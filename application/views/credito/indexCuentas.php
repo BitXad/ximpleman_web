@@ -1,5 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/credito.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -17,12 +18,41 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
-                <h3 class="box-title">Credito</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('credito/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                </div>
+                <h3 class="box-title">Cuentas por Cobrar</h3>
+            <!--    <div class="box-tools">
+                    <a href="<?php echo site_url('credito/add'); ?>" class="btn btn-success btn-sm">+ A«Ðadir</a> 
+                </div> -->
+                 <div class="col-md-12"  >
+                 <div class="col-md-4"  >
+            
+            <br class="no-print">        
+        <div class="row">
+            Desde: <input type="date" class="btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
+       
+            Hasta: <input type="date" class="btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
+        </div> <br>
+        
+          
+       </div> 
+        <div class="col-md-6">
+        <!--------------------- parametro de buscador --------------------->
+                  <div class="input-group"> 
+                    <input id="cliente_id" type="text" size="90" class="form-control" placeholder="Ingrese el Proveedor">
+                  </div>
+        <!--------------------- fin parametro de buscador --------------------->
+    </div>
+         <div class="col-md-2">
+      
+     <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_cuenta()">
+                <h5>
+                <span class="fa fa-search"></span>   Realizar  Busqueda  
+                </h5>
+          </button>
+       <br class="no-print">   
+</div>
+</div>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -52,7 +82,7 @@
 						<th>Tipo</th>
 						<th>Operaciones</th>
                     </tr>
-                    <tbody class="buscar">
+                    <tbody class="buscar" id="tablacuentas">
                     <?php $cont = 0;
                           foreach($credito as $c){;
                                  $cont = $cont+1;?>

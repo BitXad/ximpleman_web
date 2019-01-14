@@ -226,10 +226,15 @@ class Proveedor extends CI_Controller{
         $proveedor_razon = $this->input->post('razon_social');
         
         
+<<<<<<< HEAD
+        $this->load->model('Compra_model');        
+=======
         $this->load->model('Compra_model');
             
               
+>>>>>>> master
         $this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id);
+
         $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
         if(isset($datos)){
                         echo json_encode($datos);

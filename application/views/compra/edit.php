@@ -663,7 +663,11 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </div>
             </div></div>
             
+<<<<<<< HEAD
+                <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')">
+=======
                 <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
+>>>>>>> master
                     <i class="fa fa-check"></i> Guardar
                 </button>           
             </form>
@@ -849,7 +853,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     
 ?>              
         <div class="col-md-8">
-                     <span class="btn btn-warning">Comprar con dinero de caja <input  type="checkbox"  id="compra_caja" name="compra_caja" value="1"></span>
+                     <span class="btn btn-warning">Comprar con dinero de caja <input  type="checkbox"  id="compra_caja" name="compra_caja" value="1" <?php if ($compra[0]['compra_caja']==1){ ?> checked <?php } ?> ></span>
 
         </div>  
 
