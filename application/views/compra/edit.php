@@ -663,11 +663,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </div>
             </div></div>
             
-<<<<<<< HEAD
-                <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')">
-=======
                 <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
->>>>>>> master
+
                     <i class="fa fa-check"></i> Guardar
                 </button>           
             </form>
