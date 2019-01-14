@@ -1,0 +1,114 @@
+
+#titulo{
+    text-align: center;
+    font-family: "Arial", arial narrow;
+    font-size: 12pt;
+    font-weight: bold;
+    line-height: 12px;
+}
+#titulo .lahora{
+    /*font-family: "Arial", arial narrow;*/
+    font-size: 8pt;
+    /*text-align: center;*/
+    font-weight: normal;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+/* *************************INICIO Para impresion de hojas de detalles de servicio***************************** */
+#contenedortitulo{
+    display: flex;
+    max-width: 100%;
+    max-height: 5%;
+    font-family: "Arial", Arial Narrow;
+    text-align: center;
+}
+#cabizquierda{
+    width: 25%;
+    font-size: 8pt;
+}
+#cabcentro{
+    width: 50%;
+    font-size: 12pt;
+}
+#cabcentro label{
+    font-family: "Arial", Arial Narrow;
+    font-size: 8pt;
+}
+#cabderecha{
+    /*display: block;*/
+    width: 25%
+}
+#cabizquierdafechas{
+    padding-top: 0px;
+    padding-bottom: 0px;
+    max-width: 100%;
+    font-family: "Arial", Arial Narrow;
+    font-size: 8pt;
+    text-align: left;
+/*    line-height: 10px;*/
+}
+/* *************************F I N Para impresion de hojas de detalles de servicio***************************** */
+#resbusquedadetalleserv{
+    padding-top: 0px;
+}
+/* *************************INICIO para firma de pie 2 columnas***************************** */
+#parafirmas{
+    display: flex;
+    max-width: 100%;
+    /*max-height: 5%;*/
+    font-family: "Arial", Arial Narrow;
+    text-align: center;
+}
+#firmaizquierda{
+    width: 50%;
+}
+#firmaderecha{
+    width: 50%;
+}
+/* *************************F I N para firma de pie 2 columnas***************************** */
+
+
+#mitabladetimpresion {
+    font-family: "Arial", Arial Narrow;
+    border-collapse: collapse;
+    width: 100%;
+}
+/*
+#leyenda{
+    font-family: "Arial",arial Narrow;
+    font-size: 6pt;
+}*/
+/*
+#mitabladetimpresion td, #mitabladetimpresion th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    
+}*/
+
+#mitabladetimpresion tr:nth-child(even){background-color: #f2f2f2;}
+
+#mitabladetimpresion tr:hover {background-color: #ddd;}
+
+#mitabladetimpresion th {
+    /*padding-top: 12px;
+    padding-bottom: 12px; */
+    text-align: center;
+    background-color: #3c8dbc;
+    color: white;
+    font-size: 10pt;
+    padding: 2px;
+}
+#mitabladetimpresion td {
+    font-size: 8pt;
+    padding: 2px;
+}
+#alinearder{
+    text-align: right;
+}
+.estotal{
+    font-size: 10pt;
+}
+.esbold{
+    font-weight: bold;
+}

@@ -1,0 +1,57 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 15-dic-2018, 7:14:56
+    Author     : masterbit
+*/
+
+* {
+  font-size: 12px;
+  font-family: 'Times New Roman';
+}
+ 
+td,
+th,
+tr,
+table {
+  border-top: 1px solid black;
+  border-collapse: collapse;
+}
+ 
+td.producto,
+th.producto {
+  width: 75px;
+  max-width: 75px;
+}
+ 
+td.cantidad,
+th.cantidad {
+  width: 40px;
+  max-width: 40px;
+  word-break: break-all;
+}
+ 
+td.precio,
+th.precio {
+  width: 40px;
+  max-width: 40px;
+  word-break: break-all;
+}
+ 
+.centrado {
+  text-align: center;
+  align-content: center;
+}
+ 
+.ticket {
+  width: 155px;
+  max-width: 155px;
+}
+ 
+img {
+  max-width: inherit;
+  width: inherit;
+}

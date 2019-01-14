@@ -1,0 +1,27 @@
+  .cuerpo {
+                    font-family: "Arial", Arial, Arial, arial;
+                    font-size: 11px;
+                    overflow-x:hidden;
+                    overflow-y:auto; /* Hace que se ajuste a la columna más alta en ff */
+                    height:100%; /* Hace que se ajuste a la columna más alta  en ie6 */
+                }          
+            .columna_derecha {
+                    float:right; /* Alineación a la derecha */
+                    width:30%;
+                   
+                    
+                }
+    
+                .columna_izquierda {
+                    float:left; /* Alineación a la izquierda */
+                    width:30%;
+                    
+                    
+                }
+ 
+             .columna_central {
+                 margin-left:30%; /* Espacio para la columna izquierda */
+                    margin-right:30%; /* Espacio para la columna derecha */
+                   
+                  
+              }

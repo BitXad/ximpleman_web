@@ -1,0 +1,77 @@
+.micontenedor{
+    font-family: "Arial", arial narrow;
+    max-width: 6cm;
+    width: 6.8cm;
+    margin-left: 0em;
+    padding:0px;
+}
+#titulo{
+    text-align: center;
+    font-family: "Arial", arial narrow;
+    font-size: 11pt;
+    font-weight: bold;
+    line-height: 12px;
+}
+#titulo .lahora{
+    /*font-family: "Arial", arial narrow;*/
+    font-size: 6pt;
+    /*text-align: center;*/
+    font-weight: normal;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.micontenedor img{
+    max-width: 7cm;
+    max-height: 6cm;
+    width: 6cm;
+    height: 3cm;
+    padding-bottom: 8px;
+}
+div center b{
+    font-family: "Arial",arial Narrow;
+}
+div center div{
+    font-family: "Arial",arial Narrow;
+    font-size: 8pt;
+}
+div b{
+    font-family: "Arial",arial Narrow;
+    font-size: 8pt;
+    margin: 0;
+    padding: 0;
+}
+
+#mitablaimpresion {
+    font-family: "Arial", Arial Narrow;
+    border-collapse: collapse;
+    width: 100%;
+}
+#leyenda{
+    font-family: "Arial",arial Narrow;
+    font-size: 6pt;
+}
+#mitablaimpresion td, #mitablaimpresion th {
+    /*border: 1px solid #ddd;
+    padding: 8px;
+    */
+}
+
+#mitablaimpresion tr:nth-child(even){background-color: #f2f2f2;}
+
+#mitablaimpresion tr:hover {background-color: #ddd;}
+
+#mitablaimpresion th {
+    /*padding-top: 12px;
+    padding-bottom: 12px; */
+    text-align: left;
+    background-color: #3c8dbc;
+    color: white;
+    font-size: 8pt;
+    padding: 2px;
+}
+#mitablaimpresion td {
+    font-size: 6pt;
+    padding: 2px;
+}
