@@ -294,7 +294,14 @@ class Categoria_insumo extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
+                
                 $this->load->model('Detalle_venta_model');
+                $res = $this->Detalle_venta_model->get_cantidad_detalle_venta($detalleven_id);
+                if(isset($res)){
+                    $this->load->model('Inventario_model');
+                    $this->Inventario_model->incrementar_inventario($res['detalleven_cantidad'], $res['producto_id']);
+                
+                }
                 $this->Detalle_venta_model->delete_detalle_venta($detalleven_id);
                 redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
             }
@@ -365,6 +372,36 @@ class Categoria_insumo extends CI_Controller{
             $subtotal = $cantidad * $producto_precio;
             $total = $subtotal;
             
+            $this->load->model('Detalle_venta_model');
+            $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
+            if (isset($res)){
+                $cantidad1 = $res['detalleven_cantidad'];
+                $rescantidad = $cantidad + $cantidad1;
+                $resubtotal = $subtotal + $res['detalleven_subtotal'];
+                $restotal = $resubtotal;
+                $detalleparams = array(
+                    'producto_id' => $producto_id,
+                    'venta_id' => $venta_id,
+                    'moneda_id' => $this->input->post('moneda_id'),
+                    'detalleven_codigo' => $this->input->post('producto_codigo'),
+                    'detalleven_cantidad' => $rescantidad,
+                    'detalleven_unidad' => $this->input->post('producto_unidad'),
+                    'detalleven_costo' => $this->input->post('producto_costo'),
+                    'detalleven_precio' => $producto_precio,
+                    'detalleven_subtotal' => $resubtotal,
+                    'detalleven_descuento' => 0,
+                    'detalleven_total' => $restotal,
+                    'detalleven_caracteristicas' => $this->input->post('caracteristicas'),
+                    'detalleven_comision' => $this->input->post('producto_comision'),
+                    'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
+                    'usuario_id' => $usuario_id,
+                    'detalleserv_id' => $detalleserv_id,
+
+                );
+            
+            $detalleven_id = $this->Detalle_venta_model->update_detalle_venta($res['detalleven_id'], $detalleparams);
+        }
+        else{
             $detalleparams = array(
                 'producto_id' => $producto_id,
                 'venta_id' => $venta_id,
@@ -384,8 +421,11 @@ class Categoria_insumo extends CI_Controller{
                 'detalleserv_id' => $detalleserv_id,
                 
             );
-            $this->load->model('Detalle_venta_model');
             $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
+        }
+            
+            $this->load->model('Inventario_model');
+            $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
             
             redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
         }else{

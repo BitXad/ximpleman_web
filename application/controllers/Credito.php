@@ -61,7 +61,7 @@ class Credito extends CI_Controller{
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
         $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/index?');
+        $config['base_url'] = site_url('credito/indexDeuda?');
         $config['total_rows'] = $this->Credito_model->get_all_credito_count();
         $this->pagination->initialize($config);
 
@@ -91,7 +91,7 @@ class Credito extends CI_Controller{
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
         $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/index?');
+        $config['base_url'] = site_url('credito/indexCuentas?');
         $config['total_rows'] = $this->Credito_model->get_all_credito_count();
         $this->pagination->initialize($config);
 
@@ -106,6 +106,36 @@ class Credito extends CI_Controller{
         } else {
             redirect('', 'refresh');
         }
+    }
+
+    function buscarDeuda()
+    {
+         if ($this->input->is_ajax_request()) {  
+        $filtro = $this->input->post('filtro'); 
+        $datos = $this->Credito_model->get_deudas($filtro);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+    }
+
+     function buscarCuenta()
+    {
+         if ($this->input->is_ajax_request()) {  
+        $filtro = $this->input->post('filtro'); 
+        $datos = $this->Credito_model->get_cuentas($filtro);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
     }
 
     /*

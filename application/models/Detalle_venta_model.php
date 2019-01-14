@@ -141,4 +141,39 @@ class Detalle_venta_model extends CI_Model
         return $this->db->delete('detalle_venta',array('detalleven_id'=>$detalleven_id));
     }
     
+    /* ****Obtiene la cantidad de detalle venta (para insumos de servicio)****** */
+    function get_cantidad_detalle_venta($detalleven_id)
+    {
+        $sql = "select detalleven_cantidad, producto_id from detalle_venta where detalleven_id = ".$detalleven_id;
+        $res = $this->db->query($sql)->row_array();        
+        return $res;
+    }
+    /* ********Nos da el resultado si esta asignado un insumo ******** */
+    function existe_insumo_asignado($producto_id,$detalleserv_id)
+    {
+        $sql = "select
+                        * 
+                  from
+                        detalle_venta
+                 where
+                        producto_id = '$producto_id'
+                        and detalleserv_id = '$detalleserv_id'";
+        $detalle_ven = $this->db->query($sql)->row_array();
+        return $detalle_ven;
+    }
+    /* ****Obtiene todos los insumos de un detalle de servicio****** */
+    function get_all_insumo_usado($detalleserv_id)
+    {
+        $sql = "select
+                       dv.detalleven_cantidad, p.producto_nombre, p.producto_codigo, 
+                       p.producto_codigobarra
+                  from
+                       detalle_venta dv, producto p
+                 where
+                       dv.producto_id = p.producto_id
+                       and dv.detalleserv_id = ".$detalleserv_id;
+        $res = $this->db->query($sql)->result_array();
+        return $res;
+    }
+    
 }

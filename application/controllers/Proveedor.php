@@ -91,10 +91,10 @@ class Proveedor extends CI_Controller{
                 $usuario_id = $session_data['usuario_id'];
         $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('proveedor_codigo','Proveedor Codigo','required');
-		$this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
-		
-		if($this->form_validation->run())     
+        $this->form_validation->set_rules('proveedor_codigo','Proveedor Codigo','required');
+        $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
+        
+        if($this->form_validation->run())     
         {   
 
             $estado = 1;
@@ -130,17 +130,17 @@ class Proveedor extends CI_Controller{
                         $foto = $new_name . $dia . $extension;
                     }
             $params = array(
-				'estado_id' => $estado,
-				'proveedor_codigo' => $this->input->post('proveedor_codigo'),
-				'proveedor_nombre' => $this->input->post('proveedor_nombre'),
-				'proveedor_foto' => $foto,
-				'proveedor_contacto' => $this->input->post('proveedor_contacto'),
-				'proveedor_direccion' => $this->input->post('proveedor_direccion'),
-				'proveedor_telefono' => $this->input->post('proveedor_telefono'),
-				'proveedor_email' => $this->input->post('proveedor_email'),
-				'proveedor_nit' => $this->input->post('proveedor_nit'),
-				'proveedor_razon' => $this->input->post('proveedor_razon'),
-				'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
+                'estado_id' => $estado,
+                'proveedor_codigo' => $this->input->post('proveedor_codigo'),
+                'proveedor_nombre' => $this->input->post('proveedor_nombre'),
+                'proveedor_foto' => $foto,
+                'proveedor_contacto' => $this->input->post('proveedor_contacto'),
+                'proveedor_direccion' => $this->input->post('proveedor_direccion'),
+                'proveedor_telefono' => $this->input->post('proveedor_telefono'),
+                'proveedor_email' => $this->input->post('proveedor_email'),
+                'proveedor_nit' => $this->input->post('proveedor_nit'),
+                'proveedor_razon' => $this->input->post('proveedor_razon'),
+                'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
             );
             
             $proveedor_id = $this->Proveedor_model->add_proveedor($params);
@@ -148,8 +148,8 @@ class Proveedor extends CI_Controller{
         }
         else
         {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado();
             
             $data['_view'] = 'proveedor/add';
             $this->load->view('layouts/main',$data);
@@ -165,14 +165,18 @@ class Proveedor extends CI_Controller{
 
     function rapido()
     {   
+         $this->load->library('form_validation');
+        $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
+        
+        if($this->form_validation->run())     
+        {   
+
           if ($this->input->is_ajax_request()) { 
         $compra_id = $this->input->post('compra_id');
         
         $this->load->model('Compra_model');
         $estado= 1;
-        
-       
-        
+  
            
             $params = array(
                 'estado_id' => $estado,
@@ -201,10 +205,17 @@ class Proveedor extends CI_Controller{
         else
         {                 
                     show_404();
-        }          
+        }
+        }else{
+            echo json_encode(null);
+        }
+
     }
+
+
     function cambiarproveedor()
     {   
+
          if ($this->input->is_ajax_request()) {
        
    
@@ -214,13 +225,16 @@ class Proveedor extends CI_Controller{
        // $proveedor_codigo = $this->input->post('codigo_control');     
         $proveedor_razon = $this->input->post('razon_social');
         
-        $sql = "UPDATE proveedor SET proveedor_nit = ".$proveedor_nit.", proveedor_razon = '".$proveedor_razon."' 
-        WHERE proveedor_id = ".$proveedor_id." ";
-        $this->db->query($sql); 
+        
+<<<<<<< HEAD
+        $this->load->model('Compra_model');        
+=======
         $this->load->model('Compra_model');
             
               
+>>>>>>> master
         $this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id);
+
         $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
         if(isset($datos)){
                         echo json_encode($datos);
@@ -259,10 +273,10 @@ class Proveedor extends CI_Controller{
         {
             $this->load->library('form_validation');
 
-			$this->form_validation->set_rules('proveedor_codigo','Proveedor Codigo','required');
-			$this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
-		
-			if($this->form_validation->run())     
+            $this->form_validation->set_rules('proveedor_codigo','Proveedor Codigo','required');
+            $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
+        
+            if($this->form_validation->run())     
             {   
 
              if (!empty($_FILES['chivo']['name'])){
@@ -297,18 +311,18 @@ class Proveedor extends CI_Controller{
                         $foto = $new_name . $dia . $extension;
                     
                 $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'proveedor_codigo' => $this->input->post('proveedor_codigo'),
-					'proveedor_nombre' => $this->input->post('proveedor_nombre'),
-					'proveedor_foto' => $foto,
-					'proveedor_contacto' => $this->input->post('proveedor_contacto'),
-					'proveedor_direccion' => $this->input->post('proveedor_direccion'),
-					'proveedor_telefono' => $this->input->post('proveedor_telefono'),
+                    'estado_id' => $this->input->post('estado_id'),
+                    'proveedor_codigo' => $this->input->post('proveedor_codigo'),
+                    'proveedor_nombre' => $this->input->post('proveedor_nombre'),
+                    'proveedor_foto' => $foto,
+                    'proveedor_contacto' => $this->input->post('proveedor_contacto'),
+                    'proveedor_direccion' => $this->input->post('proveedor_direccion'),
+                    'proveedor_telefono' => $this->input->post('proveedor_telefono'),
                     'proveedor_telefono2' => $this->input->post('proveedor_telefono2'),
-					'proveedor_email' => $this->input->post('proveedor_email'),
-					'proveedor_nit' => $this->input->post('proveedor_nit'),
-					'proveedor_razon' => $this->input->post('proveedor_razon'),
-					'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
+                    'proveedor_email' => $this->input->post('proveedor_email'),
+                    'proveedor_nit' => $this->input->post('proveedor_nit'),
+                    'proveedor_razon' => $this->input->post('proveedor_razon'),
+                    'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
                 );
 
                 $this->Proveedor_model->update_proveedor($proveedor_id,$params);            
@@ -337,8 +351,8 @@ class Proveedor extends CI_Controller{
             }
             else
             {
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado();
 
                 $data['_view'] = 'proveedor/edit';
                 $this->load->view('layouts/main',$data);

@@ -993,16 +993,16 @@ class Servicio extends CI_Controller{
             redirect('', 'refresh');
         }
     }
-    /* **********Elimina el servicio y sus detalles de servicio*************** */
-    function removeall($servicio_id)
+    /* **********Obtiene todos los insumos usados en un determinado detalle de servicio*************** */
+    function obtenerinsumosusados($detalleserv_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
-                $this->load->model('Detalle_serv_model');
-                $this->Detalle_serv_model->delete_detalle_serv_all($servicio_id);
-                $this->Servicio_model->delete_servicio($servicio_id);
-                echo json_encode("ok");
+                
+                $this->load->model('Detalle_venta_model');
+                $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
+                echo json_encode($datos);
             }
             else{
                 redirect('alerta');
