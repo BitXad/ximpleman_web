@@ -91,17 +91,17 @@ function insumosusados(detalleserv_id){
            type:"POST",
            data:{},
            success:function(respuesta){
-               
+               var res = "";
                var registros =  JSON.parse(respuesta);
                if (registros != null){
                     var n = registros.length; //tamaño del arreglo de la consulta
                     for (var i = 0; i < n ; i++){
-                        html += registros[i]['producto_nombre']+" ("+registros[i]['producto_codigobarra']+")";
-                        html += " Cant.: "+registros[i]['detalleven_cantidad']+"<br>";
+                        res += registros[i]['producto_nombre']+" ("+registros[i]['producto_codigobarra']+")";
+                        res += " Cant.: "+registros[i]['detalleven_cantidad']+"<br>";
                       //alert(html);  
                    }
                }
-               resolve(html);
+               resolve(res);
         },
         error:function(error){
             reject(error);
@@ -116,7 +116,10 @@ function insumosusados(detalleserv_id){
 async function processData (detalleserv_id) {
   try {
     const result = await insumosusados(detalleserv_id);
-    return result;
+    //alert(result);
+    $('#insumosusados'+detalleserv_id).html(result);
+    //console.log(result);
+    return "";
   } catch (err) {
     return console.log(err.message);
   }
@@ -203,13 +206,14 @@ function resultadodetalleservicioview(servicio_id){
                             misinsumos = registros[i]["detalleserv_insumo"];
                         }
                         var res = "";
-                        var res1 = "";
+                        processData(registros[i]["detalleserv_id"]);
+                        //var res1 = insumosusados(registros[i]["detalleserv_id"]).then(function () {console.log("error")});
                         //res1 = insumosusados(registros[i]["detalleserv_id"]).then(function () {});
                         //var res = insumosusados(registros[i]["detalleserv_id"]);
                         //console.log(processData(registros[i]["detalleserv_id"]));
-                        html += misinsumos+processData(registros[i]["detalleserv_id"])+"</td>";
+                        //html += misinsumos+processData(registros[i]["detalleserv_id"])+"</td>";
                         //insumosusados(registros[i]['detalleserv_id']);
-                        html += misinsumos+res1+"<span id='insumosusados"+registros[i]['detalleserv_id']+"'></span>"+"</td>";
+                        html += misinsumos+"<span id='insumosusados"+registros[i]['detalleserv_id']+"'></span>"+"</td>";
                         html += "<td>"+registros[i]["detalleserv_glosa"]+"</td>";
                         html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
                         html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
