@@ -104,7 +104,7 @@ input[type=number] { -moz-appearance:textfield; }
                             
                             <th>Total</th>
                     </tr>
-                    <tbody class="buscar">
+                    <tbody class="buscare">
                     <?php $cont = 0;
                           $subtotalcompra = 0;
                           $descuento = 0;
@@ -187,7 +187,7 @@ input[type=number] { -moz-appearance:textfield; }
                           
                             <th>Total</th>
                     </tr>
-                    <tbody class="buscar">
+                    <tbody class="buscare">
                     <?php $cont = 0;
                           $subtotalventa = 0;
                           $descuento = 0;
@@ -346,7 +346,7 @@ input[type=number] { -moz-appearance:textfield; }
                                                 <th>N</th>
                                                 <th>Producto</th>
                     </tr>
-                    <tbody class="buscar" id="tablaresultados1">
+                    <tbody class="buscare" id="tablaresultados1">
                     
                         <!------ aqui se vacia los resultados de la busqueda mediante JS --->
                     

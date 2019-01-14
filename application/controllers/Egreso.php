@@ -10,9 +10,10 @@ class Egreso extends CI_Controller{
         parent::__construct();
         $this->load->model('Egreso_model');
         $this->load->model('Categoria_egreso_model'); 
-    
+        $this->load->model('Empresa_model');
         $this->load->model('Usuario_model');   
-        $this->load->helper('numeros');    
+        $this->load->helper('numeros');
+        $this->load->model('Parametro_model'); 
     } 
     
      
@@ -30,6 +31,7 @@ class Egreso extends CI_Controller{
                 $usuario_id = $session_data['usuario_id'];
         $data['egreso'] = $this->Egreso_model->get_all_egreso();
         $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);    
         $data['_view'] = 'egreso/index';
         $this->load->view('layouts/main',$data);
             }
@@ -41,9 +43,43 @@ class Egreso extends CI_Controller{
         }
     }
 
-    /*
-     * Addegr a new egreso
-     */
+ function buscarfecha()
+    {
+         
+     if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+               $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+
+        if ($this->input->is_ajax_request()) {
+            
+            $filtro = $this->input->post('filtro');
+            
+           if ($filtro == null){
+            $result = $this->Egreso_model->get_all_egreso($params);
+            }
+            else{
+            $result = $this->Egreso_model->fechaegreso($filtro);            
+            }
+           echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }          
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+
+    
     function add()
     {   
         
@@ -163,12 +199,46 @@ class Egreso extends CI_Controller{
      */
 
 public function pdf($egreso_id){
+     if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+               $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
 
       $data['egresos'] = $this->Egreso_model->get_egresos($egreso_id);
-      
+      $data['empresa'] = $this->Empresa_model->get_empresa(1);    
              $data['_view'] = 'egreso/recibo';
             $this->load->view('layouts/main',$data);
        
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+
+
+    public function boucher($egreso_id){
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+               $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+      $data['egreso'] = $this->Egreso_model->get_egresos($egreso_id);
+      $data['empresa'] = $this->Empresa_model->get_empresa(1);    
+             $data['_view'] = 'egreso/reciboboucher';
+            $this->load->view('layouts/main',$data);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
     }
 
     function remove($egreso_id)

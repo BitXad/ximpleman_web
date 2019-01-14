@@ -21,6 +21,14 @@ class Factura extends CI_Controller{
      */
     function index()
     {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************            
+        
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -33,7 +41,14 @@ class Factura extends CI_Controller{
         
         $data['_view'] = 'factura/index';
         $this->load->view('layouts/main',$data);
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
     }
+
+
     /*
      * Listing of factura
      */
@@ -49,7 +64,15 @@ class Factura extends CI_Controller{
 // }
     function factura_carta($venta_id)
     {
-        $usuario_id = 1;
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+        $usuario_id = $session_data['usuario_id'];
         
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
@@ -102,11 +125,26 @@ class Factura extends CI_Controller{
             echo "<script type='text/javascript>alert('La venta no contiene una factura asociada...!'); </script>'";
             redirect('venta');
         }
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
     }
+
+
     
     function factura_boucher($venta_id)
     {
-        $usuario_id = 1;
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $session_data['usuario_id'];
         
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
@@ -140,7 +178,7 @@ class Factura extends CI_Controller{
          $params['size'] = 5;
          //decimos el directorio a guardar el codigo qr, en este 
          //caso una carpeta en la raíz llamada qr_code
-         $params['savename'] = FCPATH.'resources\images\qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+         $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
          //generamos el código qr
          $this->ciqrcode->generate($params); 
          //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
@@ -159,13 +197,29 @@ class Factura extends CI_Controller{
             echo "<script type='text/javascript>alert('La venta no contiene una factura asociada...!'); </script>'";
             redirect('venta');
         }
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
     }
+
+
 
     /*
      * Adding a new factura
      */
     function add()
     {   
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+                
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -200,13 +254,29 @@ class Factura extends CI_Controller{
             $data['_view'] = 'factura/add';
             $this->load->view('layouts/main',$data);
         }
-    }  
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+    }
+
 
     /*
      * Editing a factura
      */
     function edit($factura_id)
     {   
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+        
+                
         // check if the factura exists before trying to edit it
         $data['factura'] = $this->Factura_model->get_factura($factura_id);
         
@@ -249,13 +319,28 @@ class Factura extends CI_Controller{
         }
         else
             show_error('The factura you are trying to edit does not exist.');
-    } 
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+}
+
 
     /*
      * Deleting factura
      */
     function remove($factura_id)
     {
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+                
         $factura = $this->Factura_model->get_factura($factura_id);
 
         // check if the factura exists before trying to delete it
@@ -266,6 +351,12 @@ class Factura extends CI_Controller{
         }
         else
             show_error('The factura you are trying to delete does not exist.');
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
     }
+
     
 }

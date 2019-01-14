@@ -116,4 +116,27 @@ class Dosificacion_model extends CI_Model
     {
         return $this->db->delete('dosificacion',array('dosificacion_id'=>$dosificacion_id));
     }
+    
+    /*
+     * Obtiene la dosificacion para notas de entrega de Servicios
+     */
+    function get_all_dosificacion_servicio()
+    {
+        $dosificacion = $this->db->query("
+            SELECT
+                d.`dosificacion_id`, e.`estado_descripcion`,
+                em.`empresa_nombre`, d.`dosificacion_leyenda2`,
+                d.`dosificacion_leyenda3`, d.`dosificacion_leyenda4`
+
+            FROM
+                dosificacion d, estado e, empresa em
+
+            WHERE
+                d.estado_id = e.estado_id
+                and d.empresa_id = em.empresa_id
+                
+        ")->row_array();
+
+        return $dosificacion;
+    }
 }

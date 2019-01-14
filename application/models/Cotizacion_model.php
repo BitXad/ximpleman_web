@@ -27,8 +27,25 @@ class Cotizacion_model extends CI_Model
      */
     function get_all_cotizacion()
     {
-        $this->db->order_by('cotizacion_id', 'desc');
-        return $this->db->get('cotizacion')->result_array();
+         $limit_condition = "";
+        if(isset($params) && !empty($params))
+            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
+        $cotizacion = $this->db->query("
+            SELECT
+                c.*, u.*
+
+            FROM
+                cotizacion c, usuario u
+            WHERE
+                c.usuario_id = u.usuario_id
+               
+            ORDER BY `cotizacion_id` DESC
+
+            " . $limit_condition . "
+        ")->result_array();
+
+        return $cotizacion;
     }
         
     /*
@@ -37,7 +54,8 @@ class Cotizacion_model extends CI_Model
  function get_detalle_cotizacion($cotizacion_id)
     {
         $sql = "SELECT d.*, p.* from detalle_cotizacion d, inventario p
-               where d.producto_id=p.producto_id and d.cotizacion_id = ".$cotizacion_id;
+               where d.producto_id=p.producto_id and d.cotizacion_id = ".$cotizacion_id."
+               limit 200";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     } 

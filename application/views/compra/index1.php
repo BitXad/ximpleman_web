@@ -30,14 +30,14 @@
 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
                 <h3 class="box-title">Compras Completadas</h3>
             	<div class="box-tools">
-                    <a href="<?php echo site_url('compra/reportes'); ?>" class="btn btn-warning btn-sm"><span class="fa fa-print"></span>Reportes Compra</a> 
-                    <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-sm">+ A√±adir Compra</a>
+                    
+                    <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-sm">+ Aè´–adir Compra</a>
                 </div>
             </div>
 <div class="row">
@@ -59,11 +59,11 @@
        <div class="col-md-6">
       <div  class="box-tools" >
                           
-                    <select  class="btn btn-primary btn-sm" id="select_compra" onchange="buscar_compras()">
+                    <select  class="btn btn-primary btn-sm" style="padding: 0px;" id="select_compra" onchange="buscar_compras()">
                         <option value="1">Compras de Hoy</option>
                         <option value="2">Compras de Ayer</option>
                         <option value="3">Compras de la semana</option>
-                        <option value="4">Todas las Compras</option>
+                        
                         <option value="5">Compras por fecha</option>
                     </select>
             
@@ -119,16 +119,50 @@
                         <th>Estado</th>
                         <th></th>
                     </tr>
-                    <tbody class="buscar" id="compraproveedor">
+                   <!-- <tbody class="buscar" id="compraproveedor">-->
                     <tbody class="buscar" id="fechadecompra">
                     
+                     <?php $cont = 0;
+                    $total = 0;
+                          foreach($compra as $c){;
+                          $cont = $cont+1;
+                         
+                          
+                       
+                            $subto = $c['compra_totalfinal'];
+                            $total = $total + $subto;
+                    ?>
+                    <tr>
+						<td><?php echo $cont ?></td>
+                        <!--<td><?php //echo $p['compra_id']; ?></td>-->
+                        <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font> <br>
+                        <span class="btn-info btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
+                        <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?></span></td>
+                        
+                                            
+                        
+                        <td align="right" ><?php echo "Sub Total: ".number_format($c['compra_subtotal'],'2','.',','); ?><br>
+                                          <?php echo "Desc.: ".number_format($c['compra_descuento'],'2','.',','); ?><br>
+                                          <?php echo "Desc.Global: ".number_format($c['compra_descglobal'],'2','.',','); ?><br>  
+                                          <font size="3"><b><?php echo number_format($c['compra_totalfinal'],'2','.',','); ?></b></font></td>
+                        
+                        <td align="center"><?php echo date('d/m/Y',strtotime($c['compra_fecha'])) ; ?><br>
+                            <?php echo $c['compra_hora']; ?></td>
+                        <td align="center"><?php echo $c['estado_descripcion']; ?></td>
+                       	<td>
+                            <a href="<?php echo site_url('compra/edit/'.$c['compra_id'].'/1'); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                            <a href="<?php echo site_url('compra/pdf/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>  
+                            <!--<a href="<?php echo site_url('compra/remove/'.$c['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                        </td>
+                    </tr>
                     
+                    <?php  } ?>
                             
 
                     <tr>
                     <td></td>    
                     <td align="right"><b>TOTAL</b></td> 
-                    <td align="right"><font size="4"><b><?php echo number_format(0,'2','.',','); ?></b></font></td>
+                    <td align="right"><font size="4"><b><?php echo number_format($total,'2','.',','); ?></b></font></td>
                     <td></td>    
                     <td></td>
                     <td></td>
@@ -191,8 +225,8 @@
                         <td><?php echo $psn['estado_descripcion']; ?></td>
                         <td>
                             <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
-                            <a href="<?php echo site_url('compra/edito/'.$psn['compra_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a>  
-                            <a href="<?php echo site_url('compra/remove/'.$psn['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                           <!--<a href="<?php echo site_url('compra/edito/'.$psn['compra_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a>  
+                            <a href="<?php echo site_url('compra/remove/'.$psn['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php } ?></tbody>

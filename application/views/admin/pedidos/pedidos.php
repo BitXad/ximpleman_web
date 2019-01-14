@@ -233,6 +233,8 @@
                        $tr = '<tr class="error" >';
                     }
 
+                    $fecha = date("d-m-Y", strtotime($row->pedidos_fecha) );
+
                     echo $tr;
 
                     ?>
@@ -241,7 +243,7 @@
                         <small ><?php echo $row->proveedor_nombre?></small>
                     </td>
                     <td data-title="Monto"><?php echo $row->pedidos_montototal?></td>
-                    <td data-title="Fecha"><?php echo $row->pedidos_fecha?></td>
+                    <td data-title="Fecha"><?php echo $fecha?></td>
                     <td data-title="Resumen">
                         <p>
                             <?php echo substr($row->pedidos_resumen, 0, 15); ?>...
@@ -411,6 +413,16 @@
         ajax_cambiar_todos();
     });
 
+
+    function convertDateFormat(string){
+        var info = "";
+        if(string != null){
+            info = string.split('-').reverse().join('/');
+        }
+        return info;
+    }
+
+
     function ajax_cambiar_hoy(){
         var today = moment().format('YYYY-MM-DD');
         //console.log(today);
@@ -464,7 +476,7 @@
                         '<small >'+value.proveedor_nombre+'</small>'+
                         '</td>'+
                         '<td data-title="Monto">'+value.pedidos_montototal+'</td>'+
-                        '<td data-title="Fecha">'+value.pedidos_fecha+'</td>'+
+                        '<td data-title="Fecha">'+convertDateFormat(value.pedidos_fecha)+'</td>'+
                         '<td data-title="Resumen">'+
                         '<p>'+ value.pedidos_resumen.substring(0,15)+'...</p>'+
                         '</td>'+
@@ -545,7 +557,7 @@
                         '<small >'+value.proveedor_nombre+'</small>'+
                         '</td>'+
                         '<td data-title="Monto">'+value.pedidos_montototal+'</td>'+
-                        '<td data-title="Fecha">'+value.pedidos_fecha+'</td>'+
+                        '<td data-title="Fecha">'+convertDateFormat(value.pedidos_fecha)+'</td>'+
                         '<td data-title="Resumen">'+
                         '<p>'+ value.pedidos_resumen.substring(0,15)+'...</p>'+
                         '</td>'+
@@ -617,7 +629,7 @@
                         '<small >'+value.proveedor_nombre+'</small>'+
                         '</td>'+
                         '<td data-title="Monto">'+value.pedidos_montototal+'</td>'+
-                        '<td data-title="Fecha">'+value.pedidos_fecha+'</td>'+
+                        '<td data-title="Fecha">'+convertDateFormat(value.pedidos_fecha)+'</td>'+
                         '<td data-title="Resumen">'+
                         '<p>'+ value.pedidos_resumen.substring(0,15)+'...</p>'+
                         '</td>'+
@@ -696,7 +708,7 @@
                         '<small >'+value.proveedor_nombre+'</small>'+
                         '</td>'+
                         '<td data-title="Monto">'+value.pedidos_montototal+'</td>'+
-                        '<td data-title="Fecha">'+value.pedidos_fecha+'</td>'+
+                        '<td data-title="Fecha">'+convertDateFormat(value.pedidos_fecha)+'</td>'+
                         '<td data-title="Resumen">'+
                         '<p>'+ value.pedidos_resumen.substring(0,15)+'...</p>'+
                         '</td>'+

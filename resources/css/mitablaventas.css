@@ -2,6 +2,49 @@
     /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
     font-family: "Arial", Arial, Arial, arial;
     font-size: 10px;
+    /*border-collapse: collapse;*/
+    width: 100%;
+}
+
+#mitablaventas td, #mitablaventas th {
+    /*border: 1px solid black;*/
+    padding: 7px;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+}
+
+#mitablaventas tr:nth-child(even){background-color: white;}
+
+#mitablaventas tr:hover {background-color: white;}
+
+#mitablaventas th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    background-color: gray;
+    color: white;
+    font-size: 11px;
+}
+#div1 {
+     overflow:scroll;
+     height:200px;
+     width:500px;
+}
+#div1 table {
+    width:500px;
+    background-color:white;
+}    
+
+
+
+
+/*
+estilo anterior
+
+#mitablaventas {
+
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 10px;
     border-collapse: collapse;
     width: 100%;
 }
@@ -32,4 +75,5 @@
 #div1 table {
     width:500px;
     background-color:lightgray;
-}    
+}    	
+*/

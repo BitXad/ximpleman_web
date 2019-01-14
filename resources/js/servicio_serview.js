@@ -1,0 +1,709 @@
+$(document).on("ready",inicio);
+function inicio(){
+    var servicio_id = document.getElementById('esteservicio_id').value;
+    resultadodetalleservicioview(servicio_id);
+       /* tablaresultados(1);
+        tablaproductos();
+        */
+}
+/* ****Muestra el formato de fechas ==>> d/m/Y**** */
+function convertDateFormat(string){
+    var info = "";
+    if(string != null){
+       info = string.split('-').reverse().join('/');
+   }
+    return info;
+}
+/* ***************Muestra el formato de numeros ==>> 00,000.00 los miles los separa con comas******************** */
+function numberFormat(numero){
+    // Variable que contendra el resultado final
+    var resultado = "";
+
+    // Si el numero empieza por el valor "-" (numero negativo)
+    if(numero[0]=="-")
+    {
+        // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+        // el signo negativo
+        nuevoNumero=numero.replace(/\,/g,'').substring(1);
+    }else{
+        // Cogemos el numero eliminando los posibles puntos que tenga
+        nuevoNumero=numero.replace(/\,/g,'');
+    }
+
+    // Si tiene decimales, se los quitamos al numero
+    if(numero.indexOf(".")>=0)
+        nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+
+    // Ponemos un punto cada 3 caracteres
+    for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+        resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+
+    // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+    // los separadores de miles
+    if(numero.indexOf(".")>=0)
+        resultado+=numero.substring(numero.indexOf("."));
+
+    if(numero[0]=="-")
+    {
+        // Devolvemos el valor añadiendo al inicio el signo negativo
+        return "-"+resultado;
+    }else{
+        return resultado;
+    }
+}
+/* ******************Retorna dos dijitos para el caso de 0 y 9************************* */
+function tiempodosdigitos(num){
+    if(num<10){num = "0" + num;}
+    return num;
+}
+/* **************Dibuja los detalles de servicio en SERVIEW *************** */
+function resultadodetalleservicioview(servicio_id){
+      
+    var tipoimpresora = document.getElementById('tipoimpresora').value;
+    var base_url      = document.getElementById('base_url').value;
+    var controlador   = base_url+"servicio/getdetalleservicio/"+servicio_id;
+     
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+            success:function(resul){
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    var sumtotal = 0;
+                    var sumacuenta = 0;
+                    var sumsaldo = 0;
+                    html = "";
+                    for (var i = 0; i < n ; i++){
+                        if(registros[i]['esteestado'] == 6){
+                            sumtotal   = Number(sumtotal)  + Number(registros[i]['detalleserv_total']);
+                            sumacuenta = Number(sumacuenta)   + Number(registros[i]['detalleserv_acuenta']);
+                            sumsaldo   = Number(sumsaldo) + Number(registros[i]['detalleserv_saldo']);
+                        }
+                        html += "<tr>";
+                      
+                        html += "<td>"+(i+1)+"</td>";
+                        
+                        html += "<td id='horizontal'>";
+                        html += "<font size='1'>"+registros[i]["detalleserv_descripcion"]+"</font><br>;";
+                        if(registros[i]["procedencia_id"] != 0){
+                            html += "<font size='1'><b>Proc.: </b>"+registros[i]["procedencia_descripcion"]+"</font><br>";
+                        }
+                        if(registros[i]["tiempouso_id"] != 0){
+                            html += "<font size='1'><b>T. uso.: </b>"+registros[i]["tiempouso_descripcion"]+"</font><br>";
+                        }
+                        var res = "";
+                        if(registros[i]["detalleserv_reclamo"] == "si"){ res = "Si";}else{ res = "No"; }
+                        html += "<font size='1'><b>¿Recl.?: </b>"+res+"</font><br>";
+                        html += "<font size='1'><b>Tec.R.: </b>"+registros[i]["responsable_nombres"]+" "+registros[i]["responsable_apellidos"]+"</font><br>";
+                        html += "<font size='1'><b>Reg.: </b>"+registros[i]["usuario_nombre"]+"</font><br>";
+                        html += "<font size='1'><b>Entrega: </b>";
+                        //var fechaentrega = "";
+                        if(registros[i]["detalleserv_fechaentrega"] != null){
+                            html += convertDateFormat(registros[i]["detalleserv_fechaentrega"])+" <b>Hrs.: </b>"+registros[i]["detalleserv_horaentrega"]+"</font>";
+                        }
+                        //html += fechaentrega;
+                        html += "</td>";
+                        html += "<td>"+registros[i]["detalleserv_codigo"]+"</td>";
+                        html += "<td>";
+                        if(registros[i]["catserv_id"] !=0){ html+= registros[i]["catserv_descripcion"]; }
+                        if(registros[i]["subcatserv_id"] !=0){ html += "/"+registros[i]["subcatserv_descripcion"];}
+                        html += "</td>";
+                        html += "<td>";
+                        if(registros[i]["cattrab_id"] !=0){ html += registros[i]["cattrab_descripcion"]; }
+                        html += "</td>";
+                        html += "<td>";
+                        if(registros[i]["detalleserv_fechaterminado"] != null){
+                            html += convertDateFormat(registros[i]["detalleserv_fechaterminado"])+" <br>"+registros[i]["detalleserv_horaterminado"];
+                        }
+                        html += "</td>";
+                        html += "<td>";
+                        if(registros[i]["detalleserv_fechaentregado"] != null){
+                            html += convertDateFormat(registros[i]["detalleserv_fechaentregado"])+"<br>"+registros[i]["detalleserv_horaentregado"];
+                        }
+                        html += "</td>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
+                        html += "<td id='horizontal'><font size='1'><b>Falla: </b>"+registros[i]["detalleserv_falla"]+"<br><b>Diagnostico: </b>"+registros[i]["detalleserv_diagnostico"]+"<br><b>Solucion: </b>"+registros[i]["detalleserv_solucion"]+"</font></td>";
+                        html += "<td><font size='1'><b>Entrada: </b>"+registros[i]["detalleserv_pesoentrada"]+"</font><br>";
+                        var pesosalida = "";
+                        if(registros[i]["detalleserv_pesosalida"] != null){
+                            pesosalida = registros[i]["detalleserv_pesosalida"];
+                        }
+                        html += "<font size='1'><b>Salida: </b>"+pesosalida+"</font>";
+                        html += "</td>";
+                        html += "<td>";
+                        var misinsumos = "";
+                        if(registros[i]["detalleserv_insumo"] != null){
+                            misinsumos = registros[i]["detalleserv_insumo"];
+                        }
+                        html += misinsumos+"</td>";
+                        html += "<td>"+registros[i]["detalleserv_glosa"]+"</td>";
+                        html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                        html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                        html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
+                        html += "<td>";
+                        
+                        html += "<!-- ---------------------- INICIO modal para Registrar Diagnostico, Solucion, Terminado ----------------- -->";
+                        html += "<div class='modal fade' id='modaldst"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<label>Registrar datos a: "+registros[i]["detalleserv_codigo"]+"</label>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<span id='mensajetec_detalleserv"+registros[i]["detalleserv_id"]+"' class='text-danger'></span>";
+                        html += "</div>";
+                        //html += "form_open('detalle_serv/registrartec/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"')";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' class='control-label'><span class='text-danger'>*</span>Diagnostico</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='text' name='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_diagnostico"]+"' class='form-control' id='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' required />";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' class='control-label'><span class='text-danger'>*</span>Solución</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='text' name='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_solucion"]+"' class='form-control' id='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' required />";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='detalleserv_pesosalida"+registros[i]["detalleserv_id"]+"' class='control-label'>Peso Salida(Gr.)</label>";
+                        html += "<div class='form-group'>";
+                        var estepesosalida = ""
+                        if(registros[i]["detalleserv_pesosalida"] != null || registros[i]["detalleserv_pesosalida"] != 0){
+                            estepesosalida = Number(registros[i]["detalleserv_pesosalida"]);
+                        }else{
+                            estepesosalida = Number(0);
+                        }
+                        html += "<input type='number' step='any' min='0' name='detalleserv_pesosalida"+registros[i]["detalleserv_id"]+"' value='"+estepesosalida+"' class='form-control' id='detalleserv_pesosalida"+registros[i]["detalleserv_id"]+"' />";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='control-label'>Datos Adicionales</label>";
+                        html += "<div class='form-group'>";
+                        html += "<textarea rows='5' maxlength='350' name='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='form-control' id='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' >";
+                        if(registros[i]["detalleserv_glosa"] == null || registros[i]["detalleserv_glosa"] == ""){ html += "# de hojas impresas:"; }
+                        else{ html += registros[i]["detalleserv_glosa"]; }
+                        html += "</textarea>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<button onclick='registrorepserviciotecnico("+servicio_id+", "+registros[i]['detalleserv_id']+", "+i+")' class='btn btn-success' data-dismiss='modal'>";
+                        html += "<i class='fa fa-check'></i> Guardar";
+                        html += "</button>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'>";
+                        html += "<i class='fa fa-times'></i> Cancelar</a>";
+                        html += "</div>";
+                        //html += "<?php echo form_close(); ?>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!-- ---------------------- FIN modal para Registrar Diagnostico, Solucion, Terminado ----------------- -->";
+
+                        html += "<!-- ---------------------- INICIO modal para Cobrar un detalle de un Servicio ----------------- -->";
+                        html += "<div class='modal fade' id='modalpagardetalle"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<label>Cobrar de: "+registros[i]["detalleserv_descripcion"]+"; Codigo: "+registros[i]["detalleserv_codigo"]+"</label>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<span id='mensajecobrar_detalleserv"+registros[i]["detalleserv_id"]+"' class='text-danger'></span>";
+                        html += "</div>";
+                        //html += "echo form_open('detalle_serv/registrarcobrodetalle/'.$servicio['servicio_id"]+);";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<label for='fecha_cobro' class='control-label'>FECHA DE COBRO</label>";
+                        /*html += "<?php";
+                        html += "$fecha = date('Y-m-d');";
+                        html += "$hora = date('H:i:s');";
+                        html += "?>";*/
+                    /*    var f = new Date();
+                        var fecha = "";
+                        var hora  = "";
+                        var d       = f.getDate();
+                        var dia     = (d<10) ? "0" + d : d;
+                        var m       = (f.getMonth() +1);
+                        var mes     = (m<10) ? "0" + m : m;
+                        var h       = f.getHours();
+                        var hor     = (h<10) ? "0" + h : h;
+                        var min     = f.getMinutes();
+                        var minuto  = (min<10) ? "0" + min : min;
+                        var s       = f.getSeconds();
+                        var segundo = (s<10) ? "0" + s : s;
+                        //fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
+                        fecha = f.getFullYear()+ "-" + mes + "-" + dia;
+                        
+                        hora  = hor + ":"+ minuto + ":" + segundo;*/
+                        html += "<input type='datetime-local' name='fecha_cobro"+registros[i]["detalleserv_id"]+"' value='' class='form-control' id='fecha_cobro"+registros[i]["detalleserv_id"]+"' required />";
+                        html += "<div class='box-body'>";
+
+                        html += "<table class='table-striped table-condensed' id='cobrototal'>";
+                        html += "<tr>";
+                        html += "<td>Total Bs.</td>";
+                        html += "<td id='alinear'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                        html += "</tr>";
+                        html += "<tr>";
+                        html += "<td>A cuenta Bs.</td>";
+
+                        html += "<td id='alinear'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                        html += "</tr>";
+                        html += "<tr style='font-size: 20px; '>";
+                        html += "<td><b>Saldo a Cobrar Bs.</b></td>";
+                        html += "<td id='alinear'><b>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</b></td>";
+                        html += "</tr>";
+                        html += "</table>";
+                        //html += "<input type='hidden' name='detalleserv_id' id='detalleserv_id' value='"+registros[i]["detalleserv_id"]+"'>";
+                        html += "</div>";
+
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<button onclick='cobrardetalle("+servicio_id+", "+registros[i]['detalleserv_id']+", "+i+")' class='btn btn-success' data-dismiss='modal'>";
+                        html += "<i class='fa fa-money'></i> Cobrar";
+                        html += "</button>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'>";
+                        html += "<i class='fa fa-times'></i> Cancelar</a>";
+                        html += "</div>";
+                        //html += "<?php echo form_close(); ?>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!-- ---------------------- FIN modal para Cobrar un detalle de un Servicio ----------------- -->";
+
+                        html += "<!-- ---------------------- INICIO modal para poner en CREDITO un detalle de un Servicio ----------------- -->";
+                        html += "<div class='modal fade' id='modalcreditodetalle"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<label>Se pondra en Credito el detalle: "+registros[i]["detalleserv_descripcion"]+"; Codigo: "+registros[i]["detalleserv_codigo"]+"</label>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<span id='mensajeponercredito_detalleserv"+registros[i]["detalleserv_id"]+"' class='text-danger'></span>";
+                        html += "</div>";
+                        //html += "echo form_open('detalle_serv/registrarcreditodetalle');";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<div class='box-body'>";
+                        html += "<table class='table-striped table-condensed' id='cobrototal'>";
+                        html += "<tr>";
+                        html += "<td>Total Bs.</td>";
+                        html += "<td id='alinear'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                        html += "</tr>";
+                        html += "<tr>";
+                        html += "<td>A cuenta Bs.</td>";
+
+                        html += "<td id='alinear'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                        html += "</tr>";
+                        html += "<tr>";
+                        html += "<td><b>Saldo a Cobrar Bs.</b></td>";
+                        html += "<td id='alinear'><b>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</b></td>";
+                        html += "</tr>";
+                        html += "</table>";
+                        //html += "<input type='hidden' name='servicio_id' id='servicio_id' value='"+servicio_id+"'>";
+                        //html += "<input type='hidden' name='detalleserv_id' id='detalleserv_id' value='"+registros[i]["detalleserv_id"]+"'>";
+                        html += "</div>";
+
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<button onclick='ponerencredito("+servicio_id+", "+registros[i]['detalleserv_id']+", "+i+")'  class='btn btn-success' data-dismiss='modal'>";
+                        html += "<i class='fa fa-money'></i> Poner en Credito";
+                        html += "</button>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'>";
+                        html += "<i class='fa fa-times'></i> Cancelar</a>";
+                        html += "</div>";
+                        //html += "<?php echo form_close(); ?>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!-- ---------------------- FIN modal para poner en CREDITO un detalle de un Servicio ----------------- -->";
+
+                        html += "<!------------------------ INICIO modal para confirmar Anulacion de un detalle ------------------->";
+                        html += "<div class='modal fade' id='modalanulardet"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<h3><b><span class='fa fa-minus-circle'></span>¿</b>";
+                        html += "Desea Anular este detalle de Servicio con el codigo: <b>"+registros[i]["detalleserv_codigo"]+"?</b>";
+                        html += "</h3>";
+                        html += "Al ANULAR este detalle de servicio, sus campos: Total, A cuenta y Saldo seran CERO.";
+
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        //html += "<a href='"+base_url+"detalle_serv/anulardetalleserv/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a onclick='anulardetalleservicio("+servicio_id+", "+registros[i]['detalleserv_id']+", "+i+")' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar Anulacion ------------------->";
+
+                        html += "<!------------------------ INICIO modal para confirmar Eliminación ------------------->";
+                        html += "<div class='modal fade' id='modaleliminardet"+i+"' tabindex='-1' role='dialog' aria-labelledby='modaleliminarLabel"+i+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<h3><b><span class='fa fa-trash'></span></b>";
+                        html += "¿Desea Eliminar el detalle de servicio con el codigo: <b>"+registros[i]["detalleserv_codigo"]+"</b>?";
+                        html += "</h3>";
+                        html += "Al eliminar este detalle, se perdera toda la información.";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        //html += "<a href='"+base_url+"detalle_serv/removedet/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a onclick='eliminardetalleservicio("+servicio_id+", "+registros[i]['detalleserv_id']+", "+i+")' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
+                        
+                        html += "<a href='"+base_url+"detalle_serv/modificarmidetalle/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-info btn-xs' title='modificar detalle serv..'><span class='fa fa-pencil'></span> </a>";
+                        html += "<a class='btn btn-info btn-xs' data-toggle='modal' data-target='#modaldst"+i+"' title='reporte serv. tecnico'><span class='fa fa-file-text'></span><br></a>";
+                        html += "<a class='btn btn-info btn-xs' href='"+base_url+"categoria_insumo/verinsumosasignar/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' title='ver, asignar insumos'><span class='fa fa-file-text-o'></span><br></a>";
+                        if(registros[i]["esteestado"] == 6){
+                            html += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalpagardetalle"+i+"' title='cobrar detalle serv..' onclick='refrescarhora()';><span class='fa fa-money'></span><br></a>";
+                            html += "<a class='btn  btn-success btn-xs' data-toggle='modal' data-target='#modalcreditodetalle"+i+"' title='credito detalle serv..' ><span class='fa fa-credit-card'></span><br></a>";
+                        }
+                        if(registros[i]["esteestado"] == 7){
+                            var dir_url = "";
+                            if(tipoimpresora == "FACTURADORA"){
+                                dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+registros[i]["detalleserv_id"];
+                            }else{
+                                dir_url = base_url+"detalle_serv/compdetalle_pago/"+registros[i]["detalleserv_id"];
+                            }
+                            html += "<a href='"+dir_url+"' class='btn btn-success btn-xs'  title='imprimir detalle serv..' target='_blank' ><span class='fa fa-print'></span><br></a>";
+                        }
+                        html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalanulardet"+i+"' title='anular detalle serv..'><span class='fa fa-minus-circle'></span></a>";
+                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modaleliminardet"+i+"' title='eliminar detalle serv..' ><span class='fa fa-trash'></span></a>";
+                        
+                        html += "</td>";
+                        
+                        html += "<tr>";
+                        }
+                    $("#creditototal").html(numberFormat(Number(sumtotal).toFixed(2)));
+                    $("#creditoacuenta").html(numberFormat(Number(sumacuenta).toFixed(2)));
+                    $("#creditosaldo").html(numberFormat(Number(sumsaldo).toFixed(2)));
+                    $("#cobrartotal").html(numberFormat(Number(sumtotal).toFixed(2)));
+                    $("#cobraracuenta").html(numberFormat(Number(sumacuenta).toFixed(2)));
+                    $("#cobrarsaldo").html(numberFormat(Number(sumsaldo).toFixed(2)));
+                    $("#detalleservicio").html(html);
+                   
+            }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           html = "";
+           $("#detalleservicio").html(html);
+        }
+        
+    });   
+
+}
+/* *************Anula el detalle de un SERVICIO**************** */
+function anulardetalleservicio(servicio_id, detalleserv_id, nummodal){
+    var nombremodal = nummodal;
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"servicio/anulardetalle/"+servicio_id+"/"+detalleserv_id;
+     $('#modalanulardet'+nombremodal).modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+            success:function(resul){
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    if(registros == "ok"){
+                        
+                        alert("Anulacion exitosa");
+                        resultadodetalleservicioview(servicio_id);
+                        resultadomontoservicio(servicio_id);
+                    }else{
+                        alert("Hubo problemas con la Anulacion");
+                    }
+                }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           alert("Ocurrio un error inesperado");
+        }
+        
+    });   
+
+}
+
+function resultadomontoservicio(servicio_id){
+      
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"servicio/getmontoservicio/"+servicio_id;
+     
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+            success:function(resul){
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    var total   = registros["servicio_total"];
+                    var acuenta = registros["servicio_acuenta"];
+                    var saldo   = registros["servicio_saldo"];
+                    html = "";
+                    $("#totalfinal").html(numberFormat(Number(total).toFixed(2)));
+                    $("#totalacuenta").html(numberFormat(Number(acuenta).toFixed(2)));
+                    $("#totalsaldo").html(numberFormat(Number(saldo).toFixed(2)));
+            }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           html = "";
+           $("#totalfinal").html(html);
+           $("#totalacuenta").html(html);
+           $("#totalsaldo").html(html);
+        }
+        
+    });   
+
+}
+
+function eliminardetalleservicio(servicio_id, detalleserv_id, nummodal){
+    var nombremodal = nummodal;
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"detalle_serv/removedet/"+servicio_id+"/"+detalleserv_id;
+    $('#modaleliminardet'+nombremodal).modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+            success:function(resul){
+                
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    if(registros == "ok"){
+                        
+                        //alert('#modaleliminar'+nombremodal);
+                        alert("Eliminacion exitosa");
+                        resultadodetalleservicioview(servicio_id);
+                        resultadomontoservicio(servicio_id);
+                        
+                    }else{
+                        alert("Hubo problemas con la Eliminacion");
+                    }
+                }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           alert("Ocurrio un error inesperado");
+        }
+        
+    });   
+
+}
+
+/* ****************Registra el reporte del servicio tecnico*************** */
+function registrorepserviciotecnico(servicio_id, detalleserv_id, nummodal){
+    var nombremodal = "modaldst"+nummodal;
+    var base_url = document.getElementById('base_url').value;
+    
+    var detalleserv_diagnostico = document.getElementById('detalleserv_diagnostico'+detalleserv_id).value;
+    var detalleserv_solucion = document.getElementById('detalleserv_solucion'+detalleserv_id).value;
+    var detalleserv_pesosalida = document.getElementById('detalleserv_pesosalida'+detalleserv_id).value;
+    var detalleserv_glosa = document.getElementById('detalleserv_glosa'+detalleserv_id).value;
+    
+    var controlador = base_url+'detalle_serv/registrartec/'+servicio_id+'/'+detalleserv_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
+               detalleserv_pesosalida:detalleserv_pesosalida, detalleserv_glosa:detalleserv_glosa},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   if(registros == "faltadatos"){
+                       $('#'+nombremodal).modal('show');
+                       $('#mensajetec_detalleserv'+detalleserv_id).html("<br>Debe llenar los campos: Diagnostico y Solución");
+                   }else if("ok"){
+                       //$('#'+nombremodal).modal('hide');
+                       resultadodetalleservicioview(servicio_id);
+                       //resultadomontoservicio(servicio_id);
+                       //$('#'+nombremodal).modal('hide');
+                       //resetearegtecnicoinput();
+                   }
+               }
+        }
+        
+    });
+}
+
+function refrescarhora(){
+    //$('#modalpagardetalle'+numod).reload();
+    var f = new Date();
+    var fecha = "";
+    var hora  = "";
+    var d       = f.getDate();
+    var dia     = (d<10) ? "0" + d : d;
+    var m       = (f.getMonth() +1);
+    var mes     = (m<10) ? "0" + m : m;
+    var h       = f.getHours();
+    var hor     = (h<10) ? "0" + h : h;
+    var min     = f.getMinutes();
+    var minuto  = (min<10) ? "0" + min : min;
+    var s       = f.getSeconds();
+    var segundo = (s<10) ? "0" + s : s;
+    //fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
+    fecha = f.getFullYear()+ "-" + mes + "-" + dia;
+var r = new Date();
+    hora  = hor + ":"+ minuto + ":" + segundo;
+    $('input[type=datetime-local]').val(fecha+"T"+hora);
+}
+
+/* ****************Registra el cobro de un detalle de servicio*************** */
+function cobrardetalle(servicio_id, detalleserv_id, nummodal){
+    //var nombremodal = "modalpagardetalle"+nummodal;
+    var base_url = document.getElementById('base_url').value;
+    var tipoimpresora = document.getElementById('tipoimpresora').value;
+    
+    var fecha_cobro = document.getElementById('fecha_cobro'+detalleserv_id).value;
+    var controlador = base_url+'detalle_serv/registrarcobrodetalle/'+servicio_id+'/'+detalleserv_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{fecha_cobro:fecha_cobro},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   if(registros == "faltadatos"){
+                       $('#mensajecobrar_detalleserv'+detalleserv_id).html("<br>Fecha de cobro no debe estar vacio.");
+                   }else if("ok"){
+                        var dir_url = "";
+                        if(tipoimpresora == "FACTURADORA"){
+                            dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+detalleserv_id;
+                        }else{
+                            dir_url = base_url+"detalle_serv/compdetalle_pago/"+detalleserv_id;
+                        }
+                        //html += "<a href='"+dir_url+"' class='btn btn-success btn-xs'  title='imprimir detalle serv..' target='_blank' ><span class='fa fa-print'></span><br></a>";
+                            
+                        $("#printdetalleserv").attr("href", dir_url);
+                        document.getElementById('printdetalleserv').click();
+                        //$("#printdetalleserv").trigger('click');
+                       resultadodetalleservicioview(servicio_id);
+                       resultadomontoservicio(servicio_id);
+                       //$('#'+nombremodal).modal('hide');
+                       //resetearegtecnicoinput();
+                   }
+               }
+        }
+        
+    });
+}
+/* ****************Registra el cobro de un detalle de servicio*************** */
+function ponerencredito(servicio_id, detalleserv_id, nummodal){
+    var nombremodal = "modalcreditodetalle"+nummodal;
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_serv/registrarcreditodetalle';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{servicio_id:servicio_id, detalleserv_id:detalleserv_id},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   $('#'+nombremodal).modal('hide');
+                   if(registros == "faltadatos"){
+                       $('#mensajeponercredito_detalleserv'+detalleserv_id).html("<br>Ocurrio un error, por favor refresque la pagina e intente nuevamente.");
+                   }else if("ok"){
+                       //$('#'+nombremodal).modal('hide');
+                       resultadodetalleservicioview(servicio_id);
+                   }
+               }
+        }
+        
+    });
+}
+/* ****************Registra el cobro de todos los detalles de servicio que sean terminados*************** */
+function cobrototalservicio(servicio_id){
+    //var nombremodal = "modalpagar";
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_serv/registrarcobrototal/'+servicio_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   //$('#'+nombremodal).modal('hide');
+                /*   if(registros == "faltadatos"){
+                       $('#mensajeponercredito_detalleserv'+detalleserv_id).html("<br>Ocurrio un error, por favor refresque la pagina e intente nuevamente.");
+                   }else*/ if("ok"){
+                       //$('#'+nombremodal).modal('hide');
+                       resultadodetalleservicioview(servicio_id);
+                   }
+               }
+        }
+        
+    });
+}
+/* ****************Poner en credito todos los detalles de servicio que sean terminados*************** */
+function creditototalservicio(servicio_id){
+    //var nombremodal = "modalpagar";
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_serv/registrarcreditototal/'+servicio_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    if("ok"){
+                       resultadodetalleservicioview(servicio_id);
+                   }
+               }
+        }
+        
+    });
+}
+/* ****************Anular todos los detalles de servicio*************** */
+function anulartotalservicio(servicio_id){
+    //var nombremodal = "modalpagar";
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'servicio/anularserviciodet/'+servicio_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    if("ok"){
+                       resultadodetalleservicioview(servicio_id);
+                       resultadomontoservicio(servicio_id);
+                   }
+               }
+        }
+        
+    });
+}

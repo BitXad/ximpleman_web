@@ -31,6 +31,15 @@ class Producto extends CI_Controller{
         $this->pagination->initialize($config);
 */
         $data['a'] = $a;
+        $this->load->model('Categoria_producto_model');
+        $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
+        
+        $this->load->model('Presentacion_model');
+        $data['all_presentacion'] = $this->Presentacion_model->get_alls_presentacion();
+        
+        $this->load->model('Moneda_model');
+        $data['all_moneda'] = $this->Moneda_model->get_alls_moneda();
+        
         $data['producto'] = $this->Producto_model->get_all_producto();
         
         $data['_view'] = 'producto/index';
@@ -135,7 +144,8 @@ class Producto extends CI_Controller{
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
-
+            $this->load->model('Inventario_model');
+            $this->Inventario_model->ingresar_producto_inventario($producto_id);
             redirect('producto/index');
         }
         else
@@ -268,7 +278,9 @@ class Producto extends CI_Controller{
 					'producto_tipocambio' => $this->input->post('producto_tipocambio'),
                 );
 
-                $this->Producto_model->update_producto($producto_id,$params);            
+                $this->Producto_model->update_producto($producto_id,$params);
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->update_inventario($producto_id, $params);
                 redirect('producto/index');
             }
             else
@@ -395,7 +407,11 @@ class Producto extends CI_Controller{
                 'producto_tipocambio' => $this->input->post('producto_tipocambio'),
             );
             $producto_id = $this->Producto_model->add_producto($params);
-             $sql = "INSERT into detalle_compra(
+
+            $this->load->model('Inventario_model');
+            $this->Inventario_model->ingresar_producto_inventario($producto_id);
+
+             $sql = "INSERT into detalle_compra_aux(
                 compra_id,
                 producto_id,
                 detallecomp_codigo,

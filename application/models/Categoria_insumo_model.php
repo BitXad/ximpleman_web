@@ -143,7 +143,7 @@ class Categoria_insumo_model extends CI_Model
          */
     }
     /*
-     * Recupera lo necesario para mostrar cuantos fueron asignados a una determnada subcategoria
+     * Recupera lo necesario para mostrar cuantos fueron asignados a una determinada subcategoria
      */
     function get_all_insumo_from_subcatserv($subcatserv_id)
     {
@@ -169,5 +169,20 @@ class Categoria_insumo_model extends CI_Model
         ")->result_array();
 
         return $categoria_insumo;
+    }
+    
+    function get_exist_insumo_asignado($subcatserv_id, $producto_id)
+    {
+        $categoria_insumo = $this->db->query("
+            select
+                ci.catinsumo_id
+            from
+                categoria_insumo ci
+            where
+                ci.subcatserv_id = '$subcatserv_id'
+                and ci.producto_id = '$producto_id'
+        ")->row_array();
+
+        return $categoria_insumo['catinsumo_id'];
     }
 }

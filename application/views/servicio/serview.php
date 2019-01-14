@@ -1,5 +1,5 @@
-<?php $usuario_id = 2; ?>
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/servicio_serview.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <style type="text/css">
 /*    #tamtex{ font-size: 0.1em; }*/
     #recepcion{ background-color: #FFFF33; font-size: small; }
@@ -56,6 +56,10 @@
 <!-------------------------------------------------------->
 
 <div class="box-header with-border">
+    <input type="hidden" value="<?php echo $servicio['servicio_id']; ?>" id="esteservicio_id">
+    <input type="hidden" value="<?php echo $all_parametro[0]['parametro_tipoimpresora']; ?>" id="tipoimpresora">
+    <span hidden="true"><a id="printdetalleserv" target='_blank' ></a></span>
+    
     <h3 class="box-title"><b>Detalle del Servicio N°: <?php echo $servicio['servicio_id'] ?></b></h3>
     <div class="container">
         <div class="panel panel-primary col-md-5">
@@ -83,7 +87,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>N°</th>
 						<th>Detalle</th>
 						<th>Codigo</th>
 						<th>Categoria/<br>Subcategoria</th>
@@ -98,14 +102,10 @@
 						<th>Total</th>
 						<th>Acuenta</th>
 						<th>Saldo</th>
-						
-						
-						
-                                                
 						<th></th>
                     </tr>
-                    <tbody class="buscar">
-                    <?php
+                    <tbody class="buscar" id="detalleservicio">
+                    <?php 
                          $i = 1;
                          $sumTotal = 0; $sumAcuenta = 0;
                          $sumSaldo = 0; $cont = 0;
@@ -133,7 +133,7 @@
                                                     ?>
                                                 </td>
                                                 <td><?php echo $d['detalleserv_codigo']; ?></td>
-                                                <td><?php if($d['catserv_id']<>0){echo $d['catserv_descripcion'].'/';} if($d['subcatserv_id']<>0){ echo $d['subcatserv_descripcion'];} ?></td>
+                                                <td><?php if($d['catserv_id']<>0){echo $d['catserv_descripcion'];} if($d['subcatserv_id']<>0){ echo "/".$d['subcatserv_descripcion'];} ?></td>
                                                 <td><?php if($d['cattrab_id']<>0){echo $d['cattrab_descripcion'];} ?></td>
 						<td><?php if(isset($d['detalleserv_fechaterminado'])){ echo date('d/m/Y', strtotime($d['detalleserv_fechaterminado'])).' <br>'.date('H:i:s', strtotime($d['detalleserv_horaterminado']));}  ?></td>
                                                 <td><?php if(isset($d['detalleserv_fechaentregado'])){ echo date('d/m/Y', strtotime($d['detalleserv_fechaentregado'])).' <br>'.date('H:i:s', strtotime($d['detalleserv_horaentregado']));}  ?></td>
@@ -393,21 +393,21 @@
             <div class="box-body table-responsive table-condensed">
                 <table class="table table-striped table-condensed" >
                     <tbody>
-                        <tr>
+                        <!--<tr>
                             <th>Descripción</th>
                             <th>Totales</th>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td>Total Final</td>
-                            <td><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></td>
+                            <td id="alinear"><span id="totalfinal"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></span></td>
                         </tr>
                         <tr>
                             <td>A cuenta</td>
-                            <td><?php echo number_format($servicio['servicio_acuenta'],'2','.',','); ?></td>
+                            <td id="alinear"><span id="totalacuenta"><?php echo number_format($servicio['servicio_acuenta'],'2','.',','); ?></span></td>
                         </tr>
                         <tr>
                             <th id="masgrande">Saldo</th>
-                            <th id="masgrande"><?php echo number_format($servicio['servicio_saldo'],'2','.',','); ?></th>
+                            <th id="masgrande" style="text-align: right;"><span id="totalsaldo"><?php echo number_format($servicio['servicio_saldo'],'2','.',','); ?></span></th>
                         </tr>
                     </tbody>
                     
@@ -417,7 +417,7 @@
     </div>
     <div style="float: right">
     <center>
-        <a class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalpagar" ><span class="fa fa-money fa-4x"></span><br>Cobrar Serv..</a>
+        <a class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalpagar" onclick="refrescarhora()" ><span class="fa fa-money fa-4x"></span><br>Cobrar Serv..</a>
         <a class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalcredito" ><span class="fa fa-credit-card fa-4x"></span><br>Pagar a Credito</a>
         <a class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalanular" ><span class="fa fa-minus-circle fa-4x"></span><br>Anular Serv..</a>
         <a href="<?php echo site_url('servicio/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
@@ -453,7 +453,7 @@
         <h3>Se pondra en credito todos los detalles de servicio terminado.</h3>
         </div>
         <?php
-        echo form_open('detalle_serv/registrarcreditototal/'.$servicio['servicio_id']);
+        //echo form_open('detalle_serv/registrarcreditototal/'.$servicio['servicio_id']);
         ?>
       <div class="modal-body">
        <!------------------------------------------------------------------->
@@ -462,16 +462,16 @@
        <table class="table-striped table-condensed" id="cobrototal">
            <tr>
                <td>Total Final Bs.</td>
-               <td id="alinear"><?php echo number_format($sumTotal,'2','.',',') ?></td>
+               <td id="alinear"><span id="creditototal"><?php echo number_format($sumTotal,'2','.',',') ?></span></td>
            </tr>
            <tr>
                <td>A cuenta Bs.</td>
                
-		<td id="alinear"><?php echo number_format($sumAcuenta,'2','.',',') ?></td>
+		<td id="alinear"><span id="creditoacuenta"><?php echo number_format($sumAcuenta,'2','.',',') ?></span></td>
            </tr>
            <tr style="font-size: 20px; ">
                <td><b>Saldo a Cobrar Bs.</b></td>
-               <td id="alinear"><b><?php echo number_format($sumSaldo,'2','.',',') ?></td>
+               <td id="alinear"><b><span id="creditosaldo"><?php echo number_format($sumSaldo,'2','.',',') ?></span></b></td>
            </tr>
        </table>
                <!--<input type="hidden" name="servicio_total" id="servicio_total" value="<?php //echo $servicio['servicio_total']; ?>">-->
@@ -480,13 +480,13 @@
        <!------------------------------------------------------------------->
       </div>
       <div class="modal-footer aligncenter">
-          <button type="submit" class="btn btn-success">
+          <button onclick="creditototalservicio(<?php echo $servicio['servicio_id']; ?>)" class="btn btn-success" data-dismiss="modal">
                 <i class="fa fa-money"></i> Poner en Credito
           </button>
           <a href="#" class="btn btn-danger" data-dismiss="modal">
                 <i class="fa fa-times"></i> Cancelar</a>
       </div>
-        <?php echo form_close(); ?>
+        <?php //echo form_close(); ?>
     </div>
   </div>
 </div>
@@ -501,7 +501,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
         </div>
         <?php
-        echo form_open('detalle_serv/registrarcobrototal/'.$servicio['servicio_id']);
+        //echo form_open('detalle_serv/registrarcobrototal/'.$servicio['servicio_id']);
         ?>
       <div class="modal-body">
        <!------------------------------------------------------------------->
@@ -517,16 +517,16 @@
        <table class="table-striped table-condensed" id="cobrototal">
            <tr>
                <td>Total Final Bs.</td>
-               <td id="alinear"><?php echo number_format($sumTotal,'2','.',',') ?></td>
+               <td id="alinear"><span id="cobrartotal"><?php echo number_format($sumTotal,'2','.',',') ?></span></td>
            </tr>
            <tr>
                <td>A cuenta Bs.</td>
                
-		<td id="alinear"><?php echo number_format($sumAcuenta,'2','.',',') ?></td>
+		<td id="alinear"><span id="cobraracuenta"><?php echo number_format($sumAcuenta,'2','.',',') ?></span></td>
            </tr>
            <tr style="font-size: 20px; ">
                <td><b>Saldo a Cobrar Bs.</b></td>
-               <td id="alinear"><b><?php echo number_format($sumSaldo,'2','.',',') ?></td>
+               <td id="alinear"><b><span id="cobrarsaldo"><?php echo number_format($sumSaldo,'2','.',',') ?></span></b></td>
            </tr>
        </table>
                <!--<input type="hidden" name="servicio_total" id="servicio_total" value="<?php //echo $servicio['servicio_total']; ?>">-->
@@ -535,39 +535,42 @@
        <!------------------------------------------------------------------->
       </div>
       <div class="modal-footer aligncenter">
-          <button type="submit" class="btn btn-success">
+          <button onclick="cobrototalservicio(<?php echo $servicio['servicio_id']; ?>)" class="btn btn-success" data-dismiss="modal">
                 <i class="fa fa-money"></i> Cobrar
           </button>
           <a href="#" class="btn btn-danger" data-dismiss="modal">
                 <i class="fa fa-times"></i> Cancelar</a>
       </div>
-        <?php echo form_close(); ?>
+        <?php //echo form_close(); ?>
     </div>
   </div>
 </div>
 <!-- ---------------------- FIN modal para Cobrar todo el SERVICIO(solo todos sus detalles TERMINADOS) ----------------- -->
 
 <!------------------------ INICIO modal para confirmar Anulacion ------------------->
-                                    <div class="modal fade" id="modalanular" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php //echo $i; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                          </div>
-                                          <div class="modal-body">
-                                           <!------------------------------------------------------------------->
-                                           <h3><b> <span class="fa fa-minus-circle"></span>¿</b>
-                                               Desea Anular todo el Servicio <b> (N°: <?php echo $servicio['servicio_id']; ?>)?</b>
-                                           </h3>
-                                           Al ANULAR este servicio, se anularan todos sus detalles(incluidos Total, A cuenta y Saldo seran CERO).
-                                           <!------------------------------------------------------------------->
-                                          </div>
-                                          <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('servicio/anularserviciodet/'.$servicio['servicio_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
+    <div class="modal fade" id="modalanular" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php //echo $i; ?>">
+      <div class="modal-dialog" role="document">
+            <br><br>
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+          </div>
+          <div class="modal-body">
+           <!------------------------------------------------------------------->
+           <h3><b> <span class="fa fa-minus-circle"></span>¿</b>
+               Desea Anular todo el Servicio <b> (N°: <?php echo $servicio['servicio_id']; ?>)?</b>
+           </h3>
+           Al ANULAR este servicio, se anularan todos sus detalles(incluidos Total, A cuenta y Saldo seran CERO).
+           <!------------------------------------------------------------------->
+          </div>
+          <div class="modal-footer aligncenter">
+              <button onclick="anulartotalservicio(<?php echo $servicio['servicio_id']; ?>)" class="btn btn-success" data-dismiss="modal">
+                 <i class="fa fa-check"></i>Si
+              </button>
+                      <!--<a href="<?php //echo site_url('servicio/anularserviciodet/'.$servicio['servicio_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>-->
+                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+          </div>
+        </div>
+      </div>
+    </div>
             <!------------------------ FIN modal para confirmar Anulacion ------------------->

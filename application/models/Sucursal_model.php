@@ -152,5 +152,10 @@ class sucursal_model extends CI_Model
         return $query->num_rows();
     }
 
-
+    public function borrar_sucursal($sucursal_id)
+    {
+        $this->db->where('sucursal_id', $sucursal_id);
+        $this->db->delete('sucursales');
+        return true;
+    }
 }

@@ -165,17 +165,15 @@ class Proveedor extends CI_Controller{
 
     function rapido()
     {   
-
+          if ($this->input->is_ajax_request()) { 
         $compra_id = $this->input->post('compra_id');
-        $bandera = $this->input->post('bandera');
-        $this->load->library('form_validation');
+        
         $this->load->model('Compra_model');
         $estado= 1;
         
-        $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
+       
         
-        if($this->form_validation->run())     
-        {   
+           
             $params = array(
                 'estado_id' => $estado,
                 'proveedor_codigo' => $this->input->post('proveedor_codigo'),
@@ -187,46 +185,52 @@ class Proveedor extends CI_Controller{
                 'proveedor_telefono' => $this->input->post('proveedor_telefono'),
                 'proveedor_email' => $this->input->post('proveedor_email'),
                 'proveedor_nit' => $this->input->post('proveedor_nit'),
-                'proveedor_razon' => $this->input->post('proveedor_nombre'),
+                'proveedor_razon' => $this->input->post('proveedor_razon'),
                 'proveedor_autorizacion' => $this->input->post('proveedor_autorizacion'),
             );
 
              
-            $proveedor_id = $this->Proveedor_model->add_proveedor($params);
-            $this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id); 
-           redirect('compra/edit/'.$compra_id.'/'.$bandera);
-        }
+           $proveedor_id = $this->Proveedor_model->add_proveedor($params);
+          
+   $this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id);
+        $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
+        if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
         else
-        {   
-            
-            $this->load->model('Estado_model');
-            $data['all_estado'] = $this->Estado_model->get_all_estado();
-            
-            $data['_view'] = 'proveedor/rapido';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-
+        {                 
+                    show_404();
+        }          
+    }
     function cambiarproveedor()
     {   
-        $bandera = $this->input->post('bandera');
+         if ($this->input->is_ajax_request()) {
+       
+   
         $proveedor_id = $this->input->post('proveedor_id');
         $compra_id = $this->input->post('compra_id');
-        $proveedor_nit = $this->input->post('proveedor_nit');
-        $proveedor_razon = $this->input->post('proveedor_razon');
-        $proveedor_codigo = $this->input->post('proveedor_codigo');
-        $proveedor_autorizacion = $this->input->post('proveedor_autorizacion');        
-
+        $proveedor_nit = $this->input->post('nit');
+       // $proveedor_codigo = $this->input->post('codigo_control');     
+        $proveedor_razon = $this->input->post('razon_social');
+        
+        $sql = "UPDATE proveedor SET proveedor_nit = ".$proveedor_nit.", proveedor_razon = '".$proveedor_razon."' 
+        WHERE proveedor_id = ".$proveedor_id." ";
+        $this->db->query($sql); 
         $this->load->model('Compra_model');
-        $sql = "UPDATE proveedor set proveedor_nit = '".$proveedor_nit."',".
-                "proveedor_razon = '".$proveedor_razon."',".
-                "proveedor_codigo = '".$proveedor_codigo."',".
-                "proveedor_autorizacion = '".$proveedor_autorizacion."' ".
-                "WHERE proveedor_id = ".$proveedor_id;        
-        $this->Compra_model->ejecutar($sql);       
+            
+              
         $this->Compra_model->cambiar_proveedor($compra_id,$proveedor_id);
-         redirect('compra/edit/'.$compra_id.'/'.$bandera);
-    }  
+        $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
+        if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+    }
 
     /*
      * Editing a proveedor

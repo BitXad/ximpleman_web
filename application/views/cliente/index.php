@@ -37,6 +37,10 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="eltipo_cliente" id="eltipo_cliente" value='<?php echo json_encode($all_tipo_cliente); ?>' />
+<input type="hidden" name="lacategoria_cliente" id="lacategoria_cliente" value='<?php echo json_encode($all_categoria_cliente); ?>' />
+<input type="hidden" name="lacategoria_clientezona" id="lacategoria_clientezona" value='<?php echo json_encode($all_categoria_clientezona);  ?>' />
+<input type="hidden" name="elusuario" id="elusuario" value='<?php echo json_encode($all_usuario);  ?>' />
 <!-------------------------------------------------------->
 <div class="box-header">
                 <h3 class="box-title">Cliente</h3>
@@ -106,7 +110,14 @@
                                                     <div style="white-space: nowrap;"><?php echo $c['cliente_nombrenegocio']."<br>"; ?></div>
                                                     <div><?php
                                                            echo "<b>Nit: </b>".$c['cliente_nit']."<br>";
-                                                           echo "<b>Razon: </b>".$c['cliente_razon'];
+                                                           echo "<b>Razon: </b>".$c['cliente_razon']."<br>";
+                                                           $escategoria_clientezona = "";
+                                                            if($c['categoriacliezona_id'] == null || $c['categoriacliezona_id'] == 0 || $c['categoriacliezona_id']-1 > count($all_categoria_clientezona)){ 
+                                                                $escategoria_clientezona = "No definido";
+                                                            }else{
+                                                                $escategoria_clientezona = $all_categoria_clientezona[$c['categoriacliezona_id']-1]['categoriacliezona_descripcion'];
+                                                            }
+                                                           echo "<b>Zona: </b>".$escategoria_clientezona;
                                                     ?>
                                                     </div>
                                                 </td>
@@ -117,10 +128,29 @@
                                                 </td>
 						<td><?php echo $c['cliente_email']; ?></td>
 						<td><?php echo $c['cliente_aniversario']; ?></td>
-						
-						<td><?php echo $c['tipocliente_descripcion']; ?></td>
-						<td><?php echo $c['categoriaclie_descripcion']; ?></td>
-						<td><?php echo $c['usuario_nombre']; ?></td>
+						<?php
+                                                $estipo_cliente = "";
+                                                if($c['tipocliente_id'] == null || $c['tipocliente_id'] == 0 || $c['tipocliente_id']-1 > count($all_tipo_cliente)){ 
+                                                    $estipo_cliente = "No definido";
+                                                }else{
+                                                    $estipo_cliente = $all_tipo_cliente[$c['tipocliente_id']-1]['tipocliente_descripcion'];
+                                                }
+                                                $escategoria_cliente = "";
+                                                if($c['categoriaclie_id'] == null || $c['categoriaclie_id'] == 0 || $c['categoriaclie_id']-1 > count($all_categoria_cliente)){ 
+                                                    $escategoria_cliente = "No definido";
+                                                }else{
+                                                    $escategoria_cliente = $all_categoria_cliente[$c['categoriaclie_id']-1]['categoriaclie_descripcion'];
+                                                }
+                                                $esusuario = "";
+                                                if($c['usuario_id'] == null || $c['usuario_id'] == 0 || $c['usuario_id']-1 > count($all_usuario)){ 
+                                                    $esusuario = "No definido";
+                                                }else{
+                                                    $esusuario = $all_usuario[$c['usuario_id']-1]['usuario_nombre'];
+                                                }
+                                                ?>
+						<td><?php echo $estipo_cliente; ?></td>
+						<td><?php echo $escategoria_cliente; ?></td>
+						<td><?php echo $esusuario; ?></td>
                                                 <td style="background-color: #<?php echo $c['estado_color']; ?>"><?php echo $c['estado_descripcion']; ?></td>
 						<td>
                             <a href="<?php echo site_url('cliente/edit/'.$c['cliente_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 

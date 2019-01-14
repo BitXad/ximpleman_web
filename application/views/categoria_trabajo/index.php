@@ -1,5 +1,4 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -35,7 +34,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>N°</th>
 						<th>Descripción</th>
 						<th>Estado</th>
 						<th></th>
@@ -63,13 +62,13 @@
                                           <div class="modal-body">
                                            <!------------------------------------------------------------------->
                                            <h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la categoria de trabajo <b> <?php echo $c['cattrab_descripcion']; ?></b> seleccionada?
+                                               ¿Desea eliminar la categoria de trabajo <b> <?php echo $c['cattrab_descripcion']; ?></b>?
                                            </h3>
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_trabajo/remove/'.$c['cattrab_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                                      <a href="<?php echo site_url('categoria_trabajo/remove/'.$c['cattrab_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>
@@ -80,6 +79,7 @@
                         </td>
                     </tr>
                     <?php $i++; } } ?>
+                    </tbody>
                 </table>
                                 
             </div>

@@ -1,5 +1,4 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
@@ -112,7 +111,7 @@
                         <div class="col-md-2">
                             <br>
                             <button class="btn btn-sm btn-primary btn-sm btn-block"  type="submit" onclick="buscar_detallepor_fecha()" style="height: 34px;">
-                                <span class="fa fa-search"></span>Buscar Servicios
+                                <span class="fa fa-search"></span>Buscar Detalle Serv.
                           </button>
                             <br>
                         </div>
@@ -185,10 +184,11 @@
 <div class="col-md-6">
     <div  class="box-tools" >
         <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
+            <!--<option value="">- ELEGIR -</option>-->
             <option value="1">Servicios de Hoy</option>
             <option value="2">Servicios de Ayer</option>
             <option value="3">Servicios de la semana</option>
-            <option value="4">Todos los Servicios</option>
+            <!-- <option value="4">Todos los Servicios</option> -->
             <option value="5">Servicios por fecha</option>
         </select>
   </div>
@@ -199,10 +199,10 @@
         
         <center>            
             <div class="col-md-2">
-                Desde: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                Desde: <input type="date" class="btn btn-primary btn-sm form-control" value="<?php echo date('Y-m-d')?>" id="fecha_desde" name="fecha_desde" required="true">
             </div>
             <div class="col-md-2">
-                Hasta: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+                Hasta: <input type="date" class="btn btn-primary btn-sm form-control" value="<?php echo date('Y-m-d')?>" id="fecha_hasta" name="fecha_hasta" required="true">
             </div>
 
             <div class="col-md-2">
@@ -310,8 +310,9 @@
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('servicio/anularserv/'.$s['servicio_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
-                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                              <!--<a href="<?php //echo site_url('servicio/anularserv/'.$s['servicio_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>-->
+                                              <a onclick="anulartodoelservicio(<?php echo $s['servicio_id']; ?>, <?php echo $i; ?>)" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                              <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>
@@ -334,7 +335,8 @@
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('servicio/remove/'.$s['servicio_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <!--<a href="<?php //echo site_url('servicio/remove/'.$s['servicio_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>-->
+                                                      <a onclick="eliminartodoelservicio(<?php echo $s['servicio_id']; ?>, <?php echo $i; ?>)" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                       <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
@@ -369,7 +371,7 @@
                                             <br><br>
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                              <label>Buscar por Codigo:</label>
+                                              <label>Buscar servicio por Codigo:</label>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                           </div>
                                             <?php

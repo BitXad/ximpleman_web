@@ -85,9 +85,9 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="moneda_id" class="control-label">Moneda</label>
+						<label for="moneda_id" class="control-label"><span class="text-danger">*</span>Moneda</label>
 						<div class="form-group">
-							<select name="moneda_id" class="form-control">
+							<select name="moneda_id" class="form-control" required>
 								<option value="">- MONEDA -</option>
 								<?php 
 								foreach($all_moneda as $moneda)

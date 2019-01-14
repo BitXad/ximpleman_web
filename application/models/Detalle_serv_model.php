@@ -98,6 +98,13 @@ class Detalle_serv_model extends CI_Model
     {
         return $this->db->delete('detalle_serv',array('detalleserv_id'=>$detalleserv_id));
     }
+    /*
+     * Eliminar todos los detalles de un servicio
+     */
+    function delete_detalle_serv_all($servicio_id)
+    {
+        return $this->db->delete('detalle_serv',array('servicio_id'=>$servicio_id));
+    }
     
     /* *****************Normaliza la fecha; es decir lo convierte en formato Y-m-d*********************** */
     function normalize_date($date){

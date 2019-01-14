@@ -23,7 +23,7 @@ class Servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $data['servicio'] = $this->Servicio_model->get_all_servicio();
+        $data['servicio'] = $this->Servicio_model->get_all_servicio_now();
         $data['a']=$es;
         
         $this->load->model('Estado_model');
@@ -283,7 +283,8 @@ class Servicio extends CI_Controller{
         }
     }
     /*
-     * Crea un Nuevo SERVICIO en donde se puede registrar productos para arreglar...
+     * Crea un Nuevo SERVICIO en donde se puede registrar productos para
+     * dar amntenimineto, reparar, diagnosticar...
      */
     function serviciocreado($servicio_id, $a = null)
     {
@@ -331,10 +332,10 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
-            
+            /*
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
-            
+            */
             $this->load->model('Categoria_servicio_model');
 	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
             
@@ -356,7 +357,9 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Procedencia_model');
 	    $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
-
+            
+            $this->load->model('Parametro_model');
+	    $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
             
             $data['_view'] = 'servicio/serviciocreado';
             $this->load->view('layouts/main',$data);
@@ -378,28 +381,27 @@ class Servicio extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
-        // check if the servicio exists before trying to edit it
-        $data['servicio'] = $this->Servicio_model->get_servicio($this->input->post('servicio_id'));
-        
-        if(isset($data['servicio']['servicio_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {
-                $params = array(
-					'cliente_id' => $this->input->post('cliente_id'),
-                );
-
-                $this->Servicio_model->update_servicio($servicio_id,$params);            
-                redirect('servicio/serviciocreado/'.$servicio_id);
-            }
-            else
-            {
-                $data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The servicio you are trying to edit does not exist.');
+                
+                if ($this->input->is_ajax_request()){
+                    $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+                    if(isset($data['servicio']['servicio_id']))
+                    {
+                        $cliente_id = $this->input->post('cliente_id');
+                        $params = array(
+					'cliente_id' => $cliente_id,
+                        );
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                        $this->load->model('Cliente_model');
+	                $datos = $this->Cliente_model->get_cliente($cliente_id);
+                        echo json_encode($datos);
+                    }else{
+                        echo json_encode("noexiste");
+                    }
+                }
+                else
+                {                 
+                    show_404();
+                }
         }
             else{
                 redirect('alerta');
@@ -417,21 +419,23 @@ class Servicio extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
-            if(isset($_POST) && count($_POST) > 0)     
-            {
-                $params = array(
-					'tiposerv_id' => $this->input->post('tiposerv_id'),
-					'servicio_direccion' => $this->input->post('direccion'),
-                );
-
-                $this->Servicio_model->update_servicio($servicio_id,$params);
-                redirect('servicio/serviciocreado/'.$servicio_id);
-            }
-            else
-            {
-                $data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
-                $this->load->view('layouts/main',$data);
-            }
+                
+                if ($this->input->is_ajax_request()){
+                    $tiposerv_id = $this->input->post('tiposerv_id');   
+                    $direccion = $this->input->post('direccion');
+                    $params = array(
+			'tiposerv_id' => $tiposerv_id,
+			'servicio_direccion' => $direccion,
+                    );
+                    $this->Servicio_model->update_servicio($servicio_id,$params);
+                    $datos = $this->Servicio_model->get_servicio_tiposervicio($servicio_id);
+                    echo json_encode($datos);
+                }
+                else
+                {                 
+                    show_404();
+                }
+                
             }
             else{
                 redirect('alerta');
@@ -507,7 +511,8 @@ class Servicio extends CI_Controller{
 	$this->Detalle_serv_model->anular_detalle_serv($servicio_id, $detparams);
         
         $this->Servicio_model->update_servicio($servicio_id,$params);
-        redirect('servicio/serview/'.$servicio_id);
+        echo json_encode("ok");
+        //redirect('servicio/serview/'.$servicio_id);
         }
             else{
                 redirect('alerta');
@@ -530,41 +535,19 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
-	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
+	    //$data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
             
+            $this->load->model('Tipo_servicio_model');
+	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
+            
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
             
-            $this->load->model('Categoria_servicio_model');
-	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
-                
-            $this->load->model('Responsable_model');
-	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-                
-            $this->load->model('Tipo_servicio_model');
-	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
-	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
-            
-            
-            $this->load->model('Subcategoria_servicio_model');
-	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-            
-            $this->load->model('Categoria_trabajo_model');
-	    $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
-            
-            $this->load->model('Tiempo_uso_model');
-	    $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
-            
-            $this->load->model('Procedencia_model');
-	    $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
-
-
-            $this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-
+            $this->load->model('Parametro_model');
+	    $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
             
         $data['_view'] = 'servicio/serview';
         $this->load->view('layouts/main',$data);
@@ -607,7 +590,8 @@ class Servicio extends CI_Controller{
 	$this->Detalle_serv_model->anular_detalle_serv($servicio_id, $detparams);
         
         $this->Servicio_model->update_servicio($servicio_id,$params);
-        redirect('servicio');
+        echo json_encode("ok");
+        //redirect('servicio');
         }
             else{
                 redirect('alerta');
@@ -713,7 +697,7 @@ class Servicio extends CI_Controller{
         );
 
         $this->Servicio_model->update_servicio($servicio_id,$sumparams);
-        redirect('servicio/serview/'.$servicio_id);
+        echo json_encode("ok");
         }
             else{
                 redirect('alerta');
@@ -757,7 +741,7 @@ class Servicio extends CI_Controller{
         }
     }
     
-    function boletarecepcion($servicio_id)
+    function boletarecepcion_boucher($servicio_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
@@ -805,7 +789,46 @@ class Servicio extends CI_Controller{
 	    $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
 */
             $this->load->model('Dosificacion_model');
-	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/boletarecepcion_boucher';
+            $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    function boletarecepcion($servicio_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+//	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
             
             $data['_view'] = 'servicio/boletarecepcion';
             $this->load->view('layouts/main',$data);
@@ -904,6 +927,83 @@ class Servicio extends CI_Controller{
             show_404();
         }
         }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    /*
+     * obtenemos los detalles de un determinado servicio
+    */
+    function getdetalleservicio($servicio_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                if ($this->input->is_ajax_request()){
+                    $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+                    if(isset($data['servicio']['servicio_id']))
+                    {
+                        $this->load->model('Detalle_serv_model');
+	                $datos = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+                        echo json_encode($datos);
+                    }else{
+                        echo json_encode("noexiste");
+                    }
+                }
+                else
+                {                 
+                    show_404();
+                }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    /*
+     * Obtiene los datos de un servicio; lo que recupera son los montos
+     */
+    function getmontoservicio($servicio_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                if ($this->input->is_ajax_request()){
+                   $datos = $this->Servicio_model->get_servicio($servicio_id);
+                    echo json_encode($datos);
+                }
+                else
+                {                 
+                    show_404();
+                }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /* **********Elimina el servicio y sus detalles de servicio*************** */
+    function removeall($servicio_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $this->load->model('Detalle_serv_model');
+                $this->Detalle_serv_model->delete_detalle_serv_all($servicio_id);
+                $this->Servicio_model->delete_servicio($servicio_id);
+                echo json_encode("ok");
+            }
             else{
                 redirect('alerta');
             }

@@ -21,6 +21,10 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
+<input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
+<input id="pedido_id" name="pedido_id" value="0" hidden>
+<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >
+<input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
 
 
 <div class="box-header">
@@ -96,115 +100,10 @@
                         <th> </th>
                     </tr>
                     <tbody class="buscar" id="tabla_pedidos">
-<!--                <?php $cont = 0;
-                           $cantidad_pedidos = 0;
-                           $total_pedido = 0;
-                          foreach($pedido as $p){;
-                                 $cont = $cont+1; 
-                                 $total_pedido+=$p['pedido_total'];
-                                 ?>
-                    <tr>
-                        <td><?php echo $cont ?></td>
 
-                        <td><font size="3"><b><?php echo $p['cliente_nombre']; ?></b></font> <br>
-                        <?php echo $p['cliente_nombrenegocio']; ?><br>
-                        <?php echo $p['pedido_fecha']; ?><br>                       
+                        <!-- Aqui de acomoda la tabla de pedidos -->
                         
-                        </td>
-                        <td align="center" bgcolor="<?php echo $p['estado_color']; ?>">
-                            <a href="<?php echo base_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>">
-                            <font size="3" color="white"><b><?php echo "00".$p['pedido_id']; ?></b></font> <br>
-                            <font size="1" color="white"><?php echo $p['estado_descripcion']; ?></font>
-                            
-                            </a>
-                        </td>
-                         
-                        
-                        <td align="right" bgcolor="<?php echo $p['estado_color']; ?>">
-                            <?php echo "Sub Total: ".number_format($p['pedido_subtotal'],'2','.',','); ?><br>
-                            <?php echo "Desc.: ".number_format($p['pedido_descuento'],'2','.',','); ?><br>  
-                            <font size="3"><b><?php echo number_format($p['pedido_total'],'2','.',','); ?></b></font>
-                        </td>
-                        
-                        <td bgcolor="<?php echo $p['estado_color']; ?>">
-                            <center>                            
-                            <font size="2">                            
-                            <?php echo "<b>".implode("/", array_reverse(explode("-", $p['pedido_fechaentrega'])))."</b><br>".$p['pedido_horaentrega']; ?>                            
-                            </font>
-                            </center> 
-                        </td>
-                        
-                        <td>
-                            <a href="<?php echo site_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>" class="btn btn-success btn-sm"><span class="fa fa-cubes"></span></a>
-                            <?php if ($p['estado_id']==11) { ?>
-                           <button type="button" class="btn btn-facebook btn-sm" data-toggle="modal" data-target="#modalConsolidar<?php echo $p['pedido_id']; ?>">
-                               <span class="fa fa-money"></span>     Consolidar
-                          </button>
-
-        -------------------------------------------------- Modal -----------------------------------
-                            <div class="modal fade" id="modalConsolidar<?php echo $p['pedido_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="modalConsolidar" aria-hidden="true">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-
-                                  <div class="modal-header" style="background-color: #CDCDCD">
-                                      <center>
-
-                                      <h3 class="modal-title" id="exampleModalLabel"><b><span class="fa fa-money"></span>  Consolidar Pedido a Ventas <span class="fa fa-save"></span></b></h3>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-
-                                      </center>
-                                  </div>
-
-                                  <div class="modal-body">
-                                      <center>
-                                          <font size="5"><b>Se enviará este pedido como operación de venta</b></font><br>  
-                                          <font size="5">¿Desea continuar?</font><br>  
-
-                                      </center>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                                    <button  class="btn btn-primary" data-dismiss="modal"  onclick="consolidar_pedido(<?php echo $p['pedido_id']; ?>)"><span class="fa fa-money"></span> Consolidar</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-        -------------------------------------- Fin Modal -----------------------------------------------                    
-
-                            <?php } ?>
-                            
-
-                        </td>
-                    </tr>
-                    
-                    <?php } ?>
-                    <tr>
-                        <th> </th>
-                        <th> </th>
-                        <th>Sub <br>Total</th>
-                            
-                        <th>
-                            <center> 
-                            PEDIDOS<br>                      
-                            <font size="3"><b><?php echo $cont; ?></b></font>
-                            </center>
-                       </th>
-                       
-                       <th>
-                            <center>
-                                TOTAL Bs<br>
-                            <font size="3"><b><?php echo number_format($total_pedido,'2','.',','); ?></b></font>
-                            </center>
-                       </th>
-                        
-                        <th></th>
-
-                        <th> </th>
-                    </tr> -->
-                    
-                </tbody>
+                    </tbody>
                 </table>
                                 
             </div>

@@ -13,121 +13,6 @@ class Sucursal extends CI_Controller
         $this->load->library('pagination');
     }
 
-    public function indexXx()
-    {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-
-                $sucursales = $this->sucursal_model->get_sucursales();
-                $data1['sucursales'] = $sucursales;
-
-                $data = array(
-                    'usuario_login' => $session_data['usuario_login'],
-                    'usuario_id' => $session_data['usuario_id'],
-                    'usuario_nombre' => $session_data['usuario_nombre'],
-                    'rol' => $this->getRol($session_data['tipousuario_id']),
-                    'tipousuario_id' => $session_data['tipousuario_id'],
-                    'usuario_imagen' => $session_data['usuario_imagen'],
-                    'usuario_email' => $session_data['usuario_email'],
-                    'page_title' => 'Admin >> Sucursales',
-                    'thumb'=> $session_data['thumb']
-                );
-
-                $data1['usuario_imagen'] = $session_data['usuario_imagen'];
-
-                $rows = array();
-
-/*	            print "<pre>";
-	            print_r($rows);
-	            print "</pre>";*/
-
-                foreach ($sucursales as $sucursal){
-
-                    $info_sucursal = $this->items($sucursal->sucursal_url);
-                    //echo $info_sucursal;
-                    foreach ($info_sucursal as $row2){
-                        $rows2 = array(
-                            'codigo' => $row2->producto_codigo,
-                            'cuantos' => $row2->existencia,
-                            'url' => $sucursal->sucursal_url,
-                            'sucursal' => $sucursal->sucursal_nombre,
-                            'id' => $row2->producto_id
-                        );
-                        array_push($rows, $rows2);
-                    }
-                }
-
-                $items = array();
-
-                foreach ($rows as $fila){
-
-                    if( count($items)>0 ) {
-                        //echo 'sucursales:'.$fila['sucursal'].'<br>';
-
-                        $res = $this->find( $fila['codigo'],$items);
-                        if( $res!=false ){
-                            $mejor = array();
-                            //if (array_key_exists('sucursales', $fila)) {
-                                $mejor = array(
-                                    'sucursales'=> $res['sucursales'].','.$fila['sucursal'].':'.$fila['cuantos']
-                                );
-//                            $indexCompleted = array_search('sucursales', $fila);
-   //                         unset($fila[$indexCompleted]);
-                            foreach ($items as $key => $item){
-                                if($item['codigo']==$fila['codigo']){
-                                    unset($items[$key]);
-                                    break;
-                                }
-                            }
-
-                            $nuevo1 = array(
-                                'codigo' => $fila['codigo']
-                            );
-
-                            $nuevo1 = $nuevo1 + $mejor;
-                            array_push($items, $nuevo1);
-                            //array_replace($items,$aux);
-
-                        } else {
-                            $nuevo = array(
-                                'codigo' => $fila['codigo'],
-                                'sucursales' => $fila['sucursal'].':'.$fila['cuantos'],
-                                'id' => $fila['id']
-                            );
-                            array_push($items, $nuevo);
-                        }
-
-                    } else {
-                        $nuevo = array(
-                            'codigo' => $fila['codigo'],
-                            'sucursales'=> $fila['sucursal'].':'.$fila['cuantos'],
-                            'id' => $fila['id']
-                        );
-                        array_push($items, $nuevo);
-                    }
-                }
-
-/*                print "<pre>";
-                print_r( $items);
-                print "</pre>";*/
-
-
-                $data1['sucs'] = $items;
-                $data['main'] = $this->load->view('sucursales/lista',$data1, true);
-                $this->load->view('template/main',$data);
-
-
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
-
-    }
-
     public function find($codigo, $items)
     {
         foreach ($items as $item){
@@ -707,7 +592,6 @@ class Sucursal extends CI_Controller
         echo json_encode($data);
     }
 
-
     public function index()
     {
         if ($this->session->userdata('logged_in')) {
@@ -727,47 +611,26 @@ class Sucursal extends CI_Controller
 
     }
 
-    public function infoxxxxx()
+    public function borrar($idsuc)
     {
-        /*        if ($this->session->userdata('logged_in')) {
-                    $session_data = $this->session->userdata('logged_in');
-                    if($session_data['tipousuario_id']==1) {
-                    $this->load->model('Pedido_model');
-                        ;*/
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if ($session_data['tipousuario_id'] == 1) {
 
+                $this->sucursal_model->borrar_sucursal($idsuc);
+                $this->session->set_flashdata('msg',
+                    '<div class="alert alert-success text-center fade in" style="margin-top:18px;">
+                                <a class="close" title="close" aria-label="close" data-dismiss="alert" href="#">×</a>
+                                Sucursal elmininada con <strong>Exito!</strong>
+                            </div>');
+                redirect('sucursal');
 
-        /*               $data = array(
-                           'usuario_login' => $session_data['usuario_login'],
-                           'usuario_id' => $session_data['usuario_id'],
-                           'usuario_nombre' => $session_data['usuario_nombre'],
-                           'rol' => $this->getRol($session_data['tipousuario_id']),
-                           'tipousuario_id' => $session_data['tipousuario_id'],
-                           'usuario_imagen' => $session_data['usuario_imagen'],
-                           'usuario_email' => $session_data['usuario_email'],
-                           'page_title' => 'Admin >> Sucursales',
-                           'thumb'=> $session_data['thumb']
-                       );*/
-        //$this->load->model('inventario_model');
-
-        $res = $this->sucursal_model->get_inventario(100,15); //lista de inventario de existentes
-
-        //$data1['usuario_imagen'] = $session_data['usuario_imagen'];
-        //$data['main'] = $this->load->view('sucursales/info', $data1, true);
-        //$this->load->view('template/main',$data);
-
-        /*                print "<pre>";
-                        print_r($res);
-                        print "</pre>";*/
-        echo json_encode($res);
-        //return $res;
-
-        /*            }
-                    else{
-                        redirect('alerta');
-                    }
-                } else {
-                    redirect('', 'refresh');
-                }*/
+            } else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
     }
 
 }

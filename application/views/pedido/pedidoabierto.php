@@ -58,13 +58,20 @@ function mostrar_ocultar(){
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <!--------------------- CABCERA -------------------------->
 
+ 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
+<input type="text" value="<?php echo $pedido_id; ?>" id="pedido_id" hidden>
+<input type="text" value='[{}]' id="lista_pedido" hidden>
+<!--<input type="text" value="4775.74" id="numero_prueba">-->
+
 
 <div class="box-header">
     <h1 class="box-title"><b>DETALLE PEDIDO Nº: <?php echo "000".$pedido_id; ?></b></h1>
+    <!--<a href="<?php echo base_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-success">Actualizar </a>-->
 </div>
 
 
@@ -74,9 +81,13 @@ function mostrar_ocultar(){
     <div class="panel panel-primary col-md-8">
         <h5><b>Cliente: </b><?php echo $pedido[0]['cliente_nombre']; ?> <br>
         <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo']; ?> <br>
-        <b>Fecha/Hora: </b><?php echo $pedido[0]['pedido_fecha']; ?></h5>       
+        <b>Fecha/Hora: </b><?php echo $pedido[0]['pedido_fecha']; ?></h5>   
+        
+        <?php //$descuento =  "<script>descuento</script>"; ?>
+        <?php //$totalfinal =  "<script>descuento</script>"; ?>
+        
     </div>
-    
+      
     <div class="box-tools">
         <center>            
             <a href="<?php echo base_url('cliente/clientenuevo/'.$pedido[0]['pedido_id']); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie</small></a>
@@ -85,162 +96,72 @@ function mostrar_ocultar(){
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
     </div>
-    <br>            
-  
+    <br>  
+
+    
 </div>
 
 
-<!--------------------- FIN CABERECA -------------------------->
+<!------------------------  inicio buscandor de producto --------------------------------------->
 
 
-<!--<div class="box-header">
-                <h3 class="box-title">Pedido</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('pedido/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                </div>
-            </div>-->
+
+    
+
+
+
 <div class="row">
     <div class="col-md-12">
-    <!--------------------- parametro de buscador --------------------->
-              <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el pedido, producto, precio"> 
-              </div>
-                
-        <!--------------------- fin parametro de buscador --------------------->
-  
-            
-            
         <div class="box">
             
-            <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
-                    <tr>
-                            <th>Nº</th>
-                            <th>producto</th>
-                            <th>Total</th>
-                    </tr>
-                    <tbody class="buscar" id="detalle_pedido">
-                    <?php $cont = 0;
-                          $subtotal = 0;
-                          $descuento = 0;
-                          $totalfinal = 0;
-                          
-                          foreach($detalle_pedido as $d){;
-                                 $cont = $cont+1; 
+    <!--------------------- parametro de buscador --------------------->
+                  <div class="input-group">
+                      <span class="input-group-addon"> 
+                        Buscar 
+                      </span>           
+                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,6)">
+                  </div>
+        <!--------------------- fin parametro de buscador --------------------->
+        <div class="box box-body table-responsive" >
+            
+            
+                <table class="table table-striped" id="mitabla">
+                            <tr>
+                                    <th>#</th>
+                                    <th>Saldos</th>
+                                    <th>Detalle</th>
+                            </tr>
+                            <tbody class="buscar3"  id="tablaresultadospedido">
 
-                                 
-                          $subtotal += $d['detalleped_subtotal'];
-                          $descuento += $d['detalleped_descuento'];
-                          $totalfinal += $d['detalleped_total'];
-                          
-                                 
-                                 
-                                 ?>
-                    <tr>
-                        
-                            <td><?php echo $cont ?></td>  
-
-                            <?php 
-                                $imagen = base_url('resources/images/').$d['detalleped_foto']; 
-                            ?>
-                            
-                            <td>   
-                                <center>
-                                    <img src="<?php echo $imagen; ?>" width="70" height="70" class="img-circle"><br>
-                                    <span class="badge btn-danger">
-                                        <font size="4"> <b><?php echo number_format($d['detalleped_total'],2,".",","); ?></b></font> <br>                                        
-                                    </span>
-                                </center>
-                        
-                            </td>                              
-                            
-                            <td><b><?php echo $d['detalleped_nombre']; ?></b><br>
-                                    <b>Unidad: </b><?php echo $d['detalleped_unidad']; ?>
-                                    <b>Código: </b><?php echo $d['detalleped_codigo']; ?>
-                                    <b>Obs.: </b><?php echo $d['detalleped_preferencia']; ?><br>
-                                    <span class="badge btn-facebook btn-sm"> <b>Precio: </b><?php echo $d['detalleped_precio']; ?></span>
-                                <!--------------------------------------------------------------->
-                                <table class="table-condensed btn-foursquarexs" id="mitabla" >
-                                    <tbody align="center">
-                                        <tr>
-                                                <td><b>Cant</b><br><?php echo $d['detalleped_cantidad']; ?></td>
-                                                <td><b>Total<br><?php echo $d['detalleped_subtotal']; ?></b></td>
-                                                <td><b>Desc<br><?php echo number_format($d['detalleped_descuento'], 2, ".", ","); ?></b></td>
-                                        </tr>
-                                    </tbody>
-                                </table>                                
-                                <!--------------------------------------------------------------->
-                                        
-                                <div class="btn-group">                                  
-<!--                                    <a href="<?php echo site_url('detalle_pedido/edit/'.$d['detalleped_id']); ?>" class="btn btn-info btn-sm"><span class="fa fa-minus"></span></a> 
-                                    <a href="<?php echo site_url('detalle_pedido/edit/'.$d['detalleped_id']); ?>" class="btn btn-info btn-sm"><span class="fa fa-plus"></span></a>                                 
-                                    <a href="<?php echo site_url('detalle_pedido/quitar/'.$d['detalleped_id']."/".$pedido_id); ?>" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></a>-->
-                                    
-                                    <button class="btn btn-info btn-sm" onclick="incrementar(<?php echo $d['detalleped_id']; ?>)"><span class="fa fa-minus" ></span></button>
-                                    <button class="btn btn-info btn-sm" onclick="disminuir(<?php echo $d['detalleped_id']; ?>)"><span class="fa fa-plus" ></span></button>                                 
-                                    <button class="btn btn-danger btn-sm" onclick="eliminar(<?php echo $d['detalleped_id']; ?>)"><span class="fa fa-trash" ></span></button>
-                                    
-                                </div>
-                                    
-                            </td>
-                                               
-                    </tr>
-                    <?php } ?>
-                </tbody>
+                            </tbody>
                 </table>
-                
             </div>
-            <div class="pull-right">
-
-                </div>                
         </div>
     </div>
 </div>
 
 
-<div class="col-md-6">
-        
-        
+<div class="row" id="filtrar">
+        <div class="box" id="tabla_pedidoabierto">
+            
+            
+                 
+        </div>
+</div>
+
+
+
+<div class="col-md-6">  
 <!----------- tabla detalle cuenta ----------------------------------->
 
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box">
+        <div class="row" id="detalle_cuenta_pedido">
 
-
-        <div class="box-body table-responsive table-condensed">
-            <table class="table table-striped table-condensed" id="miotratabla">
-                <tr>
-                    <th> Descripción</th>
-                    <th> Total </th>                       
-                </tr>
-                
-                <tr>
-                    <td>Sub Total Bs</td>
-                    <td><?php echo number_format($subtotal,2,'.',','); ?></td>                    
-                </tr>                
-                
-                <tr>
-                    <td>Descuento</td>
-                    <td><?php echo number_format($descuento,2,'.',',');?></td>                    
-                </tr>
-                
-                <tr>
-                    <th><b>TOTAL FINAL</b></th>
-                    <th><font size="5"> <?php echo number_format($totalfinal,2,'.',',');?></font></th>
-                </tr>
-
-
-            </table>
-        </div>
-        </div>
-        </div>
-        </div>
+            
+        </div>        
+<!----------- fin tabla detalle cuenta ----------------------------------->
         
-    <!----------- fin tabla detalle cuenta ----------------------------------->
-        
-    </div>
+</div>
 <!----------------------------------- BOTONES ---------------------------------->
 <div class="col-md-6">
         
@@ -268,14 +189,14 @@ function mostrar_ocultar(){
 		<div class="modal-content">
 			<div class="modal-header">
                             
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                            </button>
-                            <h4 class="modal-title" id="myModalLabel">Buscar</h4>
-
-                            <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                              <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del huesped...">
-                            </div>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
+                                
+      <div class="input-group"> <span class="input-group-addon">Buscar</span>
+        <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del huesped...">
+      </div>
                                 
 			</div>
 			<div class="modal-body">
@@ -285,7 +206,6 @@ function mostrar_ocultar(){
                             <tr>
                                                         <th>N</th>
                                                         <th> Nombres</th>
-<!--                                                        <th>Acción</th>-->
                             </tr>
                             <tbody class="buscar2">
                  
@@ -345,13 +265,12 @@ function mostrar_ocultar(){
 <!--------------------------------- FIN MODAL CLIENTES ------------------------------------>
 
 
+<!----------------- modal productos---------------------------------------------->
 
-<!----------------- inicio modal productos---------------------------------------------->
 
-
-<div class="modal fade" id="modalbuscarprod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalbuscarprod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
 	<div class="modal-dialog" role="document">
-		<div class="modal-content">
+		<div class="modal-content table-responsive">
 			<div class="modal-header">
                             
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -379,7 +298,7 @@ function mostrar_ocultar(){
 
             <div class="col-md-8">
                 
-<!--            ------------------- inicio parametro de buscador --------------------->
+<!--            ------------------- parametro de buscador --------------------->
                        
                   <div class="input-group">
                       <span class="input-group-addon"> 
@@ -398,10 +317,10 @@ function mostrar_ocultar(){
 			</div>
 			<div class="modal-body">
                         <!--------------------- TABLA---------------------------------------------------->
-                        <div class="box-body table-responsive">
+                        <div class="box-body">
                         <table class="table table-striped" id="mitabla">
                             <tr>
-                                    <th>N</th>
+                                    <th>#</th>
                                     <th>Datos</th>
                                     <th>Producto</th>
                             </tr>
@@ -412,12 +331,9 @@ function mostrar_ocultar(){
 
 -->                            </tbody>
                         </table>
-                        <div class="pull-right">
-                            <?php echo $this->pagination->create_links(); ?>                    
-                        </div>                
-                    </div><!--
-
-
+                                   
+                    </div>
+                        
 
                         <!----------------------FIN TABLA--------------------------------------------------->
 			</div>
@@ -426,9 +342,8 @@ function mostrar_ocultar(){
 </div>
 
 <!---------------------- fin modal productos --------------------------------------------------->
-<!--      $subtotal += $d['detalleped_subtotal'];
-                          $descuento += $d['detalleped_descuento'];
-                          $totalfinal += $d['detalleped_total'];-->
+
+
                           
 <!----------------------Modal Cobrar--------------------------------------------------->
 <form action="<?php echo base_url('pedido/finalizarpedido'); ?>"  method="POST" class="form" name="descuento">    
@@ -457,17 +372,19 @@ function mostrar_ocultar(){
                                     <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>
                                     </div>
                                     
+
+                                    
                                     <div class="col-md-3">
-                                        <h4 class="modal-title" id="myModalLabel"><b>CUENTA POR PEDIDO</b></h4>
-                                        <select id="tipo_pago" class="btn btn-default" onchange="mostrar_ocultar()">
-                                            <option value="EFECTIVO" data-image="<?php echo base_url('resources/img/logo.png'); ?>">EFECTIVO</option>                                       
-                                            <option value="BANCO">BANCO</option>
-                                            <option value="CREDITO">CREDITO</option>
-                                            <option value="TARJETA CREDITO">TARJETA DE CREDITO</option>
-                                            <option value="TARJETA DEBITO">TARJETA DE DEBITO</option>
+                                        <h4 class="modal-title" id="myModalLabel"><b>TIPO TRANSACCIÓN</b></h4>                                        
+                                        <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default"  onchange="mostrar_ocultar()">
+                                            <?php
+                                                foreach($tipo_transaccion as $tipo){ ?>
+                                                    <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+                                            <?php } ?>
+ 
                                          </select>
                                     </div>
-                                    
+
                                 </div>                                    
                                 </center>     
                                 
@@ -479,26 +396,13 @@ function mostrar_ocultar(){
 
                             
 <!----------- tabla detalle cuenta ----------------------------------->
-<!--        <div class="box-header">
-            <h3 class="box-title">CUENTA: ESTADIA</h3>
-            <div class="box-tools">
-                <a href="<?php echo site_url('huesped/add'); ?>" class="btn btn-success btn-sm">Añadir</a> 
-                <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-sm"><span class="fa fa-search"></span>    Productos</a>
-            </div>
-        </div>        -->
-                
-<?php 
-    $total_pedido = $subtotal;
-    $total_descuento = $descuento;
-    //$total_consumo = 0;
-    
-?>              
 
+                
 
 <!--             <form action="<?php echo base_url('pedido/finalizarpedido/'.$pedido_id); ?>"  method="POST" class="form" name="descuento">    -->
             <div hidden="true">        
-                <input id="pedido_totalestadia" name="pedido_totalestadia" value="<?php echo $total_pedido; ?>">
-                <input id="pedido_totalconsumo" name="pedido_totalconsumo" value="<?php echo $total_descuento; ?>">
+<!--                <input id="pedido_totalestadia" name="pedido_totalestadia" value="<?php echo $total_pedido; ?>">
+                <input id="pedido_totalconsumo" name="pedido_totalconsumo" value="<?php echo $total_descuento; ?>">-->
                 <input id="pedido_id"  name="pedido_id" type="text" class="form-control" value="<?php echo $pedido_id; ?>">
             </div>
                  
@@ -518,24 +422,24 @@ function mostrar_ocultar(){
                 
                 <tr>
                         <td>Total Pedido Bs</td>
-                        <td align="right"><?php echo number_format($total_pedido,2,'.',','); ?></td>
+                        
+                        <!--<td align="right"><?php echo number_format($total_pedido,2,'.',''); ?></td>-->
+                        <td align="right"><input type="text"  size="8"  id="total_pedido" val="0.00"></td>
                     
                 </tr>                
                 <tr>
                         <td>Descuento Bs</td>
-                        <td align="right"><?php echo number_format($total_descuento,2,'.',','); ?></td>
+                        <!--<td align="right"><?php echo number_format($total_descuento,2,'.',''); ?></td>-->
+                        <td align="right"><input type="text"   size="8" id="total_descuento" val="0.00"></td>
                     
                 </tr>
-                <?php $subtotal = $total_pedido - $total_descuento; 
-                        $efectivo = $subtotal;
-                        $cambio = 0.00;
-                ?>
-                        
+               
                 <tr>
                         <td align="right"><b>Sub Total Bs</b></td>
                         <td align="right">                
                             
-                            <input class="btn btn-foursquarexs" id="pedido_subtotal" size="2"  name="pedido_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
+                            <!--<input class="btn btn-foursquarexs" id="pedido_subtotal" size="2"  name="pedido_subtotal" value="<?php echo number_format($subtotal,2,'.',''); ?>" readonly="true">-->
+                            <input class="btn btn-sm" id="pedido_subtotal" size="4"  name="pedido_subtotal" value="0.00" readonly="true">
                         </td>
 
                 </tr>
@@ -543,21 +447,24 @@ function mostrar_ocultar(){
                 <tr>                      
                         <td>Descuento Bs</td>
                         <td align="right">
-                         <input class="btn btn-info" id="pedido_descuento" name="pedido_descuento" size="2" value="<?php echo $descuento; ?>" onKeyUp="calcularDesc('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">
+                         <!--<input class="btn btn-info" id="pedido_descuento" name="pedido_descuento" size="2" value="<?php echo $descuento; ?>" onKeyUp="calcularDesc('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">-->
+                         <input class="btn btn-sm" id="pedido_descuento" name="pedido_descuento" size="4" value="0.00" onKeyUp="calcularDesc('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">
                         </td>
                 </tr>
 
                 <tr>                      
                         <td><b>Total Final Bs</b></td>
                         <td align="right">
-                              <input class="btn btn-foursquarexs" id="pedido_totalfinal" size="2" name="pedido_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
+                              <!--<input class="btn btn-foursquarexs" id="pedido_totalfinal" size="2" name="pedido_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">-->
+                              <input class="btn btn-sm" id="pedido_totalfinal" size="4" name="pedido_totalfinal" value="0.00" readonly="true">
                         </td>
                 </tr>
 
                 <tr>                      
                         <td>Efectivo Bs</td>
                         <td align="right">
-                            <input class="btn btn-info" id="pedido_efectivo" size="2" name="pedido_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularCambio('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">
+                            <!--<input class="btn btn-info" id="pedido_efectivo" size="2" name="pedido_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularCambio('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">-->
+                            <input class="btn btn-sm" id="pedido_efectivo" size="4" name="pedido_efectivo" value="0.00"  onKeyUp="calcularCambio('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">
                 
                         </td>
                 </tr>
@@ -565,7 +472,8 @@ function mostrar_ocultar(){
                 <tr>                      
                     <td><b>Cambio Bs</b></td>
                         <td align="right">
-                            <input type="number" class="btn btn-foursquarexs" id="pedido_cambio" size="2" name="pedido_cambio" value="<?php echo $cambio; ?>" readonly="true" required min="0">
+                            <!--<input type="number" class="btn btn-foursquarexs" id="pedido_cambio" size="2" name="pedido_cambio" value="<?php echo $cambio; ?>" readonly="true" required min="0">-->
+                            <input class="btn btn-sm" id="pedido_cambio" size="8" name="pedido_cambio" value="0.00" readonly="true" required min="0">
                         </td>
                 </tr>
                 
@@ -634,8 +542,6 @@ function calcularcredito(pedidototal_final,cuota_inicial,cuotas,monto_cuota){
 //    var monto_cuotax = Number(caja[monto_cuota].value);    
 
 
-    alert('sff');
-
 }
 
 
@@ -694,35 +600,3 @@ function calcularCambio(pedido_subtotalx,pedido_descuentox,pedido_totalfinalx,pe
 </div>
 </form>
 
-<!----------------------Fin Modal Cobrar--------------------------------------------------->
-
-
-
-<!--
-
-    
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.min.css">
-<link rel="stylesheet" href="<?php echo base_url('resources/css/chosen.min.css');?>" >
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-<script src="<?php echo base_url('/resources/js/jquery-2.2.3.min'); ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
-<script src="<?php echo base_url('/resources/js/chosen.jquery.min.js'); ?>"></script>
-
-<div style="width:520px;margin:0px auto;margin-top:30px;">  
-  <select class="chosen" style="width:500px;">
-  <option>PHP</option>
-  <option>PHP Array</option>
-  <option>PHP Object</option>
-  <option>PHP Wiki</option>
-  <option>PHP Variable</option>
-  <option>Java</option>
-  <option>C</option>
-  <option>C++</option>
-  </select>
-</div>
-
-
-<script type="text/javascript">
-      $(".chosen").chosen();
-</script>
--->

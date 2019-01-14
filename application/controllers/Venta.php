@@ -21,6 +21,8 @@ class Venta extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Detalle_venta_model');
         $this->load->model('Parametro_model');
+        $this->load->model('Estado_model');
+        $this->load->model('Usuario_model');
         
     } 
 
@@ -40,17 +42,19 @@ class Venta extends CI_Controller{
 		
         
         
-        $params['limit'] = RECORDS_PER_PAGE;
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('venta/index?');
-        $config['total_rows'] = $this->Venta_model->get_all_venta_count();
-        $this->pagination->initialize($config);
+//        $params['limit'] = RECORDS_PER_PAGE;
+//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+//        
+//        $config = $this->config->item('pagination');
+//        $config['base_url'] = site_url('venta/index?');
+//        $config['total_rows'] = $this->Venta_model->get_all_venta_count();
+//        $this->pagination->initialize($config);
 
        
-        $data['venta'] = $this->Venta_model->get_all_venta($params);
+        //$data['venta'] = $this->Venta_model->get_all_venta($params);
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['estado'] = $this->Estado_model->get_tipo_estado(1);
+        $data['usuario'] = $this->Venta_model->get_usuarios();
         
         $data['_view'] = 'venta/index';
         $this->load->view('layouts/main',$data);
@@ -420,7 +424,7 @@ class Venta extends CI_Controller{
         }
                 
         
-        if($facturado){//si la venta es facturada
+        if($facturado=="true"){//si la venta es facturada
 
             $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
 
@@ -443,7 +447,8 @@ class Venta extends CI_Controller{
                 $factura_llave         = $dosificacion[0]['dosificacion_llave'];
                 $factura_fechalimite   = $dosificacion[0]['dosificacion_fechalimite'];
                 $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $nit,$factura_fechaventa, $factura_total);
-                $factura_leyenda       = $dosificacion[0]['dosificacion_leyenda1'];
+                $factura_leyenda1       = $dosificacion[0]['dosificacion_leyenda1'];
+                $factura_leyenda2       = $dosificacion[0]['dosificacion_leyenda2'];
                 $factura_nitemisor     = $dosificacion[0]['dosificacion_nitemisor'];
                 $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
                 $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
@@ -456,17 +461,18 @@ class Venta extends CI_Controller{
                     factura_fecha, factura_hora, factura_subtotaltotal, 
                     factura_ice, factura_exento, factura_descuento, factura_total, 
                     factura_numero, factura_autorizacion, factura_llave, 
-                    factura_fechalimite, factura_codigocontrol, factura_leyenda, 
+                    factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                     factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad) value(".
                     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotaltotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda."',".
+                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."')";
                 $this->Venta_model->ejecutar($sql);
-
+                
+                $this->ultimaventa();
        //     }
         }
 
@@ -683,6 +689,7 @@ function edit($venta_id)
         			else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }
     } 
+    
     /*
      * Deleting venta
      */
@@ -808,6 +815,43 @@ function edit($venta_id)
         } else { redirect('', 'refresh'); }
         
     }
+    /*
+     * incrementar cantidad de productos en el detalle
+     */
+    function incrementar_detalle()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        
+        $detalleven_id = $this->input->post('detalleven_id');
+        $cantidad = $this->input->post('cantidad');
+        $venta_id = $this->input->post('venta_id');
+        $descuento = 0;
+        
+            $sql = "update detalle_venta set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
+                    ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                    ", detalleven_descuento = ".$descuento.
+                    ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                    "  where detalleven_id = ".$detalleven_id;
+            
+        $this->Venta_model->ejecutar($sql);
+        
+        $this->actualizar_tabla_venta($venta_id);
+        
+        return true;
+        
+            		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
+    }
 
     /*
      * reduce la cantidad de productos en el detalle
@@ -835,6 +879,47 @@ function edit($venta_id)
                     "  where detalleven_id = ".$detalleven_id;
             
         $this->Venta_model->ejecutar($sql);
+        return true;
+            		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
+    }
+
+
+    /*
+     * reduce la cantidad de productos en el detalle
+     */
+    function reducir_detalle()
+    {
+      
+            if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+        
+        
+        $detalleven_id = $this->input->post('detalleven_id');
+        $cantidad = $this->input->post('cantidad');
+        $venta_id = $this->input->post('venta_id');
+        $descuento = 0;
+        
+            $sql = "update detalle_venta set detalleven_cantidad = detalleven_cantidad - ".$cantidad.
+                    ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                    ", detalleven_descuento = ".$descuento.
+                    ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                    "  where detalleven_id = ".$detalleven_id;
+            
+        $this->Venta_model->ejecutar($sql);
+        
+        $this->actualizar_tabla_venta($venta_id);
+        
+        
         return true;
             		
         //**************** fin contenido ***************
@@ -979,24 +1064,8 @@ function buscarproductos()
             
             if ($parametro!=""){
             $datos = $this->Inventario_model->get_inventario_parametro($parametro);            
-            //$datos = $this->Inventario_model->get_inventario_bloque();
-            
-//            foreach ($datos as $d){
-//                
-//                $presentanciones = $this->Model_presentacion->get_presentaciones($d['producto_id']);
-//                if(!is_null($presentanciones)){
-//                    
-//                    foreach ($presentaciones as $presentacion){
-//                    //    $a = ['contenido' => $presentacion['presentacion_contenido'],'unidad' => $presentacion['presentacion_presentacion'],];                        
-//                    
-//                        $cad = "<option value='".$presentacion['presentacion_contenido']."'">
-//                        
-//                    }
-//                    
-//                }
-//            }
-            
-            echo json_encode($datos);
+          echo json_encode($datos);
+          
             }
             else echo json_encode(null);
         }
@@ -1090,8 +1159,8 @@ function registrarcliente()
             $cliente_telefono = "'".$this->input->post('telefono')."'";
             $cliente_ci = $cliente_nit;
             $cliente_nombre = $cliente_razon;
-            $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id) value(0,0,".
-                   $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",0,0)";
+            $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id) value(1,1,".
+                   $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0)";
             
             $datos = $this->Venta_model->registrarcliente($sql);
             echo json_encode($datos);
@@ -1123,23 +1192,61 @@ function modificarcliente()
     
         if ($this->input->is_ajax_request()) {
             
-            $cliente_nit = $this->input->post('nit');
+            $cliente_nit = $this->input->post('nit');          
+            if($cliente_nit == null) $cliente_nit = 0;
+            
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
             $cliente_id = $this->input->post('cliente_id');
 //            $cliente_ci =  "'".$this->input->post('cliente_ci')."'";
             $cliente_nombre =  "'".$this->input->post('cliente_nombre')."'";
             
-            $sql = "update cliente set ".
-                    " cliente_nombre = ".$cliente_nombre.
-//                    ",cliente_ci = ".$cliente_ci.
-                    ",cliente_nit = ".$cliente_nit.
-                    ",cliente_razon = ".$cliente_razon.
-                    ",cliente_telefono = ".$cliente_telefono.
-                    " where cliente_id = ".$cliente_id;
+            if ($cliente_id>0){
+                $sql = "update cliente set ".
+                        " cliente_nombre = ".$cliente_nombre.
+    //                    ",cliente_ci = ".$cliente_ci.
+                        ",cliente_nit = ".$cliente_nit.
+                        ",cliente_razon = ".$cliente_razon.
+                        ",cliente_telefono = ".$cliente_telefono.
+                        " where cliente_id = ".$cliente_id;
+
+                $datos = $this->Venta_model->modificarcliente($sql);            
+                echo  '[{"cliente_id":'.$cliente_id.'}]';
+            }
+            else{
+                //si el cliente ingresa con nit 0 se debe
+                              
+                $datos = $this->Venta_model->buscar_cliente($cliente_nit); 
+                
+                if (sizeof($datos)>0){
+                    $cliente_id = $datos[0]["cliente_id"];
+
+                    $sql = "update cliente set ".
+                            " cliente_nombre = ".$cliente_nombre.
+                            ",cliente_nit = ".$cliente_nit.
+                            ",cliente_razon = ".$cliente_razon.
+                            ",cliente_telefono = ".$cliente_telefono.
+                            " where cliente_id = ".$cliente_id;
+
+                    $datos = $this->Venta_model->modificarcliente($sql);   
+                    echo  '[{"cliente_id":'.$cliente_id.'}]';
+                }
+                else{
+                        
+
+ 
+                        $cliente_ci = $cliente_nit;
+                        $cliente_nombre = $cliente_razon;
+                        $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id) value(1,1,".
+                               $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0)";
+
+                        $datos = $this->Venta_model->registrarcliente($sql);
+                        return json_encode($datos);
+ 
+                }
+                
+            }
             
-            echo $sql;
-            $datos = $this->Venta_model->registrarcliente($sql);
             
 //echo json_encode(true);
             
@@ -1160,9 +1267,354 @@ function modificarcliente()
 /*************** funcion para mostrar la vista de la factura******************/
 function ultimaventa(){
     
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************    
+    
+                
     $venta_id = $this->Venta_model->ultima_venta();
     redirect('factura/factura_boucher/'.$venta_id);
     
+       //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
 }
 
+function eliminar_venta($venta_id){
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************       
+    
+            $sql = "update inventario i, detalle_venta d"
+                    ." set i.existencia = i.existencia + d.detalleven_cantidad"
+                    ." where d.venta_id = ".$venta_id." and d.producto_id = i.producto_id ";
+            $this->Venta_model->ejecutar($sql);    
+
+            $sql =  "delete from detalle_venta where venta_id = ".$venta_id;
+            $this->Venta_model->ejecutar($sql);
+
+            $sql =  "delete from venta where venta_id = ".$venta_id;
+            $this->Venta_model->ejecutar($sql);
+
+            $sql =  "delete from cuota where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
+            $this->Venta_model->ejecutar($sql);
+
+            $sql =  "delete from credito where venta_id = ".$venta_id;
+            $this->Venta_model->ejecutar($sql);
+
+            redirect('venta/index');
+            
+       //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }               
+}
+
+function anular_venta($venta_id){
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+        //    
+    //actualiza el invetario retornando los productos
+    $sql = "update inventario i, detalle_venta d"
+            ." set i.existencia = i.existencia + d.detalleven_cantidad"
+            ." where d.venta_id = ".$venta_id." and d.producto_id = i.producto_id ";
+    $this->Venta_model->ejecutar($sql);    
+
+    
+    //$sql =  "delete from detalle_venta where venta_id = ".$venta_id;
+    $sql =  "update detalle_venta set detalleven_cantidad = 0, detalleven_precio = 0, detalleven_total = 0 where venta_id = ".$venta_id;
+    $this->Venta_model->ejecutar($sql);
+            
+    //$sql =  "delete from venta where venta_id = ".$venta_id;
+    $sql =  "update venta set venta_subtotal = 0, venta_descuento = 0, venta_total = 0, venta_efectivo = 0, venta_cambio = 0, estado_id = 3 where venta_id = ".$venta_id;
+    $this->Venta_model->ejecutar($sql);
+    
+    //$sql =  "delete from cuota where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
+    $sql =  "update cuota  set
+            cuota_numcuota = 0
+            ,cuota_capital = 0
+            ,cuota_interes = 0
+            ,cuota_moradias = 0
+            ,cuota_multa = 0
+            ,cuota_subtotal = 0
+            ,cuota_descuento = 0
+            ,cuota_total = 0
+            ,cuota_cancelado = 0
+            ,cuota_numercibo = 0
+            ,cuota_saldo = 0
+            ,cuota_saldocredito = 0
+             where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
+    $this->Venta_model->ejecutar($sql);
+        
+    $sql =  "update credito set
+            estado_id = 9
+            ,credito_monto = 0
+            ,credito_cuotainicial = 0
+            ,credito_interesproc = 0
+            ,credito_interesmonto = 0
+            ,credito_numpagos = 0
+            ,credito_tipointeres = 0
+            where venta_id = ".$venta_id;
+    $this->Venta_model->ejecutar($sql);
+            
+    redirect('venta/index');
+    
+    //**************** fin contenido ***************
+                             }
+                             else{ redirect('alerta'); }
+     } else { redirect('', 'refresh'); }       
+    
+}
+
+    /*
+     * Mostrar ventas
+     */
+    function mostrar_ventas()
+    {
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+
+        $usuario_id = 1;
+
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $filtro = $this->input->post('filtro');
+            
+            if ($filtro == null){
+                $result = $this->Venta_model->get_ventas(" and v.venta_fecha = date(now())");
+            }
+            else{
+                $result = $this->Venta_model->get_ventas($filtro);            
+            }
+
+           echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }           
+    }
+    
+  function busquedacombi()
+    {
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************          
+
+                
+        $params['limit'] = RECORDS_PER_PAGE;
+        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        
+        $config = $this->config->item('pagination');
+       
+        $config['total_rows'] = $this->Venta_model->get_all_venta_count();
+        $this->pagination->initialize($config);
+        $this->load->model('Usuario_model');
+        $this->load->model('Detalle_venta_model');
+        $filtro = $this->input->post('filtro');
+        
+        if ($filtro == null){
+           $data['venta'] = $this->Venta_model->get_all_ventas($params);
+        }
+        else{
+             $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
+        }
+        
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario($params);
+         
+      
+        $data['_view'] = 'venta/combinados';
+        $this->load->view('layouts/main',$data);
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }          
+
+    }
+
+    function comision()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************           
+        
+        $params['limit'] = RECORDS_PER_PAGE;
+        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        
+        $config = $this->config->item('pagination');
+       
+        $config['total_rows'] = $this->Venta_model->get_all_venta_count();
+        $this->pagination->initialize($config);
+        $this->load->model('Usuario_model');
+        $this->load->model('Detalle_venta_model');
+        $filtro = $this->input->post('filtro');
+        
+        if ($filtro == null){
+           $data['venta'] = $this->Venta_model->get_all_venta($params);
+        }
+        else{
+             $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
+        }
+        
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario($params);
+         
+      
+        $data['_view'] = 'venta/comisiones';
+        $this->load->view('layouts/main',$data);
+        
+       //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }           
+        
+    }
+    
+    function buscarporvendedores()
+    {
+            if ($this->session->userdata('logged_in')) {
+                $session_data = $this->session->userdata('logged_in');
+                if($session_data['tipousuario_id']==1) {
+                    $data = array(
+                        'page_title' => 'Admin >> Mi Cuenta'
+                    );
+            //**************** inicio contenido ***************          
+
+            if ($this->input->is_ajax_request()) {
+
+                $filtro = $this->input->post('filtro');   
+
+                if ($filtro!=""){
+                $datos = $this->Venta_model->get_busqueda($filtro);            
+
+                echo json_encode($datos);
+                }
+                else echo json_encode(null);
+            }
+            else
+            {                 
+                show_404();
+            }              
+
+           //**************** fin contenido ***************
+                }
+                else{ redirect('alerta'); }
+            } else { redirect('', 'refresh'); }           
+
+    }
+
+    
+    function actualizar_tabla_venta($venta_id)
+    {
+
+        //actualizar los totales
+        $sql = "select if(sum(x.detalleven_subtotal)>0,sum(x.detalleven_subtotal),0) as subtotal,"
+                . "if(sum(x.detalleven_descuento)>0,sum(x.detalleven_descuento),0) as descuento, "
+                . "if(sum(x.detalleven_total)>0, sum(x.detalleven_total),0) as total "
+                . " from detalle_venta x where x.venta_id = ".$venta_id;                    
+        $resultado = $this->Venta_model->consultar($sql);
+
+        //echo json_encode($resultado);
+
+        $subtotal = $resultado[0]['subtotal'];
+        $descuento = $resultado[0]['descuento'];
+        $total = $resultado[0]['total'];
+
+        $sql = "update venta set "
+                . " venta_subtotal = ".$subtotal
+                . ",venta_descuento = ".$descuento
+                . ",venta_total = ".$total
+                ." where venta_id = ".$venta_id;
+        $this->Venta_model->ejecutar($sql);        
+        
+        return true;
+        
+    }
+    
+    function eliminar_producto_vendido($detalleven_id)
+    {
+            if ($this->session->userdata('logged_in')) {
+                $session_data = $this->session->userdata('logged_in');
+                if($session_data['tipousuario_id']==1) {
+                    $data = array(
+                        'page_title' => 'Admin >> Mi Cuenta'
+                    );
+            //**************** inicio contenido ***************          
+
+            if ($this->input->is_ajax_request()) {
+
+                //Obtener el detalle de la venta a eliminar
+                $sql = "select * from detalle_venta where detalleven_id = ".$detalleven_id;
+                $resultado = $this->Venta_model->consultar($sql);
+                
+                if (sizeof($resultado)>0){ // si el detalle existe
+                    
+                    
+                    $producto_id = $resultado[0]['producto_id'];
+                    $cantidad = $resultado[0]['detalleven_cantidad'];
+                    $venta_id = $resultado[0]['venta_id'];
+                    
+                    //eliminar el detalle de la venta
+                    $sql = "delete from detalle_venta where detalleven_id = ".$detalleven_id;                    
+                    $this->Venta_model->ejecutar($sql);
+
+                    //retornamos la cantidad al inventario
+                    $sql = "update inventario set existencia = existencia + ".$cantidad;
+                    $this->Venta_model->ejecutar($sql);
+
+                    $this->actualizar_tabla_venta($venta_id);
+                 
+                    
+                }
+                
+                return true;
+                
+            }
+            else
+            {                 
+                show_404();
+            }              
+
+           //**************** fin contenido ***************
+                }
+                else{ redirect('alerta'); }
+            } else { redirect('', 'refresh'); }           
+
+    }
 }

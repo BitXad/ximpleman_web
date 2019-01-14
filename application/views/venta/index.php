@@ -1,6 +1,12 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
+    window.onload = function() {
+        buscar_ventas()
+  //funciones a ejecutar
+    };
+    
         $(document).ready(function () {
             (function ($) {
                 $('#filtrar').keyup(function () {
@@ -17,113 +23,128 @@
 
 </script>
 
+<!--<script type="text/javascript">
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar tr').hide();
+                    $('.buscar tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });
+</script>   -->
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->    
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<!-------------------------------------------------------->
-<div class="box-header">
-                <h3 class="box-title">Ventas</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm">Registrar Ventas</a> 
+
+
+<input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
+
+
+<div class="box-header no-print">
+<h3 class="box-title">Ventas</h3>
+            	<div class="box-tools">                    
+                    <select  class="btn btn-facebook btn-sm" id="select_ventas" onclick="buscar_ventas()">
+<!--                        <option value="1">-- SELECCIONE UNA OPCION --</option>-->
+                        <option value="1">Ventas de Hoy</option>
+                        <option value="2">Ventas de Ayer</option>
+                        <option value="3">Ventas de la semana</option>
+                        <option value="4">Todos las ventas</option>
+                        <option value="5">Ventas por fecha</option>
+                    </select>
+                    <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Registrar Venta</a>
                 </div>
 </div>
+<!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
+<form method="post" onclick="ventas_por_fecha()">
+<div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:none;'>
+    <br>
+    <center>            
+        <div class="col-md-2">
+            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+        </div>
+        <div class="col-md-2">
+            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+        </div>
+        
+        <div class="col-md-2">
+            Tipo:             
+            <select  class="btn btn-warning btn-sm form-control" id="estado_id" required="true">
+                <?php foreach($estado as $es){?>
+                    <option value="<?php echo $es['estado_id']; ?>"><?php echo $es['estado_descripcion']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        
+        <div class="col-md-2">
+            Usuario:             
+            <select  class="btn btn-warning btn-sm form-control" id="usuario_id">
+                    <option value="0">-- TODOS --</option>
+                <?php foreach($usuario as $us){?>
+                    <option value="<?php echo $us['usuario_id']; ?>"><?php echo $us['usuario_nombre']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        
+        <br>
+        <div class="col-md-3">
+
+            <button class="btn btn-sm btn-facebook btn-sm btn-block"  type="submit">
+                <h4>
+                <span class="fa fa-search"></span>   Buscar
+                </h4>
+          </button>
+            <br>
+        </div>
+        
+    </center>    
+    <br>    
+</div>
+</form>
+<!------------------------------------------------------------------------------------------->
+
+                
+                
+                
+
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese usuario, cliente, fecha">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
+            
+<!--------------------- inicio loader ------------------------->
+<div class="row" id='oculto'  style='display:none;'>
+    <center>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+    </center>
+</div> 
+<!--------------------- fin inicio loader ------------------------->
+            
         <div class="box">
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>#</th>
 						<th>Cliente</th>
-						<th>Trans.</th>
-						<th>Tipo<br>Trans.</th>
-						<th>Fecha</th>
 						<th>Totales</th>						
-						<th>Usuario</th>
-
+						<th>Trans.</th>
+						<th>Tipo</th>
+						<th>Fecha</th>
 						<th></th>
+
                     </tr>
-                    <tbody class="buscar">
-                    <?php $cont = 0;
-                           $total_final = 0;
-                          foreach($venta as $v){;
-                                 $cont = $cont+1; 
-                                 $total_final += $v['venta_total'];
-                                 ?>
-                    <tr>
-                            <td><?php echo $cont ?></td>
-                            <td style="white-space:nowrap"><font size="3"><b> <?php echo $v['cliente_nombre']; ?></b></font><sub><?php echo "[".$v['cliente_id']."]"; ?></sub>
-                                <br>Razón Soc.: <?php echo $v['cliente_razon']; ?>
-                                <br>NIT: <?php echo $v['cliente_nit']; ?>
-                                <br>Telefono(s): <?php echo $v['cliente_telefono']; ?>
-                                <br>Nota: <?php echo $v['venta_glosa']; ?>
 
-                            </td>
+                    <tbody class="buscar" id="tabla_ventas">
 
-                            <td align="center"><font size="3"><b>  <?php echo "00".$v['venta_id']; ?></b></font></td>
-
-                            <td align="center"  bgcolor="<?php echo $v['estado_color']; ?>"><?php echo $v['forma_nombre']; ?>
-                                <br> <?php echo $v['tipotrans_nombre']; ?>
-
-                                <br><br><span class="btn btn-facebook btn-xs" ><b><?php echo $v['estado_descripcion']; ?></b></span> 
-
-                            </td>
-
-                            <td><?php echo $v['venta_fecha']; ?>
-                                <br> <?php echo $v['venta_hora']; ?>
-                            </td>
-
-                            <td style="withe-space:nowrap" align="right" >
-                                <?php echo "Sub Total ".$v['moneda_descripcion'].": ".number_format($v['venta_subtotal'],2,'.',',   '); ?><br>
-                                <?php echo "Desc. ".$v['moneda_descripcion'].": ".number_format($v['venta_descuento'],2,'.',','); ?><br>
-                                <!--<span class="btn btn-facebook">-->
-                                <font size="3" face="Arial narrow"> <b><?php echo "Total ".$v['moneda_descripcion'].": ".number_format($v['venta_total'],2,'.',','); ?></b></font><br>
-                                <!--</span>-->
-                                    <?php echo "Efectivo ".$v['moneda_descripcion'].": ".number_format($v['venta_efectivo'],2,'.',','); ?><br>
-                                    <?php echo "Cambio ".$v['moneda_descripcion'].": ".number_format($v['venta_cambio'],2,'.',','); ?>
-                            </td>
-
-                            <td align="center">
-                                <img src="<?php echo base_url('resources/images/'.$v['usuario_imagen']); ?>" class="img-circle" width="50" height="50">
-                                <br><?php echo $v['usuario_nombre']; ?>
-                            </td>
-
-                            <td>
-                                <a href="<?php echo site_url('venta/edit/'.$v['venta_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
-                                <a href="<?php echo site_url('venta/nota_venta/'.$v['venta_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a> 
-                                <!--<a href="<?php echo site_url('venta/remove/'.$v['venta_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
-                          
-                                <?php if ($parametro[0]['parametro_tipoimpresora']=="FACTURADORA"){ ?>
-                                            <?php if($v['venta_tipodoc']){ $formato_boton = "btn btn-warning btn-xs"; $mensaje_title = "Ver factura";} 
-                                                else { $formato_boton = "btn btn-facebook btn-xs";  $mensaje_title = "Ver nota de venta"; }
-                                            ?>
-                                        
-                                        <a href="<?php echo site_url('factura/factura_boucher/'.$v['venta_id']); ?>" class="<?php echo $formato_boton; ?> " title="<?php echo $mensaje_title; ?>"><span class="fa fa-list-alt"></span></a> 
-                                
-                                <?php } else{ ?>
-                                        
-                                        <a href="<?php echo site_url('factura/factura_carta/'.$v['venta_id']); ?>" class="<?php echo $formato_boton; ?>" title="<?php echo $mensaje_title; ?>"><span class="fa fa-list-alt"></span></a>
-                                
-                                <?php } ?>
-                            </td>
-                    </tr>
-                    <?php } ?>
-                    <tr>
-                        <th></th>
-                        <th>Totales</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th><font size="3"> <?php echo "Bs: ".number_format($total_final,2,'.',','); ?></font></th>						
-                        <th></th>
-                        <th></th>
-                    </tr>                    
+                    </tbody>
                 </table>
                 <div class="pull-right">
                     <?php echo $this->pagination->create_links(); ?>                    
@@ -132,3 +153,29 @@
         </div>
     </div>
 </div>
+
+
+
+    <!--<table class="table table-striped table-condensed" id="mitabla">
+
+        <tr id="x1" style="display:none">
+
+        <td>Celda 1</td>
+
+        <td>Celda 2</td>
+
+        <td>Celda 3</td>
+
+      </tr>
+
+      <tr id="x2">
+
+        <td>Celda 4</td>
+
+        <td>Celda 5</td>
+
+        <td>Celda 6</td>
+
+      </tr>
+
+    </table>-->

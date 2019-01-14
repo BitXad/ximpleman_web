@@ -344,7 +344,7 @@ class Cliente extends CI_Controller{
     }
     
     /*
-     * Se AÃ±ade un nuevo Cliente desde Detalle - Servicios por MEV
+     * Se A«Ğade un nuevo Cliente desde Detalle - Servicios por MEV
      */
     function add_new($servicio_id)
     {
@@ -354,94 +354,96 @@ class Cliente extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        // check if the servicio exists before trying to edit it
-        $this->load->model('Servicio_model');
-        $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
-        
-        if(isset($data['servicio']['servicio_id']))
-        {
-            $this->load->library('form_validation');
+                
+                $this->load->model('Servicio_model');
+                $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 
-		//$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
-		$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
-		$this->form_validation->set_rules('cliente_telefono','Cliente Telefono','required');
-		
-		if($this->form_validation->run())     
+                if(isset($data['servicio']['servicio_id']))
                 {
-                    $usuario_id = $session_data['usuario_id'];
-                    $tipocliente_id = 1;
-                    $categoria_clie = 1;
-                    $cliente_ci = 0;
-                    $cliente_nit = 0;
-                    if($this->input->post('cliente_ci') == null){
-                        $cliente_ci = rand(1000000, 99999999);
-                    }else{
-                        $cliente_ci = $this->input->post('cliente_ci');
-                        $cliente_nit = $cliente_ci;
-                    }
-                    if($this->input->post('cliente_nit') == null){
-                        if($cliente_nit ==0){
-                            $cliente_nit = rand(10000000, 999999999);
+                    $this->load->library('form_validation');
+                    $this->form_validation->set_rules('cliente_nombre','Cliente telefono','required');
+                    $this->form_validation->set_rules('cliente_codigo','Cliente telefono','required');
+                    $this->form_validation->set_rules('cliente_telefono','Cliente telefono','required');
+                        
+                    if($this->form_validation->run())     
+                    {
+                    if ($this->input->is_ajax_request()){
+                    
+                        $usuario_id = $session_data['usuario_id'];
+                        $tipocliente_id = 1;
+                        $categoria_clie = 1;
+                        $cliente_ci = 0;
+                        $cliente_nit = 0;
+                        if($this->input->post('cliente_ci') == null){
+                            $cliente_ci = rand(1000000, 99999999);
+                        }else{
+                            $cliente_ci = $this->input->post('cliente_ci');
+                            $cliente_nit = $cliente_ci;
                         }
-                    }else{
-                        $cliente_nit = $this->input->post('cliente_nit');
+                        if($this->input->post('cliente_nit') == null){
+                            if($cliente_nit ==0){
+                                $cliente_nit = rand(10000000, 999999999);
+                            }
+                        }else{
+                            $cliente_nit = $this->input->post('cliente_nit');
+                        }
+
+                        
+                        $estado_id = 1; //$this->Estado_model->get_id_estado($estado_descripcion);
+                        $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                                    'tipocliente_id' => $tipocliente_id,
+                                    'categoriaclie_id' => $categoria_clie,
+                                    'cliente_codigo' => $this->input->post('cliente_codigo'),
+                                    'cliente_nombre' => $this->input->post('cliente_nombre'),
+                                    'cliente_ci' => $cliente_ci,
+                                    'cliente_direccion' => $this->input->post('cliente_direccion'),
+                                    'cliente_telefono' => $this->input->post('cliente_telefono'),
+                                    'cliente_celular' => $this->input->post('cliente_celular'),
+                                    'cliente_foto' => $this->input->post('cliente_foto'),
+                                    'cliente_email' => $this->input->post('cliente_email'),
+                                    'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                                    'cliente_aniversario' => $mifecha,
+                                    'cliente_latitud' => $this->input->post('cliente_latitud'),
+                                    'cliente_longitud' => $this->input->post('cliente_longitud'),
+                                    'cliente_nit' => $cliente_nit,
+                                    'cliente_razon' => $this->input->post('cliente_nombre'),
+                                    'usuario_id' => $usuario_id,
+                                );
+                            $cliente_id = $this->Cliente_model->add_cliente($params);
+                            //tipousuario_id = 5 --> porque el tipo de usario es CLIENTE
+                            $param = array(
+                                                'estado_id' => $estado_id,
+                                                'tipousuario_id' => 5,
+                                                'usuario_nombre' => $this->input->post('cliente_nombre'),
+                                                'usuario_email' => $this->input->post('cliente_email'),
+                                                'usuario_login' => $cliente_ci,
+                                                'usuario_clave' => md5($this->input->post('cliente_codigo')),
+                            );
+
+                            $this->load->model('Usuario_model');
+                            $usuario_id = $this->Usuario_model->add_usuario($param);
+                            /*$mas_params = array('cliente_codigo' =>'CSRV-'.$cliente_id);
+                            $this->Cliente_model->update_cliente($cliente_id, $mas_params);
+                            */
+                            $params_serv = array('cliente_id' => $cliente_id);
+
+                            $this->Servicio_model->update_servicio($servicio_id,$params_serv);
+
+                        $datos = $this->Cliente_model->get_cliente($cliente_id);
+                    echo json_encode($datos);
+                    }else
+                    {                 
+                        show_404();
                     }
-                    
-                    
-                    //$estado_descripcion = "'ACTIVO'";
-                    //$this->load->model('Estado_model');
-		    $estado_id = 1; //$this->Estado_model->get_id_estado($estado_descripcion);
-                    $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
-            $params = array(
-				'estado_id' => $estado_id,
-				'tipocliente_id' => $tipocliente_id,
-				'categoriaclie_id' => $categoria_clie,
-				'cliente_codigo' => $this->input->post('cliente_codigo'),
-				'cliente_nombre' => $this->input->post('cliente_nombre'),
-				'cliente_ci' => $cliente_ci,
-				'cliente_direccion' => $this->input->post('cliente_direccion'),
-				'cliente_telefono' => $this->input->post('cliente_telefono'),
-				'cliente_celular' => $this->input->post('cliente_celular'),
-				'cliente_foto' => $this->input->post('cliente_foto'),
-				'cliente_email' => $this->input->post('cliente_email'),
-				'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-				'cliente_aniversario' => $mifecha,
-				'cliente_latitud' => $this->input->post('cliente_latitud'),
-				'cliente_longitud' => $this->input->post('cliente_longitud'),
-				'cliente_nit' => $cliente_nit,
-				'cliente_razon' => $this->input->post('cliente_razon'),
-				'usuario_id' => $usuario_id,
-            );
-            $cliente_id = $this->Cliente_model->add_cliente($params);
-            //tipousuario_id = 5 --> porque el tipo de usario es CLIENTE
-            $param = array(
-				'estado_id' => $estado_id,
-				'tipousuario_id' => 5,
-				'usuario_nombre' => $this->input->post('cliente_nombre'),
-				'usuario_email' => $this->input->post('cliente_email'),
-				'usuario_login' => $cliente_ci,
-				'usuario_clave' => md5($this->input->post('cliente_codigo')),
-            );
-            
-            $this->load->model('Usuario_model');
-            $usuario_id = $this->Usuario_model->add_usuario($param);
-            /*$mas_params = array('cliente_codigo' =>'CSRV-'.$cliente_id);
-            $this->Cliente_model->update_cliente($cliente_id, $mas_params);
-            */
-            $params_serv = array('cliente_id' => $cliente_id);
-            
-            $this->Servicio_model->update_servicio($servicio_id,$params_serv);
-            
-            redirect('servicio/serviciocreado/'.$servicio_id);
-            }
-            else
-            {
-                $data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
-                $this->load->view('layouts/main',$data);
-            }
-        }else{
-            show_error('El servicio al cual desea asignar un cliente, no existe');
-        }
+                }else{
+                    echo json_encode("faltadatos");
+                }
+                }else{
+                        show_error('El servicio al cual desea asignar un cliente, no existe');
+                }
+                
         }
             else{
                 redirect('alerta');
@@ -518,4 +520,82 @@ class Cliente extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+    
+    /*
+     * Ingresar nuevo cliente
+     */
+    function clientenuevo($pedido_id)
+    {   
+        
+        
+        $this->load->library('form_validation');
+
+		$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
+		$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
+		
+		if($this->form_validation->run())     
+        {   
+            $params = array(
+				'estado_id' => $this->input->post('estado_id'),
+				'tipocliente_id' => $this->input->post('tipocliente_id'),
+				'categoriaclie_id' => $this->input->post('categoriaclie_id'),
+				'cliente_codigo' => $this->input->post('cliente_codigo'),
+				'cliente_nombre' => $this->input->post('cliente_nombre'),
+				'cliente_ci' => $this->input->post('cliente_ci'),
+				'cliente_direccion' => $this->input->post('cliente_direccion'),
+				'cliente_telefono' => $this->input->post('cliente_telefono'),
+				'cliente_celular' => $this->input->post('cliente_celular'),
+				'cliente_foto' => $this->input->post('cliente_foto'),
+				'cliente_email' => $this->input->post('cliente_email'),
+				'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+				'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+				'cliente_latitud' => $this->input->post('cliente_latitud'),
+				'cliente_longitud' => $this->input->post('cliente_longitud'),
+				'cliente_nit' => $this->input->post('cliente_nit'),
+				'cliente_razon' => $this->input->post('cliente_razon'),
+            );
+            
+            $cliente_id = $this->Cliente_model->add_cliente($params);
+            $this->load->model('Pedido_model');
+            $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
+            redirect('pedido/pedidoabierto/'.$pedido_id);
+        }
+        else
+        {
+			$this->load->model('Estado_model');
+			$data['all_estado'] = $this->Estado_model->get_all_estado();
+
+			$this->load->model('Tipo_cliente_model');
+			$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+			$this->load->model('Categoria_cliente_model');
+			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+            $data['pedido_id'] = $pedido_id;
+            $data['_view'] = 'cliente/clientenuevo';
+            $this->load->view('layouts/main',$data);
+        }
+    } 
+    
+    
+    /*
+     * Adding a new cliente
+     */
+    function cambiarcliente()
+    {   
+        $cliente_id = $this->input->post('cliente_id');
+        $pedido_id = $this->input->post('pedido_id');
+        $cliente_nit = $this->input->post('cliente_nit');
+        $cliente_razon = $this->input->post('cliente_razon');
+                  
+
+        $this->load->model('Pedido_model');
+        $sql = "update cliente set cliente_nit = '".$cliente_nit."',".
+                "cliente_razon = '".$cliente_razon."' ".
+                "where cliente_id = ".$cliente_id;        
+        $this->Pedido_model->ejecutar($sql);       
+        $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);
+        redirect('pedido/pedidoabierto/'.$pedido_id);
+        
+    }      
+    
 }

@@ -13,7 +13,7 @@
             }(jQuery));
         });
 </script>  
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
 <div class="row">
     <div class="col-md-12">
@@ -33,37 +33,62 @@
                 <table class="table table-striped" id="mitabla">
                     <tr>
 						<th>Nro.</th>
+                        <th>Cliente</th>
 						<th>Fecha</th>
 						<th>Validez</th>
 						<th>Forma de Pago</th>
 						<th>Tiempo de Entrega</th>
 						<th>Registro<br>Fecha/Hora</th>
 						<th>Total Bs.</th>
-                        <th>Glosa</th>
                         <th>Usuario</th>
 						<th></th>
                     </tr>
                     <tbody class="buscar">
-                    <?php $cont=0; 
+                    <?php $cont=0;
+                    $i = 1;  
                     foreach($cotizacion as $c){ 
-                        $cont++ ?>
+                        $cont++
+                         ?>
                     <tr>
 						<td><?php echo $cont; ?></td>
+                        <td><?php echo $c['cotizacion_cliente']; ?></td>
 						<td><?php echo $c['cotizacion_fecha']; ?></td>
 						<td><?php echo $c['cotizacion_validez']; ?></td>
 						<td><?php echo $c['cotizacion_formapago']; ?></td>
 						<td><?php echo $c['cotizacion_tiempoentrega']; ?></td>
 						<td><?php echo $c['cotizacion_fechahora']; ?></td>
 						<td><?php echo $c['cotizacion_total']; ?></td>
-                        <td><?php echo $c['cotizacion_glosa']; ?></td>
-                        <td><?php echo $c['usuario_id']; ?></td>
+                        <td><?php echo $c['usuario_nombre']; ?></td>
 						<td>
                             <a href="<?php echo site_url('cotizacion/add/'.$c['cotizacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('cotizacion/cotizarecibo/'.$c['cotizacion_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a> 
-                            <a href="<?php echo site_url('cotizacion/remove/'.$c['cotizacion_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <a href="<?php echo site_url('cotizacion/cotizarecibo/'.$c['cotizacion_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a> 
+                           <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <h3><b> <span class="fa fa-trash"></span></b>
+                                               ¿Desea eliminar la cotizacion <b> <?php echo $c['cotizacion_id']; ?></b>?
+                                           </h3>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          <div class="modal-footer aligncenter">
+                                                      <a href="<?php echo site_url('cuotum/remove/'.$c['cotizacion_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
+                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                        <!------------------------ FIN modal para confirmar eliminación ------------------->
                         </td>
                     </tr>
-                    <?php } ?>
+                    <?php $i++; }?>
                 </table>
                                 
             </div>

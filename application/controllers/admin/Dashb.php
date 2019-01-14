@@ -27,6 +27,8 @@ class Dashb extends CI_Controller
                 $data['pedidos'] = $this->Pedido_model->get_pedidos_dia();
                 $data['compras'] = $this->Compra_model->get_compras_dia();
                 $data['clientes'] = $this->Cliente_model->get_clientes();
+                $data['resumen_usuario'] = $this->Venta_model->get_resumen_usuarios();
+                $data['ventas_semanales'] = $this->Venta_model->get_ventas_semanales();
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 
                 

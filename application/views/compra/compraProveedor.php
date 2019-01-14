@@ -42,14 +42,14 @@
 <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 
-                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
                     </center>
                     </div>
                     <div class="columna_izquierda">
-                       <center>  <font size="4"><b><u><?php echo $empresa['empresa_nombre']; ?></u></b></font><br>
-                        <?php echo $empresa['empresa_zona']; ?><br>
-                        <?php echo $empresa['empresa_direccion']; ?><br>
-                        <?php echo $empresa['empresa_telefono']; ?>
+                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
+                        <?php echo $empresa[0]['empresa_zona']; ?><br>
+                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                        <?php echo $empresa[0]['empresa_telefono']; ?>
                     </div> </center>
                     <div class="columna_central">
                         <center>      <h3 class="box-title"><u>COMPRAS</u></h3>

@@ -1,173 +1,1 @@
-<script src="<?php echo base_url('resources/js/reporte_ingegr.js'); ?>" type="text/javascript"></script>
-<link href="<?php echo base_url('resources/css/mitabladetalleimpresion.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-
-<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<script type="text/javascript">
-    function imprimirdetalle(){
-        var f = new Date();
-        
-        var estafecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()+" "+
-                        f.getHours()+":"+f.getMinutes()+":"+f.getSeconds();
-        $('#fechaimpresion').html(estafecha);
-        window.print();
-    }
-</script>
-<div class="box-header no-print">
-    <h3 class="box-title"><b>Reporte de Ingresos y Egresos</b></h3><br><br>
-    <div class="container">  
-        <div class="box-tools">
-            
-                <div class=" col-md-11"> <!-- panel panel-primary -->
-                    <!--<div class="panel panel-primary col-md-8" id='buscador_oculto' > style='display:none; padding-top: 10px;'> -->
-                          
-                        <div class="col-md-2">
-                            Desde: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
-                        </div>
-                        <div class="col-md-2">
-                            Hasta: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
-                        </div>
-
-                        
-                        <div class="col-md-2">
-                            <br>
-                            <button class="btn btn-sm btn-primary btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
-                                <span class="fa fa-search"></span>Buscar
-                          </button>
-                            <br>
-                        </div>
-                        <div class="col-md-2">
-                            <br>
-                            <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Ing. Egr. encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="resingegr" type="text" value="0" readonly="true"> </span></span>
-                        </div>
-                        <div class="col-md-2">
-                            <br>
-                            <br>
-                        </div>
-                        <div class="col-md-2">
-                            <br>
-                            <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
-                        </div>
-
-                </div>
-            
-        </div>
-
-        
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <div class="box">
-          
-     
-        <!-- ********************************INICIO Cabecera******************************* -->
-            <div class="box-body table-responsive" id="contenedortitulo">
-                <div id="cabizquierda">
-                <?php
-                echo $all_empresa[0]['empresa_nombre']."<br>";
-                echo $all_empresa[0]['empresa_direccion']."<br>";
-                echo $all_empresa[0]['empresa_telefono'];
-                ?>
-                </div>
-                <div id="cabcentro">
-                    REPORTE DE INGRESO Y SALIDA<br>
-                    <label id="fechaimpresion"></label><br>
-                    <label id="tituloimpresion"></label>
-                </div>
-                <div id="cabderecha">
-                    <?php
-                    $mimagen = "thumb_".$all_empresa[0]['empresa_imagen'];
-                    echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
-                    ?>
-                </div>
-                
-            </div>
-            <div class="box-body table-responsive" id="cabizquierdafechas">
-                    <label id="fecha1impresion"></label>
-                    <label id="fecha2impresion"></label>
-            </div>
-            <!-- <div class="box-body table-responsive" id="resbusquedadetalleserv">
-
-            </div> -->
-            <!-- ********************************FIN Cabecera******************************* -->
-            <div class="box-body table-responsive" id="resbusquedadetalleserv">
-                <table class="table table-striped table-condensed" id="mitabladetimpresion">
-                    <tr>
-                        <th>N°</th>
-                        <th>Fecha</th>
-                        <th>Detalle</th>
-                        <th>Ingreso</th>
-                        <th>Egreso</th>
-                        <th>Utilidad</th>
-                    </tr>
-                    <tbody class="buscar" id="tablaresultados">
-                    <?php $cont = 0;
-                          $totalingreso = 0;
-                          $totalegreso = 0;
-                          $totalutilidad = 0;
-                    
-                          foreach($ingresos as $i){;
-                             $cont = $cont+1;
-                             $totalingreso = $totalingreso + $i['ingreso'];
-                             $totalegreso = $totalegreso + $i['egreso'];
-                             $totalutilidad = $totalutilidad + $i['utilidad'];
-                            ?>
-                    
-                    <tr>
-                      <td><?php echo $cont;?></td>
-                        <td><?php echo $i['fecha']; ?></td>
-                        <td><?php echo $i['detalle']; ?></td>
-                        <td id='alinearder'><?php echo number_format($i['ingreso'],2); ?></td>
-                        <td id='alinearder'><?php echo number_format($i['egreso'],2); ?></td>
-                        <td id='alinearder'><?php echo number_format($i['utilidad'],2); ?></td>
-                                                      
-                    </tr>
-                    <?php } ?>
-                   
-                   <tr>
-                     <td colspan="2"></td>
-                     <td class='esbold'>TOTAL (INGRESOS/EGRESOS/UTILIDAD)Bs.</td>
-                     <td class='esbold' id='alinearder'><?php echo number_format($totalingreso,2,'.',',');?></td>
-                     <td class='esbold' id='alinearder'><?php echo number_format($totalegreso,2,'.',',');?></td>
-                     <td class='esbold' id='alinearder'><?php echo number_format($totalutilidad,2,'.',',');?></td>
-                   </tr>
-                  <!-- <tr>
-                    <td colspan="2"></td>
-                     <td class="subtitulo">TOTAL (VENTAS POR BANCO/TARJETAS DE CREDITO)Bs.</td>
-                    <td class="subtitulo" align="right" ><?php //echo number_format('0',2);?></td>
-                    <td></td>
-                     <td class="subtitulo" align="right"><?php //echo number_format('0',2);?></td>
-                   </tr> -->
-                   <tr>
-                     <td colspan="2"></td>
-                     <td class='esbold' >SALDO EFECTIVO EN CAJA Bs.</td>
-                     <td></td>
-                     <td class='esbold' id='alinearder'><?php echo number_format($totalingreso-$totalegreso,2,'.',',');?></td>
-                   </tr>
-                </table>
-
-        </div>
-        <div id="parafirmas">
-            <div id="firmaizquierda">
-              <br>
-              <br>
-              ________________________<br>ENTREGADO POR
-            </div>
-            <div id="firmaderecha">
-              <br>
-              <br>
-              ________________________<br>REVISADO POR
-            </div>
-        </div>
-        <br>
-            <div class="column" align="right">
-              <p class="subtitulo">EFECTIVO EN CAJA Bs.:...........$US:........</p>
-              <P class="subtitulo">UTILIDAD BRUTA Bs.:...........$US:........</P>
-              <P class="subtitulo">GASTOS OPERAT. Bs.:...........$US:........</P>
-              <Pclass="subtitulo">UTILIDAD NETA Bs.:...........$US:........</P>
-            </div>
-
-        </div>
-    </div>
-</div>
+<script src="<?php echo base_url('resources/js/reporte_ingegr.js'); ?>" type="text/javascript"></script><link href="<?php echo base_url('resources/css/mitabladetalleimpresion.css'); ?>" rel="stylesheet"><link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"><script type="text/javascript">function mostraringreso() {    obj = document.getElementById('oculto1');    obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj.style.visibility == 'hidden'){        $('#mitabladetimpresion').css({ 'width':'0', 'height':'0' });        $('#map').css({ 'width':'0', 'height':'0' });        $('#oculto1').css({ 'width':'0', 'height':'0' });                //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#mitabladetimpresion').css({ 'width':'100%', 'height':'100%' });        $('#map').css({ 'width':'100%', 'height':'100%' });        $('#oculto1').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrarventa() {    obj2 = document.getElementById('oculto2');    obj2.style.visibility = (obj2.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj2.style.visibility === 'hidden'){        $('#map2').css({ 'width':'0', 'height':'0' });        $('#oculto2').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#map2').css({ 'width':'100%', 'height':'100%' });        $('#oculto2').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrarcobro() {    obj3 = document.getElementById('oculto3');    obj3.style.visibility = (obj3.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj3.style.visibility == 'hidden'){        $('#map3').css({ 'width':'0', 'height':'0' });        $('#oculto3').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#map3').css({ 'width':'100%', 'height':'100%' });        $('#oculto3').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostraregreso() {    obj4 = document.getElementById('oculto4');    obj4.style.visibility = (obj4.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj4.style.visibility == 'hidden'){        $('#map4').css({ 'width':'0', 'height':'0' });        $('#oculto4').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#map4').css({ 'width':'100%', 'height':'100%' });        $('#oculto4').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrarcompra() {    obj5 = document.getElementById('oculto5');    obj5.style.visibility = (obj5.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj5.style.visibility == 'hidden'){        $('#map5').css({ 'width':'0', 'height':'0' });        $('#oculto5').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#map5').css({ 'width':'100%', 'height':'100%' });        $('#oculto5').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrarpago() {    obj6 = document.getElementById('oculto6');    obj6.style.visibility = (obj6.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj6.style.visibility == 'hidden'){        $('#map6').css({ 'width':'0', 'height':'0' });        $('#oculto6').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#map6').css({ 'width':'100%', 'height':'100%' });        $('#oculto6').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrartotal() {    objt = document.getElementById('ocultot');    objt.style.visibility = (objt.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(objt.style.visibility == 'hidden'){        $('#mapt').css({ 'width':'0', 'height':'0' });        $('#ocultot').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#mapt').css({ 'width':'100%', 'height':'100%' });        $('#ocultot').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrar2() {    obj2 = document.getElementById('ocultov2');    obj2.style.visibility = (obj2.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj2.style.visibility == 'hidden'){        $('#mapv2').css({ 'width':'0', 'height':'0' });        $('#ocultov2').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#mapv2').css({ 'width':'100%', 'height':'100%' });        $('#ocultov2').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrar3() {    obj3 = document.getElementById('ocultov3');    obj3.style.visibility = (obj3.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj3.style.visibility == 'hidden'){        $('#mapv3').css({ 'width':'0', 'height':'0' });        $('#ocultov3').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#mapv3').css({ 'width':'100%', 'height':'100%' });        $('#ocultov3').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrar4() {    obj4 = document.getElementById('ocultov4');    obj4.style.visibility = (obj4.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj4.style.visibility == 'hidden'){        $('#mapv4').css({ 'width':'0', 'height':'0' });        $('#ocultov4').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#mapv4').css({ 'width':'100%', 'height':'100%' });        $('#ocultov4').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}function mostrar5() {    obj5 = document.getElementById('ocultov5');    obj5.style.visibility = (obj5.style.visibility == 'hidden') ? 'visible' : 'hidden';    //objm = document.getElementById('map');    if(obj5.style.visibility == 'hidden'){        $('#mapv5').css({ 'width':'0', 'height':'0' });        $('#ocultov5').css({ 'width':'0', 'height':'0' });        //$('#mosmapa').text("Obtener Ubicación del negocio");    }else{        $('#mapv5').css({ 'width':'100%', 'height':'100%' });        $('#ocultov5').css({ 'width':'100%', 'height':'100%' });        //$('#mosmapa').text("Cerrar mapa");    }}</script><!--<label  class="control-label"><a href="#" class="btn btn-success btn-sm " id="mosmapa" onclick="mostrar('1'); return false">Obtener Ubicación del negocio</a></label> <div id="oculto1" style="visibility:hidden">     <div id="map"><table><tr><td>aaa</td></tr>         <tr><td>www</td></tr>         </table></div>        </div>--><input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" /><script type="text/javascript">    function imprimirdetalle(){        var f = new Date();                var estafecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear()+" "+                        f.getHours()+":"+f.getMinutes()+":"+f.getSeconds();        $('#fechaimpresion').html(estafecha);        window.print();    }</script><div class="box-header no-print">    <h3 class="box-title"><b>Reporte de Ingresos y Egresos</b></h3><br><br>    <div class="container">          <div class="box-tools">                            <div class=" col-md-11"> <!-- panel panel-primary -->                    <!--<div class="panel panel-primary col-md-8" id='buscador_oculto' > style='display:none; padding-top: 10px;'> -->                        <div class="col-md-2">                            Usuario:                                         <select  class="btn btn-primary btn-sm form-control" id="buscarusuario_id" required>                                <option value="0"> TODOS </option>                                <?php foreach($all_usuario as $usuario){?>                                <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>                                <?php } ?>                            </select>                        </div>                          <div class="col-md-2">                            Desde: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">                        </div>                        <div class="col-md-2">                            Hasta: <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">                        </div>                                                <div class="col-md-2">                            <br>                            <button class="btn btn-sm btn-primary btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">                                <span class="fa fa-search"></span>Buscar                          </button>                            <br>                        </div>                        <div class="col-md-2">                            <br>                            <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Ing. Egr. encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="resingegr" type="text" value="0" readonly="true"> </span></span>                        </div>                        <div class="col-md-2">                            <br>                            <br>                        </div>                        <div class="col-md-2">                            <br>                            <a id="imprimirestedetalle" class="btn btn-sq-lg btn-success" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>                        </div>                </div>        </div>    </div></div><div class="row">    <div class="col-md-12">        <div class="box">        <!-- ********************************INICIO Cabecera******************************* -->            <div class="box-body table-responsive" id="contenedortitulo">                <div id="cabizquierda">                <?php                echo $all_empresa[0]['empresa_nombre']."<br>";                echo $all_empresa[0]['empresa_direccion']."<br>";                echo $all_empresa[0]['empresa_telefono'];                ?>                </div>                <div id="cabcentro">                    REPORTE DE INGRESO Y SALIDA<br>                    <label id="fechaimpresion"></label><br>                    <label id="tituloimpresion"></label>                </div>                <div id="cabderecha">                    <?php                    $mimagen = "thumb_".$all_empresa[0]['empresa_imagen'];                    echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';                    ?>                </div>                            </div>            <div class="box-body table-responsive" id="cabizquierdafechas">                    <label id="elusuario"></label><br>                    <label id="fecha1impresion"></label>                    <label id="fecha2impresion"></label>            </div>                        <div id="tablaingresoresultados"></div>        <div id="tablaventaresultados"></div>        <div id="tablaformapagoresultados2"></div>        <div id="tablaformapagoresultados3"></div>        <div id="tablaformapagoresultados4"></div>        <div id="tablaformapagoresultados5"></div>        <div id="tablacobroresultados"></div>        <div id="tablaegresoresultados"></div>        <div id="tablacompraresultados"></div>        <div id="tablapagoresultados"></div>        <div id="saldoencaja"></div>        <div id="tablatotalresultados"></div>            <!-- ********************************FIN Cabecera******************************* -->            <!--            <div class="box-body table-responsive" id="resbusquedadetalleserv">                <table class="table table-striped table-condensed" id="mitabladetimpresion">                    <tr>                        <th>N°</th>                        <th>Fecha</th>                        <th>Detalle</th>                        <th>Ingreso</th>                        <th>Egreso</th>                        <th>Utilidad</th>                    </tr>                    <tbody class="buscar" id="tablaresultados">                </table>            </div> -->        <div id="parafirmas">            <div id="firmaizquierda">              <br>              <br>              ________________________<br>ENTREGADO POR            </div>            <div id="firmaderecha">              <br>              <br>              ________________________<br>REVISADO POR            </div>        </div>        <br>            <div class="column" align="right">              <p class="subtitulo">EFECTIVO EN CAJA Bs.:...........$US:........</p>              <P class="subtitulo">UTILIDAD BRUTA Bs.:...........$US:........</P>              <P class="subtitulo">GASTOS OPERAT. Bs.:...........$US:........</P>              <Pclass="subtitulo">UTILIDAD NETA Bs.:...........$US:........</P>            </div>        </div>    </div></div>

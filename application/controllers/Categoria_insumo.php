@@ -151,6 +151,7 @@ class Categoria_insumo extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
+                
             $data['subcatserv_id'] = $subcatserv_id;
             $this->load->model('Subcategoria_servicio_model');
             $nombre = $this->Subcategoria_servicio_model->get_nombre_subcategoria_servicio($subcatserv_id);
@@ -178,21 +179,32 @@ class Categoria_insumo extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
-            if(isset($_POST) && count($_POST) > 0)     
-            {
-                $params = array(
-                        'producto_id' => $this->input->post('producto_id'),
+                if ($this->input->is_ajax_request()){
+                    $subcatserv_id = $this->input->post('subcatserv_id');
+                    $producto_id = $this->input->post('producto_id');
+                    $params = array(
+                        'producto_id' => $producto_id,
                         'subcatserv_id' => $subcatserv_id,
                         'estado_id' => 1,
-                );
-
-                $catinsumo_id = $this->Categoria_insumo_model->add_categoria_insumo($params);
-                redirect('categoria_insumo/insumo/'.$subcatserv_id);
-            }
-            else
-            {
-                redirect('categoria_insumo/insumo/'.$subcatserv_id);
-            }
+                    );
+                    $dato = $this->Categoria_insumo_model->get_exist_insumo_asignado($subcatserv_id, $producto_id);
+                    if(empty($dato)){
+                        $catinsumo_id = $this->Categoria_insumo_model->add_categoria_insumo($params);
+                        $datos = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
+                        if(isset($datos)){
+                            echo json_encode($datos);
+                        }else echo json_encode(null);
+                    }else{
+                        $a = "no";
+                        echo json_encode($a);
+                    }
+                    
+                }
+                else
+                {                 
+                    show_404();
+                }
+                
         }
             else{
                 redirect('alerta');
@@ -208,12 +220,15 @@ class Categoria_insumo extends CI_Controller{
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
 
-            $params = array(
-                    'estado_id' => 1,
-            );
-
-            $this->Categoria_insumo_model->update_categoria_insumo($catinsumo_id, $params);
-            redirect('categoria_insumo/insumo/'.$subcatserv_id);
+                if ($this->input->is_ajax_request()){
+                    $params = array(
+                        'estado_id' => 1,
+                    );
+                    $this->Categoria_insumo_model->update_categoria_insumo($catinsumo_id, $params);
+                    echo json_encode("ok");
+                }else{                 
+                    show_404();
+                }
             }
             else{
                 redirect('alerta');
@@ -229,12 +244,18 @@ class Categoria_insumo extends CI_Controller{
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
 
-            $params = array(
+                if ($this->input->is_ajax_request()){
+                    $params = array(
                     'estado_id' => 2,
-            );
+                    );
+                    $this->Categoria_insumo_model->update_categoria_insumo($catinsumo_id, $params);
+                    echo json_encode("ok");
+                }
+                else
+                {                 
+                    show_404();
+                }
 
-            $this->Categoria_insumo_model->update_categoria_insumo($catinsumo_id, $params);
-            redirect('categoria_insumo/insumo/'.$subcatserv_id);
         }
             else{
                 redirect('alerta');
@@ -249,8 +270,16 @@ class Categoria_insumo extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
-                $this->Categoria_insumo_model->delete_categoria_insumo($catinsumo_id);
-                redirect('categoria_insumo/insumo/'.$subcatserv_id);
+                if ($this->input->is_ajax_request()){
+                    
+                    $this->Categoria_insumo_model->delete_categoria_insumo($catinsumo_id);
+                    echo json_encode("ok");
+                }
+                else
+                {                 
+                    show_404();
+                }
+                
         }
             else{
                 redirect('alerta');
@@ -393,6 +422,29 @@ class Categoria_insumo extends CI_Controller{
         {                 
             show_404();
         }              
+    }
+    
+    function insumosasignados()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+ 
+//        if(isset($this->input->post('catserv_id')))
+//        {
+            $subcatserv_id = $this->input->post('subcatserv_id');
+            //$this->load->model('Categoria_insumo_model');
+            $res = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
+            
+           // $res = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria($catserv_id);
+            echo json_encode($res);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
     }
     
 }

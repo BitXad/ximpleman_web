@@ -12,12 +12,40 @@ class Compra extends CI_Controller{
         $this->load->model('Producto_model');
         //$this->load->model('Inventario_model');
         $this->load->model('Estado_model');
-         $this->load->model('Tipo_transaccion_model');
+        $this->load->model('Tipo_transaccion_model');
         $this->load->model('Empresa_model');
+        $this->load->model('Parametro_model');
+        $this->load->helper('numeros');  
     } 
 
     
+      public function boucher($compra_id){
+
+      if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $usuario_id = $session_data['usuario_id'];  
+$data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+         $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+       $data['compra'] = $this->Compra_model->join_compras($compra_id);
+        $this->load->model('detalle_compra_model');
+                $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+          $data['_view'] = 'compra/boucher';
+            $this->load->view('layouts/main',$data);
+  
       
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+       
+    } 
     /*
      * Listing of compra
      */
@@ -46,7 +74,7 @@ class Compra extends CI_Controller{
         else{
             $data['compra'] = $this->Compra_model->fechacompras($filtro);            
         }
-        
+        $data['parametro'] = $this->Parametro_model->get_parametro(1);
         $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
         $data['estado'] = $this->Estado_model->get_tipo_estado(1);
@@ -112,7 +140,32 @@ class Compra extends CI_Controller{
         $data['_view'] = 'compra/compraProveedor';
         $this->load->view('layouts/main',$data);
     }
-
+    function repoProducto()
+     {
+        $usuario_id = 1;
+        $params['limit'] = RECORDS_PER_PAGE; 
+        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+       // $this->load->model('Inventario_model');
+       // $config = $this->config->item('pagination');
+        //$config['base_url'] = site_url('compra/index?');
+       // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
+        //$this->pagination->initialize($config);
+        $filtro = $this->input->post('filtro');
+        
+        if ($filtro == null){
+            $data['compra'] = $this->Compra_model->get_all_compra($params);
+        }
+        else{
+            $data['compra'] = $this->Compra_model->fechacompras($filtro);            
+        }
+        $data['inventario'] = $this->Producto_model->get_all_productos(); 
+        $this->load->model('Proveedor_model');
+        $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
+        $data['_view'] = 'compra/compraProducto';
+        $this->load->view('layouts/main',$data);
+    }
 
 
     function buscarprove()
@@ -181,6 +234,8 @@ class Compra extends CI_Controller{
                     show_404();
         }          
     }
+    
+    
      function anula()
      {
        if ($this->session->userdata('logged_in')) {
@@ -322,6 +377,7 @@ class Compra extends CI_Controller{
      */
     function edit($compra_id,$bandera)
     {   
+
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
@@ -334,8 +390,46 @@ class Compra extends CI_Controller{
         $compra = $this->Compra_model->get_proveedor_id($compra_id);
         $proveedor_id = $compra[0]['proveedor_id'];
        
-                  
-                
+        $cargar_aux = "INSERT INTO detalle_compra_aux
+                            (compra_id,
+                            moneda_id,
+                            producto_id,
+                            detallecomp_codigo,
+                            detallecomp_cantidad,
+                            detallecomp_unidad,
+                            detallecomp_costo,
+                            detallecomp_precio,
+                            detallecomp_subtotal,
+                            detallecomp_descuento,
+                            detallecomp_total,
+                            detallecomp_descglobal,
+                            detallecomp_fechavencimiento,
+                            detallecomp_tipocambio,
+                            cambio_id
+                            )
+                            (SELECT 
+                            compra_id,
+                            moneda_id,
+                            producto_id,
+                            detallecomp_codigo,
+                            detallecomp_cantidad,
+                            detallecomp_unidad,
+                            detallecomp_costo,
+                            detallecomp_precio,
+                            detallecomp_subtotal,
+                            detallecomp_descuento,
+                            detallecomp_total,
+                            detallecomp_descglobal,
+                            detallecomp_fechavencimiento,
+                            detallecomp_tipocambio,
+                            cambio_id
+                            FROM 
+                            detalle_compra
+                            WHERE 
+                            detalle_compra.compra_id = ".$compra_id.")"; 
+            $this->db->query($cargar_aux);                
+            $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
+            $this->db->query($borrar_detalle);  
             if($proveedor_id==0)     
             {   
                  $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
@@ -365,12 +459,12 @@ class Compra extends CI_Controller{
                 $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
 
                 $this->load->model('Detalle_compra_model');
-                $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+                $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
 
               
-            //$this->load->model('Producto_model');
-            //$data['inventario'] = $this->Producto_model->get_all_productos();  
-            $this->load->model('Inventario_model');
+            $this->load->model('Producto_model');
+            $data['inventario'] = $this->Producto_model->get_all_productos();  
+            //$this->load->model('Inventario_model');
             //$data['inventario'] = $this->Inventario_model->get_all_inventario();
                 $this->load->model('Documento_respaldo_model');
                  $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
@@ -416,7 +510,7 @@ class Compra extends CI_Controller{
                 $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
 
                 $this->load->model('Detalle_compra_model');
-                $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+                $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
 
                 $this->load->model('Producto_model');
             $data['inventario'] = $this->Producto_model->get_all_productos();  
@@ -454,7 +548,13 @@ class Compra extends CI_Controller{
             if($session_data['tipousuario_id']==1) {
                 $usuario_id = $session_data['usuario_id'];  
         $compra_id = $this->input->post('compra_id');
-        $sql = "UPDATE detalle_compra
+        $vaciar =    "UPDATE inventario i, detalle_compra_aux d
+                            SET i.existencia =  i.existencia-d.detallecomp_cantidad 
+                            WHERE  d.compra_id = ".$compra_id." 
+                            and i.producto_id = d.producto_id ";
+                            
+             $this->db->query($vaciar);
+        $sql = "UPDATE detalle_compra_aux
                 SET
                 detallecomp_cantidad = 0,               
                 detallecomp_descuento = 0,
@@ -464,6 +564,7 @@ class Compra extends CI_Controller{
                 ";
 
         $this->Compra_model->ejecutar($sql);
+        
 
         $comp = "UPDATE compra
                     SET
@@ -527,7 +628,7 @@ class Compra extends CI_Controller{
                 'compra_hora' => date('H:i:s'),
                 'compra_efectivo' => $this->input->post('compra_efectivo'),
                 'compra_cambio' => $this->input->post('compra_cambio'),
-
+                'compra_caja' => $this->input->post('compra_caja'),
 
            );
                 
@@ -551,8 +652,49 @@ class Compra extends CI_Controller{
                
                 $credito_numpagos = $numcuota;
                
-           $this->Compra_model->update_compra($compra_id,$params);  
+           $this->Compra_model->update_compra($compra_id,$params);
 
+        $vaciar_detalle = "INSERT INTO detalle_compra 
+                            (compra_id,
+                            moneda_id,
+                            producto_id,
+                            detallecomp_codigo,
+                            detallecomp_cantidad,
+                            detallecomp_unidad,
+                            detallecomp_costo,
+                            detallecomp_precio,
+                            detallecomp_subtotal,
+                            detallecomp_descuento,
+                            detallecomp_total,
+                            detallecomp_descglobal,
+                            detallecomp_fechavencimiento,
+                            detallecomp_tipocambio,
+                            cambio_id
+                            )
+                            (SELECT 
+                            ".$compra_id.",
+                            moneda_id,
+                            producto_id,
+                            detallecomp_codigo,
+                            detallecomp_cantidad,
+                            detallecomp_unidad,
+                            detallecomp_costo,
+                            detallecomp_precio,
+                            detallecomp_subtotal,
+                            detallecomp_descuento,
+                            detallecomp_total,
+                            detallecomp_descglobal,
+                            detallecomp_fechavencimiento,
+                            detallecomp_tipocambio,
+                            cambio_id
+                            FROM 
+                            detalle_compra_aux
+                            WHERE
+                            compra_id=".$compra_id.")";
+        $this->db->query($vaciar_detalle);
+         $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
+        $this->db->query($eliminar_aux);
+              
     if ($_POST['tipotrans_id']==2) { // tipotrans_id = 2 : CREDITO
         
       
@@ -675,11 +817,29 @@ class Compra extends CI_Controller{
         }
     }
     
+    function detallecompra()
+    {
 
+         if ($this->input->is_ajax_request()) {  
+        $compra_id = $this->input->post('compra_id');
+        $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+     
+    }
     function ingresarproducto()
     {
-        $usuario_id = 1;
-        $bandera = $this->input->post('bandera');
+       
+        
+        
+        if ($this->input->is_ajax_request()) {
+       
         $compra_id = $this->input->post('compra_id');
         $producto_id = $this->input->post('producto_id');
         $cantidad = $this->input->post('cantidad'); 
@@ -687,8 +847,7 @@ class Compra extends CI_Controller{
         $producto_costo = $this->input->post('producto_costo');
         $producto_precio = $this->input->post('producto_precio');
         
-        
-       $sql = "INSERT into detalle_compra(
+       $sql = "INSERT into detalle_compra_aux(
                 compra_id,
                 producto_id,
                 detallecomp_codigo,
@@ -715,6 +874,7 @@ class Compra extends CI_Controller{
                 
                 from producto where producto_id = ".$producto_id."
                 )";
+        $this->Compra_model->ejecutar($sql);
 
                 $pro = "UPDATE producto
                 SET
@@ -724,50 +884,97 @@ class Compra extends CI_Controller{
                       
                 WHERE producto_id = ".$producto_id."
                 ";
-
+                $llenar =    "UPDATE inventario i, detalle_compra_aux d
+                            SET i.existencia =  i.existencia+d.detallecomp_cantidad 
+                            WHERE  d.compra_id = ".$compra_id." 
+                            and i.producto_id = d.producto_id ";
+                            
+             $this->db->query($llenar);
         $this->Compra_model->ejecutar($pro);
-        $this->Compra_model->ejecutar($sql);
-        redirect('compra/edit/'.$compra_id.'/'.$bandera);
+        $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
     }
 
 function updateDetalle()
     {
         
-        $bandera = $this->input->post('bandera');    
-        $compra_id = $this->input->post('compra_id');
-        $producto_id = $this->input->post('producto_id');
+                
+        $detallecomp_id = $this->input->post('detallecomp_id');
         $cantidad = $this->input->post('cantidad'); 
         $descuento = $this->input->post('descuento'); 
-        $producto_costo = $this->input->post('producto_costo');
-        $producto_precio = $this->input->post('producto_precio');
-        $detallecomp_id = $this->input->post('detallecomp_id');
+        $producto_costo = $this->input->post('costo');
+        $producto_precio = $this->input->post('precio');   
+        $producto_id = $this->input->post('producto_id');    
+        $compra_id = $this->input->post('compra_id');
+
+         $vaciar =    "UPDATE inventario i, detalle_compra_aux d
+                            SET i.existencia =  i.existencia-d.detallecomp_cantidad 
+                            WHERE  d.compra_id = ".$compra_id." 
+                            and i.producto_id = d.producto_id ";
+                            
+             $this->db->query($vaciar);
         
-       $sql = "UPDATE detalle_compra
+        $sql = "UPDATE detalle_compra_aux
                 SET
-                compra_id = ".$compra_id.",
-                producto_id = ".$producto_id.",
+                
+                
                 detallecomp_costo = ".$producto_costo.",
                 detallecomp_cantidad = ".$cantidad.",
                 detallecomp_precio = ".$producto_precio.",
                 detallecomp_descuento = ".$descuento.",
                 detallecomp_subtotal = ".$cantidad." * ".$producto_costo.",
                 detallecomp_total = (".$cantidad." * ".$producto_costo.") - ".$descuento."          
-                WHERE producto_id = ".$producto_id." and detallecomp_id = ".$detallecomp_id."
+                WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id." and detallecomp_id = ".$detallecomp_id."
                 ";
+                $this->Compra_model->ejecutar($sql);
 
-        $pro = "UPDATE inventario
-                SET
-                      
-                producto_costo = ".$producto_costo.",
-                producto_precio = ".$producto_precio."
-                      
-                WHERE producto_id = ".$producto_id."
-                ";
-
-        $this->Compra_model->ejecutar($sql);
-        $this->Compra_model->ejecutar($pro);
-        redirect('compra/edit/'.$compra_id.'/'.$bandera);
+        
+        $llenar =    "UPDATE inventario i, detalle_compra_aux d
+                            SET i.existencia =  i.existencia+d.detallecomp_cantidad 
+                            WHERE  d.compra_id = ".$compra_id." 
+                            and i.producto_id = d.producto_id ";
+                            
+             $this->db->query($llenar);
+            
+            return true;
+            
+           
     }
+
+     function quitar($detallecomp_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        $vaciar =    "UPDATE inventario i, detalle_compra_aux d
+                            SET i.existencia =  i.existencia-d.detallecomp_cantidad 
+                            WHERE  d.detallecomp_id = ".$detallecomp_id." 
+                            and i.producto_id = d.producto_id ";
+                            
+             $this->db->query($vaciar);
+        $sql = "delete from detalle_compra_aux where detallecomp_id = ".$detallecomp_id;
+        $this->Compra_model->ejecutar($sql);
+        
+        return true;
+                    
+        //**************** fin contenido ***************
+                    }
+                    else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
+    }
+
     /*
      * Deleting compra
      */
@@ -887,7 +1094,7 @@ function edito($compra_id)
             $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
 
             $this->load->model('Detalle_compra_model');
-            $data['all_detalle_compra'] = $this->Detalle_compra_model->get_all_detalle_compra();
+            $data['all_detalle_compra_aux'] = $this->Detalle_compra_model->get_all_detalle_compra();
 
             $this->load->model('Documento_respaldo_model');
             $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
@@ -922,6 +1129,8 @@ function edito($compra_id)
 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
+         $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
        $data['compra'] = $this->Compra_model->join_compras($compra_id);
         $this->load->model('Detalle_compra_model');
                 $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);

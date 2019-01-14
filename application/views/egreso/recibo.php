@@ -75,16 +75,30 @@ border-top: 0px;
          </style>
          <div class="box">
         <div class="row"> 
-        <div class="left1">   
- <td><img src="/ximpleman_web/resources/images/1542385883.png";  style="width:100px;height:100px"> </td></div>
- <div class="medio1" align="center">       <h2 align="center"><b>EMPRESA</b></h2>
+        <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
+<!-------------------------------------------------------->
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<div class="cuerpo">
+                    <div class="columna_derecha">
+                        <center> 
+                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                    </center>
+                    </div>
+                    <div class="columna_izquierda">
+                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
+                        <?php echo $empresa[0]['empresa_zona']; ?><br>
+                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                        <?php echo $empresa[0]['empresa_telefono']; ?>
+                    </div> </center>
+                    <div class="columna_central">
+                        <center>      <h3 class="box-title"><u>RECIBO DE EGRESO</u></h3>
+                           Numero: <b><?php echo $egresos[0]['egreso_id'];?></b>  <br>
+                          Numero transaccion: <b><?php echo$egresos[0]['egreso_numero'];?></b>
+               
+                </center>
+                    </div>
 
- Av. Ballivivian #666 <br>
- Telf: 666666-7777777 <br>
- COCHABAMBA-BOLIVIA</div>
-     <div class="right1">        <div class="box1" ><h2><b>Recibo de egreso</b></h2>
-             Numero: <b><?php echo $egresos[0]['egreso_id'];?></b>  <br>
-             Numero transaccion: <b><?php echo$egresos[0]['egreso_numero'];?></b>  </div>  </div>
+          
 
             </div>       
            <div class="row" style="padding-left: 17%;">
@@ -129,7 +143,7 @@ border-top: 0px;
             <td><?php echo$egresos[0]['usuario_nombre'];?></td>
              </div> 
 </div>
- <div class="right" style="text-align: right">
+ <div class="right" style="text-align: right; padding-right: 10px;">
                  <font size="2" style=""><?php echo date("d/m/Y   H:i:s  .")  ; ?></font>   
                  
             </div>

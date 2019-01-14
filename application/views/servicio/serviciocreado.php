@@ -1,5 +1,4 @@
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/servicio_creado.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script>
         $(document).ready(function() {
@@ -164,18 +163,25 @@ $(document).ready(function(){
 	    });
 </script>
 <div class="box-header with-border">
+    <input type="hidden" value="<?php echo $servicio['servicio_id']; ?>" id="esteservicio_id">
     <h3 class="box-title"><b>Detalle del Servicio N°: <?php echo $servicio['servicio_id'] ?></b></h3>
     <div class="container">
         <div class="panel panel-primary col-md-5">
             <h5>
-                <b>Cliente: </b><?php if(is_null($servicio['cliente_id'])|| ($servicio['cliente_id'] ==0)){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_nombre']; echo "<b><br>Telef.: </b>".$cliente['cliente_telefono']; } ?><br>
-                <b>Codigo Cliente: </b><?php if(is_null($cliente['cliente_codigo'])){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_codigo']; } ?><br>
+                <b>Cliente: </b><span id="cliente-nombre"><?php if(is_null($servicio['cliente_id'])|| ($servicio['cliente_id'] ==0)){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_nombre']; ?>
+                    </span><br>
+                <b>Telef.: </b><span id="cliente-telefono"><?php echo $cliente['cliente_telefono']; } ?>
+                    </span><br>
+                <b>Codigo Cliente: </b><span id="cliente-codigo"><?php if(is_null($cliente['cliente_codigo'])){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_codigo']; } ?>
+                    </span><br>
                 <b>Fecha/Hora: </b><?php if(is_null($servicio['servicio_fecharecepcion'])){ echo "NO DEFINIDO";} else{ echo date('d/m/Y', strtotime($servicio['servicio_fecharecepcion'])); echo '|'.$servicio['servicio_horarecepcion']; } ?><br>
                 <b>Registrado por: </b><?php if(is_null($usuario['usuario_id'])){ echo "NO DEFINIDO";} else{ echo $usuario['usuario_nombre']; } ?><br>
-                <b>Tipo Servicio: </b><?php if(is_null($servicio['tiposerv_id'])){ echo "NO DEFINIDO";} else{ echo $tipo_servicio['tiposerv_descripcion'];
+                <b>Tipo Servicio: </b>
+                <span id="mitiposervicio"><?php if(is_null($servicio['tiposerv_id'])){ echo "NO DEFINIDO";} else{ echo $tipo_servicio['tiposerv_descripcion'];
                                             if($servicio['tiposerv_id'] == 2){
                                               echo "<br><b>Dirección: </b>".$servicio['servicio_direccion'];
                                             } } ?>
+                </span>
             </h5>
         </div>
         <div class="box-tools">
@@ -184,7 +190,7 @@ $(document).ready(function(){
                 <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#myModal"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie..</small></a>
                 <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Clie..</small></a>
                 <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Det. Serv.</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prod..</small></a>
+                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Det. Serv.</small></a>
             </center>
         </div>
     </div>
@@ -200,7 +206,7 @@ $(document).ready(function(){
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>N°</th>
 						<th>Detalle</th>
 						<th>Codigo</th>
 						<th>Categoria/<br>Subcategoria</th>
@@ -221,8 +227,8 @@ $(document).ready(function(){
                                                 
 						<th></th>
                     </tr>
-                    <tbody class="buscar1">
-                    <?php
+                    <tbody class="buscar1" id="detalleservicio">
+                    <?php /*
                          $i = 1;
                          $total = 0; $acuenta = 0;
                          $saldo = 0; $cont = 0;
@@ -260,7 +266,7 @@ $(document).ready(function(){
                             <td id="alinear"><?php echo number_format($d['detalleserv_total'],'2','.',',') ?></td>
                             <td id="alinear"><?php echo number_format($d['detalleserv_acuenta'],'2','.',',') ?></td>
                             <td id="alinear"><?php echo number_format($d['detalleserv_saldo'],'2','.',',') ?></td>
-
+                            <td>
                             <!------------------------ INICIO modal para confirmar Anulacion ------------------->
                                     <div class="modal fade" id="modalanulado<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                                       <div class="modal-dialog" role="document">
@@ -272,14 +278,14 @@ $(document).ready(function(){
                                           <div class="modal-body">
                                            <!------------------------------------------------------------------->
                                            <h3><b><span class="fa fa-minus-circle"></span>¿</b>
-                                               Desea Anular este detalle de Servicio con el codigo: <b> <?php echo $d['detalleserv_codigo']; ?>?</b>
+                                               Desea Anular el detalle de Servicio con el codigo: <b> <?php echo $d['detalleserv_codigo']; ?>?</b>
                                             </h3>
                                                Al ANULAR este detalle de servicio, sus campos: Total, A cuenta y Saldo seran CERO.
                                            
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('detalle_serv/anulardetalleserv/'.$servicio['servicio_id'].'/'.$d['detalleserv_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a onclick="anulardetalleservicio(<?php echo $servicio['servicio_id']; ?>, <?php echo $d['detalleserv_id']; ?>, <?php echo $i; ?>)" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                       <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
@@ -304,20 +310,20 @@ $(document).ready(function(){
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('detalle_serv/remove/'.$servicio['servicio_id'].'/'.$d['detalleserv_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a onclick="eliminardetalleservicio(<?php echo $servicio['servicio_id']; ?>, <?php echo $d['detalleserv_id']; ?>, <?php echo $i; ?>)" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                       <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                         <!------------------------ FIN modal para confirmar Eliminación ------------------->
-                            <td>
+                            
                                 <a href="<?php echo site_url('detalle_serv/modificardetalle/'.$servicio['servicio_id'].'/'.$d['detalleserv_id']); ?>" class="btn btn-info btn-xs" title="editar"><span class="fa fa-pencil"></span> </a>
                                 <a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalanulado<?php echo $i; ?>" title="anular"><span class="fa fa-minus-circle"></span></a>
                                 <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modaleliminar<?php echo $i; ?>" title="eliminar" ><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
-                    <?php $i++; } ?>
+                    <?php $i++; } */ ?>
                 </table>
                                 
             </div>
@@ -331,11 +337,14 @@ $(document).ready(function(){
                                           <div class="modal-header">
                                               <label>Nuevo Cliente:</label>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <span id="mensajenew_cliente" class="text-danger"></span>
                                           </div>
+                                            
                                             <?php
-                                            echo form_open('cliente/add_new/'.$servicio['servicio_id']);
+                                            //echo form_open('cliente/add_new/'.$servicio['servicio_id']);
                                             ?>
                                           <div class="modal-body">
+                                              
                                            <!------------------------------------------------------------------->
                                            
                                            <div class="col-md-6">
@@ -373,16 +382,13 @@ $(document).ready(function(){
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                              <button type="submit" class="btn btn-success">
+                                              <button class="btn btn-success" onclick="registrarnuevocliente(<?php echo $servicio['servicio_id']; ?>)">
                                                     <i class="fa fa-check"></i> Guardar
                                               </button>
-<!--                                              <a href="<?php // echo site_url('cliente/add_new'); ?>" type="submit" class="btn btn-success">
-                                                <i class="fa fa-check"></i> Guardar
-                                              </a>-->
                                               <a href="#" class="btn btn-danger" data-dismiss="modal">
                                                     <i class="fa fa-times"></i> Cancelar</a>
                                           </div>
-                                            <?php echo form_close(); ?>
+                                            <?php //echo form_close(); ?>
                                         </div>
                                       </div>
                                     </div>
@@ -396,21 +402,21 @@ $(document).ready(function(){
             <div class="box-body table-responsive table-condensed">
                 <table class="table table-striped table-condensed" >
                     <tbody>
-                        <tr>
+                        <!--<tr>
                             <th>Descripción</th>
                             <th></th>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td>Total Final</td>
-                            <td id="alinear"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></td>
+                            <td id="alinear"><span id="totalfinal"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></span></td>
                         </tr>
                         <tr>
                             <td>A cuenta</td>
-                            <td id="alinear"><?php echo number_format($servicio['servicio_acuenta'],'2','.',','); ?></td>
+                            <td id="alinear"><span id="totalacuenta"><?php echo number_format($servicio['servicio_acuenta'],'2','.',','); ?></span></td>
                         </tr>
                         <tr>
                             <th id="masgrande">Saldo</th>
-                            <th id="masgrande" style="text-align: right;"><?php echo number_format($servicio['servicio_saldo'],'2','.',','); ?></th>
+                            <th id="masgrande" style="text-align: right;"><span id="totalsaldo"><?php echo number_format($servicio['servicio_saldo'],'2','.',','); ?></span></th>
                         </tr>
                     </tbody>
                     
@@ -418,11 +424,19 @@ $(document).ready(function(){
             </div>
         </div>
     </div>
-    <div style="float: right">
-    <center>
-        <a href="<?php echo site_url('servicio/boletarecepcion/'.$servicio['servicio_id']); ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imprimir</a>
-        <a href="<?php echo site_url('servicio'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
-    </center>
+    <div style="float: right; text-align: center;">
+        <?php
+        $dir_url = "";
+        if($all_parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
+            $dir_url = site_url('servicio/boletarecepcion_boucher/'.$servicio['servicio_id']);
+        }else{
+            $dir_url = site_url('servicio/boletarecepcion/'.$servicio['servicio_id']);
+        }
+        ?>
+        
+        
+        <a href="<?php echo $dir_url; ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imprimir</a>
+        <a href="<?php echo site_url('servicio'); ?>" id="finalizar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
 </div>
 </div>
 
@@ -495,9 +509,10 @@ $(document).ready(function(){
           <div class="modal-header">
               <label>Nuevo Detalle del Servicio N° <?php echo $servicio['servicio_id'] ?></label>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            <span id="mensajenew_detalleserv" class="text-danger"></span>
           </div>
             <?php
-            echo form_open('detalle_serv/nuevodetalle/'.$servicio['servicio_id']);
+            //echo form_open('detalle_serv/nuevodetalle/'.$servicio['servicio_id']);
             ?>
           <div class="modal-body">
            <!------------------------------------------------------------------->
@@ -576,7 +591,7 @@ $(document).ready(function(){
                                 <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                     <div class="form-group" id="new_select">
                                             <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
-                                                    <option value="">- MARCA/MODELO -</option>
+                                                    <option value="0">- MARCA/MODELO -</option>
                                             </select>
                                     </div>
                             </div>
@@ -649,7 +664,7 @@ $(document).ready(function(){
                             <div class="col-md-6">
                                     <label for="responsable_id" class="control-label"><span class="text-danger">*</span>Responsable</label>
                                     <div class="form-group">
-                                        <select name="responsable_id" class="form-control" required>
+                                        <select name="responsable_id" class="form-control" id="responsable_id" required>
                                                     <option value="">- RESPONSABLE -</option>
                                                     <?php 
                                                     foreach($all_responsable as $responsable)
@@ -662,21 +677,18 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <input type="hidden" name="servicio_id" value="<?php echo $servicio['servicio_id'] ?>" class="form-control" id="servicio_id" />
+                        <!--    <input type="hidden" name="servicio_id" value="<?php //echo $servicio['servicio_id'] ?>" class="form-control" id="servicio_id" /> -->
 		
            <!------------------------------------------------------------------->
           </div>
           <div class="modal-footer aligncenter">
-              <button type="submit" class="btn btn-success">
+              <button class="btn btn-success" onclick="registrarnuevodetalleservicio(<?php echo $servicio['servicio_id']; ?>)" >
                     <i class="fa fa-check"></i> Guardar
               </button>
-<!--                                              <a href="<?php // echo site_url('cliente/add_new'); ?>" type="submit" class="btn btn-success">
-                <i class="fa fa-check"></i> Guardar
-              </a>-->
               <a href="#" class="btn btn-danger" data-dismiss="modal">
                     <i class="fa fa-times"></i> Cancelar</a>
           </div>
-            <?php echo form_close(); ?>
+            <?php //echo form_close(); ?>
         </div>
       </div>
     </div>
@@ -693,6 +705,10 @@ $(document).ready(function(){
     <script type="text/javascript">
     alert('El estado Entregado se cambia cuando el saldo  es 0, verifique sus saldos');
     </script>
+    <?php }elseif($a == "no"){ ?>
+    <script type="text/javascript">
+    alert('No se encontro ningun Detalle de Servicio con ese codigo.');
+    </script>
     <?php } ?>
 <!-- ---------------------- Inicio modal para asignar Tipo de Servicio ----------------- -->
     <div class="modal fade" id="modaltiposervicio" tabindex="-1" role="dialog" aria-labelledby="modaltiposervicioLabel">
@@ -704,7 +720,7 @@ $(document).ready(function(){
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
           </div>
             <?php
-            echo form_open('servicio/asignartiposervicio/'.$servicio['servicio_id']);
+            //echo form_open('servicio/asignartiposervicio/'.$servicio['servicio_id']);
             ?>
           <div class="modal-body">
 
@@ -741,16 +757,16 @@ $(document).ready(function(){
                         <input type="text" class="form-control" name="direccion" id="direccion" value="<?php echo $servicio['servicio_direccion']; ?>" />
                     </div>
             </div>
-           <!------------------------------------------------------------------->
+           <!-- --------------------------------------------------------------- -->
           </div>
           <div class="modal-footer aligncenter">
-              <button type="submit" class="btn btn-success">
+              <button class="btn btn-success" onclick="cambiartiposervicio(<?php echo $servicio['servicio_id']; ?>)">
                     <i class="fa fa-check"></i> Guardar
               </button>
               <a href="#" class="btn btn-danger" data-dismiss="modal">
                     <i class="fa fa-times"></i> Cancelar</a>
           </div>
-            <?php echo form_close(); ?>
+            <?php //echo form_close(); ?>
         </div>
       </div>
     </div>
@@ -762,7 +778,7 @@ $(document).ready(function(){
                                             <br><br>
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                              <label>buscar Servicio:</label>
+                                              <label>buscar detalle de servicio:</label>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                           </div>
                                             <?php
@@ -773,7 +789,7 @@ $(document).ready(function(){
                                            
                                            <div class="col-md-6">
 						<div class="form-group">
-							<input type="text" name="codigo" class="form-control" id="codigo" required />
+                                                    <input type="text" name="codigo" class="form-control" id="codigo" required placeholder="Codigo del Producto" />
 						</div>
 					  </div>
                                           <div class="col-md-6">

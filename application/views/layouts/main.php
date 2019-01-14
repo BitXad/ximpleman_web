@@ -28,7 +28,7 @@
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse">
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
@@ -47,8 +47,10 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-
+<!---<div style="float: left; padding-top: 12px; padding-left: 40%; color: white; font-size: 15pt">
+    <b><?php $misitio  = trim(dirname($_SERVER['PHP_SELF']), "/"); echo $misitio; ?></b></div>-->
             <div class="navbar-custom-menu">
+                
                 <ul class="nav navbar-nav">
                     <!-- User Account: style can be found in dropdown.less -->
                     <li class="dropdown user user-menu">
@@ -56,6 +58,7 @@
                             <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['thumb']);  ?>" class="user-image" alt="User Image">
                             <span class="hidden-xs"><?php echo strtolower($session_data['usuario_login'])?></span>
                         </a>
+                        
                         <ul class="dropdown-menu">
                             <!-- User image -->
                             <li class="user-header">
@@ -126,6 +129,15 @@
                             <a href="<?php echo site_url('categoria_cliente');?>"><i class="fa fa-user"></i>Categoria Cliente</a>
                         </li>
                         <li>
+                            <a href="<?php echo site_url('categoria_clientezona');?>"><i class="fa fa-user"></i>Categoria Cliente Zona</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('categoria_egreso');?>"><i class="fa fa-user"></i>Categoria Egreso</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('categoria_ingreso');?>"><i class="fa fa-user"></i>Categoria Ingreso</a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('categoria_producto');?>"><i class="fa fa-cubes"></i>Categoria Productos</a>
                         </li>
                         <li>
@@ -185,6 +197,9 @@
                             <a href="<?php echo site_url('compra');?>"><i class="fa fa-cart-arrow-down"></i>Compras</a>
                         </li>
                         <li>
+                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cart-plus"></i>Actualizar Inventario</a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i>Pedidos Mañana</a>
                         </li>
                         <li>
@@ -214,9 +229,6 @@
                             <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-exchange"></i> <span>Cambio</span></a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cuotum/index');?>"><i class="fa fa-cc"></i> <span>Cuota</span></a>
-                        </li>
-                        <li>
                             <a href="<?php echo site_url('servicio/index');?>"><i class="fa fa-wrench"></i> Servicios</a>
                         </li>
                     </ul>
@@ -231,22 +243,28 @@
                             <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-cart-arrow-down"></i>Compras</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i>Egresos</a>
+                            <a href="<?php echo site_url('reportes/egresorep');?>"><i class="fa fa-arrow-left"></i>Egresos</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Factura</span></a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('ingreso');?>"><i class="fa fa-arrow-right"></i>Ingresos</a>
+                            <a href="<?php echo site_url('reportes/ingresorep');?>"><i class="fa fa-arrow-right"></i>Ingresos</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Ingresos/Egresos</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/planillacaja');?>"><i class="fa fa-exchange"></i>Planilla de Caja</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/servicioreportes');?>"><i class="fa fa-exchange"></i>Servicios</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/ventareportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('venta/comision');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
                         </li>
                     </ul>
                 </li>

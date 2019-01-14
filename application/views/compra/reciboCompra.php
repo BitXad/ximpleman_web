@@ -121,35 +121,35 @@ border-bottom: 0px;
 }
 
          </style>
-         
+    <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">     
        <div class="box" > 
         <div class="row"> 
        
- <div class="left1" align="center" >       <h4 align="center"><b>EMPRESA</b></h4>
-Km 6.5 Carretera a Sacaba<br>
-Telf: 4511518 <br>
-COCHABAMBA-BOLIVIA </div>
-     <div class="medio1" align="center">       <div class="box1" ><h4><b>Boleta de compra</b></h4>
-             No.: <b><?php echo $compra[0]['compra_id'];?></b>  <br>
-             </div>  </div>
+<div class="cuerpo">
+                    <div class="columna_derecha">
+                        <center> 
+                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                    </center>
+                    </div>
+                    <div class="columna_izquierda">
+                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
+                        <?php echo $empresa[0]['empresa_zona']; ?><br>
+                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                        <?php echo $empresa[0]['empresa_telefono']; ?>
+                    </div> </center>
+                    <div class="columna_central">
+                        <center>      <h3 class="box-title"><u>BOLETA DE COMPRA</u></h3>
+                           Numero: <b><?php echo $compra[0]['compra_id'];?></b>  <br>
+                         
+               
+                </center>
+                    </div>
 
-            </div>    
-            <div class="row">   
-           <div class="box2" >
-                       <div class="left">
-                <div class="content">Fecha: 
-                            <b><?php echo $compra[0]['compra_fecha'];?> - <?php echo $compra[0]['compra_hora'];?></b> <br> 
-                    Proveedor: <b><?php echo $compra[0]['proveedor_nombre'];?></b>          
-                 </div>
-            </div>
-            <div class="right">
-                <div class="content">Tipo trans.: <b><?php echo $compra[0]['tipotrans_nombre'];?></b> <br>
-                Tipo de Pago: <b><?php echo $compra[0]['forma_nombre'];?></b>
-                							<input type="hidden"  value="<?php echo $compra[0]['compra_id'];?>" class="form-control" id="compra_id" />
-            </div>
-        </div>
+          
+
+            </div>       
       
-          </div></div>
+          </div>
          <div class="row">               
  <div class="box3">
 

@@ -16,7 +16,7 @@ class Parametro extends CI_Controller{
      */
     function index()
     {
-        $data['parametros'] = $this->Parametro_model->get_all_parametros();
+        $data['parametros'] = $this->Parametro_model->get_all_parametro();
         
         $data['_view'] = 'parametro/index';
         $this->load->view('layouts/main',$data);
@@ -33,7 +33,14 @@ class Parametro extends CI_Controller{
 				'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
 				'parametro_numrecing' => $this->input->post('parametro_numrecing'),
 				'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
-				'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
+                'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
+                'parametro_numcuotas' => $this->input->post('parametro_numcuotas'),
+                'parametro_montomax' => $this->input->post('parametro_montomax'),
+                'parametro_diasgracia' => $this->input->post('parametro_diasgracia'),
+                'parametro_diapago' => $this->input->post('parametro_diapago'),
+                'parametro_periododias' => $this->input->post('parametro_periododias'),
+                'parametro_interes' => $this->input->post('parametro_interes'),
+				'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
             );
             
             $parametro_id = $this->Parametro_model->add_parametro($params);
@@ -63,6 +70,13 @@ class Parametro extends CI_Controller{
 					'parametro_numrecing' => $this->input->post('parametro_numrecing'),
 					'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
 					'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
+                    'parametro_numcuotas' => $this->input->post('parametro_numcuotas'),
+                    'parametro_montomax' => $this->input->post('parametro_montomax'),
+                    'parametro_diasgracia' => $this->input->post('parametro_diasgracia'),
+                    'parametro_diapago' => $this->input->post('parametro_diapago'),
+                    'parametro_periododias' => $this->input->post('parametro_periododias'),
+                    'parametro_interes' => $this->input->post('parametro_interes'),
+                    'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            

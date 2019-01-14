@@ -1,5 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -17,7 +18,7 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-
+<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 
 <div class="container">
     
@@ -34,7 +35,7 @@
         <td width="300">
             <center>
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font><br>
-                <font size="2" face="arial"><b>N&deg;: 00<?php echo $venta[0]['venta_id']; ?></b></font>
+                <font size="2" face="arial"><b>Nº: 00<?php echo $venta[0]['venta_id']; ?></b></font>
             </center>
             
         </td>
@@ -53,7 +54,7 @@
 <div class="container">
     <div class="panel panel-primary col-md-8">
         <h5><b>Cliente: </b><?php echo $venta[0]['cliente_nombre']; ?> <br>
-        <b>C&oacute;digo Cliente: </b><?php echo $venta[0]['cliente_codigo']; ?> <br>
+        <b>Código Cliente: </b><?php echo $venta[0]['cliente_codigo']; ?> <br>
         <b>Fecha/Hora: </b><?php echo $venta[0]['venta_fecha']; ?></h5>       
     </div>
 </div>
@@ -116,7 +117,17 @@
 						<!--<td><?php echo $d['venta_glosa']; ?></td>-->
 						<td><?php echo $d['detalleven_codigo']; ?></td>
 						<td><?php echo $d['detalleven_unidad']; ?></td>
-						<td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
+						<td align="center">
+                                                    <?php //echo $d['detalleven_cantidad']; ?>
+
+                                                    <div class="btn-group">
+                                                        <button class="btn btn-success btn-xs no-print" onclick="reducir_detalle(1,<?php echo $d["detalleven_id"]; ?>,<?php echo $d["venta_id"]; ?>)" title="Disminuir producto"><span class="fa fa-minus" ></span></button>
+                                                        <span class="btn btn-default  btn-xs"> <?php echo $d["detalleven_cantidad"]; ?></span>
+                                               
+                                                        <button class="btn btn-success btn-xs no-print" onclick="incrementar_detalle(1,<?php echo $d["detalleven_id"]; ?>,<?php echo $d["venta_id"]; ?>)" title="Incrementar producto"><span class="fa fa-plus" ></span></button>
+                                                    </div>
+                                                
+                                                </td>
 						<!--<td><?php echo $d['detalleven_costo']; ?></td>-->
 						<td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
 						<td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
@@ -129,7 +140,8 @@
 						<td><?php echo $d['detalleven_caracteristicas']; ?></td>-->
 						<td class="no-print">
                                                     <a href="<?php //echo site_url('detalle_venta/edit/'.$d['detalleven_id']); ?>" class="btn btn-info btn-xs no-print"><span class="fa fa-pencil" ></span></a> 
-                                                    <a href="<?php //echo site_url('detalle_venta/remove/'.$d['detalleven_id']); ?>" class="btn btn-danger btn-xs no-print"><span class="fa fa-trash"></span></a>
+                                                    <!--<a href="<?php //echo site_url('detalle_venta/remove/'.$d['detalleven_id']); ?>" class="btn btn-danger btn-xs no-print"><span class="fa fa-trash"></span></a>-->
+                                                    <button class="btn btn-danger btn-xs no-print" onclick="eliminar_producto_vendido(<?php echo $d['detalleven_id']; ?>)"> <span class="fa fa-trash"></span></a></button>
                                                 </td>
                     </tr>
                     <?php } ?>
@@ -185,3 +197,7 @@
     
 </center>   
 
+    <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger no-print" style="width: 120px !important; height: 120px !important;">
+        <i class="fa fa-sign-out fa-4x"></i><br><br>
+       Salir <br>
+    </a>

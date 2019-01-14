@@ -73,8 +73,8 @@ function creacotizacion()
             $data['cotizacion_id'] = $cotizacion_id; 
             $this->load->model('Detalle_cotizacion_model');
             $data['detalle_cotizacion'] = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
-           $this->load->model('Inventario_model');
-            $data['producto'] = $this->Inventario_model->get_all_inventario();     
+           $this->load->model('Producto_model');
+            //$data['producto'] = $this->Producto_model->get_all_productos();  
             $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);     
             $data['_view'] = 'cotizacion/add';
             $this->load->view('layouts/main',$data);
@@ -99,10 +99,12 @@ function creacotizacion()
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
             $usuario_id = $session_data['usuario_id'];
-            $data['cotizacion_id'] = $cotizacion_id; 
+            $data['cotizacion_id'] = $cotizacion_id;
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $this->load->model('Detalle_cotizacion_model');
             $data['detalle_cotizacion'] = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
-             $data['usuario'] = $this->Cotizacion_model->get_cotizacion_usuario($usuario_id);  
+            $data['usuario'] = $this->Cotizacion_model->get_cotizacion_usuario($usuario_id);  
             $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);     
             $data['_view'] = 'cotizacion/cotiza';
             $this->load->view('layouts/main',$data);
@@ -115,13 +117,30 @@ function creacotizacion()
             redirect('', 'refresh');
         }
     }
+
+function detallecotizacion()
+    {
+    
+
+         if ($this->input->is_ajax_request()) {  
+        $cotizacion_id = $this->input->post('cotizacion_id');
+        $datos = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+     
+    
+    }    
 function insertarproducto()
     {   
        
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
         $cotizacion_id = $this->input->post('cotizacion_id');
         $descripcion = $this->input->post('descripcion');
         $producto_id = $this->input->post('producto_id');
@@ -157,36 +176,33 @@ function insertarproducto()
                 
                 from producto where producto_id = ".$producto_id."
                 )";
-
               
-
         $this->Cotizacion_model->ejecutar($sql);
-         redirect('cotizacion/add/'.$cotizacion_id);
+        $datos = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
     }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+        else
+        {                 
+                    show_404();
+        }          
     }
 
     function updateDetallecot()
     {
       
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $usuario_id = $session_data['usuario_id'];
+        
+         if ($this->input->is_ajax_request()) {
         $detallecot_id = $this->input->post('detallecot_id');
         
         $caracteristica = $this->input->post('detallecot_caracteristica');
         $cotizacion_id = $this->input->post('cotizacion_id');
-        $descripcion = $this->input->post('descripcion');
+       // $descripcion = $this->input->post('descripcion');
         $producto_id = $this->input->post('producto_id');
         $cantidad = $this->input->post('cantidad'); 
         $descuento = $this->input->post('descuento'); 
-        $producto_precio = $this->input->post('producto_precio');
+        $producto_precio = $this->input->post('precio');
         
         $descripcion = "'".$descripcion."'";
         $caracteristica = "'".$caracteristica."'";
@@ -194,28 +210,49 @@ function insertarproducto()
        $cot = "UPDATE detalle_cotizacion
                 SET
                 detallecot_caracteristica = ".$caracteristica.",
-                detallecot_descripcion = ".$descripcion.",
+               
                 detallecot_precio = ".$producto_precio.",
                 detallecot_cantidad = ".$cantidad.",
                 detallecot_descuento = ".$descuento.",
                 detallecot_subtotal = ".$cantidad." * ".$producto_precio.",
-                detallecot_total = (".$cantidad." * ".$producto_precio.") - ".$descuento.",
-                producto_id = ".$producto_id.",
-                cotizacion_id = ".$cotizacion_id."
+                detallecot_total = (".$cantidad." * ".$producto_precio.") - ".$descuento."
                         
                 WHERE producto_id = ".$producto_id." and detallecot_id = ".$detallecot_id."
             ";
 
     
         $this->Cotizacion_model->ejecutar($cot);
-         redirect('cotizacion/add/'.$cotizacion_id);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+        $datos = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
+          if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+    }
+
+    function quitar($detallecot_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        
+        $sql = "delete from detalle_cotizacion where detallecot_id = ".$detallecot_id;
+        $this->Cotizacion_model->ejecutar($sql);
+        
+        return true;
+                    
+        //**************** fin contenido ***************
+                    }
+                    else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
     }
     /*
      * Editing a cotizacion

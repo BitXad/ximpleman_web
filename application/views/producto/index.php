@@ -40,6 +40,9 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="lacategoria" id="lacategoria" value='<?php echo json_encode($all_categoria); ?>' />
+<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php echo json_encode($all_presentacion); ?>' />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda);  ?>' />
 
     <div class="box-header">
                 <h3 class="box-title">Productos</h3>
@@ -56,7 +59,7 @@
             <span class="input-group-addon"> 
                 Buscar 
             </span>           
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código" onkeypress="validar2(event,4)">
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras" onkeypress="validar2(event,4)">
         </div>
         <!--este es FIN de input buscador-->
         <div class="container" id="categoria">
@@ -99,13 +102,32 @@
                                                     </div>
                                                   </div>
                                                 </td>
-						<td><?php echo "<b>Cat.: </b>".$p['categoria_nombre']; echo "<br><b>Pres.: </b>".$p['presentacion_nombre']; ?></td>
+						<td><?php
+                                                $escategoria="";
+                                                if($p['categoria_id'] == null || $p['categoria_id'] == 0 || $p['categoria_id']-1 > count($all_categoria)){ 
+                                                    $escategoria = "No definido";
+                                                }else{
+                                                    $escategoria = $all_categoria[$p['categoria_id']-1]['categoria_nombre'];
+                                                }
+                                                $espresentacion="";
+                                                if($p['presentacion_id'] == null || $p['presentacion_id'] == 0 || $p['presentacion_id']-1 > count($all_presentacion)){ 
+                                                    $espresentacion = "No definido";
+                                                }else{
+                                                    $espresentacion = $all_presentacion[$p['presentacion_id']-1]['presentacion_nombre'];
+                                                }
+                                                $esmoneda="";
+                                                if($p['moneda_id'] == null || $p['moneda_id'] == 0 || $p['moneda_id']-1 > count($all_moneda)){ 
+                                                    $esmoneda = "No definido";
+                                                }else{
+                                                    $esmoneda = $all_moneda[$p['moneda_id']-1]['moneda_descripcion'];
+                                                }
+                                                echo "<b>Cat.: </b>".$escategoria;  echo "<br><b>Pres.: </b>".$espresentacion; ?></td>
 						<td><?php echo $p['producto_codigo']; echo "<br>".$p['producto_codigobarra']; ?></td>
 						<!--<td><?php /*echo $p['producto_unidad']; ?></td>
 						<td><?php echo $p['producto_marca']; ?></td>
 						<td><?php echo $p['producto_industria'];*/ ?></td> -->
 						<td><?php echo "<b>Compra: </b>".$p['producto_costo']; echo "<br><b>Venta: </b>".$p['producto_precio']; ?></td>
-						<td><?php echo "<b>Moneda: </b>".$p['moneda_descripcion']."<br>"; echo "<b>T. Cambio: </b>".$p['producto_tipocambio']; ?></td>
+						<td><?php echo "<b>Moneda: </b>".$esmoneda."<br>"; echo "<b>T. Cambio: </b>".$p['producto_tipocambio']; ?></td>
 						<td><?php echo $p['producto_comision']; ?></td>
                                                 <td style="background-color: #<?php echo $p['estado_color']; ?>"><?php echo $p['estado_descripcion']; ?></td>
 						<td>

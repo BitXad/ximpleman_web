@@ -98,4 +98,26 @@ class Presentacion_model extends CI_Model
     {
         return $this->db->delete('presentacion',array('presentacion_id'=>$presentacion_id));
     }
+    
+    /*
+     * Get alls presentacion
+     */
+    function get_alls_presentacion()
+    {
+        $presentacion = $this->db->query("
+            SELECT
+                presentacion_id, presentacion_nombre
+
+            FROM
+                `presentacion`
+
+            WHERE
+                1 = 1
+
+            ORDER BY `presentacion_id` DESC
+
+        ")->result_array();
+
+        return $presentacion;
+    }
 }

@@ -185,6 +185,57 @@ class Inventario_model extends CI_Model
         $this->db->query($sql);
         return true;
     }
+    
+    /*
+     * actualizar inventario
+     */
+    function actualizar_producto_inventario($producto_id)
+    {
+        //Truncar la tabla inventario
+        $sql = "delete from inventario where producto_id = ".$producto_id;
+        $this->db->query($sql);
+        
+        
+        //cargar el inventario actualizado
+        $sql = "insert into inventario
+                (select p.*,
+                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
+                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
+                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
+                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
+                from
+                producto p  
+                where p.producto_id = ".$producto_id."
+                group by
+                p.producto_id
+                order by p.producto_nombre)";
+        
+        $this->db->query($sql);
+        return true;
+    }
+    
+    /*
+     * ingresa los datos de un producto al inventario
+     */
+    function ingresar_producto_inventario($producto_id)
+    {
+        //Truncar la tabla inventario
+        $sql = "delete from inventario where producto_id = ".$producto_id;
+        $this->db->query($sql);
+        
+        
+        //cargar el inventario actualizado
+        $sql = "insert into inventario
+                (select p.*,0 as compras, 0 as ventas, 0 as pedidos, 0 as existencia
+                from producto p  
+                where p.producto_id = ".$producto_id."
+                group by
+                p.producto_id
+                order by p.producto_nombre)";
+
+        $this->db->query($sql);
+        return true;
+    }
 
     /*
      * actualizar las cantidades del inventario

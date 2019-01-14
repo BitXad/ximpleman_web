@@ -64,59 +64,6 @@ function mostrar_ocultar(){
 <input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 
-<!--<div class="box-header">
-
-    <div class="panel panel-primary col-md-12">
-        
-------------------- cliente_id -------------------
-        <div class="col-md-2" hidden>
-
-            <div class="form-group">
-                    <input type="text" name="cliente_id" value="0" class="form-control" id="cliente_id" />
-            </div>
-        </div>
-------------------- fin cliente_id -------------------
-        
-        <div class="col-md-3">
-            <label for="nit" class="control-label">NIT</label>
-            <div class="form-group">
-                <input type="number" name="nit" class="form-control" id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <label for="razon social" class="control-label">RAZON SOCIAL</label>
-            <div class="form-group">
-                <input type="razon_social" name="razon_social" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)"/>
-            </div>
-        </div>
-        
-        <div class="col-md-2">
-            <label for="telefono" class="control-label">TELEFONO</label>
-            <div class="form-group">
-                    <input type="telefono" name="telefono" class="form-control" id="telefono"  onclick="seleccionar(3) value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
-            </div>
-        </div>
-        
-        <div class="col-md-3">
-            <label for="tipo" class="control-label">TIPO CLIENTE</label>           
-            <div class="form-group">
-                
-                <select  class="form-control" id="tipocliente_id" name="tipocliente_id" >
-                    <?php foreach($tipo_cliente as $tc){ ?>
-                    <option value="<?php echo $tc['tipocliente_id'];?>"><?php echo $tc['tipocliente_descripcion'];?></option>
-                    <?php } ?>
-                </select>
-              
-            </div>
-        </div>
-
-
-        
-
-        
-    </div>    
-</div>-->
 
 <!-------------------- inicio collapse ---------------------->
 
@@ -126,12 +73,10 @@ function mostrar_ocultar(){
         
         
 <!--------------------- cliente_id --------------------->
-        <div class="col-md-2" hidden>
+<div class="container" hidden>
+    <input type="text" name="cliente_id" value="0" class="form-control" id="cliente_id" >
+</div>
 
-            <div class="form-group">
-                    <input type="text" name="cliente_id" value="0" class="form-control" id="cliente_id" />
-            </div>
-        </div>
 <!--------------------- fin cliente_id --------------------->
         
         <div class="col-md-3">
@@ -174,7 +119,7 @@ function mostrar_ocultar(){
         </div>        
         
       <h4 class="panel-title">
-        <input type="checkbox" id="facturado" name="facturado">
+        <input type="checkbox" id="facturado" value="1" name="facturado">
         <a data-toggle="collapse" href="#collapse1">Más</a>
       </h4>
     </div>
@@ -282,19 +227,32 @@ function mostrar_ocultar(){
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
                 <span class="badge btn-danger">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                <span class="badge btn-default">
 
+                    <!--------------------- inicio loader ------------------------->
+                    <div class="row" id='oculto'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                        </center>
+                    </div> 
+                    <!--------------------- fin inicio loader ------------------------->
+                    
+                </span>
+
+                
+                
 </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
         <div class="box">
             <div class="box-body  table-responsive">
-                <table class="table table-striped" id="mitabla">
+                <table class="table  table-condensed table-striped" id="mitabla">
                     <tr>
                             <th>Nº</th> 
                             <th>Descripción</th>
-                            <th>Código</th>                            
+                            <!--<th>Código</th>-->                            
                             <th>Precio</th>
-                            <th>Saldo</th>
+<!--                            <th>Saldo</th>-->
                             <th> </th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
@@ -304,13 +262,14 @@ function mostrar_ocultar(){
                     </tbody>
                 </table>
             </div>
-                <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
+               
         </div>
     </div>
     
     <div class="col-md-6">
+        <div class="row">
+            
+            <div class="col-md-8">
             <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código">
@@ -320,27 +279,34 @@ function mostrar_ocultar(){
             <!--------------- botones ---------------------->
             <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
             <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a> <b> Quitar Todo</b></button> 
-            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar venta</b></a> 
-            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs"><span class="fa fa-print"></span><b> Imprimir</b></a> 
-            <!--<a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-info btn-xs"><span class="fa fa-address-book"></span><b> copia</b></a>--> 
-<!--            
-            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success">
-            <i class="fa fa-money fa-4x"></i><br><br>
-            Finalizar Venta <br>
-            </a>
-
-            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-sign-out fa-4x"></i><br><br>
-               Salir <br>
-            </a>    -->
+            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
+            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
             
             <!--------------- fin botones ---------------------->
             
             <!--------------------- fin parametro de buscador ---------------------> 
+        
+            </div>
+            <div class="col-md-4" style="background-color: black;">
+                <center>
+                    
+                <font size="4" style="color:white">
+                    
+                
+                <b>Total Final</b>
+                <b>Bs <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 150px; border-color: black; border-width: 0; background-color: black; text-align: center"> </b>
+                </font>
+    
+                </center>
+
+                
+            </div>
+        </div>
+        
         <div class="box">
            
             
-            <div class="box-body  table-responsive">
+            <div class="box-body table-condensed table-responsive">
                 <div id="tablaproductos">
                     
                     <!--------------- RESULTADO TABLA DE PRODUCTOS---------------------------->
@@ -349,6 +315,8 @@ function mostrar_ocultar(){
             </div>
                 
         </div>
+        
+
     </div>
     
 </div>
@@ -433,7 +401,7 @@ function mostrar_ocultar(){
                                          </select>
                                     </div>
                                     
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <h4 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h4>                                        
                                         <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default"  onchange="mostrar_ocultar()">
                                             <?php
@@ -456,7 +424,11 @@ function mostrar_ocultar(){
 <?php 
     $total_descuento = 0;
     
-?>              
+    $subtotal = $total_detalle - $total_descuento; 
+    $efectivo = $subtotal;
+    $cambio = 0.00;
+    $ancho_boton = 10;
+    ?>
 
             <div hidden="true">        
                             <input id="total_detalle" name="total_detalle" value="<?php echo $total_detalle; ?>">
@@ -476,23 +448,24 @@ function mostrar_ocultar(){
             
             
             
-            <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" >
+            <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
                 <tr>
                         <td>Total Bs</td>
-                        <td  align="right"><?php echo number_format($total_detalle,2,'.',','); ?></td>
+                        <td align="right">
+                            <input class="btn btn-foursquarexs" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                        </td>
+                    
                     
                 </tr>                
                 <tr>
                         <td>Descuento Bs</td>
-                        <td align="right"><?php echo number_format($total_descuento,2,'.',','); ?></td>
+                        <td align="right">
+                            <input class="btn btn-foursquarexs" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                        </td>
                     
                 </tr>
-                <?php $subtotal = $total_detalle - $total_descuento; 
-                        $efectivo = $subtotal;
-                        $cambio = 0.00;
-                        $ancho_boton = 8;
-                ?>
+
                         
                 <tr>
                         <td align="right"><b>Sub Total Bs</b></td>
@@ -530,7 +503,7 @@ function mostrar_ocultar(){
                 <tr>                      
                     <td><b>Cambio Bs</b></td>
                         <td align="right">
-                            <input type="number" class="btn btn-foursquarexs" id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
+                            <input class="btn btn-foursquarexs" id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
                 </tr>
                 
@@ -674,7 +647,7 @@ function mostrar_ocultar(){
                         <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                        <th>N</th>
+                        <th>#</th>
                         <th>Cliente</th>
 <!--                        <th>Sub <br>Total</th>-->
                         <th align="center">COD</th>
@@ -719,9 +692,7 @@ function mostrar_ocultar(){
                     </tr>
                     <?php } ?>
                 </table>
-                        <div class="pull-right">
-                            <?php echo $this->pagination->create_links(); ?>                    
-                        </div>                
+             
                     </div>
 
                         <!----------------------FIN TABLA--------------------------------------------------->
@@ -731,6 +702,10 @@ function mostrar_ocultar(){
 </div>
 
 <!---------------------- fin modal pedidos --------------------------------------------------->
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
+<div id="modalespera">
+    
+</div>
 
-
+-->

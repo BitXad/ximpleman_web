@@ -245,6 +245,22 @@ function mostrar(a) {
 						</div>
 					</div>
                                         <div class="col-md-6">
+						<label for="categoriacliezona_id" class="control-label">Zona</label>
+						<div class="form-group">
+							<select name="categoriacliezona_id" class="form-control">
+								<option value="0">- CATEGORIA CLIENTE ZONA -</option>
+								<?php 
+								foreach($all_categoria_clientezona as $categoria_clientezona)
+								{
+									$selected = ($categoria_clientezona['categoriacliezona_id'] == $cliente['categoriacliezona_id']) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$categoria_clientezona['categoriacliezona_id'].'" '.$selected.'>'.$categoria_clientezona['categoriacliezona_descripcion'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+                                        <div class="col-md-6">
 						<label for="usuario_id" class="control-label">Prevendedor</label>
 						<div class="form-group">
 							<select name="usuario_id" class="form-control">

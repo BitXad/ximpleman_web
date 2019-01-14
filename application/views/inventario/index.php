@@ -24,7 +24,9 @@
                     }).show();
                 })
             }(jQuery));
-        });         
+        });   
+        
+
         
 </script>   
 
@@ -50,19 +52,27 @@
 <div class="row">
     <div class="col-md-12">
             <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código">
                   </div>
             <!--------------------- fin parametro de buscador ---------------------> 
             <div class="box">
            
-            
+                       <!--------------------- inicio loader ------------------------->
+                    <div class="row" id='loader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                        </center>
+                    </div> 
+                    <!--------------------- fin inicio loader ------------------------->
+                    
 <div class="box-body  table-responsive">
                 
             
 <table class="table table-striped table-bordered" id="mitabla">
     <tr>
-		<th>Num</th>
+		<th>#</th>
+		<th>Imagen</th>
 		<th>Descripción</th>
 		<th>Código</th>
 		<th>Costo</th>
@@ -70,43 +80,54 @@
 		<th>Ventas</th>
 		<th>Pedidos</th>
 		<th>Existencia</th>
-		<!--<th></th>-->
+		<th>Total</th>
     </tr>
     <tbody class="buscar">
 	<?php $c = $offset; 
-            foreach($inventario as $i){ ?>
-  
+        
+            $total = 0;
+            $total_final = 0;
+
+            
+            foreach($inventario as $i){ 
+                    $total = $i['producto_costo']*$i['producto_costo'];
+                    $total_final += $total;
+                ?>
                 <td><?php echo ++$c; ?></td>
+                <td><img src="<?php echo base_url("resources/images/productos/".$i['producto_foto']); ?>" width="50" height="50" class="img-circle"</td>
                 <td><font size="3"><b><?php echo $i['producto_nombre']; ?></b></font>
                     <br>
-                    <small> <?php echo $i['producto_unidad']; ?> | <?php echo $i['producto_marca']; ?> | <?php echo $i['producto_industria']; ?></small>
-                </td>
-<!--		<td><?php echo $i['estado_id']; ?></td>
-		<td><?php echo $i['categoria_id']; ?></td>
-		<td><?php echo $i['presentacion_id']; ?></td>
-		<td><?php echo $i['moneda_id']; ?></td>-->
-                <td><center><font size="3"><b><?php echo $i['producto_codigo']; ?></b><br></font>
-		<?php echo $i['producto_codigobarra']; ?></center></td>
-		<!--<td><?php echo $i['producto_foto']; ?></td>-->
-		<td><?php echo $i['producto_costo']; ?></td>
-		<!--<td><?php echo $i['producto_precio']; ?></td>-->
-		<!--<td><?php echo $i['producto_comision']; ?></td>-->
-		<!--<td><?php echo $i['producto_tipocambio']; ?></td>-->
-		<td><?php echo $i['compras']; ?></td>
-		<td><?php echo $i['ventas']; ?></td>
-		<td><?php echo $i['pedidos']; ?></td>
+                    <small> <?php echo $i['producto_unidad']." | ".$i['producto_marca']." | ".$i['producto_industria']; ?></small>
+                </td>                
+                <td><center><font size="3"><b><?php echo $i['producto_codigobarra']; ?></b><br></font>
+		<?php echo $i['producto_codigo']; ?></center></td>
+		<td><center><?php echo $i['producto_costo']; ?></center></td>
+
+                <td><center><?php echo $i['compras']; ?></center></td>
+		<td><center><?php echo $i['ventas']; ?></center></td>
+		<td><center><?php echo $i['pedidos']; ?></center></td>
                 <td><center> <font size="3"><b><?php echo $i['existencia']; ?></b></font></center></td>
-<!--		<td>
-            <a href="<?php echo site_url('inventario/edit/'.$i['producto_id']); ?>" class="btn btn-info btn-xs">Edit</a> 
-            <a href="<?php echo site_url('inventario/remove/'.$i['producto_id']); ?>" class="btn btn-danger btn-xs">Delete</a>
-        </td>-->
+                <td><center> <font size="2"><b><?php echo $total; ?></b></font></center></td>
     </tr>
 	<?php } ?>
     </tbody>
+    <tr>
+		<th> </th>
+		<th> </th>
+		<th> </th>
+		<th> </th>
+		<th> </th>
+		<th> </th>
+		<th> </th>
+		<th></th>
+		<th></th>
+		<th><?php echo $total_final; ?></th>
+		<!--<th></th>-->
+    </tr>    
 </table>
-<div class="pull-right">
+<!--<div class="pull-right">
     <?php echo $this->pagination->create_links(); ?>    
-</div>
+</div>-->
 
     </div>
     </div>

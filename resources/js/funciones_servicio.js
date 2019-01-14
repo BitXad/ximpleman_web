@@ -150,7 +150,7 @@ function tablaresultadosproducto()
     
     
     controlador = base_url+'producto/buscarproductos/';
-    parametro = document.getElementById('filtrar').value;        
+    parametro = document.getElementById('filtrar').value;
     
     
 
@@ -166,14 +166,18 @@ function tablaresultadosproducto()
                if (registros != null){
                    
                    
-                    var cont = 0;
+                    /*var cont = 0;
                     var cant_total = 0;
-                    var total_detalle = 0;
+                    var total_detalle = 0; */
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
                    if (n <= limite) x = n; 
                    else x = limite;
+                   //var categ = new Array();
+                   var categ = JSON.parse(document.getElementById('lacategoria').value);
+                   var present = JSON.parse(document.getElementById('lapresentacion').value);
+                   var moned = JSON.parse(document.getElementById('lamoneda').value);
                     
                     for (var i = 0; i < x ; i++){
                         html += "<tr>";
@@ -187,7 +191,7 @@ function tablaresultadosproducto()
                             mimagen = "thumb_"+registros[i]["producto_foto"];
                             //mimagen = nomfoto.split(".").join("_thumb.");
                         }
-                        html += "<img src='"+base_url+"resources/images/productos/"+mimagen+"' />";
+                        html += "<img src='"+base_url+"resources/images/productos/"+mimagen+"'/>";
                         html += "</div>";
                         html += "<div>";
                         html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
@@ -195,15 +199,34 @@ function tablaresultadosproducto()
                         html += "</div>";
                         html += "</div>";
                         html += "</td>";
-                       
-                        html += "<td><b>Cat.: </b>"+registros[i]["categoria_nombre"]+"<br><b>Pres.: </b>"+registros[i]["presentacion_nombre"]+"</td>";
+                        var escategoria="";
+                        if(registros[i]["categoria_id"] == null || registros[i]["categoria_id"] == 0 || registros[i]["categoria_id"]-1 > categ.length){
+                            escategoria = "No definido";
+                        }else{
+                            if (typeof(eval(categ[registros[i]["categoria_id"]-1])) != 'undefined'){
+                                escategoria = categ[registros[i]["categoria_id"]-1]["categoria_nombre"];
+                            }
+                        }
+                        var espresentacion="";
+                        if(registros[i]["presentacion_id"] == null || registros[i]["presentacion_id"] == 0 || registros[i]["presentacion_id"]-1 > present.length){
+                            espresentacion = "No definido";
+                        }else{
+                            espresentacion = present[registros[i]["presentacion_id"]-1]["presentacion_nombre"];
+                        }
+                        var esmoneda="";
+                        if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"]-1 > moned.length){ 
+                            esmoneda = "No definido";
+                        }else{
+                            esmoneda = moned[registros[i]["moneda_id"]-1]["moneda_descripcion"];
+                        }
+                        html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+espresentacion+"</td>";
                         var codbarras = "";
                         if(!(registros[i]["producto_codigobarra"] == null)){
                             codbarras = registros[i]["producto_codigobarra"];
                         }
                         html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
                         html += "<td><b>Compra: </b>"+registros[i]["producto_costo"]+"<br><b>Venta: </b>"+registros[i]["producto_precio"]+"</td>";
-                        html += "<td><b>Moneda: </b>"+registros[i]["moneda_descripcion"]+"<br><b>T. Cambio: </b>"+registros[i]["producto_tipocambio"]+"</td>";
+                        html += "<td><b>Moneda: </b>"+esmoneda+"<br><b>T. Cambio: </b>"+registros[i]["producto_tipocambio"]+"</td>";
                         html += "<td>"+registros[i]["producto_comision"]+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
 		        html += "<td>";
@@ -281,7 +304,10 @@ function tablaresultadoscliente()
                 
                if (registros != null){
                    
-                   
+                   var tipocli = JSON.parse(document.getElementById('eltipo_cliente').value);
+                   var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
+                   var categoriacliezona = JSON.parse(document.getElementById('lacategoria_clientezona').value);
+                   var usuariocli = JSON.parse(document.getElementById('elusuario').value);
                     var cont = 0;
                     var cant_total = 0;
                     var total_detalle = 0;
@@ -302,6 +328,31 @@ function tablaresultadoscliente()
                             mimagen = "thumb_"+registros[i]["cliente_foto"];
                             //mimagen = nomfoto.split(".").join("_thumb.");
                         }
+                        var neg = "";
+                        var dir = "";
+                        var lati = "";
+                        var long = "";
+                        var corr = "";
+                        var aniv = "";
+                        if(registros[i]["cliente_nombrenegocio"] != null){
+                            neg = registros[i]["cliente_nombrenegocio"];
+                        }
+                        if(registros[i]["cliente_direccion"] != null){
+                            dir = registros[i]["cliente_direccion"];
+                        }
+                        if(registros[i]["cliente_latitud"] != null){
+                            lati = registros[i]["cliente_latitud"];
+                        }
+                        if(registros[i]["cliente_longitud"] != null){
+                            long = registros[i]["cliente_longitud"];
+                        }
+                        if(registros[i]["cliente_email"] != null){
+                            corr = registros[i]["cliente_email"];
+                        }
+                        if(registros[i]["cliente_aniversario"] != null){
+                            aniv = registros[i]["cliente_aniversario"];
+                        }
+                        
                         html += "<img src='"+base_url+"/resources/images/clientes/"+mimagen+"' />";
                         html += "</div>";
                         html += "<div>";
@@ -313,21 +364,47 @@ function tablaresultadoscliente()
                         html += "</div>";
                         html += "</td>";
                         html += "<td>";
-                        html += "<div style='white-space: nowrap;'>"+registros[i]["cliente_nombrenegocio"]+"<br></div>";
+                        html += "<div style='white-space: nowrap;'>"+neg+"<br></div>";
                         html += "<div>";
                         html += "<b>Nit: </b>"+registros[i]["cliente_nit"]+"<br>";
-                        html += "<b>Razon: </b>"+registros[i]["cliente_razon"];
+                        html += "<b>Razon: </b>"+registros[i]["cliente_razon"]+"<br>";
+                        var escategoria_clientezona="";
+                        if(registros[i]["categoriacliezona_id"] == null || registros[i]["categoriacliezona_id"] == 0 || registros[i]["categoriacliezona_id"]-1 > categoriacliezona.length){
+                            escategoria_clientezona = "No definido";
+                        }else{
+                            escategoria_clientezona = categoriacliezona[registros[i]["categoriacliezona_id"]-1]["categoriacliezona_descripcion"];
+                        }
+                        html += "<b>Zona: </b>"+escategoria_clientezona;
                         html += "</div>";
                         html += "</td>";
-                        html += "<td>"+registros[i]["cliente_direccion"]+"</td>";
-                        html += "<td><b>Lat.: </b>"+registros[i]["cliente_latitud"]+"<br>";
-                        html += "<b>Lon.: </b>"+registros[i]['cliente_longitud'];
+                        html += "<td>"+dir+"</td>";
+                        html += "<td><b>Lat.: </b>"+lati+"<br>";
+                        html += "<b>Lon.: </b>"+long;
                         html += "</td>";
-                        html += "<td>"+registros[i]["cliente_email"]+"</td>";
-                        html += "<td>"+registros[i]["cliente_aniversario"]+"</td>";
-                        html += "<td>"+registros[i]["tipocliente_descripcion"]+"</td>";
-                        html += "<td>"+registros[i]["categoriaclie_descripcion"]+"</td>";
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
+                        html += "<td>"+corr+"</td>";
+                        html += "<td>"+aniv+"</td>";
+                        var estipo_cliente="";
+                        if(registros[i]["tipocliente_id"] == null || registros[i]["tipocliente_id"] == 0 || registros[i]["tipocliente_id"]-1 > tipocli.length){
+                            estipo_cliente = "No definido";
+                        }else{
+                           
+                            estipo_cliente = tipocli[registros[i]["tipocliente_id"]-1]["tipocliente_descripcion"];
+                        }
+                        var escategoria_cliente="";
+                        if(registros[i]["categoriaclie_id"] == null || registros[i]["categoriaclie_id"] == 0 || registros[i]["categoriaclie_id"]-1 > categoriacli.length){
+                            escategoria_cliente = "No definido";
+                        }else{
+                            escategoria_cliente = categoriacli[registros[i]["categoriaclie_id"]-1]["categoriaclie_descripcion"];
+                        }
+                        var esusuario="";
+                        if(registros[i]["usuario_id"] == null || registros[i]["usuario_id"] == 0 || registros[i]["usuario_id"]-1 > usuariocli.length){ 
+                            esusuario = "No definido";
+                        }else{
+                            esusuario = usuariocli[registros[i]["usuario_id"]-1]["usuario_nombre"];
+                        }
+                        html += "<td>"+estipo_cliente+"</td>";
+                        html += "<td>"+escategoria_cliente+"</td>";
+                        html += "<td>"+esusuario+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+";'>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td>";
                         html += "<a href='"+base_url+"cliente/edit/"+registros[i]["cliente_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
@@ -781,8 +858,6 @@ function mostrar_ocultar_buscador(parametro){
 
 function buscar_por_fecha()
 {
-    /*var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"compra";*/
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var estado_id   = document.getElementById('buscarestado_id').value;
@@ -880,13 +955,15 @@ function fechadeservicio(filtro){
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"servicio/anularserv/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        //html += "<a href='"+base_url+"servicio/anularserv/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a onclick='anulartodoelservicio("+registros[i]['servicio_id']+", "+i+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </a>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar Anulacion ------------------->";
+                        
                         html += "<!------------------------ INICIO modal para confirmar Eliminación ------------------->";
                         html += "<div class='modal fade' id='modaleliminar"+i+"' tabindex='-1' role='dialog' aria-labelledby='modaleliminarLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -904,7 +981,8 @@ function fechadeservicio(filtro){
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        //html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a onclick='eliminartodoelservicio("+registros[i]['servicio_id']+", "+i+")' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -1045,11 +1123,43 @@ function fechadedetservicio(filtro, tiempo){
                var registros =  JSON.parse(resul);
            
                if (registros != null){
-                   
-                    
-                    var cont = 0;
+                    var fecha_desde = document.getElementById('fechadet_desde').value;
+                    var fecha_hasta = document.getElementById('fechadet_hasta').value;
+                    var fecha1 = fecha_desde;
+                    var fecha2 = fecha_hasta;
+                    if(!(fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null  || fecha_hasta =="")){
+                        fecha1 = "Desde: "+convertDateFormat(fecha_desde);
+                        fecha2 = " - Hasta: "+convertDateFormat(fecha_hasta);
+                    }else if(!(fecha_desde == null || fecha_desde =="") && (fecha_desde == null || fecha_hasta =="")){
+                        fecha1 = "De: "+convertDateFormat(fecha_desde);
+                        fecha2 = "";
+                    }else if((fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null || fecha_hasta =="")){
+                        fecha1 = "";
+                        fecha2 = "De: "+convertDateFormat(fecha_hasta);
+                    }else{
+                        fecha1 = "";
+                        fecha2 = "";
+                    }
+
+                    var resbus = "";
+                    var estado = $('#buscarestadodet_id option:selected').text();
+                    var catserv = $('#catserv_id option:selected').text();
+                    var subcat = document.getElementById('buscarsubcat').value;
+                    var resubcat = "";
+
+                    if(subcat == null || subcat == ""){
+                        resubcat= ""
+                    }else resubcat = "; Sub Categoria: "+subcat;
+
+                    resbus = "Busqueda( Estado: "+estado+";  Categoria: "+catserv+resubcat+")"
+                    $('#titulo2impresion').html(resbus);
+
+
+                    /*var cont = 0;
                     var total = Number(0);
-                    var total_detalle = 0;
+                    var total_detalle = 0;*/
+
+
                     $('#tituloimpresion').html(tiempo);
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#resdetserv").val("- "+n+" -");
@@ -1079,12 +1189,15 @@ function fechadedetservicio(filtro, tiempo){
                     
                    if (n <= limite) x = n; 
                    else x = limite;
-                    
+                    var totaltotal   = 0;
+                    var totalacuenta = 0;
+                    var totalsaldo   = 0;
+
                     for (var i = 0; i < x ; i++){
-                        
-                        var suma = Number(registros[i]["compra_totalfinal"]);
-                        var total = Number(suma+total);
-                        var bandera = 1;
+
+                        totaltotal   = parseInt(totaltotal)  + parseInt(registros[i]['detalleserv_total']);
+                        totalacuenta = parseInt(totalacuenta)   + parseInt(registros[i]['detalleserv_acuenta']);
+                        totalsaldo   = parseInt(totalsaldo) + parseInt(registros[i]['detalleserv_saldo']);
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -1157,8 +1270,22 @@ function fechadedetservicio(filtro, tiempo){
                         html += "</tr>";
                        
                    }
+
+                   htmls = "";
+                   htmls += "<tr>";
+                   htmls += "<td colspan='8'></td>";
+                   htmls += "<td colspan='4' class='esbold'>TOTAL (COSTO TOTAL/A CUENTA/SALDO)Bs.</td>";
+                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totaltotal).toFixed(2))+"</td>";
+                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalacuenta).toFixed(2))+"</td>";
+                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalsaldo).toFixed(2))+"</td>";
+                   htmls += "</tr>";
+
+
                         
-                   $("#resbusquedadetalleserv").html(htmlc+html+"</table>");
+                    $('#fecha1impresion').html(fecha1);
+                    $('#fecha2impresion').html(fecha2);
+                    
+                    $("#resbusquedadetalleserv").html(htmlc+html+htmls+"</table>");
                    
             }
                 
@@ -1171,4 +1298,172 @@ function fechadedetservicio(filtro, tiempo){
         
     });   
 
+}
+
+function numberFormat(numero){
+        // Variable que contendra el resultado final
+        var resultado = "";
+ 
+        // Si el numero empieza por el valor "-" (numero negativo)
+        if(numero[0]=="-")
+        {
+            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+            // el signo negativo
+            nuevoNumero=numero.replace(/\,/g,'').substring(1);
+        }else{
+            // Cogemos el numero eliminando los posibles puntos que tenga
+            nuevoNumero=numero.replace(/\,/g,'');
+        }
+ 
+        // Si tiene decimales, se los quitamos al numero
+        if(numero.indexOf(".")>=0)
+            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+ 
+        // Ponemos un punto cada 3 caracteres
+        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+ 
+        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+        // los separadores de miles
+        if(numero.indexOf(".")>=0)
+            resultado+=numero.substring(numero.indexOf("."));
+ 
+        if(numero[0]=="-")
+        {
+            // Devolvemos el valor añadiendo al inicio el signo negativo
+            return "-"+resultado;
+        }else{
+            return resultado;
+        }
+    }
+    
+    
+/* ********************************FUNCIONES PARA SERVICIO*********************************** */
+/* ****************CAMBIAR TIPO DE SERVICIO*************** */
+function cambiartiposervicio(servicio_id){
+    var nombremodal = "modaltiposervicio";
+    var base_url = document.getElementById('base_url').value;
+    var tiposerv_id = document.getElementById('tiposerv_id').value;
+    var direccion = document.getElementById('direccion').value;
+    
+    var controlador = base_url+'servicio/asignartiposervicio/'+servicio_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{tiposerv_id:tiposerv_id, direccion:direccion},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   mires = "";
+                   var tiposerv_id = registros["tiposerv_id"];
+                   var servicio_direccion = registros["servicio_direccion"];
+                   var tiposerv_descripcion = registros["tiposerv_descripcion"];
+               }
+               
+                if(tiposerv_id == null){
+                    mires += "NO DEFINIDO";
+                }else{
+                    mires += tiposerv_descripcion;
+                }
+                if(tiposerv_id == 2){
+                    mires += "<br><b>Dirección: </b>"+servicio_direccion;
+                }
+               $('#mitiposervicio').html(mires);
+               $('#'+nombremodal).modal('hide');
+        }
+        
+    });
+}
+/* ****************REGISTRAR NUEVO CLIENTE PARA UN SERVICIO*************** */
+function registrarnuevocliente(servicio_id){
+    var nombremodal = "myModal";
+    var base_url = document.getElementById('base_url').value;
+    var cliente_nombre = document.getElementById('cliente_nombre').value;
+    var cliente_codigo = document.getElementById('cliente_codigo').value;
+    var cliente_ci = document.getElementById('cliente_ci').value;
+    var cliente_nit = document.getElementById('cliente_nit').value;
+    var cliente_telefono = document.getElementById('cliente_telefono').value;
+
+    var controlador = base_url+'cliente/add_new/'+servicio_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo, cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_telefono:cliente_telefono},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   mires = "";
+                   mirestel = "";
+                   mirescod = "";
+                   var cliente_id = registros["cliente_id"];
+                   var cliente_nombre = registros["cliente_nombre"];
+                   var cliente_telefono = registros["cliente_telefono"];
+                   var cliente_codigo = registros["cliente_codigo"];
+               }
+               
+                if(cliente_id == null || cliente_id == 0){
+                    mires += "NO DEFINIDO";
+                }else{
+                    mires += cliente_nombre;
+                    mirestel += cliente_telefono;
+                }
+                if(tiposerv_id == 2){
+                    mires += "<br><b>Dirección: </b>"+servicio_direccion;
+                }
+                if(cliente_codigo == null){
+                    mirescod += "NO DEFINIDO";
+                }else{
+                    mirescod += cliente_codigo;
+                }
+               $('#cliente-nombre').html(mires);
+               $('#cliente-telefono').html(mirestel);
+               $('#cliente-codigo').html(mirescod);
+               $('#'+nombremodal).modal('hide');
+        }
+        
+    });
+}
+
+/* ****************Anular todos los detalles de servicio*************** */
+function anulartodoelservicio(servicio_id, num){
+    var nombremodal = "modalanulado"+num;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'servicio/anularserv/'+servicio_id;
+    $('#'+nombremodal).modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    if("ok"){
+                        buscar_servicioporfechas();
+                    }
+               }
+        }
+        
+    });
+}
+
+/* ****************Anular todos los detalles de servicio*************** */
+function eliminartodoelservicio(servicio_id, num){
+    var nombremodal = "modaleliminar"+num;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'servicio/removeall/'+servicio_id;
+    $('#'+nombremodal).modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    if("ok"){
+                        buscar_servicioporfechas();
+                    }
+               }
+        }
+        
+    });
 }

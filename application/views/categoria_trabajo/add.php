@@ -8,7 +8,7 @@
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="cattrab_descripcion" class="control-label">Descripción</label>
+						<label for="cattrab_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
 							<input type="text" name="cattrab_descripcion" value="<?php echo $this->input->post('cattrab_descripcion'); ?>" class="form-control" id="cattrab_descripcion" required />
 						</div>

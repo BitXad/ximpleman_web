@@ -14,7 +14,7 @@
                 <div class="icon">
                   <i class="ion ion-calendar"></i>
                 </div>
-                <a href="http://www.ximpleman.com/ximpleman_web/compra/reportes" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="../compra/reportes" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
         <div class="col-lg-3 col-xs-6">
@@ -27,7 +27,7 @@
                 <div class="icon">
                   <i class="fa fa-truck"></i>
                 </div>
-                <a href="http://www.ximpleman.com/ximpleman_web/compra/repoProveedor" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="../compra/repoProveedor" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
         <div class="col-lg-3 col-xs-6">
@@ -35,12 +35,12 @@
               <div class="small-box bg-yellow">
                 <div class="inner">
                   <h3>PRODUCTO</h3>
-                  <p>En Proceso...</p>
+                  <p>-----------</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-cube"></i>
                 </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="http:../compra/repoProducto" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
 </div>

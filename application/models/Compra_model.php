@@ -143,7 +143,7 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 and c.compra_fecha = ".$hoje."  
-            ORDER BY `compra_id` DESC 
+            ORDER BY `compra_hora` DESC 
         ")->result_array();
 
         return $compra;
@@ -161,7 +161,7 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 ".$condicion." 
-            ORDER BY compra_id DESC
+            ORDER BY c.compra_fecha DESC, c.compra_hora DESC
         ")->result_array();
 
         return $compra;
@@ -173,7 +173,7 @@ class Compra_model extends CI_Model
             SELECT
                 c.*, e.estado_descripcion, p.proveedor_nombre, dc.*, i.*, u.usuario_nombre, t.tipotrans_nombre
             FROM
-                compra c, estado e, proveedor p, tipo_transaccion t, detalle_compra dc, producto i, usuario u
+                compra c, estado e, proveedor p, tipo_transaccion t, detalle_compra_aux dc, producto i, usuario u
 
             WHERE
                 c.estado_id = e.estado_id
@@ -239,10 +239,19 @@ class Compra_model extends CI_Model
         return $compra_id;        
         
     }
+    function get_detalle_compra_aux($compra_id)
+    {
+        $sql = "SELECT d.*, p.* from detalle_compra_aux d, producto p
+               where d.producto_id=p.producto_id and d.compra_id = ".$compra_id."
+               order by d.detallecomp_id desc";
+        $result = $this->db->query($sql)->result_array();
+        return $result;        
+    }
     function get_detalle_compra($compra_id)
     {
         $sql = "SELECT d.*, p.* from detalle_compra d, producto p
-               where d.producto_id=p.producto_id and d.compra_id = ".$compra_id;
+               where d.producto_id=p.producto_id and d.compra_id = ".$compra_id."
+               order by d.detallecomp_id desc";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }
@@ -329,11 +338,42 @@ class Compra_model extends CI_Model
 
     function get_compras_dia()
     {
-        $sql = "select if(count(*)>0, count(*), 0) as cantidad_compras, if(sum(compra_total)>0, sum(compra_total), 0) as total_compras
-                from compra where compra_fecha = date(now())";
+        $sql = "select if(count(*)>0, count(*), 0) as cantidad_compras, if(sum(compra_totalfinal)>0, sum(compra_totalfinal), 0) as total_compras
+                from compra where compra_fecha = date(now()) and tipotrans_id=1";
         $compras = $this->db->query($sql)->result_array();
 
         return $compras;
-    }    
+    }
+     function get_compras_dia_credito()
+    {
+        $sql = "select if(count(*)>0, count(*), 0) as cantidad_compras, if(sum(compra_totalfinal)>0, sum(compra_totalfinal), 0) as total_compras
+                from compra where compra_fecha = date(now()) and tipotrans_id=2";
+        $compras = $this->db->query($sql)->result_array();
+
+        return $compras;
+    } 
+
+    function ingreso($cant, $producto_costo, $sucursal, $producto){
+
+        $proveedor_id = $this->db->query("
+            SELECT
+                p.proveedor_id
+            FROM
+                 proveedor p
+            WHERE              
+                 p.proveedor_codigo = ".$sucursal."
+                
+        ")->result_array();
+
+        return $proveedor_id;
+        $fecha = "now()";
+        $hora = "TIME_FORMAT(NOW(), '%H:%i:%s')";
+        $compra = "INSERT INTO compra (proveedor_id, forma_id, tipotrans_id, compra_fecha, compra_hora) VALUES ('$proveedor_id', '1', '4', '$fecha', '$hora')";
+        $this->db->query($compra);
+        $compra_id = $this->db->insert_id();
+        $compra_total = $cant * $producto_costo;
+        $detallecomp = "INSERT INTO detalle_compra_aux (compra_id, producto_id, detallecomp_cantidad, detallecomp_costo, detallecomp_total) VALUES ('$compra_id', '$producto', '$cant', '$producto_costo' '$compra_total')";
+                        
+    }       
 }
 

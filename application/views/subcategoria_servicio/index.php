@@ -1,5 +1,9 @@
-<!----------------------------- script buscador --------------------------------------->
+<!-- --------------------------- script buscador ------------------------------------- -->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_subcategoria.js'); ?>" type="text/javascript"></script>
+
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -81,14 +85,14 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>N°</th>
 						<th>Descripción</th>
 						<th>Categoria</th>
 						<th>Estado</th>
 						<th></th>
                     </tr>
-                    <tbody class="buscar">
-                    <?php $i = 1; $cont = 0;
+                    <tbody class="buscar" id="tablasubcatresultados">
+                    <?php /* $i = 1; $cont = 0;
                           foreach($subcategoria_servicio as $c){
                               
                               if($c['subcatserv_id'] <>0) {
@@ -147,13 +151,13 @@
                                       </div>
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
-                        <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#modalverinsumo<?php echo $c['subcatserv_id']; ?>" onclick="buscarinsumos(<?php echo $c['subcatserv_id']; ?>);" ><span class="fa fa-eye"></span></a>
-                            <a href="<?php echo site_url('categoria_insumo/insumo/'.$c['subcatserv_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-file-text-o"></span></a> 
-                            <a href="<?php echo site_url('subcategoria_servicio/edit/'.$c['subcatserv_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                        <a class="btn btn-success btn-xs" data-toggle="modal" data-target="#modalverinsumo<?php echo $c['subcatserv_id']; ?>" onclick="buscarinsumos(<?php echo $c['subcatserv_id']; ?>);" title="Ver insumos asignados de: <?php echo $c['subcatserv_descripcion']; ?>" ><span class="fa fa-eye"></span></a>
+                        <a href="<?php echo site_url('categoria_insumo/insumo/'.$c['subcatserv_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-file-text-o" title="Asignar, quitar insumos"></span></a> 
+                        <a href="<?php echo site_url('subcategoria_servicio/edit/'.$c['subcatserv_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil" title="Editar"></span></a> 
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
-                       <?php $i++; } } ?>
+                       <?php $i++; } }*/ ?>
                 </table>
                                 
             </div>

@@ -155,7 +155,7 @@ class Pedido_model extends CI_Model
      */
     function crear_pedido($usuario_id)
     {
-        $usuario_id = 1;
+        $usuario_id = $usuario_id;
         $estado_id = 10; // pedido Abierto
         $cliente_id = 0;
         $tipotrans_id = 1;

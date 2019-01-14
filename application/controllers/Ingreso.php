@@ -10,9 +10,10 @@ class Ingreso extends CI_Controller{
         parent::__construct();
         $this->load->model('Ingreso_model');
          $this->load->model('Categoria_ingreso_model');
-     
+     $this->load->model('Empresa_model');
         $this->load->model('Usuario_model');
-         $this->load->helper('numeros');    
+         $this->load->helper('numeros');
+         $this->load->model('Parametro_model'); 
         //*************** Control de sesiones *******************//           
     } 
 
@@ -43,6 +44,31 @@ class Ingreso extends CI_Controller{
         }
     }
 
+     function buscarfecha()
+    {
+         
+     
+ 
+        $usuario_id = 1;
+
+        if ($this->input->is_ajax_request()) {
+            
+            $filtro = $this->input->post('filtro');
+            
+           if ($filtro == null){
+            $result = $this->Ingreso_model->get_all_ingresos($params);
+            }
+            else{
+            $result = $this->Ingreso_model->fechaingreso($filtro);            
+            }
+           echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }          
+    }
     /*
      * Adding a new ingreso
      */
@@ -160,14 +186,46 @@ class Ingreso extends CI_Controller{
     
 
 public function pdf($ingreso_id){
+    if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+               $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
 
       $data['ingresos'] = $this->Ingreso_model->get_ingresos($ingreso_id);
-      
+       $data['empresa'] = $this->Empresa_model->get_empresa(1); 
              $data['_view'] = 'ingreso/recibo';
             $this->load->view('layouts/main',$data);
        
-    }  
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+public function boucher($ingreso_id){
+    if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+               $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
 
+      $data['ingreso'] = $this->Ingreso_model->get_ingresos($ingreso_id);
+       $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+             $data['_view'] = 'ingreso/reciboboucher';
+            $this->load->view('layouts/main',$data);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
     /*
      * Deleting ingreso
      */

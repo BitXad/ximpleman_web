@@ -2,19 +2,19 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Categoria Ingreso Add</h3>
+              	<h3 class="box-title">Añadir Categoria de Ingreso</h3>
             </div>
             <?php echo form_open('categoria_ingreso/add'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="categoria_cating" class="control-label">Categoria Cating</label>
+						<label for="categoria_cating" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
 							<input type="text" name="categoria_cating" value="<?php echo $this->input->post('categoria_cating'); ?>" class="form-control" id="categoria_cating" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="descrip_cating" class="control-label">Descrip Cating</label>
+						<label for="descrip_cating" class="control-label">Descripción</label>
 						<div class="form-group">
 							<input type="text" name="descrip_cating" value="<?php echo $this->input->post('descrip_cating'); ?>" class="form-control" id="descrip_cating" />
 						</div>
@@ -23,8 +23,10 @@
 			</div>
           	<div class="box-footer">
             	<button type="submit" class="btn btn-success">
-            		<i class="fa fa-check"></i> Save
+            		<i class="fa fa-check"></i>Guardar
             	</button>
+                 <a href="<?php echo site_url('categoria_ingreso'); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
           	</div>
             <?php echo form_close(); ?>
       	</div>

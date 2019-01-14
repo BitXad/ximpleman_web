@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_insumos.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -18,15 +18,48 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="subcatserv_id" id="subcatserv_id" value="<?php echo $subcatserv_id; ?>" />
 <!-------------------------------------------------------->
 <div class="box-header">
     <h3 class="box-title">Insumos para <?php echo '"'.$nombre.'"';  ?></h3>
-    <div class="box-tools">
+    <!--<div class="box-tools">
         <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalnewinsumo" >+ Asignar Insumo</a>
-    </div>
+    </div> -->
 </div>
-<div class="row">    
+<div class="row">
     <div class="col-md-12">
+        <div class="col-md-6">
+        <!--------------------- parametro de buscador --------------------->
+        <div class="input-group"> <span class="input-group-addon">Buscar</span>
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, marca, industria" onkeypress="validar(event,4,<?php echo $subcatserv_id; ?>)">
+          </div>
+        <div class="container" id="categoria">
+            <span class="badge btn-danger">Insumos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+        </div>
+        <div class="box">
+            <div class="box-body  table-responsive">
+                <table class="table table-striped" id="mitabla">
+                    <tr>
+                            <th>Nº</th> 
+                            <th>Descripción</th>
+                            <th>Código</th>
+                            <th></th>
+                    </tr>
+                    <tbody class="buscar" id="tablaresultados">
+                    
+                        <!------ aqui se vacia los resultados de la busqueda mediante JS --->
+                    
+                    </tbody>
+                </table>
+            </div>
+                <div class="pull-right">
+                    <?php echo $this->pagination->create_links(); ?>                    
+                </div>                
+        </div>
+        <!--------------------- fin parametro de buscador --------------------->
+        
+    </div>
+    <div class="col-md-6">
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group"> <span class="input-group-addon">Buscar</span>
             <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese descripción, código">
@@ -43,8 +76,8 @@
 						<th>Estado</th>
 						<th></th>
                     </tr>
-                    <tbody class="buscar2">
-                    <?php $cont = 0;
+                    <tbody class="buscar2" id="tablainsumosresultados">
+                    <?php /* $cont = 0;
                           $categoria = "";
                           foreach($categoria_insumo as $c){
                               $cont = $cont+1;
@@ -141,7 +174,8 @@
             <!-------------------------------------------------- FIN modal para ELIMINAR INSUMO --------------------------------------->
             
                     </tr>
-                    <?php } ?>
+                    <?php } */ ?>
+                    </tbody>
                 </table>
                                 
             </div>              
@@ -151,6 +185,7 @@
         </div>
         <a href="<?php echo site_url('subcategoria_servicio'); ?>" class="btn btn-danger">
                 <i class="fa fa-arrow-left"></i> Atras</a>
+        </div>
     </div>
 </div>
 
@@ -168,81 +203,5 @@
             }(jQuery));
         });
 </script>
-<!--------------------------------- INICIO MODAL BUSCAR PRODUCTOS ------------------------------------>
-<div class="modal fade" id="modalnewinsumo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-                            
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
-                     <!--buscador-->           
-      <div class="input-group">
-                      <span class="input-group-addon"> 
-                        Buscar 
-                      </span>           
-                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, marca, industria" onkeypress="validar(event,4,<?php echo $subcatserv_id; ?>)">
-                  </div>
-                     <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria">
-    
-    <!--
-    <span class="badge btn-danger">
-    Categoria:     
-    <select class="bange btn-danger" style="border-width: 0;" onchange="tablaresultados(2)" id="categoria_prod">
-                <option value="0" >Todas</option>
-        <?php 
-           /* foreach($categoria_producto as $categ){ ?>
-                <option value="<?php echo $categ['categoria_id']; ?>"><?php echo $categ['categoria_nombre']; ?></option>
-        <?php
-            } */
-        ?>
-    </select>
-    </span> -->
-                <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Insumos encontrados</button>-->
 
-                <span class="badge btn-danger">Insumos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
-
-</div>
-<!-------------------- FIN CATEGORIAS--------------------------------->
-    
-                     
-                     
-			</div>
-			<div class="modal-body">
-                        
-                            
-                            
-                            <div class="box">
-            <div class="box-body  table-responsive">
-                <table class="table table-striped" id="mitabla">
-                    <tr>
-                            <th>Nº</th> 
-                            <th>Descripción</th>
-                            <th>Código</th>
-                            <th></th>
-                    </tr>
-                    <tbody class="buscar" id="tablaresultados">
-                    
-                        <!------ aqui se vacia los resultados de la busqueda mediante JS --->
-                    
-                    </tbody>
-                </table>
-            </div>
-                <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
-        </div>
-                            
-                            
-                            
-                            
-			</div>
-		</div>
-	</div>
-</div>
-<!--------------------------------- FIN MODAL BUSCAR PRODUCTOS ------------------------------------>
 

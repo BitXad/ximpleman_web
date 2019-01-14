@@ -1,0 +1,115 @@
+
+<script src="<?php echo base_url('resources/js/comisiones.js'); ?>" type="text/javascript"></script>
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet" type="text/css">
+ 
+<div class="box-header"  align="center">
+                <h4><b><u>COMISIONES</u></b></h4>
+                
+</div>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<div class="row">
+    <div class="col-md-12">
+
+<div class="panel panel-default col-md-12" >
+    
+
+   <div class="col-md-8"  >
+            
+            <br class="no-print">        
+        <div class="row">
+            Desde: <input type="date" class="btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
+       
+            Hasta: <input type="date" class="btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
+        </div> <br>
+        
+          
+       </div> 
+       <div class="col-md-8" >
+                        
+
+                <div class="row">             
+                            Vendedor: <select  name="usuario_id" id="usuario_id" style="font-size: 11px; border: none;" class="btn btn-primary btn-sm " >
+                                
+                                <?php 
+                                foreach($all_usuario as $usuario)
+                                {
+                                    $selected = ($usuario['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+                                    echo '<option value="'.$usuario['usuario_id'].'" '.$selected.'>'.$usuario['usuario_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                      </div>
+  
+    </div>
+    <div class="col-md-4">
+      
+     <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_ven()" >
+                <h5>
+                <span class="fa fa-search"></span>   Realizar  Busqueda  
+                </h5>
+          </button>
+       <br class="no-print">   
+</div>
+
+</div>
+</div>
+<div class="container no-print" id="categoria">
+    
+ 
+                <!--------------------- indicador de resultados --------------------->
+    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
+
+                <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input  id="pillados" type="text" value="0" readonly="true"> </span></span>
+
+</div>
+<div class="box">
+            
+            <div class="box-body table-responsive" >
+                <table class="table table-striped table-condensed" id="mitabla">
+                    <tr>
+                        <th>N</th>
+                        <th>PRODUCTO</th>
+                        <th>UNIDAD</th>
+                        <th>PRECIO</th>
+                        <th>CANTIDAD</th>
+                        <th>TOTAL</th>
+                        <th>%<br>PORC.</th>
+                        <th>TOTAL<br>COMISION</th>
+                        
+                    </tr>
+                    <tbody class="buscar" id="ventacombi">
+
+</table>
+</div>
+        
+</div>
+<br><br>
+    
+       <center>
+    <div class="col-md-12" style="margin-top: 50px; ">
+        <table>
+            <tr>
+                <td> <center>
+                
+                    <?php echo "-----------------------------------------------------"; ?><br>
+                    <?php echo "RECIBI CONFORME"; ?><br>
+                    </center>
+                </td>
+                <td width="100">
+                    <?php echo "     "; ?><br>
+                    <?php echo "     "; ?><br>
+                </td>
+                <td>
+                    <center>
+                    <?php echo "-----------------------------------------------------"; ?><br>
+                    <?php echo "ENTREGUE CONFORME"; ?><br>                    
+                    </center>
+                </td>
+            </tr>
+        </table>
+        
+    </div>
+    
+</center>
+       

@@ -134,20 +134,28 @@ class Subcategoria_servicio extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
-        $subcategoria_servicio = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
+               $subcategoria_servicio = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
 
-        // check if the subcategoria_servicio exists before trying to delete it
-        if(isset($subcategoria_servicio['subcatserv_id']))
-        {
-            $this->Subcategoria_servicio_model->delete_subcategoria_servicio($subcatserv_id);
-            redirect('subcategoria_servicio/index');
-        }
-        else
-            show_error('The subcategoria_servicio you are trying to delete does not exist.');
-        }
-            else{
-                redirect('alerta');
+            // check if the subcategoria_servicio exists before trying to delete it
+            if(isset($subcategoria_servicio['subcatserv_id']))
+            {
+                if ($this->input->is_ajax_request()){
+                    
+                    $this->Subcategoria_servicio_model->delete_subcategoria_servicio($subcatserv_id);
+                    echo json_encode("ok");
+                }
+                else
+                {                 
+                    show_404();
+                }
+                
             }
+            else
+                show_error('The subcategoria_servicio you are trying to delete does not exist.');
+            }
+                else{
+                    redirect('alerta');
+                }
         } else {
             redirect('', 'refresh');
         }
@@ -169,6 +177,27 @@ class Subcategoria_servicio extends CI_Controller{
             $res = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
             
            // $res = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria($catserv_id);
+            echo json_encode($res);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+	
+	/*
+     * funcion que devuelve las subcategorias
+     */
+    function getsubcategoriaserv()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+			
+			$res = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio();
+ 
             echo json_encode($res);
             }
             else{

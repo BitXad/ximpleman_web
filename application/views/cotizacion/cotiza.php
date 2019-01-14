@@ -70,11 +70,29 @@ input[type=number] { -moz-appearance:textfield; }
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
-<div class="box-header" style="padding-bottom: 0px;">
-     <center>
-          <h4><b><u>COTIZACION</b></u><br>
-          <b>No.: <?php echo ($this->input->post('cotizacion_id') ? $this->input->post('cotizacion_id') : $cotizacion['cotizacion_id']); ?></b></h4>
-         </div>
+ <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
+<div class="cuerpo">
+                    <div class="columna_derecha">
+                        <center> 
+                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                    </center>
+                    </div>
+                    <div class="columna_izquierda">
+                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
+                        <?php echo $empresa[0]['empresa_zona']; ?><br>
+                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                        <?php echo $empresa[0]['empresa_telefono']; ?>
+                    </div> </center>
+                    <div class="columna_central">
+                        <center>      <h3 class="box-title"><u>COTIZACION</u></h3>
+                          Numero: <b><?php echo $cotizacion['cotizacion_id'];?></b>  <br>
+                         
+                </center>
+                    </div>
+
+          
+
+            </div>       
 <div class="row" style="padding: 0px;">
    
            <div class="box" style="padding-left: 5%; padding-bottom: 0px;">
@@ -92,7 +110,7 @@ input[type=number] { -moz-appearance:textfield; }
 <div class="box" style="padding: 0px;">
             
             <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
+                <table class="table table-striped " id="mitabla">
                     <tr>
                             <th>Item</th>
                             <th>Producto<br>Descripcion</th>

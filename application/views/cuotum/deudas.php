@@ -174,11 +174,37 @@ $(document).ready(function(){
                         <td><?php echo $c['estado_descripcion']; ?></td>
                         <td> <?php if ($c['estado_id']==8) { ?>
                       
-                            <!--<a href="<?php echo site_url('cuotum/edit/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('cuotum/remove/'.$c['cuota_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                            <a href="<?php echo site_url('cuotum/edit/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                             <a href="#" data-toggle="modal" data-target="#pagar<?php echo $i; ?>" class="btn btn-success btn-xs"><span class="fa fa-dollar"></span></a>
+
+                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <h3><b> <span class="fa fa-trash"></span></b>
+                                               ¿Desea eliminar la cuota <b> <?php echo $c['cuota_numcuota']; ?></b>?
+                                           </h3>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          <div class="modal-footer aligncenter">
+                                                      <a href="<?php echo site_url('cuotum/remove/'.$c['cuota_id'].'/'.$c['credito_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
+                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                        <!------------------------ FIN modal para confirmar eliminación ------------------->
+
                           <?php }else { ?>
-                             <a href="<?php echo site_url('cuotum/recibodeudas/'.$c['cuota_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
+                             <a href="<?php echo site_url("cuotum/pendiente/".$c['cuota_id']."/".$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
+                             <a href="<?php echo site_url('cuotum/recibodeudas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
                         </td>  
                        <?php } ?>
                        
@@ -268,7 +294,8 @@ $(document).ready(function(){
                     <td></td>    
                     <td></td>    
                     <td></td> 
-                    <th align="right"><b><?php echo number_format($total,'2','.',','); ?></b></th>
+                    <td></td> 
+                    <!-------<th align="right"><b><?php echo number_format($total,'2','.',','); ?></b></th>-->
                     <td></td>    
                     <th align="right"><b><?php echo number_format($cancelados,'2','.',','); ?></b></th>   
                     <td></td>    

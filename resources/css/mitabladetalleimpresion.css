@@ -74,6 +74,9 @@
     border-collapse: collapse;
     width: 100%;
 }
+
+
+
 /*
 #leyenda{
     font-family: "Arial",arial Narrow;
@@ -111,4 +114,22 @@
 }
 .esbold{
     font-weight: bold;
+}
+
+#tablasinespacio{
+    font-family: "Arial", Arial Narrow;
+    border-collapse: collapse;
+    background-color: #f2f2f2;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#tablasinespacio td{
+    font-family: "Arial", Arial Narrow;
+    border-collapse: collapse;
+    background-color: #f2f2f2;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }

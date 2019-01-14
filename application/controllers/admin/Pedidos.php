@@ -17,8 +17,8 @@ class Pedidos extends CI_Controller
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
 
-            //if($session_data['tipousuario_id']==1) {
-            if (in_array("REALIZAR VENTAS", $session_data['permisos'])) {
+            if($session_data['tipousuario_id']==1) {
+            //if (in_array("REALIZAR VENTAS", $session_data['permisos'])) {
 
                 $data['page_title'] = 'Admin >> Plan de Pedidos';
                 $data['pedidos'] = $this->pedidos_model->get_pedidos();

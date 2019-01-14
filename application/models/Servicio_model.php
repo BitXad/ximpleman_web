@@ -123,7 +123,50 @@ class Servicio_model extends CI_Model
 
             GROUP BY
                 s.servicio_id
-              ORDER By s.servicio_id
+              ORDER By s.servicio_id desc
+        ")->result_array();
+
+        return $servicio;
+    }
+    
+    /*
+     * Get servicio by servicio_id
+     */
+    function get_servicio_tiposervicio($servicio_id)
+    {
+        $servicio = $this->db->query("
+            SELECT
+                s.tiposerv_id, s.servicio_direccion, ts.tiposerv_descripcion
+            FROM
+                servicio s, tipo_servicio ts
+
+            WHERE
+                 s.tiposerv_id = ts.tiposerv_id
+                and s.servicio_id = ?
+        ",array($servicio_id))->row_array();
+
+        return $servicio;
+    }
+    
+    /*
+     * Get all servicio de hoy!!!
+     */
+    function get_all_servicio_now()
+    {
+        $servicio = $this->db->query("
+            SELECT
+                *
+            FROM
+                servicio s, estado e, tipo_servicio ts, cliente c, usuario i
+
+            WHERE
+                s.estado_id = e.estado_id
+                and s.tiposerv_id = ts.tiposerv_id
+                and s.cliente_id = c.cliente_id
+                and s.usuario_id = i.usuario_id
+                and date(servicio_fecharecepcion) = date(now())
+
+            ORDER BY `servicio_id` DESC LIMIT 50
         ")->result_array();
 
         return $servicio;

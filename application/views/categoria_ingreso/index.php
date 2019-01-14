@@ -1,31 +1,79 @@
-<div class="row">
-    <div class="col-md-12">
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Categoria Ingreso Listing</h3>
+<script type="text/javascript">
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar tr').hide();
+                    $('.buscar tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });
+</script>   
+<!----------------------------- fin script buscador --------------------------------------->
+<!------------------ ESTILO DE LAS TABLAS ----------------->
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<!-------------------------------------------------------->
+<div class="box-header">
+                <h3 class="box-title">Categoria Ingreso</h3>
             	<div class="box-tools">
-                    <a href="<?php echo site_url('categoria_ingreso/add'); ?>" class="btn btn-success btn-sm">Add</a> 
+                    <a href="<?php echo site_url('categoria_ingreso/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>
             </div>
-            <div class="box-body">
-                <table class="table table-striped">
+<div class="row">
+    <div class="col-md-12">
+        <!--------------------- parametro de buscador --------------------->
+                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese descripción">
+                  </div>
+            <!--------------------- fin parametro de buscador --------------------->
+        <div class="box">
+            <div class="box-body  table-responsive">
+                <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Id Cating</th>
-						<th>Categoria Cating</th>
-						<th>Descrip Cating</th>
-						<th>Actions</th>
+						<th>N°</th>
+						<th>Nombre</th>
+						<th>Descripción</th>
+						<th></th>
                     </tr>
-                    <?php foreach($categoria_ingreso as $c){ ?>
+                    <tbody class="buscar">
+                    <?php $i = 1;
+                          foreach($categoria_ingreso as $c){ ?>
                     <tr>
-						<td><?php echo $c['id_cating']; ?></td>
-						<td><?php echo $c['categoria_cating']; ?></td>
-						<td><?php echo $c['descrip_cating']; ?></td>
-						<td>
-                            <a href="<?php echo site_url('categoria_ingreso/edit/'.$c['id_cating']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Edit</a> 
-                            <a href="<?php echo site_url('categoria_ingreso/remove/'.$c['id_cating']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Delete</a>
+                        <td><?php echo $i; ?></td>
+                        <td><?php echo $c['categoria_cating']; ?></td>
+                        <td><?php echo $c['descrip_cating']; ?></td>
+                        <td>
+                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <h3><b> <span class="fa fa-trash"></span></b>
+                                               ¿Desea eliminar la categoria de Ingreso <b> <?php echo $c['categoria_cating']; ?></b>?
+                                           </h3>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          <div class="modal-footer aligncenter">
+                                                      <a href="<?php echo site_url('categoria_ingreso/remove/'.$c['id_cating']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                        <!------------------------ FIN modal para confirmar eliminación ------------------->
+                            <a href="<?php echo site_url('categoria_ingreso/edit/'.$c['id_cating']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
-                    <?php } ?>
+                    <?php $i++; } ?>
+                    </tbody>
                 </table>
                                 
             </div>

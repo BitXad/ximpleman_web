@@ -77,22 +77,27 @@ function pulsar(e) {
         var pararand = fecha.getFullYear()+fecha.getMonth()+fecha.getDay();
         var cad3 = Math.floor((Math.random(1001,9999) * pararand));
         var cad = cad1+cad2+cad3;
-        $('#producto_codigo').val(cad);
+        $('#pingo').val(cad);
   });
   });
-      
+     
+
+    
 </script>
 <style type="text/css">
     input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
+    
 }
-input[type=number] { -moz-appearance:textfield; }
+input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Arial, arial;
+
+    font-size: 15px;}
 </style> 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <!--------------------- CABCERA -------------------------->
 
@@ -100,58 +105,140 @@ input[type=number] { -moz-appearance:textfield; }
     <h1 class="box-title"><b>DETALLE compra COD: <?php echo "000".$compra_id; ?></b></h1>
 </div>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-<input type="hidden" name="compra_id" id="compra_id" value="<?php echo $compra_id; ?>">
+<input type="hidden" name="compra_idie" id="compra_idie" value="<?php echo $compra_id; ?>">
 <input type="hidden" name="bandera" id="bandera" value="<?php echo $bandera; ?>"> 
 
 <div class="container">
    
-    <div class="panel panel-primary col-md-6">
-         
-        <h5><b>Proveedor: </b><?php echo $compra[0]['proveedor_nombre']; ?> <br>
-        <input id="prove_id" type="hidden" value="<?php echo $compra[0]['proveedor_id']; ?>">
-        <b>Código Proveedor: </b><?php echo $compra[0]['proveedor_codigo']; ?> <br>
+    <div class="panel panel-primary col-md-3" >
+      
+        <h5><b>Proveedor: </b><label id="provedordecompra"><?php echo $compra[0]['proveedor_nombre']; ?></label> <br>
+        
+        <b>Código Proveedor: </b><label id="provedorcodigo" ><?php echo $compra[0]['proveedor_codigo']; ?></label> <label id="prove_iden" ><input id="prove_id" type="hidden" style="padding: 0px;" value="<?php echo $compra[0]['proveedor_id']; ?>"></label><br>
         <b>Fecha/Hora: </b><?php echo $compra[0]['compra_fecha']; ?></h5>
      
-      
      
     </div>
-   
+    <div class="col-md-4">
     <div class="box-tools">
         <center>            
             <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Prov</small></a>
             <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prov</small></a>
             <!--<a href="#" data-toggle="modal" data-target="#modalbuscarprod" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->
             <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod.</small></a>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
+            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->  
+         
         </center>            
     </div>
     <br>            
-<!--    <div class="panel panel-primary col-md-4">
-    <h5><b>Adulto(s): </b><?php echo $huesped[0]['compra_adultos']; ?></h5>
-    <h5><b>Jovene(s): </b><?php echo $huesped[0]['compra_jovenes']; ?></h5>
-    <h5><b>Niño(s): </b><?php echo $huesped[0]['compra_ninos']; ?></h5>
-    <h5><b>Equipaje: </b><?php echo $huesped[0]['compra_equipaje']; ?></h5>
-    <?php $habitacion_id = $huesped[0]['habitacion_id']; ?>
-      
-    </div>-->        
+     </div> 
+     <div class="col-md-4">
+            <?php 
+            $cont = 0;
+                          $subtotal = 0;
+                          $descuento = 0;
+                          $totalfinal = 0;
+                          $total_ultimo = 0;
+                           
+                        foreach($detalle_compra as $d){;
+                                 
+                          $subtotal += $d['detallecomp_subtotal'];
+                          $descuento += $d['detallecomp_descuento'];
+                          $totalfinal += $d['detallecomp_total'];
+                          
+                          }?>
+                          <?php       
+                                if ($bandera==1) {
+                                    if ($compra[0]['compra_descglobal']==0) {
+                                       $total_ultimo = $totalfinal;
+                                    } else {
+                                       $total_ultimo = $subtotal-$compra[0]['compra_descglobal'];
+                                    }
+                                
+                                }  else {
+                                  $total_ultimo = $totalfinal;
+                                }     ?>  
+              <div class="row">
+           <div class="panel panel-primary col-md-12" id="detalleco">
+               <table>       
+                
+                <tr>
+                        <td>Sub Total Bs:</td>
+                        <td></td>
+                        <td><?php echo number_format($subtotal,2,'.',','); ?></td>
+
+                </tr>             
+                <tr>
+                        <td>Descuento:</td>
+                        <td></td>
+                        <td><?php echo number_format($descuento,2,'.',',');?></td>
+                    
+                </tr>
+                <tr>
+                        <td>Descuento Global:</td>
+                        <td style="width: 30px;"></td>
+                        <td><?php  $compra_descglobal= $compra[0]['compra_descglobal']; echo number_format($compra_descglobal,2,'.',',');?>
+
+                    
+                        </td>
+                    
+                </tr>
+                
+                <tr>
+                        <th><b>TOTAL FINAL:</b></th>
+                        <td></td>
+                        <th><font size="3"><b> <?php echo number_format($total_ultimo,2,'.',',');?></b></font></th>
+                       
+                </tr>
+
+        </table>
+        </div>
+        </div>
+     </div> 
 </div>
 
-
 <!--------------------- FIN CABERECA -------------------------->
+ <div class="box-tools" style="padding-left: 60%">
 
+                <?php if($bandera==1) { ?>
+                    
+                <a href="#" data-toggle="modal" data-target="#anularmodal" class="btn btn-xs btn-warning" >
+                <i class="fa fa-minus-circle "></i>
+               Anular Compra 
+            </a>
 
-<!--<div class="box-header">
-                <h3 class="box-title">compra</h3>
-                <div class="box-tools">
-                    <a href="<?php echo site_url('compra/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                </div>
-            </div>-->
+            <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-success" >
+                <i class="fa fa-money "></i>Guardar Cambios
+            </a>
+        
+ <?php  } ?>
+<?php if($bandera!=1) { ?>
+
+<?php $provi = $compra[0]['proveedor_id']; 
+ 
+    if($provi==0) { ?>
+        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn bbtn-xs btn-success" ></i>
+               Finalizar compra 
+            </a></label>
+            
+  <?php  } else { ?>          
+            <label id="provedorboton"><a   href="#"  data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-success" >
+                <i class="fa fa-money"></i>
+               Finalizar compra 
+            </a></label>
+ <?php  }  } ?>
+             
+            <a  href="<?php echo site_url('compra'); ?>" class="btn btn-xs btn-danger" >
+                <i class="fa fa-sign-out "></i>
+               Salir 
+            </a>    
+           
+</div>
 <div class="row">
     <div class="col-md-12">
         
-        <div class="col-md-4">
-       
-                                
+        <div class="col-md-4" style="padding-left:0px;">
+                        
       <div class="input-group"> <span class="input-group-addon">Buscar</span>
         <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event,4)">
       </div>
@@ -182,7 +269,7 @@ input[type=number] { -moz-appearance:textfield; }
                     </tbody>
                 </table>
             </div>
-         <div class="col-md-8">
+         <div class="col-md-8" style="padding-left:0px; padding-right:0px;">
     <!--------------------- parametro de buscador --------------------->
               <div class="input-group"> <span class="input-group-addon">Buscar</span>
                 <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el compra, producto, costo"> 
@@ -190,89 +277,23 @@ input[type=number] { -moz-appearance:textfield; }
                 
         <!--------------------- fin parametro de buscador --------------------->
   
-       <div class="box">
+       <div class="box" >
             
-            <div class="box-body table-responsive">
+            <div class="box-body table-responsive" style="padding-left:0px;">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                             <th>Nº</th>
-                            <th>Producto</th>
-                            <th>Unidad</th>
+                            <th>Producto/<br>Unidad</th>
                             <th>Código</th>
                             <th>Precio</th>
                             <th>Costo</th>
                             <th>Cant.</th>
                             <th>Subtotal</th>
-                            <th>Descuento</th>
+                            <th>Desc.</th>
                             <th>Total</th>
                     </tr>
-                    <tbody class="buscar">
-                    <?php $cont = 0;
-                          $subtotal = 0;
-                          $descuento = 0;
-                          $totalfinal = 0;
-                          
-                          foreach($detalle_compra as $d){;
-                                 $cont = $cont+1; 
-
-                                 
-                          $subtotal += $d['detallecomp_subtotal'];
-                          $descuento += $d['detallecomp_descuento'];
-                          $totalfinal += $d['detallecomp_total'];
-                          
-                                 
-                                 
-                                 ?>
-                    <tr>    
-                            
-                        <td><?php echo $cont ?></td>
-                            <td><b><?php echo $d['producto_nombre']; ?></b>
-                        </td>   
-                        <td>
-                        <b><?php echo $d['detallecomp_unidad']; ?></td>
-                        <td><?php echo $d['detallecomp_codigo']; ?></td>
-                         <form action="<?php echo base_url('compra/updateDetalle/'.$compra_id."/".$d['producto_id']); ?>"  method="POST" class="form">
-                        <td> <input id="compra_id"  name="compra_id" type="hidden" class="form-control" value="<?php echo $compra_id; ?>">
-                              <input id="producto_id"  name="producto_id" type="hidden" class="form-control" value="<?php echo $d['producto_id']; ?>">
-                            <input style="font-size:11px;" id="detallecomp_precio"  name="producto_precio" type="text"  class="form-control" onkeypress="return pulsar(event)" value="<?php echo $d['detallecomp_precio']; ?>"  <?php if ($bandera!=1) { echo "readonly"; } ?> ></td>  
-                        <td><input style="font-size:11px;" id="detallecomp_costo"  name="producto_costo" type="text"  class="form-control" onkeypress="return pulsar(event)" value="<?php echo $d['detallecomp_costo']; ?>" <?php if ($bandera!=1) { echo "readonly"; } ?>></td>
-                        <td><input style="font-size:11px; width: 35px;" id="detallecomp_cantidad"  name="cantidad" type="text" class="form-control" value="<?php echo $d['detallecomp_cantidad'];?>" onkeypress="return pulsar(event)">
-                            <input id="detallecomp_id"  name="detallecomp_id" type="hidden" class="form-control" value="<?php echo $d['detallecomp_id']; ?>"></td>
-                        <td><?php echo $d['detallecomp_subtotal']; ?></b></td>
-                        <td><input style="font-size:11px;" id="detallecomp_descuento"  name="descuento" size="3" type="text" class="form-control" onkeypress="return pulsar(event)" value="<?php echo number_format($d['detallecomp_descuento'], 2, ".", ","); ?>" <?php if ($bandera!=1) { echo "readonly"; } ?>>
-                        <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
-                                         
-                      </td>
- 
-                            <td>   
-                                <center>
-                                    
-                                    <span class="badge badge-success">
-                                        <font size="3"> <b><?php echo number_format($d['detallecomp_total'],2,".",","); ?></b></font> <br>                                        
-                                    </span>
-                                </center>
-                        
-                            </td>
-                            <td>            <button type="submit" class="btn btn-success btn-sm"><span class="fa fa-save" ></span>Cambios</button>
-      
-                
-         
-         </td></form>
-
-
-
-                              <td>  <form action="<?php echo base_url('detalle_compra/quitar/'.$d['detallecomp_id']."/".$compra_id); ?>"  method="POST" class="form"> 
-                                       <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
-                                
-                                 <button type="submit" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button>
-                            </form></td>
-<!--                            <td><?php echo $d['detallecomp_cantidad']; ?></td>
-                            <td><?php echo $d['detallecomp_subtotal']; ?></td>
-                            <td><?php echo $d['detallecomp_descuento']; ?></td>-->
-<!--                            <td><?php echo $d['detallecomp_total']; ?></td>-->
-                            
-                    </tr>
-                    <?php } ?>
+                    <tbody class="buscar" id="detallecompringa">
+                  
                 </table>
                 
             </div>
@@ -285,52 +306,10 @@ input[type=number] { -moz-appearance:textfield; }
 </div>
 
 <div class="col-md-6">
-        
-        
+
 <!----------- tabla detalle compra ----------------------------------->
         
-        <div class="row">
-            <div class="col-md-12">
-                <div class="box">
-
-
-        <div class="box-body table-responsive table-condensed">
-            <table class="table table-striped table-condensed" id="miotratabla">
-                <tr>
-                        <th> Descripción</th>
-                        <th> Total </th>
-                        
-                </tr>
-                <tr>
-                        <td>Sub Total Bs</td>
-                        <td><?php echo number_format($subtotal,2,'.',','); ?></td>                    
-                </tr>                
-                <tr>
-                        <td>Descuento</td>
-                        <td><?php echo number_format($descuento,2,'.',',');?></td>
-                    
-                </tr>
-                <tr>
-                        <td>Descuento Global</td>
-                        <td><?php  $compra_descglobal= $compra[0]['compra_descglobal']; echo number_format($compra_descglobal,2,'.',',');?>
-
-                    
-                        </td>
-                    
-                </tr>
-                
-                <tr>
-                        <th><b>TOTAL FINAL</b></th>
-                        <th><font size="5"> <?php echo number_format($totalfinal,2,'.',',');?></font></th>
-
-                </tr>
-
-
-            </table>
-        </div>
-        </div>
-        </div>
-        </div>
+      
         
     <!----------- fin tabla detalle cuenta ----------------------------------->
          <!-- DATOS PARA INSERTAR A COMPRA
@@ -403,41 +382,7 @@ input[type=number] { -moz-appearance:textfield; }
 
     <!----------------------------INSERTA LOS VALORES Q SE DIERON EN LOS CALCULOS------------------------------------->
 
-             <center>
-                <?php if($bandera==1) { ?>
-                    
-                <a href="#" data-toggle="modal" data-target="#anularmodal" class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-minus-circle fa-4x"></i><br><br>
-               Anular compra <br>
-            </a>
-
-            <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-money fa-4x"></i><br>Guardar<br>Cambios<br>
-            </a>
-        
- <?php  } ?>
-<?php if($bandera!=1) { ?>
-
-<?php $provi = $compra[0]['proveedor_id']; 
- 
-    if($provi==0) { ?>
-        <a  onclick="myFunction()" href="#" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-money fa-4x"></i><br><br>
-               Finalizar compra <br>
-            </a>
-            
-  <?php  } else { ?>          
-            <a   href="#"  data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-money fa-4x"></i><br><br>
-               Finalizar compra <br>
-            </a>
- <?php  }  } ?>
              
-            <a  href="<?php echo site_url('compra'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-sign-out fa-4x"></i><br><br>
-               Salir <br>
-            </a>    
-            </center>
         </form>
         </div>
 
@@ -463,15 +408,7 @@ input[type=number] { -moz-appearance:textfield; }
      <?php echo form_open_multipart('producto/rapido'); ?>
         <div class="box-body">
                 <div class="row clearfix">
-                    
-                         
-                    <div class="col-md-6">
-                        <label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_codigo" value="<?php echo $this->input->post('producto_codigo'); ?>" class="form-control" id="producto_codigo" />
-                            <span class="text-danger"><?php echo form_error('producto_codigo');?></span>
-                        </div>
-                    </div>
+                       
                     <div class="col-md-6">
                         <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
@@ -479,6 +416,20 @@ input[type=number] { -moz-appearance:textfield; }
                             
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Codigo Barra</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_codigobarra" onkeypress="return pulsar(event)" value="<?php echo $this->input->post('producto_codigobarra'); ?>" class="form-control" id="producto_codigobarra" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_codigo" value="<?php echo $this->input->post('producto_codigo'); ?>" class="form-control" id="producto_codigo" />
+                            <span class="text-danger"><?php echo form_error('producto_codigo');?></span>
+                        </div>
+                    </div>
+                    
                               <div class="col-md-6" hidden>
                     <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
                         </div>  
@@ -499,14 +450,14 @@ input[type=number] { -moz-appearance:textfield; }
                         <div class="form-group">
                             <input type="text" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
-                            <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
+                            <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="categoria_id" class="control-label">Categoria</label>
                         <div class="form-group">
                             <select name="categoria_id" id="categoria_id" class="form-control">
-                                <option value="">select categoria_producto</option>
+                                <option value="">SELECCIONAR</option>
                                 <?php 
                                 foreach($all_categoria_producto as $categoria_producto)
                                 {
@@ -518,22 +469,7 @@ input[type=number] { -moz-appearance:textfield; }
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <label for="presentacion_id" class="control-label">Presentación</label>
-                        <div class="form-group">
-                            <select name="presentacion_id" class="form-control">
-                                <option value="1">Unidad</option>
-                               <!-- <?php 
-                                foreach($all_presentacion as $presentacion)
-                                {
-                                    $selected = ($presentacion['presentacion_id'] == $this->input->post('presentacion_id')) ? ' selected="selected"' : "";
-
-                                    echo '<option value="'.$presentacion['presentacion_id'].'" '.$selected.'>'.$presentacion['presentacion_nombre'].'</option>';
-                                } 
-                                ?>   -->
-                            </select>
-                        </div>
-                    </div>
+                   
                     <div class="col-md-6">
                         <label for="producto_foto" class="control-label">Foto</label>
                         <div class="form-group">
@@ -571,13 +507,23 @@ input[type=number] { -moz-appearance:textfield; }
                             <input type="text" name="producto_industria" value="<?php echo $this->input->post('producto_industria'); ?>" class="form-control" id="producto_industria" />
                         </div>
                     </div>
-                    
-                    <div class="col-md-6">
-                        <label for="producto_codigobarra" class="control-label">Codigo Barra</label>
+                     <div class="col-md-6">
+                        <label for="presentacion_id" class="control-label">Presentación</label>
                         <div class="form-group">
-                            <input type="text" name="producto_codigobarra" value="" class="form-control" id="producto_codigobarra" />
+                            <select name="presentacion_id" class="form-control">
+                                <option value="1">Unidad</option>
+                               <!-- <?php 
+                                foreach($all_presentacion as $presentacion)
+                                {
+                                    $selected = ($presentacion['presentacion_id'] == $this->input->post('presentacion_id')) ? ' selected="selected"' : "";
+
+                                    echo '<option value="'.$presentacion['presentacion_id'].'" '.$selected.'>'.$presentacion['presentacion_nombre'].'</option>';
+                                } 
+                                ?>   -->
+                            </select>
                         </div>
                     </div>
+                    
                     <div class="col-md-6">
                    
                     <div class="col-md-6">
@@ -630,7 +576,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <h3 class="box-title">Añadir Proveedor</h3>
             </div>
 
-           <form action="<?php echo base_url('proveedor/rapido/'); ?>"  method="POST" class="form">
+           <!--<form action="<?php echo base_url('proveedor/rapido/'); ?>"  method="POST" class="form">-->
             <div class="box-body">
                 <div class="row clearfix">
                     
@@ -716,7 +662,7 @@ input[type=number] { -moz-appearance:textfield; }
                 </div>
             </div></div>
             
-                <button type="submit" class="btn btn-success">
+                <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" data-dismiss="modal">
                     <i class="fa fa-check"></i> Guardar
                 </button>           
             </form>
@@ -758,9 +704,9 @@ input[type=number] { -moz-appearance:textfield; }
                             <?php $i=1;
                             foreach($all_proveedor as $h){ ?>
                             <tr>
-                                 <form action="<?php echo base_url('proveedor/cambiarproveedor/'); ?>"  method="POST" class="form">
+                               <!--<form action="<?php echo base_url('proveedor/cambiarproveedor/'); ?>"  method="POST" class="form">-->
                               
-                                    <td><?php echo $i++; ?></td>
+                                    <td><?php echo $i++; ?></td> 
 
                                     <td>
                                         <div class="col-md-3">
@@ -770,7 +716,7 @@ input[type=number] { -moz-appearance:textfield; }
 //                                                if (is_file($imagen)){ ?>
                                             <!--<img src="<?php echo base_url('resources/img/').$h['proveedor_foto']; ?>"  class="img-responsive">-->
                                             <h1 style="color: #0073b7">
-                                            <i class="fa fa-user fa-3x"></i>   
+                                            <i class="fa fa-user fa-2x"></i>   
                                             </h1>
                                             <?php //} else { ?>
                                                     <!--<img src="<?php echo base_url('resources/img/foto0.jpg'); ?>"  class="img-responsive"  title="<?php echo $imagen;?>">-->
@@ -780,14 +726,15 @@ input[type=number] { -moz-appearance:textfield; }
                                         </div>
                                         <div class="col-md-9">
 
-                                            <b> <?php echo $h['proveedor_nombre']; ?></b><br>
+                                          <b> <?php echo $h['proveedor_nombre']; ?></b><br>
                                          Telf.:<?php echo $h['proveedor_telefono']; ?> <br>
-                                         <button type="submit" class="btn btn-success btn-xs">
+                                       
+                                         <button  class="btn btn-success btn-xs" onclick="cambiarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
                                             <i class="fa fa-check"></i> Añadir
                                         </button>
 
         <div class="box collapsed-box">
-            <div class="box-header with-border">
+            <div class="box-header " style="border:0px; padding: 0px;">
               <h3 class="box-title">Mas</h3>
               <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="" data-original-title="Collapse"><i class="fa fa-plus"></i></button>
                 
@@ -798,14 +745,14 @@ input[type=number] { -moz-appearance:textfield; }
                                             <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
                                         </div>                                        
                                         NIT:
-                                        <input type="text" id="proveedor_nit" name="proveedor_nit" class="form-control" placeholder="N.I.T."  value="<?php echo $h['proveedor_nit']; ?>">
+                                        <input type="text" id="proveedor_nit<?php echo $h['proveedor_id']; ?>" name="proveedor_nit" class="form-control" placeholder="N.I.T."  value="<?php echo $h['proveedor_nit']; ?>">
                                         <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                                         RAZON SOCIAL:
-                                        <input type="text" id="proveedor_razon" name="proveedor_razon" class="form-control" placeholder="Razón Social"  value="<?php echo $h['proveedor_razon']; ?>">
+                                        <input type="text" id="proveedor_razon<?php echo $h['proveedor_id']; ?>" name="proveedor_razon" class="form-control" placeholder="Razón Social"  value="<?php echo $h['proveedor_razon']; ?>">
                                         COD. CONTROL:
-                                        <input type="text" id="proveedor_codigo" name="proveedor_codigo" class="form-control" placeholder="Codigo"  value="<?php echo $h['proveedor_codigo']; ?>">
+                                        <input type="text" id="proveedor_codigo<?php echo $h['proveedor_id']; ?>" name="proveedor_codigo" class="form-control" placeholder="Codigo"  value="<?php echo $h['proveedor_codigo']; ?>" readonly>
                                         AUTORIZACION:
-                                        <input type="text" id="proveedor_autorizacion" name="proveedor_autorizacion" class="form-control" placeholder="AUTORIZACION"  value="<?php echo $h['proveedor_autorizacion']; ?>">
+                                        <input type="text" id="proveedor_autorizacion<?php echo $h['proveedor_id']; ?>" name="proveedor_autorizacion" class="form-control" placeholder="AUTORIZACION"  value="<?php echo $h['proveedor_autorizacion']; ?>" readonly>
 
                                         
                                         <!--</div>-->
@@ -900,13 +847,12 @@ input[type=number] { -moz-appearance:textfield; }
     //$total_consumo = 0;
     
 ?>              
+        <div class="col-md-8">
+                     <span class="btn btn-warning">Comprar con dinero de caja <input  type="checkbox"  id="compra_caja" name="compra_caja" value="1"></span>
 
+        </div>  
 
-                
-            <div hidden="true">        
-                            <input id="compra_subtotal" name="compra_subtotal" value="<?php echo $subtotal; ?>">
-                            <input id="compra_descuento" name="compra_descuento" value="<?php echo $descuento; ?>">
-            </div>
+           
         <div class="row">
             <div class="col-md-12">
             <!--<form action="<?php echo base_url('hotel/checkout/'.$compra_id."/".$habitacion_id); ?>"  method="POST" class="form">-->
@@ -920,12 +866,12 @@ input[type=number] { -moz-appearance:textfield; }
 
                 <tr>
                         <td>Compra Bs</td>
-                        <td><?php echo number_format($subtotal,2,'.',','); ?></td>
+                        <td><input class="btn btn-default" type="text" size="8" readonly id="compra_subtotal" name="compra_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>"></td>
                     
                 </tr>                
                 <tr>
                         <td>Descuento Bs</td>
-                        <td><?php echo number_format($descuento,2,'.',','); ?></td>
+                        <td><input class="btn btn-default" type="text" size="8" readonly id="compra_descuento" name="compra_descuento" value="<?php echo number_format($descuento,2,'.',','); ?>"></td>
                     
                 </tr>
                 <tr>                      
@@ -943,7 +889,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <tr>                      
                         <td><b>Total Final Bs</b></td>
                         <td>
-                              <input class="btn btn-default" id="compra_totalfinal" size="8" name="compra_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
+                              <input class="btn btn-default" id="compra_totalfinal" size="8" name="compra_totalfinal" value="<?php echo $total_ultimo; ?>" readonly="true">
                         </td>
                 </tr>
                 <tr>                      
@@ -1138,6 +1084,15 @@ function calcularCambio(compra_subtotalx,compra_descuentox,compra_totalfinalx,co
           });
       });
 </script>
+<script>
+      $(document).ready(function () {
+          $("#producto_codigobarra").keyup(function () {
+              var value = $(this).val();
+              $("#producto_codigo").val(value);
+          });
+      });
+</script>
+
 <script>
       $(document).ready(function () {
           $('#proveedor_nombre1').keyup(function () {

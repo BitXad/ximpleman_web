@@ -167,7 +167,7 @@ class Detalle_serv extends CI_Controller{
         if(isset($detalle_serv['detalleserv_id']))
         {
             $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
-            redirect('servicio/serviciocreado/'.$servicio_id);
+            echo json_encode("ok");
         }
         else
             show_error('El detalle_serv que intentas borrar no existe.');
@@ -193,7 +193,8 @@ class Detalle_serv extends CI_Controller{
         if(isset($detalle_serv['detalleserv_id']))
         {
             $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
-            redirect('servicio/serview/'.$servicio_id);
+            echo json_encode("ok");
+            //redirect('servicio/serview/'.$servicio_id);
         }
         else
             show_error('El detalle_serv que intentas borrar no existe.');
@@ -304,6 +305,7 @@ class Detalle_serv extends CI_Controller{
 	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
 	    //$this->form_validation->set_rules('detalleserv_codigo','Detalle Servicio Codigo','required');
 	    $this->form_validation->set_rules('detalleserv_falla','Detalle Servicio Falla','required');
+	    $this->form_validation->set_rules('responsable_id','Responsable del Detalle','required');
             
 	    if($this->form_validation->run())     
             {
@@ -396,15 +398,17 @@ class Detalle_serv extends CI_Controller{
                 
                 $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
-                redirect('servicio/serviciocreado/'.$servicio_id);
+                echo json_encode("ok");
+                //redirect('servicio/serviciocreado/'.$servicio_id);
             }
             else
             {
-                redirect('servicio/serviciocreado/'.$servicio_id);
+                echo json_encode("faltadatos");
+                //redirect('servicio/serviciocreado/'.$servicio_id);
             }
         }
         else
-            show_error('El Servicio que al que intenta registrar un detalle no existe');
+            echo json_encode("noexiste");
         }
             else{
                 redirect('alerta');
@@ -538,15 +542,16 @@ class Detalle_serv extends CI_Controller{
 	    if(isset($_POST) && count($_POST) > 0)     
             {
                 $codigo = $this->input->post('codigo');
-              
-                $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
-                if(!empty($data['detalle_serv']))
+                
+                $res = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
+                if(isset($res) && !empty($res))
                 {
 //                    $data['_view'] = 'detalle_serv/kardex_detalle';
 //                    $this->load->view('layouts/main',$data);
+                    //$codcodigo = urlencode($codigo);
                     redirect('detalle_serv/kardex_detalle/'.$servicio_id.'/'.$codigo);
                 }else{
-                    redirect('servicio/serviciocreado/'.$servicio_id);
+                    redirect('servicio/serviciocreado/'.$servicio_id."/no");
                 }
             }else{
                 $data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
@@ -572,8 +577,8 @@ class Detalle_serv extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        
-        $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
+        $rescodigo = str_replace("%20", " ", $codigo);
+        $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($rescodigo);
         
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -611,8 +616,8 @@ class Detalle_serv extends CI_Controller{
     }
     
     /*
-     * *************Deja en cero los montos de este detalle de servicio ($detalleser_id)
-     * *************y reclacula los valores del servicio **************
+     * *************Deja en cero los montos de este detalle de servicio ($detalleserv_id)
+     * *************y recalcula los valores del servicio **************
      */
     function anulardetalleserv($servicio_id, $detalleserv_id)
     {
@@ -664,7 +669,7 @@ class Detalle_serv extends CI_Controller{
 
         $this->Servicio_model->update_servicio($servicio_id,$sumparams);            
                 
-        redirect('servicio/serviciocreado/'.$servicio_id);
+        echo json_encode("ok");
         }
             else{
                 redirect('alerta');
@@ -1187,7 +1192,7 @@ class Detalle_serv extends CI_Controller{
     }
     /*
      * *************Modifica los datos de Diagnostico, Solucion,
-     * *************peso salida, insumo y estado de este detalle de servicio ($detalleser_id)
+     * *************peso salida, Glosa y estado de este detalle de servicio ($detalleser_id)
      */
     function registrartec($servicio_id, $detalleserv_id)
     {
@@ -1197,37 +1202,48 @@ class Detalle_serv extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $estado_id = 6; //Estado definido en la tabla (TERMINADO)
-        $fecha_terminado = date('Y-m-d');
-        $hora_terminado = date('H:i:s');
-        $detparams = array(
-                        'estado_id' => $estado_id,
-                        'detalleserv_fechaterminado' => $fecha_terminado,
-                        'detalleserv_horaterminado' => $hora_terminado,
-                        'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
-                        'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
-                        'detalleserv_pesosalida' => $this->input->post('detalleserv_pesosalida'),
-                        'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
-        );
-        $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$detparams);
-        
-        $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
-        $cont = 0;
-        foreach ($res_ids as $ids)
-        {
-            if($ids['estado_id'] == $estado_id){
-                $cont++;
-            }
-        }
-        if($cont == count($res_ids)){
-            $params = array(
-                        'estado_id' => $estado_id,
-            );
-            $this->load->model('Servicio_model');
-            $this->Servicio_model->update_servicio($servicio_id,$params);
-        }
                 
-        redirect('servicio/serview/'.$servicio_id);
+            $this->load->library('form_validation');
+
+	    $this->form_validation->set_rules('detalleserv_diagnostico','Detalle Servicio Diagnostico','required');
+	    $this->form_validation->set_rules('detalleserv_solucion','Detalle Servicio Solucion','required');
+            
+	    if($this->form_validation->run())       
+            {
+                $estado_id = 6; //Estado definido en la tabla (TERMINADO)
+                $fecha_terminado = date('Y-m-d');
+                $hora_terminado = date('H:i:s');
+                $detparams = array(
+                                'estado_id' => $estado_id,
+                                'detalleserv_fechaterminado' => $fecha_terminado,
+                                'detalleserv_horaterminado' => $hora_terminado,
+                                'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                                'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
+                                'detalleserv_pesosalida' => $this->input->post('detalleserv_pesosalida'),
+                                'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
+                );
+                $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$detparams);
+
+                $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                $cont = 0;
+                foreach ($res_ids as $ids)
+                {
+                    if($ids['estado_id'] == $estado_id){
+                        $cont++;
+                    }
+                }
+                if($cont == count($res_ids)){
+                    $params = array(
+                                'estado_id' => $estado_id,
+                    );
+                    $this->load->model('Servicio_model');
+                    $this->Servicio_model->update_servicio($servicio_id,$params);
+                }
+                echo json_encode("ok");
+                //redirect('servicio/serview/'.$servicio_id);
+            }else{
+                echo json_encode("faltadatos");
+            }
         }
             else{
                 redirect('alerta');
@@ -1354,7 +1370,8 @@ class Detalle_serv extends CI_Controller{
             
             $this->Servicio_model->update_servicio($servicio_id,$cadserv);
             */
-             redirect('servicio/serview/'.$servicio_id);
+           echo json_encode("ok");
+             //redirect('servicio/serview/'.$servicio_id);
              }
             else{
                 redirect('alerta');
@@ -1364,18 +1381,22 @@ class Detalle_serv extends CI_Controller{
         }
     }
     /*
-     * *************Registra el cobro total de un servicio *********************
-     * *************y recalcula los valores de los detalles y cambia todos los estado a ENTREGADO***********
+     * *************Registra el cobro de un detalle de servicio *********************
+     * *************y recalcula los valores de los detalles y cambia el estado de este detalle a ENTREGADO***********
      */
-    function registrarcobrodetalle($servicio_id)
+    function registrarcobrodetalle($servicio_id, $detalleserv_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
-        $detalleserv_id = $this->input->post('detalleserv_id');
-        if(isset($detalleserv_id))
-        {
-            //Este estado_id 7 es ENTREGADO
+                $this->load->library('form_validation');
+
+	    $this->form_validation->set_rules('fecha_cobro','Detalle Servicio Fecha Cobro','required');
+            
+	    if($this->form_validation->run())       
+            {
+                
+            //Este estado_id 7 es ENTREGADO, que tambien significa que es pagado
             $estado_id = 7;
             $usuario_id = $session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
@@ -1408,10 +1429,13 @@ class Detalle_serv extends CI_Controller{
                 $this->load->model('Servicio_model');
                 $this->Servicio_model->update_servicio($servicio_id,$params);
             }
-            redirect('servicio/serview/'.$servicio_id);
-        }else {
-            redirect('servicio/serview/'.$servicio_id);
-        }
+            
+            echo json_encode("ok");
+            //redirect('servicio/serview/'.$servicio_id);
+            
+        }else{
+                echo json_encode("faltadatos");
+            }
         }
             else{
                 redirect('alerta');
@@ -1535,9 +1559,11 @@ class Detalle_serv extends CI_Controller{
                 $this->load->model('Servicio_model');
                 $this->Servicio_model->update_servicio($servicio_id,$params);
             }
-            redirect('servicio/serview/'.$servicio_id);
+            echo json_encode("ok");
+            //redirect('servicio/serview/'.$servicio_id);
         }else {
-            redirect('servicio/serview/'.$servicio_id);
+            echo json_encode("faltadatos");
+            //redirect('servicio/serview/'.$servicio_id);
         }
         }
             else{
@@ -1587,8 +1613,8 @@ class Detalle_serv extends CI_Controller{
             );
             $this->Servicio_model->update_servicio($servicio_id,$params);
             }
-
-         redirect('servicio/serview/'.$servicio_id);
+        echo json_encode("ok");
+        //redirect('servicio/serview/'.$servicio_id);
          }
             else{
                 redirect('alerta');
@@ -1782,6 +1808,91 @@ class Detalle_serv extends CI_Controller{
         {                 
             show_404();
         }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta********** */
+    function compdetalle_pago($detalleserv_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                
+            
+            /*
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+//	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
+            
+            
+            */
+
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            
+            $this->load->model('Servicio_model');
+            $data['servicio'] = $this->Servicio_model->get_servicio($data['detalle_serv']['servicio_id']);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['detalle_serv']['usuariopsaldo_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'detalle_serv/compdetalle_pago';
+            $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher********** */
+    function compdetalle_pago_boucher($detalleserv_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            
+            $this->load->model('Servicio_model');
+            $data['servicio'] = $this->Servicio_model->get_servicio($data['detalle_serv']['servicio_id']);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['detalle_serv']['usuariopsaldo_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'detalle_serv/compdetalle_pago_boucher';
+            $this->load->view('layouts/main',$data);
         }
             else{
                 redirect('alerta');

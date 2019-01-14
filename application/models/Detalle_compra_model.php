@@ -65,7 +65,7 @@ class Detalle_compra_model extends CI_Model
             WHERE
                 dc.producto_id = p.producto_id
 
-            ORDER BY `detallecomp_id` DESC limit 30
+            ORDER BY `detallecomp_id` DESC limit 100
 
             " . $limit_condition . "
         ")->result_array();

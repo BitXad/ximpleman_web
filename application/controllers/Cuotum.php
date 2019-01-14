@@ -83,18 +83,44 @@ class Cuotum extends CI_Controller{
         }
     }
     function recibodeudas($cuota_id)
-    {
+    {   
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+              $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                $usuario_id = $session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
        // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
         $data['_view'] = 'cuotum/reciboDeuda';
         $this->load->view('layouts/main',$data);
+    }else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
     }
      function recibocuentas($cuota_id)
     {
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+              $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                $usuario_id = $session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
        // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
         $data['_view'] = 'cuotum/reciboCuenta';
         $this->load->view('layouts/main',$data);
+    }else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
     }
     function pagar($cuota_id)
     {
@@ -441,6 +467,23 @@ class Cuotum extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+
+    function pendiente($cuota_id,$credito_id)
+    {       
+            
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0 WHERE cuota.cuota_id=".$cuota_id." ";
+            $this->db->query($sql);
+            redirect('cuotum/deudas/'.$credito_id);
+    }
+
+    function pendiente1($cuota_id,$credito_id)
+    {       
+            
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0 WHERE cuota.cuota_id=".$cuota_id." ";
+            $this->db->query($sql);
+            redirect('cuotum/cuentas/'.$credito_id);
+    }
+
     function add()
     {   
         if(isset($_POST) && count($_POST) > 0)     
@@ -493,17 +536,24 @@ class Cuotum extends CI_Controller{
      */
     function edit($cuota_id)
     {   
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $usuario_id = $session_data['usuario_id'];
+              $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         // check if the cuotum exists before trying to edit it
         $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-        
+        $credito_id = $this->input->post('credito_id');
         if(isset($data['cuotum']['cuota_id']))
         {
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
 					'credito_id' => $this->input->post('credito_id'),
-					'usuario_id' => $this->input->post('usuario_id'),
-					'estado_id' => $this->input->post('estado_id'),
+					'usuario_id' => $usuario_id,
+					'estado_id' => 8,
 					'cuota_numcuota' => $this->input->post('cuota_numcuota'),
 					'cuota_capital' => $this->input->post('cuota_capital'),
 					'cuota_interes' => $this->input->post('cuota_interes'),
@@ -514,15 +564,15 @@ class Cuotum extends CI_Controller{
 					'cuota_total' => $this->input->post('cuota_total'),
 					'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
 					'cuota_cancelado' => $this->input->post('cuota_cancelado'),
-					'cuota_fecha' => $this->input->post('cuota_fecha'),
-					'cuota_hora' => $this->input->post('cuota_hora'),
+					'cuota_fecha' =>  date('Y-m-d'),
+					'cuota_hora' => date('H:i:s'),
 					'cuota_numercibo' => $this->input->post('cuota_numercibo'),
 					'cuota_saldo' => $this->input->post('cuota_saldo'),
 					'cuota_glosa' => $this->input->post('cuota_glosa'),
                 );
 
                 $this->Cuotum_model->update_cuotum($cuota_id,$params);            
-                redirect('cuotum/index');
+                redirect('cuotum/deudas/'.$credito_id); 
             }
             else
             {
@@ -541,12 +591,84 @@ class Cuotum extends CI_Controller{
         }
         else
             show_error('The cuotum you are trying to edit does not exist.');
-    } 
+    }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+ function editar($cuota_id)
+    {   
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $usuario_id = $session_data['usuario_id'];
+              $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        // check if the cuotum exists before trying to edit it
+        $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+        $credito_id = $this->input->post('credito_id');
+        if(isset($data['cuotum']['cuota_id']))
+        {
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'credito_id' => $this->input->post('credito_id'),
+                    'usuario_id' => $usuario_id,
+                    'estado_id' => 8,
+                    'cuota_numcuota' => $this->input->post('cuota_numcuota'),
+                    'cuota_capital' => $this->input->post('cuota_capital'),
+                    'cuota_interes' => $this->input->post('cuota_interes'),
+                    'cuota_moradias' => $this->input->post('cuota_moradias'),
+                    'cuota_multa' => $this->input->post('cuota_multa'),
+                    'cuota_subtotal' => $this->input->post('cuota_subtotal'),
+                    'cuota_descuento' => $this->input->post('cuota_descuento'),
+                    'cuota_total' => $this->input->post('cuota_total'),
+                    'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
+                    'cuota_cancelado' => $this->input->post('cuota_cancelado'),
+                    'cuota_fecha' =>  date('Y-m-d'),
+                    'cuota_hora' => date('H:i:s'),
+                    'cuota_numercibo' => $this->input->post('cuota_numercibo'),
+                    'cuota_saldo' => $this->input->post('cuota_saldo'),
+                    'cuota_glosa' => $this->input->post('cuota_glosa'),
+                );
 
+                $this->Cuotum_model->update_cuotum($cuota_id,$params);            
+                redirect('cuotum/cuentas/'.$credito_id); 
+            }
+            else
+            {
+                $this->load->model('Credito_model');
+                $data['all_credito'] = $this->Credito_model->get_all_credito();
+
+                $this->load->model('Usuario_model');
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                $data['_view'] = 'cuotum/editar';
+                $this->load->view('layouts/main',$data);
+            }
+        }
+        else
+            show_error('The cuotum you are trying to edit does not exist.');
+    }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
     /*
      * Deleting cuotum
      */
-    function remove($cuota_id)
+    function remove($cuota_id,$credito_id)
     {
         $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
 
@@ -554,7 +676,21 @@ class Cuotum extends CI_Controller{
         if(isset($cuotum['cuota_id']))
         {
             $this->Cuotum_model->delete_cuotum($cuota_id);
-            redirect('cuotum/index');
+            redirect('cuotum/deudas/'.$credito_id);
+        }
+        else
+            show_error('The cuotum you are trying to delete does not exist.');
+    }
+
+    function remover($cuota_id,$credito_id)
+    {
+        $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
+
+        // check if the cuotum exists before trying to delete it
+        if(isset($cuotum['cuota_id']))
+        {
+            $this->Cuotum_model->delete_cuotum($cuota_id);
+            redirect('cuotum/ceuntas/'.$credito_id);
         }
         else
             show_error('The cuotum you are trying to delete does not exist.');

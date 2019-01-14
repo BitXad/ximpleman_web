@@ -79,6 +79,29 @@ class Ingreso_model extends CI_Model
         $nom = $this->db->query("SELECT * FROM usuario")->result_array();
         return $nom;
     }
+    
+     function fechaingreso($condicion)
+    {
+
+            
+
+       $ingreso = $this->db->query("
+        SELECT
+               i.*, u.*
+            FROM
+                ingresos i, usuario u
+            WHERE
+                i.usuario_id = u.usuario_id
+                
+               
+                ".$condicion." 
+                
+            ORDER BY i.ingreso_fecha DESC limit 100
+        "
+        )->result_array();
+
+        return $ingreso;
+    }
     /*
      * function to add new ingreso
      */

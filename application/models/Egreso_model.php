@@ -76,6 +76,27 @@ class Egreso_model extends CI_Model
         return $this->db->insert_id();
     }
     
+    function fechaegreso($condicion)
+    {
+
+       $egreso = $this->db->query("
+        SELECT
+               e.*, u.*
+            FROM
+                egresos e, usuario u
+            WHERE
+                e.usuario_id = u.usuario_id
+                
+               
+                ".$condicion." 
+                
+            ORDER BY e.egreso_fecha DESC limit 100
+        "
+        )->result_array();
+
+        return $egreso;
+    }
+    
     /*
      * function to update egreso
      */

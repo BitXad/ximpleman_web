@@ -1,5 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/egresos.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -14,7 +15,7 @@
         });
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
-
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
             <div class="box-header">
                 <h3 class="box-title">EGRESOS</h3>
@@ -26,13 +27,58 @@
                 </div>
         
            <div class="row">
-    <div class="col-md-12">
+        <div class="col-md-12">
        <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
-          
+          </div>
+      <div class="col-md-6">
+      <div  class="box-tools" >
+                          
+                    <select  class="btn btn-primary btn-sm" id="select_compra" onchange="buscar_egresos()">
+                        <option value="0">Elija Fechas</option>
+                        <option value="1">Egresos de Hoy</option>
+                        <option value="2">Egresos de Ayer</option>
+                        <option value="3">Egresos de la semana</option>                                               
+                                                                 
+                        <option value="5">Egresos por Fecha</option>
+                    </select>
+            
+
+      </div>
+    </div>
+
+     
+<div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none;'>
+    <br>
+    <center>            
+        <div class="col-md-2">
+            Desde: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+        </div>
+        <div class="col-md-2">
+            Hasta: <input type="date" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+        </div>
+        
+      
+        
+        <div class="col-md-3">
+            
+
+            <button class="btn btn-sm btn-primary btn-sm btn-block"  onclick="buscar_por_fechas()">
+                <h4>
+                <span class="fa fa-search"></span>   Buscar egresos  
+                </h4>
+          </button>
+            <br>
+        </div>
+        
+    </center>    
+    <br>    
+</div>
+
+</div>  
 
   <div class="box">
             
@@ -50,62 +96,8 @@
                             <th></th>
                             
                         </tr>
-                           <tbody class="buscar">
-                        <?php $i=1;
-                        $cont = 0;
-                         foreach($egreso as $e){ 
-                            $cont = $cont+1;?>
-                          <tr>
-                            <td><?php echo $cont ?></td>                    
-                            <td><?php echo $e['egreso_nombre']; ?></td>
-                            <td><?php echo $e['egreso_numero']; ?></td>
-                            <td><?php echo $e['egreso_fecha']; ?></td>
-                            <td><?php echo $e['egreso_categoria']; ?></br>
-                            <?php echo $e['egreso_concepto']; ?></td>
-                            <td><?php echo $e['egreso_monto']; ?></td>
-                            <td><?php echo $e['egreso_moneda']; ?></td>
-                            <td><?php echo $e['usuario_nombre']; ?></td>
-                   
-                            <td>
-                                <a href="<?php echo site_url('egreso/pdf/'.$e['egreso_id']); ?>" class="btn btn-success btn-xs" target="_blank"><span class="fa fa-file"></span> </a> 
-                                <a href="<?php echo site_url('egreso/edit/'.$e['egreso_id']); ?>" name="boton1" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> </a> 
-       
-                               <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>
-                            </td>
-                        </tr>
-                      <!------------------------ modal para eliminar el producto ------------------->
-                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                    <!--        <h4 class="modal-title" id="myModalLabel">LISTA DE PRODUCTOS</h4>-->
-                                          </div>
-                                          <div class="modal-body">
-
-                                           <!------------------------------------------------------------------->
-
-                                           <h1><b> <em class="fa fa-trash"></b></em> 
-                                               ¿Desea eliminar el tipo de usuario <b> <?php echo $e['egreso_numero']; ?></b> seleccionado?
-                                           </h1>
-                                           <!------------------------------------------------------------------->
-                                          </div>
-                                          <div class="modal-footer aligncenter">
-
-
-                                                      <a href="<?php echo site_url('egreso/remove/'.$e['egreso_id']); ?>" class="btn btn-danger"><em class="fa fa-pencil"></em> Si </a></a>
-
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><em class="fa fa-times"></em> No </a>
-                                          </div>
-
-                                        </div>
-                                      </div>
-                                    </div>
-
-                                    
-                   <td hidden="hidden"><?php echo $i++; ?></td>
-                    <?php  }?>  
+                           <tbody class="buscar" id="fechadeegreso">
+                       
                 </table>
                 
             </div>

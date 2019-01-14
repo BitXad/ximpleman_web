@@ -98,4 +98,26 @@ class Categoria_producto_model extends CI_Model
     {
         return $this->db->delete('categoria_producto',array('categoria_id'=>$categoria_id));
     }
+    
+     /*
+     * Get all categoria_producto
+     */
+    function get_all_categoria_de_producto()
+    {
+        $categoria_producto = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `categoria_producto`
+
+            WHERE
+                1 = 1
+
+            ORDER BY `categoria_id`
+
+        ")->result_array();
+
+        return $categoria_producto;
+    }
 }
