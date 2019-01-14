@@ -56,6 +56,72 @@ function tiempodosdigitos(num){
     if(num<10){num = "0" + num;}
     return num;
 }
+/*
+async function insumosusados(detalleserv_id){
+    //var html = "";
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'servicio/obtenerinsumosusados/'+detalleserv_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    for (var i = 0; i < n ; i++){
+                        html += registros[i]['producto_nombre']+" ("+registros[i]['producto_codigobarra']+")";
+                        html += " Cant.: "+registros[i]['detalleven_cantidad']+"<br>";
+                      //alert(html);  
+                   }
+                   $("#insumosusados"+detalleserv_id).html(html);
+               }
+        }
+        
+    });
+  
+}*/
+
+function insumosusados(detalleserv_id){
+    const promise = new Promise(function (resolve, reject) {
+    //var html = "";
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'servicio/obtenerinsumosusados/'+detalleserv_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    for (var i = 0; i < n ; i++){
+                        html += registros[i]['producto_nombre']+" ("+registros[i]['producto_codigobarra']+")";
+                        html += " Cant.: "+registros[i]['detalleven_cantidad']+"<br>";
+                      //alert(html);  
+                   }
+               }
+               resolve(html);
+        },
+        error:function(error){
+            reject(error);
+        }
+        
+    });
+    });
+  
+  return promise;
+}
+
+async function processData (detalleserv_id) {
+  try {
+    const result = await insumosusados(detalleserv_id);
+    return result;
+  } catch (err) {
+    return console.log(err.message);
+  }
+}
+
 /* **************Dibuja los detalles de servicio en SERVIEW *************** */
 function resultadodetalleservicioview(servicio_id){
       
@@ -136,7 +202,14 @@ function resultadodetalleservicioview(servicio_id){
                         if(registros[i]["detalleserv_insumo"] != null){
                             misinsumos = registros[i]["detalleserv_insumo"];
                         }
-                        html += misinsumos+"</td>";
+                        var res = "";
+                        var res1 = "";
+                        //res1 = insumosusados(registros[i]["detalleserv_id"]).then(function () {});
+                        //var res = insumosusados(registros[i]["detalleserv_id"]);
+                        //console.log(processData(registros[i]["detalleserv_id"]));
+                        html += misinsumos+processData(registros[i]["detalleserv_id"])+"</td>";
+                        //insumosusados(registros[i]['detalleserv_id']);
+                        html += misinsumos+res1+"<span id='insumosusados"+registros[i]['detalleserv_id']+"'></span>"+"</td>";
                         html += "<td>"+registros[i]["detalleserv_glosa"]+"</td>";
                         html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
                         html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
