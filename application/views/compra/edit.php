@@ -569,6 +569,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                    <span id="mensaje" class="text-danger"></span>
                 <div class="row">
     <div class="col-md-12">
         <div class="box box-info">
@@ -606,7 +607,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_nit" class="control-label">Nit</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_nit" value="<?php echo $this->input->post('proveedor_nit'); ?>" class="form-control" id="proveedor_nit" />
+                            <input type="text" name="proveedor_nit" value="0" class="form-control" id="proveedor_nit" />
                         </div>
                     </div>
                 </div>
@@ -1089,6 +1090,14 @@ function calcularCambio(compra_subtotalx,compra_descuentox,compra_totalfinalx,co
           $("#producto_codigobarra").keyup(function () {
               var value = $(this).val();
               $("#producto_codigo").val(value);
+          });
+      });
+</script>
+<script>
+      $(document).ready(function () {
+          $("#proveedor_nombre1").keyup(function () {
+              var value = $(this).val();
+              $("#proveedor_razon").val(value);
           });
       });
 </script>
