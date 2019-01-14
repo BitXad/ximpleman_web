@@ -280,9 +280,15 @@ function crearproveedor(compra_id) {
                   
                      html = "<a  href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-xs btn-success' ><i class='fa fa-money'></i>Finalizar compra</a>";
                     $("#provedorboton").html(html);
+
+                     $("#modalproveedor").modal('hide');
             } else{
-                    html = "<a  onclick='myFunction()' href='#' class='btn bbtn-xs btn-success' ></i>Finalizar compra </a>";
+                    
+                    html = "<a onclick='myFunction()' href='#' class='btn bbtn-xs btn-success' ></i>Finalizar compra </a>";
                         $("#provedorboton").html(html);
+
+                        $("#mensaje").html("<br> Debe llenar el campo Nombre");
+
                         }
              },
 
