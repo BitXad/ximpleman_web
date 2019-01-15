@@ -1,10 +1,5 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.3/js/bootstrap-select.min.js"></script>  
-  <link rel='stylesheet prefetch' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css'>
-<link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.11.2/css/bootstrap-select.min.css'>
 <script type="text/javascript">
-    function cambiarcod(cod){
+   /* function cambiarcod(cod){
         var nombre = $("#producto_nombre").val();
         var cad1 = nombre.substring(0,2);
         var categoria = $('#categoria_id option:selected').text();
@@ -14,6 +9,31 @@
         var cad3 = Math.floor((Math.random(1001,9999) * pararand));
         var cad = cad1+cad2+cad3;
         $('#producto_codigo').val(cad);
+    }*/
+</script>
+<script type="text/javascript">
+    function cambiarcodproducto(){
+        var estetime = new Date();
+        var anio = estetime.getFullYear();
+        anio = anio -2000;
+        var mes = parseInt(estetime.getMonth())+1;
+        if(mes>0&&mes<10){
+            mes = "0"+mes;
+        }
+        var hora = estetime.getHours();
+        if(hora>0&&hora<10){
+            hora = "0"+hora;
+        }
+        var min = estetime.getMinutes();
+        if(min>0&&min<10){
+            min = "0"+min;
+        }
+        var seg = estetime.getSeconds();
+        if(seg>0&&seg<10){
+            seg = "0"+seg;
+        }
+        $('#producto_codigobarra').val(anio+mes+hora+min+seg);
+        $('#producto_codigo').val(anio+mes+hora+min+seg);
     }
 </script>
 
@@ -22,8 +42,8 @@
       	<div class="box box-info">
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Producto</h3>&nbsp;&nbsp;
-                <button type="button" class="btn btn-success btn-sm" onclick="cambiarcod(this);">
-			<i class="fa fa-edit"></i> Cambiar Codigo Producto
+                <button type="button" class="btn btn-success btn-sm" onclick="cambiarcodproducto();">
+			<i class="fa fa-edit"></i> Cambiar Codigo barra y Codigo
 		</button>
             </div>
                         <?php echo form_open_multipart('producto/edit/'.$producto['producto_id']); ?>
@@ -66,6 +86,12 @@
 								} 
 								?>
 							</select>
+						</div>
+					</div>
+                                        <div class="col-md-6">
+						<label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
+						<div class="form-group">
+							<input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" />
 						</div>
 					</div>
 					<div class="col-md-6">

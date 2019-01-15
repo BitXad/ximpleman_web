@@ -27,6 +27,18 @@ class Cliente extends CI_Controller{
         $data['err'] ="";
         $data['cliente'] = $this->Cliente_model->get_all_cliente();
         
+        $this->load->model('Tipo_cliente_model');
+        $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        
+        $this->load->model('Categoria_cliente_model');
+        $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+        
+        $this->load->model('Categoria_clientezona_model');
+        $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+        
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        
         $data['_view'] = 'cliente/index';
         $this->load->view('layouts/main',$data);
         }

@@ -403,7 +403,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     <div class="col-md-12">
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">Añadir Producto</h3>
+                <h3 class="box-title" style="padding-right: 170px;">Añadir Producto</h3>
+                <button type="button" class="btn btn-success btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
+      <i class="fa fa-edit"></i> Generar Codigo Barra y Codigo
+    </button>
             </div>
      <?php echo form_open_multipart('producto/rapido'); ?>
         <div class="box-body">
@@ -1104,7 +1107,31 @@ function calcularCambio(compra_subtotalx,compra_descuentox,compra_totalfinalx,co
           });
       });
 </script>
-
+<script type="text/javascript">
+    function cambiarcodproducto(){
+        var estetime = new Date();
+        var anio = estetime.getFullYear();
+        anio = anio -2000;
+        var mes = parseInt(estetime.getMonth())+1;
+        if(mes>0&&mes<10){
+            mes = "0"+mes;
+        }
+        var hora = estetime.getHours();
+        if(hora>0&&hora<10){
+            hora = "0"+hora;
+        }
+        var min = estetime.getMinutes();
+        if(min>0&&min<10){
+            min = "0"+min;
+        }
+        var seg = estetime.getSeconds();
+        if(seg>0&&seg<10){
+            seg = "0"+seg;
+        }
+        $('#producto_codigobarra').val(anio+mes+hora+min+seg);
+        $('#producto_codigo').val(anio+mes+hora+min+seg);
+    }
+</script>
 <script>
       $(document).ready(function () {
           $('#proveedor_nombre1').keyup(function () {

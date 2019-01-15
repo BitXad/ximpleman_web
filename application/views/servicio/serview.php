@@ -105,7 +105,7 @@
 						<th></th>
                     </tr>
                     <tbody class="buscar" id="detalleservicio">
-                    <?php 
+                    <?php /*
                          $i = 1;
                          $sumTotal = 0; $sumAcuenta = 0;
                          $sumSaldo = 0; $cont = 0;
@@ -379,7 +379,7 @@
                                     <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modaleliminardet<?php echo $i; ?>" title="eliminar detalle serv.." ><span class="fa fa-trash"></span><br></a>                            
                         </td>
                     </tr>
-                    <?php $i++; } ?>
+                    <?php $i++; } */ ?>
                 </table>
                                 
             </div>

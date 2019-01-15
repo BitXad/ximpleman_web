@@ -1,6 +1,5 @@
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
-    $(document).ready(function(){
+  /*  $(document).ready(function(){
     $("#categoria_id").change(function(){
         var nombre = $("#producto_nombre").val();
         var cad1 = nombre.substring(0,2);
@@ -13,7 +12,32 @@
         $('#producto_codigo').val(cad);
   });
   });
-    
+    */
+</script>
+<script type="text/javascript">
+    function cambiarcodproducto(){
+        var estetime = new Date();
+        var anio = estetime.getFullYear();
+        anio = anio -2000;
+        var mes = parseInt(estetime.getMonth())+1;
+        if(mes>0&&mes<10){
+            mes = "0"+mes;
+        }
+        var hora = estetime.getHours();
+        if(hora>0&&hora<10){
+            hora = "0"+hora;
+        }
+        var min = estetime.getMinutes();
+        if(min>0&&min<10){
+            min = "0"+min;
+        }
+        var seg = estetime.getSeconds();
+        if(seg>0&&seg<10){
+            seg = "0"+seg;
+        }
+        $('#producto_codigobarra').val(anio+mes+hora+min+seg);
+        $('#producto_codigo').val(anio+mes+hora+min+seg);
+    }
 </script>
 <script>
       $(document).ready(function () {
@@ -27,7 +51,10 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Añadir Producto</h3>
+              	<h3 class="box-title">Añadir Producto</h3>&nbsp;&nbsp;
+                <button type="button" class="btn btn-success btn-sm" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
+			<i class="fa fa-edit"></i> Generar Codigo Barra y Codigo
+		</button>
             </div>
             <?php echo form_open_multipart('producto/add'); ?>
           	<div class="box-body">
@@ -72,16 +99,16 @@
 						</div>
 					</div>
                                         <div class="col-md-6">
+						<label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
+						<div class="form-group">
+							<input type="text" name="producto_codigobarra" value="<?php echo $this->input->post('producto_codigobarra'); ?>" class="form-control" id="producto_codigobarra" required />
+						</div>
+					</div>
+                                        <div class="col-md-6">
 						<label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
 							<input type="text" name="producto_codigo" value="<?php echo $this->input->post('producto_codigo'); ?>" class="form-control" id="producto_codigo" required />
 							<span class="text-danger"><?php echo form_error('producto_codigo');?></span>
-						</div>
-					</div>
-                                        <div class="col-md-6">
-						<label for="producto_codigobarra" class="control-label">Código de barras</label>
-						<div class="form-group">
-							<input type="text" name="producto_codigobarra" value="<?php echo $this->input->post('producto_codigobarra'); ?>" class="form-control" id="producto_codigobarra" />
 						</div>
 					</div>
 					<div class="col-md-6">
