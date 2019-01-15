@@ -37,7 +37,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>N°</th>
                         <!--<th>Id</th>-->
 						<th>Descripción</th>
 						<th>Porc.<br>Desc.</th>
@@ -46,19 +46,42 @@
                     </tr>
                     <tbody class="buscar">
                     <?php
-                         $cont = 0;
+                         $i = 0;
                          foreach($categoria_cliente as $c){;
-                            $cont = $cont+1;
+                            $i = $i+1;
                          ?>
                     <tr>
-                        <td><?php echo $cont ?></td>
+                        <td><?php echo $i ?></td>
 						<!--<td><?php //echo $c['categoriaclie_id']; ?></td>-->
 						<td><?php echo $c['categoriaclie_descripcion']; ?></td>
 						<td><?php echo $c['categoriaclie_porcdesc']; ?></td>
 						<td><?php echo $c['categoriaclie_montodesc']; ?></td>
 						<td>
+						<!------------------------ INICIO modal para confirmar eliminación ------------------->
+                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <h3><b> <span class="fa fa-trash"></span></b>
+                                               ¿Desea eliminar la categoria de Cliente <b> <?php echo $c['categoriaclie_descripcion']; ?></b>?
+                                           </h3>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          <div class="modal-footer aligncenter">
+                                                      <a href="<?php echo site_url('categoria_cliente/remove/'.$c['categoriaclie_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                        <!------------------------ FIN modal para confirmar eliminación ------------------->
                             <a href="<?php echo site_url('categoria_cliente/edit/'.$c['categoriaclie_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('categoria_cliente/remove/'.$c['categoriaclie_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <a data-toggle="modal" data-target="#myModal<?php echo $i; ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
                     <?php } //$cont = 0; ?>
