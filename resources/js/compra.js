@@ -194,7 +194,7 @@ function cambiarproveedores(compra_id,proveedor_id) {
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+'proveedor/cambiarproveedor/';
     var limite = 500;
-     var nit = document.getElementById('proveedor_nit'+proveedor_id).value;
+    var nit = document.getElementById('proveedor_nit'+proveedor_id).value;
                 var razon_social = document.getElementById('proveedor_razon'+proveedor_id).value;
                 //var codigo_control = document.getElementById('proveedor_codigo'+proveedor_id).value;
                 //var autorzacion = document.getElementById('proveedor_autorizacion'+proveedor_id).value;

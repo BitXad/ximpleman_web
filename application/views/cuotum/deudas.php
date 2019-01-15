@@ -310,5 +310,8 @@ $(document).ready(function(){
             </div>
             
         </div>
+         <a href="../../credito/indexDeuda"><button type="button" class="btn btn-danger">
+                <i class="fa fa-arrow-left"></i> Atras
+              </button></a>
     </div>
 </div>
