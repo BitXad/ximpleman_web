@@ -217,7 +217,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <?php $provi = $compra[0]['proveedor_id']; 
  
     if($provi==0) { ?>
-        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn bbtn-xs btn-success" ></i>
+        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-success" ><i class="fa fa-money "></i>
                Finalizar compra 
             </a></label>
             
@@ -400,10 +400,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12"> 
         <div class="box box-info">
             <div class="box-header with-border">
-                <h3 class="box-title">Añadir Producto</h3>
+                <h3 class="box-title" style="padding-right: 170px;">Añadir Producto</h3>
+                <button type="button" class="btn btn-success btn-xs" onclick="cambiarcodproducto();" title="genera codigo de barra y codigo">
+      <i class="fa fa-edit"></i> Generar Codigo Barra y Codigo
+    </button>
             </div>
      <?php echo form_open_multipart('producto/rapido'); ?>
         <div class="box-body">
@@ -470,13 +473,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                    
-                    <div class="col-md-6">
-                        <label for="producto_foto" class="control-label">Foto</label>
+                   <div class="col-md-6">
+                        <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
-                            <input type="file" name="chivo" class="btn btn-box-tool" id="chivox" kl_virtual_keyboard_secure_input="on" />
-                             <!--<small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>-->
-                            <h4 id='loading' ></h4>
-                            <div id="message"></div>
+                            <input type="text" name="producto_unidad" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
                         </div>
                     </div>
 </div>
@@ -490,11 +490,15 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
                     <div class="box-body" style="display: none;">
                         <div class="col-md-6">
-                        <label for="producto_unidad" class="control-label">Unidad</label>
+                        <label for="producto_foto" class="control-label">Foto</label>
                         <div class="form-group">
-                            <input type="text" name="producto_unidad" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
+                            <input type="file" name="chivo" class="btn btn-box-tool" id="chivox" kl_virtual_keyboard_secure_input="on" />
+                             <!--<small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>-->
+                            <h4 id='loading' ></h4>
+                            <div id="message"></div>
                         </div>
                     </div>
+                       
                     <div class="col-md-6">
                         <label for="producto_marca" class="control-label">Marca</label>
                         <div class="form-group">
@@ -663,6 +667,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </div>
             </div></div>
             
+
                 <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
 
                     <i class="fa fa-check"></i> Guardar
@@ -973,7 +978,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit">
                 <h4>
-                <span class="fa fa-money"></span>   Pagar  
+                <span class="fa fa-money"></span>   Finalizar Compra  
                 </h4>
             </button>
             
@@ -1102,7 +1107,31 @@ function calcularCambio(compra_subtotalx,compra_descuentox,compra_totalfinalx,co
           });
       });
 </script>
-
+<script type="text/javascript">
+    function cambiarcodproducto(){
+        var estetime = new Date();
+        var anio = estetime.getFullYear();
+        anio = anio -2000;
+        var mes = parseInt(estetime.getMonth())+1;
+        if(mes>0&&mes<10){
+            mes = "0"+mes;
+        }
+        var hora = estetime.getHours();
+        if(hora>0&&hora<10){
+            hora = "0"+hora;
+        }
+        var min = estetime.getMinutes();
+        if(min>0&&min<10){
+            min = "0"+min;
+        }
+        var seg = estetime.getSeconds();
+        if(seg>0&&seg<10){
+            seg = "0"+seg;
+        }
+        $('#producto_codigobarra').val(anio+mes+hora+min+seg);
+        $('#producto_codigo').val(anio+mes+hora+min+seg);
+    }
+</script>
 <script>
       $(document).ready(function () {
           $('#proveedor_nombre1').keyup(function () {

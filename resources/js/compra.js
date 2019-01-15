@@ -798,10 +798,10 @@ function tablaresultados(opcion)
                             
                         html += "<div class='col-md-12'>";
 
-                        html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b><br>";
+                        html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-facebook btn-xs'>"+registros[i]["existencia"]+"</span><br>";
                         html += "<div class='col-md-2'  >";
                         html += "Precio_V: <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 85px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
-                        html += "<div class='col-md-2'  >";
+                        html += "<div class='col-md-2'>";
                         html += "Costo: <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 85px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_costo"]+"' > </div>";
                         html += "<div class='col-md-2'  >";
                         html += "Desc.: <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 65px; background-color: lightgrey' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
