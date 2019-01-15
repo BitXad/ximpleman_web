@@ -400,7 +400,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <span aria-hidden="true">&times;</span>
                 </button>
                 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12"> 
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title" style="padding-right: 170px;">Añadir Producto</h3>

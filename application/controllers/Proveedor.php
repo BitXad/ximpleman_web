@@ -234,7 +234,7 @@ class Proveedor extends CI_Controller{
         $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
     
             $sql= "UPDATE proveedor SET proveedor.proveedor_nit='".$proveedor_nit."', proveedor.proveedor_razon='".$proveedor_razon."' WHERE proveedor.proveedor_id=".$proveedor_id." ";
-            $this->db->query($sql);
+            $this->db->query($sql); 
         
 
         if(isset($datos)){
