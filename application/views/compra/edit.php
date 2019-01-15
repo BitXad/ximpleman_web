@@ -217,7 +217,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <?php $provi = $compra[0]['proveedor_id']; 
  
     if($provi==0) { ?>
-        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn bbtn-xs btn-success" ></i>
+        <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-success" ><i class="fa fa-money "></i>
                Finalizar compra 
             </a></label>
             
@@ -470,13 +470,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                    
-                    <div class="col-md-6">
-                        <label for="producto_foto" class="control-label">Foto</label>
+                   <div class="col-md-6">
+                        <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
-                            <input type="file" name="chivo" class="btn btn-box-tool" id="chivox" kl_virtual_keyboard_secure_input="on" />
-                             <!--<small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>-->
-                            <h4 id='loading' ></h4>
-                            <div id="message"></div>
+                            <input type="text" name="producto_unidad" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
                         </div>
                     </div>
 </div>
@@ -490,11 +487,15 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
                     <div class="box-body" style="display: none;">
                         <div class="col-md-6">
-                        <label for="producto_unidad" class="control-label">Unidad</label>
+                        <label for="producto_foto" class="control-label">Foto</label>
                         <div class="form-group">
-                            <input type="text" name="producto_unidad" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
+                            <input type="file" name="chivo" class="btn btn-box-tool" id="chivox" kl_virtual_keyboard_secure_input="on" />
+                             <!--<small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>-->
+                            <h4 id='loading' ></h4>
+                            <div id="message"></div>
                         </div>
                     </div>
+                       
                     <div class="col-md-6">
                         <label for="producto_marca" class="control-label">Marca</label>
                         <div class="form-group">
@@ -663,11 +664,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </div>
             </div></div>
             
-<<<<<<< HEAD
-                <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')">
-=======
+
                 <button type="button" class="btn btn-success" onclick="crearproveedor('<?php echo $compra_id; ?>')" >
->>>>>>> master
+
                     <i class="fa fa-check"></i> Guardar
                 </button>           
             </form>
@@ -976,7 +975,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit">
                 <h4>
-                <span class="fa fa-money"></span>   Pagar  
+                <span class="fa fa-money"></span>   Finalizar Compra  
                 </h4>
             </button>
             
