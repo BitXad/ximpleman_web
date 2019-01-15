@@ -237,6 +237,7 @@ class Cuotum extends CI_Controller{
                
               
                 }
+
             }
     /*} else {
         if ($credito_monto > $maximo){
@@ -280,12 +281,23 @@ class Cuotum extends CI_Controller{
                 $cuota_total = $saldo_deudor;
              }
          }*/
+            
+                $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
+            $credingo = $this->db->query($credis);
+            $cuotis = "SELECT COUNT(cuota_id) as 'cuotanga' FROM cuota  WHERE cuota.estado_id = 9 and cuota.credito_id = ".$credito_id;
+            $cuotinga = $this->db->query($cuotis);
+            
+            
 
 
-
+            if($cuotinga == $credingo){
+            $actualizar = "UPDATE credito SET credito.estado_id=9 WHERE credito.credito_id=".$credito_id;
+            $this->db->query($actualizar);
+            }
 
 
                  redirect('cuotum/deudas/'.$credito_id);  
+
             }
             else{
                 redirect('alerta');
@@ -454,7 +466,18 @@ class Cuotum extends CI_Controller{
              }
          }*/
 
+           $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
+            $credingo = $this->db->query($credis);
+            $cuotis = "SELECT COUNT(cuota_id) as 'cuotanga' FROM cuota  WHERE cuota.estado_id = 9 and cuota.credito_id = ".$credito_id;
+            $cuotinga = $this->db->query($cuotis);
+           
+            
 
+
+            if($cuotinga === $credingo){
+            $actualizar = "UPDATE credito SET credito.estado_id=9 WHERE credito.credito_id=".$credito_id;
+            $this->db->query($actualizar);
+            }
 
 
 
@@ -483,6 +506,7 @@ class Cuotum extends CI_Controller{
             $this->db->query($sql);
             redirect('cuotum/cuentas/'.$credito_id);
     }
+
 
     function add()
     {   

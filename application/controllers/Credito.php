@@ -91,7 +91,7 @@ class Credito extends CI_Controller{
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
         $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/indexCuentas?');
+        $config['base_url'] = site_url('credito/indexCuenta?');
         $config['total_rows'] = $this->Credito_model->get_all_credito_count();
         $this->pagination->initialize($config);
 

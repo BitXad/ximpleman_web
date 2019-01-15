@@ -292,7 +292,8 @@ $(document).ready(function(){
                     <td></td>    
                     <td></td>    
                     <td></td> 
-                    <th align="right"><b><?php echo number_format($total,'2','.',','); ?></b></th>
+                    <td></td> 
+                    <!--<th align="right"><b><?php echo number_format($total,'2','.',','); ?></b></th>-->
                     <td></td>    
                     <th align="right"><b><?php echo number_format($cancelados,'2','.',','); ?></b></th>   
                     <td></td>    
@@ -307,5 +308,8 @@ $(document).ready(function(){
             </div>
             
         </div>
+        <a href="../../credito/indexCuenta"><button type="button" class="btn btn-danger">
+                <i class="fa fa-arrow-left"></i> Atras
+              </button></a>
     </div>
 </div>
