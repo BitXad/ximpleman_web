@@ -98,4 +98,24 @@ class Proveedor_model extends CI_Model
     {
         return $this->db->delete('proveedor',array('proveedor_id'=>$proveedor_id));
     }
+    /* **********busca proveedores************* */
+    function get_busqueda_proveedor($filtro)
+    {
+        $proveedor = $this->db->query("
+            SELECT
+                p.*, e.*
+
+            FROM
+                proveedor p, estado e
+
+            WHERE
+                p.estado_id=e.estado_id
+                and 
+
+            ORDER BY `proveedor_id` DESC
+
+        ")->result_array();
+
+        return $proveedor;
+    }
 }
