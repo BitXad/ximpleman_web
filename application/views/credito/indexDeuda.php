@@ -29,18 +29,28 @@
             
             <br class="no-print">        
         <div class="row">
-            Desde: <input type="date" class="btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
+            Desde: <input type="date" class="btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="">
        
-            Hasta: <input type="date" class="btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
+            Hasta: <input type="date" class="btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="">
         </div> <br>
         
           
        </div> 
-        <div class="col-md-6">
+        <div class="col-md-4">
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> 
                     <input id="proveedor_id" type="text" size="90" class="form-control" placeholder="Ingrese el Proveedor">
                   </div>
+        <!--------------------- fin parametro de buscador --------------------->
+    </div>
+    <div class="col-md-2">
+        <!--------------------- parametro de buscador --------------------->
+                  <select  class="btn btn-primary "  id="estado_id" ">
+                        <option value="8">Pendiente</option>
+                        <option value="9">Cancelado</option>
+                   
+                       
+                    </select>
         <!--------------------- fin parametro de buscador --------------------->
     </div>
          <div class="col-md-2">

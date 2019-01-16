@@ -36,11 +36,20 @@
         
           
        </div> 
-        <div class="col-md-6">
+        <div class="col-md-4">
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> 
                     <input id="cliente_id" type="text" size="90" class="form-control" placeholder="Ingrese el Proveedor">
                   </div>
+        <!--------------------- fin parametro de buscador --------------------->
+    </div>
+      <div class="col-md-2">
+        <!--------------------- parametro de buscador --------------------->
+                  <select  class="btn btn-primary "  id="estado_id" ">
+                        <option value="8">Pendiente</option>
+                        <option value="9">Cancelado</option>
+                       
+                    </select>
         <!--------------------- fin parametro de buscador --------------------->
     </div>
          <div class="col-md-2">

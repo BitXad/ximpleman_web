@@ -496,6 +496,19 @@ class Cuotum extends CI_Controller{
             
             $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0 WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
+             $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
+            $credingo = $this->db->query($credis)->result_array();
+            $cuotis = "SELECT COUNT(cuota_id) as 'cuotanga' FROM cuota  WHERE cuota.estado_id = 9 and cuota.credito_id = ".$credito_id;
+            $cuotinga = $this->db->query($cuotis)->result_array();
+            
+            
+
+
+            if($cuotinga[0]['cuotanga'] != $credingo[0]['creditango']){
+            $actualizar = "UPDATE credito SET credito.estado_id=8 WHERE credito.credito_id=".$credito_id;
+            $this->db->query($actualizar);
+            }
+
             redirect('cuotum/deudas/'.$credito_id);
     }
 
@@ -504,6 +517,19 @@ class Cuotum extends CI_Controller{
             
             $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0 WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
+             $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
+            $credingo = $this->db->query($credis)->result_array();
+            $cuotis = "SELECT COUNT(cuota_id) as 'cuotanga' FROM cuota  WHERE cuota.estado_id = 9 and cuota.credito_id = ".$credito_id;
+            $cuotinga = $this->db->query($cuotis)->result_array();
+            
+            
+
+
+            if($cuotinga[0]['cuotanga'] != $credingo[0]['creditango']){
+            $actualizar = "UPDATE credito SET credito.estado_id=8 WHERE credito.credito_id=".$credito_id;
+            $this->db->query($actualizar);
+            }
+
             redirect('cuotum/cuentas/'.$credito_id);
     }
 
