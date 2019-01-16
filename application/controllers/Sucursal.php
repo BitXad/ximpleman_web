@@ -10,7 +10,29 @@ class Sucursal extends CI_Controller
         $this->load->library(array('form_validation'));
         $this->load->database();
         $this->load->model('sucursal_model');
+        $this->load->model('proveedor_model');
         $this->load->library('pagination');
+    }
+
+    public function index()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+
+                $sucursales = $this->sucursal_model->get_sucursales();
+                $data['sucursales'] = $sucursales;
+
+                $data['proveedores'] = $this->proveedor_model->get_proveedores();
+
+                $data['page_title'] = 'Admin >> Mi Cuenta';
+
+                $data['_view'] = 'sucursales/lista';
+                $this->load->view('layouts/main',$data);
+
+            }
+        }
+
     }
 
     public function find($codigo, $items)
@@ -48,8 +70,7 @@ class Sucursal extends CI_Controller
             if ($session_data['tipousuario_id'] == 1) {
 
                 $this->form_validation->set_rules('url', 'Url', 'trim|required');
-                $this->form_validation->set_rules('token', 'Token', 'trim|required');
-                $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
+                $this->form_validation->set_rules('idproveedor', 'IdProveedor', 'required');
 
 
                 if ($this->form_validation->run() == FALSE) {   //validacion falla
@@ -80,8 +101,7 @@ class Sucursal extends CI_Controller
 
                     $data = array(
                         'sucursal_url' => $this->input->post('url'),
-                        'sucursal_token' => $this->input->post('token'),
-                        'sucursal_nombre' => $this->input->post('nombre')
+                        'id_proveedor' => $this->input->post('idproveedor')
                     );
 
                     $this->sucursal_model->insert_sucursal($data);
@@ -108,8 +128,6 @@ class Sucursal extends CI_Controller
             $session_data = $this->session->userdata('logged_in');
             if ($session_data['tipousuario_id'] == 1) {
 
-                $data1['sucursal'] = $this->sucursal_model->get_sucursal($idsuc);
-
                 $data = array(
                     'usuario_login' => $session_data['usuario_login'],
                     'usuario_id' => $session_data['usuario_id'],
@@ -122,11 +140,13 @@ class Sucursal extends CI_Controller
                     'thumb'=> $session_data['thumb']
                 );
 
-                $data1['usuario_imagen'] = $session_data['usuario_imagen'];
+                $data['sucursal'] = $this->sucursal_model->get_sucursal($idsuc);
+                $data['usuario_imagen'] = $session_data['usuario_imagen'];
+                $data['proveedores'] = $this->proveedor_model->get_proveedores();
 
-                $data['main'] = $this->load->view('sucursales/form_edit_sucursal',$data1, true);
-
-                $this->load->view('template/main',$data);
+                //$data['main'] = $this->load->view('sucursales/form_edit_sucursal',$data1, true);
+                $data['_view'] = 'sucursales/form_edit_sucursal';
+                $this->load->view('layouts/main',$data);
 
 
             } else{
@@ -145,8 +165,6 @@ class Sucursal extends CI_Controller
 
                 $this->input->post('login');
                 $this->form_validation->set_rules('url', 'Url', 'trim|required');
-                $this->form_validation->set_rules('token', 'token', 'trim|required');
-                $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required');
 
                 if ($this->form_validation->run() == FALSE) {   //validacion falla
 
@@ -175,8 +193,7 @@ class Sucursal extends CI_Controller
 
                     $data = array(
                         'sucursal_url' => $this->input->post('url'),
-                        'sucursal_token' => $this->input->post('token'),
-                        'sucursal_nombre' => $this->input->post('nombre')
+                        'id_proveedor' => $this->input->post('idproveedor')
                     );
 
                     $this->sucursal_model->update_sucursal($data,$this->input->post('idsuc'));
@@ -197,70 +214,26 @@ class Sucursal extends CI_Controller
         }
     }
 
-    public function infox()
+    public function info($limit, $start, $codi,$tipo)
     {
-        /*        if ($this->session->userdata('logged_in')) {
-                    $session_data = $this->session->userdata('logged_in');
-                    if($session_data['tipousuario_id']==1) {
-                    $this->load->model('Pedido_model');
-                        ;*/
-
-
-        /*               $data = array(
-                           'usuario_login' => $session_data['usuario_login'],
-                           'usuario_id' => $session_data['usuario_id'],
-                           'usuario_nombre' => $session_data['usuario_nombre'],
-                           'rol' => $this->getRol($session_data['tipousuario_id']),
-                           'tipousuario_id' => $session_data['tipousuario_id'],
-                           'usuario_imagen' => $session_data['usuario_imagen'],
-                           'usuario_email' => $session_data['usuario_email'],
-                           'page_title' => 'Admin >> Sucursales',
-                           'thumb'=> $session_data['thumb']
-                       );*/
-        $this->load->model('inventario_model');
-
-        $res = $this->inventario_model->get_inventario(); //lista de inventario de existentes
-
-        //$data1['usuario_imagen'] = $session_data['usuario_imagen'];
-        //$data['main'] = $this->load->view('sucursales/info', $data1, true);
-        //$this->load->view('template/main',$data);
-
+        $res = $this->sucursal_model->get_inventario($limit,$start,$codi,$tipo); //lista de inventario de existentes
+        /*            echo 'limit:'.$limit.'<br>';
+                    echo 'start:'.$start.'<br>';*/
         /*                print "<pre>";
                         print_r($res);
                         print "</pre>";*/
-        //echo json_encode($res);
-        return $res;
-
-        /*            }
-                    else{
-                        redirect('alerta');
-                    }
-                } else {
-                    redirect('', 'refresh');
-                }*/
-    }
-
-    public function info($limit, $start, $codi)
-    {
-            $res = $this->sucursal_model->get_inventario($limit,$start,$codi); //lista de inventario de existentes
-/*            echo 'limit:'.$limit.'<br>';
-            echo 'start:'.$start.'<br>';*/
-
-            /*                print "<pre>";
-                            print_r($res);
-                            print "</pre>";*/
-            echo json_encode($res);
+        echo json_encode($res);
         //}
     }
 
-    public function items($codi,$id, $limit,$start){
+    public function items($codi,$id,$tipo,$limit,$start){
 
-        $sucursal = $this->sucursal_model->get_sucursal($id);
+        $sucursal = $this->sucursal_model->get_sucursal2($id);
         // set HTTP header
         $headers = array('Content-Type: application/json',);
 
 // the url of the API you are contacting to 'consume'
-        $url = $sucursal->sucursal_url.'/sucursal/info/'.$limit.'/'.$start.'/'.$codi;
+        $url = $sucursal->sucursal_url.'/sucursal/info/'.$limit.'/'.$start.'/'.$codi.'/'.$tipo;
 
 // Open connection
         $ch = curl_init();
@@ -279,14 +252,14 @@ class Sucursal extends CI_Controller
         curl_close($ch);
 
 // get the result and parse to JSON
-/*        if(isset($result)){ return $result ; }
-        else { return FALSE ; }*/
+        /*        if(isset($result)){ return $result ; }
+                else { return FALSE ; }*/
         //echo $result;
         return $result;
 
-/*        print "<pre>";
-        print_r($result);
-        print "</pre>";*/
+        /*        print "<pre>";
+                print_r($result);
+                print "</pre>";*/
 
     }//
 
@@ -313,148 +286,15 @@ class Sucursal extends CI_Controller
         print "<pre>";
         print_r( $items);
         print "</pre>";
-/*        foreach ($items as $item){
-            if($codigo==$item['codigo']){
+        /*        foreach ($items as $item){
+                    if($codigo==$item['codigo']){
 
-                $si = array(
-                    $sucursal => $cuantos
-                );
-                array_push($item,$si);
-                return $item;
-            }
-        }*/
-    }
-
-    public function fetch()
-    {
-        /*        if ($this->session->userdata('logged_in')) {
-                    $session_data = $this->session->userdata('logged_in');
-                    if($session_data['tipousuario_id']==1) {
-                    $this->load->model('Pedido_model');
-                        ;*/
-
-        //$data1['usuario_imagen'] = $session_data['usuario_imagen'];
-
-        $rows = array();
-
-        /*	            print "<pre>";
-                        print_r($rows);
-                        print "</pre>";*/
-        $sucursales = $this->sucursal_model->get_sucursales();
-        foreach ($sucursales as $sucursal){
-
-            $info_sucursal = $this->items(
-                $sucursal->sucursal_url,
-                $this->input->post('limit'),
-                $this->input->post('start')
-            );
-
-            foreach ($info_sucursal as $row2){
-                $rows2 = array(
-                    'codigo' => $row2->producto_codigo,
-                    'cuantos' => $row2->existencia,
-                    'url' => $sucursal->sucursal_url,
-                    'sucursal' => $sucursal->sucursal_nombre,
-                    'id' => $row2->producto_id
-                );
-                array_push($rows, $rows2);
-            }
-        }
-
-/*        print "<pre>";
-        print_r($rows);
-        print "</pre>";*/
-
-        $items = array();
-
-        foreach ($rows as $fila){
-
-            if( count($items)>0 ) {
-                //echo 'sucursales:'.$fila['sucursal'].'<br>';
-
-                $res = $this->find( $fila['codigo'],$items);
-                if( $res!=false ){
-                    $mejor = array();
-                    //if (array_key_exists('sucursales', $fila)) {
-                    $mejor = array(
-                        'sucursales'=> $res['sucursales'].','.$fila['sucursal'].':'.$fila['cuantos']
-                    );
-//                            $indexCompleted = array_search('sucursales', $fila);
-                    //                         unset($fila[$indexCompleted]);
-                    foreach ($items as $key => $item){
-                        if($item['codigo']==$fila['codigo']){
-                            unset($items[$key]);
-                            break;
-                        }
+                        $si = array(
+                            $sucursal => $cuantos
+                        );
+                        array_push($item,$si);
+                        return $item;
                     }
-
-                    $nuevo1 = array(
-                        'codigo' => $fila['codigo'],
-                        'id' => $fila['id']
-                    );
-
-                    $nuevo1 = $nuevo1 + $mejor;
-                    array_push($items, $nuevo1);
-                    //array_replace($items,$aux);
-
-                } else {
-                    $nuevo = array(
-                        'codigo' => $fila['codigo'],
-                        'sucursales' => $fila['sucursal'].':'.$fila['cuantos'],
-                        'id' => $fila['id']
-                    );
-                    array_push($items, $nuevo);
-                }
-
-            } else {
-                $nuevo = array(
-                    'codigo' => $fila['codigo'],
-                    'sucursales'=> $fila['sucursal'].':'.$fila['cuantos'],
-                    'id' => $fila['id']
-                );
-                array_push($items, $nuevo);
-            }
-        }
-
-        $output = '';
-
-/*      print "<pre>";
-        print_r($items);
-        print "</pre>";*/
-        //$cont = $this->input->post('conta');
-
-        if( count($items)>0 )
-        {
-            foreach($items as $rowx) {
-                $lista =  explode(',', $rowx['sucursales']);
-                $tdsss = '';
-                foreach ($lista as $col) {
-                    $tds = explode(':', $col);
-                    $tdsss.= '<td data-title="Cantidad">'.$tds[1].'</td>';
-                }
-
-                $output .= '
-                    <tr class="warning">
-                        <td data-title="Nro">'.($this->input->post('conta')+1).'</td>
-                        <td data-title="Codigo">'.$rowx["id"].'</td>
-                        <td data-title="Codigo">'.$rowx["codigo"].'</td>'.
-                        $tdsss.'
-                    </tr>                    
-                    ';
-
-            }
-        }
-        echo $output;
-
-
-        //echo json_encode($res);
-
-        /*            }
-                    else{
-                        redirect('alerta');
-                    }
-                } else {
-                    redirect('', 'refresh');
                 }*/
     }
 
@@ -463,7 +303,8 @@ class Sucursal extends CI_Controller
         //$codi  = '';
 
         $codi =  $this->uri->segment(3);
-        $rowno =  $this->uri->segment(4);
+        $tipo =  $this->uri->segment(4);
+        $rowno =  $this->uri->segment(5);
 
 //        echo 'codi:'.$codi;
 //        echo ',rowno:'.$rowno;
@@ -478,15 +319,15 @@ class Sucursal extends CI_Controller
             $rowno = ($rowno-1) * $rowperpage;
         }
 
-        $allcount = $this->sucursal_model->get_total_inventario($codi);
+        $allcount = $this->sucursal_model->get_total_inventario($codi,$tipo);
 
         $rows = array();
 
         $sucursales = $this->sucursal_model->get_sucursales();
+
         foreach ($sucursales as $sucursal){
 
-            $info_sucursal =
-                $this->items($codi,$sucursal->sucursal_id, $rowperpage, $rowno);
+            $info_sucursal = $this->items($codi,$sucursal->sucursal_id, $tipo, $rowperpage, $rowno);
             //var_dump($info_sucursal);
             $info_sucursal = json_decode($info_sucursal);
 
@@ -495,13 +336,20 @@ class Sucursal extends CI_Controller
                     'codigo' => $row2->producto_codigo,
                     'cuantos' => $row2->existencia,
                     'url' => $sucursal->sucursal_url,
-                    'sucursal' => $sucursal->sucursal_nombre,
-                    'id' => $row2->producto_id
+                    'sucursal' => $sucursal->proveedor_nombre,
+                    'sucursal_id' => $sucursal->sucursal_id,
+                    'id' => $row2->producto_id,
+                    'producto_costo' =>$row2->producto_costo,
+                    'proveedor_id' =>$sucursal->proveedor_id
+
                 );
                 array_push($rows, $rows2);
             }
         }
 
+        /*        print "<pre>";
+                print_r($rows);
+                print "</pre>";*/
 
         $items = array();
 
@@ -515,7 +363,7 @@ class Sucursal extends CI_Controller
                     $mejor = array();
                     //if (array_key_exists('sucursales', $fila)) {
                     $mejor = array(
-                        'sucursales'=> $res['sucursales'].','.$fila['sucursal'].':'.$fila['cuantos']
+                        'sucursales'=> $res['sucursales'].','.$fila['sucursal'].':'.$fila['cuantos'].':'.$fila['producto_costo'].':'.$fila['sucursal_id'].':'.$fila['proveedor_id']
                     );
 //                            $indexCompleted = array_search('sucursales', $fila);
                     //                         unset($fila[$indexCompleted]);
@@ -539,7 +387,7 @@ class Sucursal extends CI_Controller
                 } else {
                     $nuevo = array(
                         'codigo' => $fila['codigo'],
-                        'sucursales' => $fila['sucursal'].':'.$fila['cuantos'],
+                        'sucursales' => $fila['sucursal'].':'.$fila['cuantos'].':'.$fila['producto_costo'].':'.$fila['sucursal_id'].':'.$fila['proveedor_id'],
                         'id' => $fila['id'],
                         'numero' => $rowno
                     );
@@ -549,7 +397,7 @@ class Sucursal extends CI_Controller
             } else {
                 $nuevo = array(
                     'codigo' => $fila['codigo'],
-                    'sucursales'=> $fila['sucursal'].':'.$fila['cuantos'],
+                    'sucursales'=> $fila['sucursal'].':'.$fila['cuantos'].':'.$fila['producto_costo'].':'.$fila['sucursal_id'].':'.$fila['proveedor_id'],
                     'id' => $fila['id'],
                     'numero' => $rowno
                 );
@@ -557,12 +405,7 @@ class Sucursal extends CI_Controller
             }
         }
 
-        //print "<pre>";
-        //print_r($rows);
-        //print "</pre>";
-
-
-        $config['base_url'] = base_url().'sucursal/load/'.$codi.'/'.$rowno;
+        $config['base_url'] = base_url().'sucursal/load/'.$codi.'/'.$tipo.'/'.$rowno;
         $config['use_page_numbers'] = TRUE;
         $config['total_rows'] = $allcount;
         $config['per_page'] = $rowperpage;
@@ -588,27 +431,7 @@ class Sucursal extends CI_Controller
         $data['result'] = $items;
         $data['row'] = $rowno;
 
-
         echo json_encode($data);
-    }
-
-    public function index()
-    {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-
-                $sucursales = $this->sucursal_model->get_sucursales();
-                $data['sucursales'] = $sucursales;
-
-                $data['page_title'] = 'Admin >> Mi Cuenta';
-
-                $data['_view'] = 'sucursales/lista';
-                $this->load->view('layouts/main',$data);
-
-            }
-        }
-
     }
 
     public function borrar($idsuc)
@@ -632,5 +455,45 @@ class Sucursal extends CI_Controller
             redirect('', 'refresh');
         }
     }
+
+    public function codigo_correcto()
+    {
+        $codigo = $this->input->post('codigo');
+        $link = $this->input->post('link');
+
+        $headers = array('Content-Type: application/json');
+
+        $link = str_replace("'","",$link);
+
+        $url = $link.'/sucursal/chekear/'.$codigo.'/mbUdgZWkgqyODuHFVDlsFIZOPkBzuiBI';
+
+        //echo 'url:'.$url;
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true );
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        echo $result;
+    }
+
+    public function chekear($codigo,$token)
+    {
+        if($token=='mbUdgZWkgqyODuHFVDlsFIZOPkBzuiBI'){
+            $res = $this->sucursal_model->verify($codigo);
+            //var_dump($res);
+            echo $res;
+        } else {
+            echo '0';
+        }
+    }
+
+
 
 }
