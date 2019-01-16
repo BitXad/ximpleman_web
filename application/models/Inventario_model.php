@@ -178,6 +178,7 @@ class Inventario_model extends CI_Model
                 ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
                 from
                 producto p
+                where estado_id = 1
                 group by
                 p.producto_id
                 order by p.producto_nombre)";
@@ -209,6 +210,34 @@ class Inventario_model extends CI_Model
                 group by
                 p.producto_id
                 order by p.producto_nombre)";
+        
+        $this->db->query($sql);
+        return true;
+    }
+    
+    /*
+     * 
+     * actualizar el valor de un producto en la tabla inventario
+     */
+    function actualizar_cantidad_producto($producto_id)
+    {
+
+        
+        //cargar el inventario actualizado
+        $sql = "update inventario set existencia = 
+                (select 
+                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
+                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
+                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
+                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
+                from
+                producto p  
+                where p.producto_id = ".$producto_id."
+                group by
+                p.producto_id
+                order by p.producto_nombre)
+                
+                where producto_id =".$producto_id;
         
         $this->db->query($sql);
         return true;
@@ -407,6 +436,61 @@ class Inventario_model extends CI_Model
                " where i.producto_id = d.producto_id and d.usuario_id = ".$usuario_id;
         $this->db->query($sql);
         return true;
+    }    
+    
+    
+    function mostrar_kardex($desde, $hasta, $producto_id){
+        
+        $sql = "select * from
+                (
+                select 
+                  c.compra_fecha as fecha,
+                  c.compra_id as num_ingreso,
+                  d.detallecomp_cantidad as unidad_comp,
+                  d.detallecomp_costo as costoc_unit,
+                  d.detallecomp_subtotal as importe_ingreso,
+                  0 as num_salida,
+                  0 as unidad_vend,
+                  0 as costov_unit,
+                  0 as importe_salida,
+                  c.compra_hora as hora
+                from
+                  compra c,
+                  detalle_compra d
+                where
+                  d.producto_id = 288 and 
+                  c.compra_id = d.compra_id and 
+                  c.compra_fecha >= '".$desde."' and 
+                  c.compra_fecha <= '".$hasta."'
+
+
+                union
+
+                select 
+                  v.venta_fecha as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  v.venta_id as num_salida,
+                  t.detalleven_cantidad as unidad_vend,
+                  t.detalleven_costo as costov_unit,
+                  t.detalleven_subtotal as importe_salida,
+                  v.venta_hora as hora
+                from
+                  venta v,
+                  detalle_venta t
+                where
+                  t.producto_id = 288 and 
+                  v.venta_id = t.venta_id and 
+                  v.venta_fecha >= '".$desde."' and 
+                  v.venta_fecha <= '".$hasta."'
+                  ) as tx
+
+                  order by fecha, hora";
+        
+        $kardex = $this->db->query($sql)->result_array();
+        return $kardex;
     }    
     
     

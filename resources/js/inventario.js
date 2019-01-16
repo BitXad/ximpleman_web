@@ -58,7 +58,7 @@ function tabla_inventario(){
     var parametro = document.getElementById("filtrar").value;
     var controlador = base_url+"inventario/mostrar_inventario";
     
-   
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
 
     $.ajax({
         url: controlador,
@@ -106,9 +106,10 @@ function tabla_inventario(){
                     html += "             	<td><img src='"+ base_url+"resources/images/productos/thumb_"+inv[i]["producto_foto"]+"' width='50' height='50' class='img-circle'</td>";
                     html += "             	<td><font size='3'><b>"+ inv[i]["producto_nombre"]+"</b></font>";
                     html += "    <br>";
-                    html += "    <small>" + inv[i]["producto_unidad"]+" | "+inv[i]["producto_marca"]+" | "+inv[i]["producto_industria"]+"</small>";
+                    html += "    <small>" + inv[i]["producto_unidad"]+" | "+inv[i]["producto_marca"]+" | "+inv[i]["producto_industria"];
+                    html += "   <span class='badge span-alert'> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank'> Kardex</a> </span></small>";
                     html += "             	</td>                ";
-                    html += "             	<td><center><font size='2'><b>"+ inv[i]["producto_codigobarra"]+"</b><br></font>";
+                    html += "             	<td><center><font size='2'><b>"+ inv[i]["producto_codigobarra"]+"</b><br> </font>";
                     html += "	"+ inv[i]["producto_codigo"]+"</center></td>";
                     html += "	<td><center>"+ inv[i]["producto_costo"]+"</center></td>";
 
@@ -142,11 +143,15 @@ function tabla_inventario(){
             }, // end succes: function(resultados){
             error:function(resultado){
                 //alert('ocurrio un error..!!');
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader 
             }
+            
          }); // close ajax
          
           
-               
+    //  document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader         
     
 }
 
@@ -163,13 +168,12 @@ function actualizar_inventario()
             alert('El inventario se actualizo exitosamente...! ');
             //redirect('inventario/index');
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-            tabla_inventario();
+            //tabla_inventario();
         },
         complete: function (jqXHR, textStatus) {
             document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
-            tabla_inventario();
+            //tabla_inventario();
         }
     });   
-    
-   
+      
 }

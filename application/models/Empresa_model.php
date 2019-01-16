@@ -24,8 +24,8 @@ class Empresa_model extends CI_Model
                 `empresa`
 
             WHERE
-                `empresa_id` = ?
-        ",array($empresa_id))->result_array();
+                `empresa_id` = 
+        ".$empresa_id)->result_array();
 
         return $empresa;
     }

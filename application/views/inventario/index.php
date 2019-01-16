@@ -43,7 +43,7 @@
             
                 <button class="btn btn-success btn-sm" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Actualizar inventario</button>
                 <button class="btn btn-primary btn-sm" onclick="tabla_inventario()"><span class="fa fa-list"></span> Mostrar todo</button>
-            
+
             </div>
 </div>
 
@@ -79,53 +79,3 @@
 </div>
 </div>
 
-<!------------------------ kardex-------------------------------->
-
-<div class="row">
-    <div class="col-md-12">
-            <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código"   onkeypress="validar(event,1)" >
-                  </div>
-            <!--------------------- fin parametro de buscador ---------------------> 
-            <div class="box">
-           
-                       <!--------------------- inicio loader ------------------------->
-                    <div class="row" id='loader'  style='display:none;'>
-                        <center>
-                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
-                        </center>
-                    </div> 
-                    <!--------------------- fin inicio loader ------------------------->
-                    
-                <div class="box-body  table-responsive" >
-
-                    <div id="tabla_inventario">
-                        
-                        <table class="table  table-condensed table-striped" id="mitabla">
-                            <tr>
-                                <td>
-                                    #
-                                </td>
-                                <td>
-                                    FECHA
-                                </td>
-                                <td>
-                                    INGRESO
-                                </td>
-                                <td>
-                                    CANTIDAD
-                                </td>
-                            </tr>
-                            
-                        </table>
-                        
-                    
-                    </div>
-                    
-
-
-                </div>
-            </div>
-</div>
-</div>
