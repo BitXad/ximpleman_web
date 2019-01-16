@@ -197,7 +197,7 @@
                             <a href="<?php echo site_url('compra');?>"><i class="fa fa-cart-arrow-down"></i>Compras</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cart-plus"></i>Actualizar Inventario</a>
+                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cart-plus"></i>Inventario</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i>Pedidos Mañana</a>

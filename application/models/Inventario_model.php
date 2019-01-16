@@ -16,7 +16,7 @@ class Inventario_model extends CI_Model
      */
     function get_inventario()
     {
-        $sql = "select p.* from invetario p where p.estado_id = 1
+        $sql = "select p.* from inventario p where p.estado_id = 1
                 group by p.producto_id order by p.producto_id";
         
 //        $sql = "select p.*,

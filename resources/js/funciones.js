@@ -578,25 +578,25 @@ function actualizarprecios(e,detalleven_id)
     }
 }
 
-function actualizar_inventario()
-{
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"inventario/actualizar_inventario/";
-    
-    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{},
-        success:function(respuesta){     
-            alert('El inventario se actualizo exitosamente...! ');
-            //redirect('inventario/index');
-            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-        },
-        complete: function (jqXHR, textStatus) {
-            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-        }
-    });         
-}
+//function actualizar_inventario()
+//{
+//    var base_url = document.getElementById('base_url').value;
+//    var controlador = base_url+"inventario/actualizar_inventario/";
+//    
+//    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+//    $.ajax({url: controlador,
+//        type:"POST",
+//        data:{},
+//        success:function(respuesta){     
+//            alert('El inventario se actualizo exitosamente...! ');
+//            //redirect('inventario/index');
+//            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+//        },
+//        complete: function (jqXHR, textStatus) {
+//            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+//        }
+//    });         
+//}
 
 function actualizar_cantidad_inventario()
 {

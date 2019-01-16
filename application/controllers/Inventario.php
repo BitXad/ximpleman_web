@@ -48,6 +48,24 @@ class Inventario extends CI_Controller{
         
         
     }  
+
+    /*
+     * muestra inventario por parametro
+     */
+    function mostrar_inventario()
+    {      
+       // if($this->input->is_ajax_request()){
+            
+            $parametro = $this->input->post("parametro");
+            if ($parametro=="" || $parametro==null)
+                $resultado = $this->Inventario_model->get_inventario();                
+            else
+                $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
+            
+            echo json_encode($resultado);            
+       // }
+        
+    }  
     
     /*
      * Adding a new producto
