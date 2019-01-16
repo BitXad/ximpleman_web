@@ -19,7 +19,7 @@
         if (tecla==13){
             var base_url = document.getElementById('base_url').value;
             var filtro = document.getElementById('filtrar').value;
-            location.href=base_url"/proveedor/buscarproveedor/"+filtro;
+            location.href=base_url+"proveedor/buscarproveedor/"+filtro;
         }
     }
 </script>   
@@ -112,5 +112,13 @@
                     <?php echo $this->pagination->create_links(); ?>                    
                 </div>
         </div>
+        <?php
+            if($a =="1"){
+                ?>
+                <a href="<?php echo site_url('proveedor'); ?>" class="btn btn-danger">
+                                <i class="fa fa-arrow-left"></i> Atras</a>
+            <?php
+            }
+            ?>
     </div>
 </div>

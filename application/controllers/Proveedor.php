@@ -14,38 +14,14 @@ class Proveedor extends CI_Controller{
     /*
      * Listing of proveedor
      */
-      public function getRol($tipousuario_idol)
-    {
-        $rol = 'ADMIN';
-        if ($tipousuario_idol == 1) {
-            $rol = 'ADMINISTRADOR';
-        }
-        if ($tipousuario_idol == 2) {
-            $rol = 'CAJERO';
-        }
-        if ($tipousuario_idol == 3) {
-            $rol = 'VENDEDOR';
-        }
-        if ($tipousuario_idol == 4) {
-            $rol = 'PREVENDEDOR';
-        }
-        return $rol;
-    }
+     
     function index()
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
                 $data = array(
-                    'usuario_login' => $session_data['usuario_login'],
-                    'usuario_id' => $session_data['usuario_id'],
-                    'usuario_nombre' => $session_data['usuario_nombre'],
-                    'rol' => $this->getRol($session_data['tipousuario_id']),
-                    'tipousuario_id' => $session_data['tipousuario_id'],
-                    'usuario_imagen' => $session_data['usuario_imagen'],
-                    'usuario_email' => $session_data['usuario_email'],
-                    'page_title' => 'Admin >> Mi Cuenta',
-                    'thumb' => $session_data['thumb']
+                    'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
         $params['limit'] = RECORDS_PER_PAGE; 
@@ -55,7 +31,7 @@ class Proveedor extends CI_Controller{
         $config['base_url'] = site_url('proveedor/index?');
         $config['total_rows'] = $this->Proveedor_model->get_all_proveedor_count();
         $this->pagination->initialize($config);
-
+        $data['a'] = "0";
         $data['proveedor'] = $this->Proveedor_model->get_all_proveedor($params);
         
         $data['_view'] = 'proveedor/index';
@@ -78,15 +54,7 @@ class Proveedor extends CI_Controller{
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
                 $data = array(
-                    'usuario_login' => $session_data['usuario_login'],
-                    'usuario_id' => $session_data['usuario_id'],
-                    'usuario_nombre' => $session_data['usuario_nombre'],
-                    'rol' => $this->getRol($session_data['tipousuario_id']),
-                    'tipousuario_id' => $session_data['tipousuario_id'],
-                    'usuario_imagen' => $session_data['usuario_imagen'],
-                    'usuario_email' => $session_data['usuario_email'],
-                    'page_title' => 'Admin >> Mi Cuenta',
-                    'thumb' => $session_data['thumb']
+                    'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
         $this->load->library('form_validation');
@@ -256,15 +224,7 @@ class Proveedor extends CI_Controller{
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
                 $data = array(
-                    'usuario_login' => $session_data['usuario_login'],
-                    'usuario_id' => $session_data['usuario_id'],
-                    'usuario_nombre' => $session_data['usuario_nombre'],
-                    'rol' => $this->getRol($session_data['tipousuario_id']),
-                    'tipousuario_id' => $session_data['tipousuario_id'],
-                    'usuario_imagen' => $session_data['usuario_imagen'],
-                    'usuario_email' => $session_data['usuario_email'],
-                    'page_title' => 'Admin >> Mi Cuenta',
-                    'thumb' => $session_data['thumb']
+                    'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
         // check if the proveedor exists before trying to edit it
@@ -387,5 +347,26 @@ class Proveedor extends CI_Controller{
         else
             show_error('The proveedor you are trying to delete does not exist.');
     }
-    
+    /* *********Busca proveedores*********** */
+    function buscarproveedor($filtro)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                
+                $data['proveedor'] = $this->Proveedor_model->get_busqueda_proveedor($filtro);
+                $data['a'] = "1";
+                $data['_view'] = 'proveedor/index';
+                $this->load->view('layouts/main',$data);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
 }

@@ -99,8 +99,9 @@ class Proveedor_model extends CI_Model
         return $this->db->delete('proveedor',array('proveedor_id'=>$proveedor_id));
     }
     /* **********busca proveedores************* */
-    function get_busqueda_proveedor($filtro)
+    function get_busqueda_proveedor($filtr)
     {
+        $filtro = str_replace("%20", " ", $filtr);
         $proveedor = $this->db->query("
             SELECT
                 p.*, e.*
@@ -110,7 +111,8 @@ class Proveedor_model extends CI_Model
 
             WHERE
                 p.estado_id=e.estado_id
-                and 
+                and (p.proveedor_nombre like '%".$filtro."%' or p.proveedor_codigo like '%".$filtro."%' 
+                    or p.proveedor_contacto like '%".$filtro."%' or p.proveedor_nit like '%".$filtro."%')
 
             ORDER BY `proveedor_id` DESC
 
