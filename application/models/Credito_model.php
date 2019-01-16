@@ -135,6 +135,7 @@ class Credito_model extends CI_Model
                 c.compra_id = co.compra_id
                 and p.proveedor_id = co.proveedor_id
                 and c.estado_id = e.estado_id
+                and c.estado_id = 8
 
             ORDER BY `credito_id` DESC
 
@@ -161,7 +162,7 @@ class Credito_model extends CI_Model
                 c.venta_id = ve.venta_id
                 and p.cliente_id = ve.cliente_id
                 and c.estado_id = e.estado_id
-
+                and c.estado_id = 8
             ORDER BY `credito_id` DESC
 
             " . $limit_condition . "
