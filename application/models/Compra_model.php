@@ -173,7 +173,7 @@ class Compra_model extends CI_Model
             SELECT
                 c.*, e.estado_descripcion, p.proveedor_nombre, dc.*, i.*, u.usuario_nombre, t.tipotrans_nombre
             FROM
-                compra c, estado e, proveedor p, tipo_transaccion t, detalle_compra_aux dc, producto i, usuario u
+                compra c, estado e, proveedor p, tipo_transaccion t, detalle_compra dc, producto i, usuario u
 
             WHERE
                 c.estado_id = e.estado_id
@@ -183,7 +183,7 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 ".$condicion." 
-            ORDER BY compra_fecha DESC limit 30
+            ORDER BY compra_fecha DESC limit 500
         ")->result_array();
 
         return $compra;
@@ -269,6 +269,12 @@ class Compra_model extends CI_Model
         return $result;
     }
     
+    function detalle_compraux()
+    {
+        $sql = "select compra_id from detalle_compra_aux ";
+        $result = $this->db->query($sql)->result_array();
+        return $result;
+    }
     /*
      * function to delete compra
      */
@@ -372,7 +378,7 @@ class Compra_model extends CI_Model
         $this->db->query($compra);
         $compra_id = $this->db->insert_id();
         $compra_total = $cant * $producto_costo;
-        $detallecomp = "INSERT INTO detalle_compra_aux (compra_id, producto_id, detallecomp_cantidad, detallecomp_costo, detallecomp_total) VALUES ('$compra_id', '$producto', '$cant', '$producto_costo' '$compra_total')";
+        $detallecomp = "INSERT INTO detalle_compra (compra_id, producto_id, detallecomp_cantidad, detallecomp_costo, detallecomp_total) VALUES ('$compra_id', '$producto', '$cant', '$producto_costo' '$compra_total')";
                         
     }       
 }

@@ -237,6 +237,27 @@ class Inventario_model extends CI_Model
         return true;
     }
 
+    function ingresar_producto_a_inventario($producto_id,$existencia)
+    {
+        //Truncar la tabla inventario
+        $sql = "delete from inventario where producto_id = ".$producto_id;
+        $this->db->query($sql);
+        
+        
+        //cargar el inventario actualizado
+        $sql = "insert into inventario
+                (select p.*,".$existencia." as compras, 0 as ventas, 0 as pedidos, ".$existencia." as existencia
+                from producto p  
+                where p.producto_id = ".$producto_id."
+                group by
+                p.producto_id
+                order by p.producto_nombre)";
+
+        $this->db->query($sql);
+        return true;
+    }
+
+
     /*
      * actualizar las cantidades del inventario
      */

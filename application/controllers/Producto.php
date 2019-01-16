@@ -409,7 +409,7 @@ class Producto extends CI_Controller{
             $producto_id = $this->Producto_model->add_producto($params);
 
             $this->load->model('Inventario_model');
-            $this->Inventario_model->ingresar_producto_inventario($producto_id);
+            $this->Inventario_model->ingresar_producto_a_inventario($producto_id,$cantidad);
 
              $sql = "INSERT into detalle_compra_aux(
                 compra_id,

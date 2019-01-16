@@ -542,11 +542,11 @@ function buscar_reporte_producto(producto_id)
     
    if (fecha_desde =='' && fecha_hasta ==''){
 
-    filtro =  " and dc.producto_id = '"+producto_id+"' "
+    filtro =  " and dc.producto_id = "+producto_id+" "
     reportefechadecompra(filtro);
     }else{ 
     filtro = " and date(compra_fecha) >= '"+fecha_desde+"'  and  date(compra_fecha) <='"+fecha_hasta+
-            "' and dc.producto_id = '"+producto_id+"' "
+            "' and dc.producto_id = "+producto_id+" "
     reportefechadecompra(filtro);
 }
 }
@@ -930,7 +930,7 @@ function tablareproducto(opcion)
            $("#tablareproducto").html(html);
         }
         
-    });   
+    });    
 
 } 
 function reportefechadecompra(filtro)
@@ -938,7 +938,7 @@ function reportefechadecompra(filtro)
       
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"compra/buscarrepofecha";
-    var limite = 30;
+    var limite = 500;
      
     $.ajax({url: controlador,
            type:"POST",
@@ -967,7 +967,7 @@ function reportefechadecompra(filtro)
                         
                         var suma = Number(registros[i]["detallecomp_total"]);
                         var total = Number(suma+total);
-                        var bandera = 1;
+                        //var bandera = 1;
                         html += "<tr>";
                       
                         html += "<td align='center'>"+(i+1)+"</td>";

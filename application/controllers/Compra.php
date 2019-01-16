@@ -221,7 +221,7 @@ $data = array(
             $filtro = $this->input->post('filtro');
             
            if ($filtro == null){
-            $result = $this->Compra_model->get_all_compra($params);
+           // $result = $this->Compra_model->get_all_compra($params);
             }
             else{
             $result = $this->Compra_model->fechacompra($filtro);            
