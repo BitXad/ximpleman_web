@@ -1,9 +1,24 @@
+-<?php
 
-<link href="<?php echo base_url('resources/css/formValidation.css')?>" rel="stylesheet">
-<script src="<?php echo base_url('resources/js/formValidation.js');?>"></script>
-<script src="<?php echo base_url('resources/js/formValidationBootstrap.js');?>"></script>
+/*    print "<pre>";
+    print_r($sucursales);
+    print "</pre>";*/
 
-<style>
+?>
+<link rel="stylesheet" href="<?php echo base_url('resources/css/bootstrap-select.min.css');?>" />
+<script src="<?php echo base_url('resources/js/bootstrap-select.js');?>"></script>
+
+<style type="text/css">
+    #grupoForm .selectContainer .form-control-feedback {
+        /* Adjust feedback icon position */
+        right: -15px;
+    }
+    .dropdown-menu > .active > a,
+    .dropdown-menu > .active > a:focus,
+    .dropdown-menu > .active > a:hover {
+        color: #f9fdfb;
+    }
+
     .modal-dialog {
         width: 550px;
     }
@@ -24,6 +39,7 @@
     .error {
         background-color: #dd4b39 !important;
         font-size: 14px;
+
         font-weight: bold;
         color: white;
     }
@@ -85,11 +101,47 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-link"></i>
                                 </span>
-                                <input type="url" class="form-control input-md" name="url" id="url" placeholder="http://example.com" value="<?php echo set_value('url'); ?>" >
+                                <input type="url" class="form-control input-md" name="url" id="url" required placeholder="http://example.com" value="<?php echo set_value('url'); ?>" >
                             </div>
                         </div>
                         <div class="col-sm-2 jlkdfj1">
                             <p class="help-block"><?php echo form_error('url'); ?></p>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">Codigo</label>
+                        <div class="col-md-8">
+                            <div class="input-group in-grp1">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-key"></i>
+                                </span>
+                                <input type="text" class="form-control input-md" name="url" id="codigo" required placeholder="codigo" autocomplete="off" value="<?php echo set_value('codigo'); ?>" >
+                            </div>
+                            <p id="user-result"></p>
+                        </div>
+                        <p id="codigo-val"><img src="<?php echo base_url('resources/images/loader.gif')?>" /></p>
+                        <p class="help-block"><?php echo form_error('codigo'); ?></p>
+
+                        <div class="clearfix"> </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="proveedor">Cuenta Proveedor</label>
+                        <div class="col-xs-8 selectContainer">
+                            <select class="form-control selectpicker show-tick" data-live-search="true"  name="proveedor" id="proveedor" data-width="100%" data-style="btn-primary">
+                                <option value=""></option>
+                                <?php
+                                foreach ($proveedores as $prov) {
+                                    $valores =  $prov->proveedor_id.':'.$prov->proveedor_codigo;
+                                    echo '<option value="'.$valores.'">'.$prov->proveedor_nombre.'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                        <div class="col-sm-2 jlkdfj1">
+                            <p class="help-block"><?php echo form_error('proveedor'); ?></p>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
@@ -101,7 +153,7 @@
                                 <span class="input-group-addon">
                                     <i class="fa fa-info-circle"></i>
                                 </span>
-                                <input type="text" class="form-control input-md" name="nombre" id="nombre" placeholder="nombre sucursal" value="<?php echo set_value('nombre'); ?>">
+                                <input type="text" class="form-control input-md" name="nombre" readonly id="nombre" placeholder="nombre sucursal" value="<?php echo set_value('nombre'); ?>">
                             </div>
                         </div>
                         <div class="col-sm-2 jlkdfj1">
@@ -111,13 +163,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Token</label>
+                        <label class="col-md-3 control-label">Codigo</label>
                         <div class="col-md-8">
                             <div class="input-group in-grp1">
                                 <span class="input-group-addon">
                                     <i class="fa fa-lock"></i>
                                 </span>
-                                <input type="text" class="form-control input-md" name="token" id="token" placeholder="Token" value="<?php echo set_value('token'); ?>">
+                                <input type="text" class="form-control input-md" name="token" readonly id="token" placeholder="Codigo" value="<?php echo set_value('token'); ?>">
                             </div>
                         </div>
                         <div class="col-sm-2 jlkdfj1">
@@ -129,6 +181,7 @@
 
                     <div class="form-group">
                         <div class="col-md-4">
+                            <input type="hidden" name="idproveedor" id="idproveedor" value="">
                             <button type="submit"  class="btn btn-primary btn-lgs" >Crear</button>
                         </div>
                         <div class="clearfix"> </div>
@@ -171,12 +224,12 @@
                         ?>
                         <td data-title="Nro"><?php echo $cont++?></td>
                         <td data-title="Sucursal">
-                            <small ><?php echo $row->sucursal_nombre?></small>
+                            <small ><?php echo $row->proveedor_nombre?></small>
                         </td>
                         <td data-title="URL">
                             <small ><?php echo $row->sucursal_url?></small>
                         </td>
-                        <td data-title="Token"><?php echo $row->sucursal_token?></td>
+                        <td data-title="Token"><?php echo $row->proveedor_codigo?></td>
 
                         <td data-title="Opciones">
                             <a href="<?php echo site_url('sucursal/editar/'.$row->sucursal_id)?>"  class="btn btn-info btn-xs" title="Editar">
@@ -199,91 +252,213 @@
 
 <br>
 
-<div class="box-header">
-    <h2 class="box-title">Sucursales - Reporte</h2>
-    <div class="box-tools">
-
-        <div class="input-group col-xs-4 pull-right">
-            <input type="text"  id="buscar"  class="form-control">
-            <span class="input-group-btn">
-	            <button type="button" class="btn btn-info btn-flat"><span class="fa fa-search"></span></button>
-	        </span>
-        </div>
-
-    </div>
-</div>
 
 <div class="row">
-    <div class="col-md-12">
-        <?php
-/*            print "<pre>";
-            print_r( $sucs);
-            print "</pre>"*/;
-        ?>
-        <div class="xs tabls">
-            <div id="no-more-tables">
+
+    <div class="col-xs-12">
+        <h3 class="box-title">Sucursal - Reporte</h3>
+        <div class="box">
+            <div class="box-header">
+                <div class="box-tools">
+                    <form id="busca-form">
+                        <div class="input-group input-group-sm" >
+                            <input type="text"  id="buscar"  required class="form-control pull-right" autocomplete="off" placeholder="codigo de barras">
+                            <div class="input-group-btn">
+                                <button type="button" class="btn btn-info btn-flat" value="barra"><span class="fa fa-search"> x Barras</span></button>
+                                <button type="button" class="btn btn-primary btn-flat" value="codi"><span class="fa fa-search"> x Codigo</span></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <br>
+            <!-- /.box-header -->
+            <div class="box-body table-responsive no-padding">
                 <div class="ajax-load text-center" style="display:none">
                     <p><img src="<?php echo base_url('resources/images/loader.gif')?>" /> Cargando...</p>
                 </div>
                 <div id='paginacion'></div>
-                <table class="col-md-12 table-bordered table-striped table-condensed cf" id="table_reporte">
-                    <thead class="cf">
+                <table class="table table-bordered table-hover"  id="table_reporte">
+                    <thead>
                     <tr>
-                        <th>###</th>
-                        <th>ID</th>
-                        <th>codigo producto</th>
+                        <th>####</th>
+                        <th>Codigo Producto</th>
                         <?php
-                            foreach ($sucursales as $row){
-                                echo '<th>'.$row->sucursal_nombre.'</th>';
-                            }
+                        foreach ($sucursales as $row){
+                            echo '<th scope="col" colspan="2">'.$row->proveedor_nombre.' <br> Cuantos | Costo '.'</th>';
+                        }
                         ?>
+                        <th>Total</th>
                     </tr>
                     </thead>
                     <tbody>
                     </tbody>
                 </table>
-
                 <div id='pagination'></div>
+            </div>
+            <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+    </div>
+</div>
+
+
+<div class="modal fade" id="pasoModal" tabindex="-1" role="dialog" aria-labelledby="pasoModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    <li>Codigo Producto: <strong id="codi"></strong></li>
+                    <li>Sucursal Origen: <strong id="suc"></strong></li>
+                    <li>Cuantos: <strong id="unids"></strong></li>
+                    <li>Costo: <strong id="costo"></strong></li>
+                    <li>idProveedor: <strong id="idprove"></strong></li>
+                </ul>
+                <form name="pasoForm" class="form-horizontal" id="pasoForm" method="post" accept-charset="utf-8">
+                    <fieldset>
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="unidades">Unidades a Transferir</label>
+                            <div class="col-md-8">
+                                <div class="input-group in-grp1">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-cart-plus"></i>
+                                </span>
+                                    <input type="number" class="form-control input-md"
+                                           required name="unidades" id="unidades" min="1" step="1" max="5" pattern="\d+" value="" >
+                                </div>
+                            </div>
+                            <div class="col-sm-2 jlkdfj1"></div>
+                            <div class="clearfix"> </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-xs-3 control-label" for="sucursal">Sucursal Destino</label>
+                            <div class="col-xs-8 selectContainer">
+                                <select class="form-control" required name="sucursal" id="sucursal" width="100%" >
+                                    <option value=""></option>
+                                    <?php
+                                    foreach ($sucursales as $row){
+                                        echo '<option id="opt'.$row->sucursal_id.'" value="'.$row->sucursal_id.'">'.$row->proveedor_nombre.'</option>';
+                                    }
+                                    ?>
+                                </select>
+                                <span id="error-suc" style="color: red">Debe elegir una sucursal diferente a la de origen</span>
+                            </div>
+                            <div class="col-sm-2 jlkdfj1"></div>
+                            <div class="clearfix"> </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label" for="total">Total (bs)</label>
+                            <div class="col-md-8">
+                                <div class="input-group in-grp1">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-info-circle"></i>
+                                </span>
+                                    <input type="number"  class="form-control input-md" name="total" readonly id="total" >
+                                </div>
+                            </div>
+                            <div class="col-sm-2 jlkdfj1">
+                                <p class="help-block"><?php echo form_error('nombre'); ?></p>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+
+                        <div class="form-group">
+                            id_proveedor:<input type="text" id="id_proveedor" value="">
+                            sucursal_id:<input type="text" id="sucursal_id" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-4">
+                                <button type="submit" id="enviar-traspaso" class="btn btn-primary btn-lgs" >Enviar</button>
+                            </div>
+                            <div class="clearfix"> </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger btn-md" data-dismiss="modal">Cancelar</button>
             </div>
         </div>
     </div>
 </div>
 
-
 <script>
     $(document).ready(function() {
 
-        $('#buscar').on("input", function() {
-            //var dInput = this.value;
-            loadPagination(0);
+        $('#error-suc').hide();
+        $('#codigo-val').hide();
+
+        $( "#proveedor" ).change(function() {
+            var valor = $('#proveedor').val();
+            //console.log('elegido es:'+ valor);
+            var datos = valor.split(':');
+
+            $('#nombre').val( $("#proveedor option:selected").text());
+            $('#token').val(datos[1]);
+            $('#idproveedor').val(datos[0]);
         });
+
+
+        var TIPO = 0;
+        /*        $('#buscar').on("input", function() {
+                    loadPagination(0);
+                });*/
+        $("#busca-form button").click(function(ev){
+            ev.preventDefault();
+            if($(this).attr("value")=="barra"){
+                var codi = $('#buscar').val();
+                if(codi!=''){
+                    TIPO = 0;
+                    loadPagination(0,0);
+                }
+            }
+            if($(this).attr("value")=="codi"){
+                var codi = $('#buscar').val();
+                if(codi!=''){
+                    TIPO = 1;
+                    loadPagination(0,1);
+                }
+            }
+
+        });
+
+        $( "#busca-form" ).submit(function( event ) {
+            event.preventDefault();
+        });
+
 
         $('#pagination').on('click','a',function(e){
             e.preventDefault();
             var pageno = $(this).attr('data-ci-pagination-page');
-            loadPagination(pageno);
+            loadPagination(pageno,TIPO);
         });
 
         $('#paginacion').on('click','a',function(e){
             e.preventDefault();
             var pageno = $(this).attr('data-ci-pagination-page');
-            loadPagination(pageno);
+            loadPagination(pageno,TIPO);
         });
 
-        loadPagination(1);
+        //loadPagination(0,TIPO);
 
-        function loadPagination(pagno){
+        function loadPagination(pagno,tipo){
             //console.log('pagno:'+pagno);
             var codi = $('#buscar').val();
             if(codi==''){
                 codi='_null_';
             }
-/*            var parametros = {
-                'codi': codi
-            };*/
+            /*            var parametros = {
+                            'codi': codi
+                        };*/
             $.ajax({
                 //data:  parametros,
-                url: '<?php echo site_url()?>sucursal/load/'+codi+'/'+pagno,
+                url: '<?php echo site_url()?>sucursal/load/'+codi+'/'+tipo+'/'+pagno,
                 type: 'get',
                 dataType: 'json',
                 beforeSend: function () {
@@ -315,15 +490,21 @@
                 var sucursales = result[index].sucursales;
                 //Local:3,America:4,Colon:6
 
-               // console.log(sucursales);
+                // console.log(sucursales);
 
                 var cuantos = sucursales.split(',');
 
                 var tds = '';
                 var i;
+                var total = 0;
                 for (i = 0; i < cuantos.length; i++) {
                     var cc = cuantos[i].split(':');
-                    tds += '<td>'+cc[1]+'</td>';
+                    tds += '<td>'+cc[1]+'</td>' +
+                        '<td>' +
+                        '<h4><span class="label label-primary">'+cc[2]+'</span></h4>' +
+                        ' / <button onclick="go('+cc[4]+','+cc[1]+','+cc[2]+','+codigo+','+cc[3]+',\''+cc[0]+'\')" type="button" class="btn btn-info btn-xs">Transferir</button>'+
+                        '</td>';
+                    total += parseInt(cc[1]);
                 }
 
                 //var link = result[index].nombre;
@@ -332,9 +513,9 @@
                 var tr = "<tr>";
 
                 tr += "<td data-title='Nro'>"+ sno +"</td>";
-                tr += "<td data-title='ID'>"+ id+"</td>";
-                tr += "<td data-title='Codigo'>"+ codigo +"</td>";
+                tr += "<td data-title='Codigo'><span class=\"label label-success\">"+ codigo +"</span></td>";
                 tr += tds;
+                tr += "<td data-title='Total'>"+ total +"</td>";
                 tr += "</tr>";
 
                 $('#table_reporte tbody').append(tr);
@@ -342,8 +523,143 @@
             }
         }
 
+    });
+
+    function go(idprove,cuantos,costo,codigo,idsuc,suc) {
+        //console.log('codigo: '+codigo+' ,idsuc: '+idsuc+' ,suc: '+suc);
+        $('#codi').html(codigo);
+        $('#suc').html(suc);
+        $('#sucursal_id').val(idsuc);
+        $('#unids').html(cuantos);
+        $('#costo').html(costo);
+        $('#idprove').html(idprove);
+        //proveedor_id
+        //$('#opt'+idsuc).remove();
+
+        $('#pasoModal').modal('show');
+    }
+
+    $("#unidades").on("change paste keyup", function() {
+        var unidades =  Math.round($(this).val());
+        var unids = $('#unids').html();
+        var costo = $('#costo').html();
+        /*        console.log('unidades: '+unidades);
+                console.log('unids: '+unids);*/
+
+        if( parseInt(unidades)<= parseInt(unids) ){
+            //console.log('pasa');
+            var total = parseFloat(unidades * costo);
+            $('#total').val( total );
+        } else{
+            $('#unidades').val( unids  );
+            $('#total').val( parseFloat(unids * costo) );
+        }
 
     });
+
+
+    $( "#sucursal" ).change(function() {
+        var sucusal_id = $('#sucursal').val();
+        if(sucusal_id== $('#sucursal_id').val()){
+            $('#error-suc').show();
+            $('#enviar-traspaso').attr('disabled','true');
+        } else {
+            $('#error-suc').hide();
+            $('#enviar-traspaso').removeAttr('disabled');
+        }
+
+    });
+
+
+    $( "#pasoForm" ).submit(function( event ) {
+        event.preventDefault();
+        var cliente_nombre = $('#cliente_nombre').val();
+        var cliente_codigo = $('#cliente_codigo').val();
+        var cliente_ci = $('#cliente_ci').val();
+        var cliente_nit = $('#cliente_nit').val();
+        var cliente_telefono = $('#cliente_telefono').val();
+
+        var parametros = {
+            'cliente_nombre': cliente_nombre,
+            'cliente_codigo': cliente_codigo,
+            'cliente_ci': cliente_ci,
+            'cliente_nit': cliente_nit,
+            'cliente_telefono': cliente_telefono,
+            'servicio_id': servicio_id
+        };
+
+        $.ajax({
+            data:  parametros,
+            url:   '<?php echo base_url('cliente/create')?>',
+            type:  'post',
+//                    dataType: "json",
+            beforeSend: function () {
+
+            },
+            success:  function (response) {
+                if(response==1){
+                    $('#nombre-cliente').html(cliente_nombre);
+                    $('#telefono-cliente').html(cliente_telefono);
+                    $('#codigo-cliente').html(cliente_codigo);
+                    $('#myModal').modal('hide');
+                } else {
+                    console.log('error');
+                }
+
+            }
+        });
+
+
+    });
+
+
+    var x_timer;
+    $("#codigo").keyup(function (e){
+        clearTimeout(x_timer);
+        var codigo = $(this).val();
+        //if(  isNaN(user_numero) ){
+        x_timer = setTimeout(function(){
+            check_codigo_ajax(codigo);
+        }, 1000);
+        //}
+    });
+
+    function check_codigo_ajax(codigo){
+        var link = $('#url').val();
+        var parametros = {
+            'codigo':codigo,
+            'link': "'"+link+"'"
+        };
+
+        $.ajax({
+            data:  parametros,
+            url:   '<?php echo base_url('sucursal/codigo_correcto')?>',
+            type:  'post',
+            beforeSend: function () {
+                $("#codigo-val").show();
+            },
+            success:  function (response) {
+                console.log(response);
+                $("#codigo-val").hide('');
+                if(response!=-1){
+                    if(response=='1'){
+                        console.log('callme');
+                        $("#user-result").html('<small style="color: #f0120a;" class="help-block"><i class="fa fa-close"></i> El codigo: '+codigo+' es INVALIDO</small>');
+                        $("#sucursalForm").attr('class', 'form-group has-feedback has-error');
+                        $("#boton").attr( "disabled","disabled" );
+                    }
+                    if(response=='0'){
+                        $('#codigo-val').hide();
+                        $("#user-result").html('<i class="fa fa-check" style="color: #00CC00;"></i>');
+                        $("#sucursalForm").attr('class', 'form-group');
+                        $("#boton").removeAttr("disabled");
+                    }
+                }
+
+            }
+        });
+    }
+
 
 
 </script>

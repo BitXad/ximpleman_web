@@ -283,4 +283,21 @@ class Empresa extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+
+    /*add by fito*/
+
+    public function upgrade($codigo,$token)
+    {
+        if($token=='IongAszywDCxmGsZWKrHrhQdEnvtFESX'){
+            $data = array(
+                'empresa_codigo' => $codigo
+            );
+
+            $this->Empresa_model->update_empresa(1, $data);
+
+            echo '1';
+        } else {
+            echo 'error';
+        }
+    }
 }
