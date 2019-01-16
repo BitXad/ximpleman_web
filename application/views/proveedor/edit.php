@@ -22,33 +22,25 @@
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="estado_id" class="control-label">Estado</label>
+						<label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<select name="estado_id" class="form-control">
-								<option value="1">ACTIVO</option>
-								<option value="2">INACTIVO</option>
-								
-							</select>
+                                                    <input type="text" name="proveedor_nombre" value="<?php echo ($this->input->post('proveedor_nombre') ? $this->input->post('proveedor_nombre') : $proveedor['proveedor_nombre']); ?>" class="form-control" id="proveedor_nombre" required />
+							<span class="text-danger"><?php echo form_error('proveedor_nombre');?></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="proveedor_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_codigo" value="<?php echo ($this->input->post('proveedor_codigo') ? $this->input->post('proveedor_codigo') : $proveedor['proveedor_codigo']); ?>" class="form-control" id="proveedor_codigo" />
+							<input type="text" name="proveedor_codigo" value="<?php echo ($this->input->post('proveedor_codigo') ? $this->input->post('proveedor_codigo') : $proveedor['proveedor_codigo']); ?>" class="form-control" id="proveedor_codigo" required />
 							<span class="text-danger"><?php echo form_error('proveedor_codigo');?></span>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
-						<div class="form-group">
-							<input type="text" name="proveedor_nombre" value="<?php echo ($this->input->post('proveedor_nombre') ? $this->input->post('proveedor_nombre') : $proveedor['proveedor_nombre']); ?>" class="form-control" id="proveedor_nombre" />
-							<span class="text-danger"><?php echo form_error('proveedor_nombre');?></span>
-						</div>
-					</div>
+					
 					<div class="col-md-6">
 						<label for="proveedor_foto" class="control-label">Foto</label>
 						<div class="form-group">
                             <input type="file" name="chivo" class="form-control" id="chivox" kl_virtual_keyboard_secure_input="on">
+                            <input type="hidden" name="proveedor_foto1" value="<?php echo ($this->input->post('proveedor_foto') ? $this->input->post('proveedor_foto') : $proveedor['proveedor_foto']); ?>" class="form-control" id="proveedor_foto1" />
                             <!--<small class="help-block" data-fv-result="INVALID" data-fv-for="chivo" data-fv-validator="notEmpty" style=""></small>-->
                         
                             
@@ -81,7 +73,7 @@
 					<div class="col-md-6">
 						<label for="proveedor_email" class="control-label">Email</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_email" value="<?php echo ($this->input->post('proveedor_email') ? $this->input->post('proveedor_email') : $proveedor['proveedor_email']); ?>" class="form-control" id="proveedor_email" />
+                                                    <input type="email" name="proveedor_email" value="<?php echo ($this->input->post('proveedor_email') ? $this->input->post('proveedor_email') : $proveedor['proveedor_email']); ?>" class="form-control" id="proveedor_email" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -100,6 +92,16 @@
 						<label for="proveedor_autorizacion" class="control-label">Autorización</label>
 						<div class="form-group">
 							<input type="text" name="proveedor_autorizacion" value="<?php echo ($this->input->post('proveedor_autorizacion') ? $this->input->post('proveedor_autorizacion') : $proveedor['proveedor_autorizacion']); ?>" class="form-control" id="proveedor_autorizacion" />
+						</div>
+					</div>
+                                        <div class="col-md-6">
+						<label for="estado_id" class="control-label">Estado</label>
+						<div class="form-group">
+							<select name="estado_id" class="form-control">
+								<option value="1">ACTIVO</option>
+								<option value="2">INACTIVO</option>
+								
+							</select>
 						</div>
 					</div>
 				</div>

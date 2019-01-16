@@ -26,14 +26,14 @@
 					<div class="col-md-6">
 						<label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" class="form-control" id="proveedor_nombre" />
+							<input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" class="form-control" id="proveedor_nombre" required />
 							<span class="text-danger"><?php echo form_error('proveedor_nombre');?></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="proveedor_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_codigo" value="<?php echo $this->input->post('proveedor_codigo'); ?>" class="form-control" id="proveedor_codigo" />
+                                                    <input type="text" name="proveedor_codigo" value="<?php echo $this->input->post('proveedor_codigo'); ?>" class="form-control" id="proveedor_codigo" required />
 							<span class="text-danger"><?php echo form_error('proveedor_codigo');?></span>
 						</div>
 					</div>
@@ -73,7 +73,7 @@
 					<div class="col-md-6">
 						<label for="proveedor_email" class="control-label">Email</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_email" value="<?php echo $this->input->post('proveedor_email'); ?>" class="form-control" id="proveedor_email" />
+                                                    <input type="email" name="proveedor_email" value="<?php echo $this->input->post('proveedor_email'); ?>" class="form-control" id="proveedor_email" />
 						</div>
 					</div>
 					<div class="col-md-6">

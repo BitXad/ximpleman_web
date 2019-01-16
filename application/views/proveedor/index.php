@@ -81,7 +81,7 @@
                             <td><?php echo $cont; ?></td>
                             <td><div id="horizontal">
                                     <div>
-                                    <?php echo '<img src="'.site_url('/resources/images/proveedores/'.$p['proveedor_foto']).'" />'; ?>
+                                    <?php echo '<img src="'.site_url('/resources/images/proveedores/thumb_'.$p['proveedor_foto']).'" />'; ?>
                                     </div>
                                     <div><?php
                                         echo $p['proveedor_nombre']."<br>";
