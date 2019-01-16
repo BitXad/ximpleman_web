@@ -874,8 +874,8 @@ $data = array(
                 
                 from producto where producto_id = ".$producto_id."
                 )";
-        $this->Compra_model->ejecutar($sql);
-
+        $this->db->query($sql);
+        $detalles = $this->db->insert_id();
                 $pro = "UPDATE producto
                 SET
                       
@@ -887,7 +887,8 @@ $data = array(
                 $llenar =    "UPDATE inventario i, detalle_compra_aux d
                             SET i.existencia =  i.existencia+d.detallecomp_cantidad 
                             WHERE  d.compra_id = ".$compra_id." 
-                            and i.producto_id = d.producto_id ";
+                            and i.producto_id = ".$producto_id."
+                            and d.detallecomp_id = ".$detalles." ";
                             
              $this->db->query($llenar);
         $this->Compra_model->ejecutar($pro);
