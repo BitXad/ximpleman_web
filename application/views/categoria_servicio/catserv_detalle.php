@@ -1,5 +1,6 @@
+<script src="<?php echo base_url('resources/js/servicio_mostrarsubcat_serv.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -37,7 +38,7 @@
 						<th>Descripción</th>
 						<th>Sub<br>Categorias</th>
                     </tr>
-                    <tbody class="buscar">
+                    <tbody class="buscar" id="subcatserv">
                     <?php $i = 1; $cont = 0;
                           $categoria = "";
                           foreach($categoria_servicio as $c){
