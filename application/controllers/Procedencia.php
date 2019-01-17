@@ -48,9 +48,11 @@ class Procedencia extends CI_Controller{
                 );
         if(isset($_POST) && count($_POST) > 0)     
         {   
+            //se inicia en ACTIVO
+            $estado_id = 1;
             $params = array(
 				'procedencia_descripcion' => $this->input->post('procedencia_descripcion'),
-				'estado_id' => $this->input->post('estado_id'),
+				'estado_id' => $estado_id,
             );
             
             $procedencia_id = $this->Procedencia_model->add_procedencia($params);
@@ -58,8 +60,6 @@ class Procedencia extends CI_Controller{
         }
         else
         {
-            $this->load->model('Estado_model');
-	    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
             $data['_view'] = 'procedencia/add';
             $this->load->view('layouts/main',$data);
         }

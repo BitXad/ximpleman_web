@@ -13,22 +13,6 @@
 							<input type="text" name="cattrab_descripcion" value="<?php echo $this->input->post('cattrab_descripcion'); ?>" class="form-control" id="cattrab_descripcion" required />
 						</div>
 					</div>
-                                        <div class="col-md-6">
-						<label for="estado_id" class="control-label">Estado</label>
-						<div class="form-group">
-							<select name="estado_id" class="form-control">
-								<option value="">- ESTADO -</option>
-								<?php 
-								foreach($all_estado as $estado)
-								{
-									$selected = ($estado['estado_id'] == 1) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
 				</div>
 			</div>
           	<div class="box-footer">

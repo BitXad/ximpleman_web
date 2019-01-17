@@ -129,6 +129,7 @@ class Cliente extends CI_Controller{
                             'tipocliente_id' => $this->input->post('tipocliente_id'),
                             'categoriaclie_id' => $this->input->post('categoriaclie_id'),
                             'cliente_codigo' => $this->input->post('cliente_codigo'),
+                            'categoriacliezona_id' => $this->input->post('categoriacliezona_id'),
                             'cliente_nombre' => $this->input->post('cliente_nombre'),
                             'cliente_ci' => $this->input->post('cliente_ci'),
                             'cliente_direccion' => $this->input->post('cliente_direccion'),
@@ -142,7 +143,7 @@ class Cliente extends CI_Controller{
                             'cliente_longitud' => $this->input->post('cliente_longitud'),
                             'cliente_nit' => $this->input->post('cliente_nit'),
                             'cliente_razon' => $this->input->post('cliente_razon'),
-                            'usuario_id' => $usuario_id,
+                            'usuario_id' => $this->input->post('usuario_id'),
                 );
             
             $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -153,6 +154,8 @@ class Cliente extends CI_Controller{
 			$this->load->model('Estado_model');
 			$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
                         
+                        $this->load->model('Categoria_clientezona_model');
+                        $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
                         /***AÃ±adido por Mario Escobar parqa asignarle a un usuario prevendedor***/
                         $this->load->model('Usuario_model');
 			$data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
@@ -272,6 +275,7 @@ class Cliente extends CI_Controller{
 					'tipocliente_id' => $this->input->post('tipocliente_id'),
 					'categoriaclie_id' => $this->input->post('categoriaclie_id'),
 					'cliente_codigo' => $this->input->post('cliente_codigo'),
+					'categoriacliezona_id' => $this->input->post('categoriacliezona_id'),
 					'cliente_nombre' => $this->input->post('cliente_nombre'),
 					'cliente_ci' => $this->input->post('cliente_ci'),
 					'cliente_direccion' => $this->input->post('cliente_direccion'),
@@ -285,7 +289,7 @@ class Cliente extends CI_Controller{
 					'cliente_longitud' => $this->input->post('cliente_longitud'),
 					'cliente_nit' => $this->input->post('cliente_nit'),
 					'cliente_razon' => $this->input->post('cliente_razon'),
-                                        'usuario_id' => $usuario_id,
+					'usuario_id' => $this->input->post('usuario_id'),
                 );
 
                 $this->Cliente_model->update_cliente($cliente_id,$params);            
@@ -296,6 +300,8 @@ class Cliente extends CI_Controller{
 				$this->load->model('Estado_model');
 				$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
                                 
+                                $this->load->model('Categoria_clientezona_model');
+                                $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
                                 /***AÃ±adido por Mario Escobar parqa asignarle a un usuario prevendedor***/
                                 $this->load->model('Usuario_model');
 			        $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
@@ -356,7 +362,7 @@ class Cliente extends CI_Controller{
     }
     
     /*
-     * Se A«Ðade un nuevo Cliente desde Detalle - Servicios por MEV
+     * Se AÃ±ade un nuevo Cliente desde Detalle - Servicios por MEV
      */
     function add_new($servicio_id)
     {
@@ -421,7 +427,7 @@ class Cliente extends CI_Controller{
                                     'cliente_longitud' => $this->input->post('cliente_longitud'),
                                     'cliente_nit' => $cliente_nit,
                                     'cliente_razon' => $this->input->post('cliente_nombre'),
-                                    'usuario_id' => $usuario_id,
+                                    'usuario_id' => $this->input->post('usuario_id'),
                                 );
                             $cliente_id = $this->Cliente_model->add_cliente($params);
                             //tipousuario_id = 5 --> porque el tipo de usario es CLIENTE
@@ -552,6 +558,7 @@ class Cliente extends CI_Controller{
 				'tipocliente_id' => $this->input->post('tipocliente_id'),
 				'categoriaclie_id' => $this->input->post('categoriaclie_id'),
 				'cliente_codigo' => $this->input->post('cliente_codigo'),
+				'categoriacliezona_id' => $this->input->post('categoriacliezona_id'),
 				'cliente_nombre' => $this->input->post('cliente_nombre'),
 				'cliente_ci' => $this->input->post('cliente_ci'),
 				'cliente_direccion' => $this->input->post('cliente_direccion'),
