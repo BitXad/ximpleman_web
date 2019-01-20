@@ -28,20 +28,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <body>
 <div class="login-page">
     <div class="login-main">
+        <p class="center-block">
+            <?php
+            echo "<div class='error_msg'>";
+            if (isset($error_message)) { echo $error_message;}
+            echo validation_errors();
+            echo "</div>";
+            ?>
+        </p>
         <div class="login-head">
-            <center>
-                <h2>Ximpleman</h2>
-                <h4>
-                <?php
-                    echo "<div class='error_msg'>";
-                    if (isset($error_message)) {
-                        echo $error_message;
-                    }
-                    echo validation_errors();
-                    echo "</div>";
-                ?>
-                </h4>
-            </center>
+              <h2 class="text-center">Ximpleman</h2>
         </div>
         <div class="login-block">
             <!--				<form>-->

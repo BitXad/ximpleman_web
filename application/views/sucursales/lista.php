@@ -1,7 +1,7 @@
 -<?php
 
 /*    print "<pre>";
-    print_r($sucursales);
+    print_r($proveedores);
     print "</pre>";*/
 
 ?>
@@ -111,13 +111,13 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Codigo</label>
+                        <label class="col-md-3 control-label">Ingrese Codigo de la Sucursal</label>
                         <div class="col-md-8">
                             <div class="input-group in-grp1">
                                 <span class="input-group-addon">
                                     <i class="fa fa-key"></i>
                                 </span>
-                                <input type="text" class="form-control input-md" name="url" id="codigo" required placeholder="codigo" autocomplete="off" value="<?php echo set_value('codigo'); ?>" >
+                                <input type="text" class="form-control input-md" name="codigo" id="codigo" required placeholder="codigo" autocomplete="off" value="<?php echo set_value('codigo'); ?>" >
                             </div>
                             <p id="user-result"></p>
                         </div>
@@ -163,7 +163,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Codigo</label>
+                        <label class="col-md-3 control-label">Codigo Proveedor</label>
                         <div class="col-md-8">
                             <div class="input-group in-grp1">
                                 <span class="input-group-addon">
@@ -280,16 +280,16 @@
                 <div id='paginacion'></div>
                 <table class="table table-bordered table-hover"  id="table_reporte">
                     <thead>
-                    <tr>
-                        <th>####</th>
-                        <th>Codigo Producto</th>
-                        <?php
-                        foreach ($sucursales as $row){
-                            echo '<th scope="col" colspan="2">'.$row->proveedor_nombre.' <br> Cuantos | Costo '.'</th>';
-                        }
-                        ?>
-                        <th>Total</th>
-                    </tr>
+                        <tr>
+                            <th>####</th>
+                            <th>Codigo Producto</th>
+                            <?php
+                            foreach ($sucursales as $row){
+                                echo '<th scope="col" colspan="2">'.$row->proveedor_nombre.' <br> Cuantos | Costo '.'</th>';
+                            }
+                            ?>
+                            <th>Total</th>
+                        </tr>
                     </thead>
                     <tbody>
                     </tbody>
@@ -319,66 +319,66 @@
                 </ul>
                 <form name="pasoForm" class="form-horizontal" id="pasoForm" method="post" accept-charset="utf-8">
                     <fieldset>
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="unidades">Unidades a Transferir</label>
-                            <div class="col-md-8">
-                                <div class="input-group in-grp1">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="unidades">Unidades a Transferir</label>
+                        <div class="col-md-8">
+                            <div class="input-group in-grp1">
                                 <span class="input-group-addon">
                                     <i class="fa fa-cart-plus"></i>
                                 </span>
-                                    <input type="number" class="form-control input-md"
-                                           required name="unidades" id="unidades" min="1" step="1" max="5" pattern="\d+" value="" >
-                                </div>
+                                <input type="number" class="form-control input-md"
+                                       required name="unidades" id="unidades" min="1" step="1" max="5" pattern="\d+" value="" >
                             </div>
-                            <div class="col-sm-2 jlkdfj1"></div>
-                            <div class="clearfix"> </div>
                         </div>
+                        <div class="col-sm-2 jlkdfj1"></div>
+                        <div class="clearfix"> </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-xs-3 control-label" for="sucursal">Sucursal Destino</label>
-                            <div class="col-xs-8 selectContainer">
-                                <select class="form-control" required name="sucursal" id="sucursal" width="100%" >
-                                    <option value=""></option>
-                                    <?php
+                    <div class="form-group">
+                        <label class="col-xs-3 control-label" for="sucursal">Sucursal Destino</label>
+                        <div class="col-xs-8 selectContainer">
+                            <select class="form-control" required name="sucursal" id="sucursal" width="100%" >
+                                <option value=""></option>
+                                <?php
                                     foreach ($sucursales as $row){
                                         echo '<option id="opt'.$row->sucursal_id.'" value="'.$row->sucursal_id.'">'.$row->proveedor_nombre.'</option>';
                                     }
-                                    ?>
-                                </select>
-                                <span id="error-suc" style="color: red">Debe elegir una sucursal diferente a la de origen</span>
-                            </div>
-                            <div class="col-sm-2 jlkdfj1"></div>
-                            <div class="clearfix"> </div>
+                                ?>
+                            </select>
+                            <span id="error-suc" style="color: red">Debe elegir una sucursal diferente a la de origen</span>
                         </div>
+                        <div class="col-sm-2 jlkdfj1"></div>
+                        <div class="clearfix"> </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="col-md-3 control-label" for="total">Total (bs)</label>
-                            <div class="col-md-8">
-                                <div class="input-group in-grp1">
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="total">Total (bs)</label>
+                        <div class="col-md-8">
+                            <div class="input-group in-grp1">
                                 <span class="input-group-addon">
                                     <i class="fa fa-info-circle"></i>
                                 </span>
-                                    <input type="number"  class="form-control input-md" name="total" readonly id="total" >
-                                </div>
+                                <input type="number"  class="form-control input-md" name="total" readonly id="total" >
                             </div>
-                            <div class="col-sm-2 jlkdfj1">
-                                <p class="help-block"><?php echo form_error('nombre'); ?></p>
-                            </div>
-                            <div class="clearfix"> </div>
                         </div>
+                        <div class="col-sm-2 jlkdfj1">
+                            <p class="help-block"><?php echo form_error('nombre'); ?></p>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </div>
 
                         <div class="form-group">
                             id_proveedor:<input type="text" id="id_proveedor" value="">
                             sucursal_id:<input type="text" id="sucursal_id" value="">
                         </div>
 
-                        <div class="form-group">
-                            <div class="col-md-4">
-                                <button type="submit" id="enviar-traspaso" class="btn btn-primary btn-lgs" >Enviar</button>
-                            </div>
-                            <div class="clearfix"> </div>
+                    <div class="form-group">
+                        <div class="col-md-4">
+                            <button type="submit" id="enviar-traspaso" class="btn btn-primary btn-lgs" >Enviar</button>
                         </div>
-                    </fieldset>
+                        <div class="clearfix"> </div>
+                    </div>
+                </fieldset>
                 </form>
             </div>
             <div class="modal-footer">
@@ -448,7 +448,7 @@
         //loadPagination(0,TIPO);
 
         function loadPagination(pagno,tipo){
-            //console.log('pagno:'+pagno);
+            console.log('pagno:'+pagno+' ,tipo:'+tipo);
             var codi = $('#buscar').val();
             if(codi==''){
                 codi='_null_';
@@ -490,7 +490,7 @@
                 var sucursales = result[index].sucursales;
                 //Local:3,America:4,Colon:6
 
-                // console.log(sucursales);
+               // console.log(sucursales);
 
                 var cuantos = sucursales.split(',');
 
@@ -543,8 +543,8 @@
         var unidades =  Math.round($(this).val());
         var unids = $('#unids').html();
         var costo = $('#costo').html();
-        /*        console.log('unidades: '+unidades);
-                console.log('unids: '+unids);*/
+/*        console.log('unidades: '+unidades);
+        console.log('unids: '+unids);*/
 
         if( parseInt(unidades)<= parseInt(unids) ){
             //console.log('pasa');
