@@ -131,10 +131,6 @@
                             min: 3,
                             max: 150,
                             message: 'Nombre debe tener al menos 3 caracteres y maximo 150'
-                        },
-                        regexp: {
-                            regexp: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u,
-                            message: 'Solo es posible usar letras y espacios en blanco'
                         }
                     }
                 },
