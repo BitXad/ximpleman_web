@@ -162,7 +162,7 @@ class Pedido extends CI_Controller{
             {    $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); }
 
             $data['pedido_id'] = $pedido_id;
-            $data['detalle_pedido'] = $this->Pedido_model->get_detalle_pedido($pedido_id);
+           // $data['detalle_pedido'] = $this->Pedido_model->get_detalle_pedido($pedido_id);
             $data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
             $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
 

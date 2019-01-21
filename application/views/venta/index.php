@@ -43,6 +43,9 @@
 
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
+<input type="text" value="" id="parametro" hidden>
+
+
 
 
 <div class="box-header no-print">
@@ -56,6 +59,7 @@
                         <option value="4">Todos las ventas</option>
                         <option value="5">Ventas por fecha</option>
                     </select>
+                    <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Registrar Venta</a>
                 </div>
 </div>
@@ -65,10 +69,10 @@
     <br>
     <center>            
         <div class="col-md-2">
-            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" value="<?php echo date("Y-m-d");?>" name="fecha_desde" required="true">
         </div>
         <div class="col-md-2">
-            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" value="<?php echo date("Y-m-d");?>"  name="fecha_hasta" required="true">
         </div>
         
         <div class="col-md-2">
@@ -154,28 +158,3 @@
     </div>
 </div>
 
-
-
-    <!--<table class="table table-striped table-condensed" id="mitabla">
-
-        <tr id="x1" style="display:none">
-
-        <td>Celda 1</td>
-
-        <td>Celda 2</td>
-
-        <td>Celda 3</td>
-
-      </tr>
-
-      <tr id="x2">
-
-        <td>Celda 4</td>
-
-        <td>Celda 5</td>
-
-        <td>Celda 6</td>
-
-      </tr>
-
-    </table>-->

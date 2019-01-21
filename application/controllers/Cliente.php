@@ -545,14 +545,19 @@ class Cliente extends CI_Controller{
     function clientenuevo($pedido_id)
     {   
         
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+
         
-        $this->load->library('form_validation');
+                $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
 		$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
 		
-		if($this->form_validation->run())     
+        if($this->form_validation->run())     
         {   
+            $usuario_id = $session_data['usuario_id'];
             $params = array(
 				'estado_id' => $this->input->post('estado_id'),
 				'tipocliente_id' => $this->input->post('tipocliente_id'),
@@ -572,6 +577,7 @@ class Cliente extends CI_Controller{
 				'cliente_longitud' => $this->input->post('cliente_longitud'),
 				'cliente_nit' => $this->input->post('cliente_nit'),
 				'cliente_razon' => $this->input->post('cliente_razon'),
+				'usuario_id' => $usuario_id,
             );
             
             $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -593,6 +599,15 @@ class Cliente extends CI_Controller{
             $data['_view'] = 'cliente/clientenuevo';
             $this->load->view('layouts/main',$data);
         }
+        
+       }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }        
+        
     } 
     
     

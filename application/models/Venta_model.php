@@ -379,6 +379,34 @@ class Venta_model extends CI_Model
         return $ventas;
     }
       
+    function mostrar_ventas($condicion)
+    {    
+
+
+        $sql = "SELECT
+                v.venta_id,
+                round(v.venta_total,2) as venta,
+                round(sum(d.detalleven_cantidad * d.detalleven_precio),2) as detalle,
+
+                if((
+                round(v.venta_total,2) =
+                round(sum(d.detalleven_cantidad * d.detalleven_precio),2))
+                , 0, 1) as resultado,
+                sum(d.detalleven_cantidad) as items
+
+
+                from venta v,detalle_venta d
+                where 
+                v.venta_id = d.venta_id
+                ".$condicion."
+                group by d.venta_id
+                ";
+
+        $ventas = $this->db->query($sql)->result_array();
+
+        return $ventas;
+    }
+      
 function get_busqueda($condicion)
     {
         

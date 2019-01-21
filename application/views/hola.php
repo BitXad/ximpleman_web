@@ -42,7 +42,7 @@
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="<?php echo base_url('venta'); ?>" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
