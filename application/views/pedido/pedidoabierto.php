@@ -92,7 +92,7 @@ function mostrar_ocultar(){
         <center>            
             <a href="<?php echo base_url('cliente/clientenuevo/'.$pedido[0]['pedido_id']); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie</small></a>
             <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Clie</small></a>
-            <a href="#" data-toggle="modal" data-target="#modalbuscarprod" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>
+            <a href="<?php echo base_url('pedido'); ?>" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Pedidos</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
     </div>
@@ -194,9 +194,9 @@ function mostrar_ocultar(){
 				</button>
 				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
                                 
-      <div class="input-group"> <span class="input-group-addon">Buscar</span>
-        <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del huesped...">
-      </div>
+                                <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                                  <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del huesped...">
+                                </div>
                                 
 			</div>
 			<div class="modal-body">
@@ -204,8 +204,9 @@ function mostrar_ocultar(){
                         <div class="box-body table-responsive">
                         <table class="table table-striped" id="mitabla">
                             <tr>
-                                                        <th>N</th>
-                                                        <th> Nombres</th>
+                                                        <th>#</th>
+                                                        <th>imagen</th>
+                                                        <th>Nombres</th>
                             </tr>
                             <tbody class="buscar2">
                  
@@ -215,19 +216,12 @@ function mostrar_ocultar(){
                                  <form action="<?php echo base_url('cliente/cambiarcliente/'); ?>"  method="POST" class="form">
                               
                                     <td><?php echo $i++; ?></td>
+                                    <td>
+                                    <img src="<?php echo base_url('resources/images/clientes/thumb_'.$h['cliente_foto']); ?>" class="img-circle" width="50" height="50">
+                                    </td>
 
                                     <td>
-                                        <div class="col-md-3">
-                                            <center>
-                                                
-                                            
-                                            <h1 style="color: #0073b7">
-                                            <i class="fa fa-user fa-3x"></i>   
-                                            </h1>
-                                            
-                                            </center>    
-                                        </div>
-                                        <div class="col-md-9">
+    
 
                                             <b> <?php echo $h['cliente_nombre']; ?></b><br>
                                         C.I.:<?php echo $h['cliente_ci']; ?> | Telf.:<?php echo $h['cliente_telefono']; ?> <br>
@@ -240,11 +234,9 @@ function mostrar_ocultar(){
                                         RAZON SOCIAL:
                                         <input type="text" id="cliente_razon" name="cliente_razon" class="form-control" placeholder="Razón Social" required="true" value="<?php echo $h['cliente_razon']; ?>">
                                        
-                                        <button type="submit" class="btn btn-success btn-xs">
-                                            <i class="fa fa-check"></i> Añadir
+                                        <button type="submit" class="btn btn-success btn-xs btn-block">
+                                            <i class="fa fa-check"></i> Seleccionar Cliente
                                         </button>
-
-                                        </div>
                                         
                                     </td>
                                 
@@ -268,78 +260,7 @@ function mostrar_ocultar(){
 <!----------------- modal productos---------------------------------------------->
 
 
-<div class="modal fade" id="modalbuscarprod" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-	<div class="modal-dialog" role="document">
-		<div class="modal-content table-responsive">
-			<div class="modal-header">
-                            
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
 
-                                
-                                
-<!---- =================== INICIO BUSCADOR ================================== -->
-            <div class="row">
-            
-            <!--------------------- parametro de buscador por codigo --------------------->
-
-            <div class="col-md-4">
-                  <div class="input-group">
-                      <span class="input-group-addon"> 
-                        <i class="fa fa-barcode"></i>
-                      </span>           
-                      <input type="text" name="codigo" id="codigo" class="form-control" placeholder="código" onkeyup="validar(event,5)">
-                  </div>
-            </div>      
-           <!--------------------- fin buscador por codigo --------------------->
-           
-
-            <div class="col-md-8">
-                
-<!--            ------------------- parametro de buscador --------------------->
-                       
-                  <div class="input-group">
-                      <span class="input-group-addon"> 
-                        Buscar 
-                      </span>           
-                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,6)">
-                  </div>
-            
-<!--            ------------------- fin parametro de buscador ------------------- -->
-            
-            </div>
-            
-        </div>
-<!---- =================== INICIO BUSCADOR ==================================>
--->                                
-			</div>
-			<div class="modal-body">
-                        <!--------------------- TABLA---------------------------------------------------->
-                        <div class="box-body">
-                        <table class="table table-striped" id="mitabla">
-                            <tr>
-                                    <th>#</th>
-                                    <th>Datos</th>
-                                    <th>Producto</th>
-                            </tr>
-                            <tbody class="buscar3"  id="tablaresultadospedido">
-<!------------------------------------------------------                            
-                         
-<!- --------------------------------------- ->
-
--->                            </tbody>
-                        </table>
-                                   
-                    </div>
-                        
-
-                        <!----------------------FIN TABLA--------------------------------------------------->
-			</div>
-		</div>
-	</div>
-</div>
 
 <!---------------------- fin modal productos --------------------------------------------------->
 
