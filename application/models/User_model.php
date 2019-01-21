@@ -172,6 +172,19 @@ class User_model extends CI_Model
         }
     }
 
-
+    public function hay_login1($login)
+    {
+        $this->db->select('usuario_id');
+        $this->db->from('usuario');
+        $this->db->where('usuario_login', $login);
+        //$var = $this->db->last_query();
+        //return $var;
+        $query = $this->db->get();
+        if ( $query->num_rows() > 0 ){
+            return 1; // si hay
+        } else {
+            return 0; // no hay
+        }
+    }
 
 }

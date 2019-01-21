@@ -101,7 +101,7 @@ class Sucursal extends CI_Controller
 
                     $data = array(
                         'sucursal_url' => $this->input->post('url'),
-                        'id_proveedor' => $this->input->post('idproveedor')
+                        'id_proveedor' => $this->input->post('idproveedor'),
                     );
 
                     $this->sucursal_model->insert_sucursal($data);
@@ -229,13 +229,16 @@ class Sucursal extends CI_Controller
     public function items($codi,$id,$tipo,$limit,$start){
 
         $sucursal = $this->sucursal_model->get_sucursal2($id);
+        //var_dump($sucursal);
         // set HTTP header
         $headers = array('Content-Type: application/json',);
 
 // the url of the API you are contacting to 'consume'
         $url = $sucursal->sucursal_url.'/sucursal/info/'.$limit.'/'.$start.'/'.$codi.'/'.$tipo;
+        //echo $url;
 
 // Open connection
+
         $ch = curl_init();
 
 // Set the url, number of GET vars, GET data
@@ -280,24 +283,6 @@ class Sucursal extends CI_Controller
         return $rows1;
     }
 
-    public function buscar_agregar_sucursal($codigo,$sucursal,$cuantos,$items)
-    {
-
-        print "<pre>";
-        print_r( $items);
-        print "</pre>";
-        /*        foreach ($items as $item){
-                    if($codigo==$item['codigo']){
-
-                        $si = array(
-                            $sucursal => $cuantos
-                        );
-                        array_push($item,$si);
-                        return $item;
-                    }
-                }*/
-    }
-
     public function load(){
         //$rowno = $this->input->post('pagno');
         //$codi  = '';
@@ -329,6 +314,7 @@ class Sucursal extends CI_Controller
 
             $info_sucursal = $this->items($codi,$sucursal->sucursal_id, $tipo, $rowperpage, $rowno);
             //var_dump($info_sucursal);
+
             $info_sucursal = json_decode($info_sucursal);
 
             foreach ($info_sucursal as $row2){

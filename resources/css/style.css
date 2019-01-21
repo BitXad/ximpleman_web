@@ -1732,9 +1732,9 @@ p.grid1 {
     padding: 6.5em 0em;
 }
 .login-head {
-    background: url(../images/login.jpg)no-repeat;
+/*    background: url(../images/login.jpg)no-repeat;
     background-size: cover;
-    min-height: 150px;
+    min-height: 150px;*/
 }
 .login-head h1 {
     font-size:3em;
@@ -1744,7 +1744,7 @@ p.grid1 {
     font-family: 'Carrois Gothic', sans-serif;
 }
 .login-block {
-    padding: 4em 2em;
+    padding: 1em 2em;
 }
 .login-block input[type="text"], .login-block input[type="password"] {
     font-size: 0.9em;
