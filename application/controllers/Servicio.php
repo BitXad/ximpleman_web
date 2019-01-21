@@ -23,7 +23,7 @@ class Servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $data['servicio'] = $this->Servicio_model->get_all_servicio_now();
+        $data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
         $data['a']=$es;
         
         $this->load->model('Estado_model');
@@ -1004,6 +1004,43 @@ class Servicio extends CI_Controller{
                 $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
                 echo json_encode($datos);
             }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Reporte de los servicios por fechas
+     */
+    function repserviciofechas($es = null)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        $data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
+        $data['a']=$es;
+        
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+        
+        $this->load->model('Empresa_model');
+        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        
+        
+        /*$this->load->model('Categoria_trabajo_model');
+        $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();*/
+        
+        $this->load->model('Categoria_servicio_model');
+        $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_asc();
+        
+        $data['_view'] = 'servicio/repserviciofechas';
+        $this->load->view('layouts/main',$data);
+        }
             else{
                 redirect('alerta');
             }

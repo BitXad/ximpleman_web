@@ -467,9 +467,9 @@ class Cuotum extends CI_Controller{
          }*/
 
            $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
-            $credingo = $this->db->query->rows($credis);
+            $credingo = $this->db->query($credis)->result_array();
             $cuotis = "SELECT COUNT(cuota_id) as 'cuotanga' FROM cuota  WHERE cuota.estado_id = 9 and cuota.credito_id = ".$credito_id;
-            $cuotinga = $this->db->query->rows($cuotis);
+            $cuotinga = $this->db->query($cuotis)->result_array();
            
             
 

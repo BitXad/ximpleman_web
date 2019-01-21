@@ -100,14 +100,14 @@
             <!-- sidebar menu: : style can be found in sidebar.less -->
             <ul class="sidebar-menu">
                 <li class="header">Menu</li>
+                <?php
+                    if($session_data['tipousuario_id']==1){
+                    ?>
                 <li>
                     <a href="<?php echo site_url('admin/dashb');?>">
                         <i class="fa fa-dashboard"></i> <span>Inicio</span>
                     </a>
                 </li>
-                <?php
-                    if($session_data['tipousuario_id']==1){
-                ?>
                  <li>
                     <a href="#"><i class="fa fa-address-book"></i> <span>Registro</span></a>
                     <ul class="treeview-menu">

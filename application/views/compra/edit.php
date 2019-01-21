@@ -228,10 +228,43 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             </a></label>
  <?php  }  } ?>
              
-            <a  href="<?php echo site_url('compra'); ?>" class="btn btn-xs btn-danger" >
+
+             <a href="#" data-toggle="modal" data-target="#aviso" class="btn btn-xs btn-danger" >
+                 <i class="fa fa-sign-out "></i>
+               Salir  
+            </a>
+
+          <div class="modal fade" id="aviso" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="form">   
+               <h1><b> Desea Salir de esta Compra sin Guardar Cambios? 
+              </b></h1>
+          </div>
+              <div class="modal-footer" >
+        
+        
+                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-lg btn-success" >
                 <i class="fa fa-sign-out "></i>
-               Salir 
-            </a>    
+               Salir sin guardar
+            </a>  
+             
+           
+            
+            <button class="btn btn-lg btn-danger" data-dismiss="modal">
+       
+                <span class="fa fa-close"></span>   Cancelar  
+                    </div>
+          </div>
+        </div>
+        </div>
+           
            
 </div>
 <div class="row">
@@ -822,8 +855,12 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <select name="tipotrans_id"  type="text" class="form-control" required>
                                 
                                 <option value="1">CONTADO</option>
-                                <option value="2" id="filtrar4">CREDITO</option>
-                                <option value="3">CONSIGNACION</option>
+                                <option value="2" id="filtrar4" <?php if ($compra[0]['tipotrans_id']==2){ ?> selected
+                                  
+                                <?php } ?>>CREDITO</option>
+                                <option value="3" <?php if ($compra[0]['tipotrans_id']==3){ ?> selected
+                                  
+                                <?php } ?>>CONSIGNACION</option>
                                 
                             </select>
                         </div>
@@ -1116,6 +1153,10 @@ function calcularCambio(compra_subtotalx,compra_descuentox,compra_totalfinalx,co
         if(mes>0&&mes<10){
             mes = "0"+mes;
         }
+        var dia = estetime.getDay();
+        if(dia>0&&dia<10){
+            dia = "0"+dia;
+        }
         var hora = estetime.getHours();
         if(hora>0&&hora<10){
             hora = "0"+hora;
@@ -1128,8 +1169,8 @@ function calcularCambio(compra_subtotalx,compra_descuentox,compra_totalfinalx,co
         if(seg>0&&seg<10){
             seg = "0"+seg;
         }
-        $('#producto_codigobarra').val(anio+mes+hora+min+seg);
-        $('#producto_codigo').val(anio+mes+hora+min+seg);
+        $('#producto_codigobarra').val(anio+mes+dia+hora+min+seg);
+        $('#producto_codigo').val(anio+mes+dia+hora+min+seg);
     }
 </script>
 <script>

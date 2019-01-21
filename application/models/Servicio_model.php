@@ -171,4 +171,27 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
+    /*
+     * Get all servicios pendientes!!!
+     */
+    function get_all_servicios_pendientes()
+    {
+        $servicio = $this->db->query("
+            SELECT
+                *
+            FROM
+                servicio s, estado e, tipo_servicio ts, cliente c, usuario i
+
+            WHERE
+                s.estado_id = e.estado_id
+                and s.tiposerv_id = ts.tiposerv_id
+                and s.cliente_id = c.cliente_id
+                and s.usuario_id = i.usuario_id
+                and s.estado_id = 5
+
+            ORDER BY `servicio_id`
+        ")->result_array();
+
+        return $servicio;
+    }
 }

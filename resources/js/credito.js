@@ -40,7 +40,7 @@ function tabladeudas(filtro)
            success:function(respuesta){     
                
                                      
-               alert(filtro);
+               
                var registros =  JSON.parse(respuesta);
                 
                if (registros != null){                   
