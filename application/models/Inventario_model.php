@@ -289,7 +289,26 @@ class Inventario_model extends CI_Model
         $this->db->query($sql);
         return true;
     }
+ function rebajar_cantidad_producto($producto_id,$existencia)
+    {
 
+         //Truncar la tabla inventario
+       
+        //cargar el inventario actualizado
+        $sql = "update inventario set inventario.existencia=inventario.existencia-".$existencia." where producto_id=".$producto_id."";
+
+        $this->db->query($sql);
+    }
+ function aumentar_cantidad_producto($producto_id,$existencia)
+    {
+
+         //Truncar la tabla inventario
+       
+        //cargar el inventario actualizado
+        $sql = "update inventario set inventario.existencia=inventario.existencia+".$existencia." where producto_id=".$producto_id."";
+
+        $this->db->query($sql);
+    }
     
     /*
      * Get all inventario count

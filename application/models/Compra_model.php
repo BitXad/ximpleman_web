@@ -136,12 +136,13 @@ class Compra_model extends CI_Model
                 *
 
             FROM
-                compra c, estado e, proveedor p, tipo_transaccion t
+                compra c, estado e, proveedor p, tipo_transaccion t, usuario u
 
             WHERE
                 c.estado_id = e.estado_id
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
+                and c.usuario_id = u.usuario_id
                 and c.compra_fecha = ".$hoje."  
             ORDER BY `compra_hora` DESC 
         ")->result_array();
@@ -154,11 +155,12 @@ class Compra_model extends CI_Model
             SELECT
                 *
             FROM
-                compra c, estado e, proveedor p, tipo_transaccion t
+                compra c, estado e, proveedor p, tipo_transaccion t, usuario u
 
             WHERE
                 c.estado_id = e.estado_id
                 and c.proveedor_id = p.proveedor_id
+                and c.usuario_id = u.usuario_id
                 and c.tipotrans_id = t.tipotrans_id
                 ".$condicion." 
             ORDER BY c.compra_fecha DESC, c.compra_hora DESC
@@ -229,11 +231,12 @@ class Compra_model extends CI_Model
         $compra_hora = "TIME_FORMAT(NOW(), '%H:%i:%s')";
         $compra_subtotal = 0;
         $compra_descuento = 0;
+        $movil = 1;
         $compra_total = 0;
         $compra_glosa = "''";
         
-        $sql = "insert into compra(usuario_id,estado_id,forma_id,tipotrans_id,proveedor_id,moneda_id,compra_fecha,compra_hora,compra_subtotal,compra_descuento,compra_total,compra_glosa) ".
-                "value(".$usuario_id.",".$estado_id.",".$forma_id.",".$tipotrans_id.",".$proveedor_id.",".$moneda_id.",".$compra_fecha.",".$compra_hora.",".$compra_subtotal.",".$compra_descuento.",".$compra_total.",".$compra_glosa.")";
+        $sql = "insert into compra(usuario_id,estado_id,forma_id,tipotrans_id,proveedor_id,moneda_id,compra_fecha,compra_hora,compra_subtotal,compra_descuento,compra_total,compra_glosa,compra_placamovil) ".
+                "value(".$usuario_id.",".$estado_id.",".$forma_id.",".$tipotrans_id.",".$proveedor_id.",".$moneda_id.",".$compra_fecha.",".$compra_hora.",".$compra_subtotal.",".$compra_descuento.",".$compra_total.",".$compra_glosa.",".$movil.")";
         $compra = $this->db->query($sql);
         $compra_id = $this->db->insert_id();
         return $compra_id;        
@@ -275,9 +278,14 @@ class Compra_model extends CI_Model
         $result = $this->db->query($sql)->result_array();
         return $result;
     }
-    /*
-     * function to delete compra
-     */
+
+    function volvermal($compra_id)
+    {
+        $sql = "UPDATE compra set compra_placamovil = 1
+                 WHERE compra_id = ".$compra_id;
+        $compra = $this->db->query($sql);                
+        return $compra_id;
+    }
     function delete_compra($compra_id)
     {
         return $this->db->delete('compra',array('compra_id'=>$compra_id));

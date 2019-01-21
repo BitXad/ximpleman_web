@@ -117,6 +117,7 @@
                         <th>Total</th>
                         <th>Fecha<br>Hora</th>
                         <th>Estado</th>
+                        <th>Usuario</th>
                         <th></th>
                     </tr>
                    <!-- <tbody class="buscar" id="compraproveedor">-->
@@ -135,7 +136,7 @@
                     <tr>
 						<td><?php echo $cont ?></td>
                         <!--<td><?php //echo $p['compra_id']; ?></td>-->
-                        <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font> <br>
+                        <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b>( <?php echo $c['compra_id']; ?> )</font> <br>
                         <span class="btn-info btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
                         <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?></span></td>
                         
@@ -148,9 +149,41 @@
                         
                         <td align="center"><?php echo date('d/m/Y',strtotime($c['compra_fecha'])) ; ?><br>
                             <?php echo $c['compra_hora']; ?></td>
-                        <td align="center"><?php echo $c['estado_descripcion']; ?></td>
+                        <td align="center"><?php echo $c['estado_descripcion']; ?> <br> <?php if($c['compra_placamovil']==1) { ?><span class="btn-danger btn-xs">NO FINALIZADO</span> <?php } ?></td>
+                        <td align="center"> <?php echo $c['usuario_nombre']; ?></td>
                        	<td>
-                            <a href="<?php echo site_url('compra/edit/'.$c['compra_id'].'/1'); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                            <?php if($c['compra_placamovil']==1) { ?>
+                               <a href="#" data-toggle="modal" data-target="#cambi" class="btn btn-info btn-xs" >
+                 <i class="fa fa-pencil "></i>
+            
+            </a>
+
+         <div class="modal fade" id="cambi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog"  role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="form">   
+               <h1><b> Desea continuar con la compra no finalizada? 
+              </b></h1>
+          </div>
+              <div class="modal-footer" >       
+                  <a  href="<?php echo site_url('compra/edit/'.$c['compra_id'].'/1'); ?>" class="btn btn-lg btn-success" >
+                <i class="fa fa-sign-out "></i>
+               Si
+            </a> 
+            <a  href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-lg btn-danger" >
+                <i class="fa fa-sign-in "></i>
+               No
+            </a>  
+                    </div> </div></div></div></div>
+                            <?php } else { ?>
+                            <a href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                            <?php } ?>
                             <a href="<?php echo site_url('compra/pdf/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>  
                             <!--<a href="<?php echo site_url('compra/remove/'.$c['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
@@ -224,7 +257,7 @@
                         <td><?php echo $psn['compra_glosa']; ?></td>
                         <td><?php echo $psn['estado_descripcion']; ?></td>
                         <td>
-                            <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                            <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                            <!--<a href="<?php echo site_url('compra/edito/'.$psn['compra_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a>  
                             <a href="<?php echo site_url('compra/remove/'.$psn['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>

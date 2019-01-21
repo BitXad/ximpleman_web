@@ -700,12 +700,30 @@ function fechadecompra(filtro)
                         html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
-                        html += "<td  align='center'>"+registros[i]["estado_descripcion"]+"</td>"; 
-                        html += "<td><a href='"+base_url+"compra/pdf/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
-                        html += "<form action='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/"+bandera+"/'  method='POST' class='form'>";
-                        html += "<input type='hidden' id='bandera' name='bandera' value='1'>";
-                        html += "<button class='btn btn-info btn-xs' type='submit'><span class='fa fa-pencil'></span></button>";
-                        html += "</form></td>";
+                        html += "<td  align='center'>"+registros[i]["estado_descripcion"]+"<br>";
+                        if (Number(registros[i]["compra_placamovil"])==1) {  
+                        html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  }  
+                        html += "<td>"+registros[i]["usuario_nombre"]+"</td><td>";
+                        if (Number(registros[i]["compra_placamovil"])==1) {
+                        html += "<a href='#' data-toggle='modal' data-target='#cambi' class='btn btn-info btn-xs' ><i class='fa fa-pencil '></i></a>";
+                        html += "<div class='modal fade' id='cambi' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+                        html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                        html += "<div class='form'><h1><b> Desea continuar con la compra no finalizada? </b></h1></div>";
+                        html += "<div class='modal-footer'>";
+                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-lg btn-success'><i class='fa fa-sign-out '></i> Si</a>";
+                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-lg btn-danger' ><i class='fa fa-sign-in '></i>No</a>";
+                        html += "</div> </div></div></div></div>";
+                        } else {
+                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
+                        }
+                        html += "<a href='"+base_url+"compra/pdf/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
+                        
+                       // html += "<input type='hidden' id='bandera' name='bandera' value='1'>";
+                        //html += "<button class='btn btn-info btn-xs' type='submit'><span class='fa fa-pencil'></span></button>";
+                        html += "</td>";
                        
                        
                         html += "</tr>";
