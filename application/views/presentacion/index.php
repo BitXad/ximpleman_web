@@ -36,27 +36,48 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
 						<th>Num.</th>
-						<th>Id</th>
 						<th>Nombre</th>
 						<th>Contenido</th>
 						<th>Unidad</th>
 						<th>Precio</th>
-						<th>Operaciones</th>
+						<th></th>
                     </tr>
                     <tbody class="buscar">
-                    <?php $cont = 0;
+                    <?php $i = 0;
                           foreach($presentacion as $p){;
-                                 $cont = $cont+1; ?>
+                                 $i = $i+1; ?>
                     <tr>
-						<td><?php echo $cont ?></td>
-						<td><?php echo $p['presentacion_id']; ?></td>
-						<td><?php echo $p['presentacion_nombre']; ?></td>
-						<td><?php echo $p['presentacion_contenido']; ?></td>
-						<td><?php echo $p['presentacion_unidad']; ?></td>
-						<td><?php echo $p['presentacion_precio']; ?></td>
-						<td>
+                        <td><?php echo $i; ?></td>
+                        <td><?php echo $p['presentacion_nombre']; ?></td>
+                        <td><?php echo $p['presentacion_contenido']; ?></td>
+                        <td><?php echo $p['presentacion_unidad']; ?></td>
+                        <td><?php echo $p['presentacion_precio']; ?></td>
+                        <td>
+                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <h3><b> <span class="fa fa-trash"></span></b>
+                                               ¿Desea eliminar la presentacion <b> <?php echo $p['presentacion_nombre']; ?></b>?
+                                           </h3>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          <div class="modal-footer aligncenter">
+                                                      <a href="<?php echo site_url('presentacion/remove/'.$p['presentacion_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                        <!------------------------ FIN modal para confirmar eliminación ------------------->
                             <a href="<?php echo site_url('presentacion/edit/'.$p['presentacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('presentacion/remove/'.$p['presentacion_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <a data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
                     <?php } ?>

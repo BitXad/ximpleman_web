@@ -172,7 +172,7 @@ function mostrarinsumosasignados(){
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
                         //html += "<a href='"+base_url+"categoria_insumo/activar/"+subcatserv+"/"+registros[i]["catinsumo_id"]+"' class='btn btn-success'><span class='fa fa-pencil'></span> Si </a>";
-                        html += "<a class='btn btn-success' onclick='activarinsumo("+subcatserv+", "+registros[i]["catinsumo_id"]+", "+i+")' ><span class='fa fa-check'></span> Si </a>";
+                        html += "<a data-dismiss='modal' class='btn btn-success' onclick='activarinsumo("+subcatserv+", "+registros[i]["catinsumo_id"]+", "+i+")' ><span class='fa fa-check'></span> Si </a>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -198,7 +198,7 @@ function mostrarinsumosasignados(){
                         html += "<div class='modal-footer aligncenter'>";
                         
                         //html += "<a href='"+base_url+"categoria_insumo/desactivar/"+subcatserv+"/"+registros[i]["catinsumo_id"]+"' class='btn btn-success'><span class='fa fa-pencil'></span> Si </a>";
-                        html += "<a class='btn btn-success' onclick='desactivarinsumo("+subcatserv+", "+registros[i]["catinsumo_id"]+", "+i+")' ><span class='fa fa-check'></span> Si </a>";
+                        html += "<a data-dismiss='modal' class='btn btn-success' onclick='desactivarinsumo("+subcatserv+", "+registros[i]["catinsumo_id"]+", "+i+")' ><span class='fa fa-check'></span> Si </a>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -223,7 +223,7 @@ function mostrarinsumosasignados(){
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
                         //html += "<a href='"+base_url+"categoria_insumo/eliminar/"+subcatserv+"/"+registros[i]["catinsumo_id"]+"' class='btn btn-success'><span class='fa fa-pencil'></span> Si </a>";
-                        html += "<a class='btn btn-success' onclick='eliminarinsumo("+subcatserv+", "+registros[i]["catinsumo_id"]+", "+i+")' ><span class='fa fa-check'></span> Si </a>";
+                        html += "<a data-dismiss='modal' class='btn btn-success' onclick='eliminarinsumo("+subcatserv+", "+registros[i]["catinsumo_id"]+", "+i+")' ><span class='fa fa-check'></span> Si </a>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";

@@ -65,13 +65,13 @@
                                           <div class="modal-body">
                                            <!------------------------------------------------------------------->
                                            <h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la categoria de Servicio <b> <?php echo $c['catserv_descripcion']; ?></b>?
+                                               ¿Desea eliminar la categoria <b> <?php echo $c['catserv_descripcion']; ?></b>?
                                            </h3>
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_servicio/remove/'.$c['catserv_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                                      <a href="<?php echo site_url('categoria_servicio/remove/'.$c['catserv_id']); ?>" class="btn btn-success"><span class="fa fa-pencil"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>

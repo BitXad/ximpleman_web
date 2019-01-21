@@ -120,4 +120,15 @@ class Proveedor_model extends CI_Model
 
         return $proveedor;
     }
+
+    /*add by Fito*/
+    public function get_proveedores()
+    {
+        $this->db->select('*');
+        $this->db->from('proveedor');
+        $this->db->order_by("proveedor_nombre", "asc");
+        $query = $this->db->get();
+        return $query->result();
+    }
+
 }

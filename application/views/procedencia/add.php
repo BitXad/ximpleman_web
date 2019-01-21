@@ -8,25 +8,9 @@
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="procedencia_descripcion" class="control-label">Descripción</label>
+						<label for="procedencia_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
 							<input type="text" name="procedencia_descripcion" value="<?php echo $this->input->post('procedencia_descripcion'); ?>" class="form-control" id="procedencia_descripcion" required />
-						</div>
-					</div>
-                                        <div class="col-md-6">
-						<label for="estado_id" class="control-label">Estado</label>
-						<div class="form-group">
-							<select name="estado_id" class="form-control">
-								<option value="">- ESTADO -</option>
-								<?php 
-								foreach($all_estado as $estado)
-								{
-									$selected = ($estado['estado_id'] == 1) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-								} 
-								?>
-							</select>
 						</div>
 					</div>
 				</div>

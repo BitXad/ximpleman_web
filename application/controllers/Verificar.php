@@ -19,6 +19,9 @@ class Verificar extends CI_Controller
         $clave = $this->input->post('password');
 
         $result = $this->login_model->login2($username,$clave );
+/*        print "<pre>";
+        print_r( $result);
+        print "</pre>";*/
         //var_dump($result);
 
         if ($result) {
@@ -52,20 +55,29 @@ class Verificar extends CI_Controller
                 $this->session->set_userdata('logged_in', $sess_array);
                 $session_data = $this->session->userdata('logged_in');
 
+                //print "<pre>"; print_r( $session_data); print "</pre>";
+
                 if ($session_data['tipousuario_id'] == 1) {// admin page
                     redirect('admin/dashb');
-                }elseif($session_data['tipousuario_id'] == 5) {
+                }
+                if($session_data['tipousuario_id'] == 5) {
                     $this->load->model('Cliente_model');
                     $cliente_id = $this->cliente_model->get_cliente_from_ci($session_data['usuario_login']);
                     redirect('detalle_serv/kardexserviciocliente/'.$cliente_id);
                 }
+
+                if($session_data['tipousuario_id'] == 2){
+                    redirect('venta/ventas');
+                }
+
 
             } else {
                 $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO invalido,' . $result . '</div>');
                 redirect('login');
             }
 
-        } else {
+        }
+        else {
             $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USER o PASSWORD invalidos,' . $result . '</div>');
             redirect('login');
         }
@@ -115,54 +127,58 @@ class Verificar extends CI_Controller
         } else { echo '';}
     }
 
-    public function do_login($username, $clave)
+    public function do_login($username, $clave, $token)
     {
-        $result = $this->login_model->login2($username,$clave);
-        if($result){
-            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 5) {
-                $thumb = "";
-                if($result->usuario_imagen <> null){
-                    $thumb = $this->foto_thumb($result->usuario_imagen);
+        if($token=='mbUdgZWkgqyODuHFVDlsFIZOPkBzuiBI'){
+            $result = $this->login_model->login2($username,$clave);
+            if($result){
+                if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 5) {
+                    $thumb = "";
+                    if($result->usuario_imagen <> null){
+                        $thumb = $this->foto_thumb($result->usuario_imagen);
+                    }
+                    $permisos = $this->rol_model->get_permisos($result->tipousuario_id);
+
+                    $descrip = array();
+                    foreach ($permisos as $per){
+                        array_push($descrip, $per->rol_descripcion);
+                    }
+
+                    $sess_array = array(
+                        'usuario_login' => $result->usuario_login,
+                        'usuario_id' => $result->usuario_id,
+                        'usuario_nombre' => $result->usuario_nombre,
+                        'estado_id' => $result->estado_id,
+                        'tipousuario_id' => $result->tipousuario_id,
+                        'usuario_imagen' => $result->usuario_imagen,
+                        'usuario_email' => $result->usuario_email,
+                        'usuario_clave' => $result->usuario_clave,
+                        'thumb' => $thumb,
+                        'rol' => $this->getTipo_usuario($result->tipousuario_id),
+                        'permisos' => $descrip,
+                        'codigo' => $this->get_codigo_empresa()
+                    );
+
+                    $this->session->set_userdata('logged_in', $sess_array);
+                    $session_data = $this->session->userdata('logged_in');
+
+                    if ($session_data['tipousuario_id'] == 1) { // admin page
+                        redirect('admin/dashb');
+                    } elseif($session_data['tipousuario_id'] == 5) {
+                        $this->load->model('Cliente_model');
+                        $cliente_id = $this->cliente_model->get_cliente_from_ci($session_data['usuario_login']);
+                        redirect('detalle_serv/kardexserviciocliente/'.$cliente_id);
+                    }
+
+                } else {
+                    $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO invalido,' . $result . '</div>');
+                    redirect('login');
                 }
-                $permisos = $this->rol_model->get_permisos($result->tipousuario_id);
-
-                $descrip = array();
-                foreach ($permisos as $per){
-                    array_push($descrip, $per->rol_descripcion);
-                }
-
-                $sess_array = array(
-                    'usuario_login' => $result->usuario_login,
-                    'usuario_id' => $result->usuario_id,
-                    'usuario_nombre' => $result->usuario_nombre,
-                    'estado_id' => $result->estado_id,
-                    'tipousuario_id' => $result->tipousuario_id,
-                    'usuario_imagen' => $result->usuario_imagen,
-                    'usuario_email' => $result->usuario_email,
-                    'usuario_clave' => $result->usuario_clave,
-                    'thumb' => $thumb,
-                    'rol' => $this->getTipo_usuario($result->tipousuario_id),
-                    'permisos' => $descrip,
-                    'codigo' => $this->get_codigo_empresa()
-                );
-
-                $this->session->set_userdata('logged_in', $sess_array);
-                $session_data = $this->session->userdata('logged_in');
-
-                if ($session_data['tipousuario_id'] == 1) {// admin page
-                    redirect('admin/dashb');
-                }elseif($session_data['tipousuario_id'] == 5) {
-                    $this->load->model('Cliente_model');
-                    $cliente_id = $this->cliente_model->get_cliente_from_ci($session_data['usuario_login']);
-                    redirect('detalle_serv/kardexserviciocliente/'.$cliente_id);
-                }
-
-            } else {
-                $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO invalido,' . $result . '</div>');
-                redirect('login');
             }
         }
     }
+
+
 
     private function get_codigo_empresa()
     {

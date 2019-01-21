@@ -105,6 +105,9 @@
                         <i class="fa fa-dashboard"></i> <span>Inicio</span>
                     </a>
                 </li>
+                <?php
+                    if($session_data['tipousuario_id']==1){
+                ?>
                  <li>
                     <a href="#"><i class="fa fa-address-book"></i> <span>Registro</span></a>
                     <ul class="treeview-menu">
@@ -122,6 +125,11 @@
                         </li>
                     </ul>
                 </li>
+                <?php }?>
+
+                <?php
+                if($session_data['tipousuario_id']==1){
+                ?>
                 <li>
                     <a href="#"><i class="fa fa-list-ol"></i> <span>Parametros</span></a>
                     <ul class="treeview-menu">
@@ -187,6 +195,8 @@
                         
                     </ul>
                 </li>
+
+                <?php }?>
                 <li>
                     <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
                     <ul class="treeview-menu">
@@ -196,6 +206,9 @@
                         <li>
                             <a href="<?php echo site_url('compra');?>"><i class="fa fa-cube"></i>Compras</a>
                         </li>
+                        <?php
+                            if($session_data['tipousuario_id']==1){
+                        ?>
                         <li>
                             <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i>Inventario</a>
                         </li>
@@ -225,14 +238,22 @@
                         <li>
                             <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i> <span>Egresos</span></a>
                         </li>
+                            <?php }?>
                         <li>
                             <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-exchange"></i> <span>Cambio</span></a>
                         </li>
+                        <?php
+                            if($session_data['tipousuario_id']==1){
+                         ?>
                         <li>
                             <a href="<?php echo site_url('servicio/index');?>"><i class="fa fa-wrench"></i> Servicios</a>
                         </li>
+                        <?php }?>
                     </ul>
                 </li>
+                <?php
+                    if($session_data['tipousuario_id']==1){
+                ?>
                 <li>
                     <a href="#"><i class="fa fa-clipboard"></i> <span>Reportes</span></a>
                     <ul class="treeview-menu">
@@ -363,7 +384,7 @@
                         </li>
                     </ul>
                 </li>
-                 
+                    <?php }?>
                 
             </ul>
         </section>
