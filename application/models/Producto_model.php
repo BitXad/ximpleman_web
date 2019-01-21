@@ -181,4 +181,22 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+    /*
+     * Get producto by producto_id en ROW
+     */
+    function get_esteproducto($producto_id)
+    {
+        $producto = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `producto`
+
+            WHERE
+                `producto_id` = ?
+        ",array($producto_id))->row_array();
+
+        return $producto;
+    }
 }

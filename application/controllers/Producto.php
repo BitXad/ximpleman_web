@@ -186,7 +186,7 @@ class Producto extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         // check if the producto exists before trying to edit it
-        $data['producto'] = $this->Producto_model->get_producto($producto_id);
+        $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
         
         if(isset($data['producto']['producto_id']))
         {
