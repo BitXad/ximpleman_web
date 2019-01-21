@@ -30,7 +30,7 @@
 <div class="box-header">
 <h3 class="box-title">Pedido</h3>
             	<div class="box-tools">                    
-                    <select  class="btn btn-facebook btn-sm" id="select_pedidos" onchange="buscar_pedidos()">
+                    <select  class="btn btn-facebook btn-sm" id="select_pedidos" onclick="buscar_pedidos()">
                         <option value="1">Pedidos de Hoy</option>
                         <option value="2">Pedidos de Ayer</option>
                         <option value="3">Pedidos de la semana</option>

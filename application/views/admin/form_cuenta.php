@@ -1,3 +1,6 @@
+<?php
+    $session_data = $this->session->userdata('logged_in');
+?>
 <link href="<?php echo site_url('resources/css/formValidation.css')?>" rel="stylesheet">
 
 <div class="row">
@@ -43,7 +46,13 @@
                     <div class="col-md-6">
                         <label for="user_login class="control-label">login</label>
                         <div class="form-group">
-                            <input type="text" name="login" value="<?php echo $user['usuario_login']; ?>" class="form-control" id="login"  autocomplete="off" />
+                            <?php
+                            $read_only = '';
+                            if($session_data['tipousuario_id']!=1){
+                                $read_only = 'readonly';
+                            }
+                            ?>
+                            <input type="text" <?php echo $read_only?> name="login" value="<?php echo $user['usuario_login']; ?>" class="form-control" id="login"  autocomplete="off" />
                             <span class="text-danger"><?php echo form_error('login');?></span>
                             <div id="user-result"></div>
                         </div>
@@ -58,7 +67,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <img src="<?php echo site_url('uploads/profile/'.$usuario_imagen)?>" id="previewing" class="img-responsive center-block">
+                        <img src="<?php echo site_url('resources/images/usuarios/'.$usuario_imagen)?>" id="previewing" class="img-responsive center-block">
                     </div>
 
                     <div class="col-md-6">
@@ -106,10 +115,6 @@
                                     min: 3,
                                     max: 150,
                                     message: 'Nombre debe tener al menos 3 caracteres y maximo 150'
-                                },
-                                regexp: {
-                                    regexp: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u,
-                                    message: 'Solo es posible usar letras y espacios en blanco'
                                 }
                             }
                         },

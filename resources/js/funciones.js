@@ -383,11 +383,12 @@ function ingresardetalle(producto_id)
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'venta/insertarProducto';
    var cantidad = document.getElementById('cantidad'+producto_id).value;
+   var existencia = document.getElementById('existencia'+producto_id).value;
    
  
     $.ajax({url: controlador,
            type:"POST",
-           data:{cantidad:cantidad, producto_id:producto_id},
+           data:{cantidad:cantidad, producto_id:producto_id, existencia:existencia},
            success:function(respuesta){
                tablaproductos();
                
@@ -578,25 +579,25 @@ function actualizarprecios(e,detalleven_id)
     }
 }
 
-function actualizar_inventario()
-{
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"inventario/actualizar_inventario/";
-    
-    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{},
-        success:function(respuesta){     
-            alert('El inventario se actualizo exitosamente...! ');
-            //redirect('inventario/index');
-            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-        },
-        complete: function (jqXHR, textStatus) {
-            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
-        }
-    });         
-}
+//function actualizar_inventario()
+//{
+//    var base_url = document.getElementById('base_url').value;
+//    var controlador = base_url+"inventario/actualizar_inventario/";
+//    
+//    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+//    $.ajax({url: controlador,
+//        type:"POST",
+//        data:{},
+//        success:function(respuesta){     
+//            alert('El inventario se actualizo exitosamente...! ');
+//            //redirect('inventario/index');
+//            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+//        },
+//        complete: function (jqXHR, textStatus) {
+//            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+//        }
+//    });         
+//}
 
 function actualizar_cantidad_inventario()
 {
@@ -672,6 +673,7 @@ function tablaresultados(opcion)
                     
                     for (var i = 0; i < x ; i++){
                         
+                        html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><font size='3' face='arial narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
@@ -752,7 +754,7 @@ function tablaresultados(opcion)
                             
                         html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
-                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0'></b>";
+                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
                         
                         html += "               </td>";
                         html += "          </tr>";
@@ -1007,8 +1009,10 @@ function registrarventa(cliente_id)
     var cuota_inicial = document.getElementById('cuota_inicial').value;
     var credito_interes = document.getElementById('credito_interes').value;
     var facturado = document.getElementById('facturado').checked;
-    
 
+    document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
+    
+    
     if( facturado == 1){     
         venta_tipodoc = 1;}
     else{
@@ -1068,6 +1072,7 @@ function registrarventa(cliente_id)
 
 function finalizarventa()
 {
+    
     var monto = document.getElementById('venta_totalfinal').value;
     
     
@@ -1484,7 +1489,9 @@ function tabla_ventas(filtro)
             var cantidad_pedidos = 0;
             var total_pedido = 0;
             var v = JSON.parse(response);
-            
+                
+                $("#parametro").val(filtro); // se enviar el parametro a un text para usarlo desde otro metodo despues
+                
             
                 html = "";
 
@@ -1527,8 +1534,11 @@ function tabla_ventas(filtro)
                     html += "                           <br><br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
                     html += "                       </td>";
 
-                    html += "                       <td>"+formato_fecha(v[i]['venta_fecha']);
+                    html += "                       <td><center>"+formato_fecha(v[i]['venta_fecha']);
                     html += "                           <br> "+v[i]['venta_hora'];
+                    html += "                           <br><input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' >";
+                    
+                    html += "                       </center>";
                     html += "                       </td>";
 
 //                    html += "                       <td align='center'>";
@@ -1557,9 +1567,11 @@ function tabla_ventas(filtro)
                     html += "                                      <h1 style='font-size: 80px'> <b> <em class='fa fa-trash'></em></b></h1> ";
                     html += "                                      <h4>";
                     html += "                                          ";
-                    html += "                                          ¿Desea anular la venta <b> <br>";
-                    html += "                                         "+v[i]['venta_id']+"?<br>";
-                    html += "                                          ";
+                    html += "                                          ¿Desea anular la venta? <b> <br>";
+                    html += "                                          Trans.: "+v[i]['venta_id']+"<br>";
+//                    html += "                                          -----------------------------<br>";
+//                    html += "                                          La venta tiene una FACTURA ASOCIADA<br>";
+//                    html += "                                          <input type='checkbox' name='anular_factura' value='1'> Anular factura<br>";
                     html += "                                      </h4>";
                     html += "                                      <!------------------------------------------------------------------->";
                     html += "                                             ";
@@ -1958,8 +1970,11 @@ function borrar_datos_cliente()
     $("#cliente_ci").val("0");
     $("#cliente_nombrenegocio").val("-");
     $("#cliente_codigo").val("0");
+    $("#venta_efectivo").val("0");
+    $("#venta_cambio").val("0");
     
     document.getElementById("forma_pago").selectedIndex = 0
+    document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     
     
@@ -1975,6 +1990,74 @@ function borrar_datos_cliente()
         boton.click();                    
     } 
     
-    
+    document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
         
+}
+
+
+function verificar_ventas()
+{
+    var base_url = document.getElementById('base_url').value;    
+    var parametro = document.getElementById('parametro').value;
+    var controlador = base_url+'venta/verificar_ventas';        
+            
+//            var res = JSON.parse(parametro = document.getElementById('ventas').value);
+//            var max = res.length;
+//            
+//            for (var i = 0; i<max; i++){
+//                
+//                
+//                
+//                if (res[i]["resultado"] == 1){
+//                    
+//                    botoncito = "#boton"+res[i]["venta_id"];
+//                    document.getElementById(botoncito).style.display = 'block'; 
+//                    $(botoncito).val("CONFLICTO");
+//                    
+//                }
+//                else{
+//                    
+//                    botoncito = "#boton"+res[i]["venta_id"];
+//                    document.getElementById(botoncito).style.display = 'block'; 
+//                    $(botoncito).val("CONRRECTO");
+//                    
+//                }
+//            }
+            
+            
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{filtro: filtro},
+        success:function(respuesta){
+            
+            var res = JSON.parse(respuesta);
+            var max = res.length;
+            
+            for (var i = 0; i<max; i++){
+                if (res[i]["resultado"] == 1){
+                    
+                    botoncito = "#boton"+res[i]["venta_id"];
+                   //botoncito2 = "boton"+res[i]["venta_id"];
+                    
+                    //document.getElementById(botoncito2).style.display = 'block'; ; 
+                    $(botoncito).val("CONFLICTO | Items: "+res[i]["items"]);
+                    
+                }
+                else{
+                    
+                    botoncito = "#boton"+res[i]["venta_id"];
+                    //document.getElementById(botoncito2).style.display = 'block'; 
+                    $(botoncito).val(" - OK - | Items: "+res[i]["items"]);
+                    
+                }
+            }
+          
+           // document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+
+        },
+        complete: function (jqXHR, textStatus) {
+        //    document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+        }
+    });   
+      
 }

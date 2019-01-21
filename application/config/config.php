@@ -24,8 +24,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |
 
 $config['base_url'] = 'http://192.168.1.100/ximpleman_web/';
+
 */
-$config['base_url'] = 'http://4ximpleman1.com';
+
+
+$config['base_url'] = 'http://192.168.0.108/ximpleman_web/';
+
+
 /*
 |--------------------------------------------------------------------------
 | Index File

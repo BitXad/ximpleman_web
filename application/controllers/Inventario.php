@@ -10,6 +10,8 @@ class Inventario extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Inventario_model');
+        $this->load->model('Empresa_model');
+        $this->load->model('Producto_model');
     } 
 
     /*
@@ -19,20 +21,37 @@ class Inventario extends CI_Controller{
     {
 
        
-        $params['limit'] = RECORDS_PER_PAGE; //50 items por pagina 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('inventario/index?');
-        $config['total_rows'] = $this->Inventario_model->get_all_inventario_count();
-        $this->pagination->initialize($config);
-
-        $data['offset'] = $params['offset'];
-        $data['inventario'] = $this->Inventario_model->get_all_inventario($params);
-        $data['inventario'] = $this->Inventario_model->get_all_inventario($params);
+//        $params['limit'] = RECORDS_PER_PAGE; //50 items por pagina 
+//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+//        
+//        $config = $this->config->item('pagination');
+//        $config['base_url'] = site_url('inventario/index?');
+//        $config['total_rows'] = $this->Inventario_model->get_all_inventario_count();
+//        $this->pagination->initialize($config);
+//
+//        $data['offset'] = $params['offset'];
+        //$data['inventario'] = $this->Inventario_model->get_all_inventario($params);
         $data['_view'] = 'inventario/index';
         $this->load->view('layouts/main',$data);
 
+    }
+
+    /*
+     * Kadex de producto
+     */
+    function kardex($producto_id)
+    {
+        $empresa_id = 1;
+        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+        $data['producto'] = $this->Producto_model->get_producto($producto_id);
+        
+        $desde = '2018-01-01';
+        $hasta = '2019-02-01';
+        $producto_id = 1;
+        $data['kardex'] = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
+
+        $data['_view'] = 'inventario/kardex';
+        $this->load->view('layouts/main',$data);
     }
 
     /*
@@ -46,6 +65,24 @@ class Inventario extends CI_Controller{
         $this->Inventario_model->actualizar_inventario();
         redirect('inventario/index');
         
+        
+    }  
+
+    /*
+     * muestra inventario por parametro
+     */
+    function mostrar_inventario()
+    {      
+       // if($this->input->is_ajax_request()){
+            
+            $parametro = $this->input->post("parametro");
+            if ($parametro=="" || $parametro==null)
+                $resultado = $this->Inventario_model->get_inventario();                
+            else
+                $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
+            
+            echo json_encode($resultado);            
+       // }
         
     }  
     

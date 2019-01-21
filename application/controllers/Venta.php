@@ -118,66 +118,74 @@ class Venta extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         $producto_id = $this->input->post('producto_id');
         $cantidad = $this->input->post('cantidad');
+        $existencia = $this->input->post('existencia');
         $descuento = 0;
         
-        if ($this->Venta_model->existe($producto_id,$usuario_id)){
-            
-            
-            $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
-                    ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
-                    ", detalleven_descuento = ".$descuento.
-                    ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
-                    "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
-            
-            //$this->Venta_model->ejecutar($sql);
-           // return true;
-            
-        }
-        else{
-            
-        $sql = "insert into detalle_venta_aux(
-                venta_id,
-                moneda_id,
-                producto_id,
-                detalleven_codigo,
-                detalleven_cantidad,
-                detalleven_unidad,
-                detalleven_costo,
-                detalleven_precio,
-                detalleven_subtotal,
-                detalleven_descuento,
-                detalleven_total,
-                detalleven_caracteristicas,
-                detalleven_preferencia,
-                detalleven_comision,
-                detalleven_tipocambio,
-                usuario_id
-                ) 
-                ( select 
-                0,
-                1,
-                producto_id,
-                producto_codigo,
-                ".$cantidad.",
-                producto_unidad,
-                producto_costo,
-                producto_precio,
-                producto_precio*".$cantidad.",
-                ".$descuento.",
-                producto_precio*".$cantidad.",
-                "."'-'".",
-                "."'-'".",
-                0,
-                1,
-                ".$usuario_id."
-                from producto
-                where producto_id=".$producto_id."
-                )";
-        }
+        $sql = "select if(sum(detalleven_cantidad)+".$cantidad.">".$existencia.",1,0) as resultado from detalle_venta_aux where producto_id = ".$producto_id;
+        $resultado = $this->Venta_model->consultar($sql);
         
-       // echo $sql;
-        $this->Venta_model->ejecutar($sql);
-        //redirect('venta/ventas');
+        if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
+        
+            if ($this->Venta_model->existe($producto_id,$usuario_id)){
+
+
+                $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
+                        ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                        ", detalleven_descuento = ".$descuento.
+                        ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                        "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
+
+                //$this->Venta_model->ejecutar($sql);
+               // return true;
+
+            }
+            else{
+
+            $sql = "insert into detalle_venta_aux(
+                    venta_id,
+                    moneda_id,
+                    producto_id,
+                    detalleven_codigo,
+                    detalleven_cantidad,
+                    detalleven_unidad,
+                    detalleven_costo,
+                    detalleven_precio,
+                    detalleven_subtotal,
+                    detalleven_descuento,
+                    detalleven_total,
+                    detalleven_caracteristicas,
+                    detalleven_preferencia,
+                    detalleven_comision,
+                    detalleven_tipocambio,
+                    usuario_id
+                    ) 
+                    ( select 
+                    0,
+                    1,
+                    producto_id,
+                    producto_codigo,
+                    ".$cantidad.",
+                    producto_unidad,
+                    producto_costo,
+                    producto_precio,
+                    producto_precio*".$cantidad.",
+                    ".$descuento.",
+                    producto_precio*".$cantidad.",
+                    "."'-'".",
+                    "."'-'".",
+                    0,
+                    1,
+                    ".$usuario_id."
+                    from producto
+                    where producto_id=".$producto_id."
+                    )";
+            }
+
+           // echo $sql;
+            $this->Venta_model->ejecutar($sql);
+        }
+        else echo "error";
+            
         //**************** fin contenido ***************
 
 
@@ -1318,4 +1326,49 @@ function anular_venta($venta_id){
         }
     }
 
+    
+    
+
+    /*
+     * Verificar las ventas
+     */
+    function verificar_ventas()
+    {
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+
+        $usuario_id = 1;
+
+        
+        if ($this->input->is_ajax_request()) {
+            
+            $filtro = $this->input->post('filtro');
+            
+            if ($filtro == null){
+                $result = $this->Venta_model->mostrar_ventas(" and v.venta_fecha = date(now())");
+            }
+            else{
+                $result = $this->Venta_model->mostrar_ventas($filtro);            
+            }
+
+           echo json_encode($result);
+            
+        }
+        else
+        {                 
+                    show_404();
+        }    
+       //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }           
+    }
+        
+   
 }

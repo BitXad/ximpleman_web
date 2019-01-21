@@ -25,7 +25,7 @@ class Producto_model extends CI_Model
 
             WHERE
                 `producto_id` = ?
-        ",array($producto_id))->row_array();
+        ",array($producto_id))->result_array();
 
         return $producto;
     }
