@@ -110,9 +110,10 @@
 						<td><?php echo $c['credito_hora']; ?></td>
 						<td><?php echo $c['credito_tipo']; ?></td>
 						<td>
-                            <a href="<?php echo site_url('credito/edit/'.$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('credito/remove/'.$c['credito_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <!--<a href="<?php echo site_url('credito/edit/'.$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                            <a href="<?php echo site_url('credito/remove/'.$c['credito_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                             <a href="<?php echo site_url('cuotum/deudas/'.$c['credito_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-eye"></span></a>
+                            <a href="<?php echo site_url('cuotum/planDeuda/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
 
                         </td>
                     </tr>
