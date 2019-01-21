@@ -815,6 +815,12 @@ function buscar_servicioporfechas()
     var opcion      = document.getElementById('select_servicio').value;
     var filtro = "";
 
+    if (opcion == 6)
+    {
+        filtro = " and s.estado_id = 5 ";
+        mostrar_ocultar_buscador("ocultar");
+    }
+    
     if (opcion == 1)
     {
         filtro = " and date(servicio_fecharecepcion) = date(now())";

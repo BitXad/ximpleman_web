@@ -107,9 +107,8 @@ class Subcategoria_servicio_model extends CI_Model {
                 and sc.catserv_id = " . $catserv_id . "
 
         ")->result_array();
-        $var = $this->db->last_query();
 
-        return $var;
+        return $servicio;
     }
 
     function get_all_subcategoria_de_categoria($catserv_id) {

@@ -23,7 +23,7 @@ class Servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $data['servicio'] = $this->Servicio_model->get_all_servicio_now();
+        $data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
         $data['a']=$es;
         
         $this->load->model('Estado_model');

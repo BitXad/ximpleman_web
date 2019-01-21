@@ -47,10 +47,11 @@ class Categoria_trabajo extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         if(isset($_POST) && count($_POST) > 0)     
-        {   
+        {   //por defecto la categoria es ACTIVO;
+            $estado_id = 1;
             $params = array(
 				'cattrab_descripcion' => $this->input->post('cattrab_descripcion'),
-				'estado_id' => $this->input->post('estado_id'),
+				'estado_id' => $estado_id,
             );
             
             $cattrab_id = $this->Categoria_trabajo_model->add_categoria_trabajo($params);

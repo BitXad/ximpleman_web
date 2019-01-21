@@ -72,8 +72,7 @@
                                                 <td><div id="horizontal">
                                                 <div>
                                                     <?php
-                                                     $mimagen = str_replace(".", "_thumb.", $r['responsable_imagen']);
-                                                    echo '<img src="'.site_url('/resources/images/responsables/'.$mimagen).'" />'; ?>
+                                                    echo '<img src="'.site_url('/resources/images/responsables/thumb_'.$r['responsable_imagen']).'" />'; ?>
                                                     </div>
                                                     <div>
                                                         <?php echo "<b id='masg'>".$r['responsable_nombres']." ".$r['responsable_apellidos']."</b><br>";

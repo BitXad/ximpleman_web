@@ -96,8 +96,8 @@
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('dosificacion/remove/'.$d['dosificacion_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                                      <a href="<?php echo site_url('dosificacion/remove/'.$d['dosificacion_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>

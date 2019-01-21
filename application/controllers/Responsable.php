@@ -44,7 +44,6 @@ class Responsable extends CI_Controller{
         {
             /* *********************INICIO imagen***************************** */
             $foto="";
-            
             if (!empty($_FILES['responsable_imagen']['name'])){
                         $this->load->library('image_lib');
                         $config['upload_path'] = './resources/images/responsables/';
@@ -55,9 +54,8 @@ class Responsable extends CI_Controller{
                         $config['max_width'] = 2900;
                         $config['max_height'] = 2900;
                         
-                        $isname = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
-                        //$new_name = $isname."_full";
-                        $config['file_name'] = $isname; //.$extencion;
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
                         $config['file_ext_tolower'] = TRUE;
 
                         $this->load->library('upload', $config);
@@ -65,11 +63,26 @@ class Responsable extends CI_Controller{
 
                         $img_data = $this->upload->data();
                         $extension = $img_data['file_ext'];
-                        /* ***************INICIO para redimencionar la imagen************** */
-                        /* ***************FIN    para redimencionar la imagen************** */
+                        /* ********************INICIO para resize***************************** */
+                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/responsables/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
                         $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/responsables/'.$isname.$extension;
-                        $confi['create_thumb'] = TRUE;
+                        $confi['source_image'] = './resources/images/responsables/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/responsables/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
                         $confi['maintain_ratio'] = TRUE;
                         $confi['width'] = 50;
                         $confi['height'] = 50;
@@ -78,7 +91,7 @@ class Responsable extends CI_Controller{
                         $this->image_lib->initialize($confi);
                         $this->image_lib->resize();
 
-                        $foto = $isname.$extension;
+                        $foto = $new_name.$extension;
                     }
             /* *********************FIN imagen***************************** */
             $estado_id = 1; // por defecto secrea con estado 1 ==> ACTIVO
@@ -124,51 +137,66 @@ class Responsable extends CI_Controller{
             {
                 /* *********************INICIO imagen***************************** */
                 $foto="";
-                $foto1= $this->input->post('responsable_imagen1');
+                    $foto1= $this->input->post('responsable_imagen1');
                 if (!empty($_FILES['responsable_imagen']['name']))
                 {
-                        $this->load->library('image_lib');
-                        $config['upload_path'] = './resources/images/responsables/';
-                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
-                        
-                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
-                        $config['file_name'] = $new_name; //.$extencion;
-                        $config['file_ext_tolower'] = TRUE;
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/responsables/';
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 200000;
+                    $config['max_width'] = 2900;
+                    $config['max_height'] = 2900;
 
-                        $this->load->library('upload', $config);
-                        $this->upload->do_upload('responsable_imagen');
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
 
-                        //$directorio = base_url().'resources/imagenes/';
-                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/responsables/';
-                        if(isset($foto1) && !empty($foto1)){
-                          if(file_exists($directorio.$foto1)){
-                              unlink($directorio.$foto1);
-                              $mimagenthumb = str_replace(".", "_thumb.", $foto1);
-                              unlink($directorio.$mimagenthumb);
-                          }
-                      }
-                        
-                        $img_data = $this->upload->data();
-                        $extension = $img_data['file_ext'];
-                        
-                        $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/responsables/'.$new_name.$extension;
-                        $confi['create_thumb'] = TRUE;
-                        $confi['maintain_ratio'] = TRUE;
-                        $confi['width'] = 50;
-                        $confi['height'] = 50;
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('responsable_imagen');
 
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/responsables/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 600;
                         $this->image_lib->clear();
-                        $this->image_lib->initialize($confi);
-                        $this->image_lib->resize();
-
-                        $foto = $new_name.$extension;
-                    }else{
-                        $foto = $foto1;
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
                     }
+                    /* ********************F I N  para resize***************************** */
+                    //$directorio = base_url().'resources/imagenes/';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/responsables/';
+                    if(isset($foto1) && !empty($foto1)){
+                      if(file_exists($directorio.$foto1)){
+                          unlink($directorio.$foto1);
+                          $mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          unlink($directorio.$mimagenthumb);
+                      }
+                  }
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/responsables/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/responsables/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 50;
+                    $confi['height'] = 50;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
+                }else{
+                    $foto = $foto1;
+                }
             /* *********************FIN imagen***************************** */
                 $params = array(
                                         'estado_id' => $this->input->post('estado_id'),

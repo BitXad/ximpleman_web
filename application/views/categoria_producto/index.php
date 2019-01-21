@@ -41,16 +41,38 @@
 						<th>Operaciones</th>
                     </tr>
                     <tbody class="buscar">
-                    <?php $cont = 0;
+                    <?php $i = 0;
                           foreach($categoria_producto as $c){; 
-                              $cont = $cont+1;?>
+                              $i = $i+1;?>
                     <tr>
-						<td><?php echo $cont ?></td>
-                        <!--<td><?php //echo $c['categoria_id']; ?></td>-->
-						<td><?php echo $c['categoria_nombre']; ?></td>
-						<td>
+                        <td><?php echo $i ?></td>
+                        <td><?php echo $c['categoria_nombre']; ?></td>
+                        <td>
+                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <h3><b> <span class="fa fa-trash"></span></b>
+                                               ¿Desea eliminar la categoria de producto <b> <?php echo $c['categoria_nombre']; ?></b>?
+                                           </h3>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          <div class="modal-footer aligncenter">
+                                                      <a href="<?php echo site_url('categoria_producto/remove/'.$c['categoria_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                        <!------------------------ FIN modal para confirmar eliminación ------------------->
                             <a href="<?php echo site_url('categoria_producto/edit/'.$c['categoria_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('categoria_producto/remove/'.$c['categoria_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <!--<a data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php } ?>
