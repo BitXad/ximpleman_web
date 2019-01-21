@@ -185,6 +185,7 @@
     <div  class="box-tools" >
         <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
             <!--<option value="">- ELEGIR -</option>-->
+            <option value="6">Servicios Pendientes</option>
             <option value="1">Servicios de Hoy</option>
             <option value="2">Servicios de Ayer</option>
             <option value="3">Servicios de la semana</option>
