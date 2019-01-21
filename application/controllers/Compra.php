@@ -306,6 +306,7 @@ $data = array(
             show_404();
         }              
 }
+
     /*
      * Adding a new compra
      */
@@ -374,23 +375,29 @@ $data = array(
 
     /*
      * Editing a compra
-     */
-    function edit($compra_id,$bandera)
-    {   
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $usuario_id = $session_data['usuario_id'];      
-               $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        // check if the compra exists before trying to edit it
-        $data['compra'] = $this->Compra_model->get_compra($compra_id);
-        $compra = $this->Compra_model->get_proveedor_id($compra_id);
-        $proveedor_id = $compra[0]['proveedor_id'];
-       
-        $cargar_aux = "INSERT INTO detalle_compra_aux
+     */
+    function continuar()
+    {
+             $bandera =1;
+            //$tiene_aux = "SELECT detallecomp_id FROM detalle_compra_aux WHERE detalle_compra_aux.compra_id=".$compra_id." ";
+            //$detalleaux = $this->db->query($eliminar_aux);
+            //if ($detalleaux!=NULL) {
+                redirect('compra/edit/'.$compra_id.'/'.$bandera);
+           // }
+
+    }
+    
+    function borrarauxycopiar($compra_id)
+    {
+        $bandera =1;
+
+
+            ///////////1.  BORRAR AUX DE LA COMPRA//////////
+             $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
+             $this->db->query($eliminar_aux);
+             ////////////////  2. COPIAR DE DETALLE A AUX//////////////////////
+             $cargar_aux = "INSERT INTO detalle_compra_aux
                             (compra_id,
                             moneda_id,
                             producto_id,
@@ -408,7 +415,7 @@ $data = array(
                             cambio_id
                             )
                             (SELECT 
-                            compra_id,
+                            ".$compra_id.",
                             moneda_id,
                             producto_id,
                             detallecomp_codigo,
@@ -427,9 +434,36 @@ $data = array(
                             detalle_compra
                             WHERE 
                             detalle_compra.compra_id = ".$compra_id.")"; 
-            $this->db->query($cargar_aux);                
-            $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
-            $this->db->query($borrar_detalle);  
+            $this->db->query($cargar_aux);
+
+             redirect('compra/edit/'.$compra_id.'/'.$bandera);
+            
+
+    }
+
+                
+     
+    function edit($compra_id,$bandera)
+    {   
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $usuario_id = $session_data['usuario_id'];      
+               $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        // check if the compra exists before trying to edit it
+        $data['compra'] = $this->Compra_model->get_compra($compra_id);
+        $compra = $this->Compra_model->get_proveedor_id($compra_id);
+        $proveedor_id = $compra[0]['proveedor_id'];
+        
+        $this->Compra_model->volvermal($compra_id);
+
+    
+            
+          
+       
             if($proveedor_id==0)     
             {   
                  $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
@@ -595,7 +629,7 @@ $data = array(
             if($session_data['tipousuario_id']==1) {
                 $usuario_id = $session_data['usuario_id'];
         $this->load->model('Compra_model');
-
+        $null = NULL;
         $num = $this->Compra_model->numero();
         $maximo = $num[0]['parametro_montomax'];
         $diasgra = $num[0]['parametro_diasgracia'];
@@ -624,11 +658,11 @@ $data = array(
                 'compra_total' => $this->input->post('compra_total'),
                 'compra_totalfinal' => $this->input->post('compra_totalfinal'),
                 'usuario_id' => $usuario_id,
-                'compra_fecha' => date('Y-m-d'),
-                'compra_hora' => date('H:i:s'),
+               
                 'compra_efectivo' => $this->input->post('compra_efectivo'),
                 'compra_cambio' => $this->input->post('compra_cambio'),
                 'compra_caja' => $this->input->post('compra_caja'),
+                'compra_placamovil' => $null,
 
            );
                 
@@ -651,9 +685,25 @@ $data = array(
                 $credito_fechalimite = "'".date('Y-m-d', $proximo_martes)."'";
                
                 $credito_numpagos = $numcuota;
-               
+               $this->load->model('Inventario_model');
+// actualizar inventario //
+        
            $this->Compra_model->update_compra($compra_id,$params);
 
+            $sacar = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra dc WHERE dc.compra_id=".$compra_id;
+                $sacar_id=$this->db->query($sacar)->result_array();
+
+                foreach ($sacar_id as $saca) {
+     
+
+ $this->Inventario_model->rebajar_cantidad_producto($saca['producto_id'],$saca['detallecomp_cantidad']);
+
+    }   
+          
+           ///////////4. ELIMINAR DETALLE COMPRA////////////
+         $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
+            $this->db->query($borrar_detalle); 
+            ///////////////5. COPIAR DE AUX A DETALLE/////////////////
         $vaciar_detalle = "INSERT INTO detalle_compra 
                             (compra_id,
                             moneda_id,
@@ -692,12 +742,30 @@ $data = array(
                             WHERE
                             compra_id=".$compra_id.")";
         $this->db->query($vaciar_detalle);
+ 
+
+       
+
+      $product = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+                $productos_id=$this->db->query($product)->result_array();
+
+ foreach ($productos_id as $producto_id) {
+     
+
+ $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad']);
+
+    }          
+        
+                //////////////////6. ELIMINAR AUX///////////////////////////
          $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
         $this->db->query($eliminar_aux);
-              
-    if ($_POST['tipotrans_id']==2) { // tipotrans_id = 2 : CREDITO
+               
+    if ($_POST['tipotrans_id']==2 ) { // tipotrans_id = 2 : CREDITO
         
-      
+       $yacredito  = "SELECT COUNT(credito_id) as 'creditos' FROM credito WHERE credito.compra_id=".$compra_id;
+            $tiene_credito = $this->db->query($yacredito)->result_array();
+                
+            if ($tiene_credito[0]['creditos']<1) {
 
                     $dias_mora = 0;
                     $multa = 0;
@@ -805,10 +873,13 @@ $data = array(
                 }
              }
                 
-}  }
+}  } }
                 redirect('compra/index');
       
     }  }
+
+   
+
             else{
                 redirect('alerta');
             }
@@ -846,7 +917,7 @@ $data = array(
         $descuento = $this->input->post('descuento'); 
         $producto_costo = $this->input->post('producto_costo');
         $producto_precio = $this->input->post('producto_precio');
-        
+         
        $sql = "INSERT into detalle_compra_aux(
                 compra_id,
                 producto_id,
@@ -884,13 +955,7 @@ $data = array(
                       
                 WHERE producto_id = ".$producto_id."
                 ";
-                $llenar =    "UPDATE inventario i, detalle_compra_aux d
-                            SET i.existencia =  i.existencia+d.detallecomp_cantidad 
-                            WHERE  d.compra_id = ".$compra_id." 
-                            and i.producto_id = ".$producto_id."
-                            and d.detallecomp_id = ".$detalles." ";
-                            
-             $this->db->query($llenar);
+              
         $this->Compra_model->ejecutar($pro);
         $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
      if(isset($datos)){
@@ -915,12 +980,7 @@ function updateDetalle()
         $producto_id = $this->input->post('producto_id');    
         $compra_id = $this->input->post('compra_id');
 
-         $vaciar =    "UPDATE inventario i, detalle_compra_aux d
-                            SET i.existencia =  i.existencia-d.detallecomp_cantidad 
-                            WHERE  d.compra_id = ".$compra_id." 
-                            and i.producto_id = d.producto_id ";
-                            
-             $this->db->query($vaciar);
+        
         
         $sql = "UPDATE detalle_compra_aux
                 SET
@@ -937,13 +997,7 @@ function updateDetalle()
                 $this->Compra_model->ejecutar($sql);
 
         
-        $llenar =    "UPDATE inventario i, detalle_compra_aux d
-                            SET i.existencia =  i.existencia+d.detallecomp_cantidad 
-                            WHERE  d.compra_id = ".$compra_id." 
-                            and i.producto_id = d.producto_id ";
-                            
-             $this->db->query($llenar);
-            
+       
             return true;
             
            
@@ -958,12 +1012,7 @@ function updateDetalle()
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         //**************** inicio contenido ***************        
-        $vaciar =    "UPDATE inventario i, detalle_compra_aux d
-                            SET i.existencia =  i.existencia-d.detallecomp_cantidad 
-                            WHERE  d.detallecomp_id = ".$detallecomp_id." 
-                            and i.producto_id = d.producto_id ";
-                            
-             $this->db->query($vaciar);
+  
         $sql = "delete from detalle_compra_aux where detallecomp_id = ".$detallecomp_id;
         $this->Compra_model->ejecutar($sql);
         
