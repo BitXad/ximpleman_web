@@ -4,12 +4,12 @@
     <h3 class="box-title"><b>Reportes de Servicios</b></h3>
     </div>
     <div class="col-md-12">
-         <div class="col-lg-3 col-xs-6">
+        <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
                   <h3>FECHAS</h3>
-                  <p>En Proceso...</p>
+                  <p>Estado, Tec. Responsable, Cliente</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-calendar"></i>
