@@ -111,7 +111,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Ingrese Codigo de la Sucursal</label>
+                        <label class="col-md-3 control-label">Ingrese Codigo de la Sucursal(Codigo de Empresa del sistema)</label>
                         <div class="col-md-8">
                             <div class="input-group in-grp1">
                                 <span class="input-group-addon">
@@ -182,7 +182,7 @@
                     <div class="form-group">
                         <div class="col-md-4">
                             <input type="hidden" name="idproveedor" id="idproveedor" value="">
-                            <button type="submit"  class="btn btn-primary btn-lgs" >Crear</button>
+                            <button type="submit"  id="boton" class="btn btn-primary btn-lgs" >Crear</button>
                         </div>
                         <div class="clearfix"> </div>
                     </div>
@@ -251,7 +251,6 @@
 </div>
 
 <br>
-
 
 <div class="row">
 
