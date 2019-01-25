@@ -5,9 +5,6 @@
  */
  
 class Venta extends CI_Controller{
-
-    var $session_data;
-
     function __construct()
     {
         parent::__construct();
@@ -26,8 +23,6 @@ class Venta extends CI_Controller{
         $this->load->model('Parametro_model');
         $this->load->model('Estado_model');
         $this->load->model('Usuario_model');
-
-        $this->session_data = $this->session->userdata('logged_in');
         
     } 
 
@@ -74,15 +69,17 @@ class Venta extends CI_Controller{
     }
 
     function ventas()
-    {
-        $this->acceso();
-
-        $data = array(
-             'page_title' => 'Admin >> VENTAS'
-        );
+    {    
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************        
         
-        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_id = $session_data['usuario_id'];
         
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -105,17 +102,24 @@ class Venta extends CI_Controller{
         $this->load->view('layouts/main',$data);
         		
         //**************** fin contenido ***************
-
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
         
     }
 
     function insertarProducto()
-    {
-        $this->acceso();
+    {       
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************        
         
         
-        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_id = $session_data['usuario_id'];
         $producto_id = $this->input->post('producto_id');
         $cantidad = $this->input->post('cantidad');
         $existencia = $this->input->post('existencia');
@@ -187,14 +191,20 @@ class Venta extends CI_Controller{
         else echo "error";
             
         //**************** fin contenido ***************
-
-
+        }
+        else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }           
                
     }
 
     function eliminardetalle()
-    {
-        $this->acceso();
+    {       
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************       
         
         $usuario_id = $session_data['usuario_id'];
@@ -205,12 +215,20 @@ class Venta extends CI_Controller{
     
             		
         //**************** fin contenido ***************
-
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+        
     }
+    
 
+    
+    
     function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
     {
+
         //include 'ControlCode.php';
+
         $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
                                                    $dosificacion_numfact,//Numero de factura
                                                    $nit,//Número de Identificación Tributaria o Carnet de Identidad
@@ -222,11 +240,18 @@ class Venta extends CI_Controller{
     }
     
     function registrarventa()
-    {
-        $this->acceso();
-        //**************** inicio contenido ***************
-        $usuario_id = $this->session_data['usuario_id'];
-
+    {  
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        
+        $usuario_id = $session_data['usuario_id'];
+        
+        
         $sql = $this->input->post('sql'); // recuperamos la consulta sql enviada mediante JS
         $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
         $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
@@ -286,7 +311,8 @@ class Venta extends CI_Controller{
           usuario_id=".$usuario_id.")";
         
         $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-
+        
+        
         //************* reducri inventario
         
         $this->Inventario_model->reducir_inventario_aux($usuario_id);
@@ -404,7 +430,8 @@ class Venta extends CI_Controller{
             $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
             $this->Venta_model->ejecutar($sql);
         }
-
+                
+        
         if($facturado=="true"){//si la venta es facturada
 
             $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
@@ -458,16 +485,27 @@ class Venta extends CI_Controller{
         }
 
         //**************** fin contenido ***************
+        }
+        else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
         
     }
+    
  /* 
  */
     function buscarcodigo()  
-    {
-        $this->acceso();
-
-        //**************** inicio contenido ***************
-        $usuario_id = $this->session_data['usuario_id'];
+    {   
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        
+        $usuario_id = $session_data['usuario_id'];
+        
 
         if ($this->input->is_ajax_request()) {       
 
@@ -501,8 +539,16 @@ class Venta extends CI_Controller{
             else return null;
             
         }
-        else { return null; }
+        else
+        {                 
+           return null;
+        }  
+                       
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
 
     }
 
@@ -510,9 +556,16 @@ class Venta extends CI_Controller{
      * Adding a new venta
      */
     function add()
-    {
-        $this->acceso();
-        //**************** inicio contenido ***************
+    {   
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -558,16 +611,29 @@ class Venta extends CI_Controller{
             $data['_view'] = 'venta/add';
             $this->load->view('layouts/main',$data);
         }
+        
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
+        
     }  
 
     /*
      * Editing a venta
      */
 function edit($venta_id)
-    {
-        $this->acceso();
-        //**************** inicio contenido ***************
+    {   
+      
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************      
+      
         // check if the venta exists before trying to edit it
         $data['venta'] = $this->Venta_model->get_venta($venta_id);
         
@@ -624,7 +690,12 @@ function edit($venta_id)
         }
         else
             show_error('The venta you are trying to edit does not exist.');
+            
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
     } 
     
     /*
@@ -646,9 +717,17 @@ function edit($venta_id)
     
     function remove($venta_id)
     {
-        $this->acceso();
-        //**************** inicio contenido ***************
+        
+           if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************     
+        
         $venta = $this->Venta_model->get_venta($venta_id);
+
         // check if the venta exists before trying to delete it
         if(isset($venta['venta_id']))
         {
@@ -657,7 +736,11 @@ function edit($venta_id)
         }
         else
             show_error('The venta you are trying to delete does not exist.');
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
     }
 
     /*
@@ -665,12 +748,23 @@ function edit($venta_id)
      */
     function eliminaritem($detalleven_id)
     {
-        $this->acceso();
-        //**************** inicio contenido ***************
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+
         $sql = "delete from detalle_venta_aux where detalleven_id = ".$detalleven_id;
         $this->Venta_model->ejecutar($sql);
         return true;
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
     }
 
     /*
@@ -678,24 +772,41 @@ function edit($venta_id)
      */
     function eliminartodo()
     {
-        $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************        
-        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_id = $session_data['usuario_id'];
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
         $this->Venta_model->ejecutar($sql);
         return true;
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
     }
     /*
      * incrementar cantidad de productos en el detalle
      */
     function incrementar()
     {
-        $this->acceso();
-        //**************** inicio contenido ***************
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        
         $detalleven_id = $this->input->post('detalleven_id');
         $cantidad = $this->input->post('cantidad');
         $descuento = 0;
+        
             $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
                     ", detalleven_descuento = ".$descuento.
@@ -704,14 +815,25 @@ function edit($venta_id)
             
         $this->Venta_model->ejecutar($sql);
         return true;
+        
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
     }
     /*
      * incrementar cantidad de productos en el detalle
      */
     function incrementar_detalle()
     {
-        $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************        
         
         $detalleven_id = $this->input->post('detalleven_id');
@@ -726,9 +848,16 @@ function edit($venta_id)
                     "  where detalleven_id = ".$detalleven_id;
             
         $this->Venta_model->ejecutar($sql);
+        
         $this->actualizar_tabla_venta($venta_id);
+        
         return true;
+        
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
         
     }
 
@@ -737,9 +866,16 @@ function edit($venta_id)
      */
     function reducir()
     {
-        $this->acceso();
+      
+            if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************
-
+        
+        
         $detalleven_id = $this->input->post('detalleven_id');
         $cantidad = $this->input->post('cantidad');
         $descuento = 0;
@@ -752,7 +888,12 @@ function edit($venta_id)
             
         $this->Venta_model->ejecutar($sql);
         return true;
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
     }
 
 
@@ -761,8 +902,16 @@ function edit($venta_id)
      */
     function reducir_detalle()
     {
-        $this->acceso();
+      
+            if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************
+        
+        
         $detalleven_id = $this->input->post('detalleven_id');
         $cantidad = $this->input->post('cantidad');
         $venta_id = $this->input->post('venta_id');
@@ -777,9 +926,14 @@ function edit($venta_id)
         $this->Venta_model->ejecutar($sql);
         
         $this->actualizar_tabla_venta($venta_id);
-
+        
+        
         return true;
+            		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
         
     }
 
@@ -788,18 +942,30 @@ function edit($venta_id)
      */
     function buscarcliente()
     {
-        $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************
-            if ($this->input->is_ajax_request()) {
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $nit = $this->input->post('nit');                    
+                    $datos = $this->Venta_model->buscar_cliente($nit);
+                    echo json_encode($datos);                        
 
-                $nit = $this->input->post('nit');
-                $datos = $this->Venta_model->buscar_cliente($nit);
-                echo json_encode($datos);
-
-            } else {
-              show_404();
-            }
+                }
+                else
+                {                 
+                            show_404();
+                }  
+        		
         //**************** fin contenido ***************
+                }
+                else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
                
     }
     /*
@@ -807,9 +973,18 @@ function edit($venta_id)
      */
     function detalleventa()
     {
-        $this->acceso();
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************
-        $usuario_id = $this->session_data['usuario_id'];
+        
+        
+        $usuario_id = $session_data['usuario_id'];
+        
         if ($this->input->is_ajax_request()) {
 
             //$sql = "select * from detalle_venta_aux where usuario_id=".$usuario_id;
@@ -821,9 +996,14 @@ function edit($venta_id)
         }
         else
         {                 
-            show_404();
-        }
+                    show_404();
+        }  
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+               
     }
 
     /*
@@ -831,7 +1011,13 @@ function edit($venta_id)
      */
     function actualizarprecio()
     {
-        $this->acceso();
+     
+            if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido *************** 
       
         if ($this->input->is_ajax_request()) {
@@ -849,12 +1035,20 @@ function edit($venta_id)
             
         $this->Venta_model->ejecutar($sql);
         return true;
+            
         }
         else
         {                 
-            show_404();
-        }
+                    show_404();
+        }  
+
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
+               
+               
     }
     
 /*
@@ -862,12 +1056,18 @@ function edit($venta_id)
 */
 function buscarproductos()
 {
-    $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************    
     
-        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_id = $session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
+            
             $parametro = $this->input->post('parametro');   
             
             if ($parametro!=""){
@@ -880,8 +1080,13 @@ function buscarproductos()
         else
         {                 
             show_404();
-        }
+        }   
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
+        
 }
     
 /*
@@ -889,10 +1094,15 @@ function buscarproductos()
 */
 function buscarcategorias()
 {
-    $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************   
    
-        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_id = $session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -908,8 +1118,12 @@ function buscarcategorias()
         else
         {                 
             show_404();
-        }
+        }      
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
 }
 
 function buscarcotizar()
@@ -938,7 +1152,12 @@ function buscarcotizar()
 */
 function registrarcliente()
 {
-    $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************    
     
         if ($this->input->is_ajax_request()) {
@@ -958,15 +1177,25 @@ function registrarcliente()
         else
         {                 
             show_404();
-        }
+        }   
+        
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
 }
 /*
 * Registrar cliente
 */
 function modificarcliente()
 {
-    $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************    
     
         if ($this->input->is_ajax_request()) {
@@ -1033,25 +1262,45 @@ function modificarcliente()
         else
         {                 
             show_404();
-        }
+        }   
+        
+        		
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
 }
 
 
 /*************** funcion para mostrar la vista de la factura******************/
 function ultimaventa(){
-    $this->acceso();
-        //**************** inicio contenido ***************
+    
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************    
+    
                 
     $venta_id = $this->Venta_model->ultima_venta();
     redirect('factura/factura_boucher/'.$venta_id);
     
        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
 }
 
 function eliminar_venta($venta_id){
 
-    $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************       
     
             $sql = "update inventario i, detalle_venta d"
@@ -1074,11 +1323,19 @@ function eliminar_venta($venta_id){
             redirect('venta/index');
             
        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }               
 }
 
 function anular_venta($venta_id){
 
-    $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************   
         //    
     //actualiza el invetario retornando los productos
@@ -1127,7 +1384,10 @@ function anular_venta($venta_id){
     redirect('venta/index');
     
     //**************** fin contenido ***************
-
+                             }
+                             else{ redirect('alerta'); }
+     } else { redirect('', 'refresh'); }       
+    
 }
 
     /*
@@ -1135,11 +1395,18 @@ function anular_venta($venta_id){
      */
     function mostrar_ventas()
     {
-        $this->acceso();
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************   
 
         $usuario_id = 1;
 
+        
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');
@@ -1159,12 +1426,23 @@ function anular_venta($venta_id){
                     show_404();
         }    
        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }           
     }
     
   function busquedacombi()
     {
-        $this->acceso();
-        //**************** inicio contenido ***************
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************          
+
+                
         $params['limit'] = RECORDS_PER_PAGE;
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -1189,11 +1467,20 @@ function anular_venta($venta_id){
         $data['_view'] = 'venta/combinados';
         $this->load->view('layouts/main',$data);
         //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }          
+
     }
 
     function comision()
     {
-        $this->acceso();
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
         //**************** inicio contenido ***************           
         
         $params['limit'] = RECORDS_PER_PAGE;
@@ -1221,13 +1508,22 @@ function anular_venta($venta_id){
         $this->load->view('layouts/main',$data);
         
        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }           
         
     }
     
     function buscarporvendedores()
     {
-        $this->acceso();
-            //**************** inicio contenido ***************
+            if ($this->session->userdata('logged_in')) {
+                $session_data = $this->session->userdata('logged_in');
+                if($session_data['tipousuario_id']==1) {
+                    $data = array(
+                        'page_title' => 'Admin >> Mi Cuenta'
+                    );
+            //**************** inicio contenido ***************          
+
             if ($this->input->is_ajax_request()) {
 
                 $filtro = $this->input->post('filtro');   
@@ -1242,8 +1538,13 @@ function anular_venta($venta_id){
             else
             {                 
                 show_404();
-            }
+            }              
+
            //**************** fin contenido ***************
+                }
+                else{ redirect('alerta'); }
+            } else { redirect('', 'refresh'); }           
+
     }
 
     
@@ -1276,7 +1577,12 @@ function anular_venta($venta_id){
     
     function eliminar_producto_vendido($detalleven_id)
     {
-        $this->acceso();
+            if ($this->session->userdata('logged_in')) {
+                $session_data = $this->session->userdata('logged_in');
+                if($session_data['tipousuario_id']==1) {
+                    $data = array(
+                        'page_title' => 'Admin >> Mi Cuenta'
+                    );
             //**************** inicio contenido ***************          
 
             if ($this->input->is_ajax_request()) {
@@ -1301,7 +1607,10 @@ function anular_venta($venta_id){
                     $this->Venta_model->ejecutar($sql);
 
                     $this->actualizar_tabla_venta($venta_id);
+                 
+                    
                 }
+                
                 return true;
                 
             }
@@ -1311,21 +1620,11 @@ function anular_venta($venta_id){
             }              
 
            //**************** fin contenido ***************
+                }
+                else{ redirect('alerta'); }
+            } else { redirect('', 'refresh'); }           
+
     }
-
-
-    private function acceso(){
-        if ($this->session->userdata('logged_in')) {
-            if( $this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==2) {
-                return;
-            } else {
-                redirect('alerta');
-            }
-        } else {
-            redirect('inicio', 'refresh');
-        }
-    }
-
     
     
 
@@ -1370,5 +1669,5 @@ function anular_venta($venta_id){
         } else { redirect('', 'refresh'); }           
     }
         
-   
+    
 }
