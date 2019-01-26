@@ -381,7 +381,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    $('#fecha2impresion').html(fecha2);
                    
                     /* *****************INICIO para reporte de INGRESOS****************** */
-                    cabecerahtml1= "<table style='width:50%;' class='table table-striped table-condensed'id='tablasinespacio' ><tr><td style='width:5%;'><a href='#' id='mosingreso' onclick='mostraringreso(); return false'>+</a></td><td style='width:61%;'>INGRESO DE EFECTIVO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso1).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
+                    cabecerahtml1= "<table style='width:100%;' class='table table-striped table-condensed'id='tablasinespacio' ><tr><td style='width:5%;'><a href='#' id='mosingreso' onclick='mostraringreso(); return false'>+</a></td><td style='width:61%;'>INGRESO DE EFECTIVO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso1).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
                     //cabecerahtml1= "<label class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mosingreso' onclick='mostraringreso(); return false'>+</a></div><div class='col-md-6'>Ingreso Efectivo: </div><div class='col-md-4'>"+numberFormat(Number(totalingreso1).toFixed(2))+"</div><div class='col-md-3'></div></label>";
                     cabecerahtml1 += "<div id='oculto1' style='visibility: hidden; width: 0; height: 0;'>";
                     cabecerahtml1 += "<div id='map'>";
@@ -398,7 +398,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml1 = "</tbody></table></div></div>";
                     /* *****************F I N para reporte de INGRESOS****************** */
                     /* *****************INICIO para reporte de VENTAS****************** */
-                    cabecerahtml2= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosventa' onclick='mostrarventa(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS EFECTIVO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso2).toFixed(2))+"</td><td style='width:17%;' ></td></tr>"+"</table>";
+                    cabecerahtml2= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosventa' onclick='mostrarventa(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS EFECTIVO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso2).toFixed(2))+"</td><td style='width:17%;' ></td></tr>"+"</table>";
                             //"<tr><td style='width:5%;'></td><td style='width:60%;'>UTILIDAD POR VENTAS EFECTIVO: </td><td style='width:35%;' id='alinearder'>"+numberFormat(Number(totalutilidad2).toFixed(2))+"</td></tr></table>";
                     //cabecerahtml2= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mosventa'onclick='mostrarventa(); return false'>+</a></div><div class='col-md-6'>Ingreso de Ventas: </div><div class='col-md-4'>"+numberFormat(Number(totalingreso2).toFixed(2))+"; &nbsp; &nbsp;Utilidad: "+numberFormat(Number(totalutilidad2).toFixed(2))+"</div><div class='col-md-3'></div></label>";
                     cabecerahtml2 += "<div id='oculto2' style='visibility:hidden; width: 0; height: 0;'>";
@@ -420,7 +420,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     porformapago(fecha_desde, fecha_hasta, usuario, 4, "INGRESO POR VENTAS TARJ. CREDITO", "UTILIDAD POR VENTAS TARJ. CREDITO");
                     porformapago(fecha_desde, fecha_hasta, usuario, 5, "INGRESO POR VENTAS CON CHEQUE", "UTILIDAD POR VENTAS CHEQUE");
                     /* *****************INICIO para reporte de DEUDAS POR COBRAR****************** */
-                    cabecerahtml3= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscobro' onclick='mostrarcobro(); return false'>+</a></td><td style='width:61%;'>INGRESO COBROS POR CREDITO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso3).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
+                    cabecerahtml3= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscobro' onclick='mostrarcobro(); return false'>+</a></td><td style='width:61%;'>INGRESO COBROS POR CREDITO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso3).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
                     //cabecerahtml3= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='moscobro' onclick='mostrarcobro(); return false'>+</a></div><div class='col-md-6'>Cobros por Credito: </div><div class='col-md-4'>"+numberFormat(Number(totalingreso3).toFixed(2))+"</div><div class='col-md-3'></div></label>";
                     cabecerahtml3 += "<div id='oculto3' style='visibility:hidden; width: 0; height: 0;'>";
                     cabecerahtml3 += "<div id='map3'>";
@@ -436,7 +436,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml3 = "</table></div></div>";
                     /* *****************F I N para reporte de DEUDAS POR COBRAR****************** */
                     /* *****************INICIO para reporte de CREDITOS POR COBRAR****************** */
-                    cabecerahtml7= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscred' onclick='mostrarcredito(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS A CREDITO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso7).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
+                    cabecerahtml7= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscred' onclick='mostrarcredito(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS A CREDITO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso7).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
                     cabecerahtml7 += "<div id='ocultocred' style='visibility:hidden; width: 0; height: 0;'>";
                     cabecerahtml7 += "<div id='mapcred'>";
                     
@@ -451,7 +451,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml7 = "</table></div></div>";
                     /* *****************F I N para reporte de CREDITOS POR COBRAR****************** */
                     /* *****************INICIO para reporte de CONSIGNACION POR COBRAR****************** */
-                    cabecerahtml8= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscons' onclick='mostrarconsignacion(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS A CONSIGNACION: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso8).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
+                    cabecerahtml8= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscons' onclick='mostrarconsignacion(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS A CONSIGNACION: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso8).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
                     cabecerahtml8 += "<div id='ocultocons' style='visibility:hidden; width: 0; height: 0;'>";
                     cabecerahtml8 += "<div id='mapcons'>";
                     
@@ -466,7 +466,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml8 = "</table></div></div>";
                     /* *****************F I N para reporte de CONSIGNACION POR COBRAR****************** */
                     /* *****************INICIO para reporte de TRASPASO POR COBRAR****************** */
-                    cabecerahtml9= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mostras' onclick='mostrartraspaso(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS A TRASPASO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso9).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
+                    cabecerahtml9= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mostras' onclick='mostrartraspaso(); return false'>+</a></td><td style='width:61%;'>INGRESO POR VENTAS A TRASPASO: </td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalingreso9).toFixed(2))+"</td><td style='width:17%;' ></td></tr></table>";
                     cabecerahtml9 += "<div id='ocultotras' style='visibility:hidden; width: 0; height: 0;'>";
                     cabecerahtml9 += "<div id='maptras'>";
                     
@@ -481,11 +481,11 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml9 = "</table></div></div>";
                     /* *****************F I N para reporte de TRASPASO POR COBRAR****************** */
                     /* *****************INICIO para suma reporte total de INGRESOS****************** */
-                    totaltablaingresoresultados  = "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS: </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
-                    totaltablaingresoventas  = "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS(EFECTIVO, VENTAS CONT., COBROS CRED.): </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso1+totalingreso2+totalingreso3).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
+                    totaltablaingresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS: </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
+                    totaltablaingresoventas  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS(EFECTIVO, VENTAS CONT., COBROS CRED.): </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso1+totalingreso2+totalingreso3).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
                     /* *****************F I N para suma reporte total de INGRESOS****************** */
                     /* *****************INICIO para reporte de EGRESOS VARIOS****************** */
-                    cabecerahtml4= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosegreso' onclick='mostraregreso(); return false'>+</a></td><td style='width:61%;'>EGRESO DE EFECTIVO: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso4).toFixed(2))+"</td></tr></table>";
+                    cabecerahtml4= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosegreso' onclick='mostraregreso(); return false'>+</a></td><td style='width:61%;'>EGRESO DE EFECTIVO: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso4).toFixed(2))+"</td></tr></table>";
                     //cabecerahtml4= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mosegreso' onclick='mostraregreso(); return false'>+</a></div><div class='col-md-6'>Egreso Efectivo: </div><div class='col-md-4'>"+numberFormat(Number(totalegreso4).toFixed(2))+"</div><div class='col-md-3'></div></label>";
                     cabecerahtml4 += "<div id='oculto4' style='visibility: hidden; width: 0; height: 0;'>";
                     cabecerahtml4 += "<div id='map4'>";
@@ -502,7 +502,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml4 = "</tbody></table></div></div>";
                     /* *****************F I N para reporte de EGRESOS VARIOS****************** */
                     /* *****************INICIO para reporte de COMPRAS****************** */
-                    cabecerahtml5= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscompra' onclick='mostrarcompra(); return false'>+</a></td><td style='width:61%;'>EGRESO POR COMPRAS: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso5).toFixed(2))+"</td></tr></table>";
+                    cabecerahtml5= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='moscompra' onclick='mostrarcompra(); return false'>+</a></td><td style='width:61%;'>EGRESO POR COMPRAS: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso5).toFixed(2))+"</td></tr></table>";
                     //cabecerahtml5= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='moscompra' onclick='mostrarcompra(); return false'>+</a></div><div class='col-md-6'>Egreso de Compras: </div><div class='col-md-4'>"+numberFormat(Number(totalegreso5).toFixed(2))+"</div><div class='col-md-3'></div></label>";
                     cabecerahtml5 += "<div id='oculto5' style='visibility: hidden; width: 0; height: 0;'>";
                     cabecerahtml5 += "<div id='map5'>";
@@ -519,7 +519,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml5 = "</tbody></table></div></div>";
                     /* *****************F I N para reporte de COMPRAS****************** */
                     /* *****************INICIO para reporte de PAGOS****************** */
-                    cabecerahtml6= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mospago' onclick='mostrarpago(); return false'>+</a></td><td style='width:61%;'>PAGOS POR CREDITO: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso6).toFixed(2))+"</td></tr></table>";
+                    cabecerahtml6= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mospago' onclick='mostrarpago(); return false'>+</a></td><td style='width:61%;'>PAGOS POR CREDITO: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso6).toFixed(2))+"</td></tr></table>";
                     //cabecerahtml6= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mospago' onclick='mostrarpago(); return false'>+</a></div><div class='col-md-4'>Pagos por Credito: </div><div class='col-md-4'>"+numberFormat(Number(totalegreso6).toFixed(2))+"</div><div class='col-md-3'></div></label>";
                     cabecerahtml6 += "<div id='oculto6' style='visibility: hidden; width: 0; height: 0;'>";
                     cabecerahtml6 += "<div id='map6'>";
@@ -536,10 +536,10 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     piehtml6 = "</tbody></table></div></div>";
                     /* *****************F I N para reporte de PAGOS****************** */
                     /* *****************INICIO para suma reporte total de INGRESOS****************** */
-                    totaltablaegresoresultados  = "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL EGRESOS: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalegreso4+totalegreso5+totalegreso6).toFixed(2))+"</b></td></tr></table>";
+                    totaltablaegresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL EGRESOS: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalegreso4+totalegreso5+totalegreso6).toFixed(2))+"</b></td></tr></table>";
                     /* *****************F I N para suma reporte total de INGRESOS****************** */ 
                    //para mostrar saldo en caja
-                    saldoencaja = "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;' id='alinearder'><b>SALDO EFECTIVO EN CAJA: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalingreso-totalegreso).toFixed(2))+"</b></td></tr></table>";
+                    saldoencaja = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;' id='alinearder'><b>SALDO EFECTIVO EN CAJA: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalingreso-totalegreso).toFixed(2))+"</b></td></tr></table>";
                     /* *****************INICIO para reporte TOTAL****************** */
                     cabecerahtmlt= "<label  class='control-label'><a href='#' class='btn btn-success btn-sm no-print' id='mostotal' onclick='mostrartotal(); return false'>REPORTE TOTAL</a></label>";
                     cabecerahtmlt += "<div id='ocultot' style='visibility: hidden; width: 0; height: 0;'>";
@@ -653,7 +653,7 @@ function porformapago(fecha_desde, fecha_hasta, usuario, formapago, nombre1, nom
                    }
 
                     /* *****************INICIO para reporte TOTAL****************** */
-                    cabecerahtml= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosv"+formapago+"' onclick='mostrar"+formapago+"(); return false'>+</a></td><td style='width:61%;'>"+nombre1+": </td><td style='width:17%;' id='alinearder'><span id='parasum"+formapago+"'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></td><td style='width:17%;'></td></tr>"+"</table>";
+                    cabecerahtml= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosv"+formapago+"' onclick='mostrar"+formapago+"(); return false'>+</a></td><td style='width:61%;'>"+nombre1+": </td><td style='width:17%;' id='alinearder'><span id='parasum"+formapago+"'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></td><td style='width:17%;'></td></tr>"+"</table>";
             //                "<tr><td style='width:5%;'></td><td style='width:60%;'>"+nombre2+": </td><td style='width:35%;' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td></tr></table>";
                     //cabecerahtml2= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mosventa'onclick='mostrarventa(); return false'>+</a></div><div class='col-md-6'>Ingreso de Ventas: </div><div class='col-md-4'>"+numberFormat(Number(totalingreso2).toFixed(2))+"; &nbsp; &nbsp;Utilidad: "+numberFormat(Number(totalutilidad2).toFixed(2))+"</div><div class='col-md-3'></div></label>";
                     cabecerahtml += "<div id='ocultov"+formapago+"' style='visibility:hidden; width: 0; height: 0;'>";
