@@ -199,3 +199,8 @@
             </div>
         </div>
     </div>
+<div class="no-print">
+<a href="<?php echo site_url('reportes/servicioreportes'); ?>" class="btn btn-danger">
+    <i class="fa fa-arrow-left"></i> Atras
+</a>
+</div>

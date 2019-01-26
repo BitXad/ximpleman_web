@@ -99,7 +99,7 @@ class Servicio_model extends CI_Model
 
             GROUP BY
                 s.servicio_id
-              ORDER By s.servicio_id
+              ORDER By s.servicio_id desc
         ")->result_array();
 
         return $servicio;
@@ -189,7 +189,7 @@ class Servicio_model extends CI_Model
                 and s.usuario_id = i.usuario_id
                 and s.estado_id = 5
 
-            ORDER BY `servicio_id`
+            ORDER BY `servicio_id` desc
         ")->result_array();
 
         return $servicio;
@@ -227,6 +227,7 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                ds.detalleserv_id,
                 ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
                 ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,

@@ -20,7 +20,7 @@
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitablaservicioimpresion-mcarta.css'); ?>" rel="stylesheet">
-<!-------------------------------------------------------->
+<!------------------------------------------------------->
 <?php
 $mostrar = "";
 $mostrar1 = "";

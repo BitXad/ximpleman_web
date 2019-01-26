@@ -468,7 +468,7 @@ function tablaresultadoservicios(){
     var controlador = "";
     var parametro = "";
 
-    var limite = 10;
+    var limite = 2000;
     var base_url = document.getElementById('base_url').value;
     
     
@@ -531,7 +531,10 @@ function tablaresultadoservicios(){
                         html += "<td>"+registros[i]["servicio_acuenta"]+"</td>";
                         html += "<td>"+registros[i]['servicio_saldo']+"</td>";
                         html += "<td>";
-                        html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        html += "<form action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
+                        html += "<button class='btn btn-success btn-xs' type='submit'><span class='fa fa-print'></span></button>";
+                        html += "<input type='checkbox' name='contitulo"+registros[i]['servicio_id']+"' title='Imprimir sin encabezado'>";
+                        html += "</form>";
                         html += "</td>";
 
                         
@@ -832,7 +835,7 @@ function fechadeservicio(filtro){
       
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"servicio/buscarserviciosfecha";
-    var limite = 1000;
+    var limite = 2000;
      
     $.ajax({url: controlador,
            type:"POST",
@@ -859,11 +862,8 @@ function fechadeservicio(filtro){
                     
                     for (var i = 0; i < x ; i++){
                         
-                        var suma = Number(registros[i]["compra_totalfinal"]);
-                        var total = Number(suma+total);
-                        var bandera = 1;
-                        html += "<tr>";
-                      
+                       html += "<tr>";
+                        
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
                         html += "<td>"+registros[i]["servicio_id"]+"</td>";
@@ -894,64 +894,13 @@ function fechadeservicio(filtro){
                         html += "<td>"+registros[i]["servicio_acuenta"]+"</td>";
                         html += "<td>"+registros[i]['servicio_saldo']+"</td>";
                         html += "<td>";
-                        html += "<!------------------------ INICIO modal para confirmar Anulacion ------------------->";
-                        html += "<div class='modal fade' id='modalanulado"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "<h3>";
-                        html += "¿Desea Anular el Servicio <b>"+registros[i]['servicio_id']+"</b>?";
-                        html += "</h3>";
-                        html += "Al ANULAR este servicio, se anularan todos sus detalles(incluidos Total, A cuenta y Saldo seran CERO).";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "</div>";
-                        html += "<div class='modal-footer aligncenter'>";
-                        //html += "<a href='"+base_url+"servicio/anularserv/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += "<a onclick='anulartodoelservicio("+registros[i]['servicio_id']+", "+i+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </a>";
-                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar Anulacion ------------------->";
-                        
-                        html += "<!------------------------ INICIO modal para confirmar Eliminación ------------------->";
-                        html += "<div class='modal fade' id='modaleliminar"+i+"' tabindex='-1' role='dialog' aria-labelledby='modaleliminarLabel"+i+"'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "<h3>";
-                        html += "¿Desea Eliminar el Servicio <b>"+registros[i]['servicio_id']+"</b>?";
-                        html += "</h3>";
-                        html += "Al ELIMINAR este servicio, se perdera toda la informacion de este servicio.";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "</div>";
-                        html += "<div class='modal-footer aligncenter'>";
-                        //html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += "<a onclick='eliminartodoelservicio("+registros[i]['servicio_id']+", "+i+")' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
-                        html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-warning btn-xs' title='anular servicio'><span class='fa fa-minus-circle'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modaleliminar"+i+"' class='btn btn-danger btn-xs' title='eliminar servicio'><span class='fa fa-trash'></span></a>";
+                        html += "<form action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
+                        html += "<button class='btn btn-success btn-xs' type='submit'><span class='fa fa-print'></span></button>";
+                        html += "<input type='checkbox' name='contitulo"+registros[i]['servicio_id']+"' title='Imprimir sin encabezado'>";
+                        html += "</form>";
                         html += "</td>";
 
-                       
-                       
+                        
                         html += "</tr>";
                        
                    }
