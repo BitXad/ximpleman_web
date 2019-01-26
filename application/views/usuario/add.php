@@ -99,7 +99,7 @@
 				</div>
 			</div>
           	<div class="box-footer">
-            	<button type="submit" class="btn btn-success">
+            	<button type="submit" id="boton" class="btn btn-success">
             		<i class="fa fa-check"></i> Guardar
             	</button>
             	<a href="index"><button type="button" class="btn btn-danger">
