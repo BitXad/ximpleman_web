@@ -1669,5 +1669,39 @@ function anular_venta($venta_id){
         } else { redirect('', 'refresh'); }           
     }
         
+
+    function costo_cero()
+    {       
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************       
+        
+        $usuario_id = $session_data['usuario_id'];
+        
+        $sql =  "UPDATE
+                detalle_venta_aux
+              SET
+                detalleven_costo = 0,
+                detalleven_precio = 0,
+                detalleven_subtotal = 0,
+                detalleven_descuento = 0,
+                detalleven_total = 0
+              WHERE
+                usuario_id = ".$usuario_id;
+        $this->Venta_model->ejecutar($sql);
+        return true;
+    
+            		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+        
+    }
+        
     
 }

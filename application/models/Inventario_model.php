@@ -477,7 +477,7 @@ class Inventario_model extends CI_Model
                   compra c,
                   detalle_compra d
                 where
-                  d.producto_id = 288 and 
+                  d.producto_id = ".$producto_id." and 
                   c.compra_id = d.compra_id and 
                   c.compra_fecha >= '".$desde."' and 
                   c.compra_fecha <= '".$hasta."'
@@ -500,7 +500,7 @@ class Inventario_model extends CI_Model
                   venta v,
                   detalle_venta t
                 where
-                  t.producto_id = 288 and 
+                  t.producto_id = ".$producto_id." and 
                   v.venta_id = t.venta_id and 
                   v.venta_fecha >= '".$desde."' and 
                   v.venta_fecha <= '".$hasta."'

@@ -1078,14 +1078,28 @@ function finalizarventa()
     
     if (monto>0)
     {
+        
         registrarcliente();
     }
     else
     {
-        alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
-    }
-  
+        
+        //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
+        
+        var txt;
+        var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
+        if (r == true) {
+          registrarcliente();
+        } 
+        //document.getElementById("demo").innerHTML = txt;
+      }
+
+        
+        
+        
 }
+  
+
 
 function consolidar_pedido(pedido_id)
 {
@@ -2060,4 +2074,22 @@ function verificar_ventas()
         }
     });   
       
+}
+
+function costo_cero()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/costo_cero";
+
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){         
+            tablaproductos();
+        },
+        error: function(respuesta){         
+        }        
+    });
+    
 }
