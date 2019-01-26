@@ -114,7 +114,10 @@ border-spacing : 1;
 
 <!--<div class="box-body table-responsive">-->
     <!--<table class="table table-condensed" id="mitabla" style="font-size:10px" style="width: 17cm;">-->
-    <table class="table" id="mitabla" style="font-size:10px" style="width: 18cm;" >
+<div class="container  table-responsive" >
+    
+
+    <table class="table table-responsive" id="mitabla" style="font-size:10px" style="width: 18cm;" >
     <tr style="font-family: Arial narrow">
         <th rowspan="2">
             FECHA
@@ -267,5 +270,6 @@ border-spacing : 1;
         
         
 </table>
+</div>
 <!--</div>-->
 
