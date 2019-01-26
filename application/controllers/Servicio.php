@@ -765,29 +765,7 @@ class Servicio extends CI_Controller{
             $empresa_id = 1;
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-  /*          
-            $this->load->model('Categoria_servicio_model');
-	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
-            
-            $this->load->model('Subcategoria_servicio_model');
-	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-            
-            $this->load->model('Responsable_model');
-	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-                
-            $this->load->model('Tipo_servicio_model');
-	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
-	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
-            
-            $this->load->model('Categoria_trabajo_model');
-	    $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
-            
-            $this->load->model('Tiempo_uso_model');
-	    $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
-            
-            $this->load->model('Procedencia_model');
-	    $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
-*/
+
             $this->load->model('Dosificacion_model');
 	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
             
@@ -1216,6 +1194,46 @@ class Servicio extends CI_Controller{
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             
             $data['_view'] = 'servicio/boletainftecdetalleserv';
+            $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Boleta de impresion de orden de SERVICIO
+     */
+    function boletacomprobanteserv($servicio_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+               $contitulo = $this->input->post('contitulo'.$servicio_id);
+               if(isset($contitulo)){
+                   $data['sintitulo']= 1;
+               }
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Tipo_servicio_model');
+	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $data['_view'] = 'servicio/boletacomprobanteserv';
             $this->load->view('layouts/main',$data);
         }
             else{

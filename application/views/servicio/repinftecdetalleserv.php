@@ -115,28 +115,20 @@
                             echo " ".$s['servicio_horarecepcion'];
                             ?>
                         </td>
-                        <td class='alinearcentro'><?php
-                            if($s['detalleserv_fechaterminado'] <> null){
-                                echo date('d/m/Y', strtotime($s['detalleserv_fechaterminado']));
-                                echo " ".$s['detalleserv_horaterminado'];
-                            }
-                            ?>
-                        </td>
-                         <td class='alinearcentro'><?php
-                            if($s['detalleserv_fechaentregado'] <> null){
-                                echo date('d/m/Y', strtotime($s['detalleserv_fechaentregado']));
-                                echo " ".$s['detalleserv_horaentregado'];
-                            }
-                            ?>
-                        </td>
+                        
                         <td class='alinearder'><?php echo number_format($s['servicio_total'],2); ?></td>
                         <td class='alinearder'><?php echo number_format($s['servicio_acuenta'],2); ?></td>
                         <td class='alinearder'><?php echo number_format($s['servicio_saldo'],2); ?></td>
-                        <td class='alinearder'><?php //echo number_format($s['servicio_saldo'],2); ?></td>
                         <td class='alinearcentro' style="background-color: #<?php echo $s['estado_color']; ?>"><?php echo $s['estado_descripcion']; ?></td>
                         <td class='alinearcentro'><?php echo $s['tiposerv_descripcion']; ?></td>
                         <td><?php echo $s['detalleserv_descripcion']; ?></td>
                         <td><?php echo $s['responsable_nombres']." ".$s['responsable_apellidos']; ?></td>
+                        <td>
+                            <form action="<?php echo site_url('servicio/boletainftecdetalleserv/'.$s['detalleserv_id']); ?>" method="post" target="_blank">
+                            <button class="btn btn-success btn-xs" type="submit"><span class="fa fa-print"></span></button>
+                            <input type="checkbox" name="contitulo<?php echo $s['detalleserv_id']; ?>" title="Imprimir sin encabezado">
+                            </form>
+                        </td>
                         
                     </tr>
                     <?php $i++; } ?>

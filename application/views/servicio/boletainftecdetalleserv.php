@@ -71,7 +71,7 @@ if(isset($sintitulo)){
 <div class="row micontenidoInforme" style="float: right; margin-top: 1cm;" id="nombrecliente">
     <div style=" text-align: right; font-size: 10pt;">
     COCHABAMBA,&nbsp;<span id="fechaliteral"></span><br>
-    <span id="itno">I.T.No: <?php echo $servicio['servicio_id']."/".$servicio['cliente_id']; ?></span>
+    <span id="itno">I.T.No: <?php echo $detalle_serv['detalleserv_id']."/".$servicio['cliente_id']; ?></span>
     </div>
 </div>
 <br>
