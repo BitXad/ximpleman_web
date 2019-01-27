@@ -100,129 +100,19 @@ class Inventario extends CI_Controller{
         
     }  
     
-    function add()
-    {   /*
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
-		$this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estado_id' => $this->input->post('estado_id'),
-				'categoria_id' => $this->input->post('categoria_id'),
-				'presentacion_id' => $this->input->post('presentacion_id'),
-				'moneda_id' => $this->input->post('moneda_id'),
-				'producto_codigo' => $this->input->post('producto_codigo'),
-				'producto_nombre' => $this->input->post('producto_nombre'),
-				'producto_unidad' => $this->input->post('producto_unidad'),
-				'producto_marca' => $this->input->post('producto_marca'),
-				'producto_industria' => $this->input->post('producto_industria'),
-				'producto_costo' => $this->input->post('producto_costo'),
-				'producto_precio' => $this->input->post('producto_precio'),
-				'producto_foto' => $this->input->post('producto_foto'),
-				'producto_comision' => $this->input->post('producto_comision'),
-				'producto_tipocambio' => $this->input->post('producto_tipocambio'),
-            );
-            
-            $producto_id = $this->Producto_model->add_producto($params);
-            redirect('producto/index');
-        }
-        else
-        {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-
-			$this->load->model('Categoria_producto_model');
-			$data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
-			$this->load->model('Presentacion_model');
-			$data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-
-			$this->load->model('Moneda_model');
-			$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-            
-            $data['_view'] = 'producto/add';
-            $this->load->view('layouts/main',$data);
-        }*/
-    }  
-
     /*
-     * Editing a producto
+     * muestra los productos duplicados en inventario
      */
-    function edit($producto_id)
-    {   
-        // check if the producto exists before trying to edit it
-        /*
-        $data['producto'] = $this->Producto_model->get_producto($producto_id);
+    function mostrar_duplicados()
+    {      
+        if($this->input->is_ajax_request()){
+            
+            $resultado = $this->Inventario_model->mostrar_duplicados_inventario();
+            echo json_encode($resultado);      
+            
+        }
+        else echo false;
         
-        if(isset($data['producto']['producto_id']))
-        {
-            $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
-			$this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'categoria_id' => $this->input->post('categoria_id'),
-					'presentacion_id' => $this->input->post('presentacion_id'),
-					'moneda_id' => $this->input->post('moneda_id'),
-					'producto_codigo' => $this->input->post('producto_codigo'),
-					'producto_nombre' => $this->input->post('producto_nombre'),
-					'producto_unidad' => $this->input->post('producto_unidad'),
-					'producto_marca' => $this->input->post('producto_marca'),
-					'producto_industria' => $this->input->post('producto_industria'),
-					'producto_costo' => $this->input->post('producto_costo'),
-					'producto_precio' => $this->input->post('producto_precio'),
-					'producto_foto' => $this->input->post('producto_foto'),
-					'producto_comision' => $this->input->post('producto_comision'),
-					'producto_tipocambio' => $this->input->post('producto_tipocambio'),
-                );
-
-                $this->Producto_model->update_producto($producto_id,$params);            
-                redirect('producto/index');
-            }
-            else
-            {
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
-
-				$this->load->model('Categoria_producto_model');
-				$data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
-				$this->load->model('Presentacion_model');
-				$data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-
-				$this->load->model('Moneda_model');
-				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
-                $data['_view'] = 'producto/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The producto you are trying to edit does not exist.');*/
-    } 
-
-    /*
-     * Deleting producto
-     */
-    function remove($producto_id)
-    {/*
-        $producto = $this->Producto_model->get_producto($producto_id);
-
-        // check if the producto exists before trying to delete it
-        if(isset($producto['producto_id']))
-        {
-            $this->Producto_model->delete_producto($producto_id);
-            redirect('producto/index');
-        }
-        else
-            show_error('The producto you are trying to delete does not exist.');*/
-    }
+    }  
     
 }
