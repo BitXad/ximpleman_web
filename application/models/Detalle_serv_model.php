@@ -656,4 +656,31 @@ class Detalle_serv_model extends CI_Model
 
         return $servicio;
     }
+    /*
+     * Get detalle_serv by detalleserv_id para INFORME
+     */
+    function get_detalle_servinf($detalleserv_id)
+    {
+        $detalle_serv = $this->db->query("
+            SELECT
+                ds.*, c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                r.responsable_nombres, r.responsable_apellidos
+                
+            FROM
+                detalle_serv ds, servicio s, estado e, responsable r, cliente c, usuario u, tipo_servicio ts
+
+            WHERE
+                ds.servicio_id = s.servicio_id
+                and ds.estado_id = e.estado_id
+                and ds.responsable_id = r.responsable_id
+                and ds.usuario_id = u.usuario_id
+                and s.cliente_id = c.cliente_id
+                and s.tiposerv_id = ts.tiposerv_id 
+                and ds.detalleserv_id = ?
+        ",array($detalleserv_id))->row_array();
+
+        return $detalle_serv;
+    }
+    
 }

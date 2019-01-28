@@ -42,7 +42,7 @@
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer">Realizar Ventas <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -57,7 +57,7 @@
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer">Más Información <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer">Realizar Pedidos <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -72,7 +72,7 @@
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer">Más información <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer">Registrar clientes <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
@@ -87,12 +87,78 @@
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="<?php echo base_url('compra'); ?>" class="small-box-footer">Más Información <i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('compra'); ?>" class="small-box-footer">Realizar Compras <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+      </div>
+      
+      <div class="row">
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-fuchsia">
+            <div class="inner">
+                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
+
+              <p><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?></p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-book"></i>
+            </div>
+            <a href="<?php echo base_url('venta'); ?>" class="small-box-footer">Ventas del Dia <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-blue-active">
+            <div class="inner">
+                <h4><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h4>
+
+              <p><?php echo "En ".$pedidos[0]['cantidad_pedidos']." inventario"; ?></p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-cubes"></i>
+            </div>
+            <a href="<?php echo base_url('inventario'); ?>" class="small-box-footer">Inventario <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-purple">
+            <div class="inner">
+                <h4><b><?php echo $clientes[0]['total_clientes']; ?></b></h4>
+
+              <p>Reporte de Caja</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-book"></i>
+            </div>
+            <a href="<?php echo base_url('reporte'); ?>" class="small-box-footer">Reporte de Caja <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-lime-active">
+            <div class="inner">
+                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
+
+              <p><?php echo "Movimiento Diario"; ?></p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-money"></i>
+            </div>
+            <a href="<?php echo base_url('reportes'); ?>" class="small-box-footer">Movimiento Diario <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         <!-- ./col -->
       </div>
       <!-- /.row -->
+      
+      
+      
       
       <div class="box">
             <div class="box-header">

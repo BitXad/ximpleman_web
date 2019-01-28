@@ -114,7 +114,10 @@ border-spacing : 1;
 
 <!--<div class="box-body table-responsive">-->
     <!--<table class="table table-condensed" id="mitabla" style="font-size:10px" style="width: 17cm;">-->
-    <table class="table" id="mitabla" style="font-size:10px" style="width: 18cm;" >
+<div class="container  table-responsive" >
+    
+
+    <table class="table table-responsive" id="mitabla" style="font-size:10px" style="width: 18cm;" >
     <tr style="font-family: Arial narrow">
         <th rowspan="2">
             FECHA
@@ -193,10 +196,10 @@ border-spacing : 1;
                 <b> <?php   if ($k['unidad_comp']<>0) echo $k['unidad_comp']; ?></b>
             </td>
             <td>
-                <?php   if ($k['costoc_unit']<>0) echo $k['costoc_unit']; ?>                
+                <?php   if ($k['costoc_unit']<>0) echo number_format($k['costoc_unit'],'2','.',','); ?>                
             </td>
             <td>
-                <?php   if ($k['importe_ingreso']<>0) echo $k['importe_ingreso']; ?>
+                <?php   if ($k['importe_ingreso']<>0) echo number_format($k['importe_ingreso'],'2','.',','); ?>
             </td>
             <td>
                 <?php   if ($k['num_salida']<>0) echo $k['num_salida']; ?>              
@@ -205,16 +208,16 @@ border-spacing : 1;
                 <b><?php   if ($k['unidad_vend']<>0) echo $k['unidad_vend']; ?></b>          
             </td>
             <td>
-                <?php   if ($k['costov_unit']<>0) echo $k['costov_unit']; ?>                
+                <?php   if ($k['costov_unit']<>0) echo number_format($k['costov_unit'],'2','.',','); ?>                
             </td>
             <td>
-                <?php   if ($k['importe_salida']<>0) echo $k['importe_salida']; ?>                
+                <?php   if ($k['importe_salida']<>0) echo number_format($k['importe_salida'],'2','.',','); ?>                
             </td>
             <td>
                 <b><?php   echo $saldo; ?></b>
             </td>
             <td>
-                <?php  echo $saldo * $k['costoc_unit']; ?>
+                <?php  echo number_format($saldo * $k['costoc_unit'],'2','.',','); ?>
             </td>
             <td>
                 
@@ -267,5 +270,6 @@ border-spacing : 1;
         
         
 </table>
+</div>
 <!--</div>-->
 

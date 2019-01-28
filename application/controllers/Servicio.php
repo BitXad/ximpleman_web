@@ -9,7 +9,7 @@ class Servicio extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Servicio_model');
-        //$this->load->helper('numeros');
+        $this->load->helper('numeros');
     } 
     
     /*
@@ -765,29 +765,7 @@ class Servicio extends CI_Controller{
             $empresa_id = 1;
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-  /*          
-            $this->load->model('Categoria_servicio_model');
-	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
-            
-            $this->load->model('Subcategoria_servicio_model');
-	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-            
-            $this->load->model('Responsable_model');
-	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-                
-            $this->load->model('Tipo_servicio_model');
-	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
-	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
-            
-            $this->load->model('Categoria_trabajo_model');
-	    $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
-            
-            $this->load->model('Tiempo_uso_model');
-	    $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
-            
-            $this->load->model('Procedencia_model');
-	    $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
-*/
+
             $this->load->model('Dosificacion_model');
 	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
             
@@ -1022,24 +1000,241 @@ class Servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
+        $data['servicio'] = $this->Servicio_model->get_all_repservicios();
         $data['a']=$es;
+        
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
         
         $this->load->model('Estado_model');
         $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
         
-        $this->load->model('Empresa_model');
-        $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
         
+        $this->load->model('Responsable_model');
+        $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
         
-        /*$this->load->model('Categoria_trabajo_model');
-        $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();*/
+        $this->load->model('Cliente_model');
+        $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
         
-        $this->load->model('Categoria_servicio_model');
-        $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_asc();
         
         $data['_view'] = 'servicio/repserviciofechas';
         $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Reporte de los servicios por fechas
+     */
+    function buscarrepservicioall()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                if ($this->input->is_ajax_request()){
+                    $filtro = $this->input->post('filtro');
+                    $datos = $this->Servicio_model->get_all_busquedarepservicios($filtro);
+                    echo json_encode($datos);
+                }
+                else
+                {                 
+                    show_404();
+                }
+                
+        
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Lista de Servicios para Informes Tecnicos
+     */
+    function repinftecservicio()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        $data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
+        
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+        
+        $data['_view'] = 'servicio/repinftecservicio';
+        $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Boleta de impresion de informe tecnico de un Servicio
+     */
+    function boletainftecservicio($servicio_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+               $contitulo = $this->input->post('contitulo'.$servicio_id);
+               if(isset($contitulo)){
+                   $data['sintitulo']= 1;
+               }
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $data['_view'] = 'servicio/boletainftecservicio';
+            $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Lista de detalles de servicio para Informes Tecnicos
+     */
+
+    function repinftecdetalleserv($es = null)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        $data['servicio'] = $this->Servicio_model->get_all_repservicios();
+        $data['a']=$es;
+        
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+        
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        
+        $this->load->model('Responsable_model');
+        $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+        
+        $this->load->model('Cliente_model');
+        $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
+        
+        
+        $data['_view'] = 'servicio/repinftecdetalleserv';
+        $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Boleta de impresion de informe tecnico de un detalle de Servicio
+     */
+    function boletainftecdetalleserv($detalleserv_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+       
+                $contitulo = $this->input->post('contitulo'.$detalleserv_id);
+               if(isset($contitulo)){
+                   $data['sintitulo']= 1;
+               }
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_servinf($detalleserv_id);
+            
+            $data['servicio'] = $this->Servicio_model->get_servicio($data['detalle_serv']['servicio_id']);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $data['_view'] = 'servicio/boletainftecdetalleserv';
+            $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Boleta de impresion de orden de SERVICIO
+     */
+    function boletacomprobanteserv($servicio_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+               $contitulo = $this->input->post('contitulo'.$servicio_id);
+               if(isset($contitulo)){
+                   $data['sintitulo']= 1;
+               }
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Tipo_servicio_model');
+	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $data['_view'] = 'servicio/boletacomprobanteserv';
+            $this->load->view('layouts/main',$data);
         }
             else{
                 redirect('alerta');

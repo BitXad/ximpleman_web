@@ -250,7 +250,7 @@ class Imagen_producto extends CI_Controller{
         $this->pagination->initialize($config);
 
         $this->load->model('Producto_model');
-	$producto = $this->Producto_model->get_producto($producto_id);
+	$producto = $this->Producto_model->get_esteproducto($producto_id);
         $data['producto_id'] = $producto_id;
         $data['producto_nombre'] = $producto['producto_nombre'];
         $data['all_imagen_producto'] = $this->Imagen_producto_model->get_all_imagen_mi_producto($producto_id, $params);
@@ -273,7 +273,7 @@ class Imagen_producto extends CI_Controller{
         $this->pagination->initialize($config);
 
         $this->load->model('Producto_model');
-	$producto = $this->Producto_model->get_producto($producto_id);
+	$producto = $this->Producto_model->get_esteproducto($producto_id);
         $data['producto_nombre'] = $producto['producto_nombre'];
         $data['producto_id'] = $producto_id;
         $data['all_imagen_producto'] = $this->Imagen_producto_model->get_all_imagen_mi_producto($producto_id, $params);

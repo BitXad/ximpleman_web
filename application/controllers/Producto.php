@@ -186,7 +186,7 @@ class Producto extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         // check if the producto exists before trying to edit it
-        $data['producto'] = $this->Producto_model->get_producto($producto_id);
+        $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
         
         if(isset($data['producto']['producto_id']))
         {
@@ -298,6 +298,146 @@ class Producto extends CI_Controller{
 				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
 
                 $data['_view'] = 'producto/edit';
+                $this->load->view('layouts/main',$data);
+            }
+        }
+        else
+            show_error('The producto you are trying to edit does not exist.');
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+ }
+ 
+
+    /*
+     * Editing a producto
+     */
+    function edit2($producto_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        // check if the producto exists before trying to edit it
+        $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
+        
+        if(isset($data['producto']['producto_id']))
+        {
+            $this->load->library('form_validation');
+
+            $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
+            $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
+
+            if($this->form_validation->run())     
+            {
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                    $foto1= $this->input->post('producto_foto1');
+                if (!empty($_FILES['producto_foto']['name']))
+                {
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/productos/';
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 200000;
+                    $config['max_width'] = 2900;
+                    $config['max_height'] = 2900;
+
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
+
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('producto_foto');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/productos/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 600;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    //$directorio = base_url().'resources/imagenes/';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
+                    if(isset($foto1) && !empty($foto1)){
+                      if(file_exists($directorio.$foto1)){
+                          unlink($directorio.$foto1);
+                          $mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          unlink($directorio.$mimagenthumb);
+                      }
+                  }
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/productos/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/productos/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 50;
+                    $confi['height'] = 50;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
+                }else{
+                    $foto = $foto1;
+                }
+            /* *********************FIN imagen***************************** */
+                $params = array(
+					'estado_id' => $this->input->post('estado_id'),
+					'categoria_id' => $this->input->post('categoria_id'),
+					'presentacion_id' => $this->input->post('presentacion_id'),
+					'moneda_id' => $this->input->post('moneda_id'),
+					'producto_codigo' => $this->input->post('producto_codigo'),
+					'producto_codigobarra' => $this->input->post('producto_codigobarra'),
+					'producto_nombre' => $this->input->post('producto_nombre'),
+					'producto_unidad' => $this->input->post('producto_unidad'),
+					'producto_marca' => $this->input->post('producto_marca'),
+					'producto_industria' => $this->input->post('producto_industria'),
+					'producto_costo' => $this->input->post('producto_costo'),
+					'producto_precio' => $this->input->post('producto_precio'),
+					'producto_foto' => $foto,
+					'producto_comision' => $this->input->post('producto_comision'),
+					'producto_tipocambio' => $this->input->post('producto_tipocambio'),
+                );
+
+                $this->Producto_model->update_producto($producto_id,$params);
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->update_inventario($producto_id, $params);
+                //redirect('producto/index');
+                echo "<script languaje='javascript' type='text/javascript'>window.close();</script>";
+            }
+            else
+            {
+				$this->load->model('Estado_model');
+				$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+				$this->load->model('Categoria_producto_model');
+				$data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+
+				$this->load->model('Presentacion_model');
+				$data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
+
+				$this->load->model('Moneda_model');
+				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+
+                $data['_view'] = 'producto/edit2';
                 $this->load->view('layouts/main',$data);
             }
         }
