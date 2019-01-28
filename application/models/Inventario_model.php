@@ -512,5 +512,22 @@ class Inventario_model extends CI_Model
         return $kardex;
     }    
     
+    function mostrar_duplicados_inventario(){
+        
+        $sql = "select x.* 
+                from inventario x
+
+                where                 
+                x.estado_id = 1 and
+                x.producto_codigobarra <> '-' and
+                x.producto_codigobarra <> '' and
+                (select count(*) from producto y where y.producto_codigobarra = x.producto_codigobarra and y.estado_id = 1)>=2
+
+                order by x.producto_codigobarra";
+        
+        $duplicados = $this->db->query($sql)->result_array();
+        return $duplicados;
+    }    
+    
     
 }
