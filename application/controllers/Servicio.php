@@ -1218,7 +1218,8 @@ class Servicio extends CI_Controller{
                if(isset($contitulo)){
                    $data['sintitulo']= 1;
                }
-            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+               $data['usuario'] = $session_data['usuario_nombre'];
+            $data['servicio'] = $this->Servicio_model->get_serviciorden_reptec($servicio_id);
             
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
@@ -1228,6 +1229,10 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['dosificacion5'] = $this->Dosificacion_model->get_dosificacion_leyenda5();
+	    $data['dosificacion3'] = $this->Dosificacion_model->get_dosificacion_leyenda3();
             
             $empresa_id = 1;
             $this->load->model('Empresa_model');

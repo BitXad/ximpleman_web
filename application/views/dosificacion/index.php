@@ -47,6 +47,7 @@
 						<th>Leyenda2</th>
 						<th>Leyenda3</th>
 						<th>Leyenda4</th>
+						<th>Leyenda5</th>
 						<th>Sucursal</th>
 						<th>Sfc</th>
 						<th>Actividad</th>
@@ -71,6 +72,7 @@
 						<td><?php echo $d['dosificacion_leyenda2']; ?></td>
 						<td><?php echo $d['dosificacion_leyenda3']; ?></td>
 						<td><?php echo $d['dosificacion_leyenda4']; ?></td>
+						<td><?php echo $d['dosificacion_leyenda5']; ?></td>
 						<td><?php echo $d['dosificacion_sucursal']; ?></td>
 						<td><?php echo $d['dosificacion_sfc']; ?></td>
 						<td><?php echo $d['dosificacion_actividad']; ?></td>

@@ -251,4 +251,23 @@ class Servicio_model extends CI_Model
         
         return $servicio;
     }
+    /*
+     * Get servicio by servicio_id y con su estado
+     */
+    function get_serviciorden_reptec($servicio_id)
+    {
+        $servicio = $this->db->query("
+            SELECT
+                s.*, e.estado_descripcion
+
+            FROM
+                servicio s, estado e
+
+            WHERE
+                 s.estado_id = e.estado_id
+                 and s.servicio_id = ?
+        ",array($servicio_id))->row_array();
+
+        return $servicio;
+    }
 }

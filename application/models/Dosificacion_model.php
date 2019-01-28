@@ -73,8 +73,9 @@ class Dosificacion_model extends CI_Model
                 d.`dosificacion_autorizacion`, d.`dosificacion_llave`,
                 d.`dosificacion_numfact`, d.`dosificacion_leyenda1`,
                 d.`dosificacion_leyenda2`, d.`dosificacion_sucursal`,
+                d.`dosificacion_leyenda3`, d.`dosificacion_leyenda4`,
                 d.`dosificacion_sfc`, d.`dosificacion_actividad`,
-                d.`dosificacion_fechahora`
+                d.`dosificacion_fechahora`, d.`dosificacion_leyenda5`
 
             FROM
                 dosificacion d, estado e, empresa em
@@ -126,14 +127,50 @@ class Dosificacion_model extends CI_Model
             SELECT
                 d.`dosificacion_id`, e.`estado_descripcion`,
                 em.`empresa_nombre`, d.`dosificacion_leyenda2`,
-                d.`dosificacion_leyenda3`, d.`dosificacion_leyenda4`
-
+                d.`dosificacion_leyenda3`, d.`dosificacion_leyenda4`,
+                d.`dosificacion_leyenda5`
             FROM
                 dosificacion d, estado e, empresa em
 
             WHERE
                 d.estado_id = e.estado_id
                 and d.empresa_id = em.empresa_id
+                
+        ")->row_array();
+
+        return $dosificacion;
+    }
+    /*
+     * Obtiene la dosificacion leyenda 5
+     */
+    function get_dosificacion_leyenda5()
+    {
+        $dosificacion = $this->db->query("
+            SELECT
+                d.`dosificacion_leyenda5`
+            FROM
+                dosificacion d
+
+            WHERE
+                1 = 1
+                
+        ")->row_array();
+
+        return $dosificacion;
+    }
+    /*
+     * Obtiene la dosificacion leyenda 3
+     */
+    function get_dosificacion_leyenda3()
+    {
+        $dosificacion = $this->db->query("
+            SELECT
+                d.`dosificacion_leyenda3`
+            FROM
+                dosificacion d
+
+            WHERE
+                1 = 1
                 
         ")->row_array();
 

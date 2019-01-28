@@ -93,6 +93,12 @@
 							<input type="text" name="dosificacion_leyenda4" value="<?php echo ($this->input->post('dosificacion_leyenda4') ? $this->input->post('dosificacion_leyenda4') : $dosificacion['dosificacion_leyenda4']); ?>" class="form-control" id="dosificacion_leyenda4" />
 						</div>
 					</div>
+                                        <div class="col-md-6">
+						<label for="dosificacion_leyenda5" class="control-label">Leyenda5</label>
+						<div class="form-group">
+                                                    <input type="text" maxlength="350" name="dosificacion_leyenda5" value="<?php echo ($this->input->post('dosificacion_leyenda5') ? $this->input->post('dosificacion_leyenda5') : $dosificacion['dosificacion_leyenda5']); ?>" class="form-control" id="dosificacion_leyenda5" />
+						</div>
+					</div>
 					<div class="col-md-6">
 						<label for="dosificacion_sucursal" class="control-label">Sucursal</label>
 						<div class="form-group">
