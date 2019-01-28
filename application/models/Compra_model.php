@@ -228,7 +228,7 @@ class Compra_model extends CI_Model
         $proveedor_id = 0;
         $moneda_id = 1;
         $compra_fecha = "now()";
-        $compra_hora = "TIME_FORMAT(NOW(), '%H:%i:%s')";
+        $compra_hora = "'".date('H:i:s')."'";
         $compra_subtotal = 0;
         $compra_descuento = 0;
         $movil = 1;

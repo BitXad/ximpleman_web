@@ -21,17 +21,17 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
                 <h3 class="box-title">Cuentas por Cobrar</h3>
-            <!--    <div class="box-tools">
-                    <a href="<?php echo site_url('credito/add'); ?>" class="btn btn-success btn-sm">+ A«Ðadir</a> 
-                </div> -->
+       
+                    <a href="<?php echo site_url('credito/repoCuentas'); ?>" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</a> 
+                
                  <div class="col-md-12"  >
                  <div class="col-md-4"  >
             
             <br class="no-print">        
         <div class="row">
-            Desde: <input type="date" class="btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
+            Desde: <input type="date" class="btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="">
        
-            Hasta: <input type="date" class="btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
+            Hasta: <input type="date" class="btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="">
         </div> <br>
         
           
@@ -111,9 +111,10 @@
 						<td><?php echo $c['credito_hora']; ?></td>
 						<td><?php echo $c['credito_tipo']; ?></td>
 						<td>
-                            <a href="<?php echo site_url('credito/edit/'.$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('credito/remove/'.$c['credito_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <!--<a href="<?php echo site_url('credito/edit/'.$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                            <a href="<?php echo site_url('credito/remove/'.$c['credito_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                             <a href="<?php echo site_url('cuotum/cuentas/'.$c['credito_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-eye"></span></a>
+                            <a href="<?php echo site_url('cuotum/planCuenta/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
 
                         </td>
                     </tr>

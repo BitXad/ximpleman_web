@@ -461,6 +461,234 @@ class Compra extends CI_Controller{
                 $this->Compra_model->volvermal($compra_id);
 
 
+<<<<<<< HEAD
+function ajustarcosto($compra_id)
+{
+   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_costo as 'nuevo_costo', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+    $pr_id = $this->db->query($producto_ide)->result_array(); 
+ foreach ($pr_id as $pr_ident) {
+ 
+    $nuevo = $pr_ident['nuevo_costo']*$pr_ident['nueva_cantidad'];
+  $cantidad = $pr_ident['nueva_cantidad'];
+ 
+  $detalle_costo = "SELECT   i.detallecomp_costo as 'viejo_costo', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
+  $det_costo=$this->db->query($detalle_costo)->result_array(); 
+$viejos = 0;
+$cantiviejas = 0;
+  foreach ($det_costo as $costo_cantidad) {
+      
+      $viejo = $costo_cantidad['viejo_costo']*$costo_cantidad['vieja_cantidad'];
+      $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
+      $cantidades = $cantiviejas+$cantidad;
+      $viejos = $viejos + $viejo;
+      $sumas =  $nuevo+$viejos;
+      $costo_promedio = $sumas/$cantidades;
+      $sql = "update inventario set inventario.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
+
+        $this->db->query($sql);
+   }    }
+
+   redirect('compra/index');
+   /////////aca redirect////////////
+}
+
+function finalizarcompra($compra_id)
+{
+
+ $this->acceso();
+ $usuario_id = $this->session_data['usuario_id'];
+ $this->load->model('Compra_model');
+ $null = NULL;
+ $num = $this->Compra_model->numero();
+ $maximo = $num[0]['parametro_montomax'];
+ $diasgra = $num[0]['parametro_diasgracia'];
+ $diapago = $num[0]['parametro_diapago'];
+ $periodo = $num[0]['parametro_periododias'];
+ $numcuota = $num[0]['parametro_numcuotas'];
+ $interes = $num[0]['parametro_interes'];
+ $nroDia = date('N');
+ $proxima_semana = time() + (7 * 24 * 60 * 60); 
+ $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
+ $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
+ $patron = ($numcuota*0.5) + 0.5;
+ if(isset($_POST) && count($_POST) > 0)     
+ {   
+     
+    $params = array(
+
+        'compra_glosa' => $this->input->post('compra_glosa'),
+        'compra_numdoc' => $this->input->post('compra_numdoc'),
+        'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+        'tipotrans_id' => $this->input->post('tipotrans_id'),                       
+        'forma_id' => $this->input->post('forma_id'),
+        'compra_subtotal' => $this->input->post('compra_subtotal'),
+        'compra_descuento' => $this->input->post('compra_descuento'),
+        'compra_descglobal' => $this->input->post('compra_descglobal'),
+        'compra_total' => $this->input->post('compra_total'),
+        'compra_totalfinal' => $this->input->post('compra_totalfinal'),
+        'usuario_id' => $usuario_id,
+        
+        'compra_efectivo' => $this->input->post('compra_efectivo'),
+        'compra_cambio' => $this->input->post('compra_cambio'),
+        'compra_caja' => $this->input->post('compra_caja'),
+        'compra_placamovil' => $null,
+
+    );
+    
+    $actualizarprecios = $this->input->post('actualizarprecios');
+    $fechalimite = $this->input->post('credito_fechalimite');
+    $fecha = $this->Compra_model->normalize_date($fechalimite);
+    $estado_id = 8;
+    $compra_id = $this->input->post('compra_id');
+    $credito_monto =  $this->input->post('compra_totalfinal');
+    $credito_cuotainicial = $this->input->post('credito_cuotainicial');
+    $credito_interesproc = 0;
+    $credito_interesmonto = 0;
+    $credito_tipointeres = $this->input->post('credito_tipointeres');
+    $credito_fecmite = "'".$fecha."'";
+    $credito_fecha = "'".date('Y-m-d')."'";               
+    $credito_tipo = $this->input->post('credito_tipo');
+    $credito_hora = "'".date('H:i:s')."'";      
+    $saldo = $credito_monto - $credito_cuotainicial;
+    $cuota_total = $saldo;
+
+    $credito_fechalimite = "'".date('Y-m-d', $proximo_martes)."'";
+    
+    $credito_numpagos = $numcuota;
+    $this->load->model('Inventario_model');
+// actualizar inventario //
+    
+    $this->Compra_model->update_compra($compra_id,$params);
+
+    $sacar = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra dc WHERE dc.compra_id=".$compra_id;
+    $sacar_id=$this->db->query($sacar)->result_array();
+
+    foreach ($sacar_id as $saca) {
+       
+
+       $this->Inventario_model->rebajar_cantidad_producto($saca['producto_id'],$saca['detallecomp_cantidad']);
+
+   }   
+   
+           ///////////4. ELIMINAR DETALLE COMPRA////////////
+   $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
+   $this->db->query($borrar_detalle); 
+            ///////////////5. COPIAR DE AUX A DETALLE/////////////////
+   $vaciar_detalle = "INSERT INTO detalle_compra 
+   (compra_id,
+   moneda_id,
+   producto_id,
+   detallecomp_codigo,
+   detallecomp_cantidad,
+   detallecomp_unidad,
+   detallecomp_costo,
+   detallecomp_precio,
+   detallecomp_subtotal,
+   detallecomp_descuento,
+   detallecomp_total,
+   detallecomp_descglobal,
+   detallecomp_fechavencimiento,
+   detallecomp_tipocambio,
+   cambio_id
+   )
+   (SELECT 
+   ".$compra_id.",
+   moneda_id,
+   producto_id,
+   detallecomp_codigo,
+   detallecomp_cantidad,
+   detallecomp_unidad,
+   detallecomp_costo,
+   detallecomp_precio,
+   detallecomp_subtotal,
+   detallecomp_descuento,
+   detallecomp_total,
+   detallecomp_descglobal,
+   detallecomp_fechavencimiento,
+   detallecomp_tipocambio,
+   cambio_id
+   FROM 
+   detalle_compra_aux
+   WHERE
+   compra_id=".$compra_id.")";
+   $this->db->query($vaciar_detalle);
+///////////// actualiza y promediaa precios////////////////////////
+  if($actualizarprecios==1){
+   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_costo as 'nuevo_costo', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+    $pr_id = $this->db->query($producto_ide)->result_array(); 
+ foreach ($pr_id as $pr_ident) {
+ 
+    $nuevo = $pr_ident['nuevo_costo']*$pr_ident['nueva_cantidad'];
+  $cantidad = $pr_ident['nueva_cantidad'];
+ 
+  $detalle_costo = "SELECT   i.detallecomp_costo as 'viejo_costo', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
+  $det_costo=$this->db->query($detalle_costo)->result_array(); 
+$viejos = 0;
+$cantiviejas = 0;
+  foreach ($det_costo as $costo_cantidad) {
+      
+      $viejo = $costo_cantidad['viejo_costo']*$costo_cantidad['vieja_cantidad'];
+      $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
+      $cantidades = $cantiviejas+$cantidad;
+      $viejos = $viejos + $viejo;
+      $sumas =  $nuevo+$viejos;
+      $costo_promedio = $sumas/$cantidades;
+      $sql = "update inventario set inventario.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
+
+        $this->db->query($sql);
+   }    }  }
+  /*///////////////////////// poner en consulta select , dc.detallecomp_costo y en aumentar_cantdad_producto: ,$producto_id['detallecomp_costo']  y  en esa funcion lo q recibe//////////////////// */
+
+   $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+   $productos_id=$this->db->query($product)->result_array();
+
+   foreach ($productos_id as $producto_id) {
+       
+
+       $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo']);
+      $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo']);
+
+   }          
+   
+                //////////////////6. ELIMINAR AUX///////////////////////////
+   $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
+   $this->db->query($eliminar_aux);
+   
+    if ($_POST['tipotrans_id']==2 ) { // tipotrans_id = 2 : CREDITO
+        
+     $yacredito  = "SELECT COUNT(credito_id) as 'creditos' FROM credito WHERE credito.compra_id=".$compra_id;
+     $tiene_credito = $this->db->query($yacredito)->result_array();
+     
+     if ($tiene_credito[0]['creditos']<1) {
+
+        $dias_mora = 0;
+        $multa = 0;
+        $descuento = 0;
+        $cancelado = 0;
+
+        if ($maximo == 0){
+           $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
+           $this->db->query($sql);
+           $credito_id = $this->db->insert_id();
+           if ($credito_tipointeres==1){
+               $cuota_capital = $credito_monto/$numcuota;
+               $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
+               $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+
+               $saldo_deudor = $cuota_total;
+               $total =  $cuota_subtotal - $descuento;
+               $siguiente= 0;
+               for ($i=1; $i <= $numcuota; $i++) { 
+
+                $cuota_numcuota = $i;
+                $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
+                $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
+                $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+                $this->db->query($cuota);
+                $siguiente = $siguiente+$periodo;
+                $saldo_deudor = $cuota_total - $cuota_capital;
+                $cuota_total = $saldo_deudor;
+=======
 
 
 
@@ -613,6 +841,7 @@ class Compra extends CI_Controller{
                 $this->Compra_model->ejecutar($comp);
 
                 redirect('compra/index');
+>>>>>>> master
             }
             else{
                 redirect('alerta');
@@ -901,6 +1130,16 @@ class Compra extends CI_Controller{
     function ingresarproducto()
     {
 
+<<<<<<< HEAD
+}  } }
+
+
+redirect('compra/index');
+
+ }
+
+}
+=======
 
 
         if ($this->input->is_ajax_request()) {
@@ -961,6 +1200,7 @@ class Compra extends CI_Controller{
             show_404();
         }
     }
+>>>>>>> master
 
     function updateDetalle()
     {
@@ -972,7 +1212,56 @@ class Compra extends CI_Controller{
         $producto_costo = $this->input->post('costo');
         $producto_precio = $this->input->post('precio');
         $producto_id = $this->input->post('producto_id');
+<<<<<<< HEAD
+        $cantidad = $this->input->post('cantidad'); 
+        $descuento = $this->input->post('descuento'); 
+        $producto_costo = $this->input->post('producto_costo');
+        $producto_precio = $this->input->post('producto_precio');
+        
+        $sql = "INSERT into detalle_compra_aux(
+        compra_id,
+        producto_id,
+        detallecomp_codigo,
+        detallecomp_unidad,
+        detallecomp_costo,
+        detallecomp_cantidad,
+        detallecomp_precio,
+        detallecomp_descuento,
+        detallecomp_subtotal,
+        detallecomp_total              
+        )
+        (
+        SELECT
+        ".$compra_id.",
+        producto_id,
+        producto_codigo,
+        producto_unidad,
+        ".$producto_costo.",
+        ".$cantidad.",
+        ".$producto_precio.",
+        ".$descuento.",
+        ".$cantidad." * ".$producto_costo.",
+        (".$cantidad." * ".$producto_costo.") - ".$descuento."
+        
+        from producto where producto_id = ".$producto_id."
+    )";
+    $this->db->query($sql);
+    $detalles = $this->db->insert_id();
+   
+
+    $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
+    if(isset($datos)){
+        echo json_encode($datos);
+    }else echo json_encode(null);
+}
+else
+{                 
+    show_404();
+}          
+}
+=======
         $compra_id = $this->input->post('compra_id');
+>>>>>>> master
 
 
 
@@ -1165,7 +1454,27 @@ class Compra extends CI_Controller{
             show_error('The compra you are trying to delete does not exist.');
     }
 
+<<<<<<< HEAD
+function pdf($compra_id){
+    $this->acceso();
+    $usuario_id = $this->session_data['usuario_id'];  
+    $data = array(
+        'page_title' => 'Admin >> Mi Cuenta'
+    );
+    $this->load->model('Empresa_model');
+    $data['empresa'] = $this->Empresa_model->get_empresa(1);
+    $data['compra'] = $this->Compra_model->join_compras($compra_id);
+    $this->load->model('Detalle_compra_model');
+    $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+    $data['_view'] = 'compra/reciboCompra';
+    $this->load->view('layouts/main',$data);
+        
+    
+}
+private function acceso(){
+=======
     function pdf($compra_id){
+>>>>>>> master
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {

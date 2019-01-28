@@ -73,7 +73,8 @@ function tabladeudas(filtro)
                         html += "<td>"+registros[i]['credito_fecha']+"</td>";
                         html += "<td>"+registros[i]['credito_hora']+"</td>";
                         html += "<td>"+registros[i]['credito_tipo']+"</td>";
-                        html += "<td><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a></td>";
+                        html += "<td><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
+                        html += "<a href='"+base_url+"cuotum/planDeuda/"+registros[i]['credito_id']+"' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
 }
                    $("#tabladeudas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
@@ -160,7 +161,8 @@ function tablacuentas(filtro)
                         html += "<td>"+registros[i]['credito_fecha']+"</td>";
                         html += "<td>"+registros[i]['credito_hora']+"</td>";
                         html += "<td>"+registros[i]['credito_tipo']+"</td>";
-                        html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a></td>";
+                        html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
+                        html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
 }
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);

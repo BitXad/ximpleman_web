@@ -9,6 +9,8 @@ class Credito extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Credito_model');
+        $this->load->model('Empresa_model');
+        $this->load->model('Cuotum_model');
     } 
 
     /*
@@ -77,6 +79,35 @@ class Credito extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+    function repoDeudas()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                $usuario_id = $session_data['usuario_id'];
+        $params['limit'] = 300; 
+        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        
+        $config = $this->config->item('pagination');
+        $config['base_url'] = site_url('credito/repoDeudas?');
+        $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+        $this->pagination->initialize($config);
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['credito'] = $this->Credito_model->get_all_deuda($params);
+        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+        $data['_view'] = 'credito/repoDeudas';
+        $this->load->view('layouts/main',$data);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
     
      function indexCuenta()
     {
@@ -98,6 +129,36 @@ class Credito extends CI_Controller{
         $data['credito'] = $this->Credito_model->get_all_cuentas($params);
         
         $data['_view'] = 'credito/indexCuentas';
+        $this->load->view('layouts/main',$data);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+
+    function repoCuentas()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                $usuario_id = $session_data['usuario_id'];
+        $params['limit'] = 300; 
+        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        
+        $config = $this->config->item('pagination');
+        $config['base_url'] = site_url('credito/repoCuentas?');
+        $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+        $this->pagination->initialize($config);
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['credito'] = $this->Credito_model->get_all_cuentas($params);
+        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+        $data['_view'] = 'credito/repoCuentas';
         $this->load->view('layouts/main',$data);
             }
             else{
