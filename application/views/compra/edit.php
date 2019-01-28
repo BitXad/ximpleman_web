@@ -81,7 +81,9 @@ function pulsar(e) {
   });
   });
      
-
+function final(){
+  document.getElementById('loader').style.display = 'block';
+}
     
 </script>
 <style type="text/css">
@@ -830,6 +832,12 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <span aria-hidden="true">&times;</span>
                 </button>
                             -->
+
+                            <div class="row" id='loader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                        </center>
+                    </div> 
                             <div class="container">
                                 <center>
                                   
@@ -1012,8 +1020,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     </div>           
         </div>
         </div>
-            <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
-            <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit">
+            <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->  
+            <span class="btn btn-warning">Ajustar precios de costo <input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1"></span> 
+            <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit" onclick="final()">
                 <h4>
                 <span class="fa fa-money"></span>   Finalizar Compra  
                 </h4>

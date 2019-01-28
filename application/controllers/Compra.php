@@ -575,8 +575,39 @@ function anular()
   
 }
 
+function ajustarcosto($compra_id)
+{
+   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_costo as 'nuevo_costo', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+    $pr_id = $this->db->query($producto_ide)->result_array(); 
+ foreach ($pr_id as $pr_ident) {
+ 
+    $nuevo = $pr_ident['nuevo_costo']*$pr_ident['nueva_cantidad'];
+  $cantidad = $pr_ident['nueva_cantidad'];
+ 
+  $detalle_costo = "SELECT   i.detallecomp_costo as 'viejo_costo', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
+  $det_costo=$this->db->query($detalle_costo)->result_array(); 
+$viejos = 0;
+$cantiviejas = 0;
+  foreach ($det_costo as $costo_cantidad) {
+      
+      $viejo = $costo_cantidad['viejo_costo']*$costo_cantidad['vieja_cantidad'];
+      $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
+      $cantidades = $cantiviejas+$cantidad;
+      $viejos = $viejos + $viejo;
+      $sumas =  $nuevo+$viejos;
+      $costo_promedio = $sumas/$cantidades;
+      $sql = "update inventario set inventario.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
+
+        $this->db->query($sql);
+   }    }
+
+   redirect('compra/index');
+   /////////aca redirect////////////
+}
+
 function finalizarcompra($compra_id)
 {
+
  $this->acceso();
  $usuario_id = $this->session_data['usuario_id'];
  $this->load->model('Compra_model');
@@ -617,6 +648,7 @@ function finalizarcompra($compra_id)
 
     );
     
+    $actualizarprecios = $this->input->post('actualizarprecios');
     $fechalimite = $this->input->post('credito_fechalimite');
     $fecha = $this->Compra_model->normalize_date($fechalimite);
     $estado_id = 8;
@@ -693,17 +725,41 @@ function finalizarcompra($compra_id)
    WHERE
    compra_id=".$compra_id.")";
    $this->db->query($vaciar_detalle);
-   
+///////////// actualiza y promediaa precios////////////////////////
+  if($actualizarprecios==1){
+   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_costo as 'nuevo_costo', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+    $pr_id = $this->db->query($producto_ide)->result_array(); 
+ foreach ($pr_id as $pr_ident) {
+ 
+    $nuevo = $pr_ident['nuevo_costo']*$pr_ident['nueva_cantidad'];
+  $cantidad = $pr_ident['nueva_cantidad'];
+ 
+  $detalle_costo = "SELECT   i.detallecomp_costo as 'viejo_costo', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
+  $det_costo=$this->db->query($detalle_costo)->result_array(); 
+$viejos = 0;
+$cantiviejas = 0;
+  foreach ($det_costo as $costo_cantidad) {
+      
+      $viejo = $costo_cantidad['viejo_costo']*$costo_cantidad['vieja_cantidad'];
+      $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
+      $cantidades = $cantiviejas+$cantidad;
+      $viejos = $viejos + $viejo;
+      $sumas =  $nuevo+$viejos;
+      $costo_promedio = $sumas/$cantidades;
+      $sql = "update inventario set inventario.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
 
-   
+        $this->db->query($sql);
+   }    }  }
+  /*///////////////////////// poner en consulta select , dc.detallecomp_costo y en aumentar_cantdad_producto: ,$producto_id['detallecomp_costo']  y  en esa funcion lo q recibe//////////////////// */
 
-   $product = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+   $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
    $productos_id=$this->db->query($product)->result_array();
 
    foreach ($productos_id as $producto_id) {
        
 
-       $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad']);
+       $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo']);
+      $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo']);
 
    }          
    
@@ -825,11 +881,13 @@ function finalizarcompra($compra_id)
 }
 
 }  } }
+
+
 redirect('compra/index');
 
-}  }
+ }
 
-
+}
 
 function detallecompra()
 {
@@ -890,16 +948,8 @@ function ingresarproducto()
     )";
     $this->db->query($sql);
     $detalles = $this->db->insert_id();
-    $pro = "UPDATE producto
-    SET
-    
-    producto_costo = ".$producto_costo.",
-    producto_precio = ".$producto_precio."
-    
-    WHERE producto_id = ".$producto_id."
-    ";
-    
-    $this->Compra_model->ejecutar($pro);
+   
+
     $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
     if(isset($datos)){
         echo json_encode($datos);
@@ -1123,8 +1173,7 @@ function pdf($compra_id){
     $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
     $data['_view'] = 'compra/reciboCompra';
     $this->load->view('layouts/main',$data);
-    
-    
+        
     
 }
 private function acceso(){

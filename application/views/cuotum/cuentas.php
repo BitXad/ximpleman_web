@@ -204,6 +204,7 @@ $(document).ready(function(){
                           <?php }else { ?>
                             <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
                              <a href="<?php echo site_url('cuotum/recibocuentas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
+                             <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>
                         </td>  
                        <?php } ?>
                         <!---------------------------------MODAL DE PAGAR------------------------->

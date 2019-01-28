@@ -181,4 +181,15 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+
+    function cambiar_ultimocosto($producto_id,$ultimocosto)
+    {
+
+         //Truncar la tabla inventario
+       
+        //cargar el inventario actualizado
+        $sql = "update producto set producto.producto_ultimocosto=".$ultimocosto." where producto_id=".$producto_id."";
+
+        $this->db->query($sql);
+    }
 }

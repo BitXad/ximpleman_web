@@ -79,7 +79,7 @@
                     </div> </center>
                     <div class="columna_central">
                         <center>      <h3 class="box-title"><u>PLAN DE PAGOS</u></h3>
-                   
+                                        <?php echo $cuota[0]['credito_id']; ?>
                          
                
                 </center>
@@ -88,7 +88,7 @@
           
 
             </div>
-            <hr>
+           <hr style="border-color: black; margin: 3px; ">
   <div class="cuerpo" >
                     <div class="columna_derecha">
                       TOTAL: <b><?php echo  number_format($cuota[0]['compra_totalfinal'], 2, ".", ",") ?></b><br>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="columna_izquierda">
                     
-                       Fecha y Hora: <b><?php echo $cuota[0]['compra_fecha']; ?>  <?php echo $cuota[0]['compra_hora']; ?></b><br>
+                       Fecha y Hora: <b><?php $fecha_format = date('Y/m/d', strtotime($cuota[0]['compra_fecha'])); echo $fecha_format; ?>  <?php echo $cuota[0]['compra_hora']; ?></b><br>
                        COD./CI: <?php echo $cuota[0]['proveedor_razon']; ?><br>
                 PROVEEDOR: <?php echo $cuota[0]['proveedor_nombre']; ?>
                        
@@ -146,24 +146,36 @@
                         <td><?php echo $cont ?></td>
                                             
                        
-                        <td><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
-                        <td><?php echo $c['cuota_fechalimite']; ?></td>
-                        <td><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
+                        <td style="text-align: center;"><?php echo $fecha_format = date('d/m/Y', strtotime($c['cuota_fechalimite'])); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
                       
-                        <td><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
+                        <td style="text-align: right;"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
                         
-                        <td><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
-                        <td><?php if ($c['cuota_fecha']=='0000-00-00') { echo ("NO PAGADO");
+                        <td style="text-align: right;"><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                        <td style="text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00') { echo ("NO PAGADO");
                          
-                        } else{ echo $c['cuota_fecha']; } ?> </td>
+                        } else{ echo $fecha_format = date('d/m/Y', strtotime($c['cuota_fecha'])); } ?> </td>
                       
                        
                 
                     
                     </tr>
                    <?php  $i++;  } ?>
+                     <tr>
+                     <td><b>TOTAL</td>
+                     <td style="text-align: right;"></td>
+                     <td style="text-align: right;"></td>
+                     <td style="text-align: right;"></td>
+                     <td style="text-align: right;"></td>
+                     <td style="text-align: right;"></td>
+                     <td style="text-align: right;"></td>
+                     <td style="text-align: right; font-size: 12px;"><b><?php echo  number_format($cancelados, 2, ".", ","); ?></td>
+                     <td style="text-align: right;"></td>
+                     
+                   </tr>
                    <tr>
                     <th colspan="10"> SALDO A CANCELAR <?php echo number_format($saldito, 2, ".", ",") ?></th>    
                       
@@ -173,26 +185,27 @@
             
         </div>
             <div class="cuerpo">
-                    <div class="columna_derecha">
+                  <div class="columna_derecha">
                         <center>
-                        <hr style="border-color: black; width: 40%;"> 
-                       GARANTE: .............................................<br>
-                       C.I.: .........................................
+                        <hr style="border-color: black; width: 80%;"> 
+                       GARANTE: .................................<br>
+                       C.I.: ............................................
                        <!-- VENDEDOR: <?php echo $cuota[0]['usuario_nombre']; ?>-->
 
                     </center>
                     </div>
                     <div class="columna_izquierda">
                        <center>  
-                         <hr style="border-color: black; width: 40%;">
+                         <hr style="border-color: black; width: 80%;">
                         CAJERO(A)
                        
                     </div> </center>
                     <div class="columna_central">
                       <CENTER>
-                         <hr style="border-color: black; width: 33%;">
-                        TITULAR: .............................................<br>
-                       C.I.: .........................................
+                         <hr style="border-color: black; width: 60%;">
+                        TITULAR: ................................<br>
+                        C.I.: ..........................................
+                   
                    
                          
                

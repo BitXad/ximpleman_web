@@ -21,9 +21,9 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
                 <h3 class="box-title">Cuentas por Cobrar</h3>
-            <!--    <div class="box-tools">
-                    <a href="<?php echo site_url('credito/add'); ?>" class="btn btn-success btn-sm">+ A«Ðadir</a> 
-                </div> -->
+       
+                    <a href="<?php echo site_url('credito/repoCuentas'); ?>" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</a> 
+                
                  <div class="col-md-12"  >
                  <div class="col-md-4"  >
             

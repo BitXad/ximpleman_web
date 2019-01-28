@@ -137,6 +137,7 @@ class Credito_model extends CI_Model
                 and c.estado_id = e.estado_id
                 and c.estado_id = 8
 
+
             ORDER BY `credito_id` DESC
 
             " . $limit_condition . "

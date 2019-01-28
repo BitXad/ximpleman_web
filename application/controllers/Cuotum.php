@@ -170,6 +170,48 @@ class Cuotum extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+    function comprobantedeudas($cuota_id,$credito_id)
+    {
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+              $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                $usuario_id = $session_data['usuario_id'];
+        $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['credito'] = $this->Cuotum_model->get_all_deuda($credito_id);
+        $data['_view'] = 'cuotum/comprobanteDeuda';
+        $this->load->view('layouts/main',$data);
+    }else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    function comprobantecuentas($cuota_id,$credito_id)
+    {
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+              $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                $usuario_id = $session_data['usuario_id'];
+        $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+        $data['_view'] = 'cuotum/comprobanteCuenta';
+        $this->load->view('layouts/main',$data);
+    }else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
     function pagar($cuota_id)
     {
         
