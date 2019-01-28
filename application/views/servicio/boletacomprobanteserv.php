@@ -25,7 +25,7 @@ body {
 <script type="text/javascript">
     $(document).ready(function()
     {
-        window.onload = window.print();
+        //window.onload = window.print();
     });
 </script>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -102,8 +102,8 @@ body {
         </div>
         </div>
         <div style="float:right; width:78%; padding-left: 8px">
-            <div class="cuerpo" >
-                <div class="columna_izquierda" style="padding-left: 9px;">
+            <div class="cuerpo" style="display: flex; width: 100%">
+                <div style="padding-left: 9px; width: 35%">
                    <div style="font-family: 'Arial', Arial, Arial, arial; font-size: 10px; text-align: center;"> 
                        <font size="1"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
                     <?php echo $empresa[0]['empresa_zona']; ?><br>
@@ -111,14 +111,15 @@ body {
                     <?php echo $empresa[0]['empresa_telefono']; ?>
                     </div>
                 </div>
-                <div class="columna_central" style="text-align: center">
+                <div style="text-align: center; width: 40%">
                     <h4 class="box-title" style="margin-top: 0px; margin-bottom: 0px;">
                         <b>ORDEN DE SERVICIO TÉCNICO<br>Nro.:  <?php echo "00".$servicio['servicio_id']; ?></b></h4>
                     <!--<font size="2"><b>Nro.:  <?php //echo "00".$servicio['servicio_id']; ?></b></font>-->
-                    <span><?php echo date("d/m/Y h:i:s a"); ?></span>
+                    <span><?php echo date("d/m/Y h:i:s a"); ?></span><br>
+                    <b>ESTADO: <?php echo $servicio['estado_descripcion']; ?></b>
                 </div>
-                <div class="columna_derecha" style="text-align: right; position: static">
-                    <b>TIPO SERV.: </b><?php echo $tipo_servicio['tiposerv_descripcion']; ?><br>
+                <div style=" width: 25%; text-align: right">
+                    <div style="padding-top: 53px; width: 100%"><b>TIPO SERV.: </b><?php echo $tipo_servicio['tiposerv_descripcion']; ?></div>
                 </div>
             </div>
             <hr style="border-color: black; margin: 0px;">
@@ -147,7 +148,7 @@ body {
             </div>
             <hr style="border-color: black; margin-top: 2px; margin-bottom: 2px">
             <div style="float: right">
-                <b>ESTADO: <?php echo $servicio['estado_descripcion']; ?></b>
+                
             </div><br>
             <hr style="border-color: black; margin-top: 2px; margin-bottom: 2px">
             <div>
