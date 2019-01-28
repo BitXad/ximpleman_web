@@ -99,7 +99,7 @@ class Servicio_model extends CI_Model
 
             GROUP BY
                 s.servicio_id
-              ORDER By s.servicio_id
+              ORDER By s.servicio_id desc
         ")->result_array();
 
         return $servicio;
@@ -189,9 +189,66 @@ class Servicio_model extends CI_Model
                 and s.usuario_id = i.usuario_id
                 and s.estado_id = 5
 
-            ORDER BY `servicio_id`
+            ORDER BY `servicio_id` desc
         ")->result_array();
 
+        return $servicio;
+    }
+    /*
+     * Get all reporte servicios HOY
+     */
+    function get_all_repservicios()
+    {
+        $servicio = $this->db->query("
+            SELECT
+                *
+            FROM
+                detalle_serv ds, servicio s, estado e, responsable r, cliente c, usuario u, tipo_servicio ts
+
+            WHERE
+                ds.servicio_id = s.servicio_id
+                and ds.estado_id = e.estado_id
+                and ds.responsable_id = r.responsable_id
+                and ds.usuario_id = u.usuario_id
+                and s.cliente_id = c.cliente_id
+                and s.tiposerv_id = ts.tiposerv_id
+                and date(servicio_fecharecepcion) = date(now())
+
+            ORDER BY ds.servicio_id      
+        ")->result_array();
+
+        return $servicio;
+    }
+    /*
+     * Get all reporte servicios con Filtro
+     */
+    function get_all_busquedarepservicios($filtro)
+    {
+        $servicio = $this->db->query("
+            SELECT
+                c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                ds.detalleserv_id,
+                ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
+                ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion, ds.detalleserv_descripcion,
+                r.responsable_nombres, r.responsable_apellidos
+                
+            FROM
+                detalle_serv ds, servicio s, estado e, responsable r, cliente c, usuario u, tipo_servicio ts
+
+            WHERE
+                ds.servicio_id = s.servicio_id
+                and ds.estado_id = e.estado_id
+                and ds.responsable_id = r.responsable_id
+                and ds.usuario_id = u.usuario_id
+                and s.cliente_id = c.cliente_id
+                and s.tiposerv_id = ts.tiposerv_id ".
+                $filtro." 
+
+            ORDER BY ds.servicio_id      
+        ")->result_array();
+        
         return $servicio;
     }
 }

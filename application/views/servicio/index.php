@@ -106,7 +106,7 @@
                         </div>
                         <div class="col-md-2">
                                 Sub Categoria Servicio:
-                                <input type="text" name="buscarsubcat" id="buscarsubcat" class="btn btn-primary btn-sm form-control" style="background-color: white; color: black; text-align: left;" placeholder="Ingrese Sub Categoria" />
+                                <input type="text" name="buscarsubcat" id="buscarsubcat" class="btn btn-primary btn-sm form-control" style="background-color: white; color: black; text-align: left; cursor: auto;" placeholder="Ingrese Sub Categoria" />
                         </div>
                         <div class="col-md-2">
                             <br>

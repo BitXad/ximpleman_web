@@ -280,6 +280,7 @@ function mostrar_ocultar(){
             <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
             <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a> <b> Quitar Todo</b></button> 
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
+            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span></a> <b> - 0 -</b></button> 
             <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
             
             <!--------------- fin botones ---------------------->

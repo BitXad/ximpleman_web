@@ -181,6 +181,7 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+<<<<<<< HEAD
 
     function cambiar_ultimocosto($producto_id,$ultimocosto)
     {
@@ -191,5 +192,24 @@ class Producto_model extends CI_Model
         $sql = "update producto set producto.producto_ultimocosto=".$ultimocosto." where producto_id=".$producto_id."";
 
         $this->db->query($sql);
+=======
+    /*
+     * Get producto by producto_id en ROW
+     */
+    function get_esteproducto($producto_id)
+    {
+        $producto = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `producto`
+
+            WHERE
+                `producto_id` = ?
+        ",array($producto_id))->row_array();
+
+        return $producto;
+>>>>>>> master
     }
 }

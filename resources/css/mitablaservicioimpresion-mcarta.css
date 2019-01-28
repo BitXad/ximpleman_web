@@ -11,6 +11,31 @@
     margin-left: 0em;
     padding:0px;*/
 }
+.micontenedorep{
+    margin-top: 1cm;
+    display: flex;
+    max-width: 100%;
+    max-height: 5%;
+    font-family: "Arial", Arial Narrow;
+    text-align: center;
+}
+.micontenidoInforme{
+    margin-top: 1cm;
+    margin-right: 2cm;
+    margin-left: 4cm;
+    display: flex;
+    max-width: 100%;
+    max-height: 5%;
+    font-family: "Arial", Arial Narrow;
+    text-align: center;
+}
+.micontenedorlineas hr{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 2cm;
+    margin-left: 4cm;
+    border-top: 1px solid;
+}
 #cabizquierda{
     width: 25%;
     font-size: 10pt;
@@ -46,14 +71,20 @@
 }
 
 .micontenedor img{
-    max-width: 3cm;
-    max-height: 3cm;
-    width: 3cm;
-    height: 3cm;
+    max-width: 2.5cm;
+    max-height: 2.5cm;
+    width: 2.5cm;
+    height: 2.5cm;
     padding-bottom: 8px;
 }
 
 .clientenombre{
+    max-width: 100%;
+    width: 100%;
+    font-family: "Arial", arial narrow;
+    font-size: 10pt;
+}
+.paramtrosbusqueda{
     max-width: 100%;
     width: 100%;
     font-family: "Arial", arial narrow;
@@ -94,7 +125,18 @@ div b{
     width: 50%;
     font-size: 10pt;
 }
-
+/* *******Para que haya solo en la parte derecha****** */
+.cabsoloizqderechafirmas{
+    /*display: block;*/
+    width: 80%;
+    font-size: 10pt;
+}
+.cabsoloderechafirmas{
+    /*display: block;*/
+    
+    width: 20%;
+    font-size: 10pt;
+}
 /* ********************************** */
 
 
@@ -129,4 +171,19 @@ div b{
 #mitablaimpresion td {
     font-size: 8pt;
     padding: 2px;
+}
+.alinearder{
+    text-align: right;
+}
+.alinearcentro{
+    text-align: center;
+}
+.negrita{
+    font-weight: bold;
+}
+.tamanio10pt{
+    font-size: 10pt;
+}
+.tamanio8pt{
+    font-size: 8pt;
 }
