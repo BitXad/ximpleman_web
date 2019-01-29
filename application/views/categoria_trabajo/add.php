@@ -11,6 +11,7 @@
 						<label for="cattrab_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
 							<input type="text" name="cattrab_descripcion" value="<?php echo $this->input->post('cattrab_descripcion'); ?>" class="form-control" id="cattrab_descripcion" required />
+                                                        <span class="text-danger"><?php echo form_error('cattrab_descripcion');?></span>
 						</div>
 					</div>
 				</div>

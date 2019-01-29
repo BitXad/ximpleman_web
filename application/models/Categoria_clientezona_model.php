@@ -33,6 +33,8 @@ class Categoria_clientezona_model extends CI_Model
 
             WHERE
                 cc.estado_id = e.estado_id
+                
+                ORDER BY cc.categoriacliezona_id DESC
 
         ")->result_array();
 

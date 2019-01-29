@@ -34,7 +34,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
 						<th>Zona</th>
 						<th>Estado</th>
 						<th></th>
@@ -74,7 +74,7 @@
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                         <a href="<?php echo site_url('categoria_clientezona/edit/'.$c['categoriacliezona_id']); ?>" class="btn btn-info btn-xs" title="Editar"><span class="fa fa-pencil"></span></a> 
-                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php $i++;  } ?>

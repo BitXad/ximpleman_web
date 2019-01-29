@@ -11,6 +11,7 @@
 						<label for="catserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
 							<input type="text" name="catserv_descripcion" value="<?php echo $this->input->post('catserv_descripcion'); ?>" class="form-control" id="catserv_descripcion" required />
+                                                        <span class="text-danger"><?php echo form_error('catserv_descripcion');?></span>
 						</div>
 					</div>
 				</div>

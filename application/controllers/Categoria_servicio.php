@@ -46,8 +46,13 @@ class Categoria_servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        if(isset($_POST) && count($_POST) > 0)     
-        {
+                
+                $this->load->library('form_validation');
+
+                    $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+
+                    if($this->form_validation->run())     
+            {
             //Estado ACTIVO por defecto
             $estado_id = 1;
             $params = array(
@@ -88,7 +93,11 @@ class Categoria_servicio extends CI_Controller{
         
         if(isset($data['categoria_servicio']['catserv_id']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
+            $this->load->library('form_validation');
+
+                    $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+
+                    if($this->form_validation->run())     
             {   
                 $params = array(
 					'catserv_descripcion' => $this->input->post('catserv_descripcion'),

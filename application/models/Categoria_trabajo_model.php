@@ -33,6 +33,8 @@ class Categoria_trabajo_model extends CI_Model
 
             WHERE
                 ct.estado_id = e.estado_id
+                
+                ORDER BY ct.cattrab_id DESC
 
         ")->result_array();
 

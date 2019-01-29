@@ -56,7 +56,7 @@ class Categoria_producto extends CI_Controller{
                 );
         $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('categoria_nombre','Categoria Nombre','required');
+                $this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 		
 		if($this->form_validation->run())     
         {   
@@ -99,7 +99,7 @@ class Categoria_producto extends CI_Controller{
         {
             $this->load->library('form_validation');
 
-			$this->form_validation->set_rules('categoria_nombre','Categoria Nombre','required');
+			$this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 		
 			if($this->form_validation->run())     
             {   

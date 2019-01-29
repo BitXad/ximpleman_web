@@ -11,6 +11,7 @@
 						<label for="categoriacliezona_descripcion" class="control-label">Zona</label>
 						<div class="form-group">
 							<input type="text" name="categoriacliezona_descripcion" value="<?php echo ($this->input->post('categoriacliezona_descripcion') ? $this->input->post('categoriacliezona_descripcion') : $categoria_clientezona['categoriacliezona_descripcion']); ?>" class="form-control" id="categoriacliezona_descripcion" required />
+                                                        <span class="text-danger"><?php echo form_error('categoriacliezona_descripcion');?></span>
 						</div>
 					</div>
                                         <div class="col-md-6">
