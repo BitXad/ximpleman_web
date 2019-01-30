@@ -19,14 +19,14 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <h3 class="box-title">Categoria Servicio</h3>
+    <h3 class="box-title">Categoria Servicio con Sub Categorias:</h3>
     
 </div>
 <div class="row">    
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group"> <span class="input-group-addon">Buscar</span>
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese descripción, sub categoria...">
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese categoria, sub categoria...">
           </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
@@ -35,7 +35,7 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
 						<th>#</th>
-						<th>Descripción</th>
+						<th>Categoria</th>
 						<th>Sub<br>Categorias</th>
                     </tr>
                     <tbody class="buscar" id="subcatserv">
