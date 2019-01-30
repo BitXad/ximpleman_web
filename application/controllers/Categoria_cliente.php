@@ -54,14 +54,16 @@ class Categoria_cliente extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $this->load->library('form_validation');
+                
+                $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('categoriaclie_descripcion','Categoriaclie Descripcion','required');
+		//$this->form_validation->set_rules('categoriaclie_descripcion','Descripcion es requerida','trim|required|alpha', array('required' => 'Este Campo no debe ser vacio', 'alpha' => 'Solo valores alfanumericos'));
+		$this->form_validation->set_rules('categoriaclie_descripcion','Descripcion es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 		$this->form_validation->set_rules('categoriaclie_porcdesc','Categoriaclie Porcdesc','required');
 		$this->form_validation->set_rules('categoriaclie_montodesc','Categoriaclie Montodesc','required');
 		
 		if($this->form_validation->run())     
-        {   
+        {
             $params = array(
 				'categoriaclie_descripcion' => $this->input->post('categoriaclie_descripcion'),
 				'categoriaclie_porcdesc' => $this->input->post('categoriaclie_porcdesc'),
@@ -102,8 +104,7 @@ class Categoria_cliente extends CI_Controller{
         if(isset($data['categoria_cliente']['categoriaclie_id']))
         {
             $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('categoriaclie_descripcion','Categoriaclie Descripcion','required');
+                        $this->form_validation->set_rules('categoriaclie_descripcion','Descripcion es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 			$this->form_validation->set_rules('categoriaclie_porcdesc','Categoriaclie Porcdesc','required');
 			$this->form_validation->set_rules('categoriaclie_montodesc','Categoriaclie Montodesc','required');
 		

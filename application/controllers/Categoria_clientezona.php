@@ -46,8 +46,13 @@ class Categoria_clientezona extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        if(isset($_POST) && count($_POST) > 0)     
-        {   //estado_id = 1    --->por defecto lo crea activo
+                
+                $this->load->library('form_validation');
+		$this->form_validation->set_rules('categoriacliezona_descripcion','Descripcion es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+		if($this->form_validation->run())     
+                {
+                    //estado_id = 1    --->por defecto lo crea activo
             $params = array(
 				'categoriacliezona_descripcion' => $this->input->post('categoriacliezona_descripcion'),
 				'estado_id' => 1,
@@ -88,8 +93,11 @@ class Categoria_clientezona extends CI_Controller{
         
         if(isset($data['categoria_clientezona']['categoriacliezona_id']))
         {
-            if(isset($_POST) && count($_POST) > 0)
-            {
+            $this->load->library('form_validation');
+		$this->form_validation->set_rules('categoriacliezona_descripcion','Descripcion es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+		if($this->form_validation->run())     
+                {
                 $params = array(
 					'categoriacliezona_descripcion' => $this->input->post('categoriacliezona_descripcion'),
 					'estado_id' => $this->input->post('estado_id'),

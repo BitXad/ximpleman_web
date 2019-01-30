@@ -37,12 +37,11 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
-                        <!--<th>Id</th>-->
+						<th>#</th>
 						<th>Descripción</th>
 						<th>Porc.<br>Desc.</th>
 						<th>Monto<br>Desc.</th>
-						<th>Operaciones</th>
+						<th></th>
                     </tr>
                     <tbody class="buscar">
                     <?php
@@ -81,7 +80,7 @@
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                             <a href="<?php echo site_url('categoria_cliente/edit/'.$c['categoriaclie_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a data-toggle="modal" data-target="#myModal<?php echo $i; ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <!--<a data-toggle="modal" data-target="#myModal<?php //echo $i; ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php } //$cont = 0; ?>

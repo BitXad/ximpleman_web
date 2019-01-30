@@ -36,7 +36,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>#</th>
 						<th>Descripción</th>
 						<th>Estado</th>
 						<th></th>
@@ -70,7 +70,7 @@
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_servicio/remove/'.$c['catserv_id']); ?>" class="btn btn-success"><span class="fa fa-pencil"></span> Si </a>
+                                                      <a href="<?php echo site_url('categoria_servicio/remove/'.$c['catserv_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                       <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
@@ -78,7 +78,7 @@
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                                                     <a href="<?php echo site_url('categoria_servicio/edit/'.$c['catserv_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                                                    <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                                                    <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
                                                     </td>
 						
                     </tr>

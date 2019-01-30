@@ -46,8 +46,12 @@ class Categoria_trabajo extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        if(isset($_POST) && count($_POST) > 0)     
-        {   //por defecto la categoria es ACTIVO;
+        $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('cattrab_descripcion','Categoria Trabajo Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+			if($this->form_validation->run())     
+            {
             $estado_id = 1;
             $params = array(
 				'cattrab_descripcion' => $this->input->post('cattrab_descripcion'),
@@ -89,7 +93,11 @@ class Categoria_trabajo extends CI_Controller{
         
         if(isset($data['categoria_trabajo']['cattrab_id']))
         {
-            if(isset($_POST) && count($_POST) > 0)
+            $this->load->library('form_validation');
+
+			$this->form_validation->set_rules('cattrab_descripcion','Categoria Trabajo Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+			if($this->form_validation->run())     
             {
                 $params = array(
 					'cattrab_descripcion' => $this->input->post('cattrab_descripcion'),
