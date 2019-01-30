@@ -63,7 +63,7 @@
 <div class="box-header">
                 <h3 class="box-title">Cliente: <?php echo $cuota[0]['cliente_nombre']; ?></h3><br>
                 <h3 class="box-title">Venta N: <b>00<?php echo $cuota[0]['venta_id']; ?></b></h3><br>
-                <h3 class="box-title">Fecha y Hora: <b><?php echo $cuota[0]['venta_fecha']; ?>  <?php echo $cuota[0]['venta_hora']; ?></b></h3><br>
+                <h3 class="box-title">Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($cuota[0]['venta_fecha'])); ?>  <?php echo $cuota[0]['venta_hora']; ?></b></h3><br>
                 <h3 class="box-title">Monto Credito: <b><?php echo $cuota[0]['venta_total']; ?></b></h3><br>
                 <h3 class="box-title">Nro. Credito: <b><?php echo $cuota[0]['credito_id']; ?></b></h3>
                 
@@ -80,7 +80,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                       <tr>
-                                                <th>Num.</th>
+                                                <th>#</th>
                         
                         <th>Num.<br>Cuota</th>
                         <th>Capital</th>
@@ -165,9 +165,9 @@ $(document).ready(function(){
                         <td><?php echo number_format($c['cuota_subtotal'], 2, ".", ","); ?></td>
                         <td><?php echo number_format($c['cuota_descuento'], 2, ".", ","); ?></td>
                         <td><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
-                        <td><?php echo $c['cuota_fechalimite']; ?></td>
+                        <td><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
                         <td><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
-                        <td><?php echo $c['cuota_fecha']; ?></td>
+                        <td><?php echo date('d/m/Y',strtotime($c['cuota_fecha'])); ?></td>
                         <td><?php echo $c['cuota_hora']; ?></td>
                         <td><?php echo $c['cuota_numercibo']; ?></td>
                         <td><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
@@ -194,8 +194,8 @@ $(document).ready(function(){
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('cuotum/remover/'.$c['cuota_id'].'/'.$c['credito_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                                      <a href="<?php echo site_url('cuotum/remover/'.$c['cuota_id'].'/'.$c['credito_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>
@@ -245,7 +245,7 @@ $(document).ready(function(){
                             <input type="text" name="cuota_capital" value="0" class="form-control" id="cuota_saldo<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden" name="cuota_numcuota" value="<?php echo $c['cuota_numcuota']; ?>" class="form-control" id="cuota_numcuota" />
                              <input type="hidden" name="cuota_fechalimite" value="<?php echo $c['cuota_fechalimite']; ?>" class="form-control" id="cuota_fechalimite" />
-                             <input type="text" name="cuota_fecha" value="<?php echo date('Y-m-d'); ?>" class="form-control" id="cuota_fecha" />
+                             <input type="hidden" name="cuota_fecha" value="<?php echo date('Y-m-d'); ?>" class="form-control" id="cuota_fecha" />
                              <input type="hidden" name="cuota_saldo" value="<?php echo $c['cuota_saldo']; ?>" class="form-control" id="cuota_saldo" />
                         </div>
                     </div>

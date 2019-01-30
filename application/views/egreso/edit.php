@@ -4,7 +4,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Edit
+                EDITAR EGRESO
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -14,14 +14,14 @@
 
 						
 							<div class="form-group">
-									<label for="egreso_categoria" class="col-md-4 control-label">Categoria</label>
+									<label for="egreso_categoria" class="col-md-4 control-label">CATEGORIA</label>
 									<div class="col-md-8">
 									<select name="egreso_categoria" class="form-control" >
                 <option value="">Selecciona categoria egreso</option>
                 <?php 
                 foreach($all_categoria_egreso as $categoria_egreso)
                 {
-                  $selected = ($categoria_egreso['categoria_categr'] == $this->input->post('egreso_categoria')) ? ' selected="selected"' : "";
+                  $selected = ($categoria_egreso['categoria_categr'] == $egreso['egreso_categoria']) ? ' selected="selected"' : "";
 
                   echo '<option value="'.$categoria_egreso['categoria_categr'].'" '.$selected.'>'.$categoria_egreso['categoria_categr'].'</option>';
                 } 
@@ -38,7 +38,7 @@
 							<div class="form-group">
 								<label for="egreso_monto" class="col-md-4 control-label">Monto</label>
 								<div class="col-md-8">
-									<input type="text" name="egreso_monto" value="<?php echo ($this->input->post('egreso_monto') ? $this->input->post('egreso_monto') : $egreso['egreso_monto']); ?>" class="form-control" id="egreso_monto" required/>
+									<input type="number" name="egreso_monto" value="<?php echo ($this->input->post('egreso_monto') ? $this->input->post('egreso_monto') : $egreso['egreso_monto']); ?>" class="form-control" id="egreso_monto" required/>
 								</div>
 							</div>
 							<div class="form-group">
@@ -65,7 +65,7 @@
 							<div class="form-group">
 								<label for="egreso_concepto" class="col-md-4 control-label">Concepto</label>
 								<div class="col-md-8">
-									<input type="text" name="egreso_concepto" value="<?php echo ($this->input->post('egreso_concepto') ? $this->input->post('egreso_concepto') : $egreso['egreso_concepto']); ?>" class="form-control" id="egreso_concepto" required />
+									<input type="text" name="egreso_concepto" value="<?php echo ($this->input->post('egreso_concepto') ? $this->input->post('egreso_concepto') : $egreso['egreso_concepto']); ?>" class="form-control" id="egreso_concepto"  />
 								</div>
 							</div>
 							

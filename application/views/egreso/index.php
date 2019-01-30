@@ -85,7 +85,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">     
                         <tr>
-							<th>NUMERO</th>
+							<th>#</th>
                             <th>NOMBRE</th>
                             <th># RECIBO</th>
                             <th>FECHA</th>

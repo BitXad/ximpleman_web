@@ -12,11 +12,11 @@
 
 							
 							<div class="form-group">
-									<label for="ingreso_categoria" class="col-md-4 control-label">CATEGORIA</label>
+									<label for="ingreso_categoria" class="col-md-4 control-label">Categoria</label>
 									<div class="col-md-8">
 										
-										<select name="ingreso_categoria" class="form-control">
-                <option value="">Selecciona categoria ingreso</option>
+										<select name="ingreso_categoria" class="form-control" >
+                <option value="">- CATEGORIA INGRESO -</option>
                 <?php 
                 foreach($all_categoria_ingreso as $categoria_ingreso)
                 {
@@ -37,11 +37,11 @@
 							<div class="form-group">
 								<label for="ingreso_monto" class="col-md-4 control-label">MONTO</label>
 								<div class="col-md-8">
-									<input type="text" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
+									<input type="number" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
 								</div>
 							</div>
 							<div class="form-group">
-									<label for="ingreso_moneda" class="col-md-4 control-label">MONEDA</label>
+									<label for="ingreso_moneda" class="col-md-4 control-label">- MONEDA -</label>
 									<div class="col-md-8">
 										<select name="ingreso_moneda" class="form-control" required>
 											<option value="">-- MONEDA --</option>

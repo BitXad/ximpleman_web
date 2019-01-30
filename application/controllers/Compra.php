@@ -746,12 +746,10 @@ $cantiviejas = 0;
       $viejos = $viejos + $viejo;
       $sumas =  $nuevo+$viejos;
       $costo_promedio = $sumas/$cantidades;
-      $sql = "update inventario set inventario.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
+      $sql = "update inventario i join producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio."where i.producto_id=".$pr_ident['product']." and p.producto_id=".$pr_ident['product']." ";
 
         $this->db->query($sql);
-      $ptq = "update producto set producto.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
-
-        $this->db->query($ptq);
+    
    }    }  }
   /*///////////////////////// poner en consulta select , dc.detallecomp_costo y en aumentar_cantdad_producto: ,$producto_id['detallecomp_costo']  y  en esa funcion lo q recibe//////////////////// */
 

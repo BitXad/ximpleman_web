@@ -65,8 +65,8 @@
   <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 
-                       COD. CIE.: <?php echo $cuota[0]['cliente_codigo']; ?><br>
-                       NO. venta: <?php echo $cuota[0]['venta_id']; ?><br>
+                       COD. CLIE.: <?php echo $cuota[0]['cliente_codigo']; ?><br>
+                       No. Venta: <?php echo $cuota[0]['venta_id']; ?><br>
                        <!-- VENDEDOR: <?php echo $cuota[0]['usuario_nombre']; ?>-->
 
                     </center>
@@ -78,10 +78,9 @@
                         <?php echo $empresa[0]['empresa_telefono']; ?>
                     </div> </center>
                     <div class="columna_central">
-                        <center>      <h3 class="box-title"><u>PLAN DE PAGOS</u></h3>
-                   
-                         
-               
+                        <center>      <h3 class="box-title"><u>PLAN DE PAGOS</u></h3><BR>
+                                    CREDITO No.: <?php echo $cuota[0]['credito_id']; ?> <br>
+                                    <?php echo date('d/m/Y H:i:s'); ?> 
                 </center>
                     </div>
 

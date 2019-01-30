@@ -77,7 +77,7 @@
                     <div class="columna_central">
                         <center>      <h3 class="box-title"><u>DEUDAS POR COBRAR</u></h3>
                             <b>VENTAS AL CREDITO</b> <br>
-                <?php echo date('d-m-Y H:i:s'); ?>
+                <?php echo date('d/m/Y H:i:s'); ?>
                 </center>
                     </div>
 </div>
@@ -93,7 +93,7 @@
                     <tr>
 						<th>Num.</th>                                             
                         <th>PROVEEDOR</th>
-                        <th>COMPRA</th>
+                        <th>VENTA</th>
                         <th>CREDITO</th>                        
                         <th>TOTAL<br>CRED.</th>
                         <th>CANCELADO<br>a CTTA</th>
@@ -122,7 +122,7 @@
                         <td style="text-align: right;"><?php $cancelado=0; foreach($cuota as $k){ if($c['credito_id']==$k['credito_id']){ 
                         $cancelado+=$k['cuota_cancelado'];  }  } echo  number_format($cancelado, 2, ".", ",");  $totalCancelados+=$cancelado; ?></td>
                         <td style="text-align: right;"><?php $saldo=$c['credito_monto']-$cancelado; echo number_format($saldo, 2, ".", ","); $totalSaldos+=$saldo; ?></td>
-						<td style="text-align: center;"><?php echo $c['cliente_telefono']; ?></td>
+						<td style="text-align: center;"><?php echo $c['cliente_telefono']; ?><?php if($c['cliente_celular']!=NULL && $c['cliente_telefono']!=NULL){ ?> - <?php echo $c['cliente_celular'];} else { echo $c['cliente_celular']; } ?></td>
 						
                     </tr>
                     <?php } ?>
@@ -139,9 +139,7 @@
                 </table>
                 
             </div>
-            <div class="pull-right no-print">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
+                          
         </div>
         <div>
             <center>

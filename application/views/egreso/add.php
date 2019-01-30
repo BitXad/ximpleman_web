@@ -3,7 +3,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4>REGISTRAR egreso</h4>
+                <h4>REGISTRAR EGRESO</h4>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -17,7 +17,7 @@
 									<div class="col-md-8">
 										
 										<select name="egreso_categoria" class="form-control">
-                <option value="">Selecciona categoria egreso</option>
+                <option value="">- CATEGORIA EGRESO -</option>
                 <?php 
                 foreach($all_categoria_egreso as $categoria_egreso)
                 {
@@ -38,14 +38,14 @@
 							<div class="form-group">
 								<label for="egreso_monto" class="col-md-4 control-label">MONTO</label>
 								<div class="col-md-8">
-									<input type="text" name="egreso_monto" value="<?php echo $this->input->post('egreso_monto'); ?>" class="form-control" id="egreso_monto" required/>
+									<input type="number" name="egreso_monto" value="<?php echo $this->input->post('egreso_monto'); ?>" class="form-control" id="egreso_monto" required/>
 								</div>
 							</div>
 							<div class="form-group">
 									<label for="egreso_moneda" class="col-md-4 control-label">MONEDA</label>
 									<div class="col-md-8">
 										<select name="egreso_moneda" class="form-control" required>
-											<option value="">-- MONEDA --</option>
+											<option value="">- MONEDA -</option>
 											<?php 
 											$egreso_moneda_values = array(
 						'Bs'=>'Bs',
