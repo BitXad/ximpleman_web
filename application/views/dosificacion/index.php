@@ -52,7 +52,7 @@
                 <label class="control-label">Fecha, Hora</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_fechahora']; ?>
+                <?php echo date("d/m/Y h:i:s a",strtotime($dosificacion[0]['dosificacion_fechahora'])); ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Nit Emisor</label>

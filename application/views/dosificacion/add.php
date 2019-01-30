@@ -86,31 +86,31 @@
 					<div class="col-md-6">
 						<label for="dosificacion_leyenda1" class="control-label">Leyenda 1</label>
 						<div class="form-group">
-							<input type="text" name="dosificacion_leyenda1" value="<?php echo $this->input->post('dosificacion_leyenda1'); ?>" class="form-control" id="dosificacion_leyenda1" />
+                                                    <textarea rows="3" class="form-control" name="dosificacion_leyenda1" id="dosificacion_leyenda1"><?php echo $this->input->post('dosificacion_leyenda1'); ?></textarea>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="dosificacion_leyenda2" class="control-label">Leyenda 2</label>
 						<div class="form-group">
-							<input type="text" name="dosificacion_leyenda2" value="<?php echo $this->input->post('dosificacion_leyenda2'); ?>" class="form-control" id="dosificacion_leyenda2" />
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda2" id="dosificacion_leyenda2"><?php echo $this->input->post('dosificacion_leyenda2'); ?></textarea>
 						</div>
 					</div>
                                         <div class="col-md-6">
 						<label for="dosificacion_leyenda3" class="control-label">Leyenda 3</label>
 						<div class="form-group">
-							<input type="text" name="dosificacion_leyenda3" value="<?php echo $this->input->post('dosificacion_leyenda3'); ?>" class="form-control" id="dosificacion_leyenda3" />
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda3" id="dosificacion_leyenda3"><?php echo $this->input->post('dosificacion_leyenda3'); ?></textarea>
 						</div>
 					</div>
                                         <div class="col-md-6">
 						<label for="dosificacion_leyenda4" class="control-label">Leyenda 4</label>
 						<div class="form-group">
-							<input type="text" name="dosificacion_leyenda4" value="<?php echo $this->input->post('dosificacion_leyenda4'); ?>" class="form-control" id="dosificacion_leyenda4" />
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda4" id="dosificacion_leyenda4"><?php echo $this->input->post('dosificacion_leyenda4'); ?></textarea>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="dosificacion_leyenda5" class="control-label">Leyenda 5</label>
 						<div class="form-group">
-							<input type="text" name="dosificacion_leyenda5" value="<?php echo $this->input->post('dosificacion_leyenda5'); ?>" class="form-control" id="dosificacion_leyenda5" />
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda5" id="dosificacion_leyenda5"><?php echo $this->input->post('dosificacion_leyenda5'); ?></textarea>
 						</div>
 					</div>
 					
