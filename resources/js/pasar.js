@@ -127,7 +127,7 @@ function ventacombi(filtro)
                         //html += "</tr>";
                    
                    $("#ventacombi").html(html);
-                   
+                    document.getElementById('loader').style.display = 'none';
             }
                 
         },

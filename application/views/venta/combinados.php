@@ -1,14 +1,15 @@
-<style>
-    ::-webkit-scrollbar { 
-    display: none; 
-}
-</style>
+
 <script src="<?php echo base_url('resources/js/pasar.js'); ?>" type="text/javascript"></script>
+<script type="text/javascript">
+    function final(){
+  document.getElementById('loader').style.display = 'block';
+}
+</script>
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
 <div class="box-header">
     <center>
-                <h3 class="box-title">Ventas por Usuarios</h3>
+                <h3 class="box-title">REPORTE DE EMBARQUE</h3>
     </center>            
 </div>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
@@ -37,8 +38,8 @@
                         </div>
 
                         <div class="col-md-4 no-print" align="center">
-                            <input type="button" class="btn btn-primary btn-sm" name="pasarAño3" onClick="pasar('usu','usuario_id')" value="Añadir -->>" style="margin:  10px;"><br>
-                            <input type="button" class="btn btn-primary btn-sm" name="pasarAño4" onClick="pasar('usuario_id','usu')" value="<<-- Quitar" style="margin:  10px;">
+                            <input type="button" class="btn btn-primary btn-sm" name="pasarA&ntilde;o3" onClick="pasar('usu','usuario_id')" value="A&ntilde;adir -->>" style="margin:  10px;"><br>
+                            <input type="button" class="btn btn-primary btn-sm" name="pasarA&ntilde;o4" onClick="pasar('usuario_id','usu')" value="<<-- Quitar" style="margin:  10px;">
                         </div>
 
                         <div class="col-md-4" style="padding-bottom:0px;" id="navTesiss">
@@ -65,7 +66,7 @@
         <div class="col-md-4">
             
 <!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
-            <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_ven()" >
+            <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_ven(),final()" >
                 <h4>
                 <span class="fa fa-search"></span>   Realizar Busqueda  
                 </h4>
@@ -88,12 +89,17 @@
                 <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="pillados" type="text" value="0" readonly="true"> </span></span>
 
 </div>
+ <div class="row" id='loader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                        </center>
+                    </div> 
 <div class="box">
             
             <div class="box-body table-responsive" >
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                        <th>N</th>
+                        <th>#</th>
                         <th>Producto</th>
                         <th>Precio</th>
                         <th>Cantidad</th>

@@ -294,7 +294,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <table class="table table-striped" id="mitabla">
                     
                      <tr>
-                                                <th>N</th>
+                                                <th>#</th>
                                                 <th>Producto</th>
                     </tr>
                     <tbody class="buscar3" id="tablaresultados">
@@ -317,7 +317,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <div class="box-body table-responsive" style="padding-left:0px;">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                            <th>Nº</th>
+                            <th>#</th>
                             <th>Producto/<br>Unidad</th>
                             <th>Código</th>
                             <th>Precio</th>
@@ -738,7 +738,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         <div class="box-body table-responsive">
                         <table class="table table-striped" id="mitabla">
                             <tr>
-                                                        <th>N</th>
+                                                        <th>#</th>
                                                         <th> Nombres</th>
 <!--                                                        <th>Acción</th>-->
                             </tr>

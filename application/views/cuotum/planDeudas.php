@@ -65,8 +65,8 @@
   <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 
-                       COD. CIE.: <?php echo $cuota[0]['proveedor_codigo']; ?><br>
-                       NO. COMPRA: <?php echo $cuota[0]['compra_id']; ?><br>
+                       COD. PROV.: <?php echo $cuota[0]['proveedor_codigo']; ?><br>
+                       No. COMPRA: <?php echo $cuota[0]['compra_id']; ?><br>
                        <!-- VENDEDOR: <?php echo $cuota[0]['usuario_nombre']; ?>-->
 
                     </center>
@@ -78,10 +78,9 @@
                         <?php echo $empresa[0]['empresa_telefono']; ?>
                     </div> </center>
                     <div class="columna_central">
-                        <center>      <h3 class="box-title"><u>PLAN DE PAGOS</u></h3>
-                                        <?php echo $cuota[0]['credito_id']; ?>
-                         
-               
+                        <center>      <h3 class="box-title"><u>PLAN DE PAGOS</u></h3><BR>
+                                        CREDITO No.: <?php echo $cuota[0]['credito_id']; ?><br>
+                                        <?php echo date('d/m/Y H:i:s'); ?> 
                 </center>
                     </div>
 
@@ -98,7 +97,7 @@
                     <div class="columna_izquierda">
                     
                        Fecha y Hora: <b><?php $fecha_format = date('Y/m/d', strtotime($cuota[0]['compra_fecha'])); echo $fecha_format; ?>  <?php echo $cuota[0]['compra_hora']; ?></b><br>
-                       COD./CI: <?php echo $cuota[0]['proveedor_razon']; ?><br>
+                       RAZON SOCIAL: <?php echo $cuota[0]['proveedor_razon']; ?><br>
                 PROVEEDOR: <?php echo $cuota[0]['proveedor_nombre']; ?>
                        
                     </div> 

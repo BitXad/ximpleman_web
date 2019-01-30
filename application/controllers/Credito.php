@@ -123,7 +123,7 @@ class Credito extends CI_Controller{
         
         $config = $this->config->item('pagination');
         $config['base_url'] = site_url('credito/indexCuenta?');
-        $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+        $config['total_rows'] = $this->Credito_model->get_all_credito_count1();
         $this->pagination->initialize($config);
 
         $data['credito'] = $this->Credito_model->get_all_cuentas($params);

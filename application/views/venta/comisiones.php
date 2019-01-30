@@ -1,5 +1,10 @@
 
 <script src="<?php echo base_url('resources/js/comisiones.js'); ?>" type="text/javascript"></script>
+<script type="text/javascript">
+    function final(){
+  document.getElementById('loader').style.display = 'block';
+}
+</script>
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet" type="text/css">
  
 <div class="box-header"  align="center">
@@ -44,7 +49,7 @@
     </div>
     <div class="col-md-4">
       
-     <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_ven()" >
+     <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_ven(),final()" >
                 <h5>
                 <span class="fa fa-search"></span>   Realizar  Busqueda  
                 </h5>
@@ -63,12 +68,17 @@
                 <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input  id="pillados" type="text" value="0" readonly="true"> </span></span>
 
 </div>
+ <div class="row" id='loader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                        </center>
+                    </div> 
 <div class="box">
             
             <div class="box-body table-responsive" >
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                        <th>N</th>
+                        <th>#</th>
                         <th>PRODUCTO</th>
                         <th>UNIDAD</th>
                         <th>PRECIO</th>

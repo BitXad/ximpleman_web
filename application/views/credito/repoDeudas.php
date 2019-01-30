@@ -77,7 +77,7 @@
                     <div class="columna_central">
                         <center>      <h3 class="box-title"><u>DEUDAS POR PAGAR</u></h3>
                             <b>COMPRAS AL CREDITO</b> <br>
-                <?php echo date('d-m-Y H:i:s'); ?>
+                <?php echo date('d/m/Y H:i:s'); ?>
                 </center>
                     </div>
 </div>
@@ -122,7 +122,7 @@
                         <td style="text-align: right;"><?php $cancelado=0; foreach($cuota as $k){ if($c['credito_id']==$k['credito_id']){ 
                         $cancelado+=$k['cuota_cancelado'];  }  } echo  number_format($cancelado, 2, ".", ",");  $totalCancelados+=$cancelado; ?></td>
                         <td style="text-align: right;"><?php $saldo=$c['credito_monto']-$cancelado; echo number_format($saldo, 2, ".", ","); $totalSaldos+=$saldo; ?></td>
-						<td style="text-align: center;"><?php echo $c['proveedor_telefono']; ?>-<?php echo $c['proveedor_telefono2']; ?></td>
+						<td style="text-align: center;"><?php echo $c['proveedor_telefono']; ?><?php if($c['proveedor_telefono2']!=NULL && $c['proveedor_telefono']!=NULL){ ?> -  <?php echo $c['proveedor_telefono2'];} else { echo $c['proveedor_telefono2']; } ?></td>
 						
                     </tr>
                     <?php } ?>
@@ -139,9 +139,7 @@
                 </table>
                 
             </div>
-            <div class="pull-right no-print">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
+                   
         </div>
         <div>
             <center>

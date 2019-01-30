@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Edit
+                EDITAR INGRESO
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -15,11 +15,11 @@
 									<label for="ingreso_categoria" class="col-md-4 control-label">Categoria</label>
 									<div class="col-md-8">
 									<select name="ingreso_categoria" class="form-control" >
-                <option value="">Selecciona categoria ingreso</option>
+                <option value="">- CATEGORIA INGRESO -</option>
                 <?php 
                 foreach($all_categoria_ingreso as $categoria_ingreso)
                 {
-                  $selected = ($categoria_ingreso['categoria_cating'] == $this->input->post('ingreso_categoria')) ? ' selected="selected"' : "";
+                  $selected = ($categoria_ingreso['categoria_cating'] == $ingreso['ingreso_categoria']) ? ' selected="selected"' : "";
 
                   echo '<option value="'.$categoria_ingreso['categoria_cating'].'" '.$selected.'>'.$categoria_ingreso['categoria_cating'].'</option>';
                 } 
@@ -36,14 +36,14 @@
 							<div class="form-group">
 								<label for="ingreso_monto" class="col-md-4 control-label">Monto</label>
 								<div class="col-md-8">
-									<input type="text" name="ingreso_monto" value="<?php echo ($this->input->post('ingreso_monto') ? $this->input->post('ingreso_monto') : $ingreso['ingreso_monto']); ?>" class="form-control" id="ingreso_monto" required/>
+									<input type="number" name="ingreso_monto" value="<?php echo ($this->input->post('ingreso_monto') ? $this->input->post('ingreso_monto') : $ingreso['ingreso_monto']); ?>" class="form-control" id="ingreso_monto" required/>
 								</div>
 							</div>
 							<div class="form-group">
 									<label for="ingreso_moneda" class="col-md-4 control-label">Moneda</label>
 									<div class="col-md-8">
 										<select name="ingreso_moneda" class="form-control" required>
-											<option value="">select</option>
+											<option value="">- MONEDA -</option>
 											<?php 
 											$ingreso_moneda_values = array(
 						'Bs'=>'Bs',

@@ -1,7 +1,14 @@
-    function toTimestamp(strDate){
-     var datum = Date.parse(strDate);
-     return datum/1000;
-    }
+    $(document).on("ready",inicio);
+function inicio(){
+      filtro = " and date(ingreso_fecha) = date(now())";   
+        
+        fechadeingreso(filtro); 
+     
+        
+} 
+
+   
+
 function buscar_ingresos()
 {
     var base_url    = document.getElementById('base_url').value;
@@ -110,11 +117,11 @@ function fechadeingreso(filtro)
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["ingreso_nombre"]+"</b></td>";
-                        html += "<td>"+registros[i]["ingreso_numero"]+"</td>"; 
-                        html += "<td>"+registros[i]["ingreso_fecha"]+"</td>"; 
+                        html += "<td align='center'>"+registros[i]["ingreso_numero"]+"</td>"; 
+                        html += "<td align='center'>"+moment(registros[i]["ingreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
                         html += "<td>"+registros[i]["ingreso_categoria"]+"</br>"; 
                         html += "<b>"+registros[i]["ingreso_concepto"]+"</b></td>"; 
-                        html += "<td>"+registros[i]["ingreso_monto"]+"</td>"; 
+                        html += "<td align='right'>"+registros[i]["ingreso_monto"]+"</td>"; 
                         html += "<td>"+registros[i]["ingreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td><a href='"+base_url+"ingreso/pdf/"+registros[i]["ingreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";

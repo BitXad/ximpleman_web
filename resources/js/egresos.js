@@ -1,7 +1,13 @@
-    function toTimestamp(strDate){
-     var datum = Date.parse(strDate);
-     return datum/1000;
-    }
+  $(document).on("ready",inicio);
+function inicio(){
+     filtro = " and date(egreso_fecha) = date(now())";   
+        
+        fechadeegreso(filtro); 
+     
+        
+} 
+
+
 function buscar_egresos()
 {
     var base_url    = document.getElementById('base_url').value;
@@ -110,11 +116,11 @@ function fechadeegreso(filtro)
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["egreso_nombre"]+"</b></td>";
-                        html += "<td>"+registros[i]["egreso_numero"]+"</td>"; 
-                        html += "<td>"+registros[i]["egreso_fecha"]+"</td>"; 
+                        html += "<td align='center'>"+registros[i]["egreso_numero"]+"</td>"; 
+                        html += "<td align='center'>"+moment(registros[i]["egreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
                         html += "<td>"+registros[i]["egreso_categoria"]+"</br>"; 
                         html += "<b>"+registros[i]["egreso_concepto"]+"</b></td>"; 
-                        html += "<td>"+registros[i]["egreso_monto"]+"</td>"; 
+                        html += "<td align='right'>"+registros[i]["egreso_monto"]+"</td>"; 
                         html += "<td>"+registros[i]["egreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";

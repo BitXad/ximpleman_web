@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="<?php echo site_url('resources/css/font-awesome.min.css');?>">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+
     <!-- Datetimepicker -->
     <link rel="stylesheet" href="<?php echo site_url('resources/css/bootstrap-datetimepicker.min.css');?>">
     <!-- Theme style -->
@@ -286,6 +287,12 @@
                         </li>
                         <li>
                             <a href="<?php echo site_url('venta');?>"><i class="fa fa-list-alt"></i>Ventas del Dia</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('venta/comision');?>"><i class="fa fa-percent"></i>Comisiones</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('venta/busquedacombi');?>"><i class="fa fa-file"></i>Reporte de Embarque</a>
                         </li>
                     </ul>
                 </li>

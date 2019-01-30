@@ -72,7 +72,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>#</th>
                                              
 						<th>Proveedor</th>
                         <th>Compra</th>
@@ -80,13 +80,13 @@
 						
 						<th>Monto</th>
 						<th>Cuota Inicial</th>
-						<th>Interes Proc.</th>
+						<th>Interes Porc.</th>
 						<th>Interes Monto</th>
-						<th>Num. Pagos</th>
+						<th># Pagos</th>
 						<th>Fecha</th>
 						<th>Hora</th>
 						<th>Tipo</th>
-						<th>Operaciones</th>
+						<th></th>
                     </tr>
                     <tbody class="buscar" id="tabladeudas">
                     <?php $cont = 0;
@@ -104,7 +104,7 @@
 						<td><?php echo $c['credito_interesproc']; ?></td>
 						<td><?php echo $c['credito_interesmonto']; ?></td>
 						<td><?php echo $c['credito_numpagos']; ?></td>
-						<td><?php echo $c['credito_fecha']; ?></td>
+						<td><?php echo date('d/m/Y', strtotime($c['credito_fecha'])); ?></td>
 						<td><?php echo $c['credito_hora']; ?></td>
 						<td><?php echo $c['credito_tipo']; ?></td>
 						<td>

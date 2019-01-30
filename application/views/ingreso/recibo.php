@@ -104,7 +104,7 @@ border-top: 0px;
            <div class="row" style="padding-left: 17%;">
                        <div class="left">
                 Fecha y Hora: 
-                            <b><?php echo$ingresos[0]['ingreso_fecha'];?></b>            
+                            <b><?php echo date('d/m/Y  H:i:s',strtotime($ingresos[0]['ingreso_fecha']));?></b>            
                  
             </div>
             <div class="right">

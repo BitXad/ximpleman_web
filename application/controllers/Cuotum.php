@@ -96,7 +96,7 @@ class Cuotum extends CI_Controller{
                 );
                 $usuario_id = $session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
-       // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+        //$data['cuotum'] = $this->Cuotum_model->get_cuotu($credito_id);
         $data['_view'] = 'cuotum/cuentas';
         $this->load->view('layouts/main',$data);
         }
@@ -431,7 +431,7 @@ class Cuotum extends CI_Controller{
                    // 'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
                     'cuota_cancelado' => $this->input->post('cuota_cancelado'),
                     'cuota_fecha' => $this->input->post('cuota_fecha'),
-                    //'cuota_hora' => $this->input->post('cuota_hora'),
+                    'cuota_hora' => date('H:i:s'),
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
@@ -456,7 +456,7 @@ class Cuotum extends CI_Controller{
                    // 'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
                     'cuota_cancelado' => $this->input->post('cuota_cancelado'),
                     'cuota_fecha' => $this->input->post('cuota_fecha'),
-                    //'cuota_hora' => $this->input->post('cuota_hora'),
+                    'cuota_hora' => date('H:i:s'),
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
@@ -468,7 +468,7 @@ class Cuotum extends CI_Controller{
                     $multa = 0;
                     $descuento = 0;
                     $cancelado = 0;
-                    $credito_fecha = $this->input->post('cuota_fecha');
+                    $credito_fecha = "'".date('d-m-Y')."'";
                     $credito_hora = "'".date('H:i:s')."'";
                     $fechalimite  = $this->input->post('cuota_fechalimite');
                     $credito_fechalimite = "'".$fechalimite."'";
@@ -584,7 +584,7 @@ class Cuotum extends CI_Controller{
     function pendiente($cuota_id,$credito_id)
     {       
             
-            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0 WHERE cuota.cuota_id=".$cuota_id." ";
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
              $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
             $credingo = $this->db->query($credis)->result_array();
@@ -605,7 +605,7 @@ class Cuotum extends CI_Controller{
     function pendiente1($cuota_id,$credito_id)
     {       
             
-            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0 WHERE cuota.cuota_id=".$cuota_id." ";
+            $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
              $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
             $credingo = $this->db->query($credis)->result_array();
@@ -704,8 +704,8 @@ class Cuotum extends CI_Controller{
 					'cuota_total' => $this->input->post('cuota_total'),
 					'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
 					'cuota_cancelado' => $this->input->post('cuota_cancelado'),
-					'cuota_fecha' =>  date('Y-m-d'),
-					'cuota_hora' => date('H:i:s'),
+					//'cuota_fecha' =>  date('Y-m-d'),
+					//'cuota_hora' => date('H:i:s'),
 					'cuota_numercibo' => $this->input->post('cuota_numercibo'),
 					'cuota_saldo' => $this->input->post('cuota_saldo'),
 					'cuota_glosa' => $this->input->post('cuota_glosa'),
@@ -770,8 +770,8 @@ class Cuotum extends CI_Controller{
                     'cuota_total' => $this->input->post('cuota_total'),
                     'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
                     'cuota_cancelado' => $this->input->post('cuota_cancelado'),
-                    'cuota_fecha' =>  date('Y-m-d'),
-                    'cuota_hora' => date('H:i:s'),
+                    //'cuota_fecha' =>  date('Y-m-d'),
+                    //'cuota_hora' => date('H:i:s'),
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                     'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),

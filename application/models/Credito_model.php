@@ -41,6 +41,25 @@ class Credito_model extends CI_Model
 
             FROM
                 `credito`
+            WHERE
+                compra_id<>0
+                and estado_id=8
+        ")->row_array();
+
+        return $credito['count'];
+    }
+
+    function get_all_credito_count1()
+    {
+        $credito = $this->db->query("
+            SELECT
+                count(*) as count
+
+            FROM
+                `credito`
+            WHERE
+                venta_id<>0
+                 and estado_id=8
         ")->row_array();
 
         return $credito['count'];
