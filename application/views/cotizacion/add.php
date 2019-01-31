@@ -186,7 +186,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <table class="table table-striped" id="mitabla">
                     
                      <tr>
-                                                <th>N</th>
+                                                <th>#</th>
                                                 <th>Producto</th>
                     </tr>
                     <tbody class="buscar3" id="tablaresultados">
@@ -207,7 +207,7 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                            <th>Nº</th>
+                            <th>#</th>
                             <th>Producto</th>
                             <th>Precio</th>
                             <th>Cantidad</th>

@@ -31,7 +31,7 @@
 							<SELECT  name="parametro_tipoimpresora" value="<?php echo ($this->input->post('parametro_tipoimpresora') ? $this->input->post('parametro_tipoimpresora') : $parametro['parametro_tipoimpresora']); ?>" class="form-control" id="parametro_tipoimpresora" >
 											 <option value="FACTURADORA">FACTURADORA</option>
 
-								            <option value="NORMAL">NORMAL</option>
+								            <option value="NORMAL" <?php if($parametro['parametro_tipoimpresora']=='NORMAL'){ ?> selected <?php } ?> >NORMAL</option>
 								</SELECT>
 						</div>
 					</div>
@@ -98,7 +98,7 @@
 			</div>
 			<div class="box-footer">
             	<button type="submit" class="btn btn-success">
-					<i class="fa fa-check"></i> Save
+					<i class="fa fa-check"></i> Guardar
 				</button>
 				<a href="../index"><button type="button" class="btn btn-danger">
             		<i class="fa fa-times"></i> Cancelar

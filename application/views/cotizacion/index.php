@@ -32,7 +32,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped" id="mitabla">
                     <tr>
-						<th>Nro.</th>
+						<th>#</th>
                         <th>Cliente</th>
 						<th>Fecha</th>
 						<th>Validez</th>

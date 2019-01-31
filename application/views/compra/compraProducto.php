@@ -25,6 +25,11 @@
                 })
             }(jQuery));
         });
+
+        function imprimir()
+        {
+             window.print(); 
+        }
 </script>   
 
 <style type="text/css">
@@ -85,9 +90,6 @@
         
             Hasta: <input type="date" style=" width: 15%;" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         
-        
-       
-            
          
        
                                 
@@ -100,12 +102,14 @@
  
                 <!--------------------- indicador de resultados --------------------->
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
-
-                <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
-
+<div class="col-md-6 no-print" >
+                <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span> </div>
+ <div class="col-md-6 no-print" >
+    <a onclick="imprimir()" class="btn btn-success btn-sm"><i class="fa fa-print"> Imprimir</i></a>
+    </div> 
 </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
-                                
+                              
             
           
                 <table class="table table-striped no-print" id="mitabla">
