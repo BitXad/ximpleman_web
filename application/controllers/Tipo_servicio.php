@@ -46,11 +46,17 @@ class Tipo_servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+                
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('tiposerv_descripcion','Tipo Servicio Descripción','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+		if($this->form_validation->run())     
+                {
+                    //por ser nuevo toma el valor de 1
+                    $estado_id = 1;
             $params = array(
+				'estado_id' => $estado_id,
 				'tiposerv_descripcion' => $this->input->post('tiposerv_descripcion'),
-				'estado_id' => $this->input->post('estado_id'),
             );
             
             $tipo_servicio_id = $this->Tipo_servicio_model->add_tipo_servicio($params);
@@ -58,8 +64,6 @@ class Tipo_servicio extends CI_Controller{
         }
         else
         {
-            $this->load->model('Estado_model');
-	    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
             $data['_view'] = 'tipo_servicio/add';
             $this->load->view('layouts/main',$data);
         }
@@ -88,8 +92,11 @@ class Tipo_servicio extends CI_Controller{
         
         if(isset($data['tipo_servicio']['tiposerv_id']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+                $this->form_validation->set_rules('tiposerv_descripcion','Tipo Servicio Descripción','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+		if($this->form_validation->run())     
+                {  
                 $params = array(
 					'tiposerv_descripcion' => $this->input->post('tiposerv_descripcion'),
 					'estado_id' => $this->input->post('estado_id'),

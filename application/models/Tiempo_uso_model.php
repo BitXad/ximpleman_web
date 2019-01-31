@@ -33,6 +33,7 @@ class Tiempo_uso_model extends CI_Model
 
             WHERE
                 tu.estado_id = e.estado_id
+                ORDER BY tu.tiempouso_id DESC
 
         ")->result_array();
 

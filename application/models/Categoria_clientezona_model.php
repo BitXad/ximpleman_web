@@ -16,7 +16,7 @@ class Categoria_clientezona_model extends CI_Model
      */
     function get_categoria_clientezona($categoriacliezona_id)
     {
-        return $this->db->get_where('categoria_clientezona',array('categoriacliezona_id'=>$categoriacliezona_id))->row_array();
+        return $this->db->get_where('zona',array('zona_id'=>$categoriacliezona_id))->row_array();
     }
         
     /*
@@ -29,12 +29,12 @@ class Categoria_clientezona_model extends CI_Model
                 *
 
             FROM
-                categoria_clientezona cc, estado e
+                zona cc, estado e
 
             WHERE
                 cc.estado_id = e.estado_id
                 
-                ORDER BY cc.categoriacliezona_id DESC
+                ORDER BY cc.zona_id DESC
 
         ")->result_array();
 
@@ -46,7 +46,7 @@ class Categoria_clientezona_model extends CI_Model
      */
     function add_categoria_clientezona($params)
     {
-        $this->db->insert('categoria_clientezona',$params);
+        $this->db->insert('zona',$params);
         return $this->db->insert_id();
     }
     
@@ -55,8 +55,8 @@ class Categoria_clientezona_model extends CI_Model
      */
     function update_categoria_clientezona($categoriacliezona_id,$params)
     {
-        $this->db->where('categoriacliezona_id',$categoriacliezona_id);
-        return $this->db->update('categoria_clientezona',$params);
+        $this->db->where('zona_id',$categoriacliezona_id);
+        return $this->db->update('zona',$params);
     }
     
     /*
@@ -64,7 +64,7 @@ class Categoria_clientezona_model extends CI_Model
      */
     function delete_categoria_clientezona($categoriacliezona_id)
     {
-        return $this->db->delete('categoria_clientezona',array('categoriacliezona_id'=>$categoriacliezona_id));
+        return $this->db->delete('zona',array('zona_id'=>$categoriacliezona_id));
     }
     
     /*
@@ -74,10 +74,10 @@ class Categoria_clientezona_model extends CI_Model
     {
         $categoriacliezona = $this->db->query("
             SELECT
-                cc.`categoriacliezona_id`, cc.`categoriacliezona_descripcion`
+                cc.`zona_id`, cc.`zona_nombre`
 
             FROM
-                categoria_clientezona cc, estado e
+                zona cc, estado e
 
             WHERE
                 cc.estado_id = e.estado_id
@@ -86,5 +86,26 @@ class Categoria_clientezona_model extends CI_Model
         ")->result_array();
 
         return $categoriacliezona;
+    }
+    /*
+     * Get all categoria_clientezona ASC
+     */
+    function get_all_categoria_clientezona_asc()
+    {
+        $clientezona = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                zona cc, estado e
+
+            WHERE
+                cc.estado_id = e.estado_id
+                
+                ORDER BY cc.zona_id ASC
+
+        ")->result_array();
+
+        return $clientezona;
     }
 }

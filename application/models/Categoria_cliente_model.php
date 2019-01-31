@@ -98,4 +98,30 @@ class Categoria_cliente_model extends CI_Model
     {
         return $this->db->delete('categoria_cliente',array('categoriaclie_id'=>$categoriaclie_id));
     }
+    /*
+     * Get all categoria_cliente ASC
+     */
+    function get_all_categoria_cliente_asc($params = array())
+    {
+        $limit_condition = "";
+        if(isset($params) && !empty($params))
+            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
+        $categoria_cliente = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `categoria_cliente`
+
+            WHERE
+                1 = 1
+
+            ORDER BY `categoriaclie_id` ASC
+
+            " . $limit_condition . "
+        ")->result_array();
+
+        return $categoria_cliente;
+    }
 }

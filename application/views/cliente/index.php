@@ -1,5 +1,4 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
@@ -56,7 +55,7 @@
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, ci, nit" onkeypress="validar2(event,1)">
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="validar2(event,1)" autocomplete="off" >
             </div>
         <!--este es FIN de input buscador-->
         <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
@@ -112,10 +111,10 @@
                                                            echo "<b>Nit: </b>".$c['cliente_nit']."<br>";
                                                            echo "<b>Razon: </b>".$c['cliente_razon']."<br>";
                                                            $escategoria_clientezona = "";
-                                                            if($c['categoriacliezona_id'] == null || $c['categoriacliezona_id'] == 0 || $c['categoriacliezona_id']-1 > count($all_categoria_clientezona)){ 
+                                                            if($c['zona_id'] == null || $c['zona_id'] == 0 || $c['zona_id']-1 > count($all_categoria_clientezona)){ 
                                                                 $escategoria_clientezona = "No definido";
                                                             }else{
-                                                                $escategoria_clientezona = $all_categoria_clientezona[$c['categoriacliezona_id']-1]['categoriacliezona_descripcion'];
+                                                                $escategoria_clientezona = $all_categoria_clientezona[$c['zona_id']-1]['zona_nombre'];
                                                             }
                                                            echo "<b>Zona: </b>".$escategoria_clientezona;
                                                     ?>

@@ -8,10 +8,10 @@
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-                                            <label for="categoriacliezona_descripcion" class="control-label"><span class="text-danger">*</span>Zona</label>
+                                            <label for="zona_nombre" class="control-label"><span class="text-danger">*</span>Zona</label>
 						<div class="form-group">
-							<input type="text" name="categoriacliezona_descripcion" value="<?php echo $this->input->post('categoriacliezona_descripcion'); ?>" class="form-control" id="categoriacliezona_descripcion" required />
-                                                        <span class="text-danger"><?php echo form_error('categoriacliezona_descripcion');?></span>
+							<input type="text" name="zona_nombre" value="<?php echo $this->input->post('zona_nombre'); ?>" class="form-control" id="categoriacliezona_descripcion" required />
+                                                        <span class="text-danger"><?php echo form_error('zona_nombre');?></span>
 						</div>
 					</div>
 				</div>

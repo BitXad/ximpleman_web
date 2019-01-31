@@ -101,9 +101,9 @@ function mostrar(a) {
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger">*</span>Nombre Negocio</label>
+						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger"></span>Nombre Negocio</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio" required="" />
+                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio"/>
                                                         <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
 						</div>
 					</div>
@@ -236,16 +236,16 @@ function mostrar(a) {
 						</div>
 					</div>
                                         <div class="col-md-6">
-						<label for="categoriacliezona_id" class="control-label">Zona</label>
+						<label for="zona_id" class="control-label">Zona</label>
 						<div class="form-group">
-							<select name="categoriacliezona_id" class="form-control">
-								<option value="0">- CATEGORIA CLIENTE ZONA -</option>
+							<select name="zona_id" class="form-control">
+								<option value="0">- ZONA -</option>
 								<?php 
-								foreach($all_categoria_clientezona as $categoria_clientezona)
+								foreach($zona as $categoria_clientezona)
 								{
-									$selected = ($categoria_clientezona['categoriacliezona_id'] == $this->input->post('categoriacliezona_id')) ? ' selected="selected"' : "";
+									$selected = ($categoria_clientezona['zona_id'] == $this->input->post('zona_id')) ? ' selected="selected"' : "";
 
-									echo '<option value="'.$categoria_clientezona['categoriacliezona_id'].'" '.$selected.'>'.$categoria_clientezona['categoriacliezona_descripcion'].'</option>';
+									echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
 								} 
 								?>
 							</select>

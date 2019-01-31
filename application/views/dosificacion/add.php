@@ -8,26 +8,10 @@
           	<div class="box-body">
           		<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="estado_id" class="control-label">Estado</label>
+                                            <label for="empresa_id" class="control-label"><span class="text-danger">*</span>Empresa</label>
 						<div class="form-group">
-							<select name="estado_id" class="form-control">
-								<option value="">select estado</option>
-								<?php 
-								foreach($all_estado as $estado)
-								{
-									$selected = ($estado['estado_id'] == $this->input->post('estado_id')) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="empresa_id" class="control-label">Empresa</label>
-						<div class="form-group">
-							<select name="empresa_id" class="form-control">
-								<option value="">select empresa</option>
+                                                    <select name="empresa_id" class="form-control" required>
+								<option value="">- EMPRESA -</option>
 								<?php 
 								foreach($all_empresa as $empresa)
 								{
@@ -42,7 +26,19 @@
 					<div class="col-md-6">
 						<label for="dosificacion_fechahora" class="control-label">Fecha, Hora</label>
 						<div class="form-group">
-							<input type="text" name="dosificacion_fechahora" value="<?php echo $this->input->post('dosificacion_fechahora'); ?>" class="form-control" id="dosificacion_fechahora" />
+                                                    <?php
+                                                    $res = $this->input->post('dosificacion_fechahora');
+                                                    if(empty($res)){
+                                                        $fecha = date("Y-m-d");
+                                                        $hora = date("h:i:s");
+                                                    }else{
+                                                        $fechayhora = $this->input->post('dosificacion_fechahora');
+                                                        $fecha = date("Y-m-d", strtotime($fechayhora));
+                                                        $hora = date("h:i:s", strtotime($fechayhora));      
+                                                        $fechayhora = $fecha.$t.$hora;
+                                                    }
+                                                    ?>
+                                                    <input type="datetime-local" name="dosificacion_fechahora" value="<?php echo $fecha."T".$hora; ?>" class="form-control" id="dosificacion_fechahora" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -69,19 +65,7 @@
 							<input type="text" name="dosificacion_numfact" value="<?php echo $this->input->post('dosificacion_numfact'); ?>" class="form-control" id="dosificacion_numfact" />
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="dosificacion_leyenda1" class="control-label">Leyenda1</label>
-						<div class="form-group">
-							<input type="text" name="dosificacion_leyenda1" value="<?php echo $this->input->post('dosificacion_leyenda1'); ?>" class="form-control" id="dosificacion_leyenda1" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="dosificacion_leyenda2" class="control-label">Leyenda2</label>
-						<div class="form-group">
-							<input type="text" name="dosificacion_leyenda2" value="<?php echo $this->input->post('dosificacion_leyenda2'); ?>" class="form-control" id="dosificacion_leyenda2" />
-						</div>
-					</div>
-					<div class="col-md-6">
+                                        <div class="col-md-6">
 						<label for="dosificacion_sucursal" class="control-label">Sucursal</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_sucursal" value="<?php echo $this->input->post('dosificacion_sucursal'); ?>" class="form-control" id="dosificacion_sucursal" />
@@ -99,12 +83,45 @@
 							<input type="text" name="dosificacion_actividad" value="<?php echo $this->input->post('dosificacion_actividad'); ?>" class="form-control" id="dosificacion_actividad" />
 						</div>
 					</div>
+					<div class="col-md-6">
+						<label for="dosificacion_leyenda1" class="control-label">Leyenda 1</label>
+						<div class="form-group">
+                                                    <textarea rows="3" class="form-control" name="dosificacion_leyenda1" id="dosificacion_leyenda1"><?php echo $this->input->post('dosificacion_leyenda1'); ?></textarea>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="dosificacion_leyenda2" class="control-label">Leyenda 2</label>
+						<div class="form-group">
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda2" id="dosificacion_leyenda2"><?php echo $this->input->post('dosificacion_leyenda2'); ?></textarea>
+						</div>
+					</div>
+                                        <div class="col-md-6">
+						<label for="dosificacion_leyenda3" class="control-label">Leyenda 3</label>
+						<div class="form-group">
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda3" id="dosificacion_leyenda3"><?php echo $this->input->post('dosificacion_leyenda3'); ?></textarea>
+						</div>
+					</div>
+                                        <div class="col-md-6">
+						<label for="dosificacion_leyenda4" class="control-label">Leyenda 4</label>
+						<div class="form-group">
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda4" id="dosificacion_leyenda4"><?php echo $this->input->post('dosificacion_leyenda4'); ?></textarea>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="dosificacion_leyenda5" class="control-label">Leyenda 5</label>
+						<div class="form-group">
+							<textarea rows="3" class="form-control" name="dosificacion_leyenda5" id="dosificacion_leyenda5"><?php echo $this->input->post('dosificacion_leyenda5'); ?></textarea>
+						</div>
+					</div>
+					
 				</div>
 			</div>
           	<div class="box-footer">
             	<button type="submit" class="btn btn-success">
             		<i class="fa fa-check"></i> Guardar
             	</button>
+                <a href="<?php echo site_url('dosificacion'); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
           	</div>
             <?php echo form_close(); ?>
       	</div>

@@ -369,10 +369,10 @@ function tablaresultadoscliente()
                         html += "<b>Nit: </b>"+registros[i]["cliente_nit"]+"<br>";
                         html += "<b>Razon: </b>"+registros[i]["cliente_razon"]+"<br>";
                         var escategoria_clientezona="";
-                        if(registros[i]["categoriacliezona_id"] == null || registros[i]["categoriacliezona_id"] == 0 || registros[i]["categoriacliezona_id"]-1 > categoriacliezona.length){
+                        if(registros[i]["zona_id"] == null || registros[i]["zona_id"] == 0 || registros[i]["zona_id"]-1 > categoriacliezona.length){
                             escategoria_clientezona = "No definido";
                         }else{
-                            escategoria_clientezona = categoriacliezona[registros[i]["categoriacliezona_id"]-1]["categoriacliezona_descripcion"];
+                            escategoria_clientezona = categoriacliezona[registros[i]["zona_id"]-1]["zona_nombre"];
                         }
                         html += "<b>Zona: </b>"+escategoria_clientezona;
                         html += "</div>";

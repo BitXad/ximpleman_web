@@ -8,16 +8,17 @@
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="tiempouso_descripcion" class="control-label">Descripcion</label>
+                                            <label for="tiempouso_descripcion" class="control-label"><span class="text-danger">*</span>Descripcion</label>
 						<div class="form-group">
 							<input type="text" name="tiempouso_descripcion" value="<?php echo ($this->input->post('tiempouso_descripcion') ? $this->input->post('tiempouso_descripcion') : $tiempo_uso['tiempouso_descripcion']); ?>" class="form-control" id="tiempouso_descripcion" required />
+                                                        <span class="text-danger"><?php echo form_error('tiempouso_descripcion');?></span>
 						</div>
 					</div>
                                         <div class="col-md-6">
 						<label for="estado_id" class="control-label">Estado</label>
 						<div class="form-group">
 							<select name="estado_id" class="form-control">
-								<option value="">- ESTADO -</option>
+								<!--<option value="">- ESTADO -</option>-->
 								<?php 
 								foreach($all_estado as $estado)
 								{

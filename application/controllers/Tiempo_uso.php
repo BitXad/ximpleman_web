@@ -46,11 +46,17 @@ class Tiempo_uso extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+                
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('tiempouso_descripcion','Tiempo Uso Descripción','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+		if($this->form_validation->run())     
+                {
+                    //se crea por defecto en ACTIVO
+                    $estado_id = 1;
             $params = array(
+				'estado_id' => $estado_id,
 				'tiempouso_descripcion' => $this->input->post('tiempouso_descripcion'),
-				'estado_id' => $this->input->post('estado_id'),
             );
             
             $tiempouso_id = $this->Tiempo_uso_model->add_tiempo_uso($params);
@@ -58,8 +64,6 @@ class Tiempo_uso extends CI_Controller{
         }
         else
         {
-            $this->load->model('Estado_model');
-	    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
             $data['_view'] = 'tiempo_uso/add';
             $this->load->view('layouts/main',$data);
         }
@@ -88,8 +92,11 @@ class Tiempo_uso extends CI_Controller{
         
         if(isset($data['tiempo_uso']['tiempouso_id']))
         {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
+            $this->load->library('form_validation');
+                $this->form_validation->set_rules('tiempouso_descripcion','Tiempo Uso Descripción','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		
+		if($this->form_validation->run())     
+                {  
                 $params = array(
 					'tiempouso_descripcion' => $this->input->post('tiempouso_descripcion'),
 					'estado_id' => $this->input->post('estado_id'),

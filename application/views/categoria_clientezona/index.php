@@ -26,7 +26,7 @@
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese descripción">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese zona">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
@@ -47,7 +47,7 @@
                     ?>
                     <tr>
 						<td><?php echo $cont; ?></td>
-						<td><?php echo $c['categoriacliezona_descripcion']; ?></td>
+						<td><?php echo $c['zona_nombre']; ?></td>
 						<td style="background-color: #<?php echo $c['estado_color'];?>"><?php echo $c['estado_descripcion']; ?></td>
 						<td>
                         <!------------------------ INICIO modal para confirmar eliminación ------------------->
@@ -61,19 +61,19 @@
                                           <div class="modal-body">
                                            <!------------------------------------------------------------------->
                                            <h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la categoria cliente zona <b> <?php echo $c['categoriacliezona_descripcion']; ?></b>?
+                                               ¿Desea eliminar la categoria cliente zona <b> <?php echo $c['zona_nombre']; ?></b>?
                                            </h3>
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_clientezona/remove/'.$c['categoriacliezona_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="<?php echo site_url('categoria_clientezona/remove/'.$c['zona_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                       <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
-                        <a href="<?php echo site_url('categoria_clientezona/edit/'.$c['categoriacliezona_id']); ?>" class="btn btn-info btn-xs" title="Editar"><span class="fa fa-pencil"></span></a> 
+                        <a href="<?php echo site_url('categoria_clientezona/edit/'.$c['zona_id']); ?>" class="btn btn-info btn-xs" title="Editar"><span class="fa fa-pencil"></span></a> 
                             <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>

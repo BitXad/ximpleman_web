@@ -23,7 +23,10 @@ class Dosificacion extends CI_Controller{
         $config['base_url'] = site_url('dosificacion/index?');
         $config['total_rows'] = $this->Dosificacion_model->get_all_dosificacion_count();
         $this->pagination->initialize($config);
-
+        if($config['total_rows'] > 0){
+            $data['newdosif'] = 1;
+        }else{ $data['newdosif'] =0; }
+        
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion($params);
         
         $data['_view'] = 'dosificacion/index';
@@ -37,8 +40,10 @@ class Dosificacion extends CI_Controller{
     {   
         if(isset($_POST) && count($_POST) > 0)     
         {   
+            //estado activo al crear
+            $estado_id = 1;
             $params = array(
-				'estado_id' => $this->input->post('estado_id'),
+				'estado_id' => $estado_id,
 				'empresa_id' => $this->input->post('empresa_id'),
 				'dosificacion_fechahora' => $this->input->post('dosificacion_fechahora'),
 				'dosificacion_nitemisor' => $this->input->post('dosificacion_nitemisor'),
@@ -60,9 +65,6 @@ class Dosificacion extends CI_Controller{
         }
         else
         {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-
 			$this->load->model('Empresa_model');
 			$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
             
@@ -107,7 +109,7 @@ class Dosificacion extends CI_Controller{
             else
             {
 				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
+				$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 
 				$this->load->model('Empresa_model');
 				$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
