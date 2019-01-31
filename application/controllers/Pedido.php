@@ -777,6 +777,36 @@ class Pedido extends CI_Controller{
         
     }
 
+    function mapa_pedido()        
+    {
 
+        //control de sesion
+//        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
+            
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************  
+        
+            $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
+            
+            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+            $data['_view'] = 'pedido/mapapedidos';
+            
+            $this->load->view('layouts/main',$data);
+            
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+                    
+//        }
+//        else{ redirect('login'); }
+        
+    }
     
 }

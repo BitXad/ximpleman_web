@@ -287,7 +287,7 @@ function mostrar_ocultar(){
                                         <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
                                         <?php                                                     
                                             $fecha = date('Y-m-d'); 
-                                            $hora = date('H:i:s');                                                                                         
+                                            $hora = date('H:i');                                                                                         
                                         ?>
                                         
                                     <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>

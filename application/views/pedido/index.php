@@ -3,6 +3,7 @@
 <script src="<?php echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
+    
         $(document).ready(function () {
             (function ($) {
                 $('#filtrar').keyup(function () {
@@ -14,7 +15,11 @@
                 })
             }(jQuery));
         });
+        
 </script>   
+
+<body onload="buscar_pedidos();">
+
 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -37,7 +42,8 @@
                         <option value="4">Todos los pedidos</option>
                         <option value="5">Pedidos por fecha</option>
                     </select>
-                    <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>
+                    <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
+                    <a href="<?php echo site_url('pedido/mapa_pedido'); ?>" class="btn btn-facebook btn-sm"><span class="fa fa-map"></span> Mapa</a>
                 </div>
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
@@ -168,10 +174,12 @@
                                 
             </div>
 <!--            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
+                    <?php //echo $this->pagination->create_links(); ?>                    
             </div>-->
         </div>
     </div>
 </div>
 
 
+    
+</body>

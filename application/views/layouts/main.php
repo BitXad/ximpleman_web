@@ -214,7 +214,7 @@
                             <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i>Inventario</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i>Pedidos Mañana</a>
+                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i>Pedidos</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('proveedor');?>"><i class="fa fa-address-book"></i>Proveedores</a>

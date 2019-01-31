@@ -6,6 +6,7 @@ function inicio(){
         tabla_pedidos(); 
         tabla_pedido_abierto();
         
+        
         document.getElementById('nit').focus();
         document.getElementById('nit').select();
 }
