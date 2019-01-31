@@ -246,26 +246,22 @@ class Cliente_model extends CI_Model
     function get_busqueda_cliente_parametro($parametro)
     {
         $sql = "SELECT
-                c.*, e.estado_color, e.estado_descripcion, t.tipocliente_descripcion,
-                cc.categoriaclie_descripcion, u.usuario_nombre
+                c.*, e.estado_color, e.estado_descripcion
 
             FROM
-                cliente c, estado e, tipo_cliente t, categoria_cliente cc, usuario u
+                cliente c, estado e
 
             WHERE
                 c.estado_id = e.estado_id
                 and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
                    or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%')
-                and c.tipocliente_id = t.tipocliente_id
-                and c.categoriaclie_id = cc.categoriaclie_id
-                and c.usuario_id = u.usuario_id
-
+                
             GROUP BY
                 c.cliente_id
               ORDER By c.cliente_id";
 
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
+        $cliente = $this->db->query($sql)->result_array();
+        return $cliente;
 
     }
     
@@ -324,5 +320,26 @@ class Cliente_model extends CI_Model
             WHERE c.estado_id = 1
             ")->result_array();
         return $cliente;
-    }       
+    }
+    /*
+     * Get all cliente (SOLO LOS colientes con sus estados)
+     */
+    function get_cliente_all()
+    {
+        $cliente = $this->db->query("
+            SELECT
+                c.*, e.estado_color, e. estado_descripcion
+
+            FROM
+                cliente c, estado e
+
+            WHERE
+                c.estado_id = e.estado_id
+
+            ORDER BY `cliente_id` DESC LIMIT 50
+
+        ")->result_array();
+
+        return $cliente;
+    }
 }
