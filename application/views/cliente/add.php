@@ -1,11 +1,10 @@
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);
     obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
     //objm = document.getElementById('map');
     if(obj.style.visibility == 'hidden'){
-        //$('#map').css({ 'width':'0px', 'height':'0px' });
+        $('#map').css({ 'width':'0px', 'height':'0px' });
         $('#mosmapa').text("Obtener Ubicación del negocio");
     }else{
         $('#map').css({ 'width':'500px', 'height':'400px' });
@@ -138,12 +137,13 @@ function mostrar(a) {
                                                             };
                                                             setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
 
-
                                                           },function(error){console.log(error);});
                                                 }
                                                 
                                                 function setMapa (coords_lat, coords_lng)
-                                                {   
+                                                {
+                                                        document.getElementById("cliente_latitud").value = coords_lat.lat;
+                                                        document.getElementById("cliente_longitud").value = coords_lng.lng;
                                                       //Se crea una nueva instancia del objeto mapa
                                                       var map = new google.maps.Map(document.getElementById('map'),
                                                       {

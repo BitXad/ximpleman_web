@@ -326,11 +326,11 @@ function tablaresultadoscliente()
                         var mimagen = "";
                         if(registros[i]["cliente_foto"] != null && registros[i]["cliente_foto"] !=""){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                            mimagen += "<img src='"+base_url+"/resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' />";
+                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' />";
                             mimagen += "</a>";
                             //mimagen = nomfoto.split(".").join("_thumb.");
                         }else{
-                            mimagen = "<img src='"+base_url+"/resources/images/usuarios/thumb_default.jpg' />";
+                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' />";
                         }
                         var neg = "";
                         var dir = "";
@@ -338,6 +338,9 @@ function tablaresultadoscliente()
                         var long = "";
                         var corr = "";
                         var aniv = "";
+                        var codigo = "";
+                        var telef = "";
+                        var celular = "";
                         if(registros[i]["cliente_nombrenegocio"] != null){
                             neg = registros[i]["cliente_nombrenegocio"];
                         }
@@ -356,15 +359,27 @@ function tablaresultadoscliente()
                         if(registros[i]["cliente_aniversario"] != "0000-00-00" && registros[i]["cliente_aniversario"] != null){
                             aniv = moment(registros[i]["cliente_aniversario"]).format("DD/MM/YYYY");
                         }
-                        
+                        if(registros[i]["cliente_codigo"] != null && registros[i]["cliente_codigo"] != ""){
+                            codigo = registros[i]["cliente_codigo"];
+                        }
+                        if(registros[i]["cliente_telefono"] != null && registros[i]["cliente_telefono"] != ""){
+                            telef = registros[i]["cliente_telefono"];
+                        }
+                        if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
+                            celular = registros[i]["cliente_celular"];
+                        }
+                        var linea = "";
+                        if(telef>0 && celular>0){
+                            linea = "-";
+                        }
                         //html += "<img src='"+base_url+"/resources/images/"+mimagen+"' />";
                         html += mimagen;
                         html += "</div>";
                         html += "<div style='padding-left: 4px'>";
                         html += "<b id='masg'>"+registros[i]["cliente_nombre"]+"</b><br>";
-                        html += "<b>Codigo: </b>"+registros[i]["cliente_codigo"]+"<br>";
+                        html += "<b>Codigo: </b>"+codigo+"<br>";
                         html += "<b>C.I.: </b>"+registros[i]["cliente_ci"]+"<br>";
-                        html += "<b>Tel.: </b>"+registros[i]["cliente_telefono"]+"-"+registros[i]["cliente_celular"];
+                        html += "<b>Tel.: </b>"+telef+linea+celular;
                         html += "</div>";
                         html += "</div>";
                         html += "</td>";

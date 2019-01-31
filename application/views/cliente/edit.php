@@ -1,5 +1,4 @@
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script>
+<script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);
     obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
@@ -125,7 +124,7 @@ function mostrar(a) {
                                                     
                                                         navigator.geolocation.getCurrentPosition(
                                                         function (position){
-                                                            if(milat == 'undefined' || milat == null){
+                                                            if(milat == 'undefined' || milat == null || milat ==""){
                                                                 coords_lat =  {
                                                                 lat: position.coords.latitude,
                                                                 };
@@ -135,7 +134,7 @@ function mostrar(a) {
                                                                 lat: milat,
                                                                 };
                                                             }
-                                                            if(milng == 'undefined' || milng == null){
+                                                            if(milng == 'undefined' || milng == null || milng ==""){
                                                                 coords_lng =  {
                                                                   lng: position.coords.longitude,
                                                                 };
@@ -152,7 +151,9 @@ function mostrar(a) {
                                                 }
                                                 
                                                 function setMapa (coords_lat, coords_lng)
-                                                {   
+                                                {
+                                                    document.getElementById("cliente_latitud").value = coords_lat.lat;
+                                                    document.getElementById("cliente_longitud").value = coords_lng.lng;
                                                       //Se crea una nueva instancia del objeto mapa
                                                       var map = new google.maps.Map(document.getElementById('map'),
                                                       {

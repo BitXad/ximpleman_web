@@ -116,7 +116,11 @@
                                                         <?php echo "<b id='masg'>".$c['cliente_nombre']."</b><br>";
                                                               echo "<b>Codigo: </b>".$c['cliente_codigo']."<br>";
                                                               echo "<b>C.I.: </b>".$c['cliente_ci']."<br>";
-                                                              echo "<b>Tel.: </b>".$c['cliente_telefono']."-".$c['cliente_celular'];
+                                                              $linea = "";
+                                                              if($c['cliente_telefono'] >0 && $c['cliente_celular']>0){
+                                                                  $linea = "-";
+                                                              }
+                                                              echo "<b>Tel.: </b>".$c['cliente_telefono'].$linea.$c['cliente_celular'];
                                                         ?>
                                                     </div>
                                                  </div>
