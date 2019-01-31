@@ -122,7 +122,8 @@ class Cliente extends CI_Controller{
                     }
             /* *********************FIN imagen***************************** */
                 $usuario_id = $session_data['usuario_id'];
-                $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                //no es necesario porque se esta usando el date y ya no el date piker
+                //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                 $estado_id = 1;
                 $params = array(
                             'estado_id' => $estado_id,
@@ -137,7 +138,7 @@ class Cliente extends CI_Controller{
                             'cliente_foto' => $foto,
                             'cliente_email' => $this->input->post('cliente_email'),
                             'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-                            'cliente_aniversario' => $mifecha,
+                            'cliente_aniversario' => $this->input->post('cliente_aniversario'),
                             'cliente_latitud' => $this->input->post('cliente_latitud'),
                             'cliente_longitud' => $this->input->post('cliente_longitud'),
                             'cliente_nit' => $this->input->post('cliente_nit'),
@@ -268,7 +269,7 @@ class Cliente extends CI_Controller{
                 }
             /* *********************FIN imagen***************************** */
                             //$this->input->post('cliente_foto'),
-                           $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                           //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                             //$mifecha = normalize_date($this->input->post('cliente_aniversario'));
                 $params = array(
 					'estado_id' => $this->input->post('estado_id'),
@@ -284,7 +285,7 @@ class Cliente extends CI_Controller{
 					'cliente_foto' => $foto,
 					'cliente_email' => $this->input->post('cliente_email'),
 					'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-					'cliente_aniversario' => $mifecha,
+					'cliente_aniversario' => $this->input->post('cliente_aniversario'),
 					'cliente_latitud' => $this->input->post('cliente_latitud'),
 					'cliente_longitud' => $this->input->post('cliente_longitud'),
 					'cliente_nit' => $this->input->post('cliente_nit'),

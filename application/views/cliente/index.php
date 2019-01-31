@@ -16,8 +16,13 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
     #contieneimg{
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
+        text-align: center;
+    }
+    #contieneimg img{
+        width: 45px;
+        height: 45px;
         text-align: center;
     }
     #horizontal{
@@ -93,10 +98,21 @@
                                                 <div id="contieneimg">
                                                     <?php
                                                     $mimagen = "thumb_".$c['cliente_foto'];
-                                                    echo '<img src="'.site_url('/resources/images/clientes/'.$mimagen).'" />';
+                                                    //echo '<img src="'.site_url('/resources/images/clientes/'.$mimagen).'" />';
+                                                    if($c['cliente_foto']){
+                                                    ?>
+                                                    <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $cont; ?>" style="padding: 0px;">
+                                                        <?php
+                                                        echo '<img src="'.site_url('/resources/images/clientes/'.$mimagen).'" />';
+                                                        ?>
+                                                    </a>
+                                                    <?php }
+                                                    else{
+                                                       echo '<img style src="'.site_url('/resources/images/usuarios/thumb_default.jpg').'" />'; 
+                                                    }
                                                     ?>
                                                     </div>
-                                                    <div>
+                                                        <div style="padding-left: 4px">
                                                         <?php echo "<b id='masg'>".$c['cliente_nombre']."</b><br>";
                                                               echo "<b>Codigo: </b>".$c['cliente_codigo']."<br>";
                                                               echo "<b>C.I.: </b>".$c['cliente_ci']."<br>";
@@ -126,7 +142,12 @@
                                                     ?>
                                                 </td>
 						<td><?php echo $c['cliente_email']; ?></td>
-						<td><?php echo $c['cliente_aniversario']; ?></td>
+                                                <td><?php
+                                                    $fecha_aniversario = "";
+                                                    if($c['cliente_aniversario'] != "0000-00-00" && $c['cliente_aniversario'] != null){
+                                                       $fecha_aniversario = date("d/m/Y", strtotime($c['cliente_aniversario']));
+                                                    }
+                                                echo $fecha_aniversario; ?></td>
 						<?php
                                                 $estipo_cliente = "";
                                                 if($c['tipocliente_id'] == null || $c['tipocliente_id'] == 0 || $c['tipocliente_id']-1 > count($all_tipo_cliente)){ 
@@ -178,6 +199,25 @@
                                       </div>
                                     </div>
                     <!------------------------ FIN modal para confirmar eliminación ------------------->
+                    <!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->
+                                    <div class="modal fade" id="mostrarimagen<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="mostrarimagenlabel<?php echo $cont; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <font size="3"><b><?php echo $c['cliente_nombre']; ?></b></font>
+                                          </div>
+                                            <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <?php echo '<img style="max-height: 100%; max-width: 100%" src="'.site_url('/resources/images/clientes/'.$c['cliente_foto']).'" />'; ?>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                    <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->
                     </td>
                     </tr>
                    

@@ -110,7 +110,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_aniversario" class="control-label">Aniversario</label>
 						<div class="form-group">
-							<input type="text" name="cliente_aniversario" value="<?php echo $this->input->post('cliente_aniversario'); ?>" class="has-datepicker form-control" id="cliente_aniversario" />
+                                                    <input type="date" name="cliente_aniversario" value="<?php echo $this->input->post('cliente_aniversario'); ?>" class="form-control" id="cliente_aniversario" />
 						</div>
 					</div>
                                         <div class="col-md-6">
