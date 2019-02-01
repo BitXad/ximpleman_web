@@ -39,11 +39,11 @@
         });
         
         
-//function mostrar(){
-//document.getElementById('oculto').style.display = 'block';}
-//
-//function ocultar(){
-//document.getElementById('oculto').style.display = 'none';}
+function mostrar(){
+document.getElementById('oculto').style.display = 'block';}
+
+function ocultar(){
+document.getElementById('oculto').style.display = 'none';}
 
 function mostrar_ocultar(){
     var x = document.getElementById('tipo_pago').value;
@@ -189,14 +189,59 @@ function mostrar_ocultar(){
 		<div class="modal-content">
 			<div class="modal-header">
                             
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<!--				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
                                 
-                                <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                                  <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del cliente...">
+                                <div class="input-group  col-md-8" > <span class="input-group-addon">Buscar</span>
+                                    <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del cliente..." onkeypress="validar(event,8)">                                    
+                                    <input id="filtrar2" type="text" class="form-control  col-md-4" placeholder="Ingresa el nombre, apellidos o ci del cliente..." onkeypress="validar(event,8)">
                                 </div>
+                                
+                                <div class="input-group  col-md-1" > 
+                                    <select  id="tipo_cliente" class="form-control  col-md-4" onkeypress="validar(event,9)">
+                                        <option > </option>
+                                        
+                                    </select>
+                                </div>-->
+
+                                <div class="row">
+
+                                           <!--------------------- parametro de buscador por codigo --------------------->
+
+                                           <div class="col-md-8">
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                       <i class="fa fa-binoculars"></i>
+                                                     </span>           
+                                                     <input type="text" name="filtrar2" id="filtrar2" class="form-control" placeholder="Ingrese el nombre, CI, codigo del cliente " onkeyup="validar(event,8)">
+                                                 </div>
+                                           </div>      
+                                          <!--------------------- fin buscador por codigo --------------------->
+
+
+                                           <div class="col-md-4">
+
+                               <!--            ------------------- parametro de buscador --------------------->
+
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                      <i class="fa fa-user"></i>
+                                                     </span>           
+                                                     <select id="tipo" class="form-control" onclick="buscar_cliente()">
+                                                         <option value="1">Mis clientes</option>
+                                                         <option value="2">Todos</option>
+                                                     </select>
+                                                 
+                                                 </div>
+
+                               <!--            ------------------- fin parametro de buscador ------------------- -->
+
+                                           </div>
+
+                                       </div>
+
                                 
 			</div>
 			<div class="modal-body">
@@ -211,40 +256,6 @@ function mostrar_ocultar(){
                             
                             <tbody class="buscar2" id="clientes_pedido">
                  
-                            <?php $i=1;
-                            foreach($cliente as $h){ ?>
-                            <tr>
-                                 <form action="<?php echo base_url('cliente/cambiarcliente/'); ?>"  method="POST" class="form">
-                              
-                                    <td><?php echo $i++; ?></td>
-                                    <td>
-                                    <img src="<?php echo base_url('resources/images/clientes/thumb_'.$h['cliente_foto']); ?>" class="img-circle" width="50" height="50">
-                                    </td>
-
-                                    <td>
-    
-
-                                            <b> <?php echo $h['cliente_nombre']; ?></b><br>
-                                        C.I.:<?php echo $h['cliente_ci']; ?> | Telf.:<?php echo $h['cliente_telefono']; ?> <br>
-                                        <div class="container" hidden="TRUE">
-                                            <input id="cliente_id"  name="cliente_id" type="text" class="form-control" value="<?php echo $h['cliente_id']; ?>">
-                                            <input id="pedido_id"  name="pedido_id" type="text" class="form-control" value="<?php echo $pedido_id; ?>">
-                                        </div>                                        
-                                        NIT:
-                                        <input type="text" id="cliente_nit" name="cliente_nit" class="form-control" placeholder="N.I.T." required="true" value="<?php echo $h['cliente_nit']; ?>">
-                                        RAZON SOCIAL:
-                                        <input type="text" id="cliente_razon" name="cliente_razon" class="form-control" placeholder="Razón Social" required="true" value="<?php echo $h['cliente_razon']; ?>">
-                                       
-                                        <button type="submit" class="btn btn-success btn-xs btn-block">
-                                            <i class="fa fa-check"></i> Seleccionar Cliente
-                                        </button>
-                                        
-                                    </td>
-                                
-                                 </form>
-                            
-                            </tr>
-                            <?php } ?>
 
                             </tbody>
                         </table>
