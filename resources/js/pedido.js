@@ -425,7 +425,6 @@ function anular_pedido(pedido_id)
 
 }
 
-
 function tablaresultadospedido(opcion)
 {   
     var controlador = "";
@@ -521,7 +520,6 @@ function tablaresultadospedido(opcion)
     });   
 } 
 
-
 function buscar_pedidos()
 {
     var base_url    = document.getElementById('base_url').value;
@@ -616,57 +614,6 @@ function pasaraventas(pedido_id,usuariopedido_id,cliente_id)
         }
     });
    
-}
-
-
-//esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
-function validar(e,opcion) {
-  tecla = (document.all) ? e.keyCode : e.which;
-  alert('aquiiiii');
-    if (tecla==13){ 
-    
-    
-        if (opcion==0){   //si la pulsacion proviene del telefono
-              document.getElementById('tipocliente_id').focus();
-        }
-        
-        if (opcion==1){   //si la pulsacion proviene del nit          
-            buscarcliente();            
-        }
-
-        if (opcion==2){
-            var codigo = document.getElementById('razon_social').value;
-            
-            codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
-                    
-            $("#cliente_nombre").val(document.getElementById('razon_social').value);
-            $("#telefono").val(''); //si la tecla proviene del input razon social
-            
-            $("#cliente_codigo").val(codigo);
-           document.getElementById('telefono').focus();
-        } 
-        
-        if (opcion==3){   //si la tecla proviene del input codigo de barras
-            buscarporcodigo();           
-        } 
-        
-        if (opcion==4){   //si la tecla proviene del input codigo de barras
-            tablaresultados(1);           
-        }        
-        
-        if (opcion==5){   //si la tecla proviene del buscador de pedido abierto
-            tablaresultadospedido(1);           
-        }        
-        
-        if (opcion==6){   //si la tecla proviene del buscador de pedido abierto
-            tablaresultadospedido(1);              
-        }        
-        
-        if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
-           document.getElementById('filtrar').focus();               
-        }        
-    } 
- 
 }
 
 //esta funcion elimina un item de la tabla detalle de venta
@@ -818,6 +765,74 @@ function validar(e,opcion) {
         if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
            document.getElementById('filtrar').focus();               
         }        
+        
+        if (opcion==8){   //si la tecla proviene del buscador de pedido abierto
+           buscar_clientes();               
+        }        
     } 
  
+}
+
+function buscar_clientes()
+{    
+    var parametro = document.getElementById('filtrar2').value;
+    var pedido_id = document.getElementById('pedido_id').value;
+    var tipo = document.getElementById('tipo').value;
+    var base_url    = document.getElementById('base_url').value;
+    
+    var controlador = base_url+"cliente/buscarclientes";
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{parametro: parametro, tipo: tipo},
+        success: function(response){           
+            var c = JSON.parse(response);
+
+            html = "";
+            for (var i = 0; i < c.length; i++){
+
+            
+                html += "<tr>";
+//                html += "     <form action='"+base_url+"cliente/cambiarcliente/ method='POST' class='form'>";
+                html += "  ";
+                html += "        <td>"+(i+1)+"</td>";
+                html += "        <td>";
+                html += "        <img src='"+base_url+"resources/images/clientes/thumb_"+c[i]["cliente_foto"]+"' class='img-circle' width='50' height='50'>";
+                html += "        </td>";
+
+                html += "        <td>";
+
+
+                html += "                <b> "+c[i]["cliente_nombre"]+"</b><br>";
+                html += "            C.I.:"+c[i]["cliente_ci"]+" | Telf.:"+c[i]["cliente_telefono"]+" <br>";
+                html += "            <div class='container' hidden='TRUE'>";
+                html += "                <input id='cliente_id'  name='cliente_id' type='text' class='form-control' value='<?php echo $h['cliente_id']; ?>'>";
+                html += "                <input id='pedido_id'  name='pedido_id' type='text' class='form-control' value='<?php echo $pedido_id; ?>'>";
+                html += "            </div>";       
+                html += "            NIT:";
+                html += "            <input type='text' id='cliente_nit' name='cliente_nit' class='form-control' placeholder='N.I.T.' required='true' value='"+c[i]["cliente_nit"]+"'>";
+                html += "            RAZON SOCIAL:";
+                html += "            <input type='text' id='cliente_razon' name='cliente_razon' class='form-control' placeholder='Razón Social' required='true' value='"+c[i]["cliente_razon"]+"'>";
+                html += "           ";
+                html += "            <button type='submit' class='btn btn-success btn-xs btn-block'>";
+                html += "                <i class='fa fa-check'></i> Seleccionar Cliente";
+                html += "            </button>";
+                html += "            <a href='"+base_url+"cliente/cambiarcliente/"+c[i]["cliente_id"]+"/"+pedido_id+"/"+c[i]["cliente_nit"]+"/"+c[i]["cliente_razon"]+"' class='btn btn-success btn-xs btn-block'> Seleccionar Cliente</a>";
+                
+                html += "            ";
+                html += "        </td>";
+                html += "    ";
+//                html += "     </form>";
+                html += "";
+                html += "</tr>       ";     
+
+            }
+
+        
+            $("#clientes_pedido").html(html);
+                        
+            
+            
+        },        
+    });
 }
