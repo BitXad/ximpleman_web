@@ -25,16 +25,16 @@ class Cliente extends CI_Controller{
 
         $data['a'] = $a;
         $data['err'] ="";
-        $data['cliente'] = $this->Cliente_model->get_cliente_all();
+        $data['cliente'] = $this->Cliente_model->get_all_cliente();
         
         $this->load->model('Tipo_cliente_model');
-        $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
+        $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         
         $this->load->model('Categoria_cliente_model');
-        $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente_asc();
+        $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
         
         $this->load->model('Categoria_clientezona_model');
-        $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
+        $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
@@ -65,7 +65,7 @@ class Cliente extends CI_Controller{
 
             //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
             $this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
-            //$this->form_validation->set_rules('cliente_nombrenegocio','Nombre Negocio','required');
+            $this->form_validation->set_rules('cliente_nombrenegocio','Nombre Negocio','required');
 
             if($this->form_validation->run())     
             {
@@ -122,14 +122,14 @@ class Cliente extends CI_Controller{
                     }
             /* *********************FIN imagen***************************** */
                 $usuario_id = $session_data['usuario_id'];
-                //no es necesario porque se esta usando el date y ya no el date piker
-                //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                 $estado_id = 1;
                 $params = array(
                             'estado_id' => $estado_id,
                             'tipocliente_id' => $this->input->post('tipocliente_id'),
                             'categoriaclie_id' => $this->input->post('categoriaclie_id'),
                             'cliente_codigo' => $this->input->post('cliente_codigo'),
+                            'categoriacliezona_id' => $this->input->post('categoriacliezona_id'),
                             'cliente_nombre' => $this->input->post('cliente_nombre'),
                             'cliente_ci' => $this->input->post('cliente_ci'),
                             'cliente_direccion' => $this->input->post('cliente_direccion'),
@@ -138,13 +138,12 @@ class Cliente extends CI_Controller{
                             'cliente_foto' => $foto,
                             'cliente_email' => $this->input->post('cliente_email'),
                             'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-                            'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+                            'cliente_aniversario' => $mifecha,
                             'cliente_latitud' => $this->input->post('cliente_latitud'),
                             'cliente_longitud' => $this->input->post('cliente_longitud'),
                             'cliente_nit' => $this->input->post('cliente_nit'),
                             'cliente_razon' => $this->input->post('cliente_razon'),
                             'usuario_id' => $this->input->post('usuario_id'),
-                            'zona_id' => $this->input->post('zona_id'),
                 );
             
             $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -156,15 +155,15 @@ class Cliente extends CI_Controller{
 			$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
                         
                         $this->load->model('Categoria_clientezona_model');
-                        $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                        $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
                         /***Añadido por Mario Escobar parqa asignarle a un usuario prevendedor***/
                         $this->load->model('Usuario_model');
 			$data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
 
 			$this->load->model('Tipo_cliente_model');
 			$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-			
-                        $this->load->model('Categoria_cliente_model');
+
+			$this->load->model('Categoria_cliente_model');
 			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
 			
             
@@ -200,7 +199,7 @@ class Cliente extends CI_Controller{
 
 			//$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
 			$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
-                        //$this->form_validation->set_rules('cliente_nombrenegocio','Cliente Nombre Negocio','required');
+                        $this->form_validation->set_rules('cliente_nombrenegocio','Cliente Nombre Negocio','required');
 		
 	    if($this->form_validation->run())     
             {
@@ -269,14 +268,14 @@ class Cliente extends CI_Controller{
                 }
             /* *********************FIN imagen***************************** */
                             //$this->input->post('cliente_foto'),
-                           //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                           $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                             //$mifecha = normalize_date($this->input->post('cliente_aniversario'));
                 $params = array(
 					'estado_id' => $this->input->post('estado_id'),
 					'tipocliente_id' => $this->input->post('tipocliente_id'),
 					'categoriaclie_id' => $this->input->post('categoriaclie_id'),
 					'cliente_codigo' => $this->input->post('cliente_codigo'),
-					'zona_id' => $this->input->post('zona_id'),
+					'categoriacliezona_id' => $this->input->post('categoriacliezona_id'),
 					'cliente_nombre' => $this->input->post('cliente_nombre'),
 					'cliente_ci' => $this->input->post('cliente_ci'),
 					'cliente_direccion' => $this->input->post('cliente_direccion'),
@@ -285,7 +284,7 @@ class Cliente extends CI_Controller{
 					'cliente_foto' => $foto,
 					'cliente_email' => $this->input->post('cliente_email'),
 					'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-					'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+					'cliente_aniversario' => $mifecha,
 					'cliente_latitud' => $this->input->post('cliente_latitud'),
 					'cliente_longitud' => $this->input->post('cliente_longitud'),
 					'cliente_nit' => $this->input->post('cliente_nit'),

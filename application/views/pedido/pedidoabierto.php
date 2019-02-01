@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/pedido.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -119,7 +119,7 @@ function mostrar_ocultar(){
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,6)">
+                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código del producto" onkeypress="validar(event,6)">
                   </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box box-body table-responsive" >
@@ -195,7 +195,7 @@ function mostrar_ocultar(){
 				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
                                 
                                 <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                                  <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del huesped...">
+                                  <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del cliente...">
                                 </div>
                                 
 			</div>
@@ -208,7 +208,8 @@ function mostrar_ocultar(){
                                                         <th>imagen</th>
                                                         <th>Nombres</th>
                             </tr>
-                            <tbody class="buscar2">
+                            
+                            <tbody class="buscar2" id="clientes_pedido">
                  
                             <?php $i=1;
                             foreach($cliente as $h){ ?>
@@ -287,7 +288,7 @@ function mostrar_ocultar(){
                                         <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
                                         <?php                                                     
                                             $fecha = date('Y-m-d'); 
-                                            $hora = date('H:i:s');                                                                                         
+                                            $hora = date('H:i');                                                                                         
                                         ?>
                                         
                                     <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>
