@@ -125,6 +125,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     var totalingreso23 = 0;
                     var totalingreso24 = 0;
                     var totalutilidad2 = 0;
+                    var totalutilidad3 = 0;
                     var totalingreso3 = 0;
                     var totalingreso7 = 0;
                     var totalingreso8 = 0;
@@ -265,6 +266,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                       
                       if(registros[i]['tipo'] == 3){
                           totalingreso3  += parseFloat(registros[i]['ingreso']);
+                          totalutilidad3 += parseFloat(registros[i]['utilidad']);
                           html3 += "<tr>";
                           html3 += "<td>"+cont3+"</td>";
                           html3 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
@@ -483,7 +485,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     /* *****************INICIO para suma reporte total de INGRESOS****************** */
                     totaltablaingresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS: </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
                     totaltablaingresoventas  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS(EFECTIVO, VENTAS CONT., COBROS CRED.): </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso1+totalingreso2+totalingreso3).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
-                    totaltablautilidadventas  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL UTILIDAD POR VENTAS EFECTIVO: </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalutilidad2).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
+                    totaltablautilidadventas  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL UTILIDAD (POR VENTAS EFECTIVO, COBROS POR CREDITO): </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalutilidad2+totalutilidad3).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
                     /* *****************F I N para suma reporte total de INGRESOS****************** */
                     /* *****************INICIO para reporte de EGRESOS VARIOS****************** */
                     cabecerahtml4= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosegreso' onclick='mostraregreso(); return false'>+</a></td><td style='width:61%;'>EGRESO DE EFECTIVO: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso4).toFixed(2))+"</td></tr></table>";
