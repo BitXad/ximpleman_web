@@ -284,13 +284,13 @@ function tablaresultadoscliente()
     var controlador = "";
     var parametro = "";
 
-    var limite = 10;
+    //var limite = 1500;
     var base_url = document.getElementById('base_url').value;
     
     
     controlador = base_url+'cliente/buscarclientes/';
     parametro = document.getElementById('filtrar').value;        
-    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
 
     $.ajax({url: controlador,
@@ -314,10 +314,10 @@ function tablaresultadoscliente()
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                   /*if (n <= limite) x = n; 
+                   else x = limite;*/
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         html += "<tr>";
                         
                         html += "<td>"+(i+1)+"</td>";
@@ -393,6 +393,7 @@ function tablaresultadoscliente()
                             escategoria_clientezona = "No definido";
                         }else{
                             escategoria_clientezona = categoriacliezona[registros[i]["zona_id"]-1]["zona_nombre"];
+                            //alert(categoriacliezona[registros[i]["zona_id"]-1]);
                         }
                         html += "<b>Zona: </b>"+escategoria_clientezona;
                         html += "</div>";
@@ -482,14 +483,18 @@ function tablaresultadoscliente()
                    
                    
                    $("#tablaresultados").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
             }
-                
+         document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(respuesta){
            // alert("Algo salio mal...!!!");
            html = "";
            $("#tablaresultados").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
         }
         
     });   

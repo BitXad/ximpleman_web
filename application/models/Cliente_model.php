@@ -226,17 +226,17 @@ class Cliente_model extends CI_Model
             SELECT sum(
             (SELECT if(count(p.cliente_id) > 0, count(p.cliente_id), 0) AS FIELD_1
              FROM pedido p
-             WHERE p.cliente_id = c.cliente_id and p.cliente_id = 4) +
+             WHERE p.cliente_id = c.cliente_id and p.cliente_id = $cliente_id) +
             (SELECT if(count(s.cliente_id) > 0, count(s.cliente_id), 0) AS FIELD_1
              FROM servicio s
-             WHERE s.cliente_id = c.cliente_id and c.cliente_id = 4) +
+             WHERE s.cliente_id = c.cliente_id and c.cliente_id = $cliente_id) +
             (SELECT if(count(v.cliente_id) > 0, count(v.cliente_id), 0) AS FIELD_1
              FROM venta v
-             WHERE v.cliente_id = c.cliente_id and c.cliente_id = 4)) as res
+             WHERE v.cliente_id = c.cliente_id and c.cliente_id = $cliente_id)) as res
              FROM
                 cliente c
-              WHERE c.cliente_id = 4
-        ",array($cliente_id))->row_array();
+              WHERE c.cliente_id = $cliente_id
+        ")->row_array();
 
         return $cliente['res'];
     }
