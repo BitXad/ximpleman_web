@@ -1,5 +1,4 @@
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script>
+<script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);
     obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
@@ -90,16 +89,16 @@ function mostrar(a) {
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger">*</span>Nombre Negocio</label>
+						<label for="cliente_nombrenegocio" class="control-label">Nombre Negocio</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo ($this->input->post('cliente_nombrenegocio') ? $this->input->post('cliente_nombrenegocio') : $cliente['cliente_nombrenegocio']); ?>" class="form-control" id="cliente_nombrenegocio" required="" />
+                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo ($this->input->post('cliente_nombrenegocio') ? $this->input->post('cliente_nombrenegocio') : $cliente['cliente_nombrenegocio']); ?>" class="form-control" id="cliente_nombrenegocio" />
                                                         <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_aniversario" class="control-label">Aniversario</label>
 						<div class="form-group">
-							<input type="text" name="cliente_aniversario" value="<?php echo ($this->input->post('cliente_aniversario') ? $this->input->post('cliente_aniversario') : $cliente['cliente_aniversario']); ?>" class="has-datepicker form-control" id="cliente_aniversario" />
+							<input type="date" name="cliente_aniversario" value="<?php echo ($this->input->post('cliente_aniversario') ? $this->input->post('cliente_aniversario') : $cliente['cliente_aniversario']); ?>" class="form-control" id="cliente_aniversario" />
 						</div>
 					</div>
                                         <div class="col-md-6">
@@ -125,7 +124,7 @@ function mostrar(a) {
                                                     
                                                         navigator.geolocation.getCurrentPosition(
                                                         function (position){
-                                                            if(milat == 'undefined' || milat == null){
+                                                            if(milat == 'undefined' || milat == null || milat ==""){
                                                                 coords_lat =  {
                                                                 lat: position.coords.latitude,
                                                                 };
@@ -135,7 +134,7 @@ function mostrar(a) {
                                                                 lat: milat,
                                                                 };
                                                             }
-                                                            if(milng == 'undefined' || milng == null){
+                                                            if(milng == 'undefined' || milng == null || milng ==""){
                                                                 coords_lng =  {
                                                                   lng: position.coords.longitude,
                                                                 };
@@ -152,7 +151,9 @@ function mostrar(a) {
                                                 }
                                                 
                                                 function setMapa (coords_lat, coords_lng)
-                                                {   
+                                                {
+                                                    document.getElementById("cliente_latitud").value = coords_lat.lat;
+                                                    document.getElementById("cliente_longitud").value = coords_lng.lng;
                                                       //Se crea una nueva instancia del objeto mapa
                                                       var map = new google.maps.Map(document.getElementById('map'),
                                                       {
@@ -245,16 +246,16 @@ function mostrar(a) {
 						</div>
 					</div>
                                         <div class="col-md-6">
-						<label for="categoriacliezona_id" class="control-label">Zona</label>
+						<label for="zona_id" class="control-label">Zona</label>
 						<div class="form-group">
-							<select name="categoriacliezona_id" class="form-control">
+							<select name="zona_id" class="form-control">
 								<option value="0">- CATEGORIA CLIENTE ZONA -</option>
 								<?php 
 								foreach($all_categoria_clientezona as $categoria_clientezona)
 								{
-									$selected = ($categoria_clientezona['categoriacliezona_id'] == $cliente['categoriacliezona_id']) ? ' selected="selected"' : "";
+									$selected = ($categoria_clientezona['zona_id'] == $cliente['zona_id']) ? ' selected="selected"' : "";
 
-									echo '<option value="'.$categoria_clientezona['categoriacliezona_id'].'" '.$selected.'>'.$categoria_clientezona['categoriacliezona_descripcion'].'</option>';
+									echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
 								} 
 								?>
 							</select>

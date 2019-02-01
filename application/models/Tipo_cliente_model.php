@@ -98,4 +98,30 @@ class Tipo_cliente_model extends CI_Model
     {
         return $this->db->delete('tipo_cliente',array('tipocliente_id'=>$tipocliente_id));
     }
+    /*
+     * Get all tipo_cliente ASC
+     */
+    function get_all_tipo_cliente_asc($params = array())
+    {
+        $limit_condition = "";
+        if(isset($params) && !empty($params))
+            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
+        $tipo_cliente = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `tipo_cliente`
+
+            WHERE
+                1 = 1
+
+            ORDER BY `tipocliente_id` ASC
+
+            " . $limit_condition . "
+        ")->result_array();
+
+        return $tipo_cliente;
+    }
 }

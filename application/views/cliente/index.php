@@ -1,5 +1,4 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
@@ -17,8 +16,13 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
     #contieneimg{
-        width: 50px;
-        height: 50px;
+        width: 45px;
+        height: 45px;
+        text-align: center;
+    }
+    #contieneimg img{
+        width: 45px;
+        height: 45px;
         text-align: center;
     }
     #horizontal{
@@ -56,7 +60,7 @@
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, ci, nit" onkeypress="validar2(event,1)">
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="validar2(event,1)" autocomplete="off" >
             </div>
         <!--este es FIN de input buscador-->
         <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
@@ -94,14 +98,29 @@
                                                 <div id="contieneimg">
                                                     <?php
                                                     $mimagen = "thumb_".$c['cliente_foto'];
-                                                    echo '<img src="'.site_url('/resources/images/clientes/'.$mimagen).'" />';
+                                                    //echo '<img src="'.site_url('/resources/images/clientes/'.$mimagen).'" />';
+                                                    if($c['cliente_foto']){
+                                                    ?>
+                                                    <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $cont; ?>" style="padding: 0px;">
+                                                        <?php
+                                                        echo '<img src="'.site_url('/resources/images/clientes/'.$mimagen).'" />';
+                                                        ?>
+                                                    </a>
+                                                    <?php }
+                                                    else{
+                                                       echo '<img style src="'.site_url('/resources/images/usuarios/thumb_default.jpg').'" />'; 
+                                                    }
                                                     ?>
                                                     </div>
-                                                    <div>
+                                                        <div style="padding-left: 4px">
                                                         <?php echo "<b id='masg'>".$c['cliente_nombre']."</b><br>";
                                                               echo "<b>Codigo: </b>".$c['cliente_codigo']."<br>";
                                                               echo "<b>C.I.: </b>".$c['cliente_ci']."<br>";
-                                                              echo "<b>Tel.: </b>".$c['cliente_telefono']."-".$c['cliente_celular'];
+                                                              $linea = "";
+                                                              if($c['cliente_telefono'] >0 && $c['cliente_celular']>0){
+                                                                  $linea = "-";
+                                                              }
+                                                              echo "<b>Tel.: </b>".$c['cliente_telefono'].$linea.$c['cliente_celular'];
                                                         ?>
                                                     </div>
                                                  </div>
@@ -112,10 +131,10 @@
                                                            echo "<b>Nit: </b>".$c['cliente_nit']."<br>";
                                                            echo "<b>Razon: </b>".$c['cliente_razon']."<br>";
                                                            $escategoria_clientezona = "";
-                                                            if($c['categoriacliezona_id'] == null || $c['categoriacliezona_id'] == 0 || $c['categoriacliezona_id']-1 > count($all_categoria_clientezona)){ 
+                                                            if($c['zona_id'] == null || $c['zona_id'] == 0 || $c['zona_id']-1 > count($all_categoria_clientezona)){ 
                                                                 $escategoria_clientezona = "No definido";
                                                             }else{
-                                                                $escategoria_clientezona = $all_categoria_clientezona[$c['categoriacliezona_id']-1]['categoriacliezona_descripcion'];
+                                                                $escategoria_clientezona = $all_categoria_clientezona[$c['zona_id']-1]['zona_nombre'];
                                                             }
                                                            echo "<b>Zona: </b>".$escategoria_clientezona;
                                                     ?>
@@ -127,7 +146,12 @@
                                                     ?>
                                                 </td>
 						<td><?php echo $c['cliente_email']; ?></td>
-						<td><?php echo $c['cliente_aniversario']; ?></td>
+                                                <td><?php
+                                                    $fecha_aniversario = "";
+                                                    if($c['cliente_aniversario'] != "0000-00-00" && $c['cliente_aniversario'] != null){
+                                                       $fecha_aniversario = date("d/m/Y", strtotime($c['cliente_aniversario']));
+                                                    }
+                                                echo $fecha_aniversario; ?></td>
 						<?php
                                                 $estipo_cliente = "";
                                                 if($c['tipocliente_id'] == null || $c['tipocliente_id'] == 0 || $c['tipocliente_id']-1 > count($all_tipo_cliente)){ 
@@ -179,6 +203,25 @@
                                       </div>
                                     </div>
                     <!------------------------ FIN modal para confirmar eliminación ------------------->
+                    <!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->
+                                    <div class="modal fade" id="mostrarimagen<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="mostrarimagenlabel<?php echo $cont; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <font size="3"><b><?php echo $c['cliente_nombre']; ?></b></font>
+                                          </div>
+                                            <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <?php echo '<img style="max-height: 100%; max-width: 100%" src="'.site_url('/resources/images/clientes/'.$c['cliente_foto']).'" />'; ?>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                    <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->
                     </td>
                     </tr>
                    

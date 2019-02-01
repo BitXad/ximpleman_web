@@ -322,11 +322,15 @@ function tablaresultadoscliente()
                         
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><div id='horizontal'>";
-                        html += "<div>";
+                        html += "<div id='contieneimg'>";
                         var mimagen = "";
-                        if(registros[i]["cliente_foto"] != null){
-                            mimagen = "thumb_"+registros[i]["cliente_foto"];
+                        if(registros[i]["cliente_foto"] != null && registros[i]["cliente_foto"] !=""){
+                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' />";
+                            mimagen += "</a>";
                             //mimagen = nomfoto.split(".").join("_thumb.");
+                        }else{
+                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' />";
                         }
                         var neg = "";
                         var dir = "";
@@ -334,6 +338,9 @@ function tablaresultadoscliente()
                         var long = "";
                         var corr = "";
                         var aniv = "";
+                        var codigo = "";
+                        var telef = "";
+                        var celular = "";
                         if(registros[i]["cliente_nombrenegocio"] != null){
                             neg = registros[i]["cliente_nombrenegocio"];
                         }
@@ -349,17 +356,30 @@ function tablaresultadoscliente()
                         if(registros[i]["cliente_email"] != null){
                             corr = registros[i]["cliente_email"];
                         }
-                        if(registros[i]["cliente_aniversario"] != null){
-                            aniv = registros[i]["cliente_aniversario"];
+                        if(registros[i]["cliente_aniversario"] != "0000-00-00" && registros[i]["cliente_aniversario"] != null){
+                            aniv = moment(registros[i]["cliente_aniversario"]).format("DD/MM/YYYY");
                         }
-                        
-                        html += "<img src='"+base_url+"/resources/images/clientes/"+mimagen+"' />";
+                        if(registros[i]["cliente_codigo"] != null && registros[i]["cliente_codigo"] != ""){
+                            codigo = registros[i]["cliente_codigo"];
+                        }
+                        if(registros[i]["cliente_telefono"] != null && registros[i]["cliente_telefono"] != ""){
+                            telef = registros[i]["cliente_telefono"];
+                        }
+                        if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
+                            celular = registros[i]["cliente_celular"];
+                        }
+                        var linea = "";
+                        if(telef>0 && celular>0){
+                            linea = "-";
+                        }
+                        //html += "<img src='"+base_url+"/resources/images/"+mimagen+"' />";
+                        html += mimagen;
                         html += "</div>";
-                        html += "<div>";
+                        html += "<div style='padding-left: 4px'>";
                         html += "<b id='masg'>"+registros[i]["cliente_nombre"]+"</b><br>";
-                        html += "<b>Codigo: </b>"+registros[i]["cliente_codigo"]+"<br>";
+                        html += "<b>Codigo: </b>"+codigo+"<br>";
                         html += "<b>C.I.: </b>"+registros[i]["cliente_ci"]+"<br>";
-                        html += "<b>Tel.: </b>"+registros[i]["cliente_telefono"]+"-"+registros[i]["cliente_celular"];
+                        html += "<b>Tel.: </b>"+telef+linea+celular;
                         html += "</div>";
                         html += "</div>";
                         html += "</td>";
@@ -369,10 +389,10 @@ function tablaresultadoscliente()
                         html += "<b>Nit: </b>"+registros[i]["cliente_nit"]+"<br>";
                         html += "<b>Razon: </b>"+registros[i]["cliente_razon"]+"<br>";
                         var escategoria_clientezona="";
-                        if(registros[i]["categoriacliezona_id"] == null || registros[i]["categoriacliezona_id"] == 0 || registros[i]["categoriacliezona_id"]-1 > categoriacliezona.length){
+                        if(registros[i]["zona_id"] == null || registros[i]["zona_id"] == 0 || registros[i]["zona_id"]-1 > categoriacliezona.length){
                             escategoria_clientezona = "No definido";
                         }else{
-                            escategoria_clientezona = categoriacliezona[registros[i]["categoriacliezona_id"]-1]["categoriacliezona_descripcion"];
+                            escategoria_clientezona = categoriacliezona[registros[i]["zona_id"]-1]["zona_nombre"];
                         }
                         html += "<b>Zona: </b>"+escategoria_clientezona;
                         html += "</div>";
@@ -432,6 +452,26 @@ function tablaresultadoscliente()
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
+                        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
+                        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<font size='3'><b>"+registros[i]["cliente_nombre"]+"</b></font>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/clientes/"+registros[i]["cliente_foto"]+"' />";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
                         html += "</td>";
                         
                         

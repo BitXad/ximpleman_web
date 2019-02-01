@@ -48,13 +48,13 @@ class Categoria_clientezona extends CI_Controller{
                 );
                 
                 $this->load->library('form_validation');
-		$this->form_validation->set_rules('categoriacliezona_descripcion','Descripcion es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		$this->form_validation->set_rules('zona_nombre','Nombre es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 		
 		if($this->form_validation->run())     
                 {
                     //estado_id = 1    --->por defecto lo crea activo
             $params = array(
-				'categoriacliezona_descripcion' => $this->input->post('categoriacliezona_descripcion'),
+				'zona_nombre' => $this->input->post('zona_nombre'),
 				'estado_id' => 1,
             );
             
@@ -91,15 +91,15 @@ class Categoria_clientezona extends CI_Controller{
         // check if the tipo_servicio exists before trying to edit it
         $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
         
-        if(isset($data['categoria_clientezona']['categoriacliezona_id']))
+        if(isset($data['categoria_clientezona']['zona_id']))
         {
             $this->load->library('form_validation');
-		$this->form_validation->set_rules('categoriacliezona_descripcion','Descripcion es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+		$this->form_validation->set_rules('zona_nombre','Nobre es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 		
 		if($this->form_validation->run())     
                 {
                 $params = array(
-					'categoriacliezona_descripcion' => $this->input->post('categoriacliezona_descripcion'),
+					'zona_nombre' => $this->input->post('zona_nombre'),
 					'estado_id' => $this->input->post('estado_id'),
                 );
 
@@ -136,7 +136,7 @@ class Categoria_clientezona extends CI_Controller{
         $categoria_clientezona = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
 
         // check if the categoria_clientezona exists before trying to delete it
-        if(isset($categoria_clientezona['categoriacliezona_id']))
+        if(isset($categoria_clientezona['zona_id']))
         {
             $this->Categoria_clientezona_model->delete_categoria_clientezona($categoriacliezona_id);
             redirect('categoria_clientezona/index');
