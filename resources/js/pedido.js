@@ -803,7 +803,8 @@ function buscar_clientes()
                 html += "        <td>";
 
 
-                html += "                <b> "+c[i]["cliente_nombre"]+"</b><br>";
+                html += "                <b> "+c[i]["cliente_nombre"]+"</b> , COD.: "+c[i]["cliente_codigo"]+" <br>";
+                html += "               "+c[i]["cliente_direccion"];
                 html += "            C.I.:"+c[i]["cliente_ci"]+" | Telf.:"+c[i]["cliente_telefono"]+" <br>";
                 html += "            <div class='container' hidden='TRUE'>";
                 html += "                <input id='cliente_id'  name='cliente_id' type='text' class='form-control' value='<?php echo $h['cliente_id']; ?>'>";
@@ -814,9 +815,9 @@ function buscar_clientes()
                 html += "            RAZON SOCIAL:";
                 html += "            <input type='text' id='cliente_razon' name='cliente_razon' class='form-control' placeholder='Razón Social' required='true' value='"+c[i]["cliente_razon"]+"'>";
                 html += "           ";
-                html += "            <button type='submit' class='btn btn-success btn-xs btn-block'>";
-                html += "                <i class='fa fa-check'></i> Seleccionar Cliente";
-                html += "            </button>";
+//                html += "            <button type='submit' class='btn btn-success btn-xs btn-block'>";
+//                html += "                <i class='fa fa-check'></i> Seleccionar Cliente";
+//                html += "            </button>";
                 html += "            <a href='"+base_url+"cliente/cambiarcliente/"+c[i]["cliente_id"]+"/"+pedido_id+"/"+c[i]["cliente_nit"]+"/"+c[i]["cliente_razon"]+"' class='btn btn-success btn-xs btn-block'> Seleccionar Cliente</a>";
                 
                 html += "            ";
