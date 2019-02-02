@@ -194,4 +194,25 @@ class Usuario_model extends CI_Model
                   u.estado_id = 1 ")->result_array();
         return $usuario;
     }
+    /*
+     * Get all usuario TODOS
+     */
+    function get_todos_usuario()
+    {
+        $usuario = $this->db->query("
+            SELECT
+                u.*
+
+            FROM
+                usuario u
+
+            WHERE
+                1=1
+
+            ORDER BY `usuario_id` ASC
+
+        ")->result_array();
+
+        return $usuario;
+    }
 }

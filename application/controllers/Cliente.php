@@ -37,7 +37,7 @@ class Cliente extends CI_Controller{
         $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
         
         $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        $data['all_usuario'] = $this->Usuario_model->get_todos_usuario();
         
         $data['_view'] = 'cliente/index';
         $this->load->view('layouts/main',$data);
