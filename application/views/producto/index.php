@@ -69,31 +69,37 @@
            
             
             <div class="box-body  table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
-                    <tr>
-                            <th>N°</th>
-                            <th>Nombre</th>
-                            <th>Categoria|<br>Presentación</th>
-                            <th>Código|<br>Cód. Barra</th>
-                            <th>Precio</th>
-                            <th>Moneda</th>
-                            <th>Comision</th>
-                            <th>Estado</th>
-                            <th>Operaciones</th>
+               <table class="table table-condensed" id="mitabla" role="table">
+               <!--<table role="table">-->
+                    <thead role="rowgroup">
+                        <tr role="row">
+                            <th  role="columnheader" >N°</th>
+                            <th  role="columnheader" >Nombre</th>
+                            <th  role="columnheader" >Categoria|<br>Presentación</th>
+                            <th  role="columnheader" >Código|<br>Cód. Barra</th>
+                            <th  role="columnheader" >Precio</th>
+                            <th  role="columnheader" >Moneda</th>
+                            <th  role="columnheader" >Comision</th>
+                            <th  role="columnheader" >Estado</th>
+                            <th  role="columnheader" >Operaciones</th>
+                    
                     </tr>
-                    <tbody class="buscar" id="tablaresultados">
+                    </thead>
+                    <tbody class="buscar" id="tablaresultados" role="rowgroup">
+
+
                     <?php $cont = 0;
                           foreach($producto as $p){;
                                  $cont = $cont+1; ?>
-                    <tr>
-						<td><?php echo $cont ?></td>
-                                                <td>
+                    <tr role="row">
+						<td role="cell"><?php echo $cont ?></td>
+                                                <td role="cell">
                                                     <div id="horizontal">
                                                         <div id="contieneimg">
                                                    <?php
                                                    //$mimagen = str_replace(".", "_thumb.", $p['producto_foto']);
                                         
-                                                   echo '<img src="'.site_url('/resources/images/productos/'."thumb_".$p['producto_foto']).'" />'; ?>
+                                                   echo '<img src="'.site_url('/resources/images/productos/'."thumb_".$p['producto_foto']).'" class="img img-circle" width="50" height="50"/>'; ?>
                                                    </div>
                                                    <div>
                                                        <b id="masgrande"><?php echo $p['producto_nombre']; ?></b><br>
@@ -101,7 +107,7 @@
                                                     </div>
                                                   </div>
                                                 </td>
-						<td><?php
+						<td role="cell"><?php
                                                 $escategoria="";
                                                 if($p['categoria_id'] == null || $p['categoria_id'] == 0 || $p['categoria_id']-1 > count($all_categoria)){ 
                                                     $escategoria = "No definido";

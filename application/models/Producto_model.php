@@ -122,6 +122,17 @@ class Producto_model extends CI_Model
         return $this->db->update('producto',$params);
     }
     
+    
+    /*
+     * function unidad de producto
+     */
+    function get_all_unidad()
+    {
+        $sql = "select * from unidad";
+        $unidades = $this->db->query($sql)->result_array();        
+        return $unidades;
+    }
+    
     /*
      * function to delete producto
      */
@@ -181,21 +192,7 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
-
-
-    function cambiar_ultimocosto($producto_id,$ultimocosto)
-    {
-
-         //Truncar la tabla inventario
-       
-        //cargar el inventario actualizado
-        $sql = "update producto set producto.producto_ultimocosto=".$ultimocosto." where producto_id=".$producto_id."";
-
-        $this->db->query($sql);
-      }
-
     /*
-
      * Get producto by producto_id en ROW
      */
     function get_esteproducto($producto_id)
@@ -212,6 +209,5 @@ class Producto_model extends CI_Model
         ",array($producto_id))->row_array();
 
         return $producto;
-
     }
 }

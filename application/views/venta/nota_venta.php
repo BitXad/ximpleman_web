@@ -101,6 +101,7 @@
                     <tbody class="buscar">
                     <?php $cont = 0;
                           $cantidad = 0;
+                          $subtotal = 0;
                           $total_descuento = 0;
                           $total_final = 0;
                           
@@ -109,6 +110,8 @@
                                  $cantidad += $d['detalleven_cantidad'];
                                  $total_descuento += $d['detalleven_descuento']; 
                                  $total_final += $d['detalleven_total']; 
+                                 $subtotal += $d['detalleven_subtotal']; 
+                                 
                                  ?>
                     <tr>
 						<td><?php echo $cont ?></td>
@@ -129,15 +132,11 @@
                                                 
                                                 </td>
 						<!--<td><?php echo $d['detalleven_costo']; ?></td>-->
-						<td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
+                                                <td align="center"><input type="text"  value="<?php echo number_format($d['detalleven_precio'],2,'.',','); ?>" size="7" ></td>
 						<td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
-						<td align="right"><?php echo number_format($d['detalleven_descuento'],2,'.',','); ?></td>
+						<td align="center"><input type="text" value="<?php echo number_format($d['detalleven_descuento'],2,'.',','); ?>" size="7" ></td></td>
 						<td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
-						<!--<td><?php echo $d['moneda_descripcion']; ?></td>-->
-<!--						<td><?php echo $d['detalleven_preferencia']; ?></td>
-						<td><?php echo $d['detalleven_comision']; ?></td>
-						<td><?php echo $d['detalleven_tipocambio']; ?></td>
-						<td><?php echo $d['detalleven_caracteristicas']; ?></td>-->
+
 						<td class="no-print">
                                                     <a href="<?php //echo site_url('detalle_venta/edit/'.$d['detalleven_id']); ?>" class="btn btn-info btn-xs no-print"><span class="fa fa-pencil" ></span></a> 
                                                     <!--<a href="<?php //echo site_url('detalle_venta/remove/'.$d['detalleven_id']); ?>" class="btn btn-danger btn-xs no-print"><span class="fa fa-trash"></span></a>-->
@@ -151,8 +150,8 @@
 						<th></th>
 						<th></th>
 						<th><?php echo number_format($cantidad,2,'.',','); ?></th>
-						<th></th>
-						<th></th>
+						<th></th>				
+						<th><?php echo number_format($subtotal,2,'.',','); ?></th>
 						<th><?php echo number_format($total_descuento,2,'.',','); ?></th>
 						<th><?php echo number_format($total_final,2,'.',','); ?></th>
                     </tr>                    

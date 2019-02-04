@@ -79,11 +79,11 @@
                         <th>N°</th>
                         <th>Nombre</th>
                         <th>Negocio</th>
-                        <th>Dirección</th>
-                        <th>Coordenadas</th>
-                        <th>Email</th>
-                        <th>Aniversario</th>
-                        <th>Tipo</th>
+                        <!--<th>Dirección</th>-->
+                        <th class="no-print">Map</th>
+<!--                        <th>Email</th>-->
+                        <!--<th>Aniversario</th>-->
+<!--                        <th>Tipo</th>-->
                         <th>Categoria</th>
                         <th>Prevendedor</th>
                         <th>Estado</th>
@@ -130,7 +130,10 @@
                                                 </td>
                                                 <td>
                                                     <div style="white-space: nowrap;"><?php echo $c['cliente_nombrenegocio']."<br>"; ?></div>
+
                                                     <div><?php
+                                                    
+                                                           echo "<b>Dir: </b>".$c['cliente_direccion']."<br>";
                                                            echo "<b>Nit: </b>".$c['cliente_nit']."<br>";
                                                            echo "<b>Razon: </b>".$c['cliente_razon']."<br>";
                                                            $escategoria_clientezona = "";
@@ -143,18 +146,33 @@
                                                     ?>
                                                     </div>
                                                 </td>
-						<td><?php echo $c['cliente_direccion']; ?></td>
-                                                <td><?php echo "<b>Lat.: </b>".$c['cliente_latitud']."<br>";
-                                                          echo "<b>Lon.: </b>".$c['cliente_longitud'];
+						<!--<td><?php echo $c['cliente_direccion']; ?></td>-->
+                                                <td>
+                                                        
+                                                    <?php 
+                                                    
+                                                          if ($c['cliente_latitud']==0 && $c['cliente_longitud']==0)
+                                                             { ?>  <img src="<?php echo base_url('resources/images/noubicacion.png'); ?>" width="30" height="30"> <?php }
+                                                          else{?>                                                              
+                                                                    <a href="https://www.google.com/maps/dir/<?php echo $c['cliente_latitud'];?>,<?php echo $c['cliente_longitud'];?>" target="_blank" title="lat:<?php echo $c['cliente_latitud'];?>,long:<?php echo $c['cliente_longitud'];?>">                                                                
+                                                                    <img src="<?php echo base_url('resources/images/blue.png'); ?>" width="30" height="30">
+                                                                    </a>
+                                                    <?php            }
                                                     ?>
+                                                    
                                                 </td>
-						<td><?php echo $c['cliente_email']; ?></td>
-                                                <td><?php
+                                                
+						<td><?php echo $c['cliente_email']; ?>
+                                                    <br>
+                                                    
+                                                    <?php
                                                     $fecha_aniversario = "";
                                                     if($c['cliente_aniversario'] != "0000-00-00" && $c['cliente_aniversario'] != null){
                                                        $fecha_aniversario = date("d/m/Y", strtotime($c['cliente_aniversario']));
                                                     }
-                                                echo $fecha_aniversario; ?></td>
+                                                echo $fecha_aniversario; ?>
+                                                
+                                                    <br>
 						<?php
                                                 $estipo_cliente = "";
                                                 if($c['tipocliente_id'] == null || $c['tipocliente_id'] == 0 || $c['tipocliente_id']-1 > count($all_tipo_cliente)){ 
@@ -175,8 +193,11 @@
                                                     $esusuario = $all_usuario[$c['usuario_id']-1]['usuario_nombre'];
                                                 }
                                                 ?>
-						<td><?php echo $estipo_cliente; ?></td>
-						<td><?php echo $escategoria_cliente; ?></td>
+                                                <br>    
+                                                <?php echo $escategoria_cliente; ?><br>
+                                                    <?php echo $estipo_cliente; ?>
+                                                </td>
+                                                
 						<td><?php echo $esusuario; ?></td>
                                                 <td style="background-color: #<?php echo $c['estado_color']; ?>"><?php echo $c['estado_descripcion']; ?></td>
 						<td>
@@ -237,9 +258,7 @@
                 <script>alert("No se puede subir una imagen con ese formato ")</script>
                 <?php } ?>
             </div>
-            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>
+
         </div>
     </div>
 </div>

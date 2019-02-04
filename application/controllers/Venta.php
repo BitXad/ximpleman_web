@@ -251,7 +251,7 @@ class Venta extends CI_Controller{
         
         $usuario_id = $session_data['usuario_id'];
         
-        
+        $porcentaje = 0;
         $sql = $this->input->post('sql'); // recuperamos la consulta sql enviada mediante JS
         $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
         $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
@@ -262,12 +262,17 @@ class Venta extends CI_Controller{
         $nit = $this->input->post('nit'); // nit del cliente
         $razon = $this->input->post('razon'); // nit del cliente
         $fecha_venta = $this->input->post('venta_fecha'); // nit del cliente
+        $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
         $venta_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
         
-        
+        if (($venta_total+$venta_descuento)>0)
+            $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
+        else
+            $porcentaje = 0;
+            
         $sql =  "insert into detalle_venta
         (producto_id,
           venta_id,
@@ -298,8 +303,8 @@ class Venta extends CI_Controller{
           detalleven_costo,
           detalleven_precio,
           detalleven_subtotal,
-          detalleven_descuento,
-          detalleven_total,
+          detalleven_subtotal * ".$porcentaje.",
+          detalleven_total - (detalleven_subtotal * ".$porcentaje."),
           detalleven_caracteristicas,
           detalleven_preferencia,
           detalleven_comision,
@@ -310,6 +315,7 @@ class Venta extends CI_Controller{
         WHERE 
           usuario_id=".$usuario_id.")";
         
+        $sqldetalle = $sql;
         $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
         
         
@@ -483,7 +489,8 @@ class Venta extends CI_Controller{
                 $this->ultimaventa();
        //     }
         }
-
+        
+      
         //**************** fin contenido ***************
         }
         else{ redirect('alerta'); }
