@@ -198,6 +198,7 @@
                 </li>
 
                 <?php }?>
+                <?php if($session_data['tipousuario_id']==3){ ?>
                 <li>
                     <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
                     <ul class="treeview-menu">
@@ -252,6 +253,7 @@
                         <?php }?>
                     </ul>
                 </li>
+                <?php } ?>
                 <?php
                     if($session_data['tipousuario_id']==1){
                 ?>
@@ -392,7 +394,20 @@
                     </ul>
                 </li>
                     <?php }?>
-                
+                 <?php
+                if($session_data['tipousuario_id']==4){?>
+                <li>
+                    <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-cube"></i>Pedidos</a>
+                        </li>
+                    </ul>
+                </li>
+                <?php } ?>
             </ul>
         </section>
         <!-- /.sidebar -->
