@@ -218,6 +218,7 @@ function tablaproductos()
                         html += "			<td align='center' width='120' "+color+"> ";
                         html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
                         html += "                       <input size='1' name='cantidad' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+" class='btn btn-warning')'>";
+                        html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "                       <button onclick='incrementar(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
 
                         html += "                       </td>";
@@ -332,23 +333,27 @@ function buscarporcodigo()
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
-    
+    //alert('por aqui');
     
     $.ajax({url: controlador,
            type:"POST",
            data:{codigo:codigo},
            success:function(respuesta){     
-                
-               tablaproductos();
-               
+    
+               tablaproductos(); 
                $("#codigo").select();
-                //document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
                
-               
+               var resultado = JSON.parse(respuesta);                
+
+                //if(resultado[0]["resultado"] == 1) alert('Todo positivo choco...!');
+                if(resultado[0]["resultado"] == 0) alert('La cantidad excede la cantidad en inventario...!');
+                if(resultado[0]["resultado"] == -1) alert('El producto no se encuentra registrado con el código especificado...!!');
+
+                 
            },
            error:function(respuesta){
                alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
-               tablaproductos();
+               
                $("#codigo").select();
 
            },
@@ -362,8 +367,8 @@ function buscarporcodigo()
             }
         });
            
-           
-        document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+        
+    document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
 
 }
 
@@ -393,6 +398,31 @@ function cantidad_en_detalle(producto_id){
     return res;
 }
 
+function existencia(producto_id){
+    
+   var base_url = document.getElementById('base_url').value;
+   var controlador = base_url+'venta/existencia';
+   var res = 0;
+   
+   $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id},
+           async: false, 
+           success:function(respuesta){
+               
+               var resultado = eval(respuesta);
+               
+                res = resultado[0]["existencia"];
+           },
+           error:function(respuesta){
+               
+             res = 0;
+           }
+    });     
+    
+    return res;
+}
+
 //se encarga de ingresar una cantidad determinada de productos al detalle de la venta en base de id de producto
 // la cantidad debe estar registrada en el modal asignada para esta operacion
 function ingresardetalle(producto_id)
@@ -412,19 +442,16 @@ function ingresardetalle(producto_id)
                data:{cantidad:cantidad, producto_id:producto_id, existencia:existencia},
                success:function(respuesta){
                    var resultado = JSON.parse(respuesta);
-
+                  // alert(resultado[0]["resultado"]);
                    tablaproductos();
 
                   // alert(resultado[0]['resultado']);
 
-                   if(resultado[0]['resultado'] == 0) alert('La cantidad excede la cantidad en invetario...!');
-                   if(resultado[0]['resultado'] == -1) alert('El producto no se encuentra registrado con el código especificado...!!');
 
 
                },
                error:function(respuesta){
                    alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
-
                    tablaproductos();
                    $("#codigo").select();
                }
@@ -471,16 +498,27 @@ function incrementar(cantidad,detalleven_id)
 {    
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/incrementar/";
-   
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{cantidad:cantidad,detalleven_id:detalleven_id},
-            success:function(respuesta){
-                tablaproductos();
-                tabladetalle();                
-            }
-        
-    });
+    var producto_id = document.getElementById('productodet_'+detalleven_id).value;
+    var cantidad_detalle = cantidad_en_detalle(producto_id)+1;
+    var cantidad_disponible =  existencia(producto_id);
+    
+   if (cantidad_detalle <= cantidad_disponible){
+       
+        $.ajax({url: controlador,
+                type:"POST",
+                data:{cantidad:cantidad,detalleven_id:detalleven_id},
+                success:function(respuesta){
+                    
+                    tablaproductos();
+                    tabladetalle();
+                    
+                }
+
+        });
+   }
+   else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+cantidad_disponible);}
+       
+    
 }
 
 //incrementa productos al detalle de la nota de venta
@@ -1464,16 +1502,19 @@ function costo_cero()
 {
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/costo_cero";
+    var txt;
+    var r = confirm("Los precios y costos serán cambiados a 0 (cero).\n Esta operación no será reversible.\n¿Desea Continuar?");
+    if (r == true) {
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){         
+                tablaproductos();
+            },
+            error: function(respuesta){         
+            }        
+        });
 
-    
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{},
-        success:function(respuesta){         
-            tablaproductos();
-        },
-        error: function(respuesta){         
-        }        
-    });
-    
+    }
 }
