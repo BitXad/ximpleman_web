@@ -187,8 +187,12 @@ class Venta extends CI_Controller{
 
            // echo $sql;
             $this->Venta_model->ejecutar($sql);
+            
+            $result = 1;
+            echo '[{"cliente_id":"'.$result.'"}]';
+            
         }
-        else echo "error";
+        else { $result = 0;  echo '[{"cliente_id":"'.$result.'"}]';}
             
         //**************** fin contenido ***************
         }
@@ -527,28 +531,46 @@ class Venta extends CI_Controller{
             if (sizeof($producto)>0){
                 //echo $producto[0]['producto_nombre']." ".$producto[0]['existencia'];
                 $producto_id = $producto[0]['producto_id'];
+                $existencia = $producto[0]['existencia'];
+                
 
-                if (!$this->Venta_model->existe($producto_id,$usuario_id)){ //Si el producto no existe en el detalle
+                $sql =  "select if(sum(detalleven_cantidad)>0,sum(detalleven_cantidad),0) as cantidad from detalle_venta_aux "
+                               . " where producto_id =".$producto_id;
 
-                    $resultado =  $this->Venta_model->agregarxcodigo($usuario_id,$producto_id,$cantidad);
-                    //redirect('venta/ventas');
-                    return $resultado;
+                $resultado = $this->Venta_model->consultar($sql);
+                
+                $cantidad = $resultado[0]['cantidad'] + 1;              
+                
+                $result = 0;
+                
+                if($cantidad<=$existencia){        
+                
+                    if (!$this->Venta_model->existe($producto_id,$usuario_id)){ //Si el producto no existe en el detalle
 
+                        $resultado =  $this->Venta_model->agregarxcodigo($usuario_id,$producto_id,$cantidad);
+                        //redirect('venta/ventas');
+                        echo  '[{"resultado":"'.$result.'"}]';//el producto se ingreso correctamente
+
+                    }
+                    else{
+
+                        $resultado = $this->Venta_model->incrementar($usuario_id,$producto_id,$cantidad);
+                        //redirect('venta/ventas');
+                        echo  '[{"resultado":"'.$result.'"}]'; //el producto se ingreso correctamente
+
+                    }
+                
                 }
-                else{
-
-                    $resultado = $this->Venta_model->incrementar($usuario_id,$producto_id,$cantidad);
-                    //redirect('venta/ventas');
-                    return $resultado;
-
-                }
+                else {  $result = 0; echo  '[{"resultado":"'.$result.'"}]';}//la cantidad exece el invetario
+                
+                
             }
-            else return null;
+            else { $result = -1; echo  '[{"resultado":"'."-1".'"}]'; }//no existe el producto
             
         }
         else
-        {                 
-           return null;
+        {  $result = -1;               
+           echo  '[{"resultado":"'."-1".'"}]'; //no existe el producto
         }  
                        
         		

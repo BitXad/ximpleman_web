@@ -332,6 +332,8 @@ function buscarporcodigo()
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
+    
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{codigo:codigo},
@@ -403,27 +405,36 @@ function ingresardetalle(producto_id)
    
    var cantidad_total = parseFloat(cantidad_en_detalle(producto_id)) + cantidad; 
    
-   //alert(cantidad_total+ " <= "+existencia);
+   if(cantidad_total <= existencia){
    
-    if (cantidad_total <= existencia){
-    
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{cantidad:cantidad, producto_id:producto_id, existencia:existencia},
-           success:function(respuesta){
-               tablaproductos();
-               
-           },
-           error:function(respuesta){
-               alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
-               tablaproductos();
-               $("#codigo").select();
-           }
-    });
-    
+        $.ajax({url: controlador,
+               type:"POST",
+               data:{cantidad:cantidad, producto_id:producto_id, existencia:existencia},
+               success:function(respuesta){
+                   var resultado = JSON.parse(respuesta);
+
+                   tablaproductos();
+
+                  // alert(resultado[0]['resultado']);
+
+                   if(resultado[0]['resultado'] == 0) alert('La cantidad excede la cantidad en invetario...!');
+                   if(resultado[0]['resultado'] == -1) alert('El producto no se encuentra registrado con el código especificado...!!');
+
+
+               },
+               error:function(respuesta){
+                   alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
+
+                   tablaproductos();
+                   $("#codigo").select();
+               }
+        });
+
    }
-   else alert('La cantidad es mayor a la del inventario..!!');
+   else alert("ADVERTENCIA: La cantidad excede la existencia del inventario...!!");
+
 }
+
 
 //esta funcion elimina un item de la tabla detalle de venta
 function quitarproducto(producto_id)
@@ -482,8 +493,8 @@ function incrementar_detalle(cantidad,detalleven_id,venta_id)
             type:"POST",
             data:{cantidad:cantidad,detalleven_id:detalleven_id,venta_id:venta_id},
             success:function(respuesta){
-//                tablaproductos();
-//                tabladetalle();                
+                tablaproductos();
+                tabladetalle();                
             }
         
     });
@@ -583,7 +594,7 @@ function ingresorapido(producto_id,cantidad)
     var factor = document.getElementById('select_factor'+producto_id).value;
     
     $("#cantidad"+producto_id).val(cantidad * factor); //establece la cantidad requerida en el modal
-        ingresardetalle(producto_id); //llama a la funcion para consolidar la cantidad
+    ingresardetalle(producto_id); //llama a la funcion para consolidar la cantidad
     
 }
 
