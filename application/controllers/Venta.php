@@ -1710,5 +1710,34 @@ function anular_venta($venta_id){
         
     }
         
+
+    function cantidad_en_detalle()
+    {       
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************       
+        
+        $usuario_id = $session_data['usuario_id'];
+        
+        $producto_id = $this->input->post('producto_id');
+        
+        $sql =  "select if(sum(detalleven_cantidad)>0,sum(detalleven_cantidad),0) as cantidad from detalle_venta_aux "
+                . " where producto_id =".$producto_id;
+        
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);
+    
+            		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+        
+    }
+        
     
 }
