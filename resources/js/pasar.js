@@ -15,7 +15,7 @@
           elemento.options[i] = null;
         }
 
-        if(elemento2.options[0].value == '-') { // condición si el elemento inicial esta solo (borrar todo)
+        if(elemento2.options[0].value == '-') { // condici贸n si el elemento inicial esta solo (borrar todo)
           elemento2.options[0] = null;
         }
 
@@ -91,10 +91,10 @@ function ventacombi(filtro)
                if (registros != null){
                    
                   //  alert(filtro);
-                    var cont = 0;
-                    var total = Number(0);
-                    var total_detalle = 0;
-                    var n = registros.length; //tamaño del arreglo de la consulta
+                    var totalCan = 0;
+                    var totalTo = 0;
+                    
+                    var n = registros.length; //tama帽o del arreglo de la consulta
                     $("#pillados").val("- "+n+" -");
                    
                     html = "";
@@ -103,9 +103,11 @@ function ventacombi(filtro)
                     
                     for (var i = 0; i < x ; i++){
                         
-                        var suma =0;
-                        var total = 0;
-                        //var cantidad = registros[i]["detalleven_cantidad"] + suma;
+                        
+                        var canti = Number(registros[i]["cantidades"]);
+                        var totalCan = Number(canti+totalCan);
+                        var total = Number(registros[i]["totales"]);
+                        var totalTo = Number(total+totalTo);
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -121,10 +123,17 @@ function ventacombi(filtro)
                        
                         html += "</tr>";
                        
+                       
                    }
-                       // html =+ "<tr>";
-                        //html += "<td>"+Number(total).toFixed(2)+"</td>";
-                        //html += "</tr>";
+                        html += "<tr>";
+                        html += "<td></td>";
+                        html += "<td style= 'font-size:12px;' ><b>TOTAL</b></td>";
+                        html += "<td></td>";
+                       
+                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalCan).toFixed(2)+"</td>";
+                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalTo).toFixed(2)+"</td>";
+                       
+                        html += "</tr>";
                    
                    $("#ventacombi").html(html);
                     document.getElementById('loader').style.display = 'none';

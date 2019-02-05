@@ -46,7 +46,7 @@ function buscar_fecha_ven()
 {
    
     var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"compra";
+    
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var usuario_id = document.getElementById('usuario_id').value;
@@ -68,7 +68,7 @@ function ventacombi(filtro)
    
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"venta/buscarporvendedores";
-    var limite = 55555;
+    var limite = 500;
     
     $.ajax({url: controlador,
            type:"POST",
@@ -89,7 +89,7 @@ function ventacombi(filtro)
 
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#pillados").val("- "+n+" -");
-                   
+                   var perra = registros["usuario_id"];
                     html = "";
                    if (n <= limite) x = n; 
                    else x = limite;
@@ -102,6 +102,7 @@ function ventacombi(filtro)
                         var totalCan = Number(canti+totalCan);
                         var total = Number(registros[i]["totales"]);
                         var totalTo = Number(total+totalTo);
+                        
                         //var cantidad = registros[i]["detalleven_cantidad"] + suma;
                         html += "<tr>";
                       
@@ -134,6 +135,7 @@ function ventacombi(filtro)
                         html += "</tr>";
                    
                    $("#ventacombi").html(html);
+                   $("#usuario1").html(perra);
                    document.getElementById('loader').style.display = 'none';
             }
                 
