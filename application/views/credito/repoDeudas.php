@@ -13,6 +13,12 @@
                 })
             }(jQuery));
         });
+
+    function imprimir()
+        {
+             window.print(); 
+        }
+
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -81,12 +87,10 @@
                 </center>
                     </div>
 </div>
+ <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
+<div class="row">  
 
-<div class="row">
-
-
-       
-        <div class="box">
+         <div class="box">
 
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">

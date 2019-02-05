@@ -4,6 +4,10 @@
     function final(){
   document.getElementById('loader').style.display = 'block';
 }
+ function imprimir()
+        {
+             window.print(); 
+        }
 </script>
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
@@ -71,7 +75,7 @@
                 <span class="fa fa-search"></span>   Realizar Busqueda  
                 </h4>
           </button>
-           
+           <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
         </div>
         
        

@@ -6,47 +6,50 @@
                 <h3 class="box-title">Parametros</h3>
             	
             </div>
-            <div class="box-body">
-                <table class="table table-striped" id="mitabla" style="width: 50%; text-align: center; font-size: 13px;" align="center">
+            <div class="box-body" >
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-6">
+                <table class="table table-striped table-condensed" id="mitabla" style="text-align: center; font-size: 11px;">
                     <?php foreach($parametros as $p){ ?>
                     <tr>
-                        <th style="font-size: 13px;">Editar</th>
+                        <th style="font-size: 11px;"></th>
                         <td>
                             <a href="<?php echo site_url('parametro/edit/'.$p['parametro_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a> 
                             
                         </td>
                     </tr>
                     <tr>
-						<th style="font-size: 13px;">No. EGRESO</th>
+						<th style="font-size: 11px;">No. EGRESO</th>
                         <td><?php echo $p['parametro_numrecegr']; ?></td>
                     </tr>
                     <tr>
-						<th style="font-size: 13px;">No. INGRESO</th>
+						<th style="font-size: 11px;">No. INGRESO</th>
                         <td><?php echo $p['parametro_numrecing']; ?></td>
                     </tr>
                     <tr>
-						<th style="font-size: 13px;">No.COPIAS FACTURAS</th>
+						<th style="font-size: 11px;">No.COPIAS FACTURAS</th>
                         <td><?php echo $p['parametro_copiasfact']; ?></td>
                     </tr>
                     <tr>
-						<th style="font-size: 13px;">TIPO DE IMPRESORA</th>
+						<th style="font-size: 11px;">TIPO DE IMPRESORA</th>
                         <td><?php echo $p['parametro_tipoimpresora']; ?></td>
                     </tr>
                     <tr>
-                        <th style="font-size: 13px;">No. CUOTAS</th>
+                        <th style="font-size: 11px;">No. CUOTAS</th>
                         <td><?php echo $p['parametro_numcuotas']; ?></td>
                     </tr>
                     <tr>
-                        <th style="font-size: 13px;">MONTO MAXIMO DE PAGO</th>
+                        <th style="font-size: 11px;">MONTO MAXIMO DE PAGO</th>
                         <td><?php echo $p['parametro_montomax']; ?> Bs.</td>
                     </tr>
                     <tr>
-                        <th style="font-size: 13px;">DIAS DE GRACIA</th>
+                        <th style="font-size: 11px;">DIAS DE GRACIA</th>
                         <td><?php echo $p['parametro_diasgracia']; ?></td>
                     </tr>
                     <tr>
-                        <th style="font-size: 13px;">DIA DE PAGO</th>
-                        <td><?php echo $p['parametro_diapago']; ?>
+                        <th style="font-size: 11px;">DIA DE PAGO</th>
+                        <td>[<?php echo $p['parametro_diapago']; ?>]
                             <?php
 $var= $p['parametro_diapago'];
 switch($var) {
@@ -70,15 +73,15 @@ break;
                         </td>
                     </tr>
                     <tr>
-                        <th style="font-size: 13px;">PERIODO DE PAGO</th>
+                        <th style="font-size: 11px;">PERIODO DE PAGO</th>
                         <td><?php echo $p['parametro_periododias']; ?></td>
                     </tr>
                     <tr>
-                        <th style="font-size: 13px;">INTERES</th>
+                        <th style="font-size: 11px;">INTERES</th>
                         <td><?php echo $p['parametro_interes']; ?></td>
                     </tr>
                     <tr>
-                        <th style="font-size: 13px;">TITULO DOC.</th>
+                        <th style="font-size: 11px;">TITULO DOC.</th>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>
                     </tr>
                    
@@ -86,7 +89,7 @@ break;
                   
                     <?php } ?>
                 </table>
-                                
+              </div>                  
             </div>
         </div>
     </div>

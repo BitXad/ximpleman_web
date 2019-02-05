@@ -25,6 +25,11 @@
                 })
             }(jQuery));
         });
+         
+        function imprimir()
+        {
+             window.print(); 
+        }
 </script>   
 
 <style type="text/css">
@@ -88,8 +93,8 @@
 
       </div></div>
 
-      
-<div class="panel panel-primary col-md-12" id='buscador_oculto' style="border: none;padding: 0;">
+<div class="col-md-12 " >      
+<div class="panel panel-primary col-md-9" style="border: none;padding: 0;">
     
              
       
@@ -100,7 +105,7 @@
         
        
             Proveedor:
-            <input id="proveedor_id" list="proveedores"  class="btn btn-primary btn-sm form-control" style=" width: 15%; font-size: 11px;" type="text" placeholder=""> 
+            <input id="proveedor_id" list="proveedores"  class="btn btn-primary btn-sm form-control" style=" width: 24%; font-size: 11px;" type="text" placeholder=""> 
             <datalist    id="proveedores" required="true">
                 <?php foreach($proveedor as $es){?>
                     <option value="<?php echo $es['proveedor_nombre']; ?>"><?php echo $es['proveedor_nombre']; ?></option>
@@ -109,11 +114,11 @@
               <button type="button" class="btn btn-primary" onclick="buscar_reporte_proveedor()"><span class="fa fa-search">Buscar</button>
         </div>
         
-       
-        
      
-</div>
 
+<div class="col-md-3 no-print" >
+    <a onclick="imprimir()" class="btn btn-success btn-sm"><i class="fa fa-print"> Imprimir</i></a>
+    </div> </div>
 <div class="container no-print" id="categoria" style="padding: 0;">
     
  

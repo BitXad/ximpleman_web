@@ -246,7 +246,7 @@ class Cuotum extends CI_Controller{
                    // 'cuota_fechalimite' => $this->input->post('cuota_fechalimite'),
                     'cuota_cancelado' => $this->input->post('cuota_cancelado'),
                     'cuota_fecha' => $this->input->post('cuota_fecha'),
-                    //'cuota_hora' => $this->input->post('cuota_hora'),
+                    'cuota_hora' => $this->input->post('cuota_hora'),
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
