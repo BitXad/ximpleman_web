@@ -172,12 +172,12 @@
 						</div>
 					</div>
 
-<!--					<div class="col-md-3">
+					<div class="col-md-3" hidden>
 						<label for="producto_tipocambio" class="control-label">Tipo Cambio</label>
 						<div class="form-group">
-							<input type="number" step="any" min="0" name="producto_tipocambio" value="<?php echo $this->input->post('producto_tipocambio'); ?>" class="form-control" id="producto_tipocambio" />
+							<input type="number" step="any" min="0" name="producto_tipocambio" value="1" class="form-control" id="producto_tipocambio" />
 						</div>
-					</div>-->
+					</div>
 					<div class="col-md-3">
 						<label for="producto_factor" class="control-label">Factor</label>
 						<div class="form-group">
@@ -239,7 +239,7 @@
 					<div class="col-md-3">
 						<label for="producto_foto" class="control-label">Foto</label>
 						<div class="form-group">
-                                                        <input type="file" name="producto_foto" value="<?php echo "producto.jpg"; ?>" class="form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
+                                                        <input type="file" name="producto_foto" value="<?php echo "producto.jpg"; ?>" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
 						</div>
 					</div>
 				</div>
@@ -255,3 +255,4 @@
       	</div>
     </div>
 </div>
+

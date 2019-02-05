@@ -328,6 +328,9 @@ class Pedido extends CI_Controller{
         $pedido_total = $this->input->post('pedido_totalfinal');
         $pedido_glosa = $this->input->post('pedido_glosa');
         
+        $pedido_latitud = $this->input->post('latitud');
+        $pedido_longitud = $this->input->post('longitud');
+        
         $fechahora = $this->input->post('fechahora_entrega');
         
 //        $dato = '2011-07-12 10:35:27';
@@ -346,6 +349,8 @@ class Pedido extends CI_Controller{
                 .",pedido_glosa = '".$pedido_glosa."'"
                 .",pedido_fechaentrega = '".$fecha."'"
                 .",pedido_horaentrega = '".$hora."'"
+                .",pedido_latitud = '".$pedido_latitud."'"
+                .",pedido_longitud = '".$pedido_longitud."'"
                 ."  where pedido_id=".$pedido_id;        
 
         $this->Pedido_model->ejecutar($sql);

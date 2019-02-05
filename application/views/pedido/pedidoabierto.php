@@ -53,6 +53,7 @@ function mostrar_ocultar(){
         document.getElementById('oculto').style.display = 'none';}
 }
 
+$(document).ready(localize());
 
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
@@ -229,7 +230,7 @@ function mostrar_ocultar(){
                                                      <span class="input-group-addon"> 
                                                       <i class="fa fa-user"></i>
                                                      </span>           
-                                                     <select id="tipo" class="form-control" onclick="buscar_cliente()">
+                                                     <select id="tipo" class="form-control">
                                                          <option value="1">Mis clientes</option>
                                                          <option value="2">Todos</option>
                                                      </select>
@@ -293,7 +294,7 @@ function mostrar_ocultar(){
                             
                                 <center>
                                 <div class="row">
-                                        
+    
                                     
                                     <div class="col-md-2">
                                         <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
@@ -359,6 +360,8 @@ function mostrar_ocultar(){
                         <!--<td align="right"><?php echo number_format($total_pedido,2,'.',''); ?></td>-->
                         <td align="right"><input type="text"  size="8"  id="total_pedido" val="0.00"></td>
                     
+                        <input type="text" name="latitud" id="latitud" value="0" hidden>
+                        <input type="text" name="longitud" id="longitud" value="0" hidden>
                 </tr>                
                 <tr>
                         <td>Descuento Bs</td>
@@ -533,3 +536,86 @@ function calcularCambio(pedido_subtotalx,pedido_descuentox,pedido_totalfinalx,pe
 </div>
 </form>
 
+
+
+<!--<button onclick="mostrarx(1)"> localizacion</button>-->
+
+<script type="text/javascript">
+function mostrarx(a) {
+    obj = document.getElementById('oculto'+a);
+    obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+    //objm = document.getElementById('map');
+    if(obj.style.visibility == 'hidden'){
+        $('#map').css({ 'width':'0px', 'height':'0px' });
+        $('#mosmapa').text("Obtener Ubicación del negocio");
+    }else{
+        $('#map').css({ 'width':'500px', 'height':'400px' });
+        $('#mosmapa').text("Cerrar mapa");
+    }
+
+}
+</script>
+
+<div id="oculto1" >
+<div id="map"></div>
+                                            <script type="text/javascript">
+                                                var marker;          //variable del marcador
+                                                var coords_lat = {};    //coordenadas obtenidas con la geolocalización
+                                                var coords_lng = {};    //coordenadas obtenidas con la geolocalización
+                                                
+
+                                                //Funcion principal
+                                                initMap = function () 
+                                                {
+                                                    //usamos la API para geolocalizar el usuario
+                                                        navigator.geolocation.getCurrentPosition(
+                                                          function (position){
+                                                            coords_lat =  {
+                                                              lat: position.coords.latitude,
+                                                            };
+                                                            coords_lng =  {
+                                                              lng: position.coords.longitude,
+                                                            };
+                                                            setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
+
+                                                          },function(error){console.log(error);});
+                                                }
+                                                
+                                                function setMapa (coords_lat, coords_lng)
+                                                {
+                                                        document.getElementById("latitud").value = coords_lat.lat;
+                                                        document.getElementById("longitud").value = coords_lng.lng;
+                                                      //Se crea una nueva instancia del objeto mapa
+                                                      var map = new google.maps.Map(document.getElementById('map'),
+                                                      {
+                                                        zoom: 13,
+                                                        center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+
+                                                      });
+
+                                                      //Creamos el marcador en el mapa con sus propiedades
+                                                      //para nuestro obetivo tenemos que poner el atributo draggable en true
+                                                      //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+                                                      marker = new google.maps.Marker({
+                                                        map: map,
+                                                        draggable: true,
+                                                        animation: google.maps.Animation.DROP,
+                                                        position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+
+                                                      });
+                                                      //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
+                                                      //cuando el usuario a soltado el marcador
+                                                      //marker.addListener('click', toggleBounce);
+
+                                                      marker.addListener( 'dragend', function (event)
+                                                      {
+                                                        //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
+                                                        document.getElementById("cliente_latitud").value = this.getPosition().lat();
+                                                        document.getElementById("cliente_longitud").value = this.getPosition().lng();
+                                                      });
+                                                }
+                                                initMap();
+                                            </script>
+                                            <script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
+                                            <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>-->
+</div>                            

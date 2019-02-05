@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/funciones_producto.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -58,7 +58,7 @@
             <span class="input-group-addon"> 
                 Buscar 
             </span>           
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras" onkeypress="buscarproducto(event)">
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras" onkeypress="validar2(event,4)">
         </div>
         <!--este es FIN de input buscador-->
         <div class="container" id="categoria">
@@ -88,9 +88,7 @@
                     <tbody class="buscar" id="tablaresultados" role="rowgroup">
 
 
-                    <?php
-                    /*
-                    $cont = 0;
+                    <?php $cont = 0;
                           foreach($producto as $p){;
                                  $cont = $cont+1; ?>
                     <tr role="row">
@@ -101,8 +99,25 @@
                                                    <?php
                                                    //$mimagen = str_replace(".", "_thumb.", $p['producto_foto']);
                                         
-                                                   echo '<img src="'.site_url('/resources/images/productos/'."thumb_".$p['producto_foto']).'" class="img img-circle" width="50" height="50"/>'; ?>
-                                                   </div>
+//                                                   echo '<img src="'.site_url('/resources/images/productos/'."thumb_".$p['producto_foto']).'" class="img img-circle" width="50" height="50"/>'; ?>
+                                                   
+                                                                                                        <?php
+                                                    $mimagen = "thumb_".$p['producto_foto'];
+                                                    //echo '<img src="'.site_url('/resources/images/clientes/'.$mimagen).'" />';
+                                                    if($p['producto_foto']){
+                                                    ?>
+                                                    <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $p['producto_id']; ?>" style="padding: 0px;">
+                                                        <?php
+                                                        echo '<img src="'.site_url('/resources/images/productos/'.$mimagen).'" />';
+                                                        ?>
+                                                    </a>
+                                                    <?php }
+                                                    else{
+                                                       echo '<img style src="'.site_url('/resources/images/productos/thumb_default.jpg').'" />'; 
+                                                    }
+                                                    ?>
+                                                            
+                                                    </div>
                                                    <div>
                                                        <b id="masgrande"><?php echo $p['producto_nombre']; ?></b><br>
                                         <?php echo $p['producto_unidad']; ?> | <?php echo $p['producto_marca']; ?> | <?php echo $p['producto_industria']; ?>
@@ -130,14 +145,17 @@
                                                 }
                                                 echo "<b>Cat.: </b>".$escategoria;  echo "<br><b>Pres.: </b>".$espresentacion; ?></td>
 						<td><?php echo $p['producto_codigo']; echo "<br>".$p['producto_codigobarra']; ?></td>
+						<!--<td><?php /*echo $p['producto_unidad']; ?></td>
+						<td><?php echo $p['producto_marca']; ?></td>
+						<td><?php echo $p['producto_industria'];*/ ?></td> -->
 						<td><?php echo "<b>Compra: </b>".$p['producto_costo']; echo "<br><b>Venta: </b>".$p['producto_precio']; ?></td>
 						<td><?php echo "<b>Moneda: </b>".$esmoneda."<br>"; echo "<b>T. Cambio: </b>".$p['producto_tipocambio']; ?></td>
 						<td><?php echo $p['producto_comision']; ?></td>
                                                 <td style="background-color: #<?php echo $p['estado_color']; ?>"><?php echo $p['estado_descripcion']; ?></td>
 						<td>
-                            <a href="<?php echo site_url('producto/edit/'.$p['miprod_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
-                            <a href="<?php echo site_url('imagen_producto/catalogoprod/'.$p['miprod_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-image"></span></a>
-                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                                <a href="<?php echo site_url('producto/edit/'.$p['miprod_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                                <a href="<?php echo site_url('imagen_producto/catalogoprod/'.$p['miprod_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-image"></span></a>
+                                <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $cont; ?>">
                                       <div class="modal-dialog" role="document">
@@ -163,7 +181,30 @@
                     <!------------------------ FIN modal para confirmar eliminación ------------------->
                         </td>
                     </tr>
-                    <?php } */ ?>                                            
+                    
+                    
+                    <!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->
+                                    <div class="modal fade" id="mostrarimagen<?php echo $p['producto_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="mostrarimagenlabel<?php echo $p['producto_id']; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <font size="3"><b><?php echo $p['producto_nombre']; ?></b></font>
+                                          </div>
+                                            <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <?php echo '<img style="max-height: 100%; max-width: 100%" src="'.site_url('/resources/images/productos/'.$p['producto_foto']).'" />'; ?>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                    <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->                  
+
+                    
+                    <?php } ?>                                            
                     </tbody>
                 </table>
             </div>

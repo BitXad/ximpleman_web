@@ -221,28 +221,5 @@ class Producto_model extends CI_Model
 
         $this->db->query($sql);
     }
-    function get_busqueda_producto_limite()
-    {
-        $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             c.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion
-
-              FROM
-              producto p, estado e, categoria_producto c, presentacion pr, moneda m
-              
-              WHERE 
-                   p.estado_id = e.estado_id
-                   
-                   and p.categoria_id = c.categoria_id
-                and p.presentacion_id = pr.presentacion_id
-                and p.moneda_id = m.moneda_id
-                  
-              GROUP BY
-                p.producto_id
-              ORDER By p.producto_id desc LIMIT 50";
-
-        $producto = $this->db->query($sql)->result_array();
-        return $producto;
-
-    }
+    
 }

@@ -1250,7 +1250,7 @@ function tabla_ventas(filtro)
 
                     html += "                       <td><center>"+formato_fecha(v[i]['venta_fecha']);
                     html += "                           <br> "+v[i]['venta_hora'];
-                    html += "                           <br><input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' >";
+                    html += "                           <br><input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' style='display:block'>";
                     
                     html += "                       </center>";
                     html += "                       </td>";
@@ -1427,7 +1427,9 @@ function borrar_datos_cliente()
     } 
     
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
-        
+    tablaproductos();
+    
+    tablaresultados(1); //redibuja la tabla de busqueda de productos      
 }
 
 
@@ -1468,24 +1470,39 @@ function verificar_ventas()
             
             var res = JSON.parse(respuesta);
             var max = res.length;
+            var precio_anterior = 0;
+            var precio_nuevo = 0;
+            var duplicado = 0;
             
             for (var i = 0; i<max; i++){
+                
+                precio_nuevo = res[i]["venta"];
+                
+                if(precio_nuevo == precio_anterior)
+                    duplicado = "DUPLICADO";
+                else
+                    duplicado = "";
+                
                 if (res[i]["resultado"] == 1){
                     
-                    botoncito = "#boton"+res[i]["venta_id"];
+                    botoncito = "#boton"+res[i]["venta_id"];                    
+//                    nombreboton = "boton"+res[i]["venta_id"];                    
                    //botoncito2 = "boton"+res[i]["venta_id"];
                     
-                    //document.getElementById(botoncito2).style.display = 'block'; ; 
-                    $(botoncito).val("CONFLICTO | Items: "+res[i]["items"]);
+                    $(botoncito).val("CONFLICTO | Items: "+res[i]["items"]+"\n"+duplicado);
+//                    document.getElementById(nombreboton).style.display = 'block';                                        
                     
                 }
                 else{
                     
                     botoncito = "#boton"+res[i]["venta_id"];
-                    //document.getElementById(botoncito2).style.display = 'block'; 
-                    $(botoncito).val(" - OK - | Items: "+res[i]["items"]);
+                    
+//                    document.getElementById(botoncito).style.display = 'block'; 
+                    $(botoncito).val(" - OK - | Items: "+res[i]["items"]+"\n"+duplicado);
+                   
                     
                 }
+                precio_anterior = precio_nuevo;                                
             }
           
            // document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader

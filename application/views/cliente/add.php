@@ -52,7 +52,7 @@ function mostrar(a) {
                                         <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required />
+							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required  onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					</div>
@@ -65,13 +65,13 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
-							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion" />
+							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion"  onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
                                         <div class="col-md-6">
 						<label for="cliente_codigo" class="control-label">Código</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" readonly />
+                                                    <input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" readonly  onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_codigo');?></span>
 						</div>
 					</div>
@@ -102,7 +102,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger"></span>Nombre Negocio</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio"/>
+                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio"  onKeyUp="this.value = this.value.toUpperCase();"/>
                                                         <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
 						</div>
 					</div>
@@ -202,7 +202,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_razon" class="control-label">Razon</label>
 						<div class="form-group">
-							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : 'SIN NOMBRE'); ?>" class="form-control" id="cliente_razon" />
+							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : 'SIN NOMBRE'); ?>" class="form-control" id="cliente_razon"  onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
 					<div class="col-md-6">
