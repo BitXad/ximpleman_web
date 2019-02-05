@@ -137,7 +137,7 @@ function tablaresultadoscliente(limite)
                         html += "</div>";
                         html += "</td>";
                         html += "<td style='text-align: center'>";
-                        if (registros[i]["cliente_latitud"]==0 && registros[i]["cliente_longitud"]==0){
+                        if ((registros[i]["cliente_latitud"]==0 && registros[i]["cliente_longitud"]==0) || (registros[i]["cliente_latitud"]==null && registros[i]["cliente_longitud"]==null) || (registros[i]["cliente_latitud"]== "" && registros[i]["cliente_longitud"]=="")){
                             html += "<img src='"+base_url+"resources/images/noubicacion.png' width='30' height='30'>";
                         }else{
                             html += "<a href='https://www.google.com/maps/dir/"+registros[i]["cliente_latitud"]+","+registros[i]["cliente_longitud"]+"' target='_blank' title='lat:"+registros[i]["cliente_latitud"]+", long:"+registros[i]["cliente_longitud"]+"'>";                                                                
