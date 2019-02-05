@@ -61,8 +61,17 @@ function tabla_pedidos(filtro)
                 html += "<tr> ";
                 html += "    <td>"+cont+"</td> ";
 
-                html += "    <td><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <br> ";
-                html += "    "+p[i]["cliente_nombrenegocio"]+"<br>  ";
+                html += "    <td><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <sub>["+p[i]["cliente_id"]+"]</sub> ";
+                
+                if (p[i]["pedido_latitud"]!=null && p[i]["pedido_longitud"]!=null)
+                        imagen = "blue.png";
+                else
+                        imagen = "noubicacion.png";
+                    
+                html += " <a href='https://www.google.com/maps/dir/"+p[i]['cliente_latitud']+","+p[i]['cliente_longitud']+"' target='_blank' title='lat:"+p[i]['cliente_latitud']+",long:"+p[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='30' height='30'></a>";
+                html += "<br>";
+                html += "    "+p[i]["cliente_nombrenegocio"];
+                html += "<br>  ";
                 html += "    "+p[i]["pedido_fecha"]+"<br> ";
                 html += "     ";
                 html += "    </td> ";
@@ -383,8 +392,6 @@ function formato_fecha(string){
    }
     return info;
 }
-
-
 
 function consolidar_pedido(pedido_id)
 {

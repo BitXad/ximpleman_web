@@ -610,7 +610,7 @@ class Cliente extends CI_Controller{
 				'tipocliente_id' => $this->input->post('tipocliente_id'),
 				'categoriaclie_id' => $this->input->post('categoriaclie_id'),
 				'cliente_codigo' => $this->input->post('cliente_codigo'),
-				'categoriacliezona_id' => $this->input->post('categoriacliezona_id'),
+				'zona_id' => $this->input->post('zona_id'),
 				'cliente_nombre' => $this->input->post('cliente_nombre'),
 				'cliente_ci' => $this->input->post('cliente_ci'),
 				'cliente_direccion' => $this->input->post('cliente_direccion'),
