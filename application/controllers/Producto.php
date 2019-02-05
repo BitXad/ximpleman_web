@@ -40,7 +40,7 @@ class Producto extends CI_Controller{
         $this->load->model('Moneda_model');
         $data['all_moneda'] = $this->Moneda_model->get_alls_moneda();
         
-        $data['producto'] = $this->Producto_model->get_all_producto();
+       // $data['producto'] = $this->Producto_model->get_all_producto();
         
         
         $data['_view'] = 'producto/index';
@@ -695,5 +695,35 @@ class Producto extends CI_Controller{
             redirect('', 'refresh');
         }
     }
-    
+    /*
+    * buscar productos con LIMITE
+    */
+    function buscarproductoslimit()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            $datos = $this->Producto_model->get_busqueda_producto_limite();
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
 }
