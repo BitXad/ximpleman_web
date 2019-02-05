@@ -1,20 +1,4 @@
 <script type="text/javascript">
-  /*  $(document).ready(function(){
-    $("#categoria_id").change(function(){
-        var nombre = $("#producto_nombre").val();
-        var cad1 = nombre.substring(0,2);
-        var categoria = $('#categoria_id option:selected').text();
-        var cad2 = categoria.substring(0,1);
-        var fecha = new Date();
-        var pararand = fecha.getFullYear()+fecha.getMonth()+fecha.getDay();
-        var cad3 = Math.floor((Math.random(1001,9999) * pararand));
-        var cad = cad1+cad2+cad3;
-        $('#producto_codigo').val(cad);
-  });
-  });
-    */
-</script>
-<script type="text/javascript">
     function cambiarcodproducto(){
         var estetime = new Date();
         var anio = estetime.getFullYear();
@@ -22,6 +6,10 @@
         var mes = parseInt(estetime.getMonth())+1;
         if(mes>0&&mes<10){
             mes = "0"+mes;
+        }
+        var dia = parseInt(estetime.getDate());
+        if(dia>0&&dia<10){
+            dia = "0"+dia;
         }
         var hora = estetime.getHours();
         if(hora>0&&hora<10){
@@ -35,8 +23,8 @@
         if(seg>0&&seg<10){
             seg = "0"+seg;
         }
-        $('#producto_codigobarra').val(anio+mes+hora+min+seg);
-        $('#producto_codigo').val(anio+mes+hora+min+seg);
+        $('#producto_codigobarra').val(anio+mes+dia+hora+min+seg);
+        $('#producto_codigo').val(anio+mes+dia+hora+min+seg);
     }
 </script>
 <script>
