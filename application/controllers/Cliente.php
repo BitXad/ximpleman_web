@@ -25,7 +25,7 @@ class Cliente extends CI_Controller{
 
         $data['a'] = $a;
         $data['err'] ="";
-        $data['cliente'] = $this->Cliente_model->get_cliente_all();
+        //$data['cliente'] = $this->Cliente_model->get_cliente_all();
         
         $this->load->model('Tipo_cliente_model');
         $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
@@ -479,13 +479,14 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   
+            //$limite = $this->input->post('limite');   
             
             if ($parametro!=""){
             $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro);
@@ -594,7 +595,7 @@ class Cliente extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
 
         
                 $this->load->library('form_validation');
@@ -677,6 +678,40 @@ class Cliente extends CI_Controller{
         $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);
         redirect('pedido/pedidoabierto/'.$pedido_id);
         
-    }      
+    }
+    /*
+    * buscar clientes limite 50
+    */
+    function buscarclienteslimit()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            //$limite = $this->input->post('limite');   
+            
+            /*if ($parametro!=""){*/
+            $datos = $this->Cliente_model->get_all_cliente();
+            echo json_encode($datos);
+            /*}
+            else echo json_encode(null);*/
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
     
 }

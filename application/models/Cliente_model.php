@@ -56,28 +56,24 @@ class Cliente_model extends CI_Model
     }
         
     /*
-     * Get all cliente
+     * Funcion que busca clientes
      */
     function get_all_cliente()
     {
-        $cliente = $this->db->query("
-            SELECT
-                *
+        $sql = "SELECT
+                c.*, e.estado_color, e.estado_descripcion
 
             FROM
-                cliente c, estado e, tipo_cliente t, categoria_cliente cc, usuario u
+                cliente c, estado e
 
             WHERE
                 c.estado_id = e.estado_id
-                and c.tipocliente_id = t.tipocliente_id
-                and c.categoriaclie_id = cc.categoriaclie_id
-                and c.usuario_id = u.usuario_id
+               
+              ORDER By c.cliente_id DESC LIMIT 50";
 
-            ORDER BY `cliente_id` DESC LIMIT 50
-
-        ")->result_array();
-
+        $cliente = $this->db->query($sql)->result_array();
         return $cliente;
+
     }
         
     /*
@@ -258,7 +254,7 @@ class Cliente_model extends CI_Model
                 
             GROUP BY
                 c.cliente_id
-              ORDER By c.cliente_id";
+              ORDER By c.cliente_id ";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;

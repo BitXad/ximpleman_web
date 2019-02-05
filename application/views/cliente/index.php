@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -60,7 +60,7 @@
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="validar2(event,1)" autocomplete="off" >
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >
             </div>
         <!--este es FIN de input buscador-->
         <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
@@ -90,7 +90,8 @@
                         <th></th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
-                    <?php $i = 1;
+                    <?php
+                    /*$i = 1;
                     $cont = 0;
                           foreach($cliente as $c){;
                                   $cont = $cont+1;
@@ -146,8 +147,8 @@
                                                     ?>
                                                     </div>
                                                 </td>
-						<!--<td><?php echo $c['cliente_direccion']; ?></td>-->
-                                                <td>
+						<!--<td><?php //echo $c['cliente_direccion']; ?></td>-->
+                                                <td style="text-align: center">
                                                         
                                                     <?php 
                                                     
@@ -249,7 +250,7 @@
                     </td>
                     </tr>
                    
-                    <?php } ?>
+                    <?php } */ ?>
                 </table>
                 <?php if($err==2){ ?>
                 <script>alert("La imagen es demasiado grande ")</script>

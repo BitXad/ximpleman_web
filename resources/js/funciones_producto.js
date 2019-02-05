@@ -1,154 +1,34 @@
 $(document).on("ready",inicio);
 function inicio(){
-       /* tablaresultados(1);
-        tablaproductos();
-        */
+    tablaresultadosproducto(1);
 }
 
-function validar(e,opcion,tabla_id) {
-  tecla = (document.all) ? e.keyCode : e.which;
-  
-    if (tecla==13){ 
-    /*
-        if (opcion==1){             
-            buscarcliente();            
-        }
-
-        if (opcion==2){   
-            $("#telefono").val(''); //si la tecla proviene del input telefono
-           document.getElementById('telefono').focus();           
-        } */
-        if (opcion==3){
-            tablaresultadosclienteservicio(tabla_id);   //servicio_id = tabla_id
-        } 
-        
-        if (opcion==4){   //busca productose en el inventario
-            tablaresultados(1, tabla_id);  //subcatserv_id = tabla_id
-        } 
-        
-    } 
-
-    
-}
 /*
  * Funcion que buscara productos en la tabla productos
  */
-function validar2(e,opcion) {
+function buscarproducto(e) {
   tecla = (document.all) ? e.keyCode : e.which;
   
     if (tecla==13){
-    
-        if (opcion==1){
-            tablaresultadoscliente();            
-        }
-/*
-        if (opcion==2){
-            tablaresultadosclienteservicio();
-        } */
-        if (opcion==3){
-            tablaresultadoservicios();
-        } 
-        if (opcion==4){   //busca productos en la tabla Producto; SE USA!!
-            tablaresultadosproducto();
-        } 
-        
+        tablaresultadosproducto(2);
     } 
 
     
 }
 
-
-
-//Tabla resultados de la busqueda de productos con opcion1 en el Inventario
-function tablaresultados(opcion, subcatserv_id)
-{   
-    var controlador = "";
-    var parametro = "";
-
-    var limite = 10;
-    var base_url = document.getElementById('base_url').value;
-    
-    if (opcion == 1){
-        controlador = base_url+'venta/buscarproductos/';
-        parametro = document.getElementById('filtrar').value        
-    }
-    
-    if (opcion == 2){
-        controlador = base_url+'venta/buscarcategorias/';
-        parametro = document.getElementById('categoria_prod').value;
-    }
-    
-
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{parametro:parametro},
-           success:function(respuesta){     
-               
-                                     
-                $("#encontrados").val("- 0 -");
-               var registros =  JSON.parse(respuesta);
-                
-               if (registros != null){
-                   
-                   
-                    var cont = 0;
-                    var cant_total = 0;
-                    var total_detalle = 0;
-                    var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
-                    html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
-                    
-                    for (var i = 0; i < x ; i++){
-                        html += "<tr>";
-                        
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
-                        html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["producto_codigo"]+"</b></font>";
-                        html += "<br>"+registros[i]["producto_codigobarra"]+"";
-                        html += "</td>";
-
-                        html += "<td>";
-                        html += "<form action='"+base_url+"categoria_insumo/asignarinsumo/"+subcatserv_id+"' method='post' accept-charset='utf-8'>";
-                        html += "<input type='hidden' id='producto_id'  name='producto_id' class='form-control' value='"+registros[i]["producto_id"]+"' />";
-                        html += "<button type='submit' class='btn btn-success btn-xs'>";
-                        html += "<i class='fa fa-check'></i> Asignar";
-                        html += "</button>";
-                        html += "</form>";
-                        html += "</td>";
-                        
-                        html += "</tr>";
-
-                   }
-                 
-                   
-                   $("#tablaresultados").html(html);
-                   
-            }
-                
-        },
-        error:function(respuesta){
-           // alert("Algo salio mal...!!!");
-           html = "";
-           $("#tablaresultados").html(html);
-        }
-        
-    });   
-
-}
-
 //Tabla resultados de la busqueda en el index de producto
-function tablaresultadosproducto()
+function tablaresultadosproducto(limite)
 {
     var controlador = "";
     var parametro = "";
 
     var base_url = document.getElementById('base_url').value;
     
-    
-    controlador = base_url+'producto/buscarproductos/';
+    if(limite == 1){
+        controlador = base_url+'producto/buscarproductoslimit/';
+    }else{
+        controlador = base_url+'producto/buscarproductos/';
+    }
     parametro = document.getElementById('filtrar').value;
     
     
