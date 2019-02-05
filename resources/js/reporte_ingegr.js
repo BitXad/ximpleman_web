@@ -481,6 +481,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     cabecerahtml9 += "</tr>";
                     
                     piehtml9 = "</table></div></div>";
+                    
                     /* *****************F I N para reporte de TRASPASO POR COBRAR****************** */
                     /* *****************INICIO para suma reporte total de INGRESOS****************** */
                     totaltablaingresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS: </b></td><td style='width:17%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></b></td><td style='width:17%;' ></td></tr></table>";
