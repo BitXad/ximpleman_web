@@ -145,7 +145,6 @@ function tablaresultadosproducto()
     var controlador = "";
     var parametro = "";
 
-    var limite = 10;
     var base_url = document.getElementById('base_url').value;
     
     
@@ -172,14 +171,12 @@ function tablaresultadosproducto()
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
                    //var categ = new Array();
                    var categ = JSON.parse(document.getElementById('lacategoria').value);
                    var present = JSON.parse(document.getElementById('lapresentacion').value);
                    var moned = JSON.parse(document.getElementById('lamoneda').value);
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         html += "<tr>";
                         
                         html += "<td>"+(i+1)+"</td>";
@@ -191,7 +188,7 @@ function tablaresultadosproducto()
                             mimagen = "thumb_"+registros[i]["producto_foto"];
                             //mimagen = nomfoto.split(".").join("_thumb.");
                         }
-                        html += "<img src='"+base_url+"resources/images/productos/"+mimagen+"'/>";
+                        html += "<img src='"+base_url+"resources/images/productos/"+mimagen+"' class='img img-circle' width='50' height='50' />";
                         html += "</div>";
                         html += "<div>";
                         html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
@@ -284,13 +281,13 @@ function tablaresultadoscliente()
     var controlador = "";
     var parametro = "";
 
-    var limite = 10;
+    //var limite = 1500;
     var base_url = document.getElementById('base_url').value;
     
     
     controlador = base_url+'cliente/buscarclientes/';
     parametro = document.getElementById('filtrar').value;        
-    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
 
     $.ajax({url: controlador,
@@ -314,19 +311,23 @@ function tablaresultadoscliente()
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                   /*if (n <= limite) x = n; 
+                   else x = limite;*/
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         html += "<tr>";
                         
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><div id='horizontal'>";
-                        html += "<div>";
+                        html += "<div id='contieneimg'>";
                         var mimagen = "";
-                        if(registros[i]["cliente_foto"] != null){
-                            mimagen = "thumb_"+registros[i]["cliente_foto"];
+                        if(registros[i]["cliente_foto"] != null && registros[i]["cliente_foto"] !=""){
+                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' />";
+                            mimagen += "</a>";
                             //mimagen = nomfoto.split(".").join("_thumb.");
+                        }else{
+                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' />";
                         }
                         var neg = "";
                         var dir = "";
@@ -334,6 +335,9 @@ function tablaresultadoscliente()
                         var long = "";
                         var corr = "";
                         var aniv = "";
+                        var codigo = "";
+                        var telef = "";
+                        var celular = "";
                         if(registros[i]["cliente_nombrenegocio"] != null){
                             neg = registros[i]["cliente_nombrenegocio"];
                         }
@@ -349,17 +353,30 @@ function tablaresultadoscliente()
                         if(registros[i]["cliente_email"] != null){
                             corr = registros[i]["cliente_email"];
                         }
-                        if(registros[i]["cliente_aniversario"] != null){
-                            aniv = registros[i]["cliente_aniversario"];
+                        if(registros[i]["cliente_aniversario"] != "0000-00-00" && registros[i]["cliente_aniversario"] != null){
+                            aniv = moment(registros[i]["cliente_aniversario"]).format("DD/MM/YYYY");
                         }
-                        
-                        html += "<img src='"+base_url+"/resources/images/clientes/"+mimagen+"' />";
+                        if(registros[i]["cliente_codigo"] != null && registros[i]["cliente_codigo"] != ""){
+                            codigo = registros[i]["cliente_codigo"];
+                        }
+                        if(registros[i]["cliente_telefono"] != null && registros[i]["cliente_telefono"] != ""){
+                            telef = registros[i]["cliente_telefono"];
+                        }
+                        if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
+                            celular = registros[i]["cliente_celular"];
+                        }
+                        var linea = "";
+                        if(telef>0 && celular>0){
+                            linea = "-";
+                        }
+                        //html += "<img src='"+base_url+"/resources/images/"+mimagen+"' />";
+                        html += mimagen;
                         html += "</div>";
-                        html += "<div>";
+                        html += "<div style='padding-left: 4px'>";
                         html += "<b id='masg'>"+registros[i]["cliente_nombre"]+"</b><br>";
-                        html += "<b>Codigo: </b>"+registros[i]["cliente_codigo"]+"<br>";
+                        html += "<b>Codigo: </b>"+codigo+"<br>";
                         html += "<b>C.I.: </b>"+registros[i]["cliente_ci"]+"<br>";
-                        html += "<b>Tel.: </b>"+registros[i]["cliente_telefono"]+"-"+registros[i]["cliente_celular"];
+                        html += "<b>Tel.: </b>"+telef+linea+celular;
                         html += "</div>";
                         html += "</div>";
                         html += "</td>";
@@ -373,6 +390,7 @@ function tablaresultadoscliente()
                             escategoria_clientezona = "No definido";
                         }else{
                             escategoria_clientezona = categoriacliezona[registros[i]["zona_id"]-1]["zona_nombre"];
+                            //alert(categoriacliezona[registros[i]["zona_id"]-1]);
                         }
                         html += "<b>Zona: </b>"+escategoria_clientezona;
                         html += "</div>";
@@ -432,6 +450,26 @@ function tablaresultadoscliente()
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
+                        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
+                        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<font size='3'><b>"+registros[i]["cliente_nombre"]+"</b></font>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/clientes/"+registros[i]["cliente_foto"]+"' />";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
                         html += "</td>";
                         
                         
@@ -442,14 +480,18 @@ function tablaresultadoscliente()
                    
                    
                    $("#tablaresultados").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
             }
-                
+         document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(respuesta){
            // alert("Algo salio mal...!!!");
            html = "";
            $("#tablaresultados").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
         }
         
     });   

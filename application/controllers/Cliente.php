@@ -25,7 +25,7 @@ class Cliente extends CI_Controller{
 
         $data['a'] = $a;
         $data['err'] ="";
-        $data['cliente'] = $this->Cliente_model->get_cliente_all();
+        //$data['cliente'] = $this->Cliente_model->get_cliente_all();
         
         $this->load->model('Tipo_cliente_model');
         $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
@@ -37,7 +37,7 @@ class Cliente extends CI_Controller{
         $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
         
         $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        $data['all_usuario'] = $this->Usuario_model->get_todos_usuario();
         
         $data['_view'] = 'cliente/index';
         $this->load->view('layouts/main',$data);
@@ -122,7 +122,8 @@ class Cliente extends CI_Controller{
                     }
             /* *********************FIN imagen***************************** */
                 $usuario_id = $session_data['usuario_id'];
-                $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                //no es necesario porque se esta usando el date y ya no el date piker
+                //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                 $estado_id = 1;
                 $params = array(
                             'estado_id' => $estado_id,
@@ -137,7 +138,7 @@ class Cliente extends CI_Controller{
                             'cliente_foto' => $foto,
                             'cliente_email' => $this->input->post('cliente_email'),
                             'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-                            'cliente_aniversario' => $mifecha,
+                            'cliente_aniversario' => $this->input->post('cliente_aniversario'),
                             'cliente_latitud' => $this->input->post('cliente_latitud'),
                             'cliente_longitud' => $this->input->post('cliente_longitud'),
                             'cliente_nit' => $this->input->post('cliente_nit'),
@@ -268,7 +269,7 @@ class Cliente extends CI_Controller{
                 }
             /* *********************FIN imagen***************************** */
                             //$this->input->post('cliente_foto'),
-                           $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                           //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                             //$mifecha = normalize_date($this->input->post('cliente_aniversario'));
                 $params = array(
 					'estado_id' => $this->input->post('estado_id'),
@@ -284,7 +285,7 @@ class Cliente extends CI_Controller{
 					'cliente_foto' => $foto,
 					'cliente_email' => $this->input->post('cliente_email'),
 					'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-					'cliente_aniversario' => $mifecha,
+					'cliente_aniversario' => $this->input->post('cliente_aniversario'),
 					'cliente_latitud' => $this->input->post('cliente_latitud'),
 					'cliente_longitud' => $this->input->post('cliente_longitud'),
 					'cliente_nit' => $this->input->post('cliente_nit'),
@@ -478,6 +479,42 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            //$limite = $this->input->post('limite');   
+            
+            if ($parametro!=""){
+            $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro);
+            echo json_encode($datos);
+            }
+            else echo json_encode(null);
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    
+    /*
+    * buscar clientes
+    */
+    function buscarclientes_usuario()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1) {
                 
                 $usuario_id = $session_data['usuario_id'];
@@ -485,9 +522,20 @@ class Cliente extends CI_Controller{
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   
+            $tipo = $this->input->post('tipo');
+            
+            if($tipo == 1){ //busque de solo mis clientes
+                $condicion = " c.usuario_id = ".$usuario_id;
+             
+            }
+            else{
+                $condicion = " "; //busqueda de todos los clientes
+
+            }
+            
             
             if ($parametro!=""){
-            $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro);
+            $datos = $this->Cliente_model->get_cliente_por_usuario($parametro,$condicion);
             echo json_encode($datos);
             }
             else echo json_encode(null);
@@ -547,7 +595,7 @@ class Cliente extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
 
         
                 $this->load->library('form_validation');
@@ -563,7 +611,7 @@ class Cliente extends CI_Controller{
 				'tipocliente_id' => $this->input->post('tipocliente_id'),
 				'categoriaclie_id' => $this->input->post('categoriaclie_id'),
 				'cliente_codigo' => $this->input->post('cliente_codigo'),
-				'categoriacliezona_id' => $this->input->post('categoriacliezona_id'),
+				'zona_id' => $this->input->post('zona_id'),
 				'cliente_nombre' => $this->input->post('cliente_nombre'),
 				'cliente_ci' => $this->input->post('cliente_ci'),
 				'cliente_direccion' => $this->input->post('cliente_direccion'),
@@ -614,13 +662,13 @@ class Cliente extends CI_Controller{
     /*
      * Adding a new cliente
      */
-    function cambiarcliente()
+    function cambiarcliente($cliente_id,$pedido_id,$cliente_nit,$cliente_razon)
     {   
-        $cliente_id = $this->input->post('cliente_id');
-        $pedido_id = $this->input->post('pedido_id');
-        $cliente_nit = $this->input->post('cliente_nit');
-        $cliente_razon = $this->input->post('cliente_razon');
-                  
+//        $cliente_id = $this->input->post('cliente_id');
+//        $pedido_id = $this->input->post('pedido_id');
+//        $cliente_nit = $this->input->post('cliente_nit');
+//        $cliente_razon = $this->input->post('cliente_razon');
+//                  
 
         $this->load->model('Pedido_model');
         $sql = "update cliente set cliente_nit = '".$cliente_nit."',".
@@ -630,6 +678,40 @@ class Cliente extends CI_Controller{
         $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);
         redirect('pedido/pedidoabierto/'.$pedido_id);
         
-    }      
+    }
+    /*
+    * buscar clientes limite 50
+    */
+    function buscarclienteslimit()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            //$limite = $this->input->post('limite');   
+            
+            /*if ($parametro!=""){*/
+            $datos = $this->Cliente_model->get_all_cliente();
+            echo json_encode($datos);
+            /*}
+            else echo json_encode(null);*/
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
     
 }

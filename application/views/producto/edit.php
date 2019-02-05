@@ -56,7 +56,41 @@
 							<span class="text-danger"><?php echo form_error('producto_nombre');?></span>
 						</div>
 					</div>
-                                    <div class="col-md-6">
+                                    
+                                    <div class="col-md-2">
+						<label for="producto_unidad" class="control-label">Unidad</label>
+						<div class="form-group">
+							<input type="text" name="producto_unidad" value="<?php echo ($this->input->post('producto_unidad') ? $this->input->post('producto_unidad') : $producto['producto_unidad']); ?>" class="form-control" id="producto_unidad" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<label for="producto_marca" class="control-label">Marca</label>
+						<div class="form-group">
+							<input type="text" name="producto_marca" value="<?php echo ($this->input->post('producto_marca') ? $this->input->post('producto_marca') : $producto['producto_marca']); ?>" class="form-control" id="producto_marca" />
+						</div>
+					</div>
+					<div class="col-md-2">
+						<label for="producto_industria" class="control-label">Industria</label>
+						<div class="form-group">
+							<input type="text" name="producto_industria" value="<?php echo ($this->input->post('producto_industria') ? $this->input->post('producto_industria') : $producto['producto_industria']); ?>" class="form-control" id="producto_industria" />
+						</div>
+					</div>
+                                    
+                                        <div class="col-md-4">
+						<label for="producto_codigobarra" class="control-label">Código de barras</label>
+						<div class="form-group">
+							<input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" />
+						</div>
+					</div>                                    
+					<div class="col-md-4">
+						<label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
+						<div class="form-group">
+							<input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required />
+							<span class="text-danger"><?php echo form_error('producto_codigo');?></span>
+						</div>
+					</div>
+                                    
+                                    <div class="col-md-4">
 						<label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
 						<div class="form-group">
                                                     <select name="categoria_id" class="form-control" required id="categoria_id">
@@ -72,6 +106,8 @@
 							</select>
 						</div>
 					</div>
+                                    
+<!--                                    
                                     <div class="col-md-6">
 						<label for="presentacion_id" class="control-label">Presentación</label>
 						<div class="form-group">
@@ -87,27 +123,10 @@
 								?>
 							</select>
 						</div>
-					</div>
-                                        <div class="col-md-6">
-						<label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
-						<div class="form-group">
-							<input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
-						<div class="form-group">
-							<input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required />
-							<span class="text-danger"><?php echo form_error('producto_codigo');?></span>
-						</div>
-					</div>
-                                    <div class="col-md-6">
-						<label for="producto_codigobarra" class="control-label">Código de barras</label>
-						<div class="form-group">
-							<input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" />
-						</div>
-					</div>
-                                        <div class="col-md-6">
+					</div>-->
+
+
+                                        <div class="col-md-3">
 						<label for="moneda_id" class="control-label">Moneda</label>
 						<div class="form-group">
 							<select name="moneda_id" class="form-control">
@@ -123,55 +142,94 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="producto_unidad" class="control-label">Unidad</label>
-						<div class="form-group">
-							<input type="text" name="producto_unidad" value="<?php echo ($this->input->post('producto_unidad') ? $this->input->post('producto_unidad') : $producto['producto_unidad']); ?>" class="form-control" id="producto_unidad" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="producto_marca" class="control-label">Marca</label>
-						<div class="form-group">
-							<input type="text" name="producto_marca" value="<?php echo ($this->input->post('producto_marca') ? $this->input->post('producto_marca') : $producto['producto_marca']); ?>" class="form-control" id="producto_marca" />
-						</div>
-					</div>
-					<div class="col-md-6">
-						<label for="producto_industria" class="control-label">Industria</label>
-						<div class="form-group">
-							<input type="text" name="producto_industria" value="<?php echo ($this->input->post('producto_industria') ? $this->input->post('producto_industria') : $producto['producto_industria']); ?>" class="form-control" id="producto_industria" />
-						</div>
-					</div>
-					<div class="col-md-6">
+					
+					<div class="col-md-3">
 						<label for="producto_costo" class="control-label">Precio de Compra</label>
 						<div class="form-group">
 							<input type="number" step="any" min="0" name="producto_costo" value="<?php echo ($this->input->post('producto_costo') ? $this->input->post('producto_costo') : $producto['producto_costo']); ?>" class="form-control" id="producto_costo" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="producto_precio" class="control-label">Precio de Venta</label>
 						<div class="form-group">
 							<input type="number" step="any" min="0" name="producto_precio" value="<?php echo ($this->input->post('producto_precio') ? $this->input->post('producto_precio') : $producto['producto_precio']); ?>" class="form-control" id="producto_precio" />
 						</div>
 					</div>
-					<div class="col-md-6">
+
+					<div class="col-md-3">
+						<label for="producto_comision" class="control-label">Comision (%)</label>
+						<div class="form-group">
+							<input type="number" step="any" min="0" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : $producto['producto_comision']); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<label for="producto_factor" class="control-label">Factor</label>
+						<div class="form-group">
+							<input type="number" step="any" min="0" name="producto_factor" value="<?php echo ($this->input->post('producto_factor') ? $this->input->post('producto_factor') : $producto['producto_factor']); ?>" class="form-control" id="producto_factor"  onclick="this.select();"/>
+						</div>
+					</div>
+
+                                        <div class="col-md-3">
+						<label for="producto_unidadfactor" class="control-label">Unidad</label>
+						<div class="form-group">
+							<select name="producto_unidadfactor" class="form-control">
+								<option value="">- UNIDAD -</option>
+								<?php 
+								foreach($unidades as $unidad)
+								{
+									$selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor']) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+
+
+					<div class="col-md-3">
+						<label for="producto_codigofactor" class="control-label">Codigo Factor</label>
+						<div class="form-group">
+							<input type="text" step="any" min="0" name="producto_codigofactor" value="<?php echo ($this->input->post('producto_codigofactor') ? $this->input->post('producto_codigofactor') : $producto['producto_codigofactor']); ?>" class="form-control" id="producto_codigofactor"  onclick="this.select();"/>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<label for="producto_preciofactor" class="control-label">Precio Unit. Factor</label>
+						<div class="form-group">
+							<input type="text" step="any" min="0" name="producto_preciofactor" value="<?php echo ($this->input->post('producto_preciofactor') ? $this->input->post('producto_preciofactor') : $producto['producto_preciofactor']); ?>" class="form-control" id="producto_preciofactor"  onclick="this.select();"/>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<label for="producto_cantidadminima" class="control-label">Cant. Minima</label>
+						<div class="form-group">
+							<input type="text" step="any" min="0" name="producto_cantidadminima" value="<?php echo ($this->input->post('producto_cantidadminima') ? $this->input->post('producto_cantidadminima') : $producto['producto_cantidadminima']); ?>" class="form-control" id="producto_cantidadminima"  onclick="this.select();"/>
+						</div>
+					</div>
+
+					<div class="col-md-3">
+						<label for="producto_ultimocosto" class="control-label">Ultimo Costo</label>
+						<div class="form-group">
+							<input type="text" step="any" min="0" name="producto_ultimocosto" value="<?php echo ($this->input->post('producto_ultimocosto') ? $this->input->post('producto_ultimocosto') : $producto['producto_ultimocosto']); ?>" class="form-control" id="producto_ultimocosto"  onclick="this.select();"/>
+						</div>
+					</div>
+
+					<div class="col-md-3">
 						<label for="producto_foto" class="control-label">Foto</label>
 						<div class="form-group">
                                                     <input type="file" name="producto_foto" value="<?php echo ($this->input->post('producto_foto') ? $this->input->post('producto_foto') : $producto['producto_foto']); ?>" class="form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
                                                     <input type="hidden" name="producto_foto1" value="<?php echo ($this->input->post('producto_foto') ? $this->input->post('producto_foto') : $producto['producto_foto']); ?>" class="form-control" id="producto_foto1" />
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="producto_comision" class="control-label">Comision</label>
-						<div class="form-group">
-							<input type="number" step="any" min="0" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : $producto['producto_comision']); ?>" class="form-control" id="producto_comision" />
-						</div>
-					</div>
-					<div class="col-md-6">
+
+<!--					<div class="col-md-6">
 						<label for="producto_tipocambio" class="control-label">Tipo Cambio</label>
 						<div class="form-group">
 							<input type="number" step="any" min="0" name="producto_tipocambio" value="<?php echo ($this->input->post('producto_tipocambio') ? $this->input->post('producto_tipocambio') : $producto['producto_tipocambio']); ?>" class="form-control" id="producto_tipocambio" />
 						</div>
-					</div>
+					</div>-->
 
 					
 					<div class="col-md-6">

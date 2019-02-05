@@ -56,28 +56,24 @@ class Cliente_model extends CI_Model
     }
         
     /*
-     * Get all cliente
+     * Funcion que busca clientes
      */
     function get_all_cliente()
     {
-        $cliente = $this->db->query("
-            SELECT
-                *
+        $sql = "SELECT
+                c.*, e.estado_color, e.estado_descripcion
 
             FROM
-                cliente c, estado e, tipo_cliente t, categoria_cliente cc, usuario u
+                cliente c, estado e
 
             WHERE
                 c.estado_id = e.estado_id
-                and c.tipocliente_id = t.tipocliente_id
-                and c.categoriaclie_id = cc.categoriaclie_id
-                and c.usuario_id = u.usuario_id
+               
+              ORDER By c.cliente_id DESC LIMIT 50";
 
-            ORDER BY `cliente_id` DESC LIMIT 50
-
-        ")->result_array();
-
+        $cliente = $this->db->query($sql)->result_array();
         return $cliente;
+
     }
         
     /*
@@ -226,17 +222,17 @@ class Cliente_model extends CI_Model
             SELECT sum(
             (SELECT if(count(p.cliente_id) > 0, count(p.cliente_id), 0) AS FIELD_1
              FROM pedido p
-             WHERE p.cliente_id = c.cliente_id and p.cliente_id = 4) +
+             WHERE p.cliente_id = c.cliente_id and p.cliente_id = $cliente_id) +
             (SELECT if(count(s.cliente_id) > 0, count(s.cliente_id), 0) AS FIELD_1
              FROM servicio s
-             WHERE s.cliente_id = c.cliente_id and c.cliente_id = 4) +
+             WHERE s.cliente_id = c.cliente_id and c.cliente_id = $cliente_id) +
             (SELECT if(count(v.cliente_id) > 0, count(v.cliente_id), 0) AS FIELD_1
              FROM venta v
-             WHERE v.cliente_id = c.cliente_id and c.cliente_id = 4)) as res
+             WHERE v.cliente_id = c.cliente_id and c.cliente_id = $cliente_id)) as res
              FROM
                 cliente c
-              WHERE c.cliente_id = 4
-        ",array($cliente_id))->row_array();
+              WHERE c.cliente_id = $cliente_id
+        ")->row_array();
 
         return $cliente['res'];
     }
@@ -252,6 +248,33 @@ class Cliente_model extends CI_Model
                 cliente c, estado e
 
             WHERE
+                c.estado_id = e.estado_id
+                and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
+                   or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%')
+                
+            GROUP BY
+                c.cliente_id
+              ORDER By c.cliente_id ";
+
+        $cliente = $this->db->query($sql)->result_array();
+        return $cliente;
+
+    }
+    
+
+    /*
+     * Funcion que busca clientes
+     */
+    function get_cliente_por_usuario($parametro,$condicion)
+    {
+        $sql = "SELECT
+                c.*, e.estado_color, e.estado_descripcion
+
+            FROM
+                cliente c, estado e
+
+            WHERE
+                ".$condicion."
                 c.estado_id = e.estado_id
                 and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
                    or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%')

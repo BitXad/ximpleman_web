@@ -89,7 +89,7 @@ function mostrar_ocultar(){
         <div class="col-md-4">
             <label for="razon social" class="control-label">RAZON SOCIAL</label>
             <div class="form-group">
-                <input type="razon_social" name="razon_social" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)"/>
+                <input type="razon_social" name="razon_social" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
         </div>
         
@@ -130,7 +130,7 @@ function mostrar_ocultar(){
             <div class="col-md-3">
             <label for="nombre" class="control-label">CLIENTE</label>
             <div class="form-group">
-                <input type="text" name="cliente_nombre" class="form-control" id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"/>
+                <input type="text" name="cliente_nombre" class="form-control" id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
             
             </div>
@@ -138,7 +138,7 @@ function mostrar_ocultar(){
             <div class="col-md-3">
             <label for="cliente_ci" class="control-label">C.I.</label>
             <div class="form-group">
-                <input type="text" name="cliente_ci" class="form-control" id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"/>
+                <input type="text" name="cliente_ci" class="form-control" id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
             
             </div>
@@ -147,7 +147,7 @@ function mostrar_ocultar(){
             <div class="col-md-3">
             <label for="cliente_nombrenegocio" class="control-label">NEGOCIO</label>
             <div class="form-group">
-                <input type="text" name="cliente_nombrenegocio" class="form-control" id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"/>
+                <input type="text" name="cliente_nombrenegocio" class="form-control" id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
             
             </div>
@@ -156,7 +156,7 @@ function mostrar_ocultar(){
             <div class="col-md-3">
             <label for="cliente_codigo" class="control-label">CÓDIGO</label>
             <div class="form-group">
-                <input type="text" name="cliente_codigo" class="form-control" id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>" />
+                <input type="text" name="cliente_codigo" class="form-control" id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
             
             </div>
@@ -317,6 +317,24 @@ function mostrar_ocultar(){
                 
         </div>
         
+        <!----------------------------------- BOTONES ---------------------------------->
+        <div class="col-md-12">
+
+            <center>
+            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-money fa-4x"></i><br><br>
+               Finalizar Venta <br>
+            </a>
+
+
+            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-sign-out fa-4x"></i><br><br>
+               Salir <br>
+            </a>    
+            </center>
+            <br>
+        </div>    
+        <!----------------------------------- fin Botones ---------------------------------->
 
     </div>
     
@@ -347,7 +365,7 @@ function mostrar_ocultar(){
         
     </div>
 <!----------------------------------- BOTONES ---------------------------------->
-<div class="col-md-6">
+<!--<div class="col-md-6">
         
     <center>
     <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
@@ -362,7 +380,7 @@ function mostrar_ocultar(){
     </a>    
     </center>
 
-</div>    
+</div>    -->
 <!----------------------------------- fin Botones ---------------------------------->
 
 

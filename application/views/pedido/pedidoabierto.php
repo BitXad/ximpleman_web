@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/funciones.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/pedido.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -39,11 +39,11 @@
         });
         
         
-//function mostrar(){
-//document.getElementById('oculto').style.display = 'block';}
-//
-//function ocultar(){
-//document.getElementById('oculto').style.display = 'none';}
+function mostrar(){
+document.getElementById('oculto').style.display = 'block';}
+
+function ocultar(){
+document.getElementById('oculto').style.display = 'none';}
 
 function mostrar_ocultar(){
     var x = document.getElementById('tipo_pago').value;
@@ -53,6 +53,7 @@ function mostrar_ocultar(){
         document.getElementById('oculto').style.display = 'none';}
 }
 
+$(document).ready(localize());
 
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
@@ -119,7 +120,7 @@ function mostrar_ocultar(){
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,6)">
+                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código del producto" onkeypress="validar(event,6)">
                   </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box box-body table-responsive" >
@@ -189,14 +190,59 @@ function mostrar_ocultar(){
 		<div class="modal-content">
 			<div class="modal-header">
                             
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<!--				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
 				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
                                 
-                                <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                                  <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del huesped...">
+                                <div class="input-group  col-md-8" > <span class="input-group-addon">Buscar</span>
+                                    <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del cliente..." onkeypress="validar(event,8)">                                    
+                                    <input id="filtrar2" type="text" class="form-control  col-md-4" placeholder="Ingresa el nombre, apellidos o ci del cliente..." onkeypress="validar(event,8)">
                                 </div>
+                                
+                                <div class="input-group  col-md-1" > 
+                                    <select  id="tipo_cliente" class="form-control  col-md-4" onkeypress="validar(event,9)">
+                                        <option > </option>
+                                        
+                                    </select>
+                                </div>-->
+
+                                <div class="row">
+
+                                           <!--------------------- parametro de buscador por codigo --------------------->
+
+                                           <div class="col-md-8">
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                       <i class="fa fa-binoculars"></i>
+                                                     </span>           
+                                                     <input type="text" name="filtrar2" id="filtrar2" class="form-control" placeholder="Ingrese el nombre, CI, codigo del cliente " onkeyup="validar(event,8)">
+                                                 </div>
+                                           </div>      
+                                          <!--------------------- fin buscador por codigo --------------------->
+
+
+                                           <div class="col-md-4">
+
+                               <!--            ------------------- parametro de buscador --------------------->
+
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                      <i class="fa fa-user"></i>
+                                                     </span>           
+                                                     <select id="tipo" class="form-control">
+                                                         <option value="1">Mis clientes</option>
+                                                         <option value="2">Todos</option>
+                                                     </select>
+                                                 
+                                                 </div>
+
+                               <!--            ------------------- fin parametro de buscador ------------------- -->
+
+                                           </div>
+
+                                       </div>
+
                                 
 			</div>
 			<div class="modal-body">
@@ -208,42 +254,9 @@ function mostrar_ocultar(){
                                                         <th>imagen</th>
                                                         <th>Nombres</th>
                             </tr>
-                            <tbody class="buscar2">
-                 
-                            <?php $i=1;
-                            foreach($cliente as $h){ ?>
-                            <tr>
-                                 <form action="<?php echo base_url('cliente/cambiarcliente/'); ?>"  method="POST" class="form">
-                              
-                                    <td><?php echo $i++; ?></td>
-                                    <td>
-                                    <img src="<?php echo base_url('resources/images/clientes/thumb_'.$h['cliente_foto']); ?>" class="img-circle" width="50" height="50">
-                                    </td>
-
-                                    <td>
-    
-
-                                            <b> <?php echo $h['cliente_nombre']; ?></b><br>
-                                        C.I.:<?php echo $h['cliente_ci']; ?> | Telf.:<?php echo $h['cliente_telefono']; ?> <br>
-                                        <div class="container" hidden="TRUE">
-                                            <input id="cliente_id"  name="cliente_id" type="text" class="form-control" value="<?php echo $h['cliente_id']; ?>">
-                                            <input id="pedido_id"  name="pedido_id" type="text" class="form-control" value="<?php echo $pedido_id; ?>">
-                                        </div>                                        
-                                        NIT:
-                                        <input type="text" id="cliente_nit" name="cliente_nit" class="form-control" placeholder="N.I.T." required="true" value="<?php echo $h['cliente_nit']; ?>">
-                                        RAZON SOCIAL:
-                                        <input type="text" id="cliente_razon" name="cliente_razon" class="form-control" placeholder="Razón Social" required="true" value="<?php echo $h['cliente_razon']; ?>">
-                                       
-                                        <button type="submit" class="btn btn-success btn-xs btn-block">
-                                            <i class="fa fa-check"></i> Seleccionar Cliente
-                                        </button>
-                                        
-                                    </td>
-                                
-                                 </form>
                             
-                            </tr>
-                            <?php } ?>
+                            <tbody class="buscar2" id="clientes_pedido">
+                 
 
                             </tbody>
                         </table>
@@ -281,13 +294,13 @@ function mostrar_ocultar(){
                             
                                 <center>
                                 <div class="row">
-                                        
+    
                                     
                                     <div class="col-md-2">
                                         <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
                                         <?php                                                     
                                             $fecha = date('Y-m-d'); 
-                                            $hora = date('H:i:s');                                                                                         
+                                            $hora = date('H:i');                                                                                         
                                         ?>
                                         
                                     <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>
@@ -347,6 +360,8 @@ function mostrar_ocultar(){
                         <!--<td align="right"><?php echo number_format($total_pedido,2,'.',''); ?></td>-->
                         <td align="right"><input type="text"  size="8"  id="total_pedido" val="0.00"></td>
                     
+                        <input type="text" name="latitud" id="latitud" value="0" hidden>
+                        <input type="text" name="longitud" id="longitud" value="0" hidden>
                 </tr>                
                 <tr>
                         <td>Descuento Bs</td>
@@ -521,3 +536,86 @@ function calcularCambio(pedido_subtotalx,pedido_descuentox,pedido_totalfinalx,pe
 </div>
 </form>
 
+
+
+<!--<button onclick="mostrarx(1)"> localizacion</button>-->
+
+<script type="text/javascript">
+function mostrarx(a) {
+    obj = document.getElementById('oculto'+a);
+    obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+    //objm = document.getElementById('map');
+    if(obj.style.visibility == 'hidden'){
+        $('#map').css({ 'width':'0px', 'height':'0px' });
+        $('#mosmapa').text("Obtener Ubicación del negocio");
+    }else{
+        $('#map').css({ 'width':'500px', 'height':'400px' });
+        $('#mosmapa').text("Cerrar mapa");
+    }
+
+}
+</script>
+
+<div id="oculto1" >
+<div id="map"></div>
+                                            <script type="text/javascript">
+                                                var marker;          //variable del marcador
+                                                var coords_lat = {};    //coordenadas obtenidas con la geolocalización
+                                                var coords_lng = {};    //coordenadas obtenidas con la geolocalización
+                                                
+
+                                                //Funcion principal
+                                                initMap = function () 
+                                                {
+                                                    //usamos la API para geolocalizar el usuario
+                                                        navigator.geolocation.getCurrentPosition(
+                                                          function (position){
+                                                            coords_lat =  {
+                                                              lat: position.coords.latitude,
+                                                            };
+                                                            coords_lng =  {
+                                                              lng: position.coords.longitude,
+                                                            };
+                                                            setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
+
+                                                          },function(error){console.log(error);});
+                                                }
+                                                
+                                                function setMapa (coords_lat, coords_lng)
+                                                {
+                                                        document.getElementById("latitud").value = coords_lat.lat;
+                                                        document.getElementById("longitud").value = coords_lng.lng;
+                                                      //Se crea una nueva instancia del objeto mapa
+                                                      var map = new google.maps.Map(document.getElementById('map'),
+                                                      {
+                                                        zoom: 13,
+                                                        center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+
+                                                      });
+
+                                                      //Creamos el marcador en el mapa con sus propiedades
+                                                      //para nuestro obetivo tenemos que poner el atributo draggable en true
+                                                      //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+                                                      marker = new google.maps.Marker({
+                                                        map: map,
+                                                        draggable: true,
+                                                        animation: google.maps.Animation.DROP,
+                                                        position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+
+                                                      });
+                                                      //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
+                                                      //cuando el usuario a soltado el marcador
+                                                      //marker.addListener('click', toggleBounce);
+
+                                                      marker.addListener( 'dragend', function (event)
+                                                      {
+                                                        //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
+                                                        document.getElementById("cliente_latitud").value = this.getPosition().lat();
+                                                        document.getElementById("cliente_longitud").value = this.getPosition().lng();
+                                                      });
+                                                }
+                                                initMap();
+                                            </script>
+                                            <script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
+                                            <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>-->
+</div>                            

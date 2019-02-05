@@ -1,11 +1,10 @@
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);
     obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
     //objm = document.getElementById('map');
     if(obj.style.visibility == 'hidden'){
-        //$('#map').css({ 'width':'0px', 'height':'0px' });
+        $('#map').css({ 'width':'0px', 'height':'0px' });
         $('#mosmapa').text("Obtener Ubicación del negocio");
     }else{
         $('#map').css({ 'width':'500px', 'height':'400px' });
@@ -53,7 +52,7 @@ function mostrar(a) {
                                         <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required />
+							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required  onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					</div>
@@ -66,13 +65,13 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
-							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion" />
+							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion"  onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
                                         <div class="col-md-6">
 						<label for="cliente_codigo" class="control-label">Código</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" readonly />
+                                                    <input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" readonly  onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_codigo');?></span>
 						</div>
 					</div>
@@ -103,14 +102,14 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger"></span>Nombre Negocio</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio"/>
+                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio"  onKeyUp="this.value = this.value.toUpperCase();"/>
                                                         <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_aniversario" class="control-label">Aniversario</label>
 						<div class="form-group">
-							<input type="text" name="cliente_aniversario" value="<?php echo $this->input->post('cliente_aniversario'); ?>" class="has-datepicker form-control" id="cliente_aniversario" />
+                                                    <input type="date" name="cliente_aniversario" value="<?php echo $this->input->post('cliente_aniversario'); ?>" class="form-control" id="cliente_aniversario" />
 						</div>
 					</div>
                                         <div class="col-md-6">
@@ -138,12 +137,13 @@ function mostrar(a) {
                                                             };
                                                             setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
 
-
                                                           },function(error){console.log(error);});
                                                 }
                                                 
                                                 function setMapa (coords_lat, coords_lng)
-                                                {   
+                                                {
+                                                        document.getElementById("cliente_latitud").value = coords_lat.lat;
+                                                        document.getElementById("cliente_longitud").value = coords_lng.lng;
                                                       //Se crea una nueva instancia del objeto mapa
                                                       var map = new google.maps.Map(document.getElementById('map'),
                                                       {
@@ -175,7 +175,9 @@ function mostrar(a) {
                                                 }
                                                 initMap();
                                             </script>
-                                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>
+                                            <script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
+                                            <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>-->
+                                            
                                             </div>
                                             <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
 					</div>
@@ -200,7 +202,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_razon" class="control-label">Razon</label>
 						<div class="form-group">
-							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : 'SIN NOMBRE'); ?>" class="form-control" id="cliente_razon" />
+							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : 'SIN NOMBRE'); ?>" class="form-control" id="cliente_razon"  onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
 					<div class="col-md-6">

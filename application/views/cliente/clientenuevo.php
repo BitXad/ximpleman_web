@@ -1,4 +1,4 @@
-<script>
+<script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);
     obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
@@ -13,6 +13,32 @@ function mostrar(a) {
 
 }
 </script>
+<script type="text/javascript">
+    $(document).ready(function(){
+    $("#cliente_nombre").change(function(){
+        var nombre = $("#cliente_nombre").val();
+        var cad1 = nombre.substring(0,2);
+        var cad2 = nombre.substring(nombre.length-1,nombre.length);
+        var fecha = new Date();
+        var pararand = fecha.getFullYear()+fecha.getMonth()+fecha.getDay();
+        var cad3 = Math.floor((Math.random(1001,9999) * pararand));
+        var cad = cad1+cad2+cad3;
+        $('#cliente_codigo').val(cad);
+        $('#cliente_razon').val(nombre);
+    });
+    $("#cliente_ci").change(function(){
+        var ci = $("#cliente_ci").val();
+        $('#cliente_nit').val(ci);
+    });
+  });
+    
+</script>
+<style type="text/css">
+    #map{
+        height: 100%;
+        width: 100%;
+    }
+</style>
 
     <div class="row">
     <div class="col-md-12">
@@ -26,7 +52,7 @@ function mostrar(a) {
                                         <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required />
+							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					</div>
@@ -39,13 +65,13 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
-							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion" />
+							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion" onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
                                         <div class="col-md-6">
 						<label for="cliente_codigo" class="control-label">Código</label>
 						<div class="form-group">
-							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" />
+                                                    <input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" readonly onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_codigo');?></span>
 						</div>
 					</div>
@@ -64,7 +90,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_foto" class="control-label">Foto</label>
 						<div class="form-group">
-							<input type="text" name="cliente_foto" value="<?php echo $this->input->post('cliente_foto'); ?>" class="form-control" id="cliente_foto" />
+                                                    <input type="file" name="cliente_foto" value="<?php echo $this->input->post('cliente_foto'); ?>" class="form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -74,16 +100,16 @@ function mostrar(a) {
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger">*</span>Nombre Negocio</label>
+						<label for="cliente_nombrenegocio" class="control-label"><span class="text-danger"></span>Nombre Negocio</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio" required="" />
+                                                    <input type="text" name="cliente_nombrenegocio" value="<?php echo $this->input->post('cliente_nombrenegocio'); ?>" class="form-control" id="cliente_nombrenegocio"  onKeyUp="this.value = this.value.toUpperCase();"/>
                                                         <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_aniversario" class="control-label">Aniversario</label>
 						<div class="form-group">
-							<input type="text" name="cliente_aniversario" value="<?php echo $this->input->post('cliente_aniversario'); ?>" class="has-datepicker form-control" id="cliente_aniversario" />
+                                                    <input type="date" name="cliente_aniversario" value="<?php echo $this->input->post('cliente_aniversario'); ?>" class="form-control" id="cliente_aniversario" />
 						</div>
 					</div>
                                         <div class="col-md-6">
@@ -91,7 +117,7 @@ function mostrar(a) {
                                             <!-- ***********************aqui empieza el mapa para capturar coordenadas *********************** -->
                                             <div id="oculto1" style="visibility:hidden">
                                             <div id="map"></div>
-                                            <script>
+                                            <script type="text/javascript">
                                                 var marker;          //variable del marcador
                                                 var coords_lat = {};    //coordenadas obtenidas con la geolocalización
                                                 var coords_lng = {};    //coordenadas obtenidas con la geolocalización
@@ -111,12 +137,13 @@ function mostrar(a) {
                                                             };
                                                             setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
 
-
                                                           },function(error){console.log(error);});
                                                 }
                                                 
                                                 function setMapa (coords_lat, coords_lng)
-                                                {   
+                                                {
+                                                        document.getElementById("cliente_latitud").value = coords_lat.lat;
+                                                        document.getElementById("cliente_longitud").value = coords_lng.lng;
                                                       //Se crea una nueva instancia del objeto mapa
                                                       var map = new google.maps.Map(document.getElementById('map'),
                                                       {
@@ -148,7 +175,9 @@ function mostrar(a) {
                                                 }
                                                 initMap();
                                             </script>
-                                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>
+                                            <script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
+                                            <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>-->
+                                            
                                             </div>
                                             <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
 					</div>
@@ -173,13 +202,13 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_razon" class="control-label">Razon</label>
 						<div class="form-group">
-							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : 'SIN NOMBRE'); ?>" class="form-control" id="cliente_razon" />
+							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : 'SIN NOMBRE'); ?>" class="form-control" id="cliente_razon"  onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="tipocliente_id" class="control-label">Tipo</label>
+						<label for="tipocliente_id" class="control-label"><span class="text-danger">*</span>Tipo</label>
 						<div class="form-group">
-							<select name="tipocliente_id" class="form-control">
+							<select name="tipocliente_id" class="form-control" required>
 								<option value="">- TIPO CLIENTE -</option>
 								<?php 
 								foreach($all_tipo_cliente as $tipo_cliente)
@@ -193,9 +222,9 @@ function mostrar(a) {
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="categoriaclie_id" class="control-label">Categoria</label>
+						<label for="categoriaclie_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
 						<div class="form-group">
-							<select name="categoriaclie_id" class="form-control">
+							<select name="categoriaclie_id" class="form-control" required>
 								<option value="">- CATEGORIA CLIENTE -</option>
 								<?php 
 								foreach($all_categoria_cliente as $categoria_cliente)
@@ -203,6 +232,38 @@ function mostrar(a) {
 									$selected = ($categoria_cliente['categoriaclie_id'] == $this->input->post('categoriaclie_id')) ? ' selected="selected"' : "";
 
 									echo '<option value="'.$categoria_cliente['categoriaclie_id'].'" '.$selected.'>'.$categoria_cliente['categoriaclie_descripcion'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+                                        <div class="col-md-6">
+						<label for="zona_id" class="control-label">Zona</label>
+						<div class="form-group">
+							<select name="zona_id" class="form-control">
+								<option value="0">- ZONA -</option>
+								<?php 
+								foreach($zona as $categoria_clientezona)
+								{
+									$selected = ($categoria_clientezona['zona_id'] == $this->input->post('zona_id')) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+                                        <div class="col-md-6">
+						<label for="usuario_id" class="control-label">Prevendedor</label>
+						<div class="form-group">
+							<select name="usuario_id" class="form-control">
+								<option value="">- ASIGNAR PREVENDEDOR -</option>
+								<?php 
+								foreach($all_usuario_prev as $usuario_prev)
+								{
+									$selected = ($usuario_prev['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
 								} 
 								?>
 							</select>
@@ -221,11 +282,10 @@ function mostrar(a) {
             	<button type="submit" class="btn btn-success">
             		<i class="fa fa-check"></i> Guardar
             	</button>
-                    <a href="<?php echo site_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-danger">
-                                <i class="fa fa-times"></i> Cancelar</a>
+                <a href="<?php echo site_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
           	</div>
             <?php echo form_close(); ?>
       	</div>
     </div>
 </div>
-

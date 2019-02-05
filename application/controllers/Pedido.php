@@ -26,7 +26,7 @@ class Pedido extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -74,7 +74,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -116,7 +116,7 @@ class Pedido extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -141,7 +141,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -192,7 +192,7 @@ class Pedido extends CI_Controller{
         
             if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -223,7 +223,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -282,7 +282,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -312,7 +312,7 @@ class Pedido extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -327,6 +327,9 @@ class Pedido extends CI_Controller{
         $pedido_descuento = $this->input->post('pedido_descuento');
         $pedido_total = $this->input->post('pedido_totalfinal');
         $pedido_glosa = $this->input->post('pedido_glosa');
+        
+        $pedido_latitud = $this->input->post('latitud');
+        $pedido_longitud = $this->input->post('longitud');
         
         $fechahora = $this->input->post('fechahora_entrega');
         
@@ -346,6 +349,8 @@ class Pedido extends CI_Controller{
                 .",pedido_glosa = '".$pedido_glosa."'"
                 .",pedido_fechaentrega = '".$fecha."'"
                 .",pedido_horaentrega = '".$hora."'"
+                .",pedido_latitud = '".$pedido_latitud."'"
+                .",pedido_longitud = '".$pedido_longitud."'"
                 ."  where pedido_id=".$pedido_id;        
 
         $this->Pedido_model->ejecutar($sql);
@@ -365,7 +370,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -430,7 +435,7 @@ class Pedido extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -478,7 +483,7 @@ class Pedido extends CI_Controller{
     {   
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -535,7 +540,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -560,7 +565,7 @@ class Pedido extends CI_Controller{
         
             if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -617,7 +622,7 @@ class Pedido extends CI_Controller{
         
             if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -665,7 +670,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -689,7 +694,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -714,7 +719,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -749,7 +754,7 @@ class Pedido extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -777,6 +782,36 @@ class Pedido extends CI_Controller{
         
     }
 
+    function mapa_pedido()        
+    {
 
+        //control de sesion
+//        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
+            
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************  
+        
+            $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
+            
+            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+            $data['_view'] = 'pedido/mapapedidos';
+            
+            $this->load->view('layouts/main',$data);
+            
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+                    
+//        }
+//        else{ redirect('login'); }
+        
+    }
     
 }
