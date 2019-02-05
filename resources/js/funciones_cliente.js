@@ -63,11 +63,11 @@ function tablaresultadoscliente(limite)
                         var mimagen = "";
                         if(registros[i]["cliente_foto"] != null && registros[i]["cliente_foto"] !=""){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' />";
+                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' class='img img-circle' width='50' height='50' />";
                             mimagen += "</a>";
                             //mimagen = nomfoto.split(".").join("_thumb.");
                         }else{
-                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' />";
+                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' class='img img-circle' width='50' height='50' />";
                         }
                         var neg = "";
                         var dir = "";
