@@ -919,7 +919,55 @@ function ingresarproducto()
         $descuento = $this->input->post('descuento'); 
         $producto_costo = $this->input->post('producto_costo');
         $producto_precio = $this->input->post('producto_precio');
+        $agrupar = $this->input->post('agrupar');
+      if ($agrupar==1) {
+
+
+        $existe = "SELECT producto_id from detalle_compra_aux WHERE compra_id=".$compra_id." and producto_id=". $producto_id." ";
+        $exis=$this->db->query($existe)->result_array();
+        if ($exis[0]['producto_id'] > 0) {
+         $sumar="UPDATE detalle_compra_aux
+          SET detallecomp_cantidad=detallecomp_cantidad+".$cantidad.",
+              detallecomp_subtotal = detallecomp_subtotal+(".$cantidad." * ".$producto_costo."),
+              detallecomp_total = detallecomp_total+(".$cantidad." * ".$producto_costo.") - ".$descuento."  
+              WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id."
+    ";
+         $this->db->query($sumar);
+        }else{
+          $sql = "INSERT into detalle_compra_aux(
+        compra_id,
+        producto_id,
+        detallecomp_codigo,
+        detallecomp_unidad,
+        detallecomp_costo,
+        detallecomp_cantidad,
+        detallecomp_precio,
+        detallecomp_descuento,
+        detallecomp_subtotal,
+        detallecomp_total              
+        )
+        (
+        SELECT
+        ".$compra_id.",
+        producto_id,
+        producto_codigo,
+        producto_unidad,
+        ".$producto_costo.",
+        ".$cantidad.",
+        ".$producto_precio.",
+        ".$descuento.",
+        ".$cantidad." * ".$producto_costo.",
+        (".$cantidad." * ".$producto_costo.") - ".$descuento."
         
+        from producto where producto_id = ".$producto_id."
+    )";
+    $this->db->query($sql);
+    $detalles = $this->db->insert_id();
+        }
+
+      }else{
+
+
         $sql = "INSERT into detalle_compra_aux(
         compra_id,
         producto_id,
@@ -950,7 +998,7 @@ function ingresarproducto()
     $this->db->query($sql);
     $detalles = $this->db->insert_id();
    
-
+}
     $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
     if(isset($datos)){
         echo json_encode($datos);
