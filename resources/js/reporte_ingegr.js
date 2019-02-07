@@ -189,7 +189,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     for (var i = 0; i < n ; i++){
                       totalingreso  += parseFloat(registros[i]['ingreso']);
                       totalegreso   += parseFloat(registros[i]['egreso']);
-                      totalutilidad += parseFloat(registros[i]['utilidad']);
+                     // totalutilidad += parseFloat(registros[i]['utilidad']);
                       
                       if(registros[i]['tipo'] == 1){
                           totalingreso1  += parseFloat(registros[i]['ingreso']);
@@ -205,6 +205,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                       if(registros[i]['tipo'] == 2){
                           totalingreso2  += parseFloat(registros[i]['ingreso']);
                           totalutilidad2 += parseFloat(registros[i]['utilidad']);
+                          totalutilidad += parseFloat(registros[i]['utilidad']);
                           html2 += "<tr>";
                           html2 += "<td>"+cont2+"</td>";
                           html2 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
@@ -267,6 +268,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                       if(registros[i]['tipo'] == 3){
                           totalingreso3  += parseFloat(registros[i]['ingreso']);
                           totalutilidad3 += parseFloat(registros[i]['utilidad']);
+                          totalutilidad += parseFloat(registros[i]['utilidad']);
                           html3 += "<tr>";
                           html3 += "<td>"+cont3+"</td>";
                           html3 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
@@ -351,7 +353,11 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                        html += "<td>"+registros[i]["detalle"]+"</td>";
                        html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                        html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
-                //       html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
+                       if(registros[i]['tipo'] == 3 || registros[i]['tipo'] == 2){
+                           html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
+                       }else{
+                           html += "<td id='alinearder'>0.00</td>";
+                       }
 
                        
                        
@@ -361,20 +367,36 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
 
                    htmls = "";
                    htmls += "<tr>";
-                   htmls += "<td colspan='2'></td>";
-                   htmls += "<td class='esbold'>TOTAL (INGRESOS/EGRESOS/UTILIDAD)Bs.</td>";
+                   htmls += "<td></td>";
+                   htmls += "<td colspan='2' class='esbold'>TOTAL (INGRESOS/EGRESOS)Bs.</td>";
                    /*var totaling = Number(totalingreso).toFixed(2);
                    var n = totaling.toString(); */
                    htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalingreso).toFixed(2))+"</td>";
                    htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalegreso).toFixed(2))+"</td>";
                    htmls += "<td></td>";
                    //htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
+                   //htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
                    htmls += "</tr>";
+                   
                    htmls += "<tr>";
-                   htmls += "<td colspan='2'></td>";
-                   htmls += "<td class='esbold' >SALDO EFECTIVO EN CAJA Bs.</td>";
                    htmls += "<td></td>";
-                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalingreso-totalegreso).toFixed(2))+"</td>";
+                   htmls += "<td colspan='2' class='esbold'>TOTAL INGRESOS(EFECTIVO, VENTAS CONT., COBROS CRED.)/UTILIDAD:</td>";
+                   /*var totaling = Number(totalingreso).toFixed(2);
+                   var n = totaling.toString(); */
+                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalingreso1+totalingreso2+totalingreso3).toFixed(2))+"</td>";
+                   htmls += "<td class='esbold' id='alinearder'></td>";
+                   //htmls += "<td></td>";
+                   //htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
+                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
+                   htmls += "</tr>";
+                   
+                   
+                   
+                   htmls += "<tr>";
+                   htmls += "<td></td>";
+                   htmls += "<td class='esbold' >SALDO EFECTIVO EN CAJA Bs.</td>";
+                   htmls += "<td colspan='2'></td>";
+                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number((totalingreso1+totalingreso2+totalingreso3)-totalegreso).toFixed(2))+"</td>";
                    htmls += "</tr>";
                    
 
@@ -543,20 +565,20 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     totaltablaegresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL EGRESOS: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalegreso4+totalegreso5+totalegreso6).toFixed(2))+"</b></td></tr></table>";
                     /* *****************F I N para suma reporte total de INGRESOS****************** */ 
                    //para mostrar saldo en caja
-                    saldoencaja = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;' id='alinearder'><b>SALDO EFECTIVO EN CAJA: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalingreso-totalegreso).toFixed(2))+"</b></td></tr></table>";
+                    saldoencaja = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;' id='alinearder'><b>SALDO EFECTIVO EN CAJA: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number((totalingreso1+totalingreso2+totalingreso3)-totalegreso).toFixed(2))+"</b></td></tr></table>";
                     /* *****************INICIO para reporte TOTAL****************** */
                     cabecerahtmlt= "<label  class='control-label'><a href='#' class='btn btn-success btn-sm no-print' id='mostotal' onclick='mostrartotal(); return false'>REPORTE TOTAL</a></label>";
                     cabecerahtmlt += "<div id='ocultot' style='visibility: hidden; width: 0; height: 0;'>";
                     cabecerahtmlt += "<div id='mapt'>";
                     
-                    cabecerahtmlt += "<table class='table table-striped table-condensed' id='mitabladetimpresion'>";
+                    cabecerahtmlt += "<table class='table table-striped table-condensed' id='mitabladetimpresion' style='width: 100%'>";
                     cabecerahtmlt += "<tr>";
-                    cabecerahtmlt += "<th>N°</th>";
-                    cabecerahtmlt += "<th>Fecha</th>";
-                    cabecerahtmlt += "<th>Detalle</th>";
-                    cabecerahtmlt += "<th>Ingreso</th>";
-                    cabecerahtmlt += "<th>Egreso</th>";
-                //    cabecerahtmlt += "<th>Utilidad</th>";
+                    cabecerahtmlt += "<th style='width: 2%'>N°</th>";
+                    cabecerahtmlt += "<th style='width: 10%'>Fecha</th>";
+                    cabecerahtmlt += "<th style='width: 43%'>Detalle</th>";
+                    cabecerahtmlt += "<th style='width: 15%'>Ingreso</th>";
+                    cabecerahtmlt += "<th style='width: 15%'>Egreso</th>";
+                    cabecerahtmlt += "<th style='width: 15%'>Utilidad</th>";
                     cabecerahtmlt += "</tr>";
                     cabecerahtmlt += "<tbody>";
                     
