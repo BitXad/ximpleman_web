@@ -1,16 +1,4 @@
-<script type="text/javascript">
-   /* function cambiarcod(cod){
-        var nombre = $("#producto_nombre").val();
-        var cad1 = nombre.substring(0,2);
-        var categoria = $('#categoria_id option:selected').text();
-        var cad2 = categoria.substring(0,1);
-        var fecha = new Date();
-        var pararand = fecha.getFullYear()+fecha.getMonth()+fecha.getDay();
-        var cad3 = Math.floor((Math.random(1001,9999) * pararand));
-        var cad = cad1+cad2+cad3;
-        $('#producto_codigo').val(cad);
-    }*/
-</script>
+
 <script type="text/javascript">
     function cambiarcodproducto(){
         var estetime = new Date();
@@ -19,6 +7,10 @@
         var mes = parseInt(estetime.getMonth())+1;
         if(mes>0&&mes<10){
             mes = "0"+mes;
+        }
+        var dia = parseInt(estetime.getDate());
+        if(dia>0&&dia<10){
+            dia = "0"+dia;
         }
         var hora = estetime.getHours();
         if(hora>0&&hora<10){
@@ -32,8 +24,8 @@
         if(seg>0&&seg<10){
             seg = "0"+seg;
         }
-        $('#producto_codigobarra').val(anio+mes+hora+min+seg);
-        $('#producto_codigo').val(anio+mes+hora+min+seg);
+        $('#producto_codigobarra').val(anio+mes+dia+hora+min+seg);
+        $('#producto_codigo').val(anio+mes+dia+hora+min+seg);
     }
 </script>
 
@@ -60,7 +52,17 @@
                                     <div class="col-md-2">
 						<label for="producto_unidad" class="control-label">Unidad</label>
 						<div class="form-group">
-							<input type="text" name="producto_unidad" value="<?php echo ($this->input->post('producto_unidad') ? $this->input->post('producto_unidad') : $producto['producto_unidad']); ?>" class="form-control" id="producto_unidad" />
+							<select name="producto_unidad" class="form-control">
+								<option value="">- UNIDAD -</option>
+								<?php 
+								foreach($unidades as $unidad)
+								{
+									$selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor']) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
+								} 
+								?>
+							</select>
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -106,25 +108,6 @@
 							</select>
 						</div>
 					</div>
-                                    
-<!--                                    
-                                    <div class="col-md-6">
-						<label for="presentacion_id" class="control-label">Presentación</label>
-						<div class="form-group">
-							<select name="presentacion_id" class="form-control">
-								<option value="">- PRESENTACION -</option>
-								<?php 
-								foreach($all_presentacion as $presentacion)
-								{
-									$selected = ($presentacion['presentacion_id'] == $producto['presentacion_id']) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$presentacion['presentacion_id'].'" '.$selected.'>'.$presentacion['presentacion_nombre'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>-->
-
 
                                         <div class="col-md-3">
 						<label for="moneda_id" class="control-label">Moneda</label>

@@ -66,7 +66,7 @@ function tablaresultadosproducto(limite)
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='50' height='50' />";
                             mimagen += "</a>";
-                            //mimagen = nomfoto.split(".").join("_thumb.");
+                            //mimagen = nomfoto.split(".").join("_thumb.");77
                         }else{
                             mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='50' height='50' />";
                         }

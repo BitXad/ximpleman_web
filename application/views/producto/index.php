@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_producto.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -58,7 +58,7 @@
             <span class="input-group-addon"> 
                 Buscar 
             </span>           
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras" onkeypress="validar2(event,4)">
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras" onkeypress="buscarproducto(event)">
         </div>
         <!--este es FIN de input buscador-->
         <div class="container" id="categoria">
@@ -88,7 +88,8 @@
                     <tbody class="buscar" id="tablaresultados" role="rowgroup">
 
 
-                    <?php $cont = 0;
+                    <?php
+                   /* $cont = 0;
                           foreach($producto as $p){;
                                  $cont = $cont+1; ?>
                     <tr role="row">
@@ -145,9 +146,7 @@
                                                 }
                                                 echo "<b>Cat.: </b>".$escategoria;  echo "<br><b>Pres.: </b>".$espresentacion; ?></td>
 						<td><?php echo $p['producto_codigo']; echo "<br>".$p['producto_codigobarra']; ?></td>
-						<!--<td><?php /*echo $p['producto_unidad']; ?></td>
-						<td><?php echo $p['producto_marca']; ?></td>
-						<td><?php echo $p['producto_industria'];*/ ?></td> -->
+						
 						<td><?php echo "<b>Compra: </b>".$p['producto_costo']; echo "<br><b>Venta: </b>".$p['producto_precio']; ?></td>
 						<td><?php echo "<b>Moneda: </b>".$esmoneda."<br>"; echo "<b>T. Cambio: </b>".$p['producto_tipocambio']; ?></td>
 						<td><?php echo $p['producto_comision']; ?></td>
@@ -204,7 +203,7 @@
                     <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->                  
 
                     
-                    <?php } ?>                                            
+                    <?php } */ ?>                                            
                     </tbody>
                 </table>
             </div>
