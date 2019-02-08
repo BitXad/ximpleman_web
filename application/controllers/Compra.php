@@ -753,14 +753,14 @@ $cantiviejas = 0;
    }    }  }
   /*///////////////////////// poner en consulta select , dc.detallecomp_costo y en aumentar_cantdad_producto: ,$producto_id['detallecomp_costo']  y  en esa funcion lo q recibe//////////////////// */
 
-   $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+   $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo, dc.detallecomp_precio from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
    $productos_id=$this->db->query($product)->result_array();
 
    foreach ($productos_id as $producto_id) {
        
 
-       $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo']);
-      $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo']);
+       $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
+      $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
 
    }          
    

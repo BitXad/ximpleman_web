@@ -499,7 +499,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         <label for="categoria_id" class="control-label">Categoria</label>
                         <div class="form-group">
                             <select name="categoria_id" id="categoria_id" class="form-control">
-                                <option value="">SELECCIONAR</option>
+                                <option value="1">- SELECCIONAR -</option>
                                 <?php 
                                 foreach($all_categoria_producto as $categoria_producto)
                                 {

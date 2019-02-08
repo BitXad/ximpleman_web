@@ -38,7 +38,7 @@
 							<div class="form-group">
 								<label for="egreso_monto" class="col-md-4 control-label">MONTO</label>
 								<div class="col-md-8">
-									<input type="number" name="egreso_monto" value="<?php echo $this->input->post('egreso_monto'); ?>" class="form-control" id="egreso_monto" required/>
+									<input type="number" step="any" min="0" name="egreso_monto" value="<?php echo $this->input->post('egreso_monto'); ?>" class="form-control" id="egreso_monto" required/>
 								</div>
 							</div>
 							<div class="form-group">

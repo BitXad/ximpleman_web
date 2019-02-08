@@ -328,13 +328,13 @@ class Inventario_model extends CI_Model
 
         $this->db->query($sql);
     }
- function aumentar_cantidad_producto($producto_id,$existencia,$ultimocosto)
+ function aumentar_cantidad_producto($producto_id,$existencia,$ultimocosto,$producto_precio)
     {
         /////////////////////////recibir $ultimo costo y poner en la consulta set inventario.producto_ultimocosto=".$ultimocosto.", 
          //Truncar la tabla inventario
        
         //cargar el inventario actualizado
-        $sql = "update inventario set inventario.producto_ultimocosto=".$ultimocosto.", inventario.existencia=inventario.existencia+".$existencia." where producto_id=".$producto_id."";
+        $sql = "update inventario set inventario.producto_precio=".$producto_precio.", inventario.producto_ultimocosto=".$ultimocosto.", inventario.existencia=inventario.existencia+".$existencia." where producto_id=".$producto_id."";
 
         $this->db->query($sql);
     }
