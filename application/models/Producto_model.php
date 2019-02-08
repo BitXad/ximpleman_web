@@ -210,11 +210,12 @@ class Producto_model extends CI_Model
  function cambiar_ultimocosto($producto_id,$ultimocosto,$producto_precio)
     {
 
-        //cargar el inventario actualizado
+        
         $sql = "update producto set producto.producto_precio=".$producto_precio.", producto.producto_ultimocosto=".$ultimocosto." where producto_id=".$producto_id."";
 
         $this->db->query($sql);
     }
+
      function get_busqueda_producto_limite()
     {
         $sql = "SELECT
