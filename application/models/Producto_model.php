@@ -170,19 +170,15 @@ class Producto_model extends CI_Model
     function get_busqueda_producto_parametro($parametro)
     {
         $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             c.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
 
               FROM
-              producto p, estado e, categoria_producto c, presentacion pr, moneda m
+              producto p, estado e
               
               WHERE 
                    p.estado_id = e.estado_id
                    and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
                    or producto_codigo like '%".$parametro."%')
-                   and p.categoria_id = c.categoria_id
-                and p.presentacion_id = pr.presentacion_id
-                and p.moneda_id = m.moneda_id
                   
               GROUP BY
                 p.producto_id
@@ -224,18 +220,13 @@ class Producto_model extends CI_Model
      function get_busqueda_producto_limite()
     {
         $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             c.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
 
               FROM
-              producto p, estado e, categoria_producto c, presentacion pr, moneda m
+              producto p, estado e
               
               WHERE 
                    p.estado_id = e.estado_id
-                   
-                   and p.categoria_id = c.categoria_id
-                and p.presentacion_id = pr.presentacion_id
-                and p.moneda_id = m.moneda_id
                   
               GROUP BY
                 p.producto_id
