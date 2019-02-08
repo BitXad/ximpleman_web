@@ -40,7 +40,7 @@ class Producto extends CI_Controller{
         $this->load->model('Moneda_model');
         $data['all_moneda'] = $this->Moneda_model->get_alls_moneda();
         
-        $data['producto'] = $this->Producto_model->get_all_producto();
+        //$data['producto'] = $this->Producto_model->get_all_producto();
         
         
         $data['_view'] = 'producto/index';
@@ -81,9 +81,10 @@ class Producto extends CI_Controller{
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
+                        $config['image_library'] = 'gd2';
+                        $config['max_size'] = 2000000;
+                        $config['max_width'] = 3900;
+                        $config['max_height'] = 3900;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
@@ -214,9 +215,9 @@ class Producto extends CI_Controller{
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/productos/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 2000000;
+                    $config['max_width'] = 3900;
+                    $config['max_height'] = 3900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -248,7 +249,8 @@ class Producto extends CI_Controller{
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
                           unlink($directorio.$foto1);
-                          $mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          $mimagenthumb = "thumb_".$foto1;
                           unlink($directorio.$mimagenthumb);
                       }
                   }
@@ -270,23 +272,8 @@ class Producto extends CI_Controller{
                 }
             /* *********************FIN imagen***************************** */
                 $params = array(
-//					'estado_id' => $this->input->post('estado_id'),
-//					'categoria_id' => $this->input->post('categoria_id'),
-//					'presentacion_id' => $this->input->post('presentacion_id'),
-//					'moneda_id' => $this->input->post('moneda_id'),
-//					'producto_codigo' => $this->input->post('producto_codigo'),
-//					'producto_codigobarra' => $this->input->post('producto_codigobarra'),
-//					'producto_nombre' => $this->input->post('producto_nombre'),
-//					'producto_unidad' => $this->input->post('producto_unidad'),
-//					'producto_marca' => $this->input->post('producto_marca'),
-//					'producto_industria' => $this->input->post('producto_industria'),
-//					'producto_costo' => $this->input->post('producto_costo'),
-//					'producto_precio' => $this->input->post('producto_precio'),
-//					'producto_foto' => $foto,
-//					'producto_comision' => $this->input->post('producto_comision'),
-//					'producto_tipocambio' => $this->input->post('producto_tipocambio'),
-                    
-       				'estado_id' => $estado_id,
+
+       				'estado_id' => $this->input->post('estado_id'),
 				'categoria_id' => $this->input->post('categoria_id'),
 				'presentacion_id' => 1,
 				'moneda_id' => $this->input->post('moneda_id'),
@@ -326,8 +313,10 @@ class Producto extends CI_Controller{
 
 				$this->load->model('Presentacion_model');
 				$data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-
-				$this->load->model('Moneda_model');
+                                
+                                $data['unidades'] = $this->Producto_model->get_all_unidad();
+				
+                                $this->load->model('Moneda_model');
 				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
 
                 $data['_view'] = 'producto/edit';
@@ -710,5 +699,35 @@ class Producto extends CI_Controller{
             redirect('', 'refresh');
         }
     }
-    
+    /*
+    * buscar productos con LIMITE
+    */
+    function buscarproductoslimit()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            $datos = $this->Producto_model->get_busqueda_producto_limite();
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
 }
