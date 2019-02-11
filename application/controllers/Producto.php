@@ -563,6 +563,7 @@ class Producto extends CI_Controller{
                 'producto_marca' => $this->input->post('producto_marca'),
                 'producto_industria' => $this->input->post('producto_industria'),
                 'producto_costo' => $this->input->post('producto_costo'),
+                'producto_ultimocosto' => $this->input->post('producto_costo'),
                 'producto_precio' => $this->input->post('producto_precio'),
                 'producto_foto' => $foto,
                 'producto_comision' => $this->input->post('producto_comision'),
@@ -571,7 +572,7 @@ class Producto extends CI_Controller{
             $producto_id = $this->Producto_model->add_producto($params);
 
             $this->load->model('Inventario_model');
-            $this->Inventario_model->ingresar_producto_a_inventario($producto_id,$cantidad);
+            $this->Inventario_model->ingresar_producto_a_inventario($producto_id,0);
 
              $sql = "INSERT into detalle_compra_aux(
                 compra_id,
