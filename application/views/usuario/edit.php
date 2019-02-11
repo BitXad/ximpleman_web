@@ -92,11 +92,10 @@
 			</div>
 			<div class="box-footer">
             	<button type="submit" id="boton" class="btn btn-success">
-					<i class="fa fa-check"></i> Guardar
-				</button>
-				<a href="javascript:history.back()"><button type="button" class="btn btn-danger">
-            		<i class="fa fa-times"></i> Cancelar
-            	</button></a>
+                        <i class="fa fa-check"></i> Guardar
+                </button>
+                <a href="<?php echo site_url('usuario'); ?>" class="btn btn-danger">
+                <i class="fa fa-times"></i> Cancelar</a>
 	        </div>				
 			<?php echo form_close(); ?>
 		</div>

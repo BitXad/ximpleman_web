@@ -247,7 +247,7 @@ class Cliente extends CI_Controller{
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
                           unlink($directorio.$foto1);
-                          $mimagenthumb = str_replace(".", "_thumb.", $foto1);
+						  $mimagenthumb = "thumb_".$foto1;
                           unlink($directorio.$mimagenthumb);
                       }
                   }
