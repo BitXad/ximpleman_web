@@ -460,6 +460,7 @@ class Inventario_model extends CI_Model
     
     function mostrar_kardex($desde, $hasta, $producto_id){
         
+        
         $sql = "select * from
                 (
                 select 
@@ -507,7 +508,7 @@ class Inventario_model extends CI_Model
                   ) as tx
 
                   order by fecha, hora";
-        
+ 
         $kardex = $this->db->query($sql)->result_array();
         return $kardex;
     }    

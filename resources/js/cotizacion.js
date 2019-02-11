@@ -215,34 +215,17 @@ function cotivalidar(e,opcion) {
 
 function seleccionar(opcion) {
 
-    
-
         if (opcion==1){             
-
             document.getElementById('nit').select();
-
-        }
-
-        
+        }      
 
         if (opcion==2){
-
             document.getElementById('razon_social').select();
-
-        }
-
-        
+        }      
 
         if (opcion==3){
-
             document.getElementById('telefono').select();
-
         }
-
-
-
-    
-
 }
 
 // esta funcion busca la cliente mediante su nit e inserta los datos 

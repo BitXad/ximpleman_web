@@ -89,14 +89,21 @@ function mostrar_ocultar(){
         <div class="col-md-4">
             <label for="razon social" class="control-label">RAZON SOCIAL</label>
             <div class="form-group">
-                <input type="razon_social" name="razon_social" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>
+                
+                <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
+                <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onselect="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>
+                <datalist id="listaclientes">
+
+                </datalist>
+                
             </div>
         </div>
+
         
         <div class="col-md-2">
             <label for="telefono" class="control-label">TELEFONO</label>
             <div class="form-group">
-                <input type="telefono" name="telefono" class="form-control" id="telefono"  onkeypress="validar(event,0)" onclick="seleccionar(3) value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
+                <input type="telefono" name="telefono" class="form-control" id="telefono"  onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
             </div>
         </div>
         
@@ -232,7 +239,7 @@ function mostrar_ocultar(){
                     <!--------------------- inicio loader ------------------------->
                     <div class="row" id='oculto'  style='display:none;'>
                         <center>
-                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
                         </center>
                     </div> 
                     <!--------------------- fin inicio loader ------------------------->
@@ -266,7 +273,13 @@ function mostrar_ocultar(){
         </div>
     </div>
     
-    <div class="col-md-6">
+    <div class="col-md-6" id="divventas1" style="display:none;">
+        <center>            
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>">
+        </center>
+    </div>
+        
+    <div class="col-md-6" id="divventas0" style="display:block;">
         <div class="row">
             
             <div class="col-md-8">
@@ -278,9 +291,10 @@ function mostrar_ocultar(){
     
             <!--------------- botones ---------------------->
             <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
-            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a> <b> Quitar Todo</b></button> 
+            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> 
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
-            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span></a> <b> - 0 -</b></button> 
+            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span><b> - 0 -</b></button> 
+            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money'></span><b> costo</b></button> 
             <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
             
             <!--------------- fin botones ---------------------->
@@ -728,3 +742,9 @@ function mostrar_ocultar(){
 </div>
 
 -->
+<!--<input type="search" name="xxx" list="listaclientes" id="xxx" value="" onchange="mensaje()"/>
+<datalist id="listaclientes">
+    <option value="1" label="jaguar">hola</option>
+    <option value="2" label="lincer">como</option>
+    <option value="3" label="gato">estas</option>
+</datalist>-->

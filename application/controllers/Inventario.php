@@ -46,7 +46,7 @@ class Inventario extends CI_Controller{
         $data['producto'] = $this->Producto_model->get_producto($producto_id);
         
         $desde = '2018-01-01';
-        $hasta = '2019-02-01';
+        $hasta = '2019-12-31';
         
         $data['kardex'] = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
 

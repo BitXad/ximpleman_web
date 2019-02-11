@@ -1697,8 +1697,7 @@ function anular_venta($venta_id){
         			}
         			else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }           
-    }
-        
+    }       
 
     function costo_cero()
     {       
@@ -1733,7 +1732,6 @@ function anular_venta($venta_id){
         
     }
         
-
     function cantidad_en_detalle()
     {       
          if ($this->session->userdata('logged_in')) {
@@ -1788,9 +1786,97 @@ function anular_venta($venta_id){
         //**************** fin contenido ***************
         			}
         			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+    }        
+
+    function precio_costo()
+    {       
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************       
+        
+        $usuario_id = $session_data['usuario_id'];
+        
+        $sql =  "UPDATE
+                detalle_venta_aux
+              SET
+               
+                detalleven_precio = detalleven_costo,
+                detalleven_subtotal = detalleven_costo * detalleven_cantidad,
+                detalleven_descuento = 0,
+                detalleven_total = detalleven_costo * detalleven_cantidad
+              WHERE
+                usuario_id = ".$usuario_id;
+        $this->Venta_model->ejecutar($sql);
+        return true;
+    
+            		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+        
+    }
+
+    function buscar_clientes()
+    {       
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************       
+        
+        $usuario_id = $session_data['usuario_id'];
+        $parametro = $this->input->post('parametro');
+        
+        $sql =  "select * from cliente where ".
+                " cliente_razon like '%".$parametro."%'".
+                " or cliente_nombre like '%".$parametro."%'".
+                " or cliente_codigo like '%".$parametro."%'".
+                " or cliente_nit like '%".$parametro."%'";
+        //echo $sql;
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);
+    
+            		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }    
         
     }
         
+    function seleccionar_cliente($cliente_id){
+        if ($this->session->userdata('logged_in')) {
+                   $session_data = $this->session->userdata('logged_in');
+                   if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                       $data = array(
+                           'page_title' => 'Admin >> Mi Cuenta'
+                       );
+               //**************** inicio contenido ***************       
+
+               $usuario_id = $session_data['usuario_id'];
+               
+               
+               $sql =  "select * from cliente where ".
+                       " cliente_id = ".$cliente_id;
+               
+               $resultado = $this->Venta_model->consultar($sql);
+               echo json_encode($resultado);
+
+
+               //**************** fin contenido ***************
+                                       }
+                                       else{ redirect('alerta'); }
+               } else { redirect('', 'refresh'); }            
+        
+    }
+    
     
 }

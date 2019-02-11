@@ -32,7 +32,9 @@ function calcularcambio(){
 
 //esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
 function validar(e,opcion) {
+    
   tecla = (document.all) ? e.keyCode : e.which;
+  
   
     if (tecla==13){ 
     
@@ -75,6 +77,11 @@ function validar(e,opcion) {
         
         if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
            document.getElementById('filtrar').focus();               
+        }
+        
+        if (opcion==9){   //si la tecla proviene del buscador de pedido abierto
+           buscar_clientes();      
+           
         }        
     } 
  
@@ -297,6 +304,7 @@ function tabladetalle(subtotal,descuento,totalfinal)
 
     $("#detallecuenta").html(html); 
 }
+
 //muestra la tabla detalle de venta auxiliar
 function tabladetalle_espera()
 {
@@ -371,7 +379,6 @@ function buscarporcodigo()
     document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
 
 }
-
 
 function cantidad_en_detalle(producto_id){
     
@@ -1073,7 +1080,8 @@ function finalizarventa()
     
     if (monto>0)
     {
-        
+       document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+       document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
         registrarcliente();
     }
     else
@@ -1084,6 +1092,8 @@ function finalizarventa()
         var txt;
         var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
         if (r == true) {
+            document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+            document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
           registrarcliente();
         } 
         //document.getElementById("demo").innerHTML = txt;
@@ -1430,6 +1440,9 @@ function borrar_datos_cliente()
     tablaproductos();
     
     tablaresultados(1); //redibuja la tabla de busqueda de productos      
+    
+    document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
+    document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
 }
 
 
@@ -1534,4 +1547,85 @@ function costo_cero()
         });
 
     }
+}
+
+function precio_costo()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/precio_costo";
+    var txt;
+    var r = confirm("Los precios de venta serán igualados al costo. \n Esta operación no será reversible.\n¿Desea Continuar?");
+    if (r == true) {
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                tablaproductos();
+            },
+            error: function(respuesta){
+            }
+        });
+    }
+}
+
+function buscar_clientes()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/buscar_clientes";
+    var parametro = document.getElementById('razon_social').value;
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro:parametro},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                fin = resultado.length;
+                html = "";
+                
+                for(var i = 0; i<fin; i++)
+                {
+                    html += "<option value='" +resultado[i]["cliente_id"]+"' label='"+resultado[i]["cliente_nombre"]+"'>"+resultado[i]["cliente_razon"]+"</option>";
+                }    
+                $("#listaclientes").html(html);
+
+            },
+            error: function(respuesta){
+            }
+        });
+}
+
+function seleccionar_cliente(){
+    var cliente_id = document.getElementById('razon_social').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/seleccionar_cliente/"+cliente_id;
+    //alert(controlador);
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                tam = resultado.length;
+                
+//                alert(resultado[0]["cliente_nit"]);
+                
+                if (tam>=1){
+                    $("#cliente_id").val(resultado[0]["cliente_id"]);
+                    $("#nit").val(resultado[0]["cliente_nit"]);
+                    $("#razon_social").val(resultado[0]["cliente_razon"]);
+                    $("#cliente_nombrenegocio").val(resultado[0]["cliente_nombrenegocio"]);
+                    $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
+                    $("#telefono").val(resultado[0]["cliente_telefono"]);
+                    $("#cliente_ci").val(resultado[0]["cliente_ci"]);     
+                    $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);     
+                }
+       
+
+            },
+            error: function(respuesta){
+            }
+        });    
+    
 }
