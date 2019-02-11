@@ -498,7 +498,7 @@ class Producto extends CI_Controller{
         
         if($this->form_validation->run())     
         {
-            /* *********************INICIO imagen***************************** */
+            /* *********************INICIO IMAGEN***************************** */
             $foto="";
             if (!empty($_FILES['chivo']['name'])){
                         $this->load->library('image_lib');
