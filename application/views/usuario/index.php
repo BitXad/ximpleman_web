@@ -72,11 +72,11 @@
                       	<td><?php echo $u['usuario_email']; ?></td>
 						<td><?php echo $u['usuario_login']; ?></td>
                         <td><div id="contieneimg"><?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."'>"; ?></div></td>
-                        <td><?php echo $u['estado_descripcion']; ?></td>
+                        <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
 
                         <td>
                             <a href="<?php echo site_url('usuario/editar/'. $u['usuario_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
-                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>
+                            <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>-->
                             <a href="<?php echo site_url('usuario/password/'.$u['usuario_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a> 
                         </td>
                     </tr>

@@ -1079,6 +1079,8 @@ function finalizarventa()
     
     if (monto>0)
     {
+        $("#diventas1").style = "display:block";
+        $("#diventas0").style = "display:none";
         
         registrarcliente();
     }
