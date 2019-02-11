@@ -5,7 +5,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Editar Clave Usuario</h3>
+              	<h3 class="box-title">Cambiar Clave</h3>
             </div>
 			<?php echo form_open('usuario/password/'.$usuario['usuario_id']); ?>
 			<div class="box-body">
@@ -18,7 +18,7 @@
 					<div class="col-md-6">
 						<label for="usuario_clave" class="control-label">Clave Antigua</label>
 						<div class="form-group">
-							<input type="text" name="usuario_clave" class="form-control" id="usuario_clave" required />
+							<input type="password" name="usuario_clave" class="form-control" id="usuario_clave" required />
 							<span class="text-danger"><?php echo form_error('usuario_clave');?></span>
 						</div>
 					</div>

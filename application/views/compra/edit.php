@@ -121,6 +121,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
      
      
     </div>
+
     <div class="col-md-4">
     <div class="box-tools">
         <center>            
@@ -129,9 +130,11 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <!--<a href="#" data-toggle="modal" data-target="#modalbuscarprod" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->
             <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod.</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->  
-         
-        </center>            
+       
+        </center>  
+
     </div>
+
     <br>            
      </div> 
      <div class="col-md-4">
@@ -200,8 +203,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 </div>
 
 <!--------------------- FIN CABERECA -------------------------->
- <div class="box-tools" style="padding-left: 60%">
+ <div class="box-tools" >
 
+         <span class="btn btn-info" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>  
                 <?php if($bandera==1) { ?>
                     
                 <a href="#" data-toggle="modal" data-target="#anularmodal" class="btn btn-xs btn-warning" >
@@ -495,7 +499,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         <label for="categoria_id" class="control-label">Categoria</label>
                         <div class="form-group">
                             <select name="categoria_id" id="categoria_id" class="form-control">
-                                <option value="">SELECCIONAR</option>
+                                <option value="1">- SELECCIONAR -</option>
                                 <?php 
                                 foreach($all_categoria_producto as $categoria_producto)
                                 {
