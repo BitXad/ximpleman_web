@@ -210,8 +210,7 @@ class Cliente extends CI_Controller{
                 $foto1= $this->input->post('cliente_foto1');
                 if (!empty($_FILES['cliente_foto']['name']))
                 {
-                    
-                    $config['upload_path'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
+                    $config['upload_path'] = './resources/images/clientes/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
                     $config['max_size'] = 0;
                     $config['max_width'] = 5900;
@@ -233,7 +232,7 @@ class Cliente extends CI_Controller{
                     if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                         $conf['image_library'] = 'gd2';
                         $conf['source_image'] = $img_data['full_path'];
-                        $conf['new_image'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
+                        $conf['new_image'] = './resources/images/clientes/';
                         $conf['maintain_ratio'] = TRUE;
                         $conf['create_thumb'] = FALSE;
                         $conf['width'] = 800;
