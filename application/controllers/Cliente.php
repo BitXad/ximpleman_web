@@ -77,9 +77,9 @@ class Cliente extends CI_Controller{
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 2000000;
-                        $config['max_width'] = 3900;
-                        $config['max_height'] = 3900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
@@ -210,17 +210,20 @@ class Cliente extends CI_Controller{
                 $foto1= $this->input->post('cliente_foto1');
                 if (!empty($_FILES['cliente_foto']['name']))
                 {
-                    $this->load->library('image_lib');
-                    $config['upload_path'] = './resources/images/clientes/';
+                    
+                    $config['upload_path'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 2000000;
-                    $config['max_width'] = 3900;
-                    $config['max_height'] = 3900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
                     $config['file_ext_tolower'] = TRUE;
-
+                    
+                    $this->load->library('image_lib');
+                    $this->image_lib->initialize($config);
+                    
                     $this->load->library('upload', $config);
                     $this->upload->do_upload('cliente_foto');
 
@@ -230,16 +233,17 @@ class Cliente extends CI_Controller{
                     if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                         $conf['image_library'] = 'gd2';
                         $conf['source_image'] = $img_data['full_path'];
-                        $conf['new_image'] = './resources/images/clientes/';
+                        $conf['new_image'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
                         $conf['maintain_ratio'] = TRUE;
                         $conf['create_thumb'] = FALSE;
                         $conf['width'] = 800;
                         $conf['height'] = 600;
-                        $this->image_lib->clear();
+                        
                         $this->image_lib->initialize($conf);
                         if(!$this->image_lib->resize()){
                             echo $this->image_lib->display_errors('','');
                         }
+                        $this->image_lib->clear();
                     }
                     /* ********************F I N  para resize***************************** */
                     //$directorio = base_url().'resources/imagenes/';
@@ -252,8 +256,8 @@ class Cliente extends CI_Controller{
                       }
                   }
                     $confi['image_library'] = 'gd2';
-                    $confi['source_image'] = './resources/images/clientes/'.$new_name.$extension;
-                    $confi['new_image'] = './resources/images/clientes/'."thumb_".$new_name.$extension;
+                    $confi['source_image'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/'.$new_name.$extension;
+                    $confi['new_image'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/'."thumb_".$new_name.$extension;
                     $confi['create_thumb'] = FALSE;
                     $confi['maintain_ratio'] = TRUE;
                     $confi['width'] = 50;
