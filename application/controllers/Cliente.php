@@ -255,8 +255,8 @@ class Cliente extends CI_Controller{
                       }
                   }
                     $confi['image_library'] = 'gd2';
-                    $confi['source_image'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/'.$new_name.$extension;
-                    $confi['new_image'] = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/'."thumb_".$new_name.$extension;
+                    $confi['source_image'] = './resources/images/clientes/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/clientes/'."thumb_".$new_name.$extension;
                     $confi['create_thumb'] = FALSE;
                     $confi['maintain_ratio'] = TRUE;
                     $confi['width'] = 50;
