@@ -18,7 +18,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -57,7 +57,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -77,9 +77,9 @@ class Cliente extends CI_Controller{
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
@@ -187,7 +187,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1  or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -210,17 +210,19 @@ class Cliente extends CI_Controller{
                 $foto1= $this->input->post('cliente_foto1');
                 if (!empty($_FILES['cliente_foto']['name']))
                 {
-                    $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/clientes/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
                     $config['file_ext_tolower'] = TRUE;
-
+                    
+                    $this->load->library('image_lib');
+                    $this->image_lib->initialize($config);
+                    
                     $this->load->library('upload', $config);
                     $this->upload->do_upload('cliente_foto');
 
@@ -235,11 +237,12 @@ class Cliente extends CI_Controller{
                         $conf['create_thumb'] = FALSE;
                         $conf['width'] = 800;
                         $conf['height'] = 600;
-                        $this->image_lib->clear();
+                        
                         $this->image_lib->initialize($conf);
                         if(!$this->image_lib->resize()){
                             echo $this->image_lib->display_errors('','');
                         }
+                        $this->image_lib->clear();
                     }
                     /* ********************F I N  para resize***************************** */
                     //$directorio = base_url().'resources/imagenes/';
@@ -369,7 +372,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -515,7 +518,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
@@ -560,7 +563,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 
                 $usuario_id = $session_data['usuario_id'];
 

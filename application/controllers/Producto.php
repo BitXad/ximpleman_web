@@ -82,9 +82,9 @@ class Producto extends CI_Controller{
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
                         $config['image_library'] = 'gd2';
-                        $config['max_size'] = 2000000;
-                        $config['max_width'] = 3900;
-                        $config['max_height'] = 3900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
@@ -215,9 +215,9 @@ class Producto extends CI_Controller{
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/productos/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 2000000;
-                    $config['max_width'] = 3900;
-                    $config['max_height'] = 3900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -366,9 +366,9 @@ class Producto extends CI_Controller{
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/productos/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -506,9 +506,9 @@ class Producto extends CI_Controller{
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
                         
                         $dia = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $new_name = $this->input->post('producto_nombre');

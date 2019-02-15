@@ -7,7 +7,7 @@ function mostrar(a) {
         $('#map').css({ 'width':'0px', 'height':'0px' });
         $('#mosmapa').text("Modificar Ubicación del negocio");
     }else{
-        $('#map').css({ 'width':'500px', 'height':'400px' });
+        $('#map').css({ 'width':'100%', 'height':'400px' });
         $('#mosmapa').text("Cerrar mapa");
     }
 
