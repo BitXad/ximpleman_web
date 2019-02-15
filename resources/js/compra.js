@@ -46,9 +46,11 @@ function tabladetallecompra(){
                         html += "<td><b>"+registros[i]["producto_nombre"]+" /</b><br>";
                         
                         html += "<b>"+registros[i]["detallecomp_unidad"]+"</td>";                                            
-                        html += "<td style='font-size:12px; text-align:center;'>"+registros[i]["detallecomp_codigo"]+"</td>";
-                        
-                        html += "<td><input id='compra_identi'  name='compra_id' type='hidden' class='form-control' value='"+compra_id+"'>";
+                        html += "<td style='font-size:12px; text-align:center;'>"+registros[i]["detallecomp_codigo"]+"<br><font size='1'>";
+                        if (registros[i]["detallecomp_fechavencimiento"]!='0000-00-00'&&registros[i]["detallecomp_fechavencimiento"]!=null) {
+                        html += "Venc:"+moment(registros[i]["detallecomp_fechavencimiento"]).format('DD/MM/YYYY')+"</font>";
+                        }
+                        html += "</td><td><input id='compra_identi'  name='compra_id' type='hidden' class='form-control' value='"+compra_id+"'>";
                         html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
                         
                         html += "<input style='font-size:13px; width:60px;' id='detallecomp_precio"+registros[i]["producto_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
@@ -132,6 +134,7 @@ function detallecompra(compra_id, producto_id){
         var descuento = document.getElementById('descuentodetalle'+producto_id).value;
         var producto_costo = document.getElementById('producto_costodetalle'+producto_id).value;
         var producto_precio = document.getElementById('producto_preciodetalle'+producto_id).value;
+        var producto_fechavenc = document.getElementById('detallecomp_fechavencimiento'+producto_id).value;
      
 
     var limite = 500;
@@ -142,7 +145,7 @@ function detallecompra(compra_id, producto_id){
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{compra_id:compra_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_costo:producto_costo, producto_precio:producto_precio, agrupar:agrupar},
+           data:{compra_id:compra_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_costo:producto_costo, producto_precio:producto_precio, agrupar:agrupar, producto_fechavenc:producto_fechavenc},
            success:function(respuesta){     
                
                tabladetallecompra();                      
@@ -814,19 +817,20 @@ function tablaresultados(opcion)
                         //html += "<input id='producto_unidade'  name='producto_unidad' type='hidden' class='form-control' value='"+registros[i]["producto_unidad"]+"'>";
                         html += "</div>";
                             
-                        html += "<div class='col-md-12'>";
+                        html += "<div class='col-md-12' style='padding-left: 0px;'>";
 
                         html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-facebook btn-xs'>"+registros[i]["existencia"]+"</span><br>";
-                        html += "<div class='col-md-2'  >";
-                        html += "Precio_V: <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 85px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
-                        html += "<div class='col-md-2'>";
-                        html += "Costo: <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 85px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
-                        html += "<div class='col-md-2'  >";
-                        html += "Desc.: <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 65px; background-color: lightgrey' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
-                        html += "<div class='col-md-2'  >";
-                        html += "Cant.: <input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"' style='width: 65px;' name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
-                        //html += "<input class='input-sm ' id='bandera'  name='bandera' type='hidden' class='form-control'  required value='"+bandera+"'>"
-                        html += "<div class='col-md-2'  >";
+                        html += "<div class='col-md-2' style='padding-left: 0px;' >";
+                        html += "Precio_V: <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 80px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                        html += "<div class='col-md-2' style='padding-left: 0px;'>";
+                        html += "Costo: <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 80px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
+                        html += "<div class='col-md-2' style='padding-left: 0px;' >";
+                        html += "Desc.: <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 60px; background-color: lightgrey' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+                        html += "<div class='col-md-2'style='padding-left: 0px;'  >";
+                        html += "Cant.: <input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"' style='width: 60px;' name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
+                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
+                        html += "F.Venc.:<input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"' style='width: 110px;padding-left: 0px;' name='detallecomp_fechavencimiento'  class='form-control' ></div>";
+                        html += "<div class='col-md-2'style='padding-right: 0px;' >";
                         html += "Anadir";
 
                         html += "<button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button>";

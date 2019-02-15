@@ -904,8 +904,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     
 ?>              
         <div class="col-md-8">
-                     <span class="btn btn-warning">Comprar con dinero de caja <input  type="checkbox"  id="compra_caja" name="compra_caja" value="1" <?php if ($compra[0]['compra_caja']==1){ ?> checked <?php } ?> ></span>
-
+          <span class="btn btn-xs" style="border-color: orange;">
+    <input type="radio" id="compra_caja0"
+     name="compra_caja" value="" <?php if ($compra[0]['compra_caja']==''){ ?> checked <?php } ?> >
+    <label for="compra_caja0">Ninguno</label></span>
+    <span class="btn btn-xs" style="border-color: orange;">
+    <input type="radio" id="compra_caja1"
+     name="compra_caja" value="1" <?php if ($compra[0]['compra_caja']==1){ ?> checked <?php } ?> >
+    <label for="compra_caja1">Dinero de caja</label></span>
+    <span class="btn btn-xs" style="border-color: orange;">
+    <input type="radio" id="compra_caja2"
+     name="compra_caja" value="2" <?php if ($compra[0]['compra_caja']==2){ ?> checked <?php } ?> >
+    <label for="compra_caja2">Generar orden de pago</label></span>
+            
         </div>  
 
            

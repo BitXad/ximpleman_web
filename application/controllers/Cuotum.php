@@ -230,6 +230,22 @@ class Cuotum extends CI_Controller{
         $credito_tipointeres = $this->input->post('credito_tipointeres');
         $cuota_capital = $this->input->post('cuota_capital');
 
+  $si_orden=$this->input->post('cuota_ordenpago');     
+   if ($si_orden==1 ) {
+     $this->load->model('Orden_pago_model');
+      $nodoc=$this->input->post('cuota_numercibo');
+      $orden_fecha = "'".date("Y-m-d")."'"; 
+      $orden_hora = "'".date("H:i:s")."'"; 
+      $compra_prove=$this->Cuotum_model->get_all_deuda($credito_id);
+      $proveedor_nombre = $compra_prove[0]['proveedor_nombre'];
+      $orden_monto = $this->input->post('cuota_cancelado');
+      $orden_motivo = "'pago de cuota a proveedor No. ".$cuota_id."/credito".$credito_id."  documento No. ".$nodoc." '";
+      $comprita = 0;
+      $orden = "insert into orden_pago(usuario_id1,usuario_id2,orden_monto,orden_destinatario,orden_motivo,orden_fecha,orden_hora,estado_id,orden_cancelado,compra_id,cuota_id) "
+                    . "value(".$usuario_id.",0".",".$orden_monto.",'".$proveedor_nombre."',".$orden_motivo.",".$orden_fecha.",".$orden_hora.",8,0,".$comprita.",".$cuota_id.")";
+            //echo $sql;
+           $this->Orden_pago_model->registrar_orden($orden);
+   }
         if($cuota_capital==0){
          $params = array(
                     
@@ -250,6 +266,7 @@ class Cuotum extends CI_Controller{
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
+                    'cuota_ordenpago' => $this->input->post('cuota_ordenpago'),
                 );
 
 
@@ -275,6 +292,7 @@ class Cuotum extends CI_Controller{
                     'cuota_numercibo' => $this->input->post('cuota_numercibo'),
                    // 'cuota_saldo' => $this->input->post('cuota_saldo'),
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
+                    'cuota_ordenpago' => $this->input->post('cuota_ordenpago'),
                 );
 
 

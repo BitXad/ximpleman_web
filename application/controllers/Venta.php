@@ -453,7 +453,7 @@ class Venta extends CI_Controller{
                 $factura_fechaventa    = $fecha_venta;
                 $factura_fecha         = "date(now())";
                 $factura_hora          = "time(now())";
-                $factura_subtotaltotal = $venta_total;
+                $factura_subtotal = $venta_total;
                 $factura_nit           = $nit;
                 $factura_razonsocial   = $razon;
                 $factura_ice           = 0;
@@ -476,13 +476,13 @@ class Venta extends CI_Controller{
                 $this->Venta_model->ejecutar($sql);
                              
                 $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
-                    factura_fecha, factura_hora, factura_subtotaltotal, 
+                    factura_fecha, factura_hora, factura_subtotal, 
                     factura_ice, factura_exento, factura_descuento, factura_total, 
                     factura_numero, factura_autorizacion, factura_llave, 
                     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
                     factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad) value(".
                     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                    $factura_fecha.",".$factura_hora.",".$factura_subtotaltotal.",".
+                    $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
