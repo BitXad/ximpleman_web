@@ -424,11 +424,9 @@ function edit($compra_id,$bandera)
  $data['compra'] = $this->Compra_model->get_compra($compra_id);
  $compra = $this->Compra_model->get_proveedor_id($compra_id);
  $proveedor_id = $compra[0]['proveedor_id'];
- 
- $this->Compra_model->volvermal($compra_id);
-
- 
- 
+ if ($bandera==0) {
+  $this->Compra_model->volvermal($compra_id);
+ }
  
  
  if($proveedor_id==0)     
@@ -767,6 +765,24 @@ $cantiviejas = 0;
                 //////////////////6. ELIMINAR AUX///////////////////////////
    $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
    $this->db->query($eliminar_aux);
+   ///////////generar orden de pago/////////////////////////
+   if ($_POST['compra_caja']==2 ) {
+     $this->load->model('Orden_pago_model');
+      $nodoc=$this->input->post('compra_numdoc');
+      $orden_fecha = "'".date("Y-m-d")."'"; 
+      $orden_hora = "'".date("H:i:s")."'"; 
+      $compra_prove=$this->Compra_model->get_compra_proveedor($compra_id);
+      $proveedor_nombre = $compra_prove[0]['proveedor_nombre'];
+      $orden_monto = $this->input->post('compra_totalfinal');
+      $orden_motivo = "'pago a proveedor compra No. ".$compra_id." documento de respaldo No. ".$nodoc." '";
+     
+      $cuota_id = 0;
+      $orden = "insert into orden_pago(usuario_id1,usuario_id2,orden_monto,orden_destinatario,orden_motivo,orden_fecha,orden_hora,estado_id,orden_cancelado,compra_id,cuota_id) "
+                    . "value(".$usuario_id.",0".",".$orden_monto.",'".$proveedor_nombre."',".$orden_motivo.",".$orden_fecha.",".$orden_hora.",8,0,".$compra_id.",".$cuota_id.")";
+            //echo $sql;
+           $this->Orden_pago_model->registrar_orden($orden);
+   }
+
    
     if ($_POST['tipotrans_id']==2 ) { // tipotrans_id = 2 : CREDITO
         
@@ -920,6 +936,7 @@ function ingresarproducto()
         $producto_costo = $this->input->post('producto_costo');
         $producto_precio = $this->input->post('producto_precio');
         $agrupar = $this->input->post('agrupar');
+        $fecha_venc = $this->input->post('producto_fechavenc');
       if ($agrupar==1) {
 
 
@@ -942,6 +959,7 @@ function ingresarproducto()
         detallecomp_costo,
         detallecomp_cantidad,
         detallecomp_precio,
+        detallecomp_fechavencimiento,
         detallecomp_descuento,
         detallecomp_subtotal,
         detallecomp_total              
@@ -955,6 +973,7 @@ function ingresarproducto()
         ".$producto_costo.",
         ".$cantidad.",
         ".$producto_precio.",
+        '".$fecha_venc."',
         ".$descuento.",
         ".$cantidad." * ".$producto_costo.",
         (".$cantidad." * ".$producto_costo.") - ".$descuento."

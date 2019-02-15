@@ -224,15 +224,23 @@ $(document).ready(function(){
               <div class="modal-body" align="center">
                 <form action="<?php echo base_url('cuotum/pagar/'.$c['cuota_id']); ?>"  method="POST" class="form" id="saldar">
 
-         
                <h1><b> <span class="mail-box" >Cancelar Cuota<br><i class="fa fa-money"></i>
                     <?php echo $c['cuota_total']; ?></span>
               </b></h1>
+     <span class="btn btn-xs" style="border-color: orange;">
+    <input type="radio" id="cuota_orde" name="cuota_ordenpago" value="0" checked/>
+    <label for="cuota_orde">Dinero de caja</label></span>
+    <span class="btn btn-xs" style="border-color: orange;">
+    <input type="radio" id="cuota_ordenpago1" name="cuota_ordenpago" value="1"  />
+    <label for="cuota_ordenpago1">Generar orden de pago</label></span>
           </div>
+
           <div class="col-md-12">
             <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
             <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
+               
           <div class="col-md-6">
+         
                         <label for="cuota_cancelado" class="control-label">Cancelado</label>
                         <div class="form-group">
                             <input type="text" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" />
