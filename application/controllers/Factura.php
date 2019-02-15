@@ -358,5 +358,255 @@ class Factura extends CI_Controller{
         } else { redirect('', 'refresh'); }
     }
 
+
+    public function generar_excel(){
+
+    $fecha_desde = $this->input->post('fecha_desde');
+    $fecha_hasta = $this->input->post('fecha_hasta');
+    $opcion = $this->input->post('opcion');
     
+    if ($opcion == 1) {
+
+    $llamadas = $this->Factura_model->get_factura_ventas($fecha_desde, $fecha_hasta);
+    if(count($llamadas) > 0){
+        //Cargamos la librería de excel.
+        $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
+        $this->excel->getActiveSheet()->setTitle('ventas');
+        //Contador de filas
+        $contador = 1;
+        $cf=0.13;
+        //Le aplicamos ancho las columnas(OPCIONAL).
+       /* $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('N')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('O')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('P')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('Q')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('R')->setWidth(30);
+        //Le aplicamos negrita a los títulos de la cabecera(OPCIONAL).
+        $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("I{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("J{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("K{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("L{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("M{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("N{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("O{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("P{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("Q{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("R{$contador}")->getFont()->setBold(true);*/
+        //Definimos los títulos de la cabecera.
+        $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'ESPECIFICACION');
+        $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'N°');
+        $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'FECHA');
+        $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'N° DE LA FACTURA');
+        $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'N° DE AUTORIZACION');
+        $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'ESTADO');
+        $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'NIT/CI CLIENTE');
+        $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'NOMBRE O RAZON SOCIAL');
+        $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'IMPORTE TOTAL DE LA VENTA');
+        $this->excel->getActiveSheet()->setCellValue("J{$contador}", 'IMPORTE ICE/IEHD/TASAS');
+        $this->excel->getActiveSheet()->setCellValue("K{$contador}", 'EXPORTACIONES Y OPERACIONES EXENTAS');
+        $this->excel->getActiveSheet()->setCellValue("L{$contador}", 'VENTAS GRAVADAS A TASA CERO');
+        $this->excel->getActiveSheet()->setCellValue("M{$contador}", 'SUBTOTAL');
+        $this->excel->getActiveSheet()->setCellValue("N{$contador}", 'DESCUENTOS BONIFICACIONES Y REBAJAS OTORGADAS');
+        $this->excel->getActiveSheet()->setCellValue("O{$contador}", 'IMPORTE BASE PARA DEBITO FISCAL');
+        $this->excel->getActiveSheet()->setCellValue("P{$contador}", 'DEBITO FISCAL');
+        $this->excel->getActiveSheet()->setCellValue("Q{$contador}", 'CODIGO DE CONTROL');
+        $this->excel->getActiveSheet()->setCellValue("R{$contador}", 'TRANSACCION');
+        //Definimos la data del cuerpo.        
+        foreach($llamadas as $l){
+           //Incrementamos una fila más, para ir a la siguiente.
+           $contador++;
+           //Informacion de las filas de la consulta.
+         
+           $this->excel->getActiveSheet()->setCellValue("A{$contador}", $l['factura_ice']);
+           $this->excel->getActiveSheet()->setCellValue("B{$contador}", $contador-1);
+           $this->excel->getActiveSheet()->setCellValue("C{$contador}", date('d/m/Y', strtotime($l['factura_fecha']))); 
+           $this->excel->getActiveSheet()->setCellValue("D{$contador}", $l['factura_numero']);
+           $this->excel->getActiveSheet()->setCellValue("E{$contador}", $l['factura_autorizacion']);
+           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $l['estado_id']);
+           $this->excel->getActiveSheet()->setCellValue("G{$contador}", $l['factura_nit']);
+           $this->excel->getActiveSheet()->setCellValue("H{$contador}", $l['factura_razonsocial']);
+           $this->excel->getActiveSheet()->setCellValue("I{$contador}", $l['factura_total']);
+           $this->excel->getActiveSheet()->setCellValue("J{$contador}", $l['factura_ice']);
+           $this->excel->getActiveSheet()->setCellValue("K{$contador}", $l['factura_exento']);
+           $this->excel->getActiveSheet()->setCellValue("L{$contador}", $l['factura_ice']);
+           $this->excel->getActiveSheet()->setCellValue("M{$contador}", $l['factura_subtotal']);
+           $this->excel->getActiveSheet()->setCellValue("N{$contador}", $l['factura_descuento']);
+           $this->excel->getActiveSheet()->setCellValue("O{$contador}", $l['factura_subtotal']);
+           $this->excel->getActiveSheet()->setCellValue("P{$contador}", $cf*$l['factura_subtotal']);
+           $this->excel->getActiveSheet()->setCellValue("Q{$contador}", $l['factura_codigocontrol']);
+           $this->excel->getActiveSheet()->setCellValue("R{$contador}", $l['venta_id']);
+        }
+        //Le ponemos un nombre al archivo que se va a generar.
+        $hoy = date('d/m/Y H:i:s');
+        $archivo = "Ventas".$hoy.".xls";
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        //Hacemos una salida al navegador con el archivo Excel.
+        $objWriter->save('php://output');
+     }else{
+        echo 'No se han encontrado ventas';
+        exit;        
+     }
+ } else{
+         $llamadas = $this->Factura_model->get_all_factura();
+    if(count($llamadas) > 0){
+        //Cargamos la librería de excel.
+        $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
+        $this->excel->getActiveSheet()->setTitle('Llamadas');
+        //Contador de filas
+        $contador = 1;
+        //Le aplicamos ancho las columnas(OPCIONAL).
+       /* $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('C')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('D')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('E')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('F')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('G')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('H')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('I')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('J')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('K')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('L')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('M')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('N')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('O')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('P')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('Q')->setWidth(30);
+        $this->excel->getActiveSheet()->getColumnDimension('R')->setWidth(30);
+        //Le aplicamos negrita a los títulos de la cabecera(OPCIONAL).
+        $this->excel->getActiveSheet()->getStyle("A{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("B{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("C{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("D{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("F{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("G{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("H{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("I{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("J{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("K{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("L{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("M{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("N{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("O{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("P{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("Q{$contador}")->getFont()->setBold(true);
+        $this->excel->getActiveSheet()->getStyle("R{$contador}")->getFont()->setBold(true);*/
+        //Definimos los títulos de la cabecera.
+        $this->excel->getActiveSheet()->setCellValue("A{$contador}", 'TIPO');
+        $this->excel->getActiveSheet()->setCellValue("B{$contador}", 'NIT');
+        $this->excel->getActiveSheet()->setCellValue("C{$contador}", 'FACTURA');
+        $this->excel->getActiveSheet()->setCellValue("D{$contador}", 'POLIZA');
+        $this->excel->getActiveSheet()->setCellValue("E{$contador}", 'AUTORIZACION');
+        $this->excel->getActiveSheet()->setCellValue("F{$contador}", 'FECHA');
+        $this->excel->getActiveSheet()->setCellValue("G{$contador}", 'IMPORTE');
+        $this->excel->getActiveSheet()->setCellValue("H{$contador}", 'ICE');
+        $this->excel->getActiveSheet()->setCellValue("I{$contador}", 'EXCENTO');
+        $this->excel->getActiveSheet()->setCellValue("J{$contador}", 'NETO');
+        $this->excel->getActiveSheet()->setCellValue("K{$contador}", 'CREDITO FISCAL');
+        $this->excel->getActiveSheet()->setCellValue("L{$contador}", 'CODIGO DE CONTROL');
+       
+        
+        //Definimos la data del cuerpo.        
+      /*  foreach($llamadas as $l){
+           //Incrementamos una fila más, para ir a la siguiente.
+           $contador++;
+           //Informacion de las filas de la consulta.
+         
+           $this->excel->getActiveSheet()->setCellValue("A{$contador}", $l['factura_id']);
+           $this->excel->getActiveSheet()->setCellValue("B{$contador}", $l['factura_id']);
+           $this->excel->getActiveSheet()->setCellValue("C{$contador}", $l['factura_fecha']);
+           $this->excel->getActiveSheet()->setCellValue("D{$contador}", $l['factura_numero']);
+           $this->excel->getActiveSheet()->setCellValue("E{$contador}", $l['factura_autorizacion']);
+           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $l['estado_id']);
+           $this->excel->getActiveSheet()->setCellValue("G{$contador}", $l['factura_nit']);
+           $this->excel->getActiveSheet()->setCellValue("H{$contador}", $l['factura_razonsocial']);
+           $this->excel->getActiveSheet()->setCellValue("I{$contador}", $l['factura_total']);
+           $this->excel->getActiveSheet()->setCellValue("J{$contador}", $l['factura_ice']);
+           $this->excel->getActiveSheet()->setCellValue("K{$contador}", $l['factura_exento']);
+           $this->excel->getActiveSheet()->setCellValue("L{$contador}", $l['factura_id']);
+           $this->excel->getActiveSheet()->setCellValue("M{$contador}", $l['factura_subtotaltotal']);
+           $this->excel->getActiveSheet()->setCellValue("N{$contador}", $l['factura_descuento']);
+           $this->excel->getActiveSheet()->setCellValue("O{$contador}", $l['factura_sfc']);
+           $this->excel->getActiveSheet()->setCellValue("P{$contador}", $l['factura_id']);
+           $this->excel->getActiveSheet()->setCellValue("Q{$contador}", $l['factura_codigocontrol']);
+           $this->excel->getActiveSheet()->setCellValue("R{$contador}", $l['venta_id']);
+        }*/
+        //Le ponemos un nombre al archivo que se va a generar.
+        $hoy = date('d/m/Y H:i:s');
+        $archivo = "Compras".$hoy.".xls";
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="'.$archivo.'"');
+        header('Cache-Control: max-age=0');
+        $objWriter = PHPExcel_IOFactory::createWriter($this->excel, 'Excel5');
+        //Hacemos una salida al navegador con el archivo Excel.
+        $objWriter->save('php://output');
+     }else{
+        echo 'No se han encontrado llamadas';
+        exit;        
+     }
+
+    }
+  }
+  
+  
+    function mostrar_facturas()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $desde = $this->input->post("desde");
+            $hasta = $this->input->post("hasta");            
+            $opcion = $this->input->post('opcion');   
+            
+            if ($opcion==1)
+                $datos = $this->Factura_model->get_factura_ventas($desde,$hasta);
+            else
+                $datos = $this->Factura_model->get_factura_compras($desde,$hasta);
+            
+            echo json_encode($datos);
+            
+                    
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    } 
 }

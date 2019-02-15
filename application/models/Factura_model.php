@@ -126,4 +126,48 @@ class Factura_model extends CI_Model
     {
         return $this->db->delete('factura',array('factura_id'=>$factura_id));
     }
+    
+
+    function get_factura_ventas($inicio, $fin)
+    {
+        $sql = "
+            SELECT
+                *
+
+            FROM
+                `factura`
+
+            WHERE
+                factura_fecha >= '".$inicio."'
+                and factura_fecha <= '".$fin."'
+                and venta_id <> 0 
+
+            ORDER BY `factura_id` DESC";
+        
+        $factura = $this->db->query($sql)->result_array();
+       
+        return $factura;
+    }
+
+    function get_factura_compras($inicio, $fin)
+    {
+        $sql = "
+            SELECT
+                *
+
+            FROM
+                `factura`
+
+            WHERE
+                factura_fecha >= '".$inicio."'
+                and factura_fecha <= '".$fin."' 
+                
+            ORDER BY `factura_id` DESC";
+        
+        $factura = $this->db->query($sql)->result_array();
+      
+        return $factura;
+    }
+            
+    
 }

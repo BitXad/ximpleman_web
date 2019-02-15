@@ -792,7 +792,7 @@ function buscar_clientes()
     $.ajax({url:controlador,
         type:"POST",
         data:{parametro: parametro, tipo: tipo},
-        success: function(response){           
+        success: function(response){
             var c = JSON.parse(response);
 
             html = "";
