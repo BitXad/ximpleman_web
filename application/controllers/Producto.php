@@ -82,9 +82,9 @@ class Producto extends CI_Controller{
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
                         $config['image_library'] = 'gd2';
-                        $config['max_size'] = 2000000;
-                        $config['max_width'] = 3900;
-                        $config['max_height'] = 3900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
@@ -215,9 +215,9 @@ class Producto extends CI_Controller{
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/productos/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 2000000;
-                    $config['max_width'] = 3900;
-                    $config['max_height'] = 3900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -366,9 +366,9 @@ class Producto extends CI_Controller{
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/productos/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -498,7 +498,7 @@ class Producto extends CI_Controller{
         
         if($this->form_validation->run())     
         {
-            /* *********************INICIO imagen***************************** */
+            /* *********************INICIO IMAGEN***************************** */
             $foto="";
             if (!empty($_FILES['chivo']['name'])){
                         $this->load->library('image_lib');
@@ -506,9 +506,9 @@ class Producto extends CI_Controller{
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
                         
                         $dia = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $new_name = $this->input->post('producto_nombre');
@@ -563,6 +563,7 @@ class Producto extends CI_Controller{
                 'producto_marca' => $this->input->post('producto_marca'),
                 'producto_industria' => $this->input->post('producto_industria'),
                 'producto_costo' => $this->input->post('producto_costo'),
+                'producto_ultimocosto' => $this->input->post('producto_costo'),
                 'producto_precio' => $this->input->post('producto_precio'),
                 'producto_foto' => $foto,
                 'producto_comision' => $this->input->post('producto_comision'),
@@ -571,7 +572,7 @@ class Producto extends CI_Controller{
             $producto_id = $this->Producto_model->add_producto($params);
 
             $this->load->model('Inventario_model');
-            $this->Inventario_model->ingresar_producto_a_inventario($producto_id,$cantidad);
+            $this->Inventario_model->ingresar_producto_a_inventario($producto_id,0);
 
              $sql = "INSERT into detalle_compra_aux(
                 compra_id,
