@@ -92,11 +92,13 @@
 
                             <!-- inicio modal -->
                             <?php if ($o['estado_id']==8){?>
+                                <span class="btn btn-danger btn-xs"><?php echo $o['estado_descripcion']; ?></span><br>
                                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalpagar<?php echo "00".$o['orden_id']; ?>">
                                 <span class="fa fa-money"></span> Pagar
                                 </button>
-                            <?php }else{ echo $o['orden_cobradapor']."<br>".$o['orden_ci']; } ?>
-                            <br><span class="btn btn-danger">asdsad</span>
+                            <?php }else{ echo $o['orden_cobradapor']."<br>".$o['orden_ci']; ?>
+                                        <br><span class="btn btn-facebook btn-xs"><?php echo $o['estado_descripcion']; ?></span>
+                            <?php } ?>
                             
                             
                             <!-- Modal -->
