@@ -64,7 +64,7 @@ class Cliente extends CI_Controller{
             $this->load->library('form_validation');
 
             //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
-            $this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
+            $this->form_validation->set_rules('cliente_nombre','Cliente Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             //$this->form_validation->set_rules('cliente_nombrenegocio','Nombre Negocio','required');
 
             if($this->form_validation->run())     

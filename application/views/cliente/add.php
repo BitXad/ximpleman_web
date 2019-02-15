@@ -14,6 +14,15 @@ function mostrar(a) {
 }
 </script>
 <script type="text/javascript">
+    function verificarnumero(numero){
+        if(numero <0){
+            alert("Nit debe ser Mayor a 0");
+            $("#cliente_nit").focus();
+        }
+        
+    }
+</script>
+<script type="text/javascript">
     $(document).ready(function(){
     $("#cliente_nombre").change(function(){
         var nombre = $("#cliente_nombre").val();
@@ -59,7 +68,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_ci" class="control-label">CI</label>
 						<div class="form-group">
-							<input type="text" name="cliente_ci" value="<?php echo $this->input->post('cliente_ci'); ?>" class="form-control" id="cliente_ci" />
+							<input type="text" name="cliente_ci" value="<?php echo $this->input->post('cliente_ci'); ?>" class="form-control" id="cliente_ci" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -78,13 +87,13 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_telefono" class="control-label">Teléfono</label>
 						<div class="form-group">
-							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" />
+							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_celular" class="control-label">Celular</label>
 						<div class="form-group">
-							<input type="text" name="cliente_celular" value="<?php echo $this->input->post('cliente_celular'); ?>" class="form-control" id="cliente_celular" />
+							<input type="text" name="cliente_celular" value="<?php echo $this->input->post('cliente_celular'); ?>" class="form-control" id="cliente_celular" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -196,7 +205,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_nit" class="control-label">Nit</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : '0'); ?>" class="form-control" id="cliente_nit" />
+                                                    <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : '0'); ?>" class="form-control" id="cliente_nit" />
 						</div>
 					</div>
 					<div class="col-md-6">
