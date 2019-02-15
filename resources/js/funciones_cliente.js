@@ -12,6 +12,10 @@ function buscarcliente(e) {
         tablaresultadoscliente(2);
     }
 }
+/* Funcion que muestra a todos los clientes */
+function mostrar_all_clientes() {
+    tablaresultadoscliente(3);
+}
 
 //Tabla resultados de la busqueda en el index de cliente
 function tablaresultadoscliente(limite)
@@ -23,6 +27,8 @@ function tablaresultadoscliente(limite)
     
     if(limit == 1){
         controlador = base_url+'cliente/buscarclienteslimit/';
+    }else if(limit == 3){
+        controlador = base_url+'cliente/buscarclientesall/';
     }else{
         controlador = base_url+'cliente/buscarclientes/';
     }

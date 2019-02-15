@@ -699,10 +699,36 @@ class Cliente extends CI_Controller{
             //$limite = $this->input->post('limite');   
             
             /*if ($parametro!=""){*/
-            $datos = $this->Cliente_model->get_all_cliente();
+            $datos = $this->Cliente_model->get_all_cliente_limit();
             echo json_encode($datos);
             /*}
             else echo json_encode(null);*/
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /* buscar Todos los clientes */
+    function buscarclientesall()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request())
+        {
+            $datos = $this->Cliente_model->get_all_cliente();
+            echo json_encode($datos);
         }
         else
         {                 

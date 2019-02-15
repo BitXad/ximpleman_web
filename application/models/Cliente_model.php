@@ -58,7 +58,7 @@ class Cliente_model extends CI_Model
     /*
      * Funcion que busca clientes
      */
-    function get_all_cliente()
+    function get_all_cliente_limit()
     {
         $sql = "SELECT
                 c.*, e.estado_color, e.estado_descripcion
@@ -364,5 +364,23 @@ class Cliente_model extends CI_Model
         ")->result_array();
 
         return $cliente;
+    }
+    /* Funcion que busca a TODOS los clientes */
+    function get_all_cliente()
+    {
+        $sql = "SELECT
+                c.*, e.estado_color, e.estado_descripcion
+
+            FROM
+                cliente c, estado e
+
+            WHERE
+                c.estado_id = e.estado_id
+               
+              ORDER By c.cliente_id DESC";
+
+        $cliente = $this->db->query($sql)->result_array();
+        return $cliente;
+
     }
 }

@@ -66,6 +66,7 @@
         <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
         <div class="container" id="categoria">
             <span class="badge btn-danger">Clientes encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a onclick="mostrar_all_clientes()" class="btn btn-success btn-sm">Ver Todos los Clientes</a>
         </div>
          <div class="row" id='loader'  style='display:none; text-align: center'>
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
