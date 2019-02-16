@@ -643,7 +643,7 @@ class Producto extends CI_Controller{
         $producto = $this->Producto_model->get_producto($producto_id);
 
         // check if the producto exists before trying to delete it
-        if(isset($producto['producto_id']))
+        if(isset($producto[0]['producto_id']))
         {
             $res = $this->Producto_model->producto_es_usado($producto_id);
             
