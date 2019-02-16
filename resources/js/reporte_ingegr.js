@@ -133,6 +133,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     var totalegreso4 = 0;
                     var totalegreso5 = 0;
                     var totalegreso6 = 0;
+                    var totalegreso10 = 0;
                     
                     var totalingreso = 0;
                     var totalegreso = 0;
@@ -155,6 +156,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     html7 = "";
                     html8 = "";
                     html9 = "";
+                    html10 = "";
                     cabecerahtml1= "";
                     cabecerahtml2= "";
                     cabecerahtml21= "";
@@ -168,6 +170,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     cabecerahtml7= "";
                     cabecerahtml8= "";
                     cabecerahtml9= "";
+                    cabecerahtml10= "";
                     
                     var cont1 = 1;
                     var cont2 = 1;
@@ -182,6 +185,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     var cont7 = 1;
                     var cont8 = 1;
                     var cont9 = 1;
+                    var cont10 = 1;
                     /*
                    if (n <= limite) x = n; 
                    else x = limite;
@@ -342,6 +346,17 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           html6 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
                           html6 += "</tr>";
                           cont6 += 1;
+                      }
+                      
+                      if(registros[i]['tipo'] == 10){
+                          totalegreso10  += parseFloat(registros[i]['egreso']);
+                          html10 += "<tr>";
+                          html10 += "<td>"+cont10+"</td>";
+                          html10 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html10 += "<td>"+registros[i]["detalle"]+"</td>";
+                          html10 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
+                          html10 += "</tr>";
+                          cont10 += 1;
                       }
 
                         html += "<tr>";
@@ -561,8 +576,25 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     
                     piehtml6 = "</tbody></table></div></div>";
                     /* *****************F I N para reporte de PAGOS****************** */
+                    /* *****************INICIO para RDENES DE PAGOS****************** */
+                    cabecerahtml10= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosorden' onclick='mostrarordenpago(); return false'>+</a></td><td style='width:61%;'>PAGOS POR ORDENES DE PAGO: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso10).toFixed(2))+"</td></tr></table>";
+                    //cabecerahtml6= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mospago' onclick='mostrarpago(); return false'>+</a></div><div class='col-md-4'>Pagos por Credito: </div><div class='col-md-4'>"+numberFormat(Number(totalegreso6).toFixed(2))+"</div><div class='col-md-3'></div></label>";
+                    cabecerahtml10 += "<div id='oculto10' style='visibility: hidden; width: 0; height: 0;'>";
+                    cabecerahtml10 += "<div id='map10'>";
+                    
+                    cabecerahtml10 += "<table class='table table-striped table-condensed' id='mitabladetimpresion'>";
+                    cabecerahtml10 += "<tr>";
+                    cabecerahtml10 += "<th>N°</th>";
+                    cabecerahtml10 += "<th>Fecha</th>";
+                    cabecerahtml10 += "<th>Detalle</th>";
+                    cabecerahtml10 += "<th>Egreso</th>";
+                    cabecerahtml10 += "</tr>";
+                    cabecerahtml10 += "<tbody>";
+                    
+                    piehtml10 = "</tbody></table></div></div>";
+                    /* *****************F I N para ORDENES de PAGOS****************** */
                     /* *****************INICIO para suma reporte total de INGRESOS****************** */
-                    totaltablaegresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL EGRESOS: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalegreso4+totalegreso5+totalegreso6).toFixed(2))+"</b></td></tr></table>";
+                    totaltablaegresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL EGRESOS: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalegreso4+totalegreso5+totalegreso6+totalegreso10).toFixed(2))+"</b></td></tr></table>";
                     /* *****************F I N para suma reporte total de INGRESOS****************** */ 
                    //para mostrar saldo en caja
                     saldoencaja = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;' id='alinearder'><b>SALDO EFECTIVO EN CAJA: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number((totalingreso1+totalingreso2+totalingreso3)-totalegreso).toFixed(2))+"</b></td></tr></table>";
@@ -596,6 +628,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    $("#tablaegresoresultados").html(cabecerahtml4+html4+piehtml4);
                    $("#tablacompraresultados").html(cabecerahtml5+html5+piehtml5);
                    $("#tablapagoresultados").html(cabecerahtml6+html6+piehtml6);
+                   $("#tablaordenresultados").html(cabecerahtml10+html10+piehtml10);
                    $("#sumatablaegresosresultados").html(totaltablaegresoresultados);
                    $("#saldoencaja").html(saldoencaja);
                    $("#tablatotalresultados").html(cabecerahtmlt+html+htmls+piehtmlt);
