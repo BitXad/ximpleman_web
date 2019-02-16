@@ -848,7 +848,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-3">
                         <label for="forma_id" class="control-label">Forma Pago</label>
                         <div class="form-group">
-                            <select name="forma_id" class="form-control" required>
+                            <select name="forma_id"  class="form-control"  required>
                                 <option value="1">EFECTIVO</option>
                                 <?php 
                                 foreach($all_forma_pago as $forma_pago)
@@ -864,7 +864,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-3">
                         <label for="tipotrans_id" class="control-label">Tipo de Compra</label>
                         <div class="form-group">
-                            <select name="tipotrans_id"  type="text" class="form-control" required>
+                            <select name="tipotrans_id" id="tipotrans" type="text" class="form-control" onchange="mostrar_radio()" required>
                                 
                                 <option value="1">CONTADO</option>
                                 <option value="2" id="filtrar4" <?php if ($compra[0]['tipotrans_id']==2){ ?> selected
@@ -903,8 +903,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     //$total_consumo = 0;
     
 ?>              
-        <div class="col-md-8">
-          <span class="btn btn-xs" style="border-color: orange;">
+        <div class="col-md-8" id='radio' style='display:block;'>
+                    <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="compra_caja0"
      name="compra_caja" value="" <?php if ($compra[0]['compra_caja']==''){ ?> checked <?php } ?> >
     <label for="compra_caja0">Ninguno</label></span>

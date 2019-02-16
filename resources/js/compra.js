@@ -486,6 +486,21 @@ function mostrar_ocultar_buscador(parametro){
     
 }
 
+function mostrar_radio(){
+     var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"compra";
+    var opcionradio      = document.getElementById('tipotrans').value;
+     if (opcionradio == 2) {
+
+       document.getElementById('radio').style.display = 'none';
+       document.getElementById('compra_caja0').checked = true;
+       
+    }
+     else{
+        document.getElementById('radio').style.display = 'block';}
+}
+
+
 function buscar_por_fecha()
 {
     var base_url    = document.getElementById('base_url').value;
