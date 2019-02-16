@@ -649,6 +649,9 @@ class Producto extends CI_Controller{
             
             if($res == 0){
                 $this->Producto_model->delete_producto($producto_id);
+                
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->delete_inventario($producto_id);
                 redirect('producto/index');
             }else{
                 $a = 1;
