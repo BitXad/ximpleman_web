@@ -643,12 +643,15 @@ class Producto extends CI_Controller{
         $producto = $this->Producto_model->get_producto($producto_id);
 
         // check if the producto exists before trying to delete it
-        if(isset($producto['producto_id']))
+        if(isset($producto[0]['producto_id']))
         {
             $res = $this->Producto_model->producto_es_usado($producto_id);
             
             if($res == 0){
                 $this->Producto_model->delete_producto($producto_id);
+                
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->delete_inventario($producto_id);
                 redirect('producto/index');
             }else{
                 $a = 1;
