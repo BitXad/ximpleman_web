@@ -1629,3 +1629,47 @@ function seleccionar_cliente(){
         });    
     
 }
+function pasaraventas(pedido_id,usuariopedido_id,cliente_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"pedido/pasaraventas/"+pedido_id+"/"+cliente_id;
+   
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){  
+            
+            $("#pedido_id").val(pedido_id);
+            $("#usuariopedido_id").val(usuariopedido_id);
+            tablaproductos();
+            datoscliente(cliente_id);           
+        },
+        error: function(respuesta){
+            tablaproductos();
+            datoscliente(cliente_id);
+        }
+    });
+   
+}
+
+
+function datoscliente(cliente_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"pedido/datoscliente";
+
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{cliente_id:cliente_id},
+        success:function(result){          
+            var datos = JSON.parse(result);            
+            //console.log(datos);            
+            $("#cliente_id").val(datos[0]["cliente_id"]);
+            $("#nit").val(datos[0]["cliente_nit"]);
+            $("#razon_social").val(datos[0]["cliente_razon"]);
+            $("#telefono").val(datos[0]["cliente_telefono"]);
+        }
+        
+    });
+   
+}   
