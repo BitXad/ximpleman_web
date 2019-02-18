@@ -142,7 +142,7 @@ class Factura_model extends CI_Model
                 and factura_fecha <= '".$fin."'
                 and venta_id <> 0 
 
-            ORDER BY `factura_id` DESC";
+            ORDER BY `factura_id` ASC";
         
         $factura = $this->db->query($sql)->result_array();
        
@@ -162,7 +162,7 @@ class Factura_model extends CI_Model
                 factura_fecha >= '".$inicio."'
                 and factura_fecha <= '".$fin."' 
                 
-            ORDER BY `factura_id` DESC";
+            ORDER BY `factura_id` ASC";
         
         $factura = $this->db->query($sql)->result_array();
       
