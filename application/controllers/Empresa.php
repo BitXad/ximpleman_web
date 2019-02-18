@@ -68,9 +68,9 @@ class Empresa extends CI_Controller{
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 4900;
+                        $config['max_height'] = 4900;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
@@ -151,7 +151,7 @@ class Empresa extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         // check if the empresa exists before trying to edit it
-        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+        $data['empresa'] = $this->Empresa_model->get_this_empresa($empresa_id);
         
         if(isset($data['empresa']['empresa_id']))
         {
@@ -169,9 +169,9 @@ class Empresa extends CI_Controller{
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/empresas/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 4900;
+                    $config['max_height'] = 4900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -203,7 +203,8 @@ class Empresa extends CI_Controller{
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
                           unlink($directorio.$foto1);
-                          $mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          $mimagenthumb = "thumb_".$foto1;
                           unlink($directorio.$mimagenthumb);
                       }
                   }
@@ -265,7 +266,7 @@ class Empresa extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $empresa = $this->Empresa_model->get_empresa($empresa_id);
+        $empresa = $this->Empresa_model->get_this_empresa($empresa_id);
 
         // check if the empresa exists before trying to delete it
         if(isset($empresa['empresa_id']))
