@@ -906,7 +906,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="col-md-8" id='radio' style='display:block;'>
                     <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="compra_caja0"
-     name="compra_caja" value="" <?php if ($compra[0]['compra_caja']==''){ ?> checked <?php } ?> >
+     name="compra_caja" value="" <?php if ($compra[0]['compra_caja']=='' || $compra[0]['compra_caja']==0 || $compra[0]['compra_caja']==null){ ?> checked <?php } ?> >
     <label for="compra_caja0">Ninguno</label></span>
     <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="compra_caja1"
