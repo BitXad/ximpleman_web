@@ -42,7 +42,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="login-block">
             <!--				<form>-->
             <?php echo form_open('verificar'); ?>
-            <input type="text" name="username" id="username" placeholder="Usuario" required="">
+            <input type="text" name="username" id="username" placeholder="Usuario"  autofocus  required="">
             <input type="password" name="password" id="password" class="lock" placeholder="Contraseña">
             <div class="forgot-top-grids">
                 <div class="forgot-grid">
@@ -61,7 +61,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             <input type="submit" name="Sign In" value="Ingresar">
 
-            <h3>No estas registrado?<a href="<?php echo base_url()?>register">Registrate Ahora</a></h3>
+            <h3>No estas registrado?<a href="<?php echo base_url()?>register">  Registrate Ahora</a></h3>
 
             <!--				</form>-->
             <h5><a href="<?php echo base_url(); ?>">Regresar</a></h5>

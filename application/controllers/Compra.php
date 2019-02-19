@@ -220,6 +220,27 @@ class Compra extends CI_Controller{
     }          
 }
 
+ function cambiarfecha()
+    {
+       
+       if ($this->input->is_ajax_request()) {
+        
+        $fecha = $this->input->post('fecha');
+        $hora = $this->input->post('hora');
+        $compra_id = $this->input->post('compra_id');
+        
+        $this->Compra_model->cambiarfechacompra($fecha,$hora,$compra_id); 
+          $result = $this->Compra_model->comprafecha($compra_id);            
+       
+        echo json_encode($result);
+        
+    }
+    else
+    {                 
+        show_404();
+    }          
+}
+
 
 function anula()
 {
@@ -950,8 +971,8 @@ function ingresarproducto()
         if ($exis[0]['producto_id'] > 0) {
          $sumar="UPDATE detalle_compra_aux
           SET detallecomp_cantidad=detallecomp_cantidad+".$cantidad.",
-              detallecomp_subtotal = detallecomp_subtotal+(".$cantidad." * ".$producto_costo."),
-              detallecomp_total = detallecomp_total+(".$cantidad." * ".$producto_costo.") - ".$descuento."  
+              detallecomp_subtotal = detallecomp_subtotal+(".$cantidad." * detallecomp_costo),
+              detallecomp_total = detallecomp_total+(".$cantidad." * detallecomp_costo) - ".$descuento."  
               WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id."
     ";
          $this->db->query($sumar);
@@ -975,13 +996,13 @@ function ingresarproducto()
         producto_id,
         producto_codigo,
         producto_unidad,
-        ".$producto_costo.",
+        ".$producto_costo."- ".$descuento.",
         ".$cantidad.",
         ".$producto_precio.",
         '".$fecha_venc."',
-        ".$descuento.",
-        ".$cantidad." * ".$producto_costo.",
-        (".$cantidad." * ".$producto_costo.") - ".$descuento."
+        0,
+        (".$producto_costo." - ".$descuento.") * ".$cantidad.",
+        (".$producto_costo." - ".$descuento.") * ".$cantidad."
         
         from producto where producto_id = ".$producto_id."
     )";

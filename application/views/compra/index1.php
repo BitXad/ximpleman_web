@@ -26,6 +26,10 @@
             })
         }(jQuery));
     });
+      function imprimir()
+        {
+             window.print(); 
+        }
 </script>   
 
 <!----------------------------- fin script buscador --------------------------------------->
@@ -33,40 +37,76 @@
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-<div class="box-header">
-    <h3 class="box-title">Compras Completadas</h3>
-    <div class="box-tools">
+<!-------------------------------------------------------->
 
-        <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-sm">+ A&ntilde;adir Compra</a>
-    </div>
-</div>
 <div class="row">
-    <div class="col-md-12">
-       <div class="col-md-6">
-        <div class="input-group"> <span class="input-group-addon">Buscar</span>
-            <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor" onkeypress="validacompra(event,4)" >
-        </div></div>
-        <div class="container" id="categoria">
+    
+    <div class="col-md-6">
 
 
-            <!--------------------- indicador de resultados --------------------->
-            <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
-
-            <span class="badge btn-primary">Productos encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
-
+        <!--este es INICIO del BREADCRUMB buscador-->
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
+                <li class="active"><b>Compras: </b></li>
+                <input style="border-width: 0; background-color: #DEDEDE" id="pillados" type="text"  size="5" value="0" readonly="true">
+            </ol>
         </div>
-        <!-------------------- CATEGORIAS------------------------------------->
-        <div class="col-md-6">
-          <div  class="box-tools" >
+        <!--este es FIN del BREADCRUMB buscador-->
+ 
+        <!--este es INICIO de input buscador-->
+            <div class="input-group">
+                      <span class="input-group-addon"> 
+                        Buscar 
+                      </span>           
+                <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor" onkeypress="validacompra(event,4)" >
 
-            <select  class="btn btn-primary btn-sm" style="padding: 0px;" id="select_compra" onchange="buscar_compras()">
+                 
+            </div>
+             <select  class="btn btn-primary btn-sm" style="padding: 0px;" id="select_compra" onchange="buscar_compras()">
                 <option value="1">Compras de Hoy</option>
                 <option value="2">Compras de Ayer</option>
                 <option value="3">Compras de la semana</option>
 
                 <option value="5">Compras por fecha</option>
             </select>
-            
+        <!--este es FIN de input buscador-->
+
+        <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
+         <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
+        <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
+        
+        
+    </div>
+    
+    <!---------------- BOTONES --------->
+    <div class="col-md-6">
+        
+            <div class="box-tools">
+        <center>            
+            <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
+        </center>            
+    </div>
+    </div>
+    <!---------------- FIN BOTONES --------->
+    
+</div>
+    
+<!-------------------------------------------------------------------------------->
+
+<div class="row">
+    <div class="col-md-12">
+       
+   
+        <!-------------------- CATEGORIAS------------------------------------->
+        <div class="col-md-6">
+          <div  class="box-tools" >
 
         </div></div>
 
@@ -82,7 +122,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        Tipo:       <br>      
+                        Tipo:         
                         <select  class="btn btn-primary btn-sm form-control" style=" width: 45%; font-size: 11px;"  id="tipotrans_id" required="true">
                             <?php foreach($tipo_transaccion as $es){?>
                                 <option value="<?php echo $es['tipotrans_id']; ?>"><?php echo $es['tipotrans_nombre']; ?></option>
@@ -98,11 +138,6 @@
         </form>
         <div class="container" id="categoria">
 
-
-            <!--------------------- indicador de resultados --------------------->
-            <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
-
-            <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="pillados" type="text" value="0" readonly="true"> </span></span>
 
         </div>
         <div class="box">
