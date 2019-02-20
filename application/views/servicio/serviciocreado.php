@@ -429,14 +429,16 @@ $(document).ready(function(){
         $dir_url = "";
         if($all_parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
             $dir_url = site_url('servicio/boletarecepcion_boucher/'.$servicio['servicio_id']);
+            $titprint = "Imp. Boucher";
         }else{
             $dir_url = site_url('servicio/boletarecepcion/'.$servicio['servicio_id']);
+            $titprint = "Imp. Normal";
         }
         ?>
         
-        <a href="<?php echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']); ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imp. Comprob.</a>
-        <a href="<?php echo $dir_url; ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imp. Boucher</a>
-        <a href="<?php echo site_url('servicio'); ?>" id="finalizar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+        <!--<a href="<?php //echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']); ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imp. Comprob.</a>
+        <a href="<?php //echo $dir_url; ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br><?php echo $titprint; ?></a>-->
+        <a href="<?php echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']);  ?>" id="finalizar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="window.location.href='../../servicio'" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
 </div>
 </div>
 
@@ -455,49 +457,46 @@ $(document).ready(function(){
 </script>   
 
 <!--------------------------------- INICIO MODAL BUSCAR CLIENTES ------------------------------------>
-<div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-                            
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
-                                
-        <!--este es INICIO de input buscador-->
-        <div class="input-group">
-                      <span class="input-group-addon"> 
-                        Buscar 
-                      </span>           
-                      <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del Clie..." onkeypress="validar(event,3,<?php echo $servicio['servicio_id']; ?>)">
-        </div>
-        <!--este es FIN de input buscador-->
-        <div class="container" id="categoria">    
-                <span class="badge btn-danger">Clientes encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
-        </div>
-			</div>
-			<div class="modal-body">
-                        <!--------------------- TABLA---------------------------------------------------->
-                        <div class="box-body table-responsive">
-                        <table class="table table-striped" id="mitabla">
-                            <tr>
-                                                        <th>N°</th>
-                                                        <th> Nombres
-                                                            <a style="float: right;" class="btn btn-success btn-xs" data-dismiss="modal" data-toggle="modal" href="#myModal"><span class="fa fa-user-plus"></span>&nbsp;Nuevo Cliente</a>
-                                                        </th>
-<!--                                                        <th>Acción</th>-->
-                            </tr>
-                            <tbody class="buscar" id="tablaresultados" >
-                           
-                            </tbody>
-                        </table>
-                    </div>
+<div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalbuscarLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Clientes</h4>
 
-                        <!----------------------FIN TABLA--------------------------------------------------->
-			</div>
-		</div>
-	</div>
+                <!--este es INICIO de input buscador-->
+                <div class="col-md-1">
+                        Buscar 
+                </div>           
+                <div class="col-md-7">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del Clie..." onkeypress="validar(event,3,<?php echo $servicio['servicio_id']; ?>)">
+                </div>
+                <!--este es FIN de input buscador-->
+                <div class="container col-md-4" id="categoria">    
+                    <span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!--------------------- TABLA---------------------------------------------------->
+                <div class="box-body table-responsive">
+                    <table class="table table-striped" id="mitabla">
+                        <tr>
+                            <th>N°</th>
+                            <th> Nombres
+                                <a style="float: right;" class="btn btn-success btn-xs" data-dismiss="modal" data-toggle="modal" href="#myModal"><span class="fa fa-user-plus"></span>&nbsp;Nuevo Cliente</a>
+                            </th>
+                        </tr>
+                        <tbody class="buscar" id="tablaresultados" >
+
+                        </tbody>
+                    </table>
+                </div>
+            <!----------------------FIN TABLA--------------------------------------------------->
+            </div>
+        </div>
+    </div>
 </div>
 <!--------------------------------- FIN MODAL BUSCAR CLIENTES ------------------------------------>
 
@@ -516,14 +515,14 @@ $(document).ready(function(){
             ?>
           <div class="modal-body">
            <!------------------------------------------------------------------->
-
-                            <div class="col-md-6">
+           <div class="col-md-12">
+                            <div class="col-md-3">
                                 <label for="detalleserv_reclamo" class="control-label">¿Es Reclamo?</label>
                                     <div class="form-group">
                                         <input type="checkbox" name="detalleserv_reclamo" id="detalleserv_reclamo" value="si" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <label for="cattrab_id" class="control-label">Tipo de Trabajo</label>
                                     <div class="form-group">
                                         <select name="cattrab_id" class="form-control" id="cattrab_id">
@@ -539,7 +538,7 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="procedencia_id" class="control-label">Procedencia</label>
                                     <div class="form-group">
                                         <select name="procedencia_id" class="form-control" id="procedencia_id">
@@ -625,43 +624,43 @@ $(document).ready(function(){
                                             <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                     <label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
                                     <div class="form-group">
                                             <input type="text" name="detalleserv_glosa" value="<?php echo $this->input->post('detalleserv_glosa'); ?>" class="form-control" id="detalleserv_glosa" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_total" class="control-label">Total</label>
                                     <div class="form-group">
                                             <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo number_format($this->input->post('detalleserv_total'),'2','.',','); ?>" class="form-control" id="detalleserv_total" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_acuenta" class="control-label">A cuenta</label>
                                     <div class="form-group">
                                             <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo number_format($this->input->post('detalleserv_acuenta'),'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_saldo" class="control-label">Saldo</label>
                                     <div class="form-group">
                                         <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo number_format($this->input->post('detalleserv_saldo'),'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_fechaentrega" class="control-label">Fecha Entrega</label>
                                     <div class="form-group">
                                         <input type="text" name="detalleserv_fechaentrega" value="<?php $maniana = time()+(24*60*60); echo date('d/m/Y', $maniana); ?>" class="has-datepicker form-control" id="detalleserv_fechaentrega" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_horaentrega" class="control-label">Hora Entrega</label>
                                     <div class="form-group">
                                         <input type="time" name="detalleserv_horaentrega" value="<?php echo date('H:i'); ?>" class="form-control" id="detalleserv_horaentrega" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="responsable_id" class="control-label"><span class="text-danger">*</span>Responsable</label>
                                     <div class="form-group">
                                         <select name="responsable_id" class="form-control" id="responsable_id" required>
@@ -677,8 +676,8 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
+                        </div>
                         <!--    <input type="hidden" name="servicio_id" value="<?php //echo $servicio['servicio_id'] ?>" class="form-control" id="servicio_id" /> -->
-		
            <!------------------------------------------------------------------->
           </div>
           <div class="modal-footer aligncenter">

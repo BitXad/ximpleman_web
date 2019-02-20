@@ -60,7 +60,7 @@
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit, nombre negocio" onkeypress="buscarcliente(event)" autocomplete="off" >
             </div>
         <!--este es FIN de input buscador-->
         <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
@@ -86,8 +86,8 @@
                         <!--<th>Aniversario</th>-->
 <!--                        <th>Tipo</th>-->
                         <th>Categoria</th>
-                        <th>Prevendedor</th>
-                        <th>Estado</th>
+                        <th>Prev./Estado</th>
+                        <!--<th>Estado</th>-->
                         <th></th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
@@ -267,6 +267,6 @@
 <?php
 if($a == 1)
 echo '<script type="text/javascript">
-    alert("El Cliente no se puede Eliminar \n porque pertenece a alguna transacción");
+    alert("El Cliente NO puede ser ELIMINADO, \n porque tiene transacciones realizadas");
 </script>';
 ?>
