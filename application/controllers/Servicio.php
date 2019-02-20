@@ -39,6 +39,9 @@ class Servicio extends CI_Controller{
         $this->load->model('Categoria_servicio_model');
         $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_asc();
         
+        $this->load->model('Parametro_model');
+	$data['all_parametro'] = $this->Parametro_model->get_all_parametro();
+        
         $data['_view'] = 'servicio/index';
         $this->load->view('layouts/main',$data);
         }
@@ -260,6 +263,7 @@ class Servicio extends CI_Controller{
         $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
         $usuario_id = $session_data['usuario_id'];
         $tiposerv_id = 1; //este valor (Servicio Normal) esta definido en la tabla tipo_servicio
+        //$cliente_id = 0; //cliente 0 que es un cliente no definido
         
         date_default_timezone_set('America/La_Paz');
         $fecha_res = date('Y-m-d');
@@ -719,14 +723,16 @@ class Servicio extends CI_Controller{
 
         if ($this->input->is_ajax_request()) {
             
-            $parametro = $this->input->post('parametro');   
+            $parametro = $this->input->post('filtro');   
             
             if ($parametro!=""){
             $datos = $this->Servicio_model->get_busqueda_servicio_parametro($parametro);
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
+            }else{
+                $datos = $this->Servicio_model->get_all_servicios_pendientes();
+            echo json_encode($datos);
             }
-            else echo json_encode(null);
         }
         else
         {                 
@@ -893,12 +899,12 @@ class Servicio extends CI_Controller{
             
             $filtro = $this->input->post('filtro');   
             
-            if ($filtro!=""){
+            //if ($filtro!=""){
             $datos = $this->Servicio_model->get_busqueda_servicio_filtro($filtro);
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
-            }
-            else echo json_encode(null);
+            /*}
+            else echo json_encode(null);*/
         }
         else
         {                 

@@ -87,6 +87,23 @@ class Servicio_model extends CI_Model
                 s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
                 u.usuario_nombre, c.cliente_nombre
             FROM
+                servicio s
+            LEFT JOIN estado e on s.estado_id = e.estado_id
+            LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN usuario u on s.usuario_id = u.usuario_id
+            WHERE
+               (c.cliente_nombre like '%".$parametro."%' or s.servicio_id like '%".$parametro."%'
+                   or e.estado_descripcion like '%".$parametro."%')
+
+            ORDER BY s.servicio_id desc 
+
+
+        /*
+            SELECT
+                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                u.usuario_nombre, c.cliente_nombre
+            FROM
                 servicio s, estado e, tipo_servicio ts, cliente c, usuario u
 
             WHERE
@@ -98,8 +115,8 @@ class Servicio_model extends CI_Model
                 and s.usuario_id = u.usuario_id
 
             GROUP BY
-                s.servicio_id
-              ORDER By s.servicio_id desc
+                s.servicio_id 
+              ORDER By s.servicio_id desc*/
         ")->result_array();
 
         return $servicio;
@@ -107,23 +124,24 @@ class Servicio_model extends CI_Model
     
     function get_busqueda_servicio_filtro($filtro)
     {
+        $where = "";
+        if($filtro != ""){
+            $where = " WHERE ";
+        }
         $servicio = $this->db->query("
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
                 u.usuario_nombre, c.cliente_nombre
             FROM
-                servicio s, estado e, tipo_servicio ts, cliente c, usuario u
+                servicio s
+            LEFT JOIN estado e on s.estado_id = e.estado_id
+            LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN usuario u on s.usuario_id = u.usuario_id
+                ".$where." ".$filtro."
 
-            WHERE
-                s.estado_id = e.estado_id
-                and s.tiposerv_id = ts.tiposerv_id
-                and s.cliente_id = c.cliente_id
-                and s.usuario_id = u.usuario_id
-                ".$filtro." 
+            ORDER BY s.servicio_id desc            
 
-            GROUP BY
-                s.servicio_id
-              ORDER By s.servicio_id desc
         ")->result_array();
 
         return $servicio;
@@ -178,18 +196,18 @@ class Servicio_model extends CI_Model
     {
         $servicio = $this->db->query("
             SELECT
-                *
+                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                i.usuario_nombre, c.cliente_nombre
             FROM
-                servicio s, estado e, tipo_servicio ts, cliente c, usuario i
-
+                servicio s
+            LEFT JOIN estado e on s.estado_id = e.estado_id
+            LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN usuario i on s.usuario_id = i.usuario_id
             WHERE
-                s.estado_id = e.estado_id
-                and s.tiposerv_id = ts.tiposerv_id
-                and s.cliente_id = c.cliente_id
-                and s.usuario_id = i.usuario_id
-                and s.estado_id = 5
+                s.estado_id = 5
 
-            ORDER BY `servicio_id` desc
+            ORDER BY s.servicio_id desc
         ")->result_array();
 
         return $servicio;
