@@ -510,7 +510,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" class="form-control" id="producto_nombre" required/>
+                            <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="producto_nombre" required/>
                             
                         </div>
                     </div>
@@ -571,7 +571,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                    <div class="col-md-6">
                         <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
-                            <input type="text" name="producto_unidad" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
+                            <input type="text" name="producto_unidad" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
                         </div>
                     </div>
 </div>
@@ -597,13 +597,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="producto_marca" class="control-label">Marca</label>
                         <div class="form-group">
-                            <input type="text" name="producto_marca" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
+                            <input type="text" name="producto_marca" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="producto_industria" class="control-label">Industria</label>
                         <div class="form-group">
-                            <input type="text" name="producto_industria" value="<?php echo $this->input->post('producto_industria'); ?>" class="form-control" id="producto_industria" />
+                            <input type="text" name="producto_industria" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_industria'); ?>" class="form-control" id="producto_industria" />
                         </div>
                     </div>
                      <div class="col-md-6">
@@ -683,7 +683,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" class="form-control" id="proveedor_nombre1" required />
+                            <input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="proveedor_nombre1" required />
                             
                         </div>
                         <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
@@ -692,7 +692,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_contacto" class="control-label">Contacto</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_contacto" value="<?php echo $this->input->post('proveedor_contacto'); ?>" class="form-control" id="proveedor_contacto" />
+                            <input type="text" name="proveedor_contacto" value="<?php echo $this->input->post('proveedor_contacto'); ?>"  onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="proveedor_contacto" />
                         </div>
                     </div>
                     
