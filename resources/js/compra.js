@@ -43,7 +43,7 @@ function tabladetallecompra(){
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["producto_nombre"]+" /</b><br>";
+                        html += "<td style='font-size:10px; width:140px;'><b>"+registros[i]["producto_nombre"]+" /</b><br>";
                         
                         html += "<b>"+registros[i]["detallecomp_unidad"]+"</td>";                                            
                         html += "<td style='font-size:12px; text-align:center;'>"+registros[i]["detallecomp_codigo"]+"<br><font size='1'>";
@@ -53,13 +53,13 @@ function tabladetallecompra(){
                         html += "</td><td><input id='compra_identi'  name='compra_id' type='hidden' class='form-control' value='"+compra_id+"'>";
                         html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
                         
-                        html += "<input style='font-size:13px; width:60px;' id='detallecomp_precio"+registros[i]["producto_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
-                        html += "<td><input style='font-size:13px; width:60px;' id='detallecomp_costo"+registros[i]["producto_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
-                        html += "<td style='padding-left:0px; padding-right:0px;'><input style='font-size:13px; width:50px;' id='detallecomp_cantidad"+registros[i]["producto_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' onkeypress='return pulsar(event)'>";
+                        html += "<input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_precio"+registros[i]["producto_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
+                        html += "<td><input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_costo"+registros[i]["producto_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
+                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["producto_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' onkeypress='return pulsar(event)'>";
                         html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detallecomp_id"]+"'>";
                        
                         html += "<td style='font-size:13px; text-align:center;'>"+Number(registros[i]["detallecomp_subtotal"]).toFixed(2)+"</b></td>";
-                        html += "<td><input style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["producto_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
+                        html += "<td><input  class='input-sm' style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["producto_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
                        
                         
                        
@@ -91,6 +91,42 @@ function tabladetallecompra(){
         
     });
 }
+function numberFormat(numero){
+        // Variable que contendra el resultado final
+        var resultado = "";
+ 
+        // Si el numero empieza por el valor "-" (numero negativo)
+        if(numero[0]=="-")
+        {
+            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+            // el signo negativo
+            nuevoNumero=numero.replace(/\,/g,'').substring(1);
+        }else{
+            // Cogemos el numero eliminando los posibles puntos que tenga
+            nuevoNumero=numero.replace(/\,/g,'');
+        }
+ 
+        // Si tiene decimales, se los quitamos al numero
+        if(numero.indexOf(".")>=0)
+            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+ 
+        // Ponemos un punto cada 3 caracteres
+        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+ 
+        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+        // los separadores de miles
+        if(numero.indexOf(".")>=0)
+            resultado+=numero.substring(numero.indexOf("."));
+ 
+        if(numero[0]=="-")
+        {
+            // Devolvemos el valor añadiendo al inicio el signo negativo
+            return "-"+resultado;
+        }else{
+            return resultado;
+        }
+}
 
 function tablatotales(total_detalle,descuento,subtotal)
 {
@@ -107,17 +143,17 @@ function tablatotales(total_detalle,descuento,subtotal)
 
      html = "";
      html += "<table><tr><td>Sub Total Bs:</td><td></td>";
-     html += "<td style='align-right'>"+subtotal.toFixed(2)+"</td>";
+     html += "<td style='text-align: right;'>"+subtotal.toFixed(2)+"</td>";
      html += "</tr><tr>";
      html += "<td>Descuento:</td><td></td>";
-     html += "<td style='align-right'>"+descuento.toFixed(2)+"</td>";
+     html += "<td style='text-align: right;'>"+descuento.toFixed(2)+"</td>";
      html += "</tr><tr>";
      html += "<td>Descuento Global:</td><td style='width: 30px;'></td>";
-     html += "<td style='align-right'>"+globaly.toFixed(2)+"</td>";
+     html += "<td style='text-align: right;'>"+globaly.toFixed(2)+"</td>";
      html += "</tr>";
      html += "<tr>";
      html += "<th><b>TOTAL FINAL:</b></th><td></td>";
-     html += "<th style='align-right'><font size='3'><b>"+totalfinal.toFixed(2)+"</b></font></th>";
+     html += "<th style='text-align: right;'><font size='3'><b>"+totalfinal.toFixed(2)+"</b></font></th>";
      html += "</tr></table>";
  
 
@@ -627,7 +663,7 @@ function compraproveedor(opcion)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font> <br>";
+                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><font size='1'>["+registros[i]["compra_id"]+"]</font> <br>";
                         
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span><br>";                                            
             if (caja==1) {  
@@ -675,7 +711,7 @@ function fechadecompra(filtro)
       
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"compra/buscarfecha";
-    var limite = 25;
+    var limite = 500000;
      
     $.ajax({url: controlador,
            type:"POST",
@@ -709,7 +745,7 @@ function fechadecompra(filtro)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font> <br>";
+                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font> <font size='1'>["+registros[i]["compra_id"]+"]</font><br>";
                         
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
                         if (caja==1) {  
@@ -750,7 +786,7 @@ function fechadecompra(filtro)
                         html += "<tr>";
                         html += "<td></td>";
                         html += "<td align='right'><b>TOTAL</b></td>";
-                        html += "<td align='right'><font size='4'><b>"+Number(total).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font></td>";
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
@@ -771,6 +807,38 @@ function fechadecompra(filtro)
 
 } 
 
+function cambiarFecha()
+{
+    var base_url = document.getElementById('base_url').value;
+    var compra_id = document.getElementById('compra_id').value;
+    var fecha = document.getElementById('fechac').value;
+    var hora = document.getElementById('horac').value;
+    var controlador = base_url+"compra/cambiarfecha";
+   
+     
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{compra_id:compra_id,fecha:fecha,hora:hora},
+          
+           success:function(resul){
+            var registros =  JSON.parse(resul);
+                
+                html = "";   
+
+                    html = registros[0]['compra_fecha'];
+                     $("#fechacompra").html(html);
+                
+       },
+            error:function(resul){
+           html = "mal";
+           $("#fechacompra").html(html);
+          
+} 
+            });   
+
+ 
+
+}
 //Tabla resultados de la busqueda
 function tablaresultados(opcion)
 {   
@@ -834,7 +902,7 @@ function tablaresultados(opcion)
                             
                         html += "<div class='col-md-12' style='padding-left: 0px;'>";
 
-                        html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-facebook btn-xs'>"+registros[i]["existencia"]+"</span><br>";
+                        html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-facebook btn-xs'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span><br>";
                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
                         html += "Precio_V: <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 80px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
                         html += "<div class='col-md-2' style='padding-left: 0px;'>";

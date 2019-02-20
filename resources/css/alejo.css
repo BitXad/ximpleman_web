@@ -121,7 +121,7 @@ border-top: 0px;
 }
 
 
-    /*----inputs------------*/
+    /*----inputs----------
 input[type="date"] {
 width: 30%;  font-family: "Arial", Arial, Arial, arial; font-size: 11px; border: none;
 }
@@ -129,4 +129,11 @@ width: 30%;  font-family: "Arial", Arial, Arial, arial; font-size: 11px; border:
 select {
       width: 40%; height: 22px; border: none;  font-family: "Arial", Arial, Arial, arial; font-size: 11px;
 }
-
+--*/
+#modale {
+ 
+  border: 5px solid #3c8dbc;
+  border-radius: 10px;
+  font-family: "Arial", Arial, Arial, arial;
+ 
+}

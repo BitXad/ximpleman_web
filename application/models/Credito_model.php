@@ -87,6 +87,28 @@ class Credito_model extends CI_Model
 
         return $deuda;
     }
+     function dato_deudas($filtro)
+    {
+        $deuda = $this->db->query("
+            SELECT
+                c.*, p.*, co.*, e.*
+
+            FROM
+                credito c, proveedor p, compra co, estado e
+
+            WHERE
+                c.compra_id = co.compra_id
+                and p.proveedor_id = co.proveedor_id
+                and c.estado_id = e.estado_id
+                and c.credito_id=".$filtro." 
+
+            ORDER BY c.credito_fecha DESC
+
+            
+        ")->result_array();
+
+        return $deuda;
+    }
         
     function get_cuentas($filtro)
     {
@@ -102,6 +124,29 @@ class Credito_model extends CI_Model
                 and p.cliente_id = co.cliente_id
                 and c.estado_id = e.estado_id
                 ".$filtro." 
+
+            ORDER BY c.credito_fecha DESC
+
+            
+        ")->result_array();
+
+        return $deuda;
+    }
+
+     function dato_cuentas($filtro)
+    {
+        $deuda = $this->db->query("
+            SELECT
+                c.*, p.*, co.*, e.*
+
+            FROM
+                credito c, cliente p, venta co, estado e
+
+            WHERE
+                c.venta_id = co.venta_id
+                and p.cliente_id = co.cliente_id
+                and c.estado_id = e.estado_id
+                and c.credito_id=".$filtro." 
 
             ORDER BY c.credito_fecha DESC
 

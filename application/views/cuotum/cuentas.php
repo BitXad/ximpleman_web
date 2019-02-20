@@ -61,11 +61,11 @@
 <!-------------------------------------------------------->
 
 <div class="box-header">
-                <h3 class="box-title">Cliente: <?php echo $cuota[0]['cliente_nombre']; ?></h3><br>
-                <h3 class="box-title">Venta N: <b>00<?php echo $cuota[0]['venta_id']; ?></b></h3><br>
-                <h3 class="box-title">Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($cuota[0]['venta_fecha'])); ?>  <?php echo $cuota[0]['venta_hora']; ?></b></h3><br>
-                <h3 class="box-title">Monto Credito: <b><?php echo $cuota[0]['venta_total']; ?></b></h3><br>
-                <h3 class="box-title">Nro. Credito: <b><?php echo $cuota[0]['credito_id']; ?></b></h3>
+                <h3 class="box-title">Cliente: <?php echo $credito[0]['cliente_nombre']; ?></h3><br>
+                <h3 class="box-title">Venta N: <b>00<?php echo $credito[0]['venta_id']; ?></b></h3><br>
+                <h3 class="box-title">Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($credito[0]['venta_fecha'])); ?>  <?php echo $credito[0]['venta_hora']; ?></b></h3><br>
+                <h3 class="box-title">Monto Credito: <b><?php echo $credito[0]['venta_total']; ?></b></h3><br>
+                <h3 class="box-title">Nro. Credito: <b><?php echo $credito[0]['credito_id']; ?></b></h3>
                 
 </div>
 <div class="row">
