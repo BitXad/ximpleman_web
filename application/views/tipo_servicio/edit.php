@@ -10,7 +10,7 @@
 					<div class="col-md-6">
                                             <label for="tiposerv_descripcion" class="control-label"><span class="text-danger">*</span>Descripci&oacute;n</label>
 						<div class="form-group">
-							<input type="text" name="tiposerv_descripcion" value="<?php echo ($this->input->post('tiposerv_descripcion') ? $this->input->post('tiposerv_descripcion') : $tipo_servicio['tiposerv_descripcion']); ?>" class="form-control" id="tiposerv_descripcion" required />
+							<input type="text" name="tiposerv_descripcion" value="<?php echo ($this->input->post('tiposerv_descripcion') ? $this->input->post('tiposerv_descripcion') : $tipo_servicio['tiposerv_descripcion']); ?>" class="form-control" id="tiposerv_descripcion" onKeyUp="this.value = this.value.toUpperCase();" required />
                                                         <span class="text-danger"><?php echo form_error('tiposerv_descripcion');?></span>
 						</div>
 					</div>

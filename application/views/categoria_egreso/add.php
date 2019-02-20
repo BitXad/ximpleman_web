@@ -10,13 +10,13 @@
 					<div class="col-md-6">
 						<label for="categoria_categr" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="categoria_categr" value="<?php echo $this->input->post('categoria_categr'); ?>" class="form-control" id="categoria_categr" required />
+							<input type="text" onKeyUp="this.value = this.value.toUpperCase();" name="categoria_categr" value="<?php echo $this->input->post('categoria_categr'); ?>" class="form-control" id="categoria_categr" required />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="descrip_categr" class="control-label">Descripción</label>
 						<div class="form-group">
-							<input type="text" name="descrip_categr" value="<?php echo $this->input->post('descrip_categr'); ?>" class="form-control" id="descrip_categr" />
+							<input type="text" onKeyUp="this.value = this.value.toUpperCase();" name="descrip_categr" value="<?php echo $this->input->post('descrip_categr'); ?>" class="form-control" id="descrip_categr" />
 						</div>
 					</div>
 				</div>

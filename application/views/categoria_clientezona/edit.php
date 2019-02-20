@@ -10,7 +10,7 @@
 					<div class="col-md-6">
 						<label for="categoriacliezona_descripcion" class="control-label">Zona</label>
 						<div class="form-group">
-							<input type="text" name="zona_nombre" value="<?php echo ($this->input->post('zona_nombre') ? $this->input->post('zona_nombre') : $categoria_clientezona['zona_nombre']); ?>" class="form-control" id="zona_nombre" required />
+							<input type="text" name="zona_nombre" value="<?php echo ($this->input->post('zona_nombre') ? $this->input->post('zona_nombre') : $categoria_clientezona['zona_nombre']); ?>" class="form-control"  onKeyUp="this.value = this.value.toUpperCase();" id="zona_nombre" required />
                                                         <span class="text-danger"><?php echo form_error('zona_nombre');?></span>
 						</div>
 					</div>

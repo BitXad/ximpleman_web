@@ -74,7 +74,7 @@
                 </h5>
           </button>
           <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
-          <a  class="btn btn-success btn-sm no-print" id="busca" ><i class="fa fa-print"> Imprimir</i></a>
+          
        <br class="no-print">   
 </div>
 <div class="col-md-4">
