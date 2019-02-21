@@ -832,7 +832,11 @@ function fechadeservicio(elfiltro, busquedade){
                         }
                         html += "<td>"+cliente_nombre+"</td>";
                         html += "<td class='text-center'>";
-                        html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-sm' title='Añadir, Modificar Servicio Creado'>"+registros[i]["servicio_id"];
+                        if(registros[i]["estado_id"] == 5){
+                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='Añadir, Modificar Servicio Creado'>"+registros[i]["servicio_id"];
+                        }else{
+                            html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
+                        }
                         html += "</td>";
                         html += "<td>";
                         var fechamos = "";
@@ -924,9 +928,13 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
-                        html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-warning btn-xs' title='anular servicio'><span class='fa fa-minus-circle'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modaleliminar"+i+"' class='btn btn-danger btn-xs' title='eliminar servicio'><span class='fa fa-trash'></span></a>";
+                        if(registros[i]["estado_id"] != 4){
+                            html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        }
+                        if(registros[i]["estado_id"] != 6 && registros[i]["estado_id"] != 7 && registros[i]["estado_id"] != 4){
+                            html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-warning btn-xs' title='anular servicio'><span class='fa fa-minus-circle'></span></a>";
+                            html += "<a data-toggle='modal' data-target='#modaleliminar"+i+"' class='btn btn-danger btn-xs' title='eliminar servicio'><span class='fa fa-trash'></span></a>";
+                        }
                         html += "<a href='"+base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"]+"' id='imprimir' class='btn btn-success btn-xs'  target='_blank' title='Imprimir Comprobante' ><span class='fa fa-print'></span></a>";
                         var dir_url = "";
                         var titprint = "";
@@ -938,6 +946,10 @@ function fechadeservicio(elfiltro, busquedade){
                             $titprint = "Imp. Normal";
                         }
                         html += "<a href='"+dir_url+"' id='imprimir' class='btn btn-facebook btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span></a>";
+                        html += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
+                        html += "<button class='btn btn-primary btn-xs' type='submit' title='Imprimir Informe Técnico' ><span class='fa fa-print'></span></button>";
+                        html += "<input type='checkbox' name='contitulo"+registros[i]['servicio_id']+"' title='Imprimir sin encabezado'>";
+                        html += "</form>";
                         html += "</td>";
 
                        

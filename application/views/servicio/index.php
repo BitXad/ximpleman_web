@@ -352,17 +352,17 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
                                                 <th>Cliente</th>
                                                 <th>Codigo</th>
                                                 <th>Fechas</th>
 						<th>Estado</th>
 						<th>Tipo Servicio</th>
 						
-						<th>Registrado por </th>
+						<th>Reg. por </th>
 						
-						<th>Total</th>
-						<th>Acuenta</th>
+						<th>Tot.</th>
+						<th>A. C.</th>
 						<th>Saldo</th>
 						<th></th>
                     </tr>

@@ -84,7 +84,7 @@ class Servicio_model extends CI_Model
     {
         $servicio = $this->db->query("
             SELECT
-                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
                 u.usuario_nombre, c.cliente_nombre
             FROM
                 servicio s
@@ -130,7 +130,7 @@ class Servicio_model extends CI_Model
         }
         $servicio = $this->db->query("
             SELECT
-                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
                 u.usuario_nombre, c.cliente_nombre
             FROM
                 servicio s

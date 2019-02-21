@@ -172,7 +172,7 @@ $(document).ready(function(){
                     </span><br>
                 <b>Telef.: </b><span id="cliente-telefono"><?php echo $cliente['cliente_telefono']; } ?>
                     </span><br>
-                <b>Codigo Cliente: </b><span id="cliente-codigo"><?php if(is_null($cliente['cliente_codigo'])){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_codigo']; } ?>
+                <b>Código Cliente: </b><span id="cliente-codigo"><?php if(is_null($cliente['cliente_codigo'])){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_codigo']; } ?>
                     </span><br>
                 <b>Fecha/Hora: </b><?php if(is_null($servicio['servicio_fecharecepcion'])){ echo "NO DEFINIDO";} else{ echo date('d/m/Y', strtotime($servicio['servicio_fecharecepcion'])); echo '|'.$servicio['servicio_horarecepcion']; } ?><br>
                 <b>Registrado por: </b><?php if(is_null($usuario['usuario_id'])){ echo "NO DEFINIDO";} else{ echo $usuario['usuario_nombre']; } ?><br>
@@ -199,16 +199,16 @@ $(document).ready(function(){
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
             <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                <input id="filtrar1" type="text" class="form-control" placeholder="Ingrese detalle, codigo..">
+                <input id="filtrar1" type="text" class="form-control" placeholder="Ingrese detalle, código..">
             </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
 						<th>Detalle</th>
-						<th>Codigo</th>
+						<th>Código</th>
 						<th>Categoria/<br>Subcategoria</th>
 						<th>Tipo<br>Trabajo</th>
 						<th>Finalizado</th>
@@ -219,7 +219,7 @@ $(document).ready(function(){
 						<th>Insumo</th>
 						<th>Datos<br>Adicionales</th>
 						<th>Total</th>
-						<th>Acuenta</th>
+						<th>A. C.</th>
 						<th>Saldo</th>
 						
 						
