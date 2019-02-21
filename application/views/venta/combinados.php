@@ -46,7 +46,7 @@
                             <input type="button" class="btn btn-primary btn-sm" name="pasarA&ntilde;o4" onClick="pasar('usuario_id','usu')" value="<<-- Quitar" style="margin:  10px;">
                         </div>
 
-                        <div class="col-md-4" style="padding-bottom:0px;" id="navTesiss">
+                        <div class="col-md-4" style="padding-bottom:0px;font-size: 12px;" id="navTesiss">
                             Usuario(s):<select multiple id="usuario_id"  name="usuario_id"  style="padding-bottom:0px;color: #fff; background-color: #31708f;border:none; width: 100%;" class="textarea" >
                                 <option value="-" >-</option>
                             </select>
@@ -56,10 +56,10 @@
     </div>
 
                
-        <div class="col-md-8" style="padding-left:0px; padding-top:0px;">
+        <div class="col-md-6" style="padding-left:45px; padding-top:0px;">
             
             <br class="no-print">        
-        <div class="row">
+        <div class="row" style="font-size: 12px;">
             Desde: <input type="date" class="btn btn-primary btn-sm " style="border:none;" id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
        
             Hasta: <input type="date" class="btn btn-primary btn-sm" style="border:none;" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
@@ -67,18 +67,19 @@
         
           
        </div>
-        <div class="col-md-4">
+        <div class="col-md-3" style="padding-top:17px;">
             
 <!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
-            <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_ven(),final()" >
-                <h4>
+            <button class="btn btn-primary btn-sm  no-print" onclick="buscar_fecha_ven(),final()" >
+               
                 <span class="fa fa-search"></span>   Realizar Busqueda  
-                </h4>
+                
           </button>
-           <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
+           
         </div>
-        
-       
+        <div class="col-md-3" style="padding-top:17px;">
+            <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
+       </div>
       
 </div>
 
