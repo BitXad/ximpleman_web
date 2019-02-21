@@ -56,21 +56,22 @@
         <!--este es FIN del BREADCRUMB buscador-->
  
         <!--este es INICIO de input buscador-->
+        <div class="col-md-8">
             <div class="input-group">
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
                 <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor" onkeypress="validacompra(event,4)" >
-
-                 
-            </div>
-             <select  class="btn btn-primary btn-sm" style="padding: 0px;" id="select_compra" onchange="buscar_compras()">
+            </div></div>
+            <div class="col-md-4">
+                <select  class="btn btn-primary btn-sm"  id="select_compra" onchange="buscar_compras()">
                 <option value="1">Compras de Hoy</option>
                 <option value="2">Compras de Ayer</option>
                 <option value="3">Compras de la semana</option>
-
                 <option value="5">Compras por fecha</option>
-            </select>
+            </select>  
+            </div>
+            
         <!--este es FIN de input buscador-->
 
         <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
@@ -105,13 +106,9 @@
        
    
         <!-------------------- CATEGORIAS------------------------------------->
-        <div class="col-md-6">
-          <div  class="box-tools" >
-
-        </div></div>
-
+       
         <form method="post" onclick="buscar_por_fecha()">
-            <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none;'>
+            <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none; padding-bottom: 10px;'>
                 <br>
                 <center>            
                     <div class="col-md-2">

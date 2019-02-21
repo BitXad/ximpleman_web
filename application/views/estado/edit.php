@@ -8,10 +8,15 @@
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="estado_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
+						<label for="estado_descripcion" class="control-label">Descripcion</label>
 						<div class="form-group">
-							<input type="text" name="estado_descripcion" value="<?php echo ($this->input->post('estado_descripcion') ? $this->input->post('estado_descripcion') : $estado['estado_descripcion']); ?>" class="form-control" id="estado_descripcion" required />
-							<span class="text-danger"><?php echo form_error('estado_descripcion');?></span>
+							<input type="text" name="estado_descripcion" value="<?php echo ($this->input->post('estado_descripcion') ? $this->input->post('estado_descripcion') : $estado['estado_descripcion']); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="estado_descripcion" required/>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="estado_color" class="control-label">Color</label>
+						<div class="form-group">
+							<input type="color" name="estado_color" value="<?php echo ($this->input->post('estado_color') ? $this->input->post('estado_color') : $estado['estado_color']); ?>" class="form-control" id="estado_color" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -24,8 +29,10 @@
 			</div>
 			<div class="box-footer">
             	<button type="submit" class="btn btn-success">
-					<i class="fa fa-check"></i> Guardar
-				</button>
+            		<i class="fa fa-check"></i> Guardar
+            	</button>
+            	<a href="<?php echo site_url('estado/index'); ?>" class="btn btn-danger">
+                                <i class="fa fa-times"></i> Cancelar</a>
 	        </div>				
 			<?php echo form_close(); ?>
 		</div>
