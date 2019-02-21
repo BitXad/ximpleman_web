@@ -110,7 +110,7 @@ function mostrarAlert(){
 			<?php echo form_open('detalle_serv/modificardetalle/'.$servicio['servicio_id'].'/'.$detalle_serv['detalleserv_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
-                                    <div class="col-md-6">
+                                    <div class="col-md-2">
                                             <label for="detalleserv_reclamo" class="control-label">¿Es Reclamo?</label>
                                                 <div class="form-group">
                                                     <?php
@@ -121,7 +121,7 @@ function mostrarAlert(){
                                                     <input type="checkbox" name="detalleserv_reclamo" id="detalleserv_reclamo" value="si" <?php echo $checked; ?> />
                                                 </div>
                                         </div>
-					<div class="col-md-6">
+					<div class="col-md-3">
                                             <label for="cattrab_id" class="control-label">Tipo de Trabajo</label>
                                                 <div class="form-group">
                                                     <select name="cattrab_id" class="form-control" id="cattrab_id">
@@ -137,7 +137,7 @@ function mostrarAlert(){
                                                         </select>
                                                 </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
                                             <label for="procedencia_id" class="control-label">Procedencia</label>
                                                 <div class="form-group">
                                                     <select name="procedencia_id" class="form-control" id="procedencia_id">
@@ -153,7 +153,7 @@ function mostrarAlert(){
                                                         </select>
                                                 </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="tiempouso_id" class="control-label">Tiempo de uso</label>
                                                 <div class="form-group">
                                                     <select name="tiempouso_id" class="form-control" id="tiempouso_id">
@@ -169,7 +169,7 @@ function mostrarAlert(){
                                                         </select>
                                                 </div>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="catserv_id" class="control-label">Categoria Producto</label>
 						<div class="form-group">
 							<select name="catserv_id" class="form-control" onchange="fetch_select(this.value);" id="catserv_id">
@@ -185,7 +185,7 @@ function mostrarAlert(){
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                                 <div class="form-group" id="new_select">
                                                         <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
@@ -201,7 +201,7 @@ function mostrarAlert(){
                                                         </select>
                                                 </div>
                                         </div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="detalleserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
                                                     <input type="text" name="detalleserv_descripcion" value="<?php echo $detalle_serv['detalleserv_descripcion']; ?>" class="form-control" id="detalleserv_descripcion" required />
@@ -219,31 +219,31 @@ function mostrarAlert(){
                                                     <input type="text" name="detalleserv_diagnostico" value="<?php if($detalle_serv['detalleserv_diagnostico'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_diagnostico']; } ?>" class="form-control" id="detalleserv_diagnostico" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<label for="detalleserv_solucion" class="control-label">Solución</label>
 						<div class="form-group">
 							<input type="text" name="detalleserv_solucion" value="<?php if($detalle_serv['detalleserv_solucion'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_solucion']; } ?>" class="form-control" id="detalleserv_solucion" />
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
                                                 <label for="detalleserv_pesoentrada" class="control-label">Peso Entrada(Gr.)</label>
                                                 <div class="form-group">
                                                         <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($detalle_serv['detalleserv_pesoentrada'],'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" />
                                                 </div>
                                         </div>
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
 						<div class="form-group">
 							<input type="text" name="detalleserv_glosa" value="<?php echo $detalle_serv['detalleserv_glosa']; ?>" class="form-control" id="detalleserv_glosa" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="detalleserv_total" class="control-label">Total</label>
 						<div class="form-group">
 							<input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo number_format($detalle_serv['detalleserv_total'],'2','.',','); ?>" class="form-control" id="detalleserv_total" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="detalleserv_acuenta" class="control-label">A cuenta</label>
 						<div class="form-group">
 							<input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo number_format($detalle_serv['detalleserv_acuenta'],'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" />
@@ -251,25 +251,25 @@ function mostrarAlert(){
                                                 <style type="text/css">
                                                 </style>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="detalleserv_saldo" class="control-label">Saldo</label>
 						<div class="form-group">
                                                     <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo number_format($detalle_serv['detalleserv_saldo'],'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="detalleserv_fechaentrega" class="control-label">Fecha Entrega</label>
 						<div class="form-group">
 							<input type="text" name="detalleserv_fechaentrega" value="<?php echo implode("/", array_reverse(explode("-", $detalle_serv['detalleserv_fechaentrega']))); ?>" class="has-datepicker form-control" id="detalleserv_fechaentrega" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="detalleserv_horaentrega" class="control-label">Hora Entrega</label>
 						<div class="form-group">
                                                     <input type="time" name="detalleserv_horaentrega" value="<?php echo $detalle_serv['detalleserv_horaentrega']; ?>" class="form-control" id="detalleserv_horaentrega" />
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
 						<label for="responsable_id" class="control-label"><span class="text-danger">*</span>Responsable</label>
 						<div class="form-group">
                                                     <select name="responsable_id" class="form-control" required>
@@ -285,7 +285,7 @@ function mostrarAlert(){
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-3">
 						<label for="estado_id" class="control-label">Estado</label>
 						<div class="form-group">
                                                         <select name="estado_id" class="form-control" id="estado_id" onchange="mostrarAlert();">
