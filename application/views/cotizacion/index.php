@@ -79,7 +79,7 @@
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('cuotum/remove/'.$c['cotizacion_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
+                                                      <a href="<?php echo site_url('cotizacion/remove/'.$c['cotizacion_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
                                                       <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>

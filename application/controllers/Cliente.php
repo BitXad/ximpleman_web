@@ -69,6 +69,29 @@ class Cliente extends CI_Controller{
 
             if($this->form_validation->run())     
             {
+                $this->input->post('cliente_nombre');
+                $resultado = $this->Cliente_model->es_cliente_registrado($this->input->post('cliente_nombre'));
+                if($resultado > 0){
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+                    $this->load->model('Categoria_clientezona_model');
+                    $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                    /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
+                    $this->load->model('Usuario_model');
+                    $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+                    $this->load->model('Tipo_cliente_model');
+                    $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+                    $this->load->model('Categoria_cliente_model');
+                    $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+		    
+                    $data['resultado'] = 1;
+                    $data['_view'] = 'cliente/add';
+                    $this->load->view('layouts/main',$data);
+                  
+                }else{
                 /* *********************INICIO imagen***************************** */
                 $foto="";
                 if (!empty($_FILES['cliente_foto']['name'])){
@@ -149,6 +172,7 @@ class Cliente extends CI_Controller{
             
             $cliente_id = $this->Cliente_model->add_cliente($params);
             redirect('cliente/index');
+            }
         }
         else
         {
@@ -157,7 +181,7 @@ class Cliente extends CI_Controller{
                         
                         $this->load->model('Categoria_clientezona_model');
                         $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-                        /***Añadido por Mario Escobar parqa asignarle a un usuario prevendedor***/
+                        /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
                         $this->load->model('Usuario_model');
 			$data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
 
@@ -167,6 +191,7 @@ class Cliente extends CI_Controller{
                         $this->load->model('Categoria_cliente_model');
 			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
 			
+                        $data['resultado'] = 0;
             
             $data['_view'] = 'cliente/add';
             $this->load->view('layouts/main',$data);

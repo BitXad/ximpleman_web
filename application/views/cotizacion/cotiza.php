@@ -2,68 +2,6 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
 
-<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#cotizar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-        
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar2').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar2 tr').hide();
-                    $('.buscar2 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-
-    $(document).ready(function () {
-            (function ($) {
-                $('#filtrar3').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar3 tr').hide();
-                    $('.buscar3 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-
-
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar4').click(function () {
-                  $('.oscar4').removeClass('hidden');
-                    var rex = new RegExp($(this).val(), 'i');
-                    
-                    $('.os1car4 tr').hide();
-                    $('.oscar4 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-
-  
-</script>  
-<style type="text/css">
-    input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-  -webkit-appearance: none; 
-  margin: 0; 
-}
-input[type=number] { -moz-appearance:textfield; }
-</style> 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
@@ -71,10 +9,12 @@ input[type=number] { -moz-appearance:textfield; }
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
  <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
-<div class="cuerpo">
+ <div class="box" > 
+ <div class="row"> 
+<div class="cuerpo" style="height: 110px;">
                     <div class="columna_derecha">
                         <center> 
-                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                        <?php echo "<img src='../ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
                     </center>
                     </div>
                     <div class="columna_izquierda">
@@ -82,20 +22,18 @@ input[type=number] { -moz-appearance:textfield; }
                         <?php echo $empresa[0]['empresa_zona']; ?><br>
                         <?php echo $empresa[0]['empresa_direccion']; ?><br>
                         <?php echo $empresa[0]['empresa_telefono']; ?>
-                    </div> </center>
+                        </center>
+                    </div> 
                     <div class="columna_central">
                         <center>      <h3 class="box-title"><u>COTIZACION</u></h3>
-                          Numero: <b><?php echo $cotizacion['cotizacion_id'];?></b>  <br>
-                         
-                </center>
+                          Numero: <b><?php echo $cotizacion['cotizacion_id'];?></b>  </center>
                     </div>
 
-          
+            </div> 
+               
 
-            </div>       
-<div class="row" style="padding: 0px;">
-   
-           <div class="box" style="padding-left: 5%; padding-bottom: 0px;">
+   <div style="padding-left: 15px;">
+         
                     <b>CLIENTE: </b><?php echo ($this->input->post('cotizacion_cliente') ? $this->input->post('cotizacion_cliente') : $cotizacion['cotizacion_cliente']); ?><br>
 					<b>FECHA: </b><?php echo implode("/", array_reverse(explode("-", ($this->input->post('cotizacion_fecha') ? $this->input->post('cotizacion_fecha') : $cotizacion['cotizacion_fecha'])))); ?><br>
 				
@@ -104,7 +42,8 @@ input[type=number] { -moz-appearance:textfield; }
 				    <b>FORMA DE PAGO: </b><?php echo ($this->input->post('cotizacion_formapago') ? $this->input->post('cotizacion_formapago') : $cotizacion['cotizacion_formapago']); ?> <br>
 			
 					<b>TIEMPO DE ENTREGA: </b><?php echo ($this->input->post('cotizacion_tiempoentrega') ? $this->input->post('cotizacion_tiempoentrega') : $cotizacion['cotizacion_tiempoentrega']); ?> 
-		    </div>
+	</div>
+        </div>   
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
 <div class="col-md-12" style="padding: 0px;"> 
 <div class="box" style="padding: 0px;">
@@ -113,7 +52,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <table class="table table-striped " id="mitabla">
                     <tr>
                             <th>Item</th>
-                            <th>Producto<br>Descripcion</th>
+                            <th>Producto / Descripcion</th>
                             <th>Unidad</th>
                             <th>Precio<br>Unit.</th>
                             <th>Cantidad</th>
@@ -138,17 +77,10 @@ input[type=number] { -moz-appearance:textfield; }
                     <tr>    
                             
                         <td><?php echo $cont ?></td>
-                            <td><b><?php echo $d['producto_nombre']; ?></b><br>
-                        Marca: <b><?php echo $d['producto_marca']; ?></b><br>
-                        Industria: <b><?php echo $d['producto_industria']; ?></b><br>
+                            <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
+                        Marca: <b><?php echo $d['producto_marca']; ?></b> / 
+                        Industria: <b><?php echo $d['producto_industria']; ?></b>
                     
-                     <div class="col-md-6">
-						
-						<div class="form-group">
-							<input type="hidden" name="cotizacion_total" value="<?php echo $totalfinal; ?>" class="form-control" id="cotizacion_total" />
-						</div>
-					</div>
-				   </form>
                         
                          <?php echo $d['detallecot_caracteristica']; ?></td>
                          <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
@@ -263,6 +195,9 @@ input[type=number] { -moz-appearance:textfield; }
                
  </center>
 </div>
+
+</div>
+
 
 
         

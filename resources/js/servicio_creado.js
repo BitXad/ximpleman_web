@@ -758,26 +758,24 @@ function tablaresultadosclienteservicio(tabla_id){
                    if (registros != null){
 
 
-                        var cont = 0;
+                        /*var cont = 0;
                         var cant_total = 0;
-                        var total_detalle = 0;
+                        var total_detalle = 0;*/
                         var n = registros.length; //tamaño del arreglo de la consulta
                         $("#encontrados").val("- "+n+" -");
                         html = "";
-                       if (n <= limite) x = n; 
-                       else x = limite;
-
-                        for (var i = 0; i < x ; i++){
+                       /*if (n <= limite) x = n; 
+                       else x = limite;*/
+                        for (var i = 0; i < n ; i++){
                             html += "<tr>";
                             
                             html += "<td>"+(i+1)+"</td>";
                             html += "<td>";
-                            html += "<div class='col-md-3'>";
-                            html += "<center> <!-- muestra por defecto la imagen de un cliente anonimo -->";
-                            html += "<h1 style='color: #0073b7'>";
+                            html += "<div class='col-md-3 text-center'>";
+                            html += "<!-- muestra por defecto la imagen de un cliente anonimo -->";
+                            html += "<div style='color: #0073b7'>";
                             html += "<i class='fa fa-user fa-3x'></i>";
-                            html += "</h1>";
-                            html += "</center>";
+                            html += "</div>";
                             html += "</div>";
                             html += "<div class='col-md-9'>";
                             //html += "<form action='"+base_url+"servicio/asignarcliente/"+servicio_id+"'  method='POST' class='form'>";
@@ -795,7 +793,6 @@ function tablaresultadosclienteservicio(tabla_id){
                             html += "</tr>";
 
                        }
-
 
                        $("#tablaresultados").html(html);
 
@@ -1487,7 +1484,11 @@ function asignarclienteregistrado(servicio_id, cliente_id){
 function registrarnuevodetalleservicio(servicio_id){
     var nombremodal = "modaldetalle";
     var base_url = document.getElementById('base_url').value;
-    var detalleserv_reclamo = document.getElementById('detalleserv_reclamo').value;
+    var detalleserv_recl = document.getElementById('detalleserv_reclamo').checked;
+    var detalleserv_reclamo = "no";
+    if(detalleserv_recl == true){
+        detalleserv_reclamo = "si";
+    }
     var cattrab_id = document.getElementById('cattrab_id').value;
     var procedencia_id = document.getElementById('procedencia_id').value;
     var tiempouso_id = document.getElementById('tiempouso_id').value;
@@ -1570,7 +1571,7 @@ function resultadodetalleservicionew(servicio_id){
                         html += "<tr>";
                         html += "<td><?php echo $cont ?></td>"; */
                         html += "<td id='horizontal'>";
-                        html += "<font size='1'>"+registros[i]["detalleserv_descripcion"]+"</font><br>;";
+                        html += "<font size='1'>"+registros[i]["detalleserv_descripcion"]+"</font><br>";
                         if(registros[i]["procedencia_id"] != 0){
                             html += "<font size='1'><b>Proc.: </b>"+registros[i]["procedencia_descripcion"]+"</font><br>";
                         }
@@ -1579,10 +1580,10 @@ function resultadodetalleservicionew(servicio_id){
                         }
                         var res = "";
                         if(registros[i]["detalleserv_reclamo"] == "si"){ res = "Si";}else{ res = "No"; }
-                        html += "<font size='1'><b>¿Recl.?: </b>"+res+"</font><br>";
-                        html += "<font size='1'><b>Tec.R.: </b>"+registros[i]["responsable_nombres"]+" "+registros[i]["responsable_apellidos"]+"</font><br>";
-                        html += "<font size='1'><b>Reg.: </b>"+registros[i]["usuario_nombre"]+"</font><br>";
-                        html += "<font size='1'><b>Entrega: </b>";
+                        html += "<font size='1'><b>¿Reclamo?: </b>"+res+"</font><br>";
+                        html += "<font size='1'><b>Resp. Tec.: </b>"+registros[i]["responsable_nombres"]+" "+registros[i]["responsable_apellidos"]+"</font><br>";
+                        html += "<font size='1'><b>Recep.: </b>"+registros[i]["usuario_nombre"]+"</font><br>";
+                        html += "<font size='1'><b>Entregar: </b>";
                         //var fechaentrega = "";
                         if(registros[i]["detalleserv_fechaentrega"] != null){
                             html += convertDateFormat(registros[i]["detalleserv_fechaentrega"])+" <b>Hrs.: </b>"+registros[i]["detalleserv_horaentrega"]+"</font>";
@@ -1608,7 +1609,7 @@ function resultadodetalleservicionew(servicio_id){
                         }
                         html += "</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td id='horizontal'><font size='1'><b>Falla: </b>"+registros[i]["detalleserv_falla"]+"<br><b>Diagnostico: </b>"+registros[i]["detalleserv_diagnostico"]+"<br><b>Solucion: </b>"+registros[i]["detalleserv_solucion"]+"</font></td>";
+                        html += "<td id='horizontal'><font size='1'><b>Falla: </b>"+registros[i]["detalleserv_falla"]+"<br><b>Diagnóstico: </b>"+registros[i]["detalleserv_diagnostico"]+"<br><b>Solución: </b>"+registros[i]["detalleserv_solucion"]+"</font></td>";
                         html += "<td><font size='1'><b>Entrada: </b>"+registros[i]["detalleserv_pesoentrada"]+"</font><br>";
                         var pesosalida = "";
                         if(registros[i]["detalleserv_pesosalida"] != null){

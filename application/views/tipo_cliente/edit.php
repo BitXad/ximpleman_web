@@ -10,7 +10,7 @@
 					<div class="col-md-6">
 						<label for="tipocliente_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-							<input type="text" name="tipocliente_descripcion" value="<?php echo ($this->input->post('tipocliente_descripcion') ? $this->input->post('tipocliente_descripcion') : $tipo_cliente['tipocliente_descripcion']); ?>" class="form-control" id="tipocliente_descripcion" required />
+							<input type="text" name="tipocliente_descripcion" value="<?php echo ($this->input->post('tipocliente_descripcion') ? $this->input->post('tipocliente_descripcion') : $tipo_cliente['tipocliente_descripcion']); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="tipocliente_descripcion" required />
 							<span class="text-danger"><?php echo form_error('tipocliente_descripcion');?></span>
 						</div>
 					</div>
@@ -32,6 +32,8 @@
             	<button type="submit" class="btn btn-success">
 					<i class="fa fa-check"></i> Guardar
 				</button>
+				<a href="<?php echo site_url('tipo_cliente/index'); ?>" class="btn btn-danger">
+                                <i class="fa fa-times"></i> Cancelar</a>
 	        </div>				
 			<?php echo form_close(); ?>
 		</div>

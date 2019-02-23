@@ -42,7 +42,7 @@
       <!-------------------- CATEGORIAS------------------------------------->
 <div class="col-md-6">
     <div  class="box-tools" >
-        <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
+        <select  class="btn btn-primary btn-sm" name="select_servicio" id="select_servicio" onchange="buscar_servicioporfechasinf()">
             <!--<option value="">- ELEGIR -</option>-->
             <option value="6">Servicios Pendientes</option>
             <option value="1">Servicios de Hoy</option>
@@ -112,7 +112,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
                                                 <th>Cliente</th>
                                                 <th>Codigo</th>
                                                 <th>Fechas</th>

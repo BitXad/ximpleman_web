@@ -26,7 +26,7 @@
 					<div class="col-md-6">
 						<label for="moneda_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-							<input type="text" name="moneda_descripcion" value="<?php echo $this->input->post('moneda_descripcion'); ?>" class="form-control" id="moneda_descripcion" required />
+							<input type="text" name="moneda_descripcion" value="<?php echo $this->input->post('moneda_descripcion'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="moneda_descripcion" required />
 							<span class="text-danger"><?php echo form_error('moneda_descripcion');?></span>
 						</div>
 					</div>

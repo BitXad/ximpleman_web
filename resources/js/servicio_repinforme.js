@@ -761,7 +761,7 @@ function tablaresultadosclienteservicio(tabla_id){
         });
 }
 
-function buscar_servicioporfechas()
+function buscar_servicioporfechasinf()
 {
     /*var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"detalle_serv/resultadobusqueda";*/
@@ -770,25 +770,25 @@ function buscar_servicioporfechas()
 
     if (opcion == 6)
     {
-        filtro = " and s.estado_id = 5 ";
+        filtro = " s.estado_id = 5 ";
         mostrar_ocultar_buscador("ocultar");
     }
     
     if (opcion == 1)
     {
-        filtro = " and date(servicio_fecharecepcion) = date(now())";
+        filtro = " date(servicio_fecharecepcion) = date(now())";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de hoy
     
     if (opcion == 2)
     {
-        filtro = " and date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de ayer
     
     if (opcion == 3) 
     {
-        filtro = " and date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
+        filtro = " date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de la semana
 
@@ -824,7 +824,7 @@ function buscar_por_fecha()
     if(estado_id != 0){
         estado = " and s.estado_id = "+estado_id;
     }
-    filtro = " and date(servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(servicio_fecharecepcion) <='"+fecha_hasta+"' "+estado;
+    filtro = " date(servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(servicio_fecharecepcion) <='"+fecha_hasta+"' "+estado;
 
     fechadeservicio(filtro);
 
@@ -835,7 +835,7 @@ function fechadeservicio(filtro){
       
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"servicio/buscarserviciosfecha";
-    var limite = 2000;
+    //var limite = 2000;
      
     $.ajax({url: controlador,
            type:"POST",
@@ -850,17 +850,17 @@ function fechadeservicio(filtro){
                if (registros != null){
                    
                     
-                    var cont = 0;
+                    /*var cont = 0;
                     var total = Number(0);
-                    var total_detalle = 0;
+                    var total_detalle = 0; */
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontradosfecha").val("- "+n+" -");
                    
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                   /*if (n <= limite) x = n; 
+                   else x = limite; */
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         
                        html += "<tr>";
                         
@@ -1343,7 +1343,7 @@ function anulartodoelservicio(servicio_id, num){
                var registros =  JSON.parse(respuesta);
                if (registros != null){
                     if("ok"){
-                        buscar_servicioporfechas();
+                        buscar_servicioporfechasinf();
                     }
                }
         }
@@ -1365,7 +1365,7 @@ function eliminartodoelservicio(servicio_id, num){
                var registros =  JSON.parse(respuesta);
                if (registros != null){
                     if("ok"){
-                        buscar_servicioporfechas();
+                        buscar_servicioporfechasinf();
                     }
                }
         }

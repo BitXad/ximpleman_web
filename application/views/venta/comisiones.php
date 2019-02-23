@@ -24,6 +24,7 @@
       });
 
 </script>
+
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet" type="text/css">
  
 <div class="box-header"  align="center">
@@ -37,7 +38,7 @@
 <div class="panel panel-default col-md-12" >
     
 
-   <div class="col-md-8 no-print" >
+   <div class="col-md-12 no-print" >
             
             <br class="no-print">        
         <div class="row" >
@@ -48,11 +49,11 @@
         
           
        </div> 
-       <div class="col-md-8" style="font-size: 12px;">
+       <div class="col-md-6" style="font-size: 12px; padding-left: 30px;">
                         
 
                 <div class="row">             
-                            VENDEDOR: <select  name="usuario_id" id="usuario_id"  style="font-size: 11px; border: none;" class="btn btn-primary btn-sm "  >
+                            VENDEDOR: <select .select-selected.select-arrow-active-no-print name="usuario_id" id="usuario_id"  style="font-size: 12px; border: none;" class="btn btn-primary btn-sm "  >
                                 
                                 <?php 
                                 foreach($all_usuario as $usuario)
@@ -66,23 +67,25 @@
                       </div>
   
     </div>
-    <div class="col-md-4">
+    <div class="col-md-3">
       
-     <button class="btn btn-sm btn-primary btn-sm btn-block no-print" onclick="buscar_fecha_ven(),final()" >
-                <h5>
+     <button class="btn btn-primary btn-sm no-print" onclick="buscar_fecha_ven(),final()" >
+        
                 <span class="fa fa-search"></span>   Realizar  Busqueda  
-                </h5>
+             
           </button>
-          <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
-          <a  class="btn btn-success btn-sm no-print" id="busca" ><i class="fa fa-print"> Imprimir</i></a>
+          
+          
        <br class="no-print">   
 </div>
+ <div class="col-md-3">
+  <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
+  </div>
 <div class="col-md-4">
     DESDE: <label class="ol" id="fecha_inicio"><?php echo date('d/m/Y'); ?>    </label>    
     HASTA: <label class="ol" id="fecha_fin"><?php echo date('d/m/Y'); ?>        
     </label>
-    USUARIO:<label class="ol" id="usuario1"> 
-    </label>
+   
 </div>
 </div>
 </div>

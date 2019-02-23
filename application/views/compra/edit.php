@@ -87,6 +87,9 @@ function final(){
     
 </script>
 <style type="text/css">
+body {
+  font-family: "Arial", Arial, Arial, arial;
+}
     input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
@@ -104,7 +107,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <!--------------------- CABCERA -------------------------->
 
 <div class="box-header">
-    <h1 class="box-title"><b>DETALLE compra COD: <?php echo "000".$compra_id; ?></b></h1>
+    <h1 class="box-title"><b>DETALLE COMPRA COD: <?php echo "000".$compra_id; ?></b></h1>
 </div>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="compra_idie" id="compra_idie" value="<?php echo $compra_id; ?>">
@@ -114,10 +117,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
    
     <div class="panel panel-primary col-md-3" >
       
-        <h5><b>Proveedor: </b><label id="provedordecompra"><?php echo $compra[0]['proveedor_nombre']; ?></label> <br>
+        <b>Proveedor:</b> <span id="provedordecompra"><?php echo $compra[0]['proveedor_nombre']; ?></span> <br>
         
-        <b>Código Proveedor: </b><label id="provedorcodigo" ><?php echo $compra[0]['proveedor_codigo']; ?></label> <label id="prove_iden" ><input id="prove_id" type="hidden" style="padding: 0px;" value="<?php echo $compra[0]['proveedor_id']; ?>"></label><br>
-        <b>Fecha/Hora: </b><?php echo $compra[0]['compra_fecha']; ?></h5>
+        <b>Código Proveedor:</b> <span id="provedorcodigo" ><?php echo $compra[0]['proveedor_codigo']; ?></span> <label id="prove_iden" ><input id="prove_id" type="hidden" style="padding: 0px;" value="<?php echo $compra[0]['proveedor_id']; ?>"></label><br>
+        <b>Fecha:</b> <span id="fechacompra" ><?php echo $compra[0]['compra_fecha']; ?></span>
      
      
     </div>
@@ -164,7 +167,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                   $total_ultimo = $totalfinal;
                                 }     ?>  
               <div class="row">
-           <div class="panel panel-primary col-md-12" id="detalleco">
+           <div class="panel panel-primary col-md-12" id="detalleco" style="font-family: "Arial", Arial, Arial, arial;">
                <table>       
                 
                 <tr>
@@ -212,6 +215,59 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <i class="fa fa-minus-circle "></i>
                Anular Compra 
             </a>
+            <a href="#" data-toggle="modal" data-target="#cambiarfecha" class="btn btn-xs btn-facebook" >
+                <i class="fa fa-calendar "></i>
+               Reestablecer Fecha 
+            </a>
+             <!---------------------------------MODAL DE CAMBIAR FECHA------------------------->
+
+  <div class="modal fade" id="cambiarfecha" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog" role="document" >
+            <div class="modal-content" id="modale">
+              <div class="modal-header">
+
+               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h2><b> <em class="fa fa-calendar"></em> Desea Modificar la Fecha? 
+              </b></h2>
+              </div>
+              <div class="modal-body" align="center">
+              <div class="col-md-6">
+            <label for="compra_fecha" class="control-label">Fecha</label>
+            <div class="form-group">
+              <input type="date" name="compra_fecha" value="<?php echo $compra[0]['compra_fecha']; ?>" class="form-control" id="fechac" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="compra_hora" class="control-label">Hora</label>
+            <div class="form-group">
+              <input type="time" name="compra_hora" value="<?php echo $compra[0]['compra_hora']; ?>" class="form-control" id="horac" />
+            </div>
+          </div>
+               
+          </div>
+              <div class="modal-footer" align="right">
+
+            <button class="btn btn-xs btn-success" onclick="cambiarFecha()" type="submit" data-dismiss="modal">
+                <h5>
+                <span class="fa fa-check"></span>   Guardar  
+                </h5>
+            </button>
+            
+            <button class="btn btn-xs btn-danger" data-dismiss="modal">
+                <h5>
+                <span class="fa fa-close"></span>   Cancelar  
+                </h5>
+            </button>
+                         
+        </div>
+
+            </div>
+          </div>
+        </div>
+        <!---------------------------------FIN MODAL DE CAMBIAR FECHA------------------------->
 
             <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-success" >
                 <i class="fa fa-money "></i>Guardar Cambios
@@ -454,7 +510,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" class="form-control" id="producto_nombre" required/>
+                            <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="producto_nombre" required/>
                             
                         </div>
                     </div>
@@ -515,7 +571,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                    <div class="col-md-6">
                         <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
-                            <input type="text" name="producto_unidad" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
+                            <input type="text" name="producto_unidad" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
                         </div>
                     </div>
 </div>
@@ -541,13 +597,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="producto_marca" class="control-label">Marca</label>
                         <div class="form-group">
-                            <input type="text" name="producto_marca" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
+                            <input type="text" name="producto_marca" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="producto_industria" class="control-label">Industria</label>
                         <div class="form-group">
-                            <input type="text" name="producto_industria" value="<?php echo $this->input->post('producto_industria'); ?>" class="form-control" id="producto_industria" />
+                            <input type="text" name="producto_industria" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_industria'); ?>" class="form-control" id="producto_industria" />
                         </div>
                     </div>
                      <div class="col-md-6">
@@ -627,7 +683,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" class="form-control" id="proveedor_nombre1" required />
+                            <input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="proveedor_nombre1" required />
                             
                         </div>
                         <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
@@ -636,7 +692,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_contacto" class="control-label">Contacto</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_contacto" value="<?php echo $this->input->post('proveedor_contacto'); ?>" class="form-control" id="proveedor_contacto" />
+                            <input type="text" name="proveedor_contacto" value="<?php echo $this->input->post('proveedor_contacto'); ?>"  onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="proveedor_contacto" />
                         </div>
                     </div>
                     
@@ -906,7 +962,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="col-md-8" id='radio' style='display:block;'>
                     <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="compra_caja0"
-     name="compra_caja" value="" <?php if ($compra[0]['compra_caja']==''){ ?> checked <?php } ?> >
+     name="compra_caja" value="" <?php if ($compra[0]['compra_caja']=='' || $compra[0]['compra_caja']==0 || $compra[0]['compra_caja']==null){ ?> checked <?php } ?> >
     <label for="compra_caja0">Ninguno</label></span>
     <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="compra_caja1"
@@ -928,7 +984,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="box-body table-responsive table-condensed">
             <!--<form method="post" name="descuento">-->
                 
-            <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" >
+            <table class="table table-striped table-condensed" id="miotratabla" >
                 
 
                 <tr>
@@ -1006,10 +1062,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                </tr>
            </table>
              <div class="col-md-4">
-                        <label for="documento_respaldo_id" class="control-label">Documento.Respaldo</label>
+                        <label for="documento_respaldo_id" class="control-label">Documento Respaldo</label>
                         <div class="form-group">
                             <select name="documento_respaldo_id" class="form-control">
-                                <option value=""></option>
+                                <option value="">- NINGUNO -</option>
                                 <?php 
                                 foreach($all_documento_respaldo as $documento_respaldo)
                                 {

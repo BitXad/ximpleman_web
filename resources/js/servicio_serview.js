@@ -407,7 +407,7 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<button onclick='ponerencredito("+servicio_id+", "+registros[i]['detalleserv_id']+", "+i+")'  class='btn btn-success' data-dismiss='modal'>";
+                        html += "<button onclick='ponerencredito("+servicio_id+", "+registros[i]['detalleserv_id']+", "+i+", "+registros[i]["detalleserv_saldo"]+" )'  class='btn btn-success' data-dismiss='modal'>";
                         html += "<i class='fa fa-money'></i> Poner en Credito";
                         html += "</button>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'>";
@@ -473,23 +473,29 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
                         
                         html += "<a href='"+base_url+"detalle_serv/modificarmidetalle/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-info btn-xs' title='modificar detalle serv..'><span class='fa fa-pencil'></span> </a>";
-                        html += "<a class='btn btn-info btn-xs' data-toggle='modal' data-target='#modaldst"+i+"' title='reporte serv. tecnico'><span class='fa fa-file-text'></span><br></a>";
-                        html += "<a class='btn btn-info btn-xs' href='"+base_url+"categoria_insumo/verinsumosasignar/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' title='ver, asignar insumos'><span class='fa fa-file-text-o'></span><br></a>";
+                        if(registros[i]["esteestado"] != 6 && registros[i]["esteestado"] != 7 && registros[i]["esteestado"] != 16){
+                            html += "<a class='btn btn-info btn-xs' data-toggle='modal' data-target='#modaldst"+i+"' title='reporte serv. tecnico'><span class='fa fa-file-text'></span><br></a>";
+                            html += "<a class='btn btn-info btn-xs' href='"+base_url+"categoria_insumo/verinsumosasignar/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' title='ver, asignar insumos'><span class='fa fa-file-text-o'></span><br></a>";
+                            html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalanulardet"+i+"' title='anular detalle serv..'><span class='fa fa-minus-circle'></span></a>";
+                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modaleliminardet"+i+"' title='eliminar detalle serv..' ><span class='fa fa-trash'></span></a>";
+                        }
                         if(registros[i]["esteestado"] == 6){
                             html += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalpagardetalle"+i+"' title='cobrar detalle serv..' onclick='refrescarhora()';><span class='fa fa-money'></span><br></a>";
                             html += "<a class='btn  btn-success btn-xs' data-toggle='modal' data-target='#modalcreditodetalle"+i+"' title='credito detalle serv..' ><span class='fa fa-credit-card'></span><br></a>";
                         }
                         if(registros[i]["esteestado"] == 7){
                             var dir_url = "";
+                            var titprint = "";
                             if(tipoimpresora == "FACTURADORA"){
                                 dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+registros[i]["detalleserv_id"];
+                                titprint = "Boucher";
                             }else{
                                 dir_url = base_url+"detalle_serv/compdetalle_pago/"+registros[i]["detalleserv_id"];
+                                titprint = "Normal";
                             }
-                            html += "<a href='"+dir_url+"' class='btn btn-success btn-xs'  title='imprimir detalle serv..' target='_blank' ><span class='fa fa-print'></span><br></a>";
+                            html += "<a href='"+dir_url+"' class='btn btn-success btn-xs'  title='imprimir detalle serv. "+titprint+"' target='_blank' ><span class='fa fa-print'></span><br></a>";
                         }
-                        html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalanulardet"+i+"' title='anular detalle serv..'><span class='fa fa-minus-circle'></span></a>";
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modaleliminardet"+i+"' title='eliminar detalle serv..' ><span class='fa fa-trash'></span></a>";
+                        
                         
                         html += "</td>";
                         
@@ -711,14 +717,14 @@ function cobrardetalle(servicio_id, detalleserv_id, nummodal){
     });
 }
 /* ****************Registra el cobro de un detalle de servicio*************** */
-function ponerencredito(servicio_id, detalleserv_id, nummodal){
+function ponerencredito(servicio_id, detalleserv_id, nummodal, saldo){
     var nombremodal = "modalcreditodetalle"+nummodal;
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'detalle_serv/registrarcreditodetalle';
     $.ajax({url: controlador,
            type:"POST",
-           data:{servicio_id:servicio_id, detalleserv_id:detalleserv_id},
+           data:{servicio_id:servicio_id, detalleserv_id:detalleserv_id, monto:saldo},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
