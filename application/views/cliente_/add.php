@@ -183,8 +183,10 @@ function mostrar(a) {
                                                       });
                                                 }
                                                 initMap();
-                                            </script>                                            
-                                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>                                            
+                                            </script>
+                                            <!--<script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>-->
+                                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>
+                                            
                                             </div>
                                             <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
 					</div>

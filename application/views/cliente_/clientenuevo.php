@@ -7,20 +7,11 @@ function mostrar(a) {
         $('#map').css({ 'width':'0px', 'height':'0px' });
         $('#mosmapa').text("Obtener Ubicación del negocio");
     }else{
-        $('#map').css({ 'width':'100%', 'height':'400px' });
+        $('#map').css({ 'width':'500px', 'height':'400px' });
         $('#mosmapa').text("Cerrar mapa");
     }
 
 }
-</script>
-<script type="text/javascript">
-    function verificarnumero(numero){
-        if(numero <0){
-            alert("Nit debe ser Mayor a 0");
-            $("#cliente_nit").focus();
-        }
-        
-    }
 </script>
 <script type="text/javascript">
     $(document).ready(function(){
@@ -55,45 +46,45 @@ function mostrar(a) {
             <div class="box-header with-border">
               	<h3 class="box-title">Añadir Cliente</h3>
             </div>
-            <?php echo form_open_multipart('cliente/add'); ?>
+            <?php echo form_open('cliente/clientenuevo/'.$pedido_id); ?>
           	<div class="box-body">
           		<div class="row clearfix">
                                         <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required  onKeyUp="this.value = this.value.toUpperCase();"/>
+							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre"  required onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_ci" class="control-label">CI</label>
 						<div class="form-group">
-							<input type="text" name="cliente_ci" value="<?php echo $this->input->post('cliente_ci'); ?>" class="form-control" id="cliente_ci" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="cliente_ci" value="<?php echo $this->input->post('cliente_ci'); ?>" class="form-control" id="cliente_ci" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
-							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion"  onKeyUp="this.value = this.value.toUpperCase();"/>
+							<input type="text" name="cliente_direccion" value="<?php echo $this->input->post('cliente_direccion'); ?>" class="form-control" id="cliente_direccion" onKeyUp="this.value = this.value.toUpperCase();"/>
 						</div>
 					</div>
                                         <div class="col-md-6">
 						<label for="cliente_codigo" class="control-label">Código</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" readonly  onKeyUp="this.value = this.value.toUpperCase();"/>
+                                                    <input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" readonly onKeyUp="this.value = this.value.toUpperCase();"/>
 							<span class="text-danger"><?php echo form_error('cliente_codigo');?></span>
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_telefono" class="control-label">Teléfono</label>
 						<div class="form-group">
-							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_celular" class="control-label">Celular</label>
 						<div class="form-group">
-							<input type="text" name="cliente_celular" value="<?php echo $this->input->post('cliente_celular'); ?>" class="form-control" id="cliente_celular" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="cliente_celular" value="<?php echo $this->input->post('cliente_celular'); ?>" class="form-control" id="cliente_celular" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -183,8 +174,10 @@ function mostrar(a) {
                                                       });
                                                 }
                                                 initMap();
-                                            </script>                                            
-                                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>                                            
+                                            </script>
+                                            <script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
+                                            <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>-->
+                                            
                                             </div>
                                             <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
 					</div>
@@ -203,7 +196,7 @@ function mostrar(a) {
 					<div class="col-md-6">
 						<label for="cliente_nit" class="control-label">Nit</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : '0'); ?>" class="form-control" id="cliente_nit" />
+                                                    <input type="text" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : '0'); ?>" class="form-control" id="cliente_nit" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -289,8 +282,8 @@ function mostrar(a) {
             	<button type="submit" class="btn btn-success">
             		<i class="fa fa-check"></i> Guardar
             	</button>
-                    <a href="<?php echo site_url('cliente/index'); ?>" class="btn btn-danger">
-                                <i class="fa fa-times"></i> Cancelar</a>
+                <a href="<?php echo site_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
           	</div>
             <?php echo form_close(); ?>
       	</div>
