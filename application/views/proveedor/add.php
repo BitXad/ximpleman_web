@@ -11,6 +11,11 @@
               $('#proveedor_codigo').val(cad);
           });
       });
+
+        function loader() {
+             document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
 </script>
 <div class="row">
     <div class="col-md-12">
@@ -18,6 +23,11 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Añadir Proveedor</h3>
             </div>
+             <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
+         <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
+        <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
             <?php echo form_open_multipart('proveedor/add'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
@@ -97,7 +107,7 @@
 				</div>
 			</div>
           	<div class="box-footer">
-            	<button type="submit" class="btn btn-success">
+            	<button type="submit" class="btn btn-success" onclick="loader()">
             		<i class="fa fa-check"></i> Guardar
             	</button>
                     <a href="<?php echo site_url('proveedor'); ?>" class="btn btn-danger">

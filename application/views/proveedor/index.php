@@ -25,11 +25,7 @@
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
-    td img{
-        width: 70px;
-        height: 70px;
-        margin-right: 5px;
-    }
+    
     #horizontal{
         display: flex;
         white-space: nowrap;
@@ -45,31 +41,69 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-<div class="box-header">
-                <h3 class="box-title">Proveedor</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('proveedor/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                </div>
+<div class="row">
+        <div class="col-md-6">
+
+
+        <!--este es INICIO del BREADCRUMB buscador-->
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
+                <li class="active"><b>Proveedores: </b></li>
+                <input style="border-width: 0; background-color: #DEDEDE" id="pillados" type="text"  size="5" value="<?php echo $total ?> " readonly="true">
+            </ol>
+        </div>
+        <!--este es FIN del BREADCRUMB buscador-->
+ 
+        <!--este es INICIO de input buscador-->
+        <div class="col-md-12">
+            <div class="input-group">
+                      <span class="input-group-addon"> 
+                        Buscar 
+                      </span>           
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el código, nombre, contacto, nit"  >
+            </div></div>
+           
+            
+        <!--este es FIN de input buscador-->
+
+        <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
+         <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
+        <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
+        
+        
+    </div>
+    <!---------------- BOTONES --------->
+    <div class="col-md-6">
+        
+            <div class="box-tools">
+        <center>            
+            <a href="<?php echo site_url('proveedor/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
+        </center>            
+    </div>
+    </div>
+    <!---------------- FIN BOTONES --------->
 </div>
 <div class="row">
     <div class="col-md-12">
-        <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                      <input id="filtrar" type="text" class="form-control" onkeypress="buscarproveedor(event)" placeholder="Ingrese el código, nombre, contacto, nit">
-                  </div>
-        <!--------------------- fin parametro de buscador --------------------->
+        
         <div class="box">
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
 						
 						<th>Nombre</th>
-						<th>Dirección</th>
-						<th>Email</th>
-						<th>Nit</th>
-						<th>Razón</th>
+						<th>Contacto</th>
+						<th>Nit</br>
+						Razón</th>
 						<th>Estado</th>
 						<!--<th>Autorización</th>-->
 						<th></th>
@@ -81,21 +115,51 @@
                             <td><?php echo $cont; ?></td>
                             <td><div id="horizontal">
                                     <div>
-                                    <?php echo '<img src="'.site_url('/resources/images/proveedores/thumb_'.$p['proveedor_foto']).'" />'; ?>
+                                        <?php if($p['proveedor_foto']){
+                                                    ?>
+                                                    <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $cont; ?>" style="padding: 0px;">
+                                                        <?php
+                                                        echo '<img src="'.site_url('/resources/images/proveedores/'.$p['proveedor_foto']).'" style="width:60px;height:60px; margin-right: 5px;" />';
+                                                        ?>
+                                                    </a>
+                                                    <?php }
+                                                    else{
+                                                       echo '<img style src="'.site_url('/resources/images/usuarios/thumb_default.jpg').'" />'; 
+                                                    }
+                                                    ?>
+                                                     <!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->
+                                    <div class="modal fade" id="mostrarimagen<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="mostrarimagenlabel<?php echo $cont; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <font size="3"><b><?php echo $p['proveedor_nombre']; ?></b></font>
+                                          </div>
+                                            <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <?php echo '<img style="max-height: 100%; max-width: 100%" src="'.site_url('/resources/images/proveedores/'.$p['proveedor_foto']).'" />'; ?>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                    <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->
                                     </div>
                                     <div><?php
                                         echo $p['proveedor_nombre']."<br>";
                                         echo "<b>Cod: </b>".$p['proveedor_codigo']."<br>";
-                                        echo "<b>Cont.: </b>".$p['proveedor_contacto']."<br>";
-                                        echo "<b>Tel.: </b>".$p['proveedor_telefono']."-".$p['proveedor_telefono2'];
+                                        echo "<b>Dir..: </b>".$p['proveedor_direccion']."<br>";
+                                        echo "<b>Em@il.: </b>".$p['proveedor_email'];
                                         ?>
                                     </div>
                                 </div>
                             </td>
-                            <td><?php echo $p['proveedor_direccion']; ?></td>
-                            <td><?php echo $p['proveedor_email']; ?></td>
-                            <td><?php echo $p['proveedor_nit']; ?></td>
-                            <td><?php echo $p['proveedor_razon']; ?></td>
+                            <td><?php echo $p['proveedor_contacto']; ?></br>
+                            <b>Telf.:</b> <?php echo $p['proveedor_telefono']."-".$p['proveedor_telefono2']; ?></td>
+                            <td><?php echo $p['proveedor_nit']; ?></br>
+                            <?php echo $p['proveedor_razon']; ?></td>
                             <td style="background-color: #<?php echo $p['estado_color']; ?>"><?php echo $p['estado_descripcion']; ?></td>
 
                             <!--<td><?php //echo $p['proveedor_autorizacion']; ?></td>-->
