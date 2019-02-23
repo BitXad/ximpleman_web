@@ -46,23 +46,15 @@
 <input type="hidden" name="lacategoria_clientezona" id="lacategoria_clientezona" value='<?php echo json_encode($all_categoria_clientezona);  ?>' />
 <input type="hidden" name="elusuario" id="elusuario" value='<?php echo json_encode($all_usuario);  ?>' />
 <!-------------------------------------------------------->
-
+<div class="box-header">
+                <h3 class="box-title">Cliente</h3>
+            	<div class="box-tools">
+                    <a href="<?php echo site_url('cliente/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+                </div>
+</div>
 <div class="row">
-    
-    <div class="col-md-6">
-
-
-        <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row">
-            <ol class="breadcrumb">
-                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
-                <li class="active"><b>Clientes: </b></li>
-                <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true">
-            </ol>
-        </div>
-        <!--este es FIN del BREADCRUMB buscador-->
- 
+    <div class="col-md-12">
+        
         <!--este es INICIO de input buscador-->
             <div class="input-group">
                       <span class="input-group-addon"> 
@@ -71,78 +63,15 @@
                 <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >
             </div>
         <!--este es FIN de input buscador-->
-
         <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
-         <div class="row" id='loader'  style='display:none; text-align: center'>
-            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-        </div>
-        <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
-        
-        
-    </div>
-    
-    <!---------------- BOTONES --------->
-    <div class="col-md-6">
-        
-            <div class="box-tools">
-        <center>            
-            <a href="<?php echo base_url('cliente/add/'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="mostrar_all_clientes()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            <a href="<?php echo base_url('pedido'); ?>" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
-        </center>            
-    </div>
-    </div>
-    <!---------------- FIN BOTONES --------->
-    
-</div>
-    
-<!-------------------------------------------------------------------------------->
-
-<!--<div class="box-header" >
-    
-            <h3 class="box-title">
------------------------------------ inicio breadcrumb --------------------------------------------------
-                <ol class="breadcrumb">
-                    <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                    <li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>
-                    <li class="active"><b>Clientes</b></li>
-                    <div class="box-tools">
-                        
-                    </div>
-                    
-                    
-                </ol>                
------------------------------------ fin inicio breadcrumb --------------------------------------------------
-            </h3>
-
-            <div class="box-tools">
-                <a href="<?php echo site_url('cliente/add'); ?>" class="btn btn-success btn-sm"><i class="fa fa-user"></i> Nuevo</a> 
-            </div>
-</div>-->
-
-<div class="row">
-    <div class="col-md-12">
-        
-        <!--este es INICIO de input buscador-->
-<!--            <div class="input-group">
-                      <span class="input-group-addon"> 
-                        Buscar 
-                      </span>           
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >
-            </div>
-        <!--este es FIN de input buscador-->
-        
-        <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
-<!--        <div class="container" id="categoria">
+        <div class="container" id="categoria">
             <span class="badge btn-danger">Clientes encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
             &nbsp;&nbsp;&nbsp;&nbsp;<a onclick="mostrar_all_clientes()" class="btn btn-success btn-sm">Ver Todos los Clientes</a>
-        </div>-->
+        </div>
          <div class="row" id='loader'  style='display:none; text-align: center'>
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
         </div>
-        <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
-
+<!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
         <div class="box">
             
             <div class="box-body table-responsive">
@@ -157,8 +86,8 @@
                         <!--<th>Aniversario</th>-->
 <!--                        <th>Tipo</th>-->
                         <th>Categoria</th>
-                        <th>Prev./Estado</th>
-                        <!--<th>Estado</th>-->
+                        <th>Prevendedor</th>
+                        <th>Estado</th>
                         <th></th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
@@ -338,6 +267,6 @@
 <?php
 if($a == 1)
 echo '<script type="text/javascript">
-    alert("El Cliente NO puede ser ELIMINADO, \n porque tiene transacciones realizadas");
+    alert("El Cliente no se puede Eliminar \n porque pertenece a alguna transacción");
 </script>';
 ?>

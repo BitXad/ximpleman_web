@@ -30,7 +30,7 @@ function mostrar_ocultar(){
     var x = document.getElementById('tipo_transaccion').value;
     if (x=='2'){ //si la transaccion es a credito
         
-        document.getElementById('oculto').style.display = 'block';
+        document.getElementById('creditooculto').style.display = 'block';
 //        var hoy = new Date();
 //        var dd = hoy.getDate();
 //        var mm = hoy.getMonth()+1;
@@ -91,7 +91,7 @@ function mostrar_ocultar(){
             <div class="form-group">
                 
                 <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
-                <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onselect="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>
+                <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>
                 <datalist id="listaclientes">
 
                 </datalist>
@@ -560,7 +560,7 @@ function mostrar_ocultar(){
                            
            <!************************************* datos credito ************************************************>
                 
-            <div class="row" id='oculto'  style='display:none;'>
+            <div class="row" id='creditooculto'  style='display:none;'>
                                     
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>Nº CUOTAS</b></h5>
@@ -615,7 +615,7 @@ function mostrar_ocultar(){
                 
            </div>
            
-           <!************************************* fin datos credito ************************************************>           
+           <!--************************************* fin datos credito ************************************************>           
                  
                 
             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   

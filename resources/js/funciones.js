@@ -779,9 +779,8 @@ function tablaresultados(opcion)
                         if (parseFloat(registros[i]["existencia"])>0){
                              html += "<button type='button' class='btn btn-warning btn-xl' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='vender' ><em class='fa fa-cart-arrow-down'></em></button>";                             
                        }
-                        
-                        html += "<!---------------------- modal cantidad producto ------------------->";
-                        
+                       
+                        html += "<!---------------------- modal cantidad producto ------------------->";                        
                         html += "<div class='modal fade' id='myModal"+registros[i]["producto_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModal"+registros[i]["producto_id"]+"'>";
                         html += "  <div class='modal-dialog' role='document'>";
                         html += "<br><br>";
@@ -906,10 +905,6 @@ function registrarcliente()
                         else{
                             registrarventa(respuesta);                            
                         }
-                        
-                        
-                       
-                        
                     },
                     error: function(respuesta){
                         cliente_id = 0;            
@@ -996,8 +991,14 @@ function registrarventa(cliente_id)
     
     var moneda_id = 1; 
     var estado_id = 1; 
+    
     var venta_fecha = fecha();//retorna la fecha actual  //"date(now())";
-    var venta_hora = "time(now())";
+    var hora = new Date();
+    
+    
+    var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getMinutes();
+
+    
     var venta_subtotal = document.getElementById('venta_subtotal').value;     
     var venta_descuento = document.getElementById('venta_descuento').value; 
     var venta_total = document.getElementById('venta_totalfinal').value; 
@@ -1012,9 +1013,9 @@ function registrarventa(cliente_id)
     var cuota_inicial = document.getElementById('cuota_inicial').value;
     var credito_interes = document.getElementById('credito_interes').value;
     var facturado = document.getElementById('facturado').checked;
+    var venta_tipodoc = 0;
 
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
-    
    
     if( facturado == 1){     
         venta_tipodoc = 1;}
@@ -1025,16 +1026,16 @@ function registrarventa(cliente_id)
                 "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,"+
                 "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc) value("+
                 forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
-                +","+moneda_id+","+estado_id+",'"+venta_fecha+"',"+venta_hora+","+venta_subtotal
+                +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+")";
         
+        alert(sql);
     if (tipo_transaccion==2){
         var cuotas = document.getElementById('cuotas').value;
         var modalidad = document.getElementById('modalidad').value;
         var dia_pago = document.getElementById('dia_pago').value;
         var fecha_inicio = document.getElementById('fecha_inicio').value;
-        
         
         $.ajax({url: controlador,
             type:"POST",
@@ -1619,7 +1620,8 @@ function seleccionar_cliente(){
                     $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#telefono").val(resultado[0]["cliente_telefono"]);
                     $("#cliente_ci").val(resultado[0]["cliente_ci"]);     
-                    $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);     
+                    $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
+                    $("#codigo").select();
                 }
        
 
