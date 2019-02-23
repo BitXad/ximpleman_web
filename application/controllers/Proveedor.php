@@ -33,7 +33,7 @@ class Proveedor extends CI_Controller{
         $this->pagination->initialize($config);
         $data['a'] = "0";
         $data['proveedor'] = $this->Proveedor_model->get_all_proveedor($params);
-        
+        $data['total'] = $this->Proveedor_model->get_all_proveedor_count();
         $data['_view'] = 'proveedor/index';
         $this->load->view('layouts/main',$data);
             }
@@ -73,9 +73,9 @@ class Proveedor extends CI_Controller{
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
                         
                         $new_name = time();
                     $config['file_name'] = $new_name;
@@ -126,6 +126,7 @@ class Proveedor extends CI_Controller{
                 'proveedor_contacto' => $this->input->post('proveedor_contacto'),
                 'proveedor_direccion' => $this->input->post('proveedor_direccion'),
                 'proveedor_telefono' => $this->input->post('proveedor_telefono'),
+                'proveedor_telefono2' => $this->input->post('proveedor_telefono2'),
                 'proveedor_email' => $this->input->post('proveedor_email'),
                 'proveedor_nit' => $this->input->post('proveedor_nit'),
                 'proveedor_razon' => $this->input->post('proveedor_razon'),
@@ -269,9 +270,9 @@ class Proveedor extends CI_Controller{
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/proveedores/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time();
                     $config['file_name'] = $new_name;

@@ -250,7 +250,8 @@ class Cliente_model extends CI_Model
             WHERE
                 c.estado_id = e.estado_id
                 and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
-                   or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%')
+                   or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%'
+                   or c.cliente_nombrenegocio like '%".$parametro."%')
                 
             GROUP BY
                 c.cliente_id
@@ -382,5 +383,22 @@ class Cliente_model extends CI_Model
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
 
+    }
+     /*
+     * Verifica si ya hay un cliente registrado con un nombre
+     */
+    //function es_cliente_registrado($cliente_nombre, $cliente_ci)
+    function es_cliente_registrado($cliente_nombre)
+    {
+        $sql = "SELECT
+                      count(c.cliente_id) as resultado
+                  FROM
+                      cliente c
+                 WHERE
+                      c.cliente_nombre = '".$cliente_nombre."'";
+                      /*or c.cliente_ci = '"//.$cliente_ci."'";*/
+
+        $cliente = $this->db->query($sql)->row_array();
+        return $cliente['resultado'];
     }
 }

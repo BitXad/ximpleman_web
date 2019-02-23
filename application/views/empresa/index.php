@@ -14,6 +14,29 @@
         });
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
+<style type="text/css">
+    #contieneimg{
+        width: 45px;
+        height: 45px;
+        text-align: center;
+    }
+    #contieneimg img{
+        width: 45px;
+        height: 45px;
+        text-align: center;
+    }
+    #horizontal{
+        display: flex;
+        white-space: nowrap;
+        border-style: none !important;
+    }
+    #masg{
+        font-size: 12px;
+    }
+    td div div{
+        
+    }
+</style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
@@ -36,16 +59,14 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
-                        <!--<th>Id</th>-->
-						<th>Nombre</th>
-						<th>Eslogan</th>
-						<th>Dirección</th>
-						<th>Teléfono</th>
-						<th>Imagen</th>
-						<th>Zona</th>
-						<th>Ubicación</th>
-						<th></th>
+                        <th>#</th>
+                        <th>Empresa</th>
+                        <th>Eslogan</th>
+                        <th>Dirección</th>
+                        <th>Teléfono</th>
+                        <th>Zona</th>
+                        <th>Ubicación</th>
+                        <th></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $i = 1;
@@ -53,19 +74,37 @@
                           foreach($empresa as $e){;
                                  $cont = $cont+1; ?>
                     <tr>
-						<td><?php echo $cont ?></td>
-                        <!--<td><?php //echo $e['empresa_id']; ?></td>-->
-						<td><?php echo $e['empresa_nombre']; ?></td>
-						<td><?php echo $e['empresa_eslogan']; ?></td>
-						<td><?php echo $e['empresa_direccion']; ?></td>
-						<td><?php echo $e['empresa_telefono']; ?></td>
-						<td><?php
-                                                $mimagen = "thumb_".$e['empresa_imagen'];
-                                                echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
-                                                ?></td>
-						<td><?php echo $e['empresa_zona']; ?></td>
-						<td><?php echo $e['empresa_ubicacion']; ?></td>
-						<td>
+                        <td><?php echo $cont ?></td>
+                        <td>
+                            <div id="horizontal">
+                                <div id="contieneimg">
+                                    <?php
+                                    $mimagen = "thumb_".$e['empresa_imagen'];
+                                    if($e['empresa_imagen']){
+                                    ?>
+                                    <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $cont; ?>" style="padding: 0px;">
+                                        <?php
+                                        echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
+                                        ?>
+                                    </a>
+                                    <?php }
+                                    else{
+                                       //echo '<img style src="'.site_url('/resources/images/usuarios/thumb_default.jpg').'" />'; 
+                                    }
+                                    ?>
+                                </div>
+                                    <div style="padding-left: 4px">
+                                        <?php echo "<b id='masg'>".$e['empresa_nombre']."</b>";?>
+                                    </div>
+                            </div>
+                            
+                        </td>
+                        <td><?php echo $e['empresa_eslogan']; ?></td>
+                        <td><?php echo $e['empresa_direccion']; ?></td>
+                        <td><?php echo $e['empresa_telefono']; ?></td>
+                        <td><?php echo $e['empresa_zona']; ?></td>
+                        <td><?php echo $e['empresa_ubicacion']; ?></td>
+                        <td>
                             <a href="<?php echo site_url('empresa/edit/'.$e['empresa_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                             <!------------------------INICIO modal para confirmar eliminación ------------------->
@@ -91,6 +130,25 @@
                                       </div>
                                     </div>
                     <!------------------------F I N modal para confirmar eliminación ------------------->
+                    <!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->
+                                    <div class="modal fade" id="mostrarimagen<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="mostrarimagenlabel<?php echo $cont; ?>">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                            <font size="3"><b><?php echo $e['empresa_nombre']; ?></b></font>
+                                          </div>
+                                            <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                           <?php echo '<img style="max-height: 100%; max-width: 100%" src="'.site_url('/resources/images/empresas/'.$e['empresa_imagen']).'" />'; ?>
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          
+                                        </div>
+                                      </div>
+                                    </div>
+                    <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->
                         </td>
                     </tr>
                     <?php $i++; } ?>

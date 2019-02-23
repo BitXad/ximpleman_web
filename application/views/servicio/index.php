@@ -2,6 +2,7 @@
 <script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="tipoimpresora" id="tipoimpresora" value="<?php echo $all_parametro[0]['parametro_tipoimpresora']; ?>" />
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -49,12 +50,114 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitabladetalleimpresion.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+
+
+<!-------------------------------------------------------->
+
+<div class="row">
+    
+    <div class="col-md-6">
+
+
+        <!--este es INICIO del BREADCRUMB buscador-->
+        <div class="row">
+            <ol class="breadcrumb">
+                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <!--<li><a href="<?php //echo site_url('cliente')?>">Clientes</a></li>-->
+                <li class="active"><b>Servicios: </b></li>
+                <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true">
+            </ol>
+        </div>
+        <!--este es FIN del BREADCRUMB buscador-->
+        <div class="col-md-8">
+        <!--este es INICIO de input buscador-->
+        <div class="input-group">
+            <span class="input-group-addon">Buscar</span>
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)">
+            <!--<input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >-->
+        </div>
+        
+        <!--este es FIN de input buscador-->
+        
+        <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
+         <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
+        <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
+        
+        </div>
+        <div class="col-md-4">
+            <div  class="box-tools" >
+        <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
+            <!--<option value="">- ELEGIR -</option>-->
+            <option value="6">Servicios Pendientes</option>
+            <option value="1">Servicios de Hoy</option>
+            <option value="2">Servicios de Ayer</option>
+            <option value="3">Servicios de la semana</option>
+            <option value="4">Todos los Servicios</option>
+            <option value="5">Servicios por fecha</option>
+        </select>
+  </div>
+        </div>
+        
+    </div>
+    
+    <!---------------- BOTONES --------->
+    <div class="col-md-6 no-print">
+        
+            <div class="box-tools text-center">
+                <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
+                <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
+                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
+                <a class="btn btn-success btn-foursquarexs" onClick="muestra_oculta('mapa')" id="mosmapa" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-search-plus"></span></font><br><small>Detalle Servicio</small></a>
+                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" ><font size="5"><span class="fa fa-search"></span></font><br><small>Kardex Cliente</small></a>
+                <a href="<?php echo base_url('pedido'); ?>" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>           
+    </div>
+    </div>
+    <!---------------- FIN BOTONES --------->
+    
+</div>
+    
+<!-------------------------------------------------------------------------------->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <div class="box-header no-print">
-    <h3 class="box-title"><b>Servicios</b></h3><br>
+    <!--<h3 class="box-title"><b>Servicios</b></h3><br>-->
     <div class="container">  
         <div class="box-tools">
-            
-            <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Servicio</small></a>
+            <!--
+            <a class="btn btn-success btn-foursquarexs" href="<?php //echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Servicio</small></a>
             <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
             <a class="btn btn-success btn-foursquarexs" onClick="muestra_oculta('mapa')" id="mosmapa" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-search-plus"></span></font><br><small>Detalle Servicio</small></a>
             <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" ><font size="5"><span class="fa fa-search"></span></font><br><small>Kardex Cliente</small></a>
@@ -172,28 +275,28 @@
 </div>
 <!-- *******************************INICIO Buscador por fechas************************************ -->
 <div class="no-print">
-<div class="col-md-6">
+<!--<div class="col-md-6">
     <div class="input-group"> <span class="input-group-addon">Buscar</span>
         <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)">
     </div>
-</div>
-<div class="container" id="categoria">
+</div> -->
+<!--<div class="container" id="categoria">
                 <span class="badge btn-primary">Servicios encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
-</div>
+</div>-->
       <!-------------------- CATEGORIAS------------------------------------->
-<div class="col-md-6">
+<!--<div class="col-md-6">
     <div  class="box-tools" >
         <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
             <!--<option value="">- ELEGIR -</option>-->
-            <option value="6">Servicios Pendientes</option>
+    <!--        <option value="6">Servicios Pendientes</option>
             <option value="1">Servicios de Hoy</option>
             <option value="2">Servicios de Ayer</option>
             <option value="3">Servicios de la semana</option>
-            <!-- <option value="4">Todos los Servicios</option> -->
+            <option value="4">Todos los Servicios</option>
             <option value="5">Servicios por fecha</option>
         </select>
   </div>
-</div>
+</div> -->
       <!--<div class="container">-->
 <!--<form method="post" onclick="buscar_por_fecha()">-->
     <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none; text-align: center; padding-top: 10px;'>
@@ -232,15 +335,11 @@
     </div>
 <!--</form>-->
 <!--</div>-->
-<div class="container" id="categoria">
+<!--<div class="container" id="categoria">
     
- 
-                <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
-
                 <span class="badge btn-primary">Servicios encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontradosfecha" type="text" value="0" readonly="true"> </span></span>
 
-</div>
+</div>-->
 </div>
 <!-- *******************************F I N  Buscador por fechas************************************ -->
 <div class="row no-print">
@@ -253,27 +352,36 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
                                                 <th>Cliente</th>
                                                 <th>Codigo</th>
                                                 <th>Fechas</th>
 						<th>Estado</th>
 						<th>Tipo Servicio</th>
 						
-						<th>Registrado por </th>
+						<th>Reg. por </th>
 						
-						<th>Total</th>
-						<th>Acuenta</th>
+						<th>Tot.</th>
+						<th>A. C.</th>
 						<th>Saldo</th>
 						<th></th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
-                    <?php $i =1; $cont = 0;
+                    <?php 
+                    /*$i =1; $cont = 0;
                           foreach($servicio as $s){ $cont = $cont+1; ?>
                     <tr>
                         <td><?php echo $cont ?></td>
-                        <td><?php echo $s['cliente_nombre']; ?></td>
-                        <td><?php echo $s['servicio_id']; ?></td>
+                        <td>
+                            <?php if($s['cliente_nombre'] <> ""){
+                                      echo $s['cliente_nombre'];
+                                  }else{
+                                      echo "NO DEFINIDO";
+                                  } ?>
+                        </td>
+                        <td class="text-center">
+                            <a href="<?php echo site_url('servicio/serviciocreado/'.$s['servicio_id']); ?>" class="btn btn-info btn-sm" title="Ver, Modificar Servicio Creado">
+                                <?php echo $s['servicio_id']; ?></a></td>
                         <td><?php $fechamos = "";
                                 if($s['servicio_fechafinalizacion'] <> null) $fechamos = date('d/m/Y', strtotime($s['servicio_fechafinalizacion']));
                                 echo "<font size='1'><b>Recep.: </b>".date('d/m/Y', strtotime($s['servicio_fecharecepcion'])).'|'.$s['servicio_horarecepcion']."<br>";
@@ -350,7 +458,7 @@
                         <a data-toggle="modal" data-target="#modaleliminar<?php echo $i; ?>" class="btn btn-danger btn-xs" title="eliminar servicio"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
-                    <?php $i++; } ?>
+                    <?php $i++; } */ ?>
                 </table>
                                 
             </div>

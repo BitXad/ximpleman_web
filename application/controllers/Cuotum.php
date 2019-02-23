@@ -10,6 +10,7 @@ class Cuotum extends CI_Controller{
         parent::__construct();
         $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
+        $this->load->model('Credito_model');
          $this->load->helper('numeros');  
     } 
 
@@ -50,7 +51,7 @@ class Cuotum extends CI_Controller{
                 );
                 $usuario_id = $session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
-        //$data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+        $data['credito'] = $this->Credito_model->dato_deudas($credito_id);
         $data['_view'] = 'cuotum/deudas';
         $this->load->view('layouts/main',$data);
             }
@@ -96,7 +97,7 @@ class Cuotum extends CI_Controller{
                 );
                 $usuario_id = $session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
-        //$data['cuotum'] = $this->Cuotum_model->get_cuotu($credito_id);
+        $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
         $data['_view'] = 'cuotum/cuentas';
         $this->load->view('layouts/main',$data);
         }
@@ -848,7 +849,7 @@ class Cuotum extends CI_Controller{
         if(isset($cuotum['cuota_id']))
         {
             $this->Cuotum_model->delete_cuotum($cuota_id);
-            redirect('cuotum/ceuntas/'.$credito_id);
+            redirect('cuotum/cuentas/'.$credito_id);
         }
         else
             show_error('The cuotum you are trying to delete does not exist.');

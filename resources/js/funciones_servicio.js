@@ -1,8 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-       /* tablaresultados(1);
-        tablaproductos();
-        */
+    fechadeservicio(null, 0);
 }
 
 function validar(e,opcion,tabla_id) {
@@ -46,7 +44,7 @@ function validar2(e,opcion) {
             tablaresultadosclienteservicio();
         } */
         if (opcion==3){
-            tablaresultadoservicios();
+            fechadeservicio("", 1);
         } 
         if (opcion==4){   //busca productos en la tabla Producto; SE USA!!
             tablaresultadosproducto();
@@ -505,147 +503,6 @@ function convertDateFormat(string){
    }
     return info;
 }
-//Tabla resultados de la busqueda en el index de servicio
-function tablaresultadoservicios(){
-    var controlador = "";
-    var parametro = "";
-
-    var limite = 10;
-    var base_url = document.getElementById('base_url').value;
-    
-    
-    controlador = base_url+'servicio/buscarservicios/';
-    parametro = document.getElementById('filtrar').value;        
-    
-    
-
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{parametro:parametro},
-           success:function(respuesta){     
-               
-                                     
-                $("#encontrados").val("- 0 -");
-               var registros =  JSON.parse(respuesta);
-                
-               if (registros != null){
-                   
-                   
-                    var cont = 0;
-                    var cant_total = 0;
-                    var total_detalle = 0;
-                    var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
-                    html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
-                    
-                    for (var i = 0; i < x ; i++){
-                        html += "<tr>";
-                        
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
-                        html += "<td>"+registros[i]["servicio_id"]+"</td>";
-                        html += "<td>";
-                        var fechamos = "";
-                        var horamos = "";
-                        if(!(registros[i]["servicio_fechafinalizacion"] == null)){
-                            fechamos = convertDateFormat(registros[i]["servicio_fechafinalizacion"]);
-                        }
-                        if(!(registros[i]["servicio_horafinalizacion"] == null)){
-                            horamos = "|"+registros[i]["servicio_horafinalizacion"];
-                        }
-                        html += "<font size='1'><b>Recep.: </b>";
-
-                        html += convertDateFormat(registros[i]["servicio_fecharecepcion"])+"|"+registros[i]["servicio_horarecepcion"]+"<br>";
-                        html += "<b>Salida: </b>"+fechamos+horamos+"</font>";
-                        html += "</td>";
-                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td>";
-                        html += " <!-- Tipo de Servicio 1 esta definido como Servicio Normal -->";
-                        html += registros[i]["tiposerv_descripcion"]+"<br>";
-                        if(!(registros[i]["tiposerv_id"] == 1)){
-                            html += "<font size='1'><b>Dir.: </b>"+registros[i]["servicio_direccion"]+"</font>";
-                        }
-                        html += "</td>";
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
-                        html += "<td>"+registros[i]["servicio_total"]+"</td>";
-                        html += "<td>"+registros[i]["servicio_acuenta"]+"</td>";
-                        html += "<td>"+registros[i]['servicio_saldo']+"</td>";
-                        html += "<td>";
-                        html += "<!------------------------ INICIO modal para confirmar Anulacion ------------------->";
-                        html += "<div class='modal fade' id='modalanulado"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "<h3>";
-                        html += "¿Desea Anular el Servicio <b>"+registros[i]['servicio_id']+"</b>?";
-                        html += "</h3>";
-                        html += "Al ANULAR este servicio, se anularan todos sus detalles(incluidos Total, A cuenta y Saldo seran CERO).";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "</div>";
-                        html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"servicio/anularserv/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar Anulacion ------------------->";
-                        html += "<!------------------------ INICIO modal para confirmar Eliminación ------------------->";
-                        html += "<div class='modal fade' id='modaleliminar"+i+"' tabindex='-1' role='dialog' aria-labelledby='modaleliminarLabel"+i+"'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "<h3>";
-                        html += "¿Desea Eliminar el Servicio <b>"+registros[i]['servicio_id']+"</b>?";
-                        html += "</h3>";
-                        html += "Al ELIMINAR este servicio, se perdera toda la informacion de este servicio.";
-                        html += "<!------------------------------------------------------------------->";
-                        html += "</div>";
-                        html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
-                        html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-warning btn-xs' title='anular servicio'><span class='fa fa-minus-circle'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modaleliminar"+i+"' class='btn btn-danger btn-xs' title='eliminar servicio'><span class='fa fa-trash'></span></a>";
-                        html += "</td>";
-
-                        
-                        html += "</tr>";
-
-                   }
-                   
-                   
-                   $("#tablaresultados").html(html);
-                   
-            }
-                
-        },
-        error:function(respuesta){
-           // alert("Algo salio mal...!!!");
-           html = "";
-           $("#tablaresultados").html(html);
-        }
-        
-    });   
-
-}
 
 //Tabla resultados de la busqueda de insumos no asigandos en un detalle de servicio
 function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
@@ -777,7 +634,7 @@ function tablaresultadosclienteservicio(tabla_id){
         var parametro = "";
         var servicio_id = tabla_id;
 
-        var limite = 10;
+        //var limite = 10;
         var base_url = document.getElementById('base_url').value;
 
 
@@ -798,26 +655,25 @@ function tablaresultadosclienteservicio(tabla_id){
                    if (registros != null){
 
 
-                        var cont = 0;
+                        /*var cont = 0;
                         var cant_total = 0;
-                        var total_detalle = 0;
+                        var total_detalle = 0; */
                         var n = registros.length; //tamaño del arreglo de la consulta
                         $("#encontrados").val("- "+n+" -");
                         html = "";
-                       if (n <= limite) x = n; 
-                       else x = limite;
+                       /*if (n <= limite) x = n; 
+                       else x = limite;*/
 
-                        for (var i = 0; i < x ; i++){
+                        for (var i = 0; i < n ; i++){
                             html += "<tr>";
                             
                             html += "<td>"+(i+1)+"</td>";
                             html += "<td>";
-                            html += "<div class='col-md-3'>";
-                            html += "<center> <!-- muestra por defecto la imagen de un cliente anonimo -->";
-                            html += "<h1 style='color: #0073b7'>";
-                            html += "<i class='fa fa-user fa-3x'></i>";
-                            html += "</h1>";
-                            html += "</center>";
+                            html += "<div class='col-md-3 text-center'>";
+                            html += "<!-- muestra por defecto la imagen de un cliente anonimo -->";
+                            html += "<div style='color: #0073b7'>";
+                            html += "<i class='fa fa-user'></i>";
+                            html += "</div>";
                             html += "</div>";
                             html += "<div class='col-md-9'>";
                             html += "<form action='"+base_url+"servicio/asignarcliente/"+servicio_id+"'  method='POST' class='form'>";
@@ -859,30 +715,30 @@ function buscar_servicioporfechas()
 
     if (opcion == 6)
     {
-        filtro = " and s.estado_id = 5 ";
+        filtro = " s.estado_id = 5 ";
         mostrar_ocultar_buscador("ocultar");
     }
     
     if (opcion == 1)
     {
-        filtro = " and date(servicio_fecharecepcion) = date(now())";
+        filtro = " date(servicio_fecharecepcion) = date(now())";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de hoy
     
     if (opcion == 2)
     {
-        filtro = " and date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
+        filtro = " date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de ayer
     
     if (opcion == 3) 
     {
-        filtro = " and date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
+        filtro = " date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
         mostrar_ocultar_buscador("ocultar");
     }//servicios de la semana
 
     if (opcion == 4) 
-    {   filtro = " ";
+    {   filtro = "";
         mostrar_ocultar_buscador("ocultar");
     }//todos los servicios
     
@@ -892,7 +748,7 @@ function buscar_servicioporfechas()
         filtro = null;
     }
 
-    fechadeservicio(filtro);
+    fechadeservicio(filtro, 0);
 }
 
 function mostrar_ocultar_buscador(parametro){
@@ -913,18 +769,29 @@ function buscar_por_fecha()
     if(estado_id != 0){
         estado = " and s.estado_id = "+estado_id;
     }
-    filtro = " and date(servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(servicio_fecharecepcion) <='"+fecha_hasta+"' "+estado;
+    filtro = " date(servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(servicio_fecharecepcion) <='"+fecha_hasta+"' "+estado;
 
-    fechadeservicio(filtro);
+    fechadeservicio(filtro, 0);
 
     
 }
 
-function fechadeservicio(filtro){
-      
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"servicio/buscarserviciosfecha";
-    var limite = 1000;
+function fechadeservicio(elfiltro, busquedade){
+    var controlador = "";
+    var filtro = "";
+    var base_url      = document.getElementById('base_url').value;
+    var tipoimpresora = document.getElementById('tipoimpresora').value;
+    if(busquedade == 1){
+        
+        controlador = base_url+'servicio/buscarservicios/';
+        filtro = document.getElementById('filtrar').value
+    }else{
+        controlador = base_url+"servicio/buscarserviciosfecha";
+        filtro = elfiltro;
+    }
+    
+    
+    //var limite = 1000;
      
     $.ajax({url: controlador,
            type:"POST",
@@ -933,32 +800,44 @@ function fechadeservicio(filtro){
            success:function(resul){     
               
                             
-                $("#encontradosfecha").val("- 0 -");
+                $("#encontrados").val(" 0");
                var registros =  JSON.parse(resul);
            
                if (registros != null){
                    
                     
-                    var cont = 0;
+                    /*var cont = 0;
                     var total = Number(0);
-                    var total_detalle = 0;
+                    var total_detalle = 0;*/
                     var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#encontradosfecha").val("- "+n+" -");
+                    $("#encontrados").val(" "+n+"");
                    
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                   /*if (n <= limite) x = n; 
+                   else x = limite; */
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         
-                        var suma = Number(registros[i]["compra_totalfinal"]);
-                        var total = Number(suma+total);
-                        var bandera = 1;
+                        /*var suma = Number(registros[i]["compra_totalfinal"]);
+                        var total = Number(suma+total); */
+                        //var bandera = 1;
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
-                        html += "<td>"+registros[i]["servicio_id"]+"</td>";
+                        var cliente_nombre = "";
+                        if(registros[i]["cliente_nombre"] == null || registros[i]["cliente_nombre"] == ""){
+                            cliente_nombre = "NO DEFINIDO";
+                        }else{
+                            cliente_nombre = registros[i]["cliente_nombre"];
+                        }
+                        html += "<td>"+cliente_nombre+"</td>";
+                        html += "<td class='text-center'>";
+                        if(registros[i]["estado_id"] == 5){
+                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='Añadir, Modificar Servicio Creado'>"+registros[i]["servicio_id"];
+                        }else{
+                            html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
+                        }
+                        html += "</td>";
                         html += "<td>";
                         var fechamos = "";
                         var horamos = "";
@@ -982,9 +861,21 @@ function fechadeservicio(filtro){
                         }
                         html += "</td>";
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
-                        html += "<td>"+registros[i]["servicio_total"]+"</td>";
-                        html += "<td>"+registros[i]["servicio_acuenta"]+"</td>";
-                        html += "<td>"+registros[i]['servicio_saldo']+"</td>";
+                        var servtotal = "";
+                        if(registros[i]["servicio_total"] != null){
+                            servtotal = registros[i]["servicio_total"];
+                        }
+                        html += "<td>"+servtotal+"</td>";
+                        var servacuenta = "";
+                        if(registros[i]["servicio_acuenta"] != null){
+                            servacuenta = registros[i]["servicio_acuenta"];
+                        }
+                        html += "<td>"+servacuenta+"</td>";
+                        var servsaldo = "";
+                        if(registros[i]["servicio_saldo"] != null){
+                            servsaldo = registros[i]["servicio_saldo"];
+                        }
+                        html += "<td>"+servsaldo+"</td>";
                         html += "<td>";
                         html += "<!------------------------ INICIO modal para confirmar Anulacion ------------------->";
                         html += "<div class='modal fade' id='modalanulado"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
@@ -1037,9 +928,28 @@ function fechadeservicio(filtro){
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
-                        html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-warning btn-xs' title='anular servicio'><span class='fa fa-minus-circle'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modaleliminar"+i+"' class='btn btn-danger btn-xs' title='eliminar servicio'><span class='fa fa-trash'></span></a>";
+                        if(registros[i]["estado_id"] != 4){
+                            html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        }
+                        if(registros[i]["estado_id"] != 6 && registros[i]["estado_id"] != 7 && registros[i]["estado_id"] != 4){
+                            html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-warning btn-xs' title='anular servicio'><span class='fa fa-minus-circle'></span></a>";
+                            html += "<a data-toggle='modal' data-target='#modaleliminar"+i+"' class='btn btn-danger btn-xs' title='eliminar servicio'><span class='fa fa-trash'></span></a>";
+                        }
+                        html += "<a href='"+base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"]+"' id='imprimir' class='btn btn-success btn-xs'  target='_blank' title='Imprimir Comprobante' ><span class='fa fa-print'></span></a>";
+                        var dir_url = "";
+                        var titprint = "";
+                        if(tipoimpresora = "FACTURADORA"){
+                            dir_url = base_url+"servicio/boletarecepcion_boucher/"+registros[i]["servicio_id"];
+                            titprint = "Imp. Boucher";
+                        }else{
+                            dir_url = base_url+"servicio/boletarecepcion/"+registros[i]["servicio_id"];
+                            $titprint = "Imp. Normal";
+                        }
+                        html += "<a href='"+dir_url+"' id='imprimir' class='btn btn-facebook btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span></a>";
+                        html += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
+                        html += "<button class='btn btn-primary btn-xs' type='submit' title='Imprimir Informe Técnico' ><span class='fa fa-print'></span></button>";
+                        html += "<input type='checkbox' name='contitulo"+registros[i]['servicio_id']+"' title='Imprimir sin encabezado'>";
+                        html += "</form>";
                         html += "</td>";
 
                        

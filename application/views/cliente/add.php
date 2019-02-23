@@ -42,6 +42,14 @@ function mostrar(a) {
   });
     
 </script>
+<?php if($resultado == 1){ ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var esnombre = $("#cliente_nombre").val();
+        alert("El Cliente '"+esnombre+"' \n ya se encuentra REGISTRADO");
+    });
+</script>
+<?php } ?>
 <style type="text/css">
     #map{
         height: 100%;

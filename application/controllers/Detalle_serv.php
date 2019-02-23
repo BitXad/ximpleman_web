@@ -1537,13 +1537,58 @@ class Detalle_serv extends CI_Controller{
         $estado_id = 16;
         $servicio_id = $this->input->post('servicio_id');
         $detalleserv_id = $this->input->post('detalleserv_id');
+        $credito_monto = $this->input->post('monto');
         if(isset($detalleserv_id))
         {
+            //8 = pendiente de Creditos
+            $estadocredito_id = 8;
+            $una_semana = time() + (7 * 24 * 60 * 60);
+            $credito_fechalimite = date('Y-m-d', $una_semana);
+            $credito_fecha = date("Y-m-d");
+            $credito_hora = date("H:i:s");
+            $cadcredito = array(
+                'estado_id' => $estadocredito_id,
+                'compra_id' => 0,
+                'venta_id' => 0,
+                'servicio_id' => $servicio_id,
+                'credito_monto' => $credito_monto,
+                'credito_cuotainicial' => 0,
+                'credito_interesproc' => 0,
+                'credito_interesmonto' => 0,
+                'credito_numpagos' => 1,
+                'credito_fechalimite' => $credito_fechalimite,
+                'credito_fecha' => $credito_fecha,
+                'credito_hora' => $credito_hora,
+                'credito_tipo' => 1,
+            );
+            $this->load->model('Credito_model');
+            $credito_id = $this->Credito_model->add_credito($cadcredito);
+            $usuario_id = $session_data['usuario_id'];
+            $cadcuota = array(
+                'credito_id' => $credito_id,
+                'usuario_id' => $usuario_id,
+                'estado_id' => $estadocredito_id,
+                'cuota_numcuota' => 1,
+                'cuota_capital' => $credito_monto,
+                'cuota_interes' => 0,
+                'cuota_moradias' => 0,
+                'cuota_multa' => 0,
+                'cuota_subtotal' => $credito_monto,
+                'cuota_descuento' => 0,
+                'cuota_total' => $credito_monto,
+                'cuota_fechalimite' => $credito_fechalimite,
+                'cuota_cancelado' => 0,
+                'cuota_saldo' => $credito_monto,
+                
+            );
+            $this->load->model('Cuotum_model');
+            $cuota_id = $this->Cuotum_model->add_cuotum($cadcuota);
+            
             $cad = array(
                     'estado_id' => $estado_id,
                 );
             $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$cad);
-                    
+            
             $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
             $cont = 0;
             foreach ($res_ids as $ids)

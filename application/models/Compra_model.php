@@ -190,6 +190,21 @@ class Compra_model extends CI_Model
 
         return $compra;
     }
+
+    function cambiarfechacompra($fecha,$hora,$compra_id)
+    {
+         $sql = " UPDATE compra
+            SET compra_fecha='".$fecha."', compra_hora='".$hora."'
+            WHERE compra_id=".$compra_id;
+        $compra = $this->db->query($sql);  
+        return $fecha;
+    }
+
+    function comprafecha($compra_id)
+    {
+         $fecha = $this->db->query(" SELECT compra_fecha from compra where compra_id=".$compra_id." ")->result_array();  
+        return $fecha;
+    }
     function normalize_date($date)
     {
         if (!empty($date)) {

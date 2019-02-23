@@ -215,13 +215,10 @@
                             <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i>Pedidos</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('proveedor');?>"><i class="fa fa-address-book"></i>Proveedores</a>
-                        </li>
-                        <li>
                             <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-list-ul"></i>Cotizaciones</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-credit-card"></i> <span>Credito</span></a>
+                            <a href="#"><i class="fa fa-credit-card"></i> <span>Deudas</span></a>
                             <ul class="treeview-menu">
                                 <li>
                                     <a href="<?php echo site_url('credito/indexDeuda');?>"><i class="fa fa-hand-o-right"></i><i class="fa fa-money"></i> Deudas por pagar</a>
