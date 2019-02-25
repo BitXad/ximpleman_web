@@ -106,10 +106,10 @@ function tabla_inventario(){
                     html += "             	<td><img src='"+ base_url+"resources/images/productos/thumb_"+inv[i]["producto_foto"]+"' width='50' height='50' class='img-circle'</td>";
                     html += "             	<td><font size='3'><b>"+ inv[i]["producto_nombre"]+"</b></font> <sub>";
                     
-                    html += "             	<a href='"+base_url+"producto/edit2/"+inv[i]["producto_id"]+"' target='_blank'>["+inv[i]["producto_id"]+"] </a></sub>";
+                    html += "             	<a href='"+base_url+"producto/edit2/"+inv[i]["producto_id"]+"' target='_blank' class='no-print'>["+inv[i]["producto_id"]+"] </a></sub>";
                     html += "    <br>";
                     html += "    <small>" + inv[i]["producto_unidad"]+" | "+inv[i]["producto_marca"]+" | "+inv[i]["producto_industria"];
-                    html += "   <span class='badge span-alert'> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank'> Kardex</a> </span></small>";
+                    html += "   <span class='badge span-alert no-print'> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank' class='no-print'> Kardex</a> </span></small>";
                     html += "             	</td>";
                     html += "             	<td><center><font size='2'><b>"+inv[i]["producto_codigobarra"]+"</b><br> </font>";
                     html += "	"+ inv[i]["producto_codigo"]+"</center></td>";
@@ -180,6 +180,44 @@ function actualizar_inventario()
       
 }
 
+
+function numberFormat(numero){
+        // Variable que contendra el resultado final
+        var resultado = "";
+ 
+        // Si el numero empieza por el valor "-" (numero negativo)
+        if(numero[0]=="-")
+        {
+            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+            // el signo negativo
+            nuevoNumero=numero.replace(/\,/g,'').substring(1);
+        }else{
+            // Cogemos el numero eliminando los posibles puntos que tenga
+            nuevoNumero=numero.replace(/\,/g,'');
+        }
+ 
+        // Si tiene decimales, se los quitamos al numero
+        if(numero.indexOf(".")>=0)
+            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+ 
+        // Ponemos un punto cada 3 caracteres
+        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+ 
+        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+        // los separadores de miles
+        if(numero.indexOf(".")>=0)
+            resultado+=numero.substring(numero.indexOf("."));
+ 
+        if(numero[0]=="-")
+        {
+            // Devolvemos el valor añadiendo al inicio el signo negativo
+            return "-"+resultado;
+        }else{
+            return resultado;
+        }
+    }
+
 function mostrar_duplicados()
 {
     var base_url = document.getElementById('base_url').value;
@@ -245,7 +283,7 @@ function mostrar_duplicados()
                     html += "	<td><center>"+ inv[i]["pedidos"]+"</center></td>";
                     
                     html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
-                    html += "             	<td><center> <font size='2'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                    html += "             	<td><center> <font size='2'><b>"+total.toFixed(2)+"</b></font></center></td>";
                     html += "</tr>";
                 } // end for (i = 0 ....)
             } //end if (inv != null){
@@ -261,7 +299,7 @@ function mostrar_duplicados()
                 html += "	<th> </th>";
                 html += "	<th></th>";
                 html += "	<th></th>";
-                html += "	<th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "	<th>"+numberFormat(number(total_final.toFixed(2)))+"</th>";
                 html += "	<!--<th></th>-->";
                 html += "</tr>    ";
                 html += "</table>";            

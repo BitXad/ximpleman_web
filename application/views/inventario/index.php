@@ -32,14 +32,17 @@
 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
+
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
- <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
+
 <!-------------------------------------------------------->
+
+
 
 <div class="box-header">
             <h3 class="box-title">Inventario</h3>
-            <div class="box-tools">
+            <div class="box-tools no-print">
             
                 <button class="btn btn-success btn-sm" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Actualizar</button>
                 <button class="btn btn-primary btn-sm" onclick="tabla_inventario()"><span class="fa fa-list"></span> Mostrar todo</button>

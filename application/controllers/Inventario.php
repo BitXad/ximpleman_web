@@ -19,21 +19,26 @@ class Inventario extends CI_Controller{
      */
     function index()
     {
+        
 
-       
-//        $params['limit'] = RECORDS_PER_PAGE; //50 items por pagina 
-//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-//        
-//        $config = $this->config->item('pagination');
-//        $config['base_url'] = site_url('inventario/index?');
-//        $config['total_rows'] = $this->Inventario_model->get_all_inventario_count();
-//        $this->pagination->initialize($config);
-//
-//        $data['offset'] = $params['offset'];
-        //$data['inventario'] = $this->Inventario_model->get_all_inventario($params);
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+		        
+        $empresa_id = 1;
+        $data['page_title'] = "Inventario";
+        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
         $data['_view'] = 'inventario/index';
         $this->load->view('layouts/main',$data);
-
+		
+        //**************** fin contenido ***************
+			}
+			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }  
     }
 
     /*
@@ -41,7 +46,19 @@ class Inventario extends CI_Controller{
      */
     function kardex($producto_id)
     {
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+		        
+        
         $empresa_id = 1;
+        
+        $data['page_title'] = "Kardex";
         $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
         $data['producto'] = $this->Producto_model->get_producto($producto_id);
         
@@ -52,6 +69,12 @@ class Inventario extends CI_Controller{
 
         $data['_view'] = 'inventario/kardex';
         $this->load->view('layouts/main',$data);
+		
+        //**************** fin contenido ***************
+			}
+			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }          
+        
     }
 
     /*
@@ -59,12 +82,24 @@ class Inventario extends CI_Controller{
      */
     function actualizar_inventario()
     {   
-       
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+		       
         $usuario_id = 1;
         
         $this->Inventario_model->actualizar_inventario();
         redirect('inventario/index');
-        
+		
+        //**************** fin contenido ***************
+			}
+			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }          
         
     }  
 
@@ -73,8 +108,16 @@ class Inventario extends CI_Controller{
      */
     function mostrar_inventario()
     {      
-       // if($this->input->is_ajax_request()){
-            
+       
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+		
             $parametro = $this->input->post("parametro");
             if ($parametro=="" || $parametro==null)
                 $resultado = $this->Inventario_model->get_inventario();                
@@ -82,7 +125,11 @@ class Inventario extends CI_Controller{
                 $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
             
             echo json_encode($resultado);            
-       // }
+		
+        //**************** fin contenido ***************
+			}
+			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }  
         
     }  
     
@@ -91,12 +138,24 @@ class Inventario extends CI_Controller{
      */
     function actualizar_cantidad_inventario()
     {   
-       
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+		       
         $usuario_id = 1;
         
         $this->Inventario_model->actualizar_cantidad_inventario();
         redirect('inventario/index');
-        
+		
+        //**************** fin contenido ***************
+			}
+			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }          
         
     }  
     
@@ -104,7 +163,17 @@ class Inventario extends CI_Controller{
      * muestra los productos duplicados en inventario
      */
     function mostrar_duplicados()
-    {      
+    {
+     
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+		        
         if($this->input->is_ajax_request()){
             
             $resultado = $this->Inventario_model->mostrar_duplicados_inventario();
@@ -112,6 +181,11 @@ class Inventario extends CI_Controller{
             
         }
         else echo false;
+		
+        //**************** fin contenido ***************
+			}
+			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }  
         
     }  
     

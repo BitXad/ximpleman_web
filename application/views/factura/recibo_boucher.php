@@ -1,47 +1,42 @@
-<!--<link href="<?php echo base_url('resources/css/factura_boucher.css'); ?>" rel="stylesheet">
-<!DOCTYPE html> 
- 
-  <div class="ticket">
-    <img src="https://yt3.ggpht.com/-3BKTe8YFlbA/AAAAAAAAAAI/AAAAAAAAAAA/ad0jqQ4IkGE/s900-c-k-no-mo-rj-c0xffffff/photo.jpg" alt="Logotipo">
-    <p class="centrado">APPS PERFECTAS
-      <br>5 de mayo #1006
-      <br>23/08/2017 08:22 a.m.</p>
-    <table>
-      <thead>
-        <tr>
-          <th class="cantidad">CANT</th>
-          <th class="producto">PRODUCTO</th>
-          <th class="precio">$$</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="cantidad">1.00</td>
-          <td class="producto">CHEETOS VERDES 80 G</td>
-          <td class="precio">$8.50</td>
-        </tr>
-        <tr>
-          <td class="cantidad">2.00</td>
-          <td class="producto">KINDER DELICE</td>
-          <td class="precio">$10.00</td>
-        </tr>
-        <tr>
-          <td class="cantidad">1.00</td>
-          <td class="producto">COCA COLA 600 ML</td>
-          <td class="precio">$10.00</td>
-        </tr>
-        <tr>
-          <td class="cantidad"></td>
-          <td class="producto">TOTAL</td>
-          <td class="precio">$28.50</td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="centrado">¡GRACIAS POR SU COMPRA!
-      <br>appsperfectas.com</p>
-  </div>-->
+<!--<script type="text/css">
+    
+textarea{  
+  /* box-sizing: padding-box; */
+  overflow:hidden;
+  /* demo only: */
+  padding:10px;
+  width:250px;
+  font-size:14px;
+  margin:50px auto;
+  display:block;
+  border-radius:10px;
+  border:6px solid #556677;
+}
 
 
+    
+</script>
+
+
+<script type="text/javascript">
+var textarea = document.querySelector('textarea');
+
+textarea.addEventListener('keydown', autosize);
+             
+function autosize(){
+  var el = this;
+  setTimeout(function(){
+    el.style.cssText = 'height:auto; padding:0';
+    // for box-sizing other than "content-box" use:
+    // el.style.cssText = '-moz-box-sizing:content-box';
+    el.style.cssText = 'height:' + el.scrollHeight + 'px';
+  },0);
+}
+
+</script>
+    -->
+    
+    
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -71,7 +66,6 @@
 </script> 
 
 <style type="text/css">
-
 
 p {
     font-family: Arial;
@@ -145,37 +139,15 @@ border-bottom : 1px solid #aaa;
                          else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
-                <!--<font size="1" face="arial"><b>ORIGINAL</b></font> <br>-->
+                <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
                 _______________________________________________                
                    
-
-<!--                <table style="width: 6cm;">
-                    <tr>
-                        <td style="font-family: arial; font-size: 8pt;">
-
-                            <b>NIT:      </b><br>
-                            <b>FACTURA No.:  </b><br>
-                            <b>AUTORIZACION: </b>
-
-                        </td>
-                        <td style="font-family: arial; font-size: 8pt;">
-                            <?php echo $factura[0]['factura_nitemisor']; ?> <br>
-                            <?php echo $factura[0]['factura_numero']; ?> <br>
-                            <?php echo $factura[0]['factura_autorizacion'] ?>           
-                        </td>
-                    </tr>
-                </table>-->
-
-
-<!--                <br>    
-                <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
-                <br>_______________________________________________-->
                 <br> 
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']; ?> <br>
+                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
                 <br>_______________________________________________
 
@@ -205,7 +177,20 @@ border-bottom : 1px solid #aaa;
                         ?>
            <tr>
                 <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre']; ?></td>
+                <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre'];?>
+                        <?php
+                        $preferencia = $d['detalleven_preferencia'];
+                        $caracteristicas = $d['detalleven_caracteristicas'];
+                        
+                        if ($preferencia !=null && $preferencia!='-')
+                            echo  " /".$preferencia;
+                        
+                        if ($caracteristicas!=null && $caracteristicas!='-')
+                            echo  "<br>".$caracteristicas;
+                        
+                        ?>
+                    <!--<textarea onload="autosize()"></textarea>-->
+                </td>
                 <td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
                 <td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
            </tr>
