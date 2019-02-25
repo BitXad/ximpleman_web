@@ -360,8 +360,10 @@ class Categoria_insumo extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-                
+        
         $producto_id = $this->input->post('producto_id');
+        $agrupar = $this->input->post('agrupar'.$producto_id);
+        
         $cantidad = $this->input->post('cantidad'.$producto_id);
         if($cantidad >0)
         {
@@ -369,16 +371,18 @@ class Categoria_insumo extends CI_Controller{
             $usuario_id = $session_data['usuario_id'];
 
             $producto_precio = $this->input->post('producto_precio');
-            $subtotal = $cantidad * $producto_precio;
-            $total = $subtotal;
+            $producto_descuento = $this->input->post('descuento'.$producto_id);
+            $new_productoprecio = $producto_precio-$producto_descuento;
+            $subtotal = $cantidad * $new_productoprecio;
+            $total = ($producto_precio-$producto_descuento)*$cantidad;
             
             $this->load->model('Detalle_venta_model');
             $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
-            if (isset($res)){
+            if (isset($res) && $agrupar == 1){
                 $cantidad1 = $res['detalleven_cantidad'];
                 $rescantidad = $cantidad + $cantidad1;
                 $resubtotal = $subtotal + $res['detalleven_subtotal'];
-                $restotal = $resubtotal;
+                $restotal = $total+ $res['detalleven_total'];
                 $detalleparams = array(
                     'producto_id' => $producto_id,
                     'venta_id' => $venta_id,
@@ -387,11 +391,12 @@ class Categoria_insumo extends CI_Controller{
                     'detalleven_cantidad' => $rescantidad,
                     'detalleven_unidad' => $this->input->post('producto_unidad'),
                     'detalleven_costo' => $this->input->post('producto_costo'),
-                    'detalleven_precio' => $producto_precio,
+                    //'detalleven_precio' => $producto_precio,
                     'detalleven_subtotal' => $resubtotal,
-                    'detalleven_descuento' => 0,
+                    'detalleven_descuento' => $producto_descuento,
                     'detalleven_total' => $restotal,
-                    'detalleven_caracteristicas' => $this->input->post('caracteristicas'),
+                    'detalleven_preferencia' => $res['detalleven_preferencia']." ".$this->input->post('preferencia'.$producto_id),
+                    'detalleven_caracteristicas' => $res['detalleven_caracteristicas']." ".$this->input->post('caracteristicas'.$producto_id),
                     'detalleven_comision' => $this->input->post('producto_comision'),
                     'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
                     'usuario_id' => $usuario_id,
@@ -410,11 +415,12 @@ class Categoria_insumo extends CI_Controller{
                 'detalleven_cantidad' => $cantidad,
                 'detalleven_unidad' => $this->input->post('producto_unidad'),
                 'detalleven_costo' => $this->input->post('producto_costo'),
-                'detalleven_precio' => $producto_precio,
+                'detalleven_precio' => $new_productoprecio,
                 'detalleven_subtotal' => $subtotal,
-                'detalleven_descuento' => 0,
+                'detalleven_descuento' => $producto_descuento,
                 'detalleven_total' => $total,
-                'detalleven_caracteristicas' => $this->input->post('caracteristicas'),
+                'detalleven_preferencia' => $this->input->post('preferencia'.$producto_id),
+                'detalleven_caracteristicas' => $this->input->post('caracteristicas'.$producto_id),
                 'detalleven_comision' => $this->input->post('producto_comision'),
                 'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
                 'usuario_id' => $usuario_id,

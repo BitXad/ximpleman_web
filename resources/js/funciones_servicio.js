@@ -1,6 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-    fechadeservicio(null, 0);
+    fechadeservicio(null, 2);
 }
 
 function validar(e,opcion,tabla_id) {
@@ -516,7 +516,7 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
     var servicio_id = servicio_id;
     var detalleserv_id = detalleserv_id;
     
-    var limite = 10;
+    //var limite = 10;
     var base_url = document.getElementById('base_url').value;
     
     
@@ -537,18 +537,17 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
                if (registros != null){
                    
                    
-                    var cont = 0;
+                    /*var cont = 0;
                     var cant_total = 0;
-                    var total_detalle = 0;
+                    var total_detalle = 0; */
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                   /*if (n <= limite) x = n; 
+                   else x = limite; */
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         html += "<tr>";
-                        
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
@@ -556,18 +555,35 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
                         html += "<td><font size='3'><b>"+registros[i]["producto_codigo"]+"</b></font>";
                         html += "<br>"+registros[i]["producto_codigobarra"]+"<br>"+registros[i]["producto_costo"];
                         html += "</td>";
-                        html += "<td>";
-                        html += "<center>";
+                        html += "<td class='text-center'>";
                         html += "<font size='3'><b>"+Number(registros[i]["existencia"]).toFixed(2)+"</b></font>";
-                        html += "</center>";
+                        html += "<br>Precio(c/u): "+registros[i]["producto_precio"]+"("+registros[i]["producto_unidad"]+")";
                         html += "</td>";
-                        html += "<td>"+registros[i]["producto_precio"]+"("+registros[i]["producto_unidad"]+")<br>Total:<br>";
+                        html += "<td><label>Cant. a Usar:</label>";
+                        
+                        html += "<form action='"+base_url+"categoria_insumo/usarinsumo/"+servicio_id+"/"+detalleserv_id+"' method='post' accept-charset='utf-8'>";
+                        
+                        html += "<input name='cantidad"+registros[i]["producto_id"]+"' type='number' step='any' min='0' max='"+registros[i]["existencia"]+"' id='cantidad"+registros[i]["producto_id"]+"' value='";
+                        var cantini = 0;
+                        if(registros[i]["existencia"] != 0){
+                            cantini = 1;
+                        }
+                        html += cantini +"' style='text-align: right; width: 75px;' />";
+                        html += "Total:&nbsp;";
                         html += "<script>";
                         html += "$(document).ready(function(){";
                         html += "$('#cantidad"+registros[i]["producto_id"]+"').change(function(){";
                         html += "var prec = "+registros[i]["producto_precio"]+";";
                         html += "var cant = $('#cantidad"+registros[i]["producto_id"]+"').val();"
-                        html += "var res = prec* cant;";
+                        html += "var desc = $('#descuento"+registros[i]["producto_id"]+"').val();"
+                        html += "var res = (prec-desc)*cant;";
+                        html += "$('#precio"+registros[i]["producto_id"]+"').html(res);";
+                        html += "});";
+                        html += "$('#descuento"+registros[i]["producto_id"]+"').change(function(){";
+                        html += "var prec = "+registros[i]["producto_precio"]+";";
+                        html += "var cant = $('#cantidad"+registros[i]["producto_id"]+"').val();"
+                        html += "var desc = $('#descuento"+registros[i]["producto_id"]+"').val();"
+                        html += "var res = (prec-desc)*cant;";
                         html += "$('#precio"+registros[i]["producto_id"]+"').html(res);";
                         html += "});";
                         html += "});";
@@ -580,18 +596,17 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
                             existencia = registros[i]["producto_precio"];
                         }
                         html += existencia+"</label>";
-                        html += "</td>";
-                        html += "<td>";
-                        html += "<form action='"+base_url+"categoria_insumo/usarinsumo/"+servicio_id+"/"+detalleserv_id+"' method='post' accept-charset='utf-8'>";
-                        html += "<label>Cantidad a Usar:</label>";
-                        html += "<input name='cantidad"+registros[i]["producto_id"]+"' type='number' step='any' min='0' max='"+registros[i]["existencia"]+"' id='cantidad"+registros[i]["producto_id"]+"' value='";
-                        var cerouno = 1;
-                        if(registros[i]["existencia"] == 0){
-                            cerouno = 0;
-                        }
-                        html += cerouno+"' style='text-align: right; width: 75px;' />";
-                        html += "<label>Caracteristicas:</label>";
-                        html += "<textarea name='caracteristicas' id='caracteristicas' class='form-control'></textarea>";
+                        /*html += "</td>";
+                        html += "<td>";*/
+                        html += "<br><label>Descuento:</label>";
+                        html += "<input name='descuento"+registros[i]["producto_id"]+"' type='number' step='any' min='0' id='descuento"+registros[i]["producto_id"]+"' value='0' style='text-align: right; width: 75px;' />";
+                        html += "&nbsp;&nbsp;<label>";
+                        html += "<input type='checkbox' name='agrupar"+registros[i]["producto_id"]+"' id='agrupar"+registros[i]["producto_id"]+"' value='1' />";
+                        html += "¿Agrupar?</label>";
+                        html += "<br><label>Preferencia:</label>";
+                        html += "<input name='preferencia"+registros[i]["producto_id"]+"' type='text' id='preferencia"+registros[i]["producto_id"]+"' />";
+                        html += "<br><label>Caracteristicas:</label>";
+                        html += "<textarea name='caracteristicas"+registros[i]["producto_id"]+"' id='caracteristicas"+registros[i]["producto_id"]+"' class='form-control'></textarea>";
                         html += "<br>";
                         html += "<input type='hidden' id='producto_tipocambio'  name='producto_tipocambio' class='form-control' value='"+registros[i]["producto_tipocambio"]+"' />";
                         html += "<input type='hidden' id='producto_comision'  name='producto_comision' class='form-control' value='"+registros[i]["producto_comision"]+"' />";
@@ -606,9 +621,10 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
                         html += "<button type='submit' class='btn btn-success btn-xs' "+deshabilitar+" >";
                         html += "<i class='fa fa-check'></i> Usar Insumo";
                         html += "</button>";
-                        html += "</form>";
+                        
                         html += "</td>";
                         
+                        html += "</form>";
                         html += "</tr>";
 
                    }
@@ -781,7 +797,9 @@ function fechadeservicio(elfiltro, busquedade){
     var filtro = "";
     var base_url      = document.getElementById('base_url').value;
     var tipoimpresora = document.getElementById('tipoimpresora').value;
-    if(busquedade == 1){
+    if(busquedade == 2){
+        controlador = base_url+'servicio/buscarserviciospendientes/';
+    }else if(busquedade == 1){
         
         controlador = base_url+'servicio/buscarservicios/';
         filtro = document.getElementById('filtrar').value
@@ -1327,55 +1345,6 @@ function cambiartiposervicio(servicio_id){
                     mires += "<br><b>Dirección: </b>"+servicio_direccion;
                 }
                $('#mitiposervicio').html(mires);
-               $('#'+nombremodal).modal('hide');
-        }
-        
-    });
-}
-/* ****************REGISTRAR NUEVO CLIENTE PARA UN SERVICIO*************** */
-function registrarnuevocliente(servicio_id){
-    var nombremodal = "myModal";
-    var base_url = document.getElementById('base_url').value;
-    var cliente_nombre = document.getElementById('cliente_nombre').value;
-    var cliente_codigo = document.getElementById('cliente_codigo').value;
-    var cliente_ci = document.getElementById('cliente_ci').value;
-    var cliente_nit = document.getElementById('cliente_nit').value;
-    var cliente_telefono = document.getElementById('cliente_telefono').value;
-
-    var controlador = base_url+'cliente/add_new/'+servicio_id;
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo, cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_telefono:cliente_telefono},
-           success:function(respuesta){
-               
-               var registros =  JSON.parse(respuesta);
-               if (registros != null){
-                   mires = "";
-                   mirestel = "";
-                   mirescod = "";
-                   var cliente_id = registros["cliente_id"];
-                   var cliente_nombre = registros["cliente_nombre"];
-                   var cliente_telefono = registros["cliente_telefono"];
-                   var cliente_codigo = registros["cliente_codigo"];
-               }
-               
-                if(cliente_id == null || cliente_id == 0){
-                    mires += "NO DEFINIDO";
-                }else{
-                    mires += cliente_nombre;
-                    mirestel += cliente_telefono;
-                }
-                if(tiposerv_id == 2){
-                    mires += "<br><b>Dirección: </b>"+servicio_direccion;
-                }
-                if(cliente_codigo == null){
-                    mirescod += "NO DEFINIDO";
-                }else{
-                    mirescod += cliente_codigo;
-                }
-               $('#cliente-nombre').html(mires);
-               $('#cliente-telefono').html(mirestel);
-               $('#cliente-codigo').html(mirescod);
                $('#'+nombremodal).modal('hide');
         }
         

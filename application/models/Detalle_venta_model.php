@@ -175,5 +175,18 @@ class Detalle_venta_model extends CI_Model
         $res = $this->db->query($sql)->result_array();
         return $res;
     }
+    /* ****Obtiene el total del precio del insumo usado****** */
+    function get_costototal_insumos_usados($detalleserv_id)
+    {
+        $sql = "SELECT
+                SUM(dv.detalleven_total) as total
+            FROM
+                detalle_venta dv
+           WHERE
+                
+                 dv.detalleserv_id = ".$detalleserv_id;
+        $res = $this->db->query($sql)->row_array();
+        return $res['total'];
+    }
     
 }

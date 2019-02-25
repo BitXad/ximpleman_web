@@ -28,11 +28,14 @@
 
                 });
                     subcat = "<select name='subcatserv_id' class='form-control' id='subcatserv_id' onchange='ponerdescripcion(this.value)'>"+
+                            "<option value='0'>- MARCA/MODELO -</option>"+
                             subcat+"</select>"
                     $('#subcatserv_id' ).replaceWith(''+subcat);
                 }
                     
                 });
+                $('#detalleserv_descripcion').val($('#catserv_id option:selected').text());
+                $('#detalleserv_descripcion').focus();
                 }
                 
 function ponerdescripcion(catserv){
@@ -170,7 +173,7 @@ function mostrarAlert(){
                                                 </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label for="catserv_id" class="control-label">Categoria Producto</label>
+                                            <label for="catserv_id" class="control-label">Categoría Producto</label>
 						<div class="form-group">
 							<select name="catserv_id" class="form-control" onchange="fetch_select(this.value);" id="catserv_id">
 								<!--<option value="">- CATEGORIA -</option>-->
@@ -204,25 +207,25 @@ function mostrarAlert(){
 					<div class="col-md-4">
 						<label for="detalleserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-                                                    <input type="text" name="detalleserv_descripcion" value="<?php echo $detalle_serv['detalleserv_descripcion']; ?>" class="form-control" id="detalleserv_descripcion" required />
+                                                    <input type="text" name="detalleserv_descripcion" value="<?php echo $detalle_serv['detalleserv_descripcion']; ?>" class="form-control" id="detalleserv_descripcion" required onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="detalleserv_falla" class="control-label"><span class="text-danger">*</span>Problema/Falla Segun Cliente</label>
+						<label for="detalleserv_falla" class="control-label"><span class="text-danger">*</span>Problema/Falla Según Cliente</label>
 						<div class="form-group">
-                                                    <input type="text" name="detalleserv_falla" value="<?php echo $detalle_serv['detalleserv_falla']; ?>" class="form-control" id="detalleserv_falla" required />
+                                                    <input type="text" name="detalleserv_falla" value="<?php echo $detalle_serv['detalleserv_falla']; ?>" class="form-control" id="detalleserv_falla" required onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="detalleserv_diagnostico" class="control-label">Diagnostico</label>
+						<label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
 						<div class="form-group">
-                                                    <input type="text" name="detalleserv_diagnostico" value="<?php if($detalle_serv['detalleserv_diagnostico'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_diagnostico']; } ?>" class="form-control" id="detalleserv_diagnostico" />
+                                                    <input type="text" name="detalleserv_diagnostico" value="<?php if($detalle_serv['detalleserv_diagnostico'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_diagnostico']; } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-5">
 						<label for="detalleserv_solucion" class="control-label">Solución</label>
 						<div class="form-group">
-							<input type="text" name="detalleserv_solucion" value="<?php if($detalle_serv['detalleserv_solucion'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_solucion']; } ?>" class="form-control" id="detalleserv_solucion" />
+							<input type="text" name="detalleserv_solucion" value="<?php if($detalle_serv['detalleserv_solucion'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_solucion']; } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
                                         <div class="col-md-2">
@@ -234,7 +237,7 @@ function mostrarAlert(){
 					<div class="col-md-5">
 						<label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
 						<div class="form-group">
-							<input type="text" name="detalleserv_glosa" value="<?php echo $detalle_serv['detalleserv_glosa']; ?>" class="form-control" id="detalleserv_glosa" />
+							<input type="text" name="detalleserv_glosa" value="<?php echo $detalle_serv['detalleserv_glosa']; ?>" class="form-control" id="detalleserv_glosa" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-4">
@@ -260,7 +263,7 @@ function mostrarAlert(){
 					<div class="col-md-3">
 						<label for="detalleserv_fechaentrega" class="control-label">Fecha Entrega</label>
 						<div class="form-group">
-							<input type="text" name="detalleserv_fechaentrega" value="<?php echo implode("/", array_reverse(explode("-", $detalle_serv['detalleserv_fechaentrega']))); ?>" class="has-datepicker form-control" id="detalleserv_fechaentrega" />
+							<input type="date" name="detalleserv_fechaentrega" value="<?php echo $detalle_serv['detalleserv_fechaentrega']; ?>" class="form-control" id="detalleserv_fechaentrega" />
 						</div>
 					</div>
 					<div class="col-md-3">
@@ -273,7 +276,7 @@ function mostrarAlert(){
 						<label for="responsable_id" class="control-label"><span class="text-danger">*</span>Responsable</label>
 						<div class="form-group">
                                                     <select name="responsable_id" class="form-control" required>
-								<option value="">- RESPONSABLE -</option>
+								<!--<option value="">- RESPONSABLE -</option>-->
 								<?php 
 								foreach($all_responsable as $responsable)
 								{
@@ -289,7 +292,7 @@ function mostrarAlert(){
 						<label for="estado_id" class="control-label">Estado</label>
 						<div class="form-group">
                                                         <select name="estado_id" class="form-control" id="estado_id" onchange="mostrarAlert();">
-								<option value="">- ESTADO -</option>
+								<!--<option value="">- ESTADO -</option>-->
 								<?php 
 								foreach($all_estado as $estado)
 								{

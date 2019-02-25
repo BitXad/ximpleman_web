@@ -309,7 +309,7 @@ class Detalle_serv extends CI_Controller{
             
 	    if($this->form_validation->run())     
             {
-                $fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
             
                 $usuario_id = $session_data['usuario_id'];
@@ -343,7 +343,7 @@ class Detalle_serv extends CI_Controller{
                                     'detalleserv_saldo' => $inputsaldo,
 //                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
 //                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
-                                    'detalleserv_fechaentrega' => $fecha_entrega,
+                                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
                                     'detalleserv_horaentrega' => $hora_entrega,
                                     'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
                 );
@@ -703,7 +703,7 @@ class Detalle_serv extends CI_Controller{
 	    if($this->form_validation->run())     
             {
                 $estado_id = $this->input->post('estado_id');
-                $fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
             
                 $usuario_id = $session_data['usuario_id'];
@@ -734,7 +734,7 @@ class Detalle_serv extends CI_Controller{
                                     'detalleserv_saldo' => $inputsaldo,
 //                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
 //                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
-                                    'detalleserv_fechaentrega' => $fecha_entrega,
+                                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
                                     'detalleserv_horaentrega' => $hora_entrega,
                                     'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
                 );
@@ -959,7 +959,7 @@ class Detalle_serv extends CI_Controller{
 	    if($this->form_validation->run())     
             {
                 $estado_id = $this->input->post('estado_id');
-                $fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
             
                 $usuario_id = $session_data['usuario_id'];
@@ -990,7 +990,7 @@ class Detalle_serv extends CI_Controller{
                                     'detalleserv_saldo' => $inputsaldo,
 //                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
 //                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
-                                    'detalleserv_fechaentrega' => $fecha_entrega,
+                                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
                                     'detalleserv_horaentrega' => $hora_entrega,
                                     'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
                 );

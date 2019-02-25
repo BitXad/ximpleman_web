@@ -45,12 +45,14 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>#</th>
 						<th>Descripción</th>
 						<th>Código</th>
 						<th>Cantidad</th>
-						<th>Precio</th>
-						<th>Obs.</th>
+						<th>Precio(c/u)</th>
+						<th>Total</th>
+						<th>Preferencia</th>
+						<th>Caracteristicas</th>
 						<th></th>
                     </tr>
                     <tbody class="buscar3">
@@ -70,15 +72,14 @@
                         </td>
                         <td><?php echo $c['detalleven_cantidad']; ?>
                         </td>
-                        <td><?php echo $c['detalleven_total']; ?>
-                        </td>
+                        <td><?php echo $c['detalleven_precio']; ?></td>
+                        <td><?php echo $c['detalleven_total']; ?></td>
+                        <td><?php echo $c['detalleven_preferencia']; ?>
                         <td><?php echo $c['detalleven_caracteristicas']; ?>
                         </td>
 			<td>
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modaleliminar<?php echo $cont; ?>" ><span class="fa fa-trash"></span><br></a>
                             
-                        </td>
-            
                                <!------------------------ INICIO modal para ELIMINAR INSUMO ------------------->
                                     <div class="modal fade" id="modaleliminar<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php //echo $i; ?>">
                                       <div class="modal-dialog" role="document">
@@ -102,7 +103,7 @@
                                       </div>
                                     </div>
             <!-------------------------------------------------- FIN modal para ELIMINAR INSUMO --------------------------------------->
-            
+                        </td>
                     </tr>
                     <?php } ?>
                 </table>
@@ -146,7 +147,7 @@
 </script>
 <!--------------------------------- INICIO MODAL MOSTRAR INSUMOS SELECCIONADOS ------------------------------------>
 <div class="modal fade" id="modalelegirinsumo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
                             
@@ -155,20 +156,19 @@
 				</button>
 				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
                                 
-      <div class="input-group"> <span class="input-group-addon">Buscar</span>
-        <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, codigo del Prod...">
-      </div>
+                              <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                                <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, codigo del Prod...">
+                              </div>
 			</div>
-			<div class="modal-body">
+                    <div class="modal-body" style="width: 100%">
                         <!--------------------- TABLA---------------------------------------------------->
                         <div class="box-body table-responsive">
-                        <table class="table table-striped" id="mitabla" >
+                            <table class="table table-striped" id="mitabla">
                             <tr>
-                                <th>Nº</th>
+                                <th>#</th>
                                 <th>Descripción</th>
                                 <th>Código</th>
                                 <th>Saldo</th>
-                                <th>Precio</th>
                                 <th></th>
                             </tr>
                             <tbody class="buscar2">
@@ -183,29 +183,45 @@
                                     <td><font size="3"><b><?php echo $p['producto_codigo']; ?></b></font>
                                         <br><?php echo $p['producto_codigobarra']; echo "<br>".$p['producto_costo']; ?>
                                     </td>
-                                    <td> 
-                                        <center>                    
+                                    <td class="text-center">           
                                             <font size="3"><b><?php echo number_format($p['existencia'],2,'.',','); ?></b></font>
-                                        </center>
+                                            <br><?php echo "Precio(c/u): ".$p['producto_precio']; echo "(".$p['producto_unidad'].")" ?>
                                     </td>
-                                    <td><?php echo $p['producto_precio']; echo "(".$p['producto_unidad'].")" ?><br>Total:<br>
+                                    <td><label>Cant. a Usar:</label>
+                                        <input name="cantidad<?php echo $p['producto_id']; ?>" type="number" step="any" min="0" max="<?php echo $p['existencia']; ?>" id="cantidad<?php echo $p['producto_id']; ?>" value="<?php if($p['existencia'] == 0){ echo 0;}else{ echo 1;} ?>" style="text-align: right; width: 75px;" />
+                                        Total:&nbsp;
                                         <script>
                                             $(document).ready(function(){
                                             $('#cantidad<?php echo $p["producto_id"]; ?>').change(function(){
                                                 var prec =   <?php echo $p['producto_precio']; ?>;
                                                 var cant = $('#cantidad<?php echo $p['producto_id']; ?>').val();
-                                                var res = prec* cant;
+                                                var desc = $('#descuento<?php echo $p['producto_id']; ?>').val();
+                                                var res = (prec-desc)*cant;
                                                 $("#precio<?php echo $p['producto_id'] ?>").html(res);
                                           });
+                                            $('#descuento<?php echo $p["producto_id"]; ?>').change(function(){
+                                                var prec =   <?php echo $p['producto_precio']; ?>;
+                                                var cant = $('#cantidad<?php echo $p['producto_id']; ?>').val();
+                                                var desc = $('#descuento<?php echo $p['producto_id']; ?>').val();
+                                                var res = (prec-desc)*cant;
+                                                $("#precio<?php echo $p['producto_id'] ?>").html(res);
+                                          });
+                                          
                                           });
     
                                         </script>
                                         <label id="precio<?php echo $p['producto_id']; ?>"><?php if($p['existencia'] == 0){ echo 0;}else{ echo $p['producto_precio'];} ?></label>
-                                    </td>
-                                    <td><label>Cantidad a Usar:</label>
-                                        <input name="cantidad<?php echo $p['producto_id']; ?>" type="number" step="any" min="0" max="<?php echo $p['existencia']; ?>" id="cantidad<?php echo $p['producto_id']; ?>" value="<?php if($p['existencia'] == 0){ echo 0;}else{ echo 1;} ?>" style="text-align: right; width: 75px;" />
+                                        
+                                        <br><label>Descuento:</label>
+                                        <input name="descuento<?php echo $p['producto_id']; ?>" type="number" step="any" min="0" id="descuento<?php echo $p['producto_id']; ?>" value="0" style="text-align: right; width: 75px;" />
+                                        &nbsp;&nbsp;<label>
+                                        <input type="checkbox" name="agrupar<?php echo $p['producto_id']; ?>" id="agrupar<?php echo $p['producto_id']; ?>" value="1" />
+                                        ¿Agrupar?</label>
+                                        <br><label>Preferencia:</label>
+                                        <input name="preferencia<?php echo $p['producto_id']; ?>" type="text" id="preferencia<?php echo $p['producto_id']; ?>"/>
+                                        <br>
                                         <label>Caracteristicas:</label>
-                                        <textarea name="caracteristicas" id="caracteristicas" class="form-control"></textarea>
+                                        <textarea name="caracteristicas<?php echo $p['producto_id']; ?>" id="caracteristicas<?php echo $p['producto_id']; ?>" class="form-control"></textarea>
                                     <br>
                                     <input type="hidden" id="producto_tipocambio"  name="producto_tipocambio" class="form-control" value="<?php echo $p['producto_tipocambio']; ?>" />
                                     <input type="hidden" id="producto_comision"  name="producto_comision" class="form-control" value="<?php echo $p['producto_comision']; ?>" />
@@ -236,7 +252,7 @@
 
 <!--------------------------------- INICIO MODAL MOSTRAR INSUMOS NO SELECCIONADOS ------------------------------------>
 <div class="modal fade" id="modalotroinsumo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
                             
@@ -259,13 +275,12 @@
 			<div class="modal-body">
                         <!--------------------- TABLA---------------------------------------------------->
                         <div class="box-body table-responsive">
-                        <table class="table table-striped" id="mitabla" >
+                        <table class="table table-condensed table-striped" id="mitabla" >
                             <tr>
-                                <th>Nº</th>
+                                <th>#</th>
                                 <th>Descripción</th>
                                 <th>Código</th>
                                 <th>Saldo</th>
-                                <th>Precio</th>
                                 <th></th>
                             </tr>
                             <tbody class="buscar" id="tablaresultados">
