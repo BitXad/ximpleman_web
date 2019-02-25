@@ -217,27 +217,37 @@ function tablaproductos()
                         html += "                           <small><br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
-html += "<p>";
-html += "  <a class='btn btn-primary' data-toggle='collapse' href='#multiCollapseExample1' role='button' aria-expanded='false' aria-controls='multiCollapseExample1'>Toggle first element</a>";
-html += "  <button class='btn btn-primary' type='button' data-toggle='collapse' data-target='#multiCollapseExample2' aria-expanded='false' aria-controls='multiCollapseExample2'>Toggle second element</button>";
-html += "  <button class='btn btn-primary' type='button' data-toggle='collapse' data-target='.multi-collapse' aria-expanded='false' aria-controls='multiCollapseExample1 multiCollapseExample2'>Toggle both elements</button>";
-html += "</p>";
+
+html += "  <button class='btn btn-primary btn-xs' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
+
 html += "<div class='row'>";
 html += "  <div class='col'>";
-html += "    <div class='collapse multi-collapse' id='multiCollapseExample1'>";
+html += "    <div class='collapse multi-collapse' id='caracteristicas"+registros[i]["detalleven_id"]+"'>";
 html += "      <div class='card card-body'>";
-html += "        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.";
+
+html += "        <div class='row clearfix'> ";
+html += "           <div class='col-md-12'>";
+html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Descripcion</label>";
+html += "               <div class='form-group'>";
+html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='form-control text-uppercase' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
+html += "               </div>";
+html += "           </div>";
+html += "           <div class='col-md-12'>";
+//html += "               <label for='estado_descripcion' class='control-label'>Descripcion</label>";
+html += "               <div class='form-group'>";
+html += "               <textarea name='detalleven_caracteristicas' class='form-control' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];
+
+html += "               </textarea>";
+
+html += "               <button class='btn btn-primary btn-xs' onclick='actualizar_caracteristicas("+registros[i]["detalleven_id"]+")' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-save'></i> Guardar</button>";
+
+html += "               </div>";
+html += "           </div>";
+
+html += "           </div>";
 html += "      </div>";
 html += "    </div>";
 html += "  </div>";
-html += "  <div class='col'>";
-html += "    <div class='collapse multi-collapse' id='multiCollapseExample2'>";
-html += "      <div class='card card-body'>";
-html += "        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident.";
-html += "      </div>";
-html += "    </div>";
-html += "  </div>";
-html += "</div>";
 //************************ FIN INICIO CARACTERISTICAS ***************************
                        
                        html += "                       </td>";
@@ -266,6 +276,7 @@ html += "</div>";
                         html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
                         html += "                        </td>";
                         html += "                    </tr>";  
+
                    }
                  
                    html += "                    </tbody>";
@@ -478,8 +489,6 @@ function ingresardetalle(producto_id)
                    tablaproductos();
 
                   // alert(resultado[0]['resultado']);
-
-
 
                },
                error:function(respuesta){
@@ -1732,6 +1741,27 @@ function datoscliente(cliente_id)
             $("#telefono").val(datos[0]["cliente_telefono"]);
         }
         
+    });
+   
+}   
+
+function actualizar_caracteristicas(detalleven_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/registrar_caracteristicas";
+    var preferencia = document.getElementById('detalleven_preferencia'+detalleven_id).value;
+    //alert(preferencia);
+    var caracteristicas = document.getElementById('detalleven_caracteristicas'+detalleven_id).value;
+    
+    //alert(preferencia+" "+caracteristicas);
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{detalleven_id:detalleven_id, preferencia:preferencia, caracteristicas:caracteristicas},
+        success:function(result){
+            tablaproductos();
+        }
+
     });
    
 }   

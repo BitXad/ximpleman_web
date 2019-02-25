@@ -138,10 +138,9 @@ class Venta extends CI_Controller{
                         ", detalleven_descuento = ".$descuento.
                         ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                         "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
-
                 //$this->Venta_model->ejecutar($sql);
                // return true;
-
+                
             }
             else{
 
@@ -1884,6 +1883,38 @@ function anular_venta($venta_id){
                } else { redirect('', 'refresh'); }            
         
     }
+        
+    function registrar_caracteristicas(){
+        if ($this->session->userdata('logged_in')) {
+                   $session_data = $this->session->userdata('logged_in');
+                   if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                       $data = array(
+                           'page_title' => 'Admin >> Mi Cuenta'
+                       );
+               //**************** inicio contenido ***************       
+
+               $usuario_id = $session_data['usuario_id'];
+               
+               $detalleven_id = $this->input->post('detalleven_id');
+               $detalleven_preferencia = $this->input->post('preferencia');
+               $detalleven_caracteristicas = $this->input->post('caracteristicas');
+               
+               $sql =  "update detalle_venta_aux set ".
+                       " detalleven_preferencia = '".$detalleven_preferencia."', ".
+                       " detalleven_caracteristicas = '".$detalleven_caracteristicas."'".                       
+                       " where detalleven_id = ".$detalleven_id;
+               
+               $resultado = $this->Venta_model->ejecutar($sql);
+               //echo json_encode($resultado);
+               return true; 
+
+               //**************** fin contenido ***************
+                                       }
+                                       else{ redirect('alerta'); }
+               } else { redirect('', 'refresh'); }            
+        
+    }
+  
     
     
 }

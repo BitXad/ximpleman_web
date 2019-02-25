@@ -178,7 +178,7 @@ class Inventario_model extends CI_Model
                 ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
                 from
                 producto p
-                where estado_id = 1
+                where p.estado_id = 1
                 group by
                 p.producto_id
                 order by p.producto_nombre)";
