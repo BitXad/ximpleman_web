@@ -171,7 +171,7 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<td>"+(i+1)+"</td>";
                         
                         html += "<td id='horizontal'>";
-                        html += "<font size='1'>"+registros[i]["detalleserv_descripcion"]+"</font><br>;";
+                        html += "<font size='1'>"+registros[i]["detalleserv_descripcion"]+"</font><br>";
                         if(registros[i]["procedencia_id"] != 0){
                             html += "<font size='1'><b>Proc.: </b>"+registros[i]["procedencia_descripcion"]+"</font><br>";
                         }
@@ -180,10 +180,10 @@ function resultadodetalleservicioview(servicio_id){
                         }
                         var res = "";
                         if(registros[i]["detalleserv_reclamo"] == "si"){ res = "Si";}else{ res = "No"; }
-                        html += "<font size='1'><b>¿Recl.?: </b>"+res+"</font><br>";
-                        html += "<font size='1'><b>Tec.R.: </b>"+registros[i]["responsable_nombres"]+" "+registros[i]["responsable_apellidos"]+"</font><br>";
-                        html += "<font size='1'><b>Reg.: </b>"+registros[i]["usuario_nombre"]+"</font><br>";
-                        html += "<font size='1'><b>Entrega: </b>";
+                        html += "<font size='1'><b>¿Reclamo?: </b>"+res+"</font><br>";
+                        html += "<font size='1'><b>Resp. Tec.: </b>"+registros[i]["responsable_nombres"]+" "+registros[i]["responsable_apellidos"]+"</font><br>";
+                        html += "<font size='1'><b>Recep.: </b>"+registros[i]["usuario_nombre"]+"</font><br>";
+                        html += "<font size='1'><b>Entregar: </b>";
                         //var fechaentrega = "";
                         if(registros[i]["detalleserv_fechaentrega"] != null){
                             html += convertDateFormat(registros[i]["detalleserv_fechaentrega"])+" <b>Hrs.: </b>"+registros[i]["detalleserv_horaentrega"]+"</font>";
@@ -209,7 +209,7 @@ function resultadodetalleservicioview(servicio_id){
                         }
                         html += "</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td id='horizontal'><font size='1'><b>Falla: </b>"+registros[i]["detalleserv_falla"]+"<br><b>Diagnostico: </b>"+registros[i]["detalleserv_diagnostico"]+"<br><b>Solucion: </b>"+registros[i]["detalleserv_solucion"]+"</font></td>";
+                        html += "<td id='horizontal'><font size='1'><b>Falla: </b>"+registros[i]["detalleserv_falla"]+"<br><b>Diagnóstico: </b>"+registros[i]["detalleserv_diagnostico"]+"<br><b>Solución: </b>"+registros[i]["detalleserv_solucion"]+"</font></td>";
                         html += "<td><font size='1'><b>Entrada: </b>"+registros[i]["detalleserv_pesoentrada"]+"</font><br>";
                         var pesosalida = "";
                         if(registros[i]["detalleserv_pesosalida"] != null){
@@ -253,15 +253,15 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
                         html += "<div class='col-md-6'>";
-                        html += "<label for='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' class='control-label'><span class='text-danger'>*</span>Diagnostico</label>";
+                        html += "<label for='detalleserv_diagnóstico"+registros[i]["detalleserv_id"]+"' class='control-label'><span class='text-danger'>*</span>Diagnostico</label>";
                         html += "<div class='form-group'>";
-                        html += "<input type='text' name='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_diagnostico"]+"' class='form-control' id='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' required />";
+                        html += "<input type='text' name='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_diagnostico"]+"' class='form-control text-uppercase' id='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' required />";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='col-md-6'>";
                         html += "<label for='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' class='control-label'><span class='text-danger'>*</span>Solución</label>";
                         html += "<div class='form-group'>";
-                        html += "<input type='text' name='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_solucion"]+"' class='form-control' id='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' required />";
+                        html += "<input type='text' name='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_solucion"]+"' class='form-control text-uppercase' id='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' required />";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='col-md-6'>";
@@ -279,7 +279,7 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<div class='col-md-6'>";
                         html += "<label for='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='control-label'>Datos Adicionales</label>";
                         html += "<div class='form-group'>";
-                        html += "<textarea rows='5' maxlength='350' name='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='form-control' id='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' >";
+                        html += "<textarea rows='5' maxlength='350' name='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='form-control text-uppercase' id='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' >";
                         if(registros[i]["detalleserv_glosa"] == null || registros[i]["detalleserv_glosa"] == ""){ html += "# de hojas impresas:"; }
                         else{ html += registros[i]["detalleserv_glosa"]; }
                         html += "</textarea>";

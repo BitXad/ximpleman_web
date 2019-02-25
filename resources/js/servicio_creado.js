@@ -1,5 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
+    $('#modaldetalle').modal('show');
     var servicio_id = document.getElementById('esteservicio_id').value;
     resultadodetalleservicionew(servicio_id);
        /* tablaresultados(1);
@@ -1390,6 +1391,8 @@ function registrarnuevocliente(servicio_id){
                if (registros != null){
                    if(registros == "faltadatos"){
                        $('#mensajenew_cliente').html("<br>Debe llenar los campos: Nombre, Código y Teléfono");
+                   }else if(registros[0] == "sonduplicados"){
+                       $('#mensajenew_cliente').html("<br>El Cliente "+registros[1]+" ya se encuentra registrado, por favor revise sus datos");
                    }else{
                    var mires = "";
                    var mirestel = "";

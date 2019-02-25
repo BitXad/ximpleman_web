@@ -41,6 +41,18 @@
         window.print();
     }
 </script>
+<script type="text/javascript">
+    function estefocus(){
+        $('#modalbuscarkardexcli').on('shown.bs.modal', function() {
+        $('#buscarcliente').focus();
+    });
+    }
+</script>
+<!--<script type="text/javascript">
+    function imprimirservicio(){
+        alert("Para imprimir");
+    }
+</script>-->
 
 <style type="text/css">
     #alinear{ text-align: right; }
@@ -105,14 +117,14 @@
     <!---------------- BOTONES --------->
     <div class="col-md-6 no-print">
         
-            <div class="box-tools text-center">
-                <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
-                <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
-                <a class="btn btn-success btn-foursquarexs" onClick="muestra_oculta('mapa')" id="mosmapa" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-search-plus"></span></font><br><small>Detalle Servicio</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" ><font size="5"><span class="fa fa-search"></span></font><br><small>Kardex Cliente</small></a>
-                <a href="<?php echo base_url('pedido'); ?>" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>           
-    </div>
+        <div class="box-tools text-center">
+            <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
+            <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
+            <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
+            <a class="btn btn-soundcloud btn-foursquarexs" onClick="muestra_oculta('mapa')" id="mosmapa" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-search-plus"></span></font><br><small>Detalle Servicio</small></a>
+            <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Kardex Cliente</small></a>
+            <a href="<?php echo base_url('servicio/repserviciodiario'); ?>" class="btn btn-danger btn-foursquarexs" target="_blank" title="Reporte Diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Vista Previa</small></a>           
+        </div>
     </div>
     <!---------------- FIN BOTONES --------->
     
@@ -354,10 +366,10 @@
                     <tr>
 						<th>#</th>
                                                 <th>Cliente</th>
-                                                <th>Codigo</th>
+                                                <th>Código</th>
                                                 <th>Fechas</th>
 						<th>Estado</th>
-						<th>Tipo Servicio</th>
+						<th>Tipo Serv.</th>
 						
 						<th>Reg. por </th>
 						
@@ -480,7 +492,7 @@
                                             <br><br>
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                              <label>Buscar servicio por Codigo:</label>
+                                              <label>Buscar servicio por Código:</label>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                           </div>
                                             <?php
@@ -490,9 +502,9 @@
                                            <!------------------------------------------------------------------->
                                            
                                            <div class="col-md-6">
-						<label for="servicio_id" class="control-label"><span class="text-danger">*</span>Codigo</label>
+						<label for="servicio_id" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
-							<input type="text" name="servicio_id" class="form-control" id="cliente_nombre" required />
+                                                    <input type="number" min="0" name="servicio_id" class="form-control" id="cliente_nombre" required />
 						</div>
 					  </div>
                                            <!------------------------------------------------------------------->
@@ -531,7 +543,7 @@
        <div class="col-md-6">
             <label for="buscarcliente" class="control-label"><span class="text-danger">*</span>Nombre Cliente</label>
             <div class="form-group">
-                    <input type="text" name="buscarcliente" class="form-control" id="buscarcliente" required />
+                <input type="text" name="buscarcliente" class="form-control text-uppercase" id="buscarcliente" required />
             </div>
       </div>
        <!------------------------------------------------------------------->

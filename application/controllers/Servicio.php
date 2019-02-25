@@ -23,7 +23,7 @@ class Servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        $data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
+        //$data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
         $data['a']=$es;
         
         $this->load->model('Estado_model');
@@ -1247,6 +1247,113 @@ class Servicio extends CI_Controller{
             $data['_view'] = 'servicio/boletacomprobanteserv';
             $this->load->view('layouts/main',$data);
         }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+    * buscar servicios pendientes
+    */
+    function buscarserviciospendientes()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+        if ($this->input->is_ajax_request()) {
+            
+            $datos = $this->Servicio_model->get_all_servicios_pendientes();
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     * Reporte de los servicios diario
+     */
+    function repserviciodiario()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        $data['servicio'] = $this->Servicio_model->get_all_repservicios();
+        
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        
+       /* $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+        */
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        
+        $this->load->model('Responsable_model');
+        $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+        
+        $this->load->model('Cliente_model');
+        $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
+        
+        
+        $data['_view'] = 'servicio/repserviciodiario';
+        $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+    * buscar servicios del dia
+    */
+    function buscardetalleserv_dia()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+        if ($this->input->is_ajax_request()) {
+            
+            $datos = $this->Servicio_model->get_all_servicios_dia();
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /* **********Obtiene Precio de un detalle de venta*************** */
+    function obtener_preciosinsumosusados($detalleserv_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                $this->load->model('Detalle_venta_model');
+                $datos = $this->Detalle_venta_model->get_costototal_insumos_usados($detalleserv_id);
+                echo json_encode($datos);
+            }
             else{
                 redirect('alerta');
             }

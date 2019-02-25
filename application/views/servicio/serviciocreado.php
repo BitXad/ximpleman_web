@@ -28,11 +28,16 @@
 
                 });
                     subcat = "<select name='subcatserv_id' class='form-control' id='subcatserv_id' onchange='ponerdescripcion(this.value)'>"+
+                            "<option value='0'>- MARCA/MODELO -</option>"+
                             subcat+"</select>"
                     $('#subcatserv_id' ).replaceWith(''+subcat);
                 }
                     
                 });
+                
+                $('#detalleserv_descripcion').val($('#catserv_id option:selected').text());
+                $('#detalleserv_descripcion').focus();
+                
                 }
                 
 function ponerdescripcion(catserv){
@@ -162,6 +167,12 @@ $(document).ready(function(){
 	         });
 	    });
 </script>
+<script type="text/javascript">
+        function ponerfocus(){
+            document.getElementById("cliente_nombre").focus();
+            //$("#cliente_nombre").focus();
+        }
+</script>
 <div class="box-header with-border">
     <input type="hidden" value="<?php echo $servicio['servicio_id']; ?>" id="esteservicio_id">
     <h3 class="box-title"><b>Detalle del Servicio N°: <?php echo $servicio['servicio_id'] ?></b></h3>
@@ -186,11 +197,11 @@ $(document).ready(function(){
         </div>
         <div class="box-tools">
             <center>
-                <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-wrench"></span></font><br><small>Tipo Serv..</small></a>
-                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#myModal"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie..</small></a>
+                <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv..</small></a>
+                <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#myModal" onclick="ponerfocus();"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie..</small></a>
                 <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Clie..</small></a>
-                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Det. Serv.</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Det. Serv.</small></a>
+                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Nuevo Det. Serv.</small></a>
+                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Det. Serv.</small></a>
             </center>
         </div>
     </div>
@@ -350,7 +361,7 @@ $(document).ready(function(){
                                            <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required />
+                                                    <input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					  </div>
@@ -369,13 +380,13 @@ $(document).ready(function(){
                                           <div class="col-md-6">
 						<label for="cliente_nit" class="control-label">Nit</label>
 						<div class="form-group">
-							<input type="int" name="cliente_nit" value="<?php echo $this->input->post('cliente_nit'); ?>" class="form-control" id="cliente_nit" />
+                                                    <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} ?>" class="form-control" id="cliente_nit" />
 						</div>
 					  </div>
                                           <div class="col-md-6">
 						<label for="cliente_telefono" class="control-label"><span class="text-danger">*</span>Teléfono</label>
 						<div class="form-group">
-							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" required/>
+							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" required onKeyUp="this.value = this.value.toUpperCase();" />
                                                         <span class="text-danger"><?php echo form_error('cliente_telefono');?></span>
 						</div>
 					</div>
@@ -471,7 +482,7 @@ $(document).ready(function(){
                         Buscar 
                 </div>           
                 <div class="col-md-7">
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del Clie..." onkeypress="validar(event,3,<?php echo $servicio['servicio_id']; ?>)">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del Clie..." onkeypress="validar(event,3,<?php echo $servicio['servicio_id']; ?>)" onKeyUp="this.value = this.value.toUpperCase();" />
                 </div>
                 <!--este es FIN de input buscador-->
                 <div class="container col-md-4" id="categoria">    
@@ -483,7 +494,7 @@ $(document).ready(function(){
                 <div class="box-body table-responsive">
                     <table class="table table-striped" id="mitabla">
                         <tr>
-                            <th>N°</th>
+                            <th>#</th>
                             <th> Nombres
                                 <a style="float: right;" class="btn btn-success btn-xs" data-dismiss="modal" data-toggle="modal" href="#myModal"><span class="fa fa-user-plus"></span>&nbsp;Nuevo Cliente</a>
                             </th>
@@ -502,7 +513,7 @@ $(document).ready(function(){
 
 <!-- ---------------------- Inicio modal para crear Nuevo Detalle de Servicio ----------------- -->
     <div class="modal fade" id="modaldetalle" tabindex="-1" role="dialog" aria-labelledby="modaldetalleLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
             <br><br>
         <div class="modal-content">
           <div class="modal-header">
@@ -517,12 +528,12 @@ $(document).ready(function(){
            <!------------------------------------------------------------------->
            <div class="col-md-12">
                             <div class="col-md-3">
-                                <label for="detalleserv_reclamo" class="control-label">¿Es Reclamo?</label>
+                                <label for="detalleserv_reclamo" class="control-label">¿Reclamo?</label>
                                     <div class="form-group">
                                         <input type="checkbox" name="detalleserv_reclamo" id="detalleserv_reclamo" value="si" />
                                     </div>
                             </div>
-                            <div class="col-md-5">
+                            <div class="col-md-3">
                                 <label for="cattrab_id" class="control-label">Tipo de Trabajo</label>
                                     <div class="form-group">
                                         <select name="cattrab_id" class="form-control" id="cattrab_id">
@@ -538,7 +549,7 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="procedencia_id" class="control-label">Procedencia</label>
                                     <div class="form-group">
                                         <select name="procedencia_id" class="form-control" id="procedencia_id">
@@ -554,7 +565,7 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-3">
                                 <label for="tiempouso_id" class="control-label">Tiempo de uso</label>
                                     <div class="form-group">
                                         <select name="tiempouso_id" class="form-control" id="tiempouso_id">
@@ -570,7 +581,7 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="catserv_id" class="control-label">Categoria Producto</label>
                                     <div class="form-group">
                                         <select name="catserv_id" class="form-control" onchange="fetch_select(this.value);" id="catserv_id">
@@ -586,7 +597,7 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                     <div class="form-group" id="new_select">
                                             <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
@@ -594,40 +605,40 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control" id="detalleserv_descripcion" required />
+                                        <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control text-uppercase" id="detalleserv_descripcion" required />
                                     </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="detalleserv_falla" class="control-label"><span class="text-danger">*</span>Problema/Falla Segun Cliente</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_falla" value="<?php echo $this->input->post('detalleserv_falla'); ?>" class="form-control" id="detalleserv_falla" required />
+                                        <input type="text" name="detalleserv_falla" value="<?php echo $this->input->post('detalleserv_falla'); ?>" class="form-control text-uppercase" id="detalleserv_falla" required />
                                     </div>
                             </div>
                             <div class="col-md-6">
-                                    <label for="detalleserv_diagnostico" class="control-label">Diagnostico</label>
+                                    <label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo "REVISION";}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" />
+                                        <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo "REVISION";}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control text-uppercase" id="detalleserv_diagnostico" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_solucion" class="control-label">Solución</label>
                                     <div class="form-group">
-                                            <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo "REVISION";}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" />
+                                            <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo "REVISION";}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control text-uppercase" id="detalleserv_solucion" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                     <label for="detalleserv_pesoentrada" class="control-label">Peso Entrada(Gr.)</label>
                                     <div class="form-group">
                                             <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" />
                                     </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                     <label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
                                     <div class="form-group">
-                                            <input type="text" name="detalleserv_glosa" value="<?php echo $this->input->post('detalleserv_glosa'); ?>" class="form-control" id="detalleserv_glosa" />
+                                            <input type="text" name="detalleserv_glosa" value="<?php echo $this->input->post('detalleserv_glosa'); ?>" class="form-control text-uppercase" id="detalleserv_glosa" />
                                     </div>
                             </div>
                             <div class="col-md-4">
@@ -651,7 +662,7 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_fechaentrega" class="control-label">Fecha Entrega</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_fechaentrega" value="<?php $maniana = time()+(24*60*60); echo date('d/m/Y', $maniana); ?>" class="has-datepicker form-control" id="detalleserv_fechaentrega" />
+                                        <input type="date" name="detalleserv_fechaentrega" value="<?php $maniana = time()+(24*60*60); echo date('Y-m-d', $maniana); ?>" class="form-control" id="detalleserv_fechaentrega" />
                                     </div>
                             </div>
                             <div class="col-md-4">
@@ -753,7 +764,7 @@ $(document).ready(function(){
             <div class="col-md-6" id="midirec" style="<?php echo $mos; ?>">
                 <label for="direccion" class="control-label">Dirección</label>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="direccion" id="direccion" value="<?php echo $servicio['servicio_direccion']; ?>" />
+                        <input type="text" class="form-control" name="direccion" id="direccion" value="<?php echo $servicio['servicio_direccion']; ?>" onKeyUp="this.value = this.value.toUpperCase();" />
                     </div>
             </div>
            <!-- --------------------------------------------------------------- -->

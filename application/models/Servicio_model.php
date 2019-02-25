@@ -288,4 +288,40 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
+    /*
+     * Get all reporte servicios con Filtro
+     */
+    function get_all_servicios_dia()
+    {
+        $servicio = $this->db->query("
+            SELECT
+                c.cliente_nombre, s.servicio_id, d.detalleserv_id, d.estado_id,
+                s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                d.detalleserv_fechaterminado, d.detalleserv_horaterminado,
+                d.detalleserv_fechaentregado, d.detalleserv_horaentregado,
+                d.detalleserv_total, d.detalleserv_acuenta, d.detalleserv_saldo,
+                e.estado_descripcion, t.tiposerv_descripcion, s.servicio_direccion,
+                d.detalleserv_descripcion, concat(r.responsable_nombres, ' ',r.responsable_apellidos) as respnombre,
+                p.producto_nombre, dv.detalleven_total as precioinsumo
+                
+            FROM
+                servicio s
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN detalle_serv d on s.servicio_id = d.servicio_id
+            LEFT JOIN estado e on s.estado_id = e.estado_id
+            LEFT JOIN tipo_servicio t on s.tiposerv_id = t.tiposerv_id
+            LEFT JOIN responsable r on d.responsable_id = r.responsable_id
+            LEFT JOIN detalle_venta dv on d.detalleserv_id = dv.detalleserv_id
+            LEFT JOIN producto p on dv.producto_id = p.producto_id
+           WHERE
+                
+                 (date(s.servicio_fecharecepcion) = date(NOW())
+                 or date(d.detalleserv_fechaentregado) = date(NOW()))
+                 and (d.estado_id = 5 or d.estado_id = 7)
+                 
+        ")->result_array();
+        
+        return $servicio;
+    }
+    
 }

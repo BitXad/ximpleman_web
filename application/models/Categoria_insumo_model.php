@@ -118,12 +118,11 @@ class Categoria_insumo_model extends CI_Model
              p.producto_codigobarra
               FROM
                 detalle_venta dv, inventario p, detalle_serv ds
-              WHERE p.estado_id=1
-                    and dv.producto_id = p.producto_id
+              WHERE 
+                    dv.producto_id = p.producto_id
                     and dv.detalleserv_id = ds.detalleserv_id
                     and ds.detalleserv_id = '$detalleserv_id'
-              GROUP BY
-                p.producto_id
+              
               ORDER By p.producto_id
         ")->result_array();
 

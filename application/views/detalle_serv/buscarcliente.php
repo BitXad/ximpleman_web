@@ -52,7 +52,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
 						<th>Cliente</th>
 						<th>Servicio</th>
 						<th>Estado</th>

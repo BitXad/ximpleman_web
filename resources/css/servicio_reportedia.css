@@ -1,0 +1,194 @@
+.micontenedor{
+    display: flex;
+    max-width: 100%;
+    max-height: 5%;
+    font-family: "Arial Narrow", Arial;
+    text-align: center;
+    
+    /*font-family: "Arial", arial narrow;
+    max-width: 20.59cm;
+    width: 19.59cm;
+    margin-left: 0em;
+    padding:0px;*/
+}
+.micontenedorep{
+    margin-top: 1cm;
+    display: flex;
+    max-width: 100%;
+    max-height: 5%;
+    font-family: "Arial Narrow", Arial;
+    text-align: center;
+}
+.micontenidoInforme{
+    margin-top: 1cm;
+    margin-right: 2cm;
+    margin-left: 4cm;
+    display: flex;
+    max-width: 100%;
+    max-height: 5%;
+    font-family: "Arial Narrow", Arial;
+    text-align: center;
+}
+.micontenedorlineas hr{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 2cm;
+    margin-left: 4cm;
+    border-top: 1px solid;
+}
+#cabizquierda{
+    width: 25%;
+    font-size: 8pt;
+}
+#cabcentro{
+    width: 50%;
+    font-size: 12pt;
+}
+/*#cabcentro label{
+    font-family: "Arial", Arial Narrow;
+    font-size: 10pt;
+}*/
+#cabderecha{
+    /*display: block;*/
+    width: 25%
+}
+
+#titulo{
+    text-align: center;
+    font-family: "Arial Narrow", Arial;
+    font-size: 12pt;
+    font-weight: bold;
+    line-height: 12px;
+}
+#titulo .lahora{
+    /*font-family: "Arial Narrow", Arial;*/
+    font-size: 8pt;
+    /*text-align: center;*/
+    font-weight: normal;
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+.micontenedor img{
+    max-width: 2.5cm;
+    max-height: 2.5cm;
+    width: 2.5cm;
+    height: 2.5cm;
+    padding-bottom: 8px;
+}
+
+.clientenombre{
+    max-width: 100%;
+    width: 100%;
+    font-family: "Arial Narrow", Arial;
+    font-size: 10pt;
+}
+.parametrosbusqueda{
+    max-width: 100%;
+    width: 100%;
+    font-family: "Arial Narrow", Arial;
+    font-size: 7pt;
+    margin-top: 5px;
+}
+
+div center b{
+    font-family: "Arial Narrow", Arial;
+}
+div center div{
+    font-family: "Arial Narrow", Arial;
+    font-size: 10pt;
+}
+div b{
+    font-family: "Arial Narrow", Arial;
+    font-size: 10pt;
+    margin: 0;
+    padding: 0;
+}
+
+
+/* ********************************** */
+.micontenedorfirmas{
+    display: flex;
+    max-width: 100%;
+    width: 100%;
+    max-height: 5%;
+    font-family: "Arial Narrow", Arial;
+    text-align: center;
+}
+#cabizquierdafirmas{
+    width: 50%;
+    font-size: 10pt;
+}
+
+#cabderechafirmas{
+    /*display: block;*/
+    width: 50%;
+    font-size: 10pt;
+}
+/* *******Para que haya solo en la parte derecha****** */
+.cabsoloizqderechafirmas{
+    /*display: block;*/
+    width: 80%;
+    font-size: 10pt;
+}
+.cabsoloderechafirmas{
+    /*display: block;*/
+    white-space: nowrap;
+    font-family: "Arial Narrow", Arial;
+    width: 20%;
+    font-size: 8pt;
+}
+/* ********************************** */
+
+
+#mitablaimpresion {
+    font-family: "Arial Narrow", Arial;
+    border-collapse: collapse;
+    width: 100%;
+}
+#leyenda{
+    font-family: "Arial Narrow", Arial;
+    font-size: 8pt;
+}
+#mitablaimpresion td, #mitablaimpresion th {
+    border: 1px solid #ddd;
+    /*padding: 8px;*/
+    
+}
+
+#mitablaimpresion tr:nth-child(even){background-color: #f2f2f2;}
+
+#mitablaimpresion tr:hover {background-color: #ddd;}
+
+#mitablaimpresion th {
+    /*padding-top: 12px;
+    padding-bottom: 12px; */
+    font-family: "Arial Narrow", Arial;
+    text-align: left;
+    background-color: #3c8dbc;
+    color: white;
+    text-align: center;
+    font-size: 9pt;
+    padding: 2px;
+}
+#mitablaimpresion td {
+    font-family: "Arial Narrow", Arial;
+    font-size: 7pt;
+    padding: 1px;
+}
+.alinearder{
+    text-align: right;
+}
+.alinearcentro{
+    text-align: center;
+}
+.negrita{
+    font-weight: bold;
+}
+.tamanio10pt{
+    font-size: 10pt;
+}
+.tamanio8pt{
+    font-size: 8pt;
+}
