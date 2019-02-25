@@ -770,13 +770,13 @@ $cantiviejas = 0;
         $this->db->query($sql);
     
    }    }  }
-  /*///////////////////////// poner en consulta select , dc.detallecomp_costo y en aumentar_cantdad_producto: ,$producto_id['detallecomp_costo']  y  en esa funcion lo q recibe//////////////////// */
+  
 
    $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo, dc.detallecomp_precio from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
    $productos_id=$this->db->query($product)->result_array();
 
    foreach ($productos_id as $producto_id) {
-       
+    //////pasa producto a inventario   y actualiza ultimo costo///////////
 
        $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
       $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
@@ -786,7 +786,7 @@ $cantiviejas = 0;
                 //////////////////6. ELIMINAR AUX///////////////////////////
    $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
    $this->db->query($eliminar_aux);
-   ///////////generar orden de pago/////////////////////////
+   ///////////si elige generar orden de pago/////////////////////////
    if ($_POST['compra_caja']==2 ) {
      $yaorden  = "SELECT COUNT(orden_id) as 'ordenes' FROM orden_pago WHERE orden_pago.compra_id=".$compra_id;
      $tiene_orden = $this->db->query($yaorden)->result_array();
