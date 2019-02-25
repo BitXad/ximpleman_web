@@ -139,37 +139,15 @@ border-bottom : 1px solid #aaa;
                          else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
-                <!--<font size="1" face="arial"><b>ORIGINAL</b></font> <br>-->
+                <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
                 _______________________________________________                
                    
-
-<!--                <table style="width: 6cm;">
-                    <tr>
-                        <td style="font-family: arial; font-size: 8pt;">
-
-                            <b>NIT:      </b><br>
-                            <b>FACTURA No.:  </b><br>
-                            <b>AUTORIZACION: </b>
-
-                        </td>
-                        <td style="font-family: arial; font-size: 8pt;">
-                            <?php echo $factura[0]['factura_nitemisor']; ?> <br>
-                            <?php echo $factura[0]['factura_numero']; ?> <br>
-                            <?php echo $factura[0]['factura_autorizacion'] ?>           
-                        </td>
-                    </tr>
-                </table>-->
-
-
-<!--                <br>    
-                <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
-                <br>_______________________________________________-->
                 <br> 
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']; ?> <br>
+                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
                 <br>_______________________________________________
 
