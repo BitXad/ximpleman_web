@@ -1331,8 +1331,8 @@ function ultimaventa(){
         redirect('factura/recibo_boucher/'.$venta_id);}
         
        //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
+        }
+            else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }    
 }
 
