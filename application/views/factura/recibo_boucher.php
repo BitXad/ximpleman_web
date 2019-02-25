@@ -135,21 +135,21 @@ border-bottom : 1px solid #aaa;
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
-                    <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
                 
                     <br>
                     <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
-                         else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>
+                         else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
-                <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
-                <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>
+                <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
+                <!--<font size="1" face="arial"><b>ORIGINAL</b></font> <br>-->
                 _______________________________________________                
                    
-                <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
-                <table style="width: 6cm;">
+
+<!--                <table style="width: 6cm;">
                     <tr>
                         <td style="font-family: arial; font-size: 8pt;">
 
@@ -164,20 +164,18 @@ border-bottom : 1px solid #aaa;
                             <?php echo $factura[0]['factura_autorizacion'] ?>           
                         </td>
                     </tr>
-                </table>
-<!--                </div>-->
+                </table>-->
 
-            <!--<center>-->                        
-                <!--<div class="panel" style="width: 7cm; ">-->
-                <br>    
+
+<!--                <br>    
                 <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
-                <br>_______________________________________________
+                <br>_______________________________________________-->
                 <br> 
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                    <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
+                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
                 <br>_______________________________________________
 
@@ -229,7 +227,7 @@ border-bottom : 1px solid #aaa;
             </font>
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($factura[0]['factura_total'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL FINAL Bs: ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
             </b>
             </font>
             <font size="1" face="arial narrow">
@@ -242,7 +240,7 @@ border-bottom : 1px solid #aaa;
             
         </td>          
     </tr>
-    <tr>
+<!--    <tr>
         <td nowrap>
             <font size="2">
             
@@ -253,8 +251,8 @@ border-bottom : 1px solid #aaa;
                 LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
             </font>
         </td>           
-    </tr>
-    <tr>
+    </tr>-->
+<!--    <tr>
         <td>
         <center>
             <img src="<?php echo $codigoqr; ?>" width="100" height="100">
@@ -263,14 +261,13 @@ border-bottom : 1px solid #aaa;
         </td>
        
 
-    </tr>    
+    </tr>    -->
     <tr >
           <td>
                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
             <center>
-                    <?php echo $factura[0]['factura_leyenda1'];?> <br>
             <font size="2">
-                    <?php echo $factura[0]['factura_leyenda2']; ?> 
+                   
             </font>
             <br>
                     <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  

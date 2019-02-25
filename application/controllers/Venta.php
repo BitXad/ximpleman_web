@@ -87,6 +87,7 @@ class Venta extends CI_Controller{
         //$data['inventario'] = $this->Inventario_model->get_inventario_bloque();
         //$data['presentacion'] = $this->Inventario_model->get_presentacion();  
         //$data['detalle_venta'] = $this->Venta_model->get_detalle_aux($usuario_id);
+        $data['page_title'] = "Ventas";
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
@@ -174,12 +175,12 @@ class Venta extends CI_Controller{
                     producto_precio*".$cantidad.",
                     ".$descuento.",
                     producto_precio*".$cantidad.",
-                    "."'-'".",
-                    "."'-'".",
+                    "."producto_caracteristicas".",
+                    "."''".",
                     0,
                     1,
                     ".$usuario_id."
-                    from producto
+                    from inventario
                     where producto_id=".$producto_id."
                     )";
             }
@@ -1315,17 +1316,23 @@ function ultimaventa(){
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
+                    'page_title' => 'Imprimir factura'
                 );
         //**************** inicio contenido ***************    
     
                 
-    $venta_id = $this->Venta_model->ultima_venta();
-    redirect('factura/factura_boucher/'.$venta_id);
+    $venta = $this->Venta_model->ultima_venta();
+    $venta_tipodoc = $venta[0]['venta_tipodoc'];
+    $venta_id = $venta[0]['venta_id'];
     
+    if ($venta_tipodoc==1){ 
+        redirect('factura/factura_boucher/'.$venta_id);}
+    else{
+        redirect('factura/recibo_boucher/'.$venta_id);}
+        
        //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
+        }
+            else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }    
 }
 
@@ -1436,7 +1443,7 @@ function anular_venta($venta_id){
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1  or $session_data['tipousuario_id']==4) {
                 $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
+                    'page_title' => 'Mostrar Ventas'
                 );
         //**************** inicio contenido ***************   
 
