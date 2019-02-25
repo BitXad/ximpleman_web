@@ -227,9 +227,25 @@ class Producto_model extends CI_Model
               WHERE 
                    p.estado_id = e.estado_id
                   
-              GROUP BY
-                p.producto_id
               ORDER By p.producto_id desc LIMIT 50";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
+    /* *****Buscar todos los productos****** */
+    function get_busqueda_productos_all()
+    {
+        $sql = "SELECT
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
+
+              FROM
+              producto p, estado e
+              
+              WHERE 
+                   p.estado_id = e.estado_id
+                  
+              ORDER By p.producto_id desc";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;

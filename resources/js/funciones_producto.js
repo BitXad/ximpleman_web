@@ -24,17 +24,19 @@ function tablaresultadosproducto(limite)
     
     if(limite == 1){
         controlador = base_url+'producto/buscarproductoslimit/';
+    }else if(limite == 3){
+        controlador = base_url+'producto/buscarproductosall/';
     }else{
         controlador = base_url+'producto/buscarproductos/';
     }
     parametro = document.getElementById('filtrar').value;
-    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
 
     $.ajax({url: controlador,
            type:"POST",
            data:{parametro:parametro},
-           success:function(respuesta){     
+           success:function(respuesta){    
                
                                      
                 $("#encontrados").val("- 0 -");
@@ -98,15 +100,22 @@ function tablaresultadosproducto(limite)
                         }else{
                             esmoneda = moned[registros[i]["moneda_id"]-1]["moneda_descripcion"];
                         }
-                        html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+registros[i]["producto_unidad"]+"</td>";
+                        html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+registros[i]["producto_unidad"]+"<br>";
+                        html += "<b>Cant. Min.: </b>"+registros[i]["producto_cantidadminima"]+"</td>";
                         var codbarras = "";
                         if(!(registros[i]["producto_codigobarra"] == null)){
                             codbarras = registros[i]["producto_codigobarra"];
                         }
                         html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-                        html += "<td><b>Compra: </b>"+registros[i]["producto_costo"]+"<br><b>Venta: </b>"+registros[i]["producto_precio"]+"</td>";
-                        html += "<td><b>Moneda: </b>"+esmoneda+"<br><b>T. Cambio: </b>"+registros[i]["producto_tipocambio"]+"</td>";
-                        html += "<td>"+registros[i]["producto_comision"]+"</td>";
+                        html += "<td><b>Compra: </b>"+registros[i]["producto_costo"]+"<br>";
+                            html += "<b>Venta: </b>"+registros[i]["producto_precio"]+"<br>";
+                            html += "<b>Comisión: </b>"+registros[i]["producto_comision"];
+                            html += "</td>";
+                        html += "<td><b>Moneda: </b>"+esmoneda+"<br>";
+                        html += "<b>T. Cambio: </b>";
+                        var tipocambio= 0;
+                        if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
+                        html += tipocambio+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
 		        html += "<td>";
                         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
@@ -162,14 +171,18 @@ function tablaresultadosproducto(limite)
                    
                    
                    $("#tablaresultados").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
             }
-                
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
         },
         error:function(respuesta){
            // alert("Algo salio mal...!!!");
            html = "";
            $("#tablaresultados").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
         }
         
     });   

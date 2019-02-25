@@ -38,7 +38,7 @@ class Producto extends CI_Controller{
         $data['all_presentacion'] = $this->Presentacion_model->get_alls_presentacion();
         
         $this->load->model('Moneda_model');
-        $data['all_moneda'] = $this->Moneda_model->get_alls_moneda();
+        $data['all_moneda'] = $this->Moneda_model->get_alls_moneda_asc();
         
         //$data['producto'] = $this->Producto_model->get_all_producto();
         
@@ -149,7 +149,7 @@ class Producto extends CI_Controller{
 				'producto_codigofactor' => $this->input->post('producto_codigofactor'),
 				'producto_preciofactor' => $this->input->post('producto_preciofactor'),
 				'producto_ultimocosto' => $this->input->post('producto_costo'),
-                'producto_cantidadminima' => $this->input->post('producto_cantidadminima'),
+                                'producto_cantidadminima' => $this->input->post('producto_cantidadminima'),
 				'producto_caracteristicas' => $this->input->post('producto_caracteristicas')
             );
             
@@ -688,11 +688,13 @@ class Producto extends CI_Controller{
             $parametro = $this->input->post('parametro');   
             
             if ($parametro!=""){
-            $datos = $this->Producto_model->get_busqueda_producto_parametro($parametro);
+                $datos = $this->Producto_model->get_busqueda_producto_parametro($parametro);
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
+            }else{
+                $datos = $this->Producto_model->get_busqueda_producto_limite();
+                echo json_encode($datos);
             }
-            else echo json_encode(null);
         }
         else
         {                 
@@ -722,6 +724,37 @@ class Producto extends CI_Controller{
             $parametro = $this->input->post('parametro');   
             
             $datos = $this->Producto_model->get_busqueda_producto_limite();
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+    * buscar productos ALL
+    */
+    function buscarproductosall()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            $datos = $this->Producto_model->get_busqueda_productos_all();
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
         }

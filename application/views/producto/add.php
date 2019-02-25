@@ -58,7 +58,7 @@
                                         <div class="col-md-6">
 						<label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" class="form-control" id="producto_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
+                                                    <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" class="form-control" id="producto_nombre" required onKeyUp="this.value = this.value.toUpperCase();" autofocus />
 							<span class="text-danger"><?php echo form_error('producto_nombre');?></span>
 						</div>
 					</div>

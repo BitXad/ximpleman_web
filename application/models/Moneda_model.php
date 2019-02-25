@@ -119,4 +119,24 @@ class Moneda_model extends CI_Model
 
         return $moneda;
     }
+    /*
+     * Get alls moneda orden ASC
+     */
+    function get_alls_moneda_asc()
+    {
+        $moneda = $this->db->query("
+            SELECT
+                moneda_id, moneda_descripcion
+            FROM
+                moneda m, estado e
+
+            WHERE
+                m.estado_id = e.estado_id
+
+            ORDER BY `moneda_id` ASC
+
+        ")->result_array();
+
+        return $moneda;
+    }
 }

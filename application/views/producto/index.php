@@ -87,7 +87,7 @@
             <div class="box-tools">
         <center>            
             <a href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
@@ -107,15 +107,14 @@
                <!--<table role="table">-->
                     <thead role="rowgroup">
                         <tr role="row">
-                            <th  role="columnheader" >N°</th>
+                            <th  role="columnheader" >#</th>
                             <th  role="columnheader" >Nombre</th>
                             <th  role="columnheader" >Categoria|<br>Presentación</th>
                             <th  role="columnheader" >Código|<br>Cód. Barra</th>
                             <th  role="columnheader" >Precio</th>
                             <th  role="columnheader" >Moneda</th>
-                            <th  role="columnheader" >Comision</th>
                             <th  role="columnheader" >Estado</th>
-                            <th  role="columnheader" >Operaciones</th>
+                            <th  role="columnheader" ></th>
                     
                     </tr>
                     </thead>
@@ -250,6 +249,6 @@
 <?php
 if($a == 1)
 echo '<script type="text/javascript">
-    alert("El Producto no se puede Eliminar \n porque pertenece a alguna transacción");
+    alert("El Producto no puede ser ELIMINADO, \n porque tienen transacciones realizadas");
 </script>';
 ?>

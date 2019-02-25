@@ -39,7 +39,7 @@ function tablaresultadoscliente(limite)
     $.ajax({url: controlador,
            type:"POST",
            data:{parametro:parametro},
-           success:function(respuesta){     
+           success:function(respuesta){
                
                                      
                 $("#encontrados").val("- 0 -");
