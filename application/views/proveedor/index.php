@@ -51,7 +51,7 @@
                 <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
                 <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
                 <li class="active"><b>Proveedores: </b></li>
-                <input style="border-width: 0; background-color: #DEDEDE" id="pillados" type="text"  size="5" value="<?php echo $total ?> " readonly="true">
+                <input style="border-width: 0; background-color: #DEDEDE" id="pillados" type="text"  size="5" value="-<?php echo $total ?>-" readonly="true">
             </ol>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->

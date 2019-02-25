@@ -65,7 +65,7 @@ class Moneda_model extends CI_Model
             WHERE
                 m.estado_id = e.estado_id
 
-            ORDER BY `moneda_id` DESC
+            ORDER BY `moneda_id` 
 
             " . $limit_condition . "
         ")->result_array();
