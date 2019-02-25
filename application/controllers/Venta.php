@@ -87,6 +87,7 @@ class Venta extends CI_Controller{
         //$data['inventario'] = $this->Inventario_model->get_inventario_bloque();
         //$data['presentacion'] = $this->Inventario_model->get_presentacion();  
         //$data['detalle_venta'] = $this->Venta_model->get_detalle_aux($usuario_id);
+        $data['page_title'] = "Ventas";
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
@@ -138,10 +139,9 @@ class Venta extends CI_Controller{
                         ", detalleven_descuento = ".$descuento.
                         ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                         "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
-
                 //$this->Venta_model->ejecutar($sql);
                // return true;
-
+                
             }
             else{
 
@@ -175,12 +175,12 @@ class Venta extends CI_Controller{
                     producto_precio*".$cantidad.",
                     ".$descuento.",
                     producto_precio*".$cantidad.",
-                    "."'-'".",
-                    "."'-'".",
+                    "."producto_caracteristicas".",
+                    "."''".",
                     0,
                     1,
                     ".$usuario_id."
-                    from producto
+                    from inventario
                     where producto_id=".$producto_id."
                     )";
             }
@@ -319,7 +319,7 @@ class Venta extends CI_Controller{
         WHERE 
           usuario_id=".$usuario_id.")";
         
-        $sqldetalle = $sql;
+        //$sqldetalle = $sql;
         $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
         
         
@@ -334,14 +334,15 @@ class Venta extends CI_Controller{
             $estado_id =  8; //8 pendiente 9 cancelado
             $compra_id =  0;
             $venta_id =  $venta_id;
-            $credito_monto =  $venta_total;
+            $credito_monto =  $venta_total - $venta_descuento;
             $credito_cuotainicial =  $cuota_inicial;
             $credito_interesproc =  $credito_interes;
             $credito_interesmonto =  $venta_total * $venta_interes; //revisar
             $credito_numpagos =  $cuotas;
             $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
-            $credito_fecha =  "date(now())";
-            $credito_hora =  "time(now())";
+            $credito_fecha = date('Y-m-d');
+            $time = time();
+            $credito_hora =  date("H:i:s", $time);
             $credito_tipo = 1; // 1- ventas 2 - compras
          
             $cuotas       = $this->input->post('cuotas');
@@ -395,32 +396,38 @@ class Venta extends CI_Controller{
             $multa = 0;
             $descuento = 0;
             $cancelado = 0;
-            
             $credito_monto = $venta_total - $cuota_inicial;
             $numcuota = $cuotas; //numero de cuotas
-            $cuota_capital = ($credito_monto)/$numcuota;            
+            $patron = ($numcuota*0.5) + 0.5;
+            $cuota_capital = ($credito_monto)/$numcuota;   // bien         
             $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
             $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
             $total = $cuota_subtotal - $descuento;
-            $saldo_deudor = $cuota_total;
-            $cuota_fecha = "1900-01-01";
+            $saldo_deudor = $credito_monto;
+            
             $siguiente= 0;
             $cuota_fechalimite = $fecha_inicio;
-            $patron = ($numcuota*0.5) + 0.5;
+           
+           // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
+            
+            $cuota_fechalimite = $fecha_inicio;        
             
             if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
             else $intervalo = 7; //si los pagos son semanales
-                 
-                for ($i=1; $i <= $numcuota; $i++) { 
+                
+            
+                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
 
                     $cuota_numcuota = $i;
                     
-                    $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".
+                    $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
                             $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
-                            $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."','".$cuota_fecha."',".$saldo_deudor.",".$credito_hora.")";
+                            $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
                   
                     $cuota_fechalimite = (time() + ($intervalo * 24 * 60 * 60 ));
-                    $cuota_fechalimite = date('Y-m-d', $cuota_fechalimite);
+//                    $cuota_fechalimite = date('Y-m-d', $cuota_fechalimite);
+                    //$cuota_fechalimite = strtotime($fecha_inicio."+ ".$i." month");
+                   // $cuota_fechalimite = 
                     
                     //echo($cuota);
                     $this->Venta_model->ejecutar($cuota);
@@ -1309,17 +1316,23 @@ function ultimaventa(){
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
                 $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
+                    'page_title' => 'Imprimir factura'
                 );
         //**************** inicio contenido ***************    
     
                 
-    $venta_id = $this->Venta_model->ultima_venta();
-    redirect('factura/factura_boucher/'.$venta_id);
+    $venta = $this->Venta_model->ultima_venta();
+    $venta_tipodoc = $venta[0]['venta_tipodoc'];
+    $venta_id = $venta[0]['venta_id'];
     
+    if ($venta_tipodoc==1){ 
+        redirect('factura/factura_boucher/'.$venta_id);}
+    else{
+        redirect('factura/recibo_boucher/'.$venta_id);}
+        
        //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
+        }
+            else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }    
 }
 
@@ -1430,7 +1443,7 @@ function anular_venta($venta_id){
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1  or $session_data['tipousuario_id']==4) {
                 $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
+                    'page_title' => 'Mostrar Ventas'
                 );
         //**************** inicio contenido ***************   
 
@@ -1877,6 +1890,38 @@ function anular_venta($venta_id){
                } else { redirect('', 'refresh'); }            
         
     }
+        
+    function registrar_caracteristicas(){
+        if ($this->session->userdata('logged_in')) {
+                   $session_data = $this->session->userdata('logged_in');
+                   if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                       $data = array(
+                           'page_title' => 'Admin >> Mi Cuenta'
+                       );
+               //**************** inicio contenido ***************       
+
+               $usuario_id = $session_data['usuario_id'];
+               
+               $detalleven_id = $this->input->post('detalleven_id');
+               $detalleven_preferencia = $this->input->post('preferencia');
+               $detalleven_caracteristicas = $this->input->post('caracteristicas');
+               
+               $sql =  "update detalle_venta_aux set ".
+                       " detalleven_preferencia = '".$detalleven_preferencia."', ".
+                       " detalleven_caracteristicas = '".$detalleven_caracteristicas."'".                       
+                       " where detalleven_id = ".$detalleven_id;
+               
+               $resultado = $this->Venta_model->ejecutar($sql);
+               //echo json_encode($resultado);
+               return true; 
+
+               //**************** fin contenido ***************
+                                       }
+                                       else{ redirect('alerta'); }
+               } else { redirect('', 'refresh'); }            
+        
+    }
+  
     
     
 }

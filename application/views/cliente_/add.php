@@ -42,14 +42,6 @@ function mostrar(a) {
   });
     
 </script>
-<?php if($resultado == 1){ ?>
-<script type="text/javascript">
-    $(document).ready(function(){
-        var esnombre = $("#cliente_nombre").val();
-        alert("El Cliente '"+esnombre+"' \n ya se encuentra REGISTRADO");
-    });
-</script>
-<?php } ?>
 <style type="text/css">
     #map{
         height: 100%;
@@ -191,8 +183,10 @@ function mostrar(a) {
                                                       });
                                                 }
                                                 initMap();
-                                            </script>                                            
-                                                <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>                                            
+                                            </script>
+                                            <!--<script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>-->
+                                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>
+                                            
                                             </div>
                                             <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
 					</div>

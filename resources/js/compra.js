@@ -165,7 +165,10 @@ function tablatotales(total_detalle,descuento,subtotal)
 function detallecompra(compra_id, producto_id){
        
         var controlador = "";
-        var agrupar = document.getElementById('agrupar').value; 
+        if(document.getElementById("agrupar").checked==true){
+        var agrupar = 1; } else{
+        var agrupar = 0;
+        }
         var cantidad = document.getElementById('cantidaddetalle'+producto_id).value; 
         var descuento = document.getElementById('descuentodetalle'+producto_id).value;
         var producto_costo = document.getElementById('producto_costodetalle'+producto_id).value;

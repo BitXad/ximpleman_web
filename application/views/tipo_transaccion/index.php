@@ -35,10 +35,10 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>#</th>
 						<!--<th>Id</th>-->
 						<th>Nombre</th>
-						<th>Operaciones</th>
+						<th></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $cont = 0;

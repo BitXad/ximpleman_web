@@ -13,7 +13,6 @@ class Factura extends CI_Controller{
         $this->load->model('Detalle_venta_model');
         $this->load->model('Parametro_model');
         
-        
     } 
 
     /*
@@ -98,8 +97,7 @@ class Factura extends CI_Controller{
         //Generador de Codigo QR
                 //cargamos la librería	
          $this->load->library('ciqrcode');
-         
-         
+                 
          //hacemos configuraciones
          $params['data'] = $cadenaQR;//$this->random(30);
          $params['level'] = 'H';
@@ -110,14 +108,12 @@ class Factura extends CI_Controller{
          //generamos el código qr
          $this->ciqrcode->generate($params); 
          //echo '<img src="'.base_url().'resources/images/qrcode.png" />';
-        //fin generador de codigo QR
-         
+        //fin generador de codigo QR        
         
         $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
         
         $data['_view'] = 'factura/factura_carta';
-        $this->load->view('layouts/main',$data);
-        
+        $this->load->view('layouts/main',$data);        
         
         }
         else
@@ -130,9 +126,7 @@ class Factura extends CI_Controller{
         			}
         			else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }
-    }
-
-
+    }    
     
     function factura_boucher($venta_id)
     {
@@ -170,8 +164,7 @@ class Factura extends CI_Controller{
         //Generador de Codigo QR
                 //cargamos la librería	
          $this->load->library('ciqrcode');
-         
-         
+                  
          //hacemos configuraciones
          $params['data'] = $cadenaQR;//$this->random(30);
          $params['level'] = 'H';
@@ -204,7 +197,36 @@ class Factura extends CI_Controller{
         } else { redirect('', 'refresh'); }
     }
 
+    function recibo_boucher($venta_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $session_data['usuario_id'];
+        
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Factura";
 
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/recibo_boucher';
+        $this->load->view('layouts/main',$data);       
+
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+    }
 
     /*
      * Adding a new factura
@@ -325,7 +347,6 @@ class Factura extends CI_Controller{
         			else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }
 }
-
 
     /*
      * Deleting factura
@@ -572,7 +593,6 @@ class Factura extends CI_Controller{
 
     }
   }
-  
   
     function mostrar_facturas()
     {

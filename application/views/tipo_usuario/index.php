@@ -36,10 +36,10 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
 					
-						<th>Id</th>
+						<th>#</th>
 						<th>Descripción</th>
 						<th>Estado</th>
-						<th>Operaciones</th>
+						<th></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $cont = 0;
