@@ -220,6 +220,7 @@ function tablaproductos()
 
 html += "  <button class='btn btn-primary btn-xs' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
 
+
 html += "<div class='row'>";
 html += "  <div class='col'>";
 html += "    <div class='collapse multi-collapse' id='caracteristicas"+registros[i]["detalleven_id"]+"'>";
@@ -227,8 +228,8 @@ html += "      <div class='card card-body'>";
 
 html += "        <div class='row clearfix'> ";
 html += "           <div class='col-md-12'>";
-html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Descripcion</label>";
-html += "               <div class='form-group'>";
+html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Preferencias/Características</label>";
+html += "               <div class='form-group'>"
 html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='form-control text-uppercase' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
 html += "               </div>";
 html += "           </div>";
@@ -248,6 +249,7 @@ html += "           </div>";
 html += "      </div>";
 html += "    </div>";
 html += "  </div>";
+
 //************************ FIN INICIO CARACTERISTICAS ***************************
                        
                        html += "                       </td>";
@@ -1099,7 +1101,7 @@ function registrarventa(cliente_id)
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+")";
         
-        alert(sql);
+       // alert(sql);
     if (tipo_transaccion==2){
         var cuotas = document.getElementById('cuotas').value;
         var modalidad = document.getElementById('modalidad').value;

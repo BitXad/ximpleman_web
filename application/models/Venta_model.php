@@ -326,13 +326,14 @@ class Venta_model extends CI_Model
      */
     function ultima_venta()
     {        
-        $sql = 'select max(venta_id) as ventaid from venta';
+        $sql = 'select * from venta order by venta_id desc limit 1';
+//        $sql = 'select max(venta_id) as ventaid from venta';
         $resultado = $this->db->query($sql)->result_array();
         
-        if (sizeof($resultado)>0) $id = $resultado[0]['ventaid'];
-        else $id = 0;
+//        if (sizeof($resultado)>0) $id = $resultado[0]['ventaid'];
+//        else $id = 0;
         
-        return $id;
+        return $resultado;
     }
 
     /*
