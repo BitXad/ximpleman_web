@@ -27,6 +27,11 @@
         $('#producto_codigobarra').val(anio+mes+dia+hora+min+seg);
         $('#producto_codigo').val(anio+mes+dia+hora+min+seg);
     }
+
+     function loader() {
+             document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
 </script>
 
 <div class="row">
@@ -38,6 +43,9 @@
 			<i class="fa fa-edit"></i> Cambiar Codigo barra y Codigo
 		</button>
             </div>
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        	</div>
                         <?php echo form_open_multipart('producto/edit/'.$producto['producto_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
@@ -142,7 +150,7 @@
 					<div class="col-md-3">
 						<label for="producto_comision" class="control-label">Comision (%)</label>
 						<div class="form-group">
-							<input type="number" step="any" min="0" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : $producto['producto_comision']); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
+							<input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : $producto['producto_comision']); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
 						</div>
 					</div>
 
@@ -249,7 +257,7 @@
 				</div>
 			</div>
 			<div class="box-footer">
-            	<button type="submit" class="btn btn-success">
+            	<button type="submit" class="btn btn-success" onclick="loader()">
 					<i class="fa fa-check"></i> Guardar
 				</button>
                             <a href="<?php echo site_url('producto/index'); ?>" class="btn btn-danger">

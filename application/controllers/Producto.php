@@ -148,7 +148,7 @@ class Producto extends CI_Controller{
 				'producto_unidadfactor' => $this->input->post('producto_unidadfactor'),
 				'producto_codigofactor' => $this->input->post('producto_codigofactor'),
 				'producto_preciofactor' => $this->input->post('producto_preciofactor'),
-				'producto_ultimocosto' => $this->input->post('producto_ultimocosto'),
+				'producto_ultimocosto' => $this->input->post('producto_costo'),
 				'producto_cantidadminima' => $this->input->post('producto_cantidadminima'),
             );
             

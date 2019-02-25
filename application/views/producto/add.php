@@ -34,6 +34,10 @@
               $("#producto_precio").val(value/0.8);
           });
       });
+       function loader() {
+             document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
 </script>
 <div class="row">
     <div class="col-md-12">
@@ -44,6 +48,9 @@
 			<i class="fa fa-barcode"></i> Generar Codigos
 		</button>
             </div>
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        	</div>
             <?php echo form_open_multipart('producto/add'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
@@ -168,7 +175,7 @@
 					<div class="col-md-3">
 						<label for="producto_comision" class="control-label">Comision (%)</label>
 						<div class="form-group">
-							<input type="number" step="any" min="0" name="producto_comision" value="<?php echo '0.00'; ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
+							<input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo '0.00'; ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
 						</div>
 					</div>
 
@@ -229,12 +236,6 @@
 						</div>
 					</div>
 
-					<div class="col-md-3">
-						<label for="producto_ultimocosto" class="control-label">Ultimo Costo</label>
-						<div class="form-group">
-							<input type="text" step="any" min="0" name="producto_ultimocosto" value="<?php echo "0.00"; ?>" class="form-control" id="producto_ultimocosto"  onclick="this.select();"/>
-						</div>
-					</div>
 
 					<div class="col-md-3">
 						<label for="producto_foto" class="control-label">Foto</label>
@@ -245,7 +246,7 @@
 				</div>
 			</div>
           	<div class="box-footer">
-            	<button type="submit" class="btn btn-success">
+            	<button type="submit" class="btn btn-success" onclick="loader()">
             		<i class="fa fa-check"></i> Guardar
             	</button>
                     <a href="<?php echo site_url('producto/index'); ?>" class="btn btn-danger">
