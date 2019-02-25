@@ -110,7 +110,8 @@ function ventacombi(filtro)
                         html += "<td> <b>"+registros[i]["producto_nombre"]+"</b>  <br>";
                         html += "<td align='center'> <b>"+registros[i]["producto_unidad"]+"</b>  <br>";
                         
-                        html += "<td align='right' >"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<br></td>";                                          
+                       // html += "<td align='right' >"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<br></td>";                                          
+                        html += "<td align='right' >"+Number(total/canti).toFixed(2)+"<br></td>";                                          
                         html += "<td align='right' >"+Number(registros[i]["cantidades"]).toFixed(2)+"<br></td>";
                         html += "<td align='right'> <b>"+Number(registros[i]["totales"]).toFixed(2)+"</b> </td>";
                         html += "<td align='right'> <b>"+Number(registros[i]["producto_comision"]).toFixed(2)+"</b> </td>";

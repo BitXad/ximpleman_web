@@ -108,12 +108,15 @@ function ventacombi(filtro)
                         var totalCan = Number(canti+totalCan);
                         var total = Number(registros[i]["totales"]);
                         var totalTo = Number(total+totalTo);
+                        var precios = Number(registros[i]["precios"]);
+                        var prom = Number(registros[i]["prom"]);
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["producto_nombre"]+"</b> <br>";
                         
-                        html += "<td align='right' >"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<br></td>";                                          
+                       // html += "<td align='right' >"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<br></td>";                                          
+                        html += "<td align='right' >"+Number(total/canti).toFixed(2)+"<br></td>";                                          
                         html += "<td align='center' >"+Number(registros[i]["cantidades"]).toFixed(2)+"<br></td>";
                         html += "<td align='right' style='font-size:12px;'><b>"+Number(registros[i]["totales"]).toFixed(2)+"</b></td>";
                      // html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
