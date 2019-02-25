@@ -149,7 +149,8 @@ class Producto extends CI_Controller{
 				'producto_codigofactor' => $this->input->post('producto_codigofactor'),
 				'producto_preciofactor' => $this->input->post('producto_preciofactor'),
 				'producto_ultimocosto' => $this->input->post('producto_costo'),
-				'producto_cantidadminima' => $this->input->post('producto_cantidadminima'),
+                'producto_cantidadminima' => $this->input->post('producto_cantidadminima'),
+				'producto_caracteristicas' => $this->input->post('producto_caracteristicas')
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
@@ -294,6 +295,7 @@ class Producto extends CI_Controller{
 				'producto_preciofactor' => $this->input->post('producto_preciofactor'),
 				'producto_ultimocosto' => $this->input->post('producto_ultimocosto'),
 				'producto_cantidadminima' => $this->input->post('producto_cantidadminima'), 
+                'producto_caracteristicas' => $this->input->post('producto_caracteristicas')
                     
                     
                 );
@@ -437,6 +439,7 @@ class Producto extends CI_Controller{
 					'producto_foto' => $foto,
 					'producto_comision' => $this->input->post('producto_comision'),
 					'producto_tipocambio' => $this->input->post('producto_tipocambio'),
+                    'producto_caracteristicas' => $this->input->post('producto_caracteristicas')
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);

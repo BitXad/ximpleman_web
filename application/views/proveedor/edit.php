@@ -12,8 +12,9 @@
           });
       });
        function loader() {
-             document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
-            //tabla_inventario();
+     	$("form").submit(function() {
+   document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+});
         }
 </script>
 <div class="row">

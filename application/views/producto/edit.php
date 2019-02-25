@@ -29,8 +29,9 @@
     }
 
      function loader() {
-             document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
-            //tabla_inventario();
+     	$("form").submit(function() {
+   document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+});
         }
 </script>
 
@@ -252,7 +253,13 @@
                                                                 
 							</select>
 						</div>
-					</div>                                    
+					</div> 
+					<div class="col-md-6">
+						<label for="producto_caracteristicas" class="control-label">Caracteristicas</label>
+						<div class="form-group">
+                              <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control id="producto_caracteristicas"><?php echo ($this->input->post('producto_caracteristicas') ? $this->input->post('producto_caracteristicas') : $producto['producto_caracteristicas']); ?></textarea>
+						</div>
+					</div>                                   
                                     
 				</div>
 			</div>

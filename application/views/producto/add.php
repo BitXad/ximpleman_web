@@ -34,9 +34,10 @@
               $("#producto_precio").val(value/0.8);
           });
       });
-       function loader() {
-             document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
-            //tabla_inventario();
+      function loader() {
+     	$("form").submit(function() {
+   document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+});
         }
 </script>
 <div class="row">
@@ -241,6 +242,13 @@
 						<label for="producto_foto" class="control-label">Foto</label>
 						<div class="form-group">
                                                         <input type="file" name="producto_foto" value="<?php echo "producto.jpg"; ?>" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<label for="producto_caracteristicas" class="control-label">Caracteristicas</label>
+						<div class="form-group">
+                              <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas"> </textarea>
 						</div>
 					</div>
 				</div>
