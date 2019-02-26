@@ -16,8 +16,8 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
     td img{
-        width: 70px;
-        height: 70px;
+        width: 60px;
+        height: 60px;
         margin-right: 5px;
     }
     #horizontal{
@@ -53,7 +53,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
 						<th>Nombres</th>
 						<th>Cargo</th>
 						<th>Dirección</th>
@@ -69,19 +69,19 @@
                                  $cont = $cont+1; ?>
                     <tr>
 						<td><?php echo $cont ?></td>
-                                                <td><div id="horizontal">
-                                                <div>
-                                                    <?php
-                                                    echo '<img src="'.site_url('/resources/images/responsables/thumb_'.$r['responsable_imagen']).'" />'; ?>
-                                                    </div>
-                                                    <div>
-                                                        <?php echo "<b id='masg'>".$r['responsable_nombres']." ".$r['responsable_apellidos']."</b><br>";
-                                                              echo "<b>C.I.: </b>".$r['responsable_ci']."<br>";
-                                                              echo "<b>Tel.: </b>".$r['responsable_telefono'];
-                                                        ?>
-                                                    </div>
-                                                 </div>
-                                                </td>
+            <td><div id="horizontal">
+            <div>
+                <?php
+                echo '<img src="'.site_url('/resources/images/responsables/'.$r['responsable_imagen']).'" />'; ?>
+                </div>
+                <div>
+                    <?php echo "<b id='masg'>".$r['responsable_nombres']." ".$r['responsable_apellidos']."</b><br>";
+                          echo "<b>C.I.: </b>".$r['responsable_ci']."<br>";
+                          echo "<b>Tel.: </b>".$r['responsable_telefono'];
+                    ?>
+                </div>
+             </div>
+            </td>
 						<td><?php echo $r['responsable_cargo']; ?></td>
 						<td><?php echo $r['responsable_direccion']; ?></td>
 						<td><?php echo $r['responsable_latitud']; ?></td>
