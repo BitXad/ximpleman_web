@@ -22,14 +22,7 @@ class Producto extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-  /*      $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('producto/index?');
-        $config['total_rows'] = $this->Producto_model->get_all_producto_count();
-        $this->pagination->initialize($config);
-*/
+                
         $data['a'] = $a;
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
@@ -40,7 +33,12 @@ class Producto extends CI_Controller{
         $this->load->model('Moneda_model');
         $data['all_moneda'] = $this->Moneda_model->get_alls_moneda_asc();
         
-        //$data['producto'] = $this->Producto_model->get_all_producto();
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+        
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        
         
         
         $data['_view'] = 'producto/index';
@@ -685,16 +683,17 @@ class Producto extends CI_Controller{
 
         if ($this->input->is_ajax_request()) {
             
-            $parametro = $this->input->post('parametro');   
+            $parametro       = $this->input->post('parametro');   
+            $categoriaestado = $this->input->post('categoriaestado');   
             
-            if ($parametro!=""){
-                $datos = $this->Producto_model->get_busqueda_producto_parametro($parametro);
+            //if ($parametro!=""){
+                $datos = $this->Producto_model->get_busqueda_producto_parametro($parametro, $categoriaestado);
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
-            }else{
+            /*}else{
                 $datos = $this->Producto_model->get_busqueda_producto_limite();
                 echo json_encode($datos);
-            }
+            } */
         }
         else
         {                 
@@ -755,6 +754,35 @@ class Producto extends CI_Controller{
             $parametro = $this->input->post('parametro');   
             
             $datos = $this->Producto_model->get_busqueda_productos_all();
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /* buscar productos por Categoria */
+    function buscarproductos_porcategoria()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                $usuario_id = $session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            $datos = $this->Producto_model->get_busqueda_productos_porcategoria($parametro);
             //$datos = $this->Inventario_model->get_inventario_bloque();
             echo json_encode($datos);
         }

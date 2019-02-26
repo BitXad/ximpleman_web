@@ -167,21 +167,21 @@ class Producto_model extends CI_Model
         return $producto['res'];
     }
     
-    function get_busqueda_producto_parametro($parametro)
+    function get_busqueda_producto_parametro($parametro, $categoriaestado)
     {
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
 
               FROM
-              producto p, estado e
+              producto p, estado e, categoria_producto cp
               
               WHERE 
                    p.estado_id = e.estado_id
                    and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
-                   or producto_codigo like '%".$parametro."%')
-                  
-              GROUP BY
-                p.producto_id
+                   or producto_codigo like '%".$parametro."%' or producto_marca like '%".$parametro."%'
+                   or producto_industria like '%".$parametro."%')
+                   ".$categoriaestado."
+              GROUP By p.producto_id
               ORDER By p.producto_id";
 
         $producto = $this->db->query($sql)->result_array();
@@ -244,6 +244,26 @@ class Producto_model extends CI_Model
               
               WHERE 
                    p.estado_id = e.estado_id
+                  
+              ORDER By p.producto_id desc";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
+    /* *****Buscar productos con una determinada categoria****** */
+    function get_busqueda_productos_porcategoria($parametro)
+    {
+        $sql = "SELECT
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
+
+              FROM
+              producto p, estado e, categoria_producto cp
+              
+              WHERE 
+                   p.estado_id = e.estado_id
+                   and p.categoria_id = cp.categoria_id
+                   ".$parametro."
                   
               ORDER By p.producto_id desc";
 
