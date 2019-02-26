@@ -35,7 +35,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
+						<th>#</th>
 						<th>Nombre</th>
 						<th>Contenido</th>
 						<th>Unidad</th>
