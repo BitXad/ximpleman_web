@@ -124,4 +124,25 @@ class Categoria_cliente_model extends CI_Model
 
         return $categoria_cliente;
     }
+    /*
+     * Get all categoria_cliente ASC
+     */
+    function get_all_cat_cliente()
+    {
+        $categoria_cliente = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `categoria_cliente`
+
+            WHERE
+                1 = 1
+
+            ORDER BY `categoriaclie_id` ASC
+
+        ")->result_array();
+
+        return $categoria_cliente;
+    }
 }

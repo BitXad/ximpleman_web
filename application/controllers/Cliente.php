@@ -31,13 +31,22 @@ class Cliente extends CI_Controller{
         $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
         
         $this->load->model('Categoria_cliente_model');
-        $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente_asc();
+        $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_cat_cliente();
         
         $this->load->model('Categoria_clientezona_model');
         $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
         
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_todos_usuario();
+        
+        $this->load->model('Usuario_model');
+        $data['all_prevendedor'] = $this->Usuario_model->get_all_usuario_prev();
+        
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+        
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
         
         $data['_view'] = 'cliente/index';
         $this->load->view('layouts/main',$data);
@@ -518,13 +527,14 @@ class Cliente extends CI_Controller{
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   
+            $categoria = $this->input->post('categoriaestado');   
             //$limite = $this->input->post('limite');   
             
-            if ($parametro!=""){
-            $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro);
+            //if ($parametro!=""){
+            $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro, $categoria);
             echo json_encode($datos);
-            }
-            else echo json_encode(null);
+            /*}
+            else echo json_encode(null);*/
         }
         else
         {                 
