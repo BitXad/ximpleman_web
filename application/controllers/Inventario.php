@@ -54,22 +54,53 @@ class Inventario extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         //**************** inicio contenido ***************
-		        
-        
+		  
+                
         $empresa_id = 1;
+        //$producto_id = $this->input->post('producto_id');
         
         $data['page_title'] = "Kardex";
         $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
         $data['producto'] = $this->Producto_model->get_producto($producto_id);
+        $data['producto_id'] = $producto_id;
         
-        $desde = '2018-01-01';
-        $hasta = '2019-12-31';
-        
-        $data['kardex'] = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
 
         $data['_view'] = 'inventario/kardex';
         $this->load->view('layouts/main',$data);
-		
+//        
+        
+	
+        //**************** fin contenido ***************
+			}
+			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }          
+        
+    }
+    /*
+     * Kadex de producto
+     */
+    function buscar_kardex()
+    {
+
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************
+		  
+                
+        $empresa_id = 1;
+        $producto_id = $this->input->post('producto_id');
+        $hasta = $this->input->post('hasta');
+        $desde = $this->input->post('desde');
+        
+        $kardex = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
+        echo json_encode($kardex);
+          
+        
+	
         //**************** fin contenido ***************
 			}
 			else{ redirect('alerta'); }

@@ -1382,10 +1382,10 @@ function anular_venta($venta_id){
         //**************** inicio contenido ***************   
         //    
     //actualiza el invetario retornando los productos
-    $sql = "update inventario i, detalle_venta d"
-            ." set i.existencia = i.existencia + d.detalleven_cantidad"
-            ." where d.venta_id = ".$venta_id." and d.producto_id = i.producto_id ";
-    $this->Venta_model->ejecutar($sql);    
+//    $sql = "update inventario i, detalle_venta d"
+//            ." set i.existencia = i.existencia + d.detalleven_cantidad"
+//            ." where d.venta_id = ".$venta_id." and d.producto_id = i.producto_id ";
+//    $this->Venta_model->ejecutar($sql);    
 
     
     //$sql =  "delete from detalle_venta where venta_id = ".$venta_id;

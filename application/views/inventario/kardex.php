@@ -12,7 +12,7 @@
 </script>-->
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
- 
+<script src="<?php echo base_url('resources/js/inventario.js'); ?>"></script> 
 
 <style type="text/css">
 
@@ -57,7 +57,7 @@ border-spacing : 1;
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-
+<input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <!-------------------------------------------------------->
 
 
@@ -66,50 +66,69 @@ border-spacing : 1;
         <td>
                 
             <center>
-                               
-<!--                    <img src="<?php echo base_url('resources/images/').$producto[0]['producto_imagen']; ?>" width="100" height="60"><br>
-                    <font size="3" face="Arial"><b><?php echo $producto[0]['producto_nombre']; ?></b></font><br>
-                    <font size="2" face="Arial"><b><?php echo $producto[0]['producto_marca']; ?></b></font><br>
-                    <font size="1" face="Arial"><b><?php echo "De: ".$producto[0]['producto_industria']; ?></b></font><br>
 
-                    <font size="1" face="Arial"><?php echo $producto[0]['producto_costo']; ?><br>
-                    <font size="1" face="Arial"><?php echo $producto[0]['producto_precio']; ?></font><br>
- -->
-                    <br>
-
+                
                     
                 <font size="3" face="arial"><b>KARDEX DE EXISTENCIA</b></font> <br>
                 <font size="1" face="arial"><b>FISICO - VALORADO</b></font> <br><br>
                 <font size="1" face="arial"><b>PRODUCTO: <?php echo $producto[0]['producto_codigobarra']." ".$producto[0]['producto_nombre']; ?></b></font> <br>
 
-                <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
-<!--                <table style="width: 6cm;">
-                    <tr>
-                        <td style="font-family: arial; font-size: 8pt;">
-
-                            <b>NIT:      </b><br>
-                            <b>FACTURA No.:  </b><br>
-                            <b>AUTORIZACION: </b>
-
-                        </td>
-                        <td style="font-family: arial; font-size: 8pt;">
-                            <?php //echo $factura[0]['factura_autorizacion'] ?>           
-                        </td>
-                    </tr>
-                </table>-->
-<!--                </div>-->
-
-            <!--<center>-->                        
-                <!--<div class="panel" style="width: 7cm; ">-->
-                <br>    
-                <!--<font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>-->
-
-
+                                <br>    
             </center>                      
         </td>
     </tr>
      
 </table>
+
+
+<!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
+<!--<form method="post" onclick="ventas_por_fecha()">-->
+<div class="panel panel-primary col-md-12 no-print" id='buscador_oculto'    >
+    <br>
+    <center>            
+        <div class="col-md-2">
+            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" value="<?php echo date("Y-m-d");?>" name="fecha_desde" required="true">
+        </div>
+        <div class="col-md-2">
+            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" value="<?php echo date("Y-m-d");?>"  name="fecha_hasta" required="true">
+        </div>
+        
+<!--        <div class="col-md-2">
+            Tipo:             
+            <select  class="btn btn-warning btn-sm form-control" id="estado_id" required="true">
+                <?php foreach($estado as $es){?>
+                    <option value="<?php echo $es['estado_id']; ?>"><?php echo $es['estado_descripcion']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+        
+        <div class="col-md-2">
+            Usuario:             
+            <select  class="btn btn-warning btn-sm form-control" id="usuario_id">
+                    <option value="0">-- TODOS --</option>
+                <?php foreach($usuario as $us){?>
+                    <option value="<?php echo $us['usuario_id']; ?>"><?php echo $us['usuario_nombre']; ?></option>
+                <?php } ?>
+            </select>
+        </div>-->
+        
+        <br>
+        <div class="col-md-3">
+
+            <button class="btn btn-sm btn-facebook btn-sm btn-block"  onclick="mostrar_kardex(<?php echo $producto_id;?>)">
+                <h4>
+                <span class="fa fa-search"></span>   Buscar
+                </h4>
+          </button>
+            <br>
+        </div>
+        
+    </center>    
+    <br>    
+</div>
+<!--</form>-->
+<!------------------------------------------------------------------------------------------->
+
 
 
 <!--<div class="box-body table-responsive">-->
@@ -168,107 +187,12 @@ border-spacing : 1;
         <th>
             SALDO<br>Bs.
         </th>
-    
-            
-        
-        
 
 
     </tr>
-    <?php $saldo = 0; $total_compras = 0; $total_ventas = 0;
-        foreach($kardex as $k){ 
-            $saldo += $k['unidad_comp'] - $k['unidad_vend'];
-            $total_compras += $k['unidad_comp']; 
-            $total_ventas += $k['unidad_vend'];
-        ?>
-    <tr align="center">    
-       
- 
-            <td>
-                <?php 
-                
-                echo $k['fecha']." - ".$k['hora']; ?>
-            </td>
-            <td>              
-                <?php  if ($k['num_ingreso']<>0) echo $k['num_ingreso']; ?>
-            </td>
-            <td>
-                <b> <?php   if ($k['unidad_comp']<>0) echo $k['unidad_comp']; ?></b>
-            </td>
-            <td>
-                <?php   if ($k['costoc_unit']<>0) echo number_format($k['costoc_unit'],'2','.',','); ?>                
-            </td>
-            <td>
-                <?php   if ($k['importe_ingreso']<>0) echo number_format($k['importe_ingreso'],'2','.',','); ?>
-            </td>
-            <td>
-                <?php   if ($k['num_salida']<>0) echo $k['num_salida']; ?>              
-            </td>
-            <td>
-                <b><?php   if ($k['unidad_vend']<>0) echo $k['unidad_vend']; ?></b>          
-            </td>
-            <td>
-                <?php   if ($k['costov_unit']<>0) echo number_format($k['costov_unit'],'2','.',','); ?>                
-            </td>
-            <td>
-                <?php   if ($k['importe_salida']<>0) echo number_format($k['importe_salida'],'2','.',','); ?>                
-            </td>
-            <td>
-                <b><?php   echo $saldo; ?></b>
-            </td>
-            <td>
-                <?php  echo number_format($saldo * $k['costoc_unit'],'2','.',','); ?>
-            </td>
-            <td>
-                
-            </td>
-            
-        </tr>
-    <?php } ?> 
-<tr>
-        <th>
-             
-        </th>
-        <th>
-                         
-        </th>
-        <th>
-            <small>ENTRADAS</small><br>
-            <h5><b> <?php echo $total_compras; ?></b></h5>
-        </th>
-        <th>
-                                      
-        </th>
-        <th>
-           
-        </th>
-        <th>
-                                       
-        </th>
-        <th>
-            <small>SALIDAS</small><br>
-            <h5><b><?php echo $total_ventas; ?></b></h5>                          
-        </th>
-        <th>
-                                 
-        </th>
-        <th>
-                                      
-        </th>
-        <th>
-                                    
-        </th>
-        <th>
-            <small>SALDOS</small><br>
-            <h5><b><?php echo $saldo; ?></b></h5>
-        </th>
-        <th>
-            
-        </th>
+    <tbody id="tabla_kardex">
 
-    </tr>
-        
-        
+    </tbody>
 </table>
 </div>
 <!--</div>-->

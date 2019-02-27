@@ -8,6 +8,26 @@ function inicio(){
       //  tabla_inventario();
 }
 
+function addZero(i) {
+    if (i < 10) {
+        i = '0' + i;
+    }
+    return i;
+}
+
+function fecha(){
+    var hoy = new Date();
+        var dd = hoy.getDate();
+        var mm = hoy.getMonth()+1;
+        var yyyy = hoy.getFullYear();
+        
+        dd = addZero(dd);
+        mm = addZero(mm);
+ 
+       // return dd+'/'+mm+'/'+yyyy;
+        return yyyy+'-'+mm+'-'+dd;
+}
+
 
 function formato_numerico(numer){
     var partdecimal = "";
@@ -109,7 +129,11 @@ function tabla_inventario(){
                     html += "             	<a href='"+base_url+"producto/edit2/"+inv[i]["producto_id"]+"' target='_blank' class='no-print'>["+inv[i]["producto_id"]+"] </a></sub>";
                     html += "    <br>";
                     html += "    <small>" + inv[i]["producto_unidad"]+" | "+inv[i]["producto_marca"]+" | "+inv[i]["producto_industria"];
+                    
                     html += "   <span class='badge span-alert no-print'> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank' class='no-print'> Kardex</a> </span></small>";
+                    
+                    //html += "     <button type='button' class='btn btn-info btn-xs' data-toggle='modal' data-target='#myModal"+inv[i]["producto_id"]+"'>Kardex</button>";
+                    
                     html += "             	</td>";
                     html += "             	<td><center><font size='2'><b>"+inv[i]["producto_codigobarra"]+"</b><br> </font>";
                     html += "	"+ inv[i]["producto_codigo"]+"</center></td>";
@@ -121,6 +145,47 @@ function tabla_inventario(){
                     
                     html += "             	<td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
                     html += "             	<td><center> <font size='2'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                    
+                    
+
+//html+="  <!-- Inicio Modal kardex -->";
+//html+="    <div class='modal fade' id='myModal"+inv[i]["producto_id"]+"' role='dialog'>";
+//html+="      <div class='modal-dialog'>";
+//    
+//html+="      <!-- Modal content-->";
+//html+="      <div class='modal-content'>";
+//html+="        <div class='modal-header'>";
+//html+="          <button type='button' class='close' data-dismiss='modal'>&times;</button>";
+//html+="          <h4 class='modal-title'><b>Kardex de Existencia</b></h4>";
+//html+="        </div>";
+//html+="        <div class='modal-body'>";
+//         
+//html+="    <div class='panel col-md-12 ' >";
+//html+="    <center>          ";  
+//html+="        <div class='col-md-6'>";
+//html+="            Desde: <input type='date' class='btn btn-warning btn-sm form-control' id='fecha_desde' value='"+fecha()+"' name='fecha_desde' required='true'>";
+//html+="       </div>";
+//html+="        <div class='col-md-6'>";
+//html+="            Hasta: <input type='date' class='btn btn-warning btn-sm form-control' id='fecha_hasta' value='"+fecha()+"'  name='fecha_hasta' required='true'>";
+//html+="        </div>";
+//        
+//html+="        <br>";
+//
+//html+="    </center>    ";
+//html+="    <br>  ";  
+//html+="    </div>";
+//               
+//html+="        </div>";
+//html+="        <div class='modal-footer'>";
+//html+="          <a href='' type='button' target='_blank' class='btn btn-default' data-dismiss='modal' onclick='mostrar_kardex("+inv[i]["producto_id"]+")' >Ver Kardex</a>";
+//html+="        </div>";
+//html+="      </div>";
+//      
+//html+="    </div>";
+//html+="  </div>";
+//html+="  <!-- Fin Modal kardex -->";             
+                    
+                    
                     html += "</tr>";
                 } // end for (i = 0 ....)
             } //end if (inv != null){
@@ -251,8 +316,6 @@ function mostrar_duplicados()
                            
 
             if (inv != null){
-            
-                    
                     var total = 0;
                     var total_final = 0;
                     var existencia = 0;
@@ -286,8 +349,7 @@ function mostrar_duplicados()
                     html += "             	<td><center> <font size='2'><b>"+total.toFixed(2)+"</b></font></center></td>";
                     html += "</tr>";
                 } // end for (i = 0 ....)
-            } //end if (inv != null){
-                
+            } //end if (inv != null){                
                 html += "</tbody>";
                 html += "<tr>";
                 html += "	<th> </th>";
@@ -299,7 +361,7 @@ function mostrar_duplicados()
                 html += "	<th> </th>";
                 html += "	<th></th>";
                 html += "	<th></th>";
-                html += "	<th>"+numberFormat(number(total_final.toFixed(2)))+"</th>";
+                html += "	<th>"+total_final.toFixed(2)+"</th>";
                 html += "	<!--<th></th>-->";
                 html += "</tr>    ";
                 html += "</table>";            
@@ -315,3 +377,107 @@ function mostrar_duplicados()
     });   
       
 }
+
+function mostrar_kardex(producto_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/buscar_kardex";
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    
+    
+    //alert(controlador);
+    
+    //alert(fecha_desde+" "+fecha_hasta+" "+producto_id);
+    //window.open(controlador); //Levantar el formulario de kardex
+    
+    $.ajax({
+        url:controlador,
+        type: "POST",
+        data:{desde:fecha_desde,hasta:fecha_hasta, producto_id:producto_id},
+        success:function(result){
+            var k = JSON.parse(result);
+            var html = "";
+            var tam = k.length;
+            var saldo = 0; 
+            var total_compras = 0; 
+            var total_ventas = 0;
+            var ocultar = "";
+            for(var i=0; i<tam; i++){
+            
+                if( Date.parse(k[i]['fecha'])>=Date.parse(fecha_desde) && Date.parse(k[i]['fecha'])<=Date.parse(fecha_hasta)){
+                    ocultar = "";
+                }
+                else{
+                    ocultar = "style='display:none;'";
+                }
+            
+                    saldo += Number(k[i]['unidad_comp']) - Number(k[i]['unidad_vend']);
+                    total_compras += Number(k[i]['unidad_comp']);
+                    total_ventas += Number(k[i]['unidad_vend']);
+                    
+                    html += "    <tr align='center' ocultar>    ";
+                    html += "            <td>"+k[i]['fecha']+"-"+k[i]['hora']+"</td>";
+                    html += "            <td>";
+                    if (k[i]['num_ingreso']!=0) 
+                        html += k[i]['num_ingreso'];
+                    html += "</td>";
+                    
+                    html += "            <td><b>";
+                        if (k[i]['unidad_comp']!=0) 
+                            html += k[i]['unidad_comp'];
+                    html += "</b></td>";
+                    
+                    html += "            <td>";                    
+                        if (k[i]['costoc_unit']!=0) html += k[i]['costoc_unit'];
+                    html += "</td>";
+                    
+                    html += "            <td>";
+                    
+                        if (k[i]['importe_ingreso']!=0) html += k[i]['importe_ingreso'];
+                    html += "</td>";
+                        
+                    html += "            <td>";
+                        if (k[i]['num_salida']!=0)  html +=  k[i]['num_salida'];
+                    html += "</td>";
+                        
+                    html += "            <td><b>";
+                            if (k[i]['unidad_vend']!=0) html += k[i]['unidad_vend'];
+                            
+                    html += "</b></td>";
+                            
+                    html += "            <td>";
+                                if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(2);
+                    html +="</td>";
+                    
+                    html +="            <td>";
+                                if (k[i]['importe_salida'] != 0)  html += k[i]['importe_salida'];
+                    html +="</td>";
+                    html +="            <td><b>"+saldo+"</b></td>";
+                    html +="            <td>"+ saldo * k[i]['costoc_unit']+"</td>";
+                    html +="            <td></td>";
+                    html +="            ";
+                    html +="        </tr>";
+                
+            }
+
+                    html +="    <tr>";
+                    html +="    <th></th>";
+                    html +="    <th></th>";
+                    html +="    <th><small>ENTRADAS</small><br><h5><b>"+total_compras+"</b></h5></th>";
+                    html +="    <th></th>";
+                    html +="    <th></th>";
+                    html +="    <th></th>";
+                    html +="    <th><small>SALIDAS</small><br><h5><b>"+total_ventas+"</b></h5></th>";
+                    html +="    <th></th>";
+                    html +="    <th></th>";
+                    html +="    <th></th>";
+                    html +="    <th><small>SALDOS</small><br><h5><b>"+saldo+"</b></h5></th>";
+                    html +="     <th></th>";
+                    html +="    </tr>";
+                    
+                    $("#tabla_kardex").html(html);
+        }
+    });
+    
+}
+
