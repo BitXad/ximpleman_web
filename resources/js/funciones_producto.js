@@ -86,7 +86,7 @@ function tablaresultadosproducto(limite)
            categoriaestado += "";
         }else{
            categoriaestado += " and p.estado_id = "+estado+" ";
-           estadotext = $('select[name="categoria_id"] option:selected').text();
+           estadotext = $('select[name="estado_id"] option:selected').text();
            estadotext = "Estado: "+estadotext;
         }
         

@@ -39,56 +39,62 @@ function mostrar(a) {
       	<div class="box box-info">
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Cliente</h3>&nbsp;&nbsp;
-                <button type="button" class="btn btn-success btn-sm" onclick="cambiarcod(this);">
-			<i class="fa fa-edit"></i> Cambiar Codigo Cliente
+                <button type="button" class="btn btn-success btn-sm" onclick="cambiarcod(this);" title="Volver a generar Código Cliente">
+			<i class="fa fa-edit"></i>Codigo Cliente
 		</button>
             </div>
                         <?php echo form_open_multipart('cliente/edit/'.$cliente['cliente_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
 							<input type="text" name="cliente_nombre" value="<?php echo ($this->input->post('cliente_nombre') ? $this->input->post('cliente_nombre') : $cliente['cliente_nombre']); ?>" class="form-control" id="cliente_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_ci" class="control-label">CI</label>
 						<div class="form-group">
 							<input type="text" name="cliente_ci" value="<?php echo ($this->input->post('cliente_ci') ? $this->input->post('cliente_ci') : $cliente['cliente_ci']); ?>" class="form-control" id="cliente_ci" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-5">
 						<label for="cliente_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
 							<input type="text" name="cliente_direccion" value="<?php echo ($this->input->post('cliente_direccion') ? $this->input->post('cliente_direccion') : $cliente['cliente_direccion']); ?>" class="form-control" id="cliente_direccion" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
 						<label for="cliente_codigo" class="control-label">Código</label>
 						<div class="form-group">
                                                     <input type="text" name="cliente_codigo" value="<?php echo ($this->input->post('cliente_codigo') ? $this->input->post('cliente_codigo') : $cliente['cliente_codigo']); ?>" class="form-control" id="cliente_codigo" readonly />
 							<span class="text-danger"><?php echo form_error('cliente_codigo');?></span>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_telefono" class="control-label">Teléfono</label>
 						<div class="form-group">
 							<input type="text" name="cliente_telefono" value="<?php echo ($this->input->post('cliente_telefono') ? $this->input->post('cliente_telefono') : $cliente['cliente_telefono']); ?>" class="form-control" id="cliente_telefono" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_celular" class="control-label">Celular</label>
 						<div class="form-group">
 							<input type="text" name="cliente_celular" value="<?php echo ($this->input->post('cliente_celular') ? $this->input->post('cliente_celular') : $cliente['cliente_celular']); ?>" class="form-control" id="cliente_celular" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-4">
 						<label for="cliente_foto" class="control-label">Foto</label>
 						<div class="form-group">
-							<input type="file" name="cliente_foto" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
+							<input type="file" name="cliente_foto" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="btn btn-success btn-sm form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
                                                         <input type="hidden" name="cliente_foto1" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="form-control" id="cliente_foto1" />
+						</div>
+					</div>
+                                        <div class="col-md-2">
+						<label for="cliente_aniversario" class="control-label">Aniversario</label>
+						<div class="form-group">
+							<input type="date" name="cliente_aniversario" value="<?php echo ($this->input->post('cliente_aniversario') ? $this->input->post('cliente_aniversario') : $cliente['cliente_aniversario']); ?>" class="form-control" id="cliente_aniversario" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -104,12 +110,7 @@ function mostrar(a) {
                                                         <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="cliente_aniversario" class="control-label">Aniversario</label>
-						<div class="form-group">
-							<input type="date" name="cliente_aniversario" value="<?php echo ($this->input->post('cliente_aniversario') ? $this->input->post('cliente_aniversario') : $cliente['cliente_aniversario']); ?>" class="form-control" id="cliente_aniversario" />
-						</div>
-					</div>
+					
                                         <div class="col-md-6">
                                             <label  class="control-label"><a href="#" class="btn btn-success btn-sm " id="mosmapa" onclick="mostrar('1'); return false">Modificar Ubicación del negocio</a></label>
                                             <!-- ***********************aqui empieza el mapa para capturar coordenadas *********************** -->
@@ -205,19 +206,19 @@ function mostrar(a) {
                                             </div>
                                             <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_latitud" class="control-label">Latitud</label>
 						<div class="form-group">
                                                     <input type="number" step="any" name="cliente_latitud" value="<?php echo ($this->input->post('cliente_latitud') ? $this->input->post('cliente_latitud') : $cliente['cliente_latitud']); ?>" class="form-control" id="cliente_latitud" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_longitud" class="control-label">Longitud</label>
 						<div class="form-group">
                                                     <input type="number" step="any" name="cliente_longitud" value="<?php echo ($this->input->post('cliente_longitud') ? $this->input->post('cliente_longitud') : $cliente['cliente_longitud']); ?>" class="form-control" id="cliente_longitud" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="cliente_nit" class="control-label">Nit</label>
 						<div class="form-group">
 							<input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : $cliente['cliente_nit']); ?>" class="form-control" id="cliente_nit" />
@@ -229,7 +230,7 @@ function mostrar(a) {
 							<input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : $cliente['cliente_razon']); ?>" class="form-control" id="cliente_razon" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="tipocliente_id" class="control-label"><span class="text-danger">*</span>Tipo</label>
 						<div class="form-group">
 							<select name="tipocliente_id" class="form-control" required>
@@ -245,7 +246,7 @@ function mostrar(a) {
 							</select>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-2">
 						<label for="categoriaclie_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
 						<div class="form-group">
 							<select name="categoriaclie_id" class="form-control" required>
@@ -261,7 +262,7 @@ function mostrar(a) {
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
 						<label for="zona_id" class="control-label">Zona</label>
 						<div class="form-group">
 							<select name="zona_id" class="form-control">
@@ -295,7 +296,7 @@ function mostrar(a) {
 					</div>
                                     
                                     
-                                        <div class="col-md-6">
+                                        <div class="col-md-2">
 						<label for="estado_id" class="control-label">Estado</label>
 						<div class="form-group">
 							<select name="estado_id" class="form-control">

@@ -3,6 +3,31 @@ function inicio(){
        tablaresultadoscliente(1);
 }
 
+function imprimir_cliente(){
+    var estafh = new Date();
+    $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
+    $("#cabeceraprint").css("display", "");
+    window.print();
+    $("#cabeceraprint").css("display", "none");
+}
+/*aumenta un cero a un digito; es para las horas*/
+function aumentar_cero(num){
+    if (num < 10) {
+        num = "0" + num;
+    }
+    return num;
+}
+/* recibe Date y devuelve en formato dd/mm/YYYY hh:mm:ss ampm */
+function formatofecha_hora_ampm(string){
+    var mifh = new Date(string);
+    var info = "";
+    var am_pm = mifh.getHours() >= 12 ? "p.m." : "a.m.";
+    var hours = mifh.getHours() > 12 ? mifh.getHours() - 12 : mifh.getHours();
+    if(string != null){
+       info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
+   }
+    return info;
+}
 /*
  * Funcion que buscara productos en la tabla productos
  */
@@ -31,14 +56,64 @@ function tablaresultadoscliente(limite)
         controlador = base_url+'cliente/buscarclientesall/';
     }else{
         controlador = base_url+'cliente/buscarclientes/';
-    }
-    parametro = document.getElementById('filtrar').value;        
+        var categoria   = document.getElementById('categoriaclie_id').value;
+        var zona        = document.getElementById('zona_id').value;
+        var tipo        = document.getElementById('tipo_id').value;
+        var prevendedor = document.getElementById('prevendedor_id').value;
+        var estado      = document.getElementById('estado_id').value;
+        var categoriaestado = "";
+        var categoriatext   = "";
+        var zonatext   = "";
+        var tipotext   = "";
+        var prevendedortext   = "";
+        var estadotext   = "";
+        if(categoria == 0){
+           categoriaestado = "";
+        }else{
+           categoriaestado += " and c.categoriaclie_id = cc.categoriaclie_id and c.categoriaclie_id = "+categoria+" ";
+           categoriatext = $('select[name="categoriaclie_id"] option:selected').text();
+           categoriatext = "Categoria: "+categoriatext;
+        }
+        if(zona == 0){
+           categoriaestado += "";
+        }else{
+           categoriaestado += " and c.zona_id = z.zona_id and c.zona_id = "+zona+" ";
+           zonatext = $('select[name="zona_id"] option:selected').text();
+           zonatext = "Zona: "+zonatext;
+        }
+        if(tipo == 0){
+           categoriaestado += "";
+        }else{
+           categoriaestado += " and c.tipocliente_id = tc.tipocliente_id and c.tipocliente_id = "+tipo+" ";
+           tipotext = $('select[name="tipo_id"] option:selected').text();
+           tipotext = "Tipo: "+tipotext;
+        }
+        if(prevendedor == 0){
+           categoriaestado += "";
+        }else{
+           categoriaestado += " and c.usuario_id = u.usuario_id and c.usuario_id = "+prevendedor+" ";
+           prevendedortext = $('select[name="prevendedor_id"] option:selected').text();
+           prevendedortext = "Prevendedor: "+prevendedortext;
+        }
+        if(estado == 0){
+           categoriaestado += "";
+        }else{
+           categoriaestado += " and c.estado_id = "+estado+" ";
+           estadotext = $('select[name="estado_id"] option:selected').text();
+           estadotext = "Estado: "+estadotext;
+        }
+        
+        $("#busquedacategoria").html(categoriatext+" "+zonatext+" "+tipotext+" "+prevendedortext+" "+estadotext);
+        
+        parametro = document.getElementById('filtrar').value;
+        
+    }        
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
 
     $.ajax({url: controlador,
            type:"POST",
-           data:{parametro:parametro},
+           data:{parametro:parametro, categoriaestado:categoriaestado},
            success:function(respuesta){
                
                                      
@@ -142,7 +217,7 @@ function tablaresultadoscliente(limite)
                         html += "<b>Zona: </b>"+escategoria_clientezona;
                         html += "</div>";
                         html += "</td>";
-                        html += "<td style='text-align: center'>";
+                        html += "<td class='no-print' style='text-align: center'>";
                         if ((registros[i]["cliente_latitud"]==0 && registros[i]["cliente_longitud"]==0) || (registros[i]["cliente_latitud"]==null && registros[i]["cliente_longitud"]==null) || (registros[i]["cliente_latitud"]== "" && registros[i]["cliente_longitud"]=="")){
                             html += "<img src='"+base_url+"resources/images/noubicacion.png' width='30' height='30'>";
                         }else{
@@ -175,8 +250,8 @@ function tablaresultadoscliente(limite)
                         html += escategoria_cliente+"</td>";
                         //html += "<td>"+esusuario+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+";'>"+esusuario+"<br>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td>";
-                        html += "<a href='"+base_url+"cliente/edit/"+registros[i]["cliente_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
+                        html += "<td class='no-print'>";
+                        html += "<a href='"+base_url+"cliente/edit/"+registros[i]["cliente_id"]+"' class='btn btn-info btn-xs' title='Modificar datos de Cliente'><span class='fa fa-pencil'></span></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
