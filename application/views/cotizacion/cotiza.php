@@ -79,7 +79,7 @@
                         <td><?php echo $cont ?></td>
                             <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
                         Marca: <b><?php echo $d['producto_marca']; ?></b> / 
-                        Industria: <b><?php echo $d['producto_industria']; ?></b>
+                        Industria: <b><?php echo $d['producto_industria']; ?></b> /
                     
                         
                          <?php echo $d['detallecot_caracteristica']; ?></td>
