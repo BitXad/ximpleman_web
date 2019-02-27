@@ -6,6 +6,33 @@ function inicio(){
         tablatotales();
         
 }
+
+function imprimir_compra(){
+    var estafh = new Date();
+    $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
+    $("#cabeceraprint").css("display", "");
+    window.print();
+    $("#cabeceraprint").css("display", "none");
+}
+/*aumenta un cero a un digito; es para las horas*/
+function aumentar_cero(num){
+    if (num < 10) {
+        num = "0" + num;
+    }
+    return num;
+}
+/* recibe Date y devuelve en formato dd/mm/YYYY hh:mm:ss ampm */
+function formatofecha_hora_ampm(string){
+    var mifh = new Date(string);
+    var info = "";
+    var am_pm = mifh.getHours() >= 12 ? "p.m." : "a.m.";
+    var hours = mifh.getHours() > 12 ? mifh.getHours() - 12 : mifh.getHours();
+    if(string != null){
+       info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
+   }
+    return info;
+}
+
 function tabladetallecompra(){
      var controlador = "";
      var limite = 500;
@@ -658,29 +685,49 @@ function compraproveedor(opcion)
                    if (n <= limite) x = n; 
                    else x = limite;
                     
-                    for (var i = 0; i < x ; i++){
-                        var bandera = 1;
+                     for (var i = 0; i < x ; i++){
+                        
                         var suma = Number(registros[i]["compra_totalfinal"]);
                         var total = Number(suma+total);
                         var caja = registros[i]["compra_caja"];
+                        var bandera = 1;
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><font size='1'>["+registros[i]["compra_id"]+"]</font> <br>";
+                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font> <font size='1'>["+registros[i]["compra_id"]+"]</font><br>";
                         
-                        html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span><br>";                                            
-            if (caja==1) {  
-                        html += "<span class='btn-warning btn-xs'>hola</span>";  }                                          
+                        html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
+                        if (caja==1) {  
+                        html += "<span class='btn-warning btn-xs'>Pago con Caja</span>";  }                                             
                         html += "</td><td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
                         html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
-                        html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
+                        html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
-                        html += "<td>"+registros[i]["estado_descripcion"]+"</td>"; 
-                        html += "<td><a href='"+base_url+"compra/pdf/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
-                        html += "<form action='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/"+bandera+"/'  method='POST' class='form'>";
-                        html += "<input type='hidden' id='bandera' name='bandera' value='1'>";
-                        html += "<button class='btn btn-info btn-xs' type='submit'><span class='fa fa-pencil'></span></button>";
-                        html += "</form></td>";
+                        html += "<td  align='center'>"+registros[i]["estado_descripcion"]+"<br>";
+                        if (Number(registros[i]["compra_placamovil"])==1) {  
+                        html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  }  
+                        html += "<td>"+registros[i]["usuario_nombre"]+"</td><td class='no-print'>";
+                        if (Number(registros[i]["compra_placamovil"])==1) {
+                        html += "<a href='#' data-toggle='modal' data-target='#cambi' class='btn btn-info btn-xs' ><i class='fa fa-pencil '></i></a>";
+                        html += "<div class='modal fade' id='cambi' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
+                        html += "<div class='modal-dialog' style='border: 1px;' role='document'>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
+                        html += "<div class='form'><h1><b> Desea continuar con la compra no finalizada? </b></h1></div>";
+                        html += "<div class='modal-footer'>";
+                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-lg btn-success'><i class='fa fa-sign-out '></i> Si</a>";
+                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-lg btn-danger' ><i class='fa fa-sign-in '></i>No</a>";
+                        html += "</div> </div></div></div></div>";
+                        } else {
+                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
+                        }
+                        html += "<a href='"+base_url+"compra/pdf/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
+                        
+                       // html += "<input type='hidden' id='bandera' name='bandera' value='1'>";
+                        //html += "<button class='btn btn-info btn-xs' type='submit'><span class='fa fa-pencil'></span></button>";
+                        html += "</td>";
+                       
                        
                         html += "</tr>";
                        
@@ -688,7 +735,7 @@ function compraproveedor(opcion)
                         html += "<tr>";
                         html += "<td></td>";
                         html += "<td align='right'><b>TOTAL</b></td>";
-                        html += "<td align='right'><font size='4'><b>"+Number(total).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font></td>";
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
@@ -699,8 +746,8 @@ function compraproveedor(opcion)
             }
                 
         },
-        error:function(respuesta){
-           // alert("Algo salio mal...!!!");
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
            html = "";
            $("#fechadecompra").html(html);
         }
@@ -760,7 +807,7 @@ function fechadecompra(filtro)
                         html += "<td  align='center'>"+registros[i]["estado_descripcion"]+"<br>";
                         if (Number(registros[i]["compra_placamovil"])==1) {  
                         html += "<span class='btn-danger btn-xs'>NO FINALIZADO</span>";  }  
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td><td>";
+                        html += "<td>"+registros[i]["usuario_nombre"]+"</td><td class='no-print'>";
                         if (Number(registros[i]["compra_placamovil"])==1) {
                         html += "<a href='#' data-toggle='modal' data-target='#cambi' class='btn btn-info btn-xs' ><i class='fa fa-pencil '></i></a>";
                         html += "<div class='modal fade' id='cambi' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>";
