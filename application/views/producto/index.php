@@ -12,10 +12,6 @@
                 })
             }(jQuery));
         });
-        function imprimir()
-        {
-             window.print(); 
-        }
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
@@ -40,14 +36,45 @@
 </style>
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="lacategoria" id="lacategoria" value='<?php echo json_encode($all_categoria); ?>' />
 <input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php echo json_encode($all_presentacion); ?>' />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda);  ?>' />
-<div class="row">
-        <div class="col-md-6">
+
+<div class="row micontenedorep" style="display: none" id="cabeceraprint">
+    <div id="cabizquierda">
+        <?php
+        echo $empresa[0]['empresa_nombre']."<br>";
+        echo $empresa[0]['empresa_direccion']."<br>";
+        echo $empresa[0]['empresa_telefono'];
+        ?>
+        </div>
+        <div id="cabcentro">
+            <div id="titulo">
+                <u>PRODUCTOS</u><br><br>
+                <!--<span style="font-size: 9pt">INGRESOS DIARIOS</span><br>-->
+                <span class="lahora" id="fhimpresion"></span><br>
+                <span style="font-size: 8pt;" id="busquedacategoria"></span>
+                <!--<span style="font-size: 8pt;">PRECIOS EXPRESADOS EN MONEDA BOLIVIANA (Bs.)</span>-->
+            </div>
+        </div>
+        <div id="cabderecha">
+            <?php
+
+            $mimagen = "thumb_".$empresa[0]['empresa_imagen'];
+
+            echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
+
+            ?>
+
+        </div>
+        
+</div>
+<br>
+<div class="row no-print">
+        <div class="col-md-9">
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
@@ -63,12 +90,59 @@
  
         <!--este es INICIO de input buscador-->
         <div class="col-md-12">
-            <div class="input-group">
-                      <span class="input-group-addon"> 
-                        Buscar 
-                      </span>           
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras" onkeypress="buscarproducto(event)">
-            </div></div>
+            <div class="col-md-7">
+                <div class="input-group">
+                    <span class="input-group-addon"> Buscar </span>           
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria" onkeypress="buscarproducto(event)" autocomplete="off">
+                </div>
+            </div>
+            <div class="col-md-3">
+                
+                <div class="box-tools">
+                    <select name="categoria_id" class="btn-primary btn-sm" id="categoria_id" onchange="tablaresultadosproducto(2)">
+                        <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
+                        <option value="0"> Todas Las Categorias </option>
+                        <?php 
+                        foreach($all_categoria as $categoria)
+                        {
+                            echo '<option value="'.$categoria['categoria_id'].'">'.$categoria['categoria_nombre'].'</option>';
+                        } 
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                
+                <div class="box-tools">
+                    <select name="estado_id" class="btn-primary btn-sm" id="estado_id" onchange="tablaresultadosproducto(2)">
+                        <option value="" disabled selected >-- BUSCAR POR ESTADOS --</option>
+                        <option value="0">Todos Los Estados</option>
+                        <?php 
+                        foreach($all_estado as $estado)
+                        {
+                            echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
+                        } 
+                        ?>
+                    </select>
+                </div>
+            </div>
+           <!-- <div class="col-md-3">
+                
+                <div class="box-tools">
+                    <select name="estado_id" class="btn-primary btn-sm" id="estado_id">
+                        <option value="">-- ESTADO --</option>
+                        <?php 
+                     /*   foreach($all_estado as $estado)
+                        {
+                                $selected = ($estado['estado_id'] == $producto['estado_id']) ? ' selected="selected"' : "";
+
+                                echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
+                        } */
+                        ?>
+                    </select>
+                </div>
+            </div>-->
+        </div>
            
             
         <!--este es FIN de input buscador-->
@@ -82,13 +156,13 @@
         
     </div>
     <!---------------- BOTONES --------->
-    <div class="col-md-6">
+    <div class="col-md-3">
         
             <div class="box-tools">
         <center>            
-            <a href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <a onclick="imprimir_producto()" class="btn btn-info btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
     </div>
@@ -103,19 +177,18 @@
         <div class="box">
                  
             <div class="box-body  table-responsive">
-               <table class="table table-condensed" id="mitabla" role="table">
+               <table class="table table-condensed" id="mitablaimpresion" role="table">
                <!--<table role="table">-->
                     <thead role="rowgroup">
                         <tr role="row">
-                            <th  role="columnheader" >N°</th>
+                            <th  role="columnheader" >#</th>
                             <th  role="columnheader" >Nombre</th>
                             <th  role="columnheader" >Categoria|<br>Presentación</th>
                             <th  role="columnheader" >Código|<br>Cód. Barra</th>
                             <th  role="columnheader" >Precio</th>
                             <th  role="columnheader" >Moneda</th>
-                            <th  role="columnheader" >Comision</th>
-                            <th  role="columnheader" >Estado</th>
-                            <th  role="columnheader" >Operaciones</th>
+                            <th  role="columnheader" class="no-print">Estado</th>
+                            <th  role="columnheader" class="no-print"></th>
                     
                     </tr>
                     </thead>
@@ -250,6 +323,6 @@
 <?php
 if($a == 1)
 echo '<script type="text/javascript">
-    alert("El Producto no se puede Eliminar \n porque pertenece a alguna transacción");
+    alert("El Producto no puede ser ELIMINADO, \n porque tienen transacciones realizadas");
 </script>';
 ?>

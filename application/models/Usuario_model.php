@@ -116,7 +116,7 @@ class Usuario_model extends CI_Model
     }
     
     /******** Función que muestra a todos los usuarios Prevendedores ************/
-    function get_all_usuario_prev()
+ /*   function get_all_usuario_prev()
     {
         $usuario = $this->db->query("
             SELECT
@@ -135,7 +135,7 @@ class Usuario_model extends CI_Model
         ")->result_array();
 
         return $usuario;
-    }
+    }*/
     
     /******** Función que muestra a todos los usuarios Prevendedores Activos ************/
     function get_all_usuario_prev_activo()
@@ -210,6 +210,28 @@ class Usuario_model extends CI_Model
                 1=1
 
             ORDER BY `usuario_id` ASC
+
+        ")->result_array();
+
+        return $usuario;
+    }
+    /******** Función que muestra a todos los usuarios Prevendedores ************/
+    function get_all_usuario_prev()
+    {
+        $usuario = $this->db->query("
+            SELECT
+                u.usuario_id, u.usuario_nombre, u.usuario_imagen, e.estado_color,
+                e.estado_descripcion, t.tipousuario_descripcion
+
+            FROM
+                usuario u, estado e, tipo_usuario t
+
+            WHERE
+                u.estado_id = e.estado_id
+                and u.tipousuario_id = t.tipousuario_id
+                and u.`tipousuario_id` = 4
+
+            ORDER BY `usuario_id` DESC 
 
         ")->result_array();
 

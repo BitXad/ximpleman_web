@@ -70,7 +70,7 @@
             <div class="box-body  table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                            <th>N°</th>
+                            <th>#</th>
                             <th>Imagen</th>
                             <th>Descripción</th>
                             <th>Estado</th>

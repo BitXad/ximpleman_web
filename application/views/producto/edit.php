@@ -40,8 +40,8 @@
       	<div class="box box-info">
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Producto</h3>&nbsp;&nbsp;
-                <button type="button" class="btn btn-success btn-sm" onclick="cambiarcodproducto();">
-			<i class="fa fa-edit"></i> Cambiar Codigo barra y Codigo
+                <button type="button" class="btn btn-success btn-sm" onclick="cambiarcodproducto();" title="Volver a generar Código y Código de barras">
+			<i class="fa fa-edit"></i> Generar Código
 		</button>
             </div>
             <div class="row" id='loader'  style='display:none; text-align: center'>
@@ -53,7 +53,7 @@
 					<div class="col-md-6">
 						<label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Producto</label>
 						<div class="form-group">
-							<input type="text" name="producto_nombre" value="<?php echo ($this->input->post('producto_nombre') ? $this->input->post('producto_nombre') : $producto['producto_nombre']); ?>" class="form-control" id="producto_nombre" required />
+							<input type="text" name="producto_nombre" value="<?php echo ($this->input->post('producto_nombre') ? $this->input->post('producto_nombre') : $producto['producto_nombre']); ?>" class="form-control" id="producto_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
 							<span class="text-danger"><?php echo form_error('producto_nombre');?></span>
 						</div>
 					</div>
@@ -77,26 +77,26 @@
 					<div class="col-md-2">
 						<label for="producto_marca" class="control-label">Marca</label>
 						<div class="form-group">
-							<input type="text" name="producto_marca" value="<?php echo ($this->input->post('producto_marca') ? $this->input->post('producto_marca') : $producto['producto_marca']); ?>" class="form-control" id="producto_marca" />
+							<input type="text" name="producto_marca" value="<?php echo ($this->input->post('producto_marca') ? $this->input->post('producto_marca') : $producto['producto_marca']); ?>" class="form-control" id="producto_marca" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 					<div class="col-md-2">
 						<label for="producto_industria" class="control-label">Industria</label>
 						<div class="form-group">
-							<input type="text" name="producto_industria" value="<?php echo ($this->input->post('producto_industria') ? $this->input->post('producto_industria') : $producto['producto_industria']); ?>" class="form-control" id="producto_industria" />
+							<input type="text" name="producto_industria" value="<?php echo ($this->input->post('producto_industria') ? $this->input->post('producto_industria') : $producto['producto_industria']); ?>" class="form-control" id="producto_industria" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
                                     
                                         <div class="col-md-4">
-						<label for="producto_codigobarra" class="control-label">Código de barras</label>
+						<label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
 						<div class="form-group">
-							<input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" />
+                                                    <input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" onKeyUp="this.value = this.value.toUpperCase();" required />
 						</div>
 					</div>                                    
 					<div class="col-md-4">
-						<label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
+						<label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código Producto</label>
 						<div class="form-group">
-							<input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required />
+							<input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required onKeyUp="this.value = this.value.toUpperCase();" />
 							<span class="text-danger"><?php echo form_error('producto_codigo');?></span>
 						</div>
 					</div>
@@ -119,9 +119,9 @@
 					</div>
 
                                         <div class="col-md-3">
-						<label for="moneda_id" class="control-label">Moneda</label>
+						<label for="moneda_id" class="control-label"><span class="text-danger">*</span>Moneda</label>
 						<div class="form-group">
-							<select name="moneda_id" class="form-control">
+                                                    <select name="moneda_id" class="form-control" required>
 								<option value="">- MONEDA -</option>
 								<?php 
 								foreach($all_moneda as $moneda)
@@ -149,7 +149,7 @@
 					</div>
 
 					<div class="col-md-3">
-						<label for="producto_comision" class="control-label">Comision (%)</label>
+						<label for="producto_comision" class="control-label">Comisión (%)</label>
 						<div class="form-group">
 							<input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : $producto['producto_comision']); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
 						</div>
@@ -163,7 +163,7 @@
 					</div>
 
                                         <div class="col-md-3">
-						<label for="producto_unidadfactor" class="control-label">Unidad</label>
+						<label for="producto_unidadfactor" class="control-label">Unidad Factor</label>
 						<div class="form-group">
 							<select name="producto_unidadfactor" class="form-control">
 								<option value="">- UNIDAD -</option>
@@ -183,14 +183,14 @@
 					<div class="col-md-3">
 						<label for="producto_codigofactor" class="control-label">Codigo Factor</label>
 						<div class="form-group">
-							<input type="text" step="any" min="0" name="producto_codigofactor" value="<?php echo ($this->input->post('producto_codigofactor') ? $this->input->post('producto_codigofactor') : $producto['producto_codigofactor']); ?>" class="form-control" id="producto_codigofactor"  onclick="this.select();"/>
+							<input type="text" step="any" min="0" name="producto_codigofactor" value="<?php echo ($this->input->post('producto_codigofactor') ? $this->input->post('producto_codigofactor') : $producto['producto_codigofactor']); ?>" class="form-control" id="producto_codigofactor"  onclick="this.select();" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
 
 					<div class="col-md-3">
 						<label for="producto_preciofactor" class="control-label">Precio Unit. Factor</label>
 						<div class="form-group">
-							<input type="text" step="any" min="0" name="producto_preciofactor" value="<?php echo ($this->input->post('producto_preciofactor') ? $this->input->post('producto_preciofactor') : $producto['producto_preciofactor']); ?>" class="form-control" id="producto_preciofactor"  onclick="this.select();"/>
+                                                    <input type="number" step="any" min="0" name="producto_preciofactor" value="<?php echo ($this->input->post('producto_preciofactor') ? $this->input->post('producto_preciofactor') : $producto['producto_preciofactor']); ?>" class="form-control" id="producto_preciofactor"  onclick="this.select();"/>
 						</div>
 					</div>
 
@@ -204,14 +204,14 @@
 					<div class="col-md-3">
 						<label for="producto_ultimocosto" class="control-label">Ultimo Costo</label>
 						<div class="form-group">
-							<input type="text" step="any" min="0" name="producto_ultimocosto" value="<?php echo ($this->input->post('producto_ultimocosto') ? $this->input->post('producto_ultimocosto') : $producto['producto_ultimocosto']); ?>" class="form-control" id="producto_ultimocosto"  onclick="this.select();"/>
+                                                    <input type="number" step="any" min="0" name="producto_ultimocosto" value="<?php echo ($this->input->post('producto_ultimocosto') ? $this->input->post('producto_ultimocosto') : $producto['producto_ultimocosto']); ?>" class="form-control" id="producto_ultimocosto"  onclick="this.select();"/>
 						</div>
 					</div>
 
 					<div class="col-md-3">
 						<label for="producto_foto" class="control-label">Foto</label>
 						<div class="form-group">
-                                                    <input type="file" name="producto_foto" value="<?php echo ($this->input->post('producto_foto') ? $this->input->post('producto_foto') : $producto['producto_foto']); ?>" class="form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
+                                                    <input type="file" name="producto_foto" value="<?php echo ($this->input->post('producto_foto') ? $this->input->post('producto_foto') : $producto['producto_foto']); ?>" class="btn btn-success btn-sm form-control" id="producto_foto" accept="image/png, image/jpeg, jpg, image/gif" />
                                                     <input type="hidden" name="producto_foto1" value="<?php echo ($this->input->post('producto_foto') ? $this->input->post('producto_foto') : $producto['producto_foto']); ?>" class="form-control" id="producto_foto1" />
 						</div>
 					</div>
@@ -224,7 +224,7 @@
 					</div>-->
 
 					
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="estado_id" class="control-label">Estado</label>
 						<div class="form-group">
                                                     <!--<select class="selectpicker" data-show-subtext="true" data-live-search="true">-->
@@ -255,9 +255,9 @@
 						</div>
 					</div> 
 					<div class="col-md-6">
-						<label for="producto_caracteristicas" class="control-label">Caracteristicas</label>
+						<label for="producto_caracteristicas" class="control-label">Características</label>
 						<div class="form-group">
-                              <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control id="producto_caracteristicas"><?php echo ($this->input->post('producto_caracteristicas') ? $this->input->post('producto_caracteristicas') : $producto['producto_caracteristicas']); ?></textarea>
+                              <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas" onKeyUp="this.value = this.value.toUpperCase();" ><?php echo ($this->input->post('producto_caracteristicas') ? $this->input->post('producto_caracteristicas') : $producto['producto_caracteristicas']); ?></textarea>
 						</div>
 					</div>                                   
                                     

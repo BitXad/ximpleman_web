@@ -10,7 +10,7 @@
     var el = document.getElementById(id); //se define la variable "el" igual a nuestro div
     el.style.display = (el.style.display == 'none') ? 'block' : 'none'; //damos un atributo display:none que oculta el div
         if(el.style.display == 'none'){
-            $('#mosmapa').text("Obtener Ubicación del negocio");
+            $('#mosmapa').text("Ubicación Domicilio");
         }else{
             $('#mapa').css({ 'width':'500px', 'height':'400px' });
         $('#mosmapa').text("Cerrar mapa");
@@ -77,7 +77,7 @@
 					</div>
                                         <div class="col-md-6">
                                             <div class="titulo_boton">
-                                                <a onClick="muestra_oculta('mapa')" id="mosmapa" class="btn btn-success">Obtener Ubicación del negocio</a>
+                                                <a onClick="muestra_oculta('mapa')" id="mosmapa" class="btn btn-success">Ubicación Domicilio</a>
                                             </div>
                                             <div id="mapa"></div>
                                             <script type="text/javascript">
