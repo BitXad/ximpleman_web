@@ -181,7 +181,7 @@ function resultadodetalleservicioview(servicio_id){
                         var res = "";
                         if(registros[i]["detalleserv_reclamo"] == "si"){ res = "Si";}else{ res = "No"; }
                         html += "<font size='1'><b>¿Reclamo?: </b>"+res+"</font><br>";
-                        html += "<font size='1'><b>Resp. Tec.: </b>"+registros[i]["responsable_nombres"]+" "+registros[i]["responsable_apellidos"]+"</font><br>";
+                        html += "<font size='1'><b>Resp. Tec.: </b>"+registros[i]["respusuario_nombre"]+"</font><br>";
                         html += "<font size='1'><b>Recep.: </b>"+registros[i]["usuario_nombre"]+"</font><br>";
                         html += "<font size='1'><b>Entregar: </b>";
                         //var fechaentrega = "";

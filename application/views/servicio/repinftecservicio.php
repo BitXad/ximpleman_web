@@ -31,13 +31,17 @@
 </div>
 <!-- *******************************INICIO Buscador por fechas************************************ -->
 <div class="no-print">
-<div class="col-md-6">
-    <div class="input-group"> <span class="input-group-addon">Buscar</span>
-        <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)">
+<div class="col-md-12">
+    <div class="col-md-6">
+        <div class="input-group"> <span class="input-group-addon">Buscar</span>
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)">
+        </div>
     </div>
-</div>
-<div class="container" id="categoria">
-                <span class="badge btn-primary">Servicios encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
+    <div class="col-md-6">
+        <div class="container" id="categoria">
+                    <span class="badge btn-primary">Servicios encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
+        </div>
+    </div>
 </div>
       <!-------------------- CATEGORIAS------------------------------------->
 <div class="col-md-6">
@@ -91,15 +95,7 @@
     </div>
 <!--</form>-->
 <!--</div>-->
-<div class="container" id="categoria">
-    
- 
-                <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
-                <span class="badge btn-primary">Servicios encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontradosfecha" type="text" value="0" readonly="true"> </span></span>
-
-</div>
 </div>
 <!-- *******************************F I N  Buscador por fechas************************************ -->
 <div class="row no-print">

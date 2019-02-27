@@ -278,11 +278,11 @@ function mostrarAlert(){
                                                     <select name="responsable_id" class="form-control" required>
 								<!--<option value="">- RESPONSABLE -</option>-->
 								<?php 
-								foreach($all_responsable as $responsable)
+								foreach($all_responsable as $usuario)
 								{
-									$selected = ($responsable['responsable_id'] == $detalle_serv['responsable_id']) ? ' selected="selected"' : "";
+									$selected = ($usuario['usuario_id'] == $detalle_serv['responsable_id']) ? ' selected="selected"' : "";
 
-									echo '<option value="'.$responsable['responsable_id'].'" '.$selected.'>'.$responsable['responsable_nombres'].' '.$responsable['responsable_apellidos'].'</option>';
+									echo '<option value="'.$usuario['usuario_id'].'" '.$selected.'>'.$usuario['usuario_nombre'].'</option>';
 								} 
 								?>
 							</select>

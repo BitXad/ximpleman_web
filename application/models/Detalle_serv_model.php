@@ -125,7 +125,10 @@ class Detalle_serv_model extends CI_Model
     {
         $detalle_serv = $this->db->query("
             SELECT
-                *, e.estado_id as esteestado
+                ds.*, r.usuario_nombre as respusuario_nombre, u.usuario_nombre, e.estado_id as esteestado,
+                e.estado_color, e.estado_descripcion, p.procedencia_descripcion,
+                cs.catserv_descripcion, scs.subcatserv_descripcion, ct.cattrab_descripcion,
+                tu.tiempouso_descripcion
 
             FROM
                 detalle_serv ds, estado e, usuario r, usuario u, categoria_servicio cs, servicio s,
@@ -133,11 +136,11 @@ class Detalle_serv_model extends CI_Model
 
             WHERE
                 ds.estado_id = e.estado_id
-                and ds.responsable_id = r.responsable_id
+                and ds.responsable_id = r.usuario_id
                 and ds.usuario_id = u.usuario_id
                 and ds.catserv_id = cs.catserv_id
                 and ds.servicio_id = s.servicio_id
-                and ds.servicio_id = ".$servicio_id." 
+                and ds.servicio_id = ".$servicio_id."
                 and ds.subcatserv_id = scs.subcatserv_id
                 and ds.procedencia_id = p.procedencia_id
                 and ds.cattrab_id = ct.cattrab_id

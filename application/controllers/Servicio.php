@@ -1019,9 +1019,12 @@ class Servicio extends CI_Controller{
         
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-        
+        /*
         $this->load->model('Responsable_model');
         $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+        */
+        $this->load->model('Usuario_model');
+        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
         
         $this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
@@ -1154,9 +1157,11 @@ class Servicio extends CI_Controller{
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
         
+        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+        /*
         $this->load->model('Responsable_model');
         $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-        
+        */
         $this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
         
@@ -1356,6 +1361,41 @@ class Servicio extends CI_Controller{
                 $datos = $this->Detalle_venta_model->get_costototal_insumos_usados($detalleserv_id);
                 echo json_encode($datos);
             }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    /* buscar servicios para repinforme */
+    function buscarservicios_infrep()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            if ($parametro!=""){
+            $datos = $this->Servicio_model->get_busqueda_infservicio_parametro($parametro);
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+            }else{
+                $datos = $this->Servicio_model->get_all_servicios_pendientes();
+            echo json_encode($datos);
+            }
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
             else{
                 redirect('alerta');
             }

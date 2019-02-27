@@ -68,7 +68,7 @@ body {
                 $diagnostico = $detalle['detalleserv_diagnostico'].$separador.$diagnostico;
                 $solucion = $detalle['detalleserv_solucion'].$separador.$solucion;
                 $fentrega_aprox = date("d/m/Y", strtotime($detalle['detalleserv_fechaentrega']))."-".$detalle['detalleserv_horaentrega'].$separador.$fentrega_aprox;
-                $responsable = $detalle['responsable_nombres']." ".$detalle['responsable_apellidos'].$separador.$responsable
+                $responsable = $detalle['respusuario_nombre'].$separador.$responsable
             ?>
             <?php
              $cant++; }
@@ -173,7 +173,7 @@ body {
                 $diagnostico = $detalle['detalleserv_diagnostico'].$separador.$diagnostico;
                 $solucion = $detalle['detalleserv_solucion'].$separador.$solucion;
                 $fentrega_aprox = date("d/m/Y", strtotime($detalle['detalleserv_fechaentrega']))."-".$detalle['detalleserv_horaentrega'].$separador.$fentrega_aprox;
-                $responsable = $detalle['responsable_nombres']." ".$detalle['responsable_apellidos'].$separador.$responsable
+                $responsable = $detalle['respusuario_nombre'].$separador.$responsable
             ?>
             <?php
              $cant++; }
