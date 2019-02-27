@@ -1,7 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/compra.js'); ?>" type="text/javascript"></script>
-
+   
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -35,17 +35,47 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <!-------------------------------------------------------->
+<div class="row micontenedorep" style="display: none" id="cabeceraprint">
+    <div id="cabizquierda">
+        <?php
+        echo $empresa[0]['empresa_nombre']."<br>";
+        echo $empresa[0]['empresa_direccion']."<br>";
+        echo $empresa[0]['empresa_telefono'];
+        ?>
+        </div>
+        <div id="cabcentro">
+            <div id="titulo">
+                <u>COMPRAS</u><br><br>
+                <!--<span style="font-size: 9pt">INGRESOS DIARIOS</span><br>-->
+                <span class="lahora" id="fhimpresion"></span><br>
+                <span style="font-size: 8pt;" id="busquedaavanzada"></span>
+                <!--<span style="font-size: 8pt;">PRECIOS EXPRESADOS EN MONEDA BOLIVIANA (Bs.)</span>-->
+            </div>
+        </div>
+        <div id="cabderecha">
+            <?php
 
+            $mimagen = "thumb_".$empresa[0]['empresa_imagen'];
+
+            echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
+
+            ?>
+
+        </div>
+        
+</div>
+<br>
 <div class="row">
     
     <div class="col-md-6">
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row">
+        <div class="row no-print">
             <ol class="breadcrumb">
                 <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
                 <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
@@ -56,14 +86,14 @@
         <!--este es FIN del BREADCRUMB buscador-->
  
         <!--este es INICIO de input buscador-->
-        <div class="col-md-8">
+        <div class="col-md-8 no-print">
             <div class="input-group">
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
                 <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor" onkeypress="validacompra(event,4)" >
             </div></div>
-            <div class="col-md-4">
+            <div class="col-md-4 no-print">
                 <select  class="btn btn-primary btn-sm"  id="select_compra" onchange="buscar_compras()">
                 <option value="1">Compras de Hoy</option>
                 <option value="2">Compras de Ayer</option>
@@ -84,13 +114,13 @@
     </div>
     
     <!---------------- BOTONES --------->
-    <div class="col-md-6">
+    <div class="col-md-6 no-print">
         
             <div class="box-tools">
         <center>            
             <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
             <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
     </div>
@@ -107,8 +137,8 @@
    
         <!-------------------- CATEGORIAS------------------------------------->
        
-        <form method="post" onclick="buscar_por_fecha()">
-            <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none; padding-bottom: 10px;'>
+        <form method="post"  onclick="buscar_por_fecha()">
+            <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:none; padding-bottom: 10px;'>
                 <br>
                 <center>            
                     <div class="col-md-2">
@@ -120,7 +150,8 @@
 
                     <div class="col-md-4">
                         Tipo:         
-                        <select  class="btn btn-primary btn-sm form-control" style=" width: 45%; font-size: 11px;"  id="tipotrans_id" required="true">
+                        <select  class="btn btn-primary btn-sm form-control" style=" width: 45%; font-size: 11px;"  id="tipotrans_id" required="true" name="tipo_transa">
+                            <option value="0">- TODOS -</option>
                             <?php foreach($tipo_transaccion as $es){?>
                                 <option value="<?php echo $es['tipotrans_id']; ?>"><?php echo $es['tipotrans_nombre']; ?></option>
                             <?php } ?>
@@ -150,7 +181,7 @@
     <th>Fecha<br>Hora</th>
     <th>Estado</th>
     <th>Usuario</th>
-    <th></th>
+    <th class="no-print"></th>
     </tr>
 <!-- <tbody class="buscar" id="compraproveedor">-->
     <tbody class="buscar" id="fechadecompra">
@@ -183,7 +214,7 @@
                     <?php echo $c['compra_hora']; ?></td>
                     <td align="center"><?php echo $c['estado_descripcion']; ?> <br> <?php if($c['compra_placamovil']==1) { ?><span class="btn-danger btn-xs">NO FINALIZADO</span> <?php } ?></td>
                     <td align="center"> <?php echo $c['usuario_nombre']; ?></td>
-                    <td>
+                    <td class="no-print">
                         <?php if($c['compra_placamovil']==1) { ?>
                          <a href="#" data-toggle="modal" data-target="#cambi" class="btn btn-info btn-xs" >
                            <i class="fa fa-pencil "></i>
@@ -249,7 +280,7 @@
 
 
 
-<div class="row">
+<div class="row no-print">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group"> <span class="input-group-addon">Buscar</span>

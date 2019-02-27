@@ -196,7 +196,7 @@ function insertarproducto()
          if ($this->input->is_ajax_request()) {
         $detallecot_id = $this->input->post('detallecot_id');
         
-        $caracteristica = $this->input->post('detallecot_caracteristica');
+        $caracteristica = $this->input->post('caracteristica');
         $cotizacion_id = $this->input->post('cotizacion_id');
        // $descripcion = $this->input->post('descripcion');
         $producto_id = $this->input->post('producto_id');

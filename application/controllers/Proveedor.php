@@ -26,7 +26,8 @@ class Proveedor extends CI_Controller{
                 $usuario_id = $session_data['usuario_id'];
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $config = $this->config->item('pagination');
         $config['base_url'] = site_url('proveedor/index?');
         $config['total_rows'] = $this->Proveedor_model->get_all_proveedor_count();

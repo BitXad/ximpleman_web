@@ -44,9 +44,9 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num</th>
+						<th>#</th>
 						<th>Nombre</th>
-						<th>Tipo Usuario</th>
+						<th>Tipo</th>
                         <th>Email</th>
 						<th>Login</th>
 						<th>Imagen</th>

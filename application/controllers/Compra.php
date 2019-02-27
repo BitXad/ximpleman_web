@@ -65,6 +65,8 @@ class Compra extends CI_Controller{
         else{
             $data['compra'] = $this->Compra_model->fechacompras($filtro);            
         }
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['parametro'] = $this->Parametro_model->get_parametro(1);
         $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
