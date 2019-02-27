@@ -157,6 +157,20 @@ class Cliente extends CI_Controller{
                 //no es necesario porque se esta usando el date y ya no el date piker
                 //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                 $estado_id = 1;
+                $lun = $this->input->post('lun');
+                if($lun != 1){ $lun = 0; }
+                $mar = $this->input->post('mar');
+                if($mar != 1){ $mar = 0; }
+                $mie = $this->input->post('mie');
+                if($mie != 1){ $mie = 0; }
+                $jue = $this->input->post('jue');
+                if($jue != 1){ $jue = 0; }
+                $vie = $this->input->post('vie');
+                if($vie != 1){ $vie = 0; }
+                $sab = $this->input->post('sab');
+                if($sab != 1){ $sab = 0; }
+                $dom = $this->input->post('dom');
+                if($dom != 1){ $dom = 0; }
                 $params = array(
                             'estado_id' => $estado_id,
                             'tipocliente_id' => $this->input->post('tipocliente_id'),
@@ -177,6 +191,13 @@ class Cliente extends CI_Controller{
                             'cliente_razon' => $this->input->post('cliente_razon'),
                             'usuario_id' => $this->input->post('usuario_id'),
                             'zona_id' => $this->input->post('zona_id'),
+                            'lun' => $lun,
+                            'mar' => $mar,
+                            'mie' => $mie,
+                            'jue' => $jue,
+                            'vie' => $vie,
+                            'sab' => $sab,
+                            'dom' => $dom,
                 );
             
             $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -308,6 +329,20 @@ class Cliente extends CI_Controller{
                             //$this->input->post('cliente_foto'),
                            //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                             //$mifecha = normalize_date($this->input->post('cliente_aniversario'));
+                $lun = $this->input->post('lun');
+                if($lun != 1){ $lun = 0; }
+                $mar = $this->input->post('mar');
+                if($mar != 1){ $mar = 0; }
+                $mie = $this->input->post('mie');
+                if($mie != 1){ $mie = 0; }
+                $jue = $this->input->post('jue');
+                if($jue != 1){ $jue = 0; }
+                $vie = $this->input->post('vie');
+                if($vie != 1){ $vie = 0; }
+                $sab = $this->input->post('sab');
+                if($sab != 1){ $sab = 0; }
+                $dom = $this->input->post('dom');
+                if($dom != 1){ $dom = 0; }
                 $params = array(
 					'estado_id' => $this->input->post('estado_id'),
 					'tipocliente_id' => $this->input->post('tipocliente_id'),
@@ -328,6 +363,14 @@ class Cliente extends CI_Controller{
 					'cliente_nit' => $this->input->post('cliente_nit'),
 					'cliente_razon' => $this->input->post('cliente_razon'),
 					'usuario_id' => $this->input->post('usuario_id'),
+                                        'lun' => $lun,
+                                        'mar' => $mar,
+                                        'mie' => $mie,
+                                        'jue' => $jue,
+                                        'vie' => $vie,
+                                        'sab' => $sab,
+                                        'dom' => $dom,
+                    
                 );
 
                 $this->Cliente_model->update_cliente($cliente_id,$params);            

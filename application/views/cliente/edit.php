@@ -278,7 +278,7 @@ function mostrar(a) {
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
 						<label for="usuario_id" class="control-label">Prevendedor</label>
 						<div class="form-group">
 							<select name="usuario_id" class="form-control">
@@ -294,7 +294,30 @@ function mostrar(a) {
 							</select>
 						</div>
 					</div>
-                                    
+                                        <div class="col-md-5">
+                                            <label for="dias_visita" class="control-label">Dias de Visita</label>
+						<div class="form-group">
+                                                    <?php
+                                                    $luncheck =""; $marcheck =""; $miecheck ="";
+                                                    $juecheck =""; $viecheck =""; $sabcheck =""; $domcheck ="";
+                                                    if($cliente['lun'] == 1){ $luncheck = "checked";}
+                                                    if($cliente['mar'] == 1){ $marcheck = "checked";}
+                                                    if($cliente['mie'] == 1){ $miecheck = "checked";}
+                                                    if($cliente['jue'] == 1){ $juecheck = "checked";}
+                                                    if($cliente['vie'] == 1){ $viecheck = "checked";}
+                                                    if($cliente['sab'] == 1){ $sabcheck = "checked";}
+                                                    if($cliente['dom'] == 1){ $domcheck = "checked";}
+                                                    ?>
+                                                    <label>Lunes<input type="checkbox" name="lun" value="1" id="lun" <?php echo $luncheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Martes<input type="checkbox" name="mar" value="1" id="mar" <?php echo $marcheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Miercoles<input type="checkbox" name="mie" value="1" id="mie" <?php echo $miecheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Jueves<input type="checkbox" name="jue" value="1" id="jue" <?php echo $juecheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Viernes<input type="checkbox" name="vie" value="1" id="vie" <?php echo $viecheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Sábado<input type="checkbox" name="sab" value="1" id="sab" <?php echo $sabcheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Domingo<input type="checkbox" name="dom" value="1" id="dom" <?php echo $domcheck; ?> /></label>
+                                                  
+						</div>
+					</div>
                                     
                                         <div class="col-md-2">
 						<label for="estado_id" class="control-label">Estado</label>

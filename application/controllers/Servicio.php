@@ -336,6 +336,8 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
+            
+	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
             /*
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
@@ -345,10 +347,10 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Subcategoria_servicio_model');
 	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-            
+            /*
             $this->load->model('Responsable_model');
 	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-                
+            */    
             $this->load->model('Tipo_servicio_model');
 	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
 	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();

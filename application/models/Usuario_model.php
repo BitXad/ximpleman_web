@@ -237,4 +237,26 @@ class Usuario_model extends CI_Model
 
         return $usuario;
     }
+    /******** Función que muestra a todos los usuarios TECNICOS responsables ************/
+    function get_all_usuario_tecnicoresponsable_ok()
+    {
+        $usuario = $this->db->query("
+            SELECT
+                u.usuario_id, u.usuario_nombre
+
+            FROM
+                usuario u, estado e, tipo_usuario t
+
+            WHERE
+                u.estado_id = e.estado_id
+                and u.tipousuario_id = t.tipousuario_id
+                and u.`tipousuario_id` = 5
+                and u.`estado_id` = 1
+
+            ORDER BY `usuario_id` DESC 
+
+        ")->result_array();
+
+        return $usuario;
+    }
 }

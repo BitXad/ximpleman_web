@@ -247,7 +247,16 @@ function tablaresultadoscliente(limite)
                         }
                         html += "<td>"+corr+"<br>"+aniv+"<br>";
                         html += estipo_cliente+"<br>";
-                        html += escategoria_cliente+"</td>";
+                        html += escategoria_cliente+"<br>";
+                        var visita = "Visitas: ";
+                        if(registros[i]["lun"]== 1){ visita += "Lun. "; }
+                        if(registros[i]["mar"]== 1){ visita += "Mar. "; }
+                        if(registros[i]["mie"]== 1){ visita += "Mie. "; }
+                        if(registros[i]["jue"]== 1){ visita += "Jue. "; }
+                        if(registros[i]["vie"]== 1){ visita += "Vie. "; }
+                        if(registros[i]["sab"]== 1){ visita += "Sab. "; }
+                        if(registros[i]["dom"]== 1){ visita += "Dom."; }
+                        html += visita+"</td>";
                         //html += "<td>"+esusuario+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+";'>"+esusuario+"<br>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td class='no-print'>";

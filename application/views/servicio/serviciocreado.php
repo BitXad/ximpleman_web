@@ -380,7 +380,7 @@ $(document).ready(function(){
                                           <div class="col-md-6">
 						<label for="cliente_nit" class="control-label">Nit</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} ?>" class="form-control" id="cliente_nit" />
+                                                    <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} ?>" class="form-control" id="cliente_nit" onclick="this.select();" />
 						</div>
 					  </div>
                                           <div class="col-md-6">
@@ -608,25 +608,25 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control text-uppercase" id="detalleserv_descripcion" required />
+                                        <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control" id="detalleserv_descripcion" required onKeyUp="this.value = this.value.toUpperCase();" />
                                     </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="detalleserv_falla" class="control-label"><span class="text-danger">*</span>Problema/Falla Segun Cliente</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_falla" value="<?php echo $this->input->post('detalleserv_falla'); ?>" class="form-control text-uppercase" id="detalleserv_falla" required />
+                                        <input type="text" name="detalleserv_falla" value="<?php echo $this->input->post('detalleserv_falla'); ?>" class="form-control" id="detalleserv_falla" required onKeyUp="this.value = this.value.toUpperCase();" />
                                     </div>
                             </div>
                             <div class="col-md-6">
                                     <label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo "REVISION";}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control text-uppercase" id="detalleserv_diagnostico" />
+                                        <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo "REVISION";}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
                                     </div>
                             </div>
                             <div class="col-md-4">
                                     <label for="detalleserv_solucion" class="control-label">Solución</label>
                                     <div class="form-group">
-                                            <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo "REVISION";}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control text-uppercase" id="detalleserv_solucion" />
+                                            <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo "REVISION";}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
                                     </div>
                             </div>
                             <div class="col-md-4">
@@ -638,7 +638,7 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
                                     <div class="form-group">
-                                            <input type="text" name="detalleserv_glosa" value="<?php echo $this->input->post('detalleserv_glosa'); ?>" class="form-control text-uppercase" id="detalleserv_glosa" />
+                                            <input type="text" name="detalleserv_glosa" value="<?php echo $this->input->post('detalleserv_glosa'); ?>" class="form-control" id="detalleserv_glosa" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
                                     </div>
                             </div>
                             <div class="col-md-4">
@@ -672,16 +672,16 @@ $(document).ready(function(){
                                     </div>
                             </div>
                             <div class="col-md-4">
-                                    <label for="responsable_id" class="control-label"><span class="text-danger">*</span>Responsable</label>
+                                    <label for="responsable_id" class="control-label"><span class="text-danger">*</span>Tec. Responsable</label>
                                     <div class="form-group">
                                         <select name="responsable_id" class="form-control" id="responsable_id" required>
                                                     <option value="">- RESPONSABLE -</option>
                                                     <?php 
                                                     foreach($all_responsable as $responsable)
                                                     {
-                                                            $selected = ($responsable['responsable_id'] == $this->input->post('responsable_id')) ? ' selected="selected"' : "";
+                                                            $selected = ($responsable['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
 
-                                                            echo '<option value="'.$responsable['responsable_id'].'" '.$selected.'>'.$responsable['responsable_nombres'].' '.$responsable['responsable_apellidos'].'</option>';
+                                                            echo '<option value="'.$responsable['usuario_id'].'" '.$selected.'>'.$responsable['usuario_nombre'].'</option>';
                                                     } 
                                                     ?>
                                             </select>

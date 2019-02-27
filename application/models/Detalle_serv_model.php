@@ -128,7 +128,7 @@ class Detalle_serv_model extends CI_Model
                 *, e.estado_id as esteestado
 
             FROM
-                detalle_serv ds, estado e, responsable r, usuario u, categoria_servicio cs, servicio s,
+                detalle_serv ds, estado e, usuario r, usuario u, categoria_servicio cs, servicio s,
                 subcategoria_servicio scs, procedencia p, categoria_trabajo ct, tiempo_uso tu
 
             WHERE
