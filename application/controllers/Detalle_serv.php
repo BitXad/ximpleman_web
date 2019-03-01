@@ -903,10 +903,13 @@ class Detalle_serv extends CI_Controller{
             
             $this->load->model('Subcategoria_servicio_model');
 	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-            
+            /*
             $this->load->model('Responsable_model');
 	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-                
+            */
+            $this->load->model('Usuario_model');
+	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+            
             $this->load->model('Tipo_servicio_model');
 	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
 	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
@@ -1159,10 +1162,13 @@ class Detalle_serv extends CI_Controller{
             
             $this->load->model('Subcategoria_servicio_model');
 	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-            
+            /*
             $this->load->model('Responsable_model');
 	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-                
+            */
+            $this->load->model('Usuario_model');
+	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+            
             $this->load->model('Tipo_servicio_model');
 	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
 	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();

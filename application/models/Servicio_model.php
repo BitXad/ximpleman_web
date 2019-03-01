@@ -219,20 +219,27 @@ class Servicio_model extends CI_Model
     {
         $servicio = $this->db->query("
             SELECT
-                *
+                c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                ds.detalleserv_id, s.servicio_total, s.servicio_acuenta, s.servicio_saldo,
+                ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
+                ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion, ds.detalleserv_descripcion,
+                r.usuario_nombre as respusuario_nombre
+                
             FROM
-                detalle_serv ds, servicio s, estado e, responsable r, cliente c, usuario u, tipo_servicio ts
+                detalle_serv ds
+                LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+                LEFT JOIN estado e on ds.estado_id = e.estado_id
+                LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+                LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+                LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+                LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
 
             WHERE
-                ds.servicio_id = s.servicio_id
-                and ds.estado_id = e.estado_id
-                and ds.responsable_id = r.responsable_id
-                and ds.usuario_id = u.usuario_id
-                and s.cliente_id = c.cliente_id
-                and s.tiposerv_id = ts.tiposerv_id
-                and date(servicio_fecharecepcion) = date(now())
+                date(s.servicio_fecharecepcion) = date(now())
 
-            ORDER BY ds.servicio_id      
+            ORDER BY ds.servicio_id       
         ")->result_array();
 
         return $servicio;
@@ -245,23 +252,24 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
-                ds.detalleserv_id,
+                ds.detalleserv_id, s.servicio_total, s.servicio_acuenta, s.servicio_saldo,
                 ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
                 ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                 e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion, ds.detalleserv_descripcion,
-                r.responsable_nombres, r.responsable_apellidos
+                r.usuario_nombre as respusuario_nombre
                 
             FROM
-                detalle_serv ds, servicio s, estado e, responsable r, cliente c, usuario u, tipo_servicio ts
+                detalle_serv ds
+                LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+                LEFT JOIN estado e on ds.estado_id = e.estado_id
+                LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+                LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+                LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+                LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
 
             WHERE
-                ds.servicio_id = s.servicio_id
-                and ds.estado_id = e.estado_id
-                and ds.responsable_id = r.responsable_id
-                and ds.usuario_id = u.usuario_id
-                and s.cliente_id = c.cliente_id
-                and s.tiposerv_id = ts.tiposerv_id ".
+                 ".
                 $filtro." 
 
             ORDER BY ds.servicio_id      
@@ -301,7 +309,7 @@ class Servicio_model extends CI_Model
                 d.detalleserv_fechaentregado, d.detalleserv_horaentregado,
                 d.detalleserv_total, d.detalleserv_acuenta, d.detalleserv_saldo,
                 e.estado_descripcion, t.tiposerv_descripcion, s.servicio_direccion,
-                d.detalleserv_descripcion, concat(r.responsable_nombres, ' ',r.responsable_apellidos) as respnombre,
+                d.detalleserv_descripcion, r.usuario_nombre as respnombre,
                 p.producto_nombre, dv.detalleven_total as precioinsumo
                 
             FROM
@@ -310,7 +318,7 @@ class Servicio_model extends CI_Model
             LEFT JOIN detalle_serv d on s.servicio_id = d.servicio_id
             LEFT JOIN estado e on s.estado_id = e.estado_id
             LEFT JOIN tipo_servicio t on s.tiposerv_id = t.tiposerv_id
-            LEFT JOIN responsable r on d.responsable_id = r.responsable_id
+            LEFT JOIN usuario r on d.responsable_id = r.usuario_id
             LEFT JOIN detalle_venta dv on d.detalleserv_id = dv.detalleserv_id
             LEFT JOIN producto p on dv.producto_id = p.producto_id
            WHERE
@@ -321,6 +329,31 @@ class Servicio_model extends CI_Model
                  
         ")->result_array();
         
+        return $servicio;
+    }
+    function get_busqueda_infservicio_parametro($parametro)
+    {
+        $servicio = $this->db->query("
+            
+            SELECT
+                s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
+                u.usuario_nombre, c.cliente_nombre
+            FROM
+                servicio s, estado e, tipo_servicio ts, cliente c, usuario u
+
+            WHERE
+                s.estado_id = e.estado_id
+                and(c.cliente_nombre like '%".$parametro."%' or s.servicio_id like '%".$parametro."%'
+                   or e.estado_descripcion like '%".$parametro."%')
+                and s.tiposerv_id = ts.tiposerv_id
+                and s.cliente_id = c.cliente_id
+                and s.usuario_id = u.usuario_id
+
+            GROUP BY
+                s.servicio_id 
+              ORDER By s.servicio_id desc
+        ")->result_array();
+
         return $servicio;
     }
     

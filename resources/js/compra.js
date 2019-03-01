@@ -461,7 +461,7 @@ function buscar_compras()
     {
         filtro = " and date(compra_fecha) = date(now())";
         mostrar_ocultar_buscador("ocultar");
-
+        $("#busquedaavanzada").html('Del Dia');
                
     }//compras de hoy
     
@@ -470,6 +470,7 @@ function buscar_compras()
        
         filtro = " and date(compra_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
+        $("#busquedaavanzada").html('De Ayer');
     }//compras de ayer
     
     if (opcion == 3) 
@@ -477,7 +478,7 @@ function buscar_compras()
     
         filtro = " and date(compra_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
         mostrar_ocultar_buscador("ocultar");
-
+        $("#busquedaavanzada").html('De la Semana');
             }
 
     
@@ -574,9 +575,19 @@ function buscar_por_fecha()
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
    var tipotrans_id = document.getElementById('tipotrans_id').value;
-    
+
+   var fecha1 = "Desde: "+moment(fecha_desde).format('DD/MM/YYYY');
+   var fecha2 = "Hasta: "+moment(fecha_hasta).format('DD/MM/YYYY');
+   var tipotrans = $('select[name="tipo_transa"] option:selected').text();
+   var tipo = "Tipo: "+tipotrans;
+    if (tipotrans_id==0) {
+         filtro = " and date(compra_fecha) >= '"+fecha_desde+"'  and  date(compra_fecha) <='"+fecha_hasta+"' ";
+         $("#busquedaavanzada").html(fecha1+" "+fecha2);
+    } else {
     filtro = " and date(compra_fecha) >= '"+fecha_desde+"'  and  date(compra_fecha) <='"+fecha_hasta+
             "' and c.tipotrans_id = "+tipotrans_id;
+             $("#busquedaavanzada").html(fecha1+" "+fecha2+" "+tipo);
+        }
     fechadecompra(filtro);
 
     
@@ -762,7 +773,7 @@ function fechadecompra(filtro)
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"compra/buscarfecha";
     var limite = 500000;
-     
+
     $.ajax({url: controlador,
            type:"POST",
            data:{filtro:filtro},

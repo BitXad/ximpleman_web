@@ -53,8 +53,8 @@
         Tecnico Responsable:             
         <select  class="btn btn-primary btn-sm form-control" id="busresponsable_id" required>
             <option value="0">TODOS</option>
-            <?php foreach($all_responsable as $responsable){?>
-            <option value="<?php echo $responsable['responsable_id']; ?>"><?php echo $responsable['responsable_nombres']." ".$responsable['responsable_apellidos']; ?></option>
+            <?php foreach($all_responsable as $usuario){?>
+            <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
             <?php } ?>
         </select>
     </div>
@@ -80,7 +80,7 @@
             <!--<div class="box-body table-responsive">-->
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>N°</th>
+						<th>#</th>
                                                 <th>Cliente</th>
                                                 <th>Num.<br>Serv.</th>
                                                 <th>Fecha/Hora<br>Recepción</th>
@@ -122,7 +122,7 @@
                         <td class='alinearcentro' style="background-color: #<?php echo $s['estado_color']; ?>"><?php echo $s['estado_descripcion']; ?></td>
                         <td class='alinearcentro'><?php echo $s['tiposerv_descripcion']; ?></td>
                         <td><?php echo $s['detalleserv_descripcion']; ?></td>
-                        <td><?php echo $s['responsable_nombres']." ".$s['responsable_apellidos']; ?></td>
+                        <td><?php echo $s['respusuario_nombre']; ?></td>
                         <td>
                             <form action="<?php echo site_url('servicio/boletainftecdetalleserv/'.$s['detalleserv_id']); ?>" method="post" target="_blank">
                             <button class="btn btn-success btn-xs" type="submit"><span class="fa fa-print"></span></button>

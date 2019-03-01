@@ -149,7 +149,7 @@ if(isset($sintitulo)){
         <hr style="margin-left: 0px;">
     </div>
     <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 10pt;">
-        <?php echo $d['responsable_nombres']." ".$d['responsable_apellidos']; ?>
+        <?php echo $d['respusuario_nombre']; ?>
     </div><!--<br>-->
     <div class="negrita micontenedorlineas" style="width: 100%;">COSTO PARCIAL:
         <hr style="margin-left: 0px;">

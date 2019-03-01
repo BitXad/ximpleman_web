@@ -1,5 +1,5 @@
-<!----------------------------- script buscador --------------------------------------->
-<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+
+<script src="<?php echo base_url('resources/js/responsable.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -22,6 +22,7 @@
             location.href=base_url+"proveedor/buscarproveedor/"+filtro;
         }
     }
+    
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
@@ -40,8 +41,40 @@
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-<div class="row">
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<!-------------------------------------------------------->
+<div class="row micontenedorep" style="display: none" id="cabeceraprint">
+    <div id="cabizquierda">
+        <?php
+        echo $empresa[0]['empresa_nombre']."<br>";
+        echo $empresa[0]['empresa_direccion']."<br>";
+        echo $empresa[0]['empresa_telefono'];
+        ?>
+        </div>
+        <div id="cabcentro">
+            <div id="titulo">
+                <u>PROVEEDORES</u><br><br>
+                <!--<span style="font-size: 9pt">INGRESOS DIARIOS</span><br>-->
+                <span class="lahora" id="fhimpresion"></span><br>
+                <span style="font-size: 8pt;" id="busquedaavanzada"></span>
+                <!--<span style="font-size: 8pt;">PRECIOS EXPRESADOS EN MONEDA BOLIVIANA (Bs.)</span>-->
+            </div>
+        </div>
+        <div id="cabderecha">
+            <?php
+
+            $mimagen = "thumb_".$empresa[0]['empresa_imagen'];
+
+            echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
+
+            ?>
+
+        </div>
+        
+</div>
+<div class="row no-print">
         <div class="col-md-6">
 
 
@@ -79,11 +112,11 @@
     <!---------------- BOTONES --------->
     <div class="col-md-6">
         
-            <div class="box-tools">
+            <div class="box-tools no-print">
         <center>            
             <a href="<?php echo site_url('proveedor/add'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
             <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a href="#" onclick="imprimir_proveedor()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
     </div>
@@ -106,7 +139,7 @@
 						Razón</th>
 						<th>Estado</th>
 						<!--<th>Autorización</th>-->
-						<th></th>
+						<th class="no-print"></th>
                     <tbody class="buscar">
                     <?php $cont = 0;
                           foreach($proveedor as $p){;
@@ -163,7 +196,7 @@
                             <td style="background-color: #<?php echo $p['estado_color']; ?>"><?php echo $p['estado_descripcion']; ?></td>
 
                             <!--<td><?php //echo $p['proveedor_autorizacion']; ?></td>-->
-                            <td>
+                            <td class="no-print">
                             <a href="<?php echo site_url('proveedor/edit/'.$p['proveedor_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <!--<a href="<?php echo site_url('proveedor/remove/'.$p['proveedor_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>

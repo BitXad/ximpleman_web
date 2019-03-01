@@ -1,3 +1,4 @@
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
 function mostrar(a) {
     obj = document.getElementById('oculto'+a);
@@ -12,6 +13,7 @@ function mostrar(a) {
     }
 
 }
+
 </script>
 <script type="text/javascript">
     function verificarnumero(numero){
@@ -21,6 +23,15 @@ function mostrar(a) {
         }
         
     }
+    
+</script>
+<script type="text/javascript">
+function toggle(source) {
+  checkboxes = document.getElementsByClassName('checkbox');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
 </script>
 <script type="text/javascript">
     function cambiarcod(cod){
@@ -300,13 +311,18 @@ function mostrar(a) {
 							</select>
 						</div>
 					</div>
-                                                <?php   foreach($all_estado as $estado)
-                                                        {
-                                                            if($estado['estado_descripcion'] == "ACTIVO"){
-                                                                echo '<input type="hidden" name="estado_id" value="'.$estado['estado_id'].'" />';
-                                                            }
-                                                        }
-                                                ?>
+                                        <div class="col-md-6">
+                                            <label for="dias_visita" class="control-label">Dias de Visita</label><input type="checkbox" id="select_all" onClick="toggle(this)" /> Todos
+						<div class="form-group">
+                                                    <label>Lunes<input class="checkbox" type="checkbox" name="lun" value="1" id="lun" /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Martes<input class="checkbox" type="checkbox" name="mar" value="1" id="mar" /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Miercoles<input class="checkbox" type="checkbox" name="mie" value="1" id="mie" /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Jueves<input class="checkbox" type="checkbox" name="jue" value="1" id="jue" /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Viernes<input class="checkbox" type="checkbox" name="vie" value="1" id="vie" /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Sábado<input class="checkbox" type="checkbox" name="sab" value="1" id="sab" /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Domingo<input class="checkbox" type="checkbox" name="dom" value="1" id="dom" /></label>
+						</div>
+					</div>
 				</div>
 			</div>
           	<div class="box-footer">

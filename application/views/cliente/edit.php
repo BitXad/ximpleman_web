@@ -23,6 +23,14 @@ function mostrar(a) {
     }
 </script>
 <script type="text/javascript">
+function toggle(source) {
+  checkboxes = document.getElementsByClassName('checkbox');
+  for(var i=0, n=checkboxes.length;i<n;i++) {
+    checkboxes[i].checked = source.checked;
+  }
+}
+</script>
+<script type="text/javascript">
     function cambiarcod(cod){
         var nombre = $("#cliente_nombre").val();
         var cad1 = nombre.substring(0,2);
@@ -278,7 +286,7 @@ function mostrar(a) {
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-5">
 						<label for="usuario_id" class="control-label">Prevendedor</label>
 						<div class="form-group">
 							<select name="usuario_id" class="form-control">
@@ -294,7 +302,32 @@ function mostrar(a) {
 							</select>
 						</div>
 					</div>
-                                    
+                                        <div class="col-md-5">
+                                            <?php
+                                                    $luncheck =""; $marcheck =""; $miecheck ="";
+                                                    $juecheck =""; $viecheck =""; $sabcheck =""; $domcheck =""; $conta = 0; $todos="";
+                                                    if($cliente['lun'] == 1){ $luncheck = "checked"; $conta=$conta+1;}
+                                                    if($cliente['mar'] == 1){ $marcheck = "checked"; $conta=$conta+1;}
+                                                    if($cliente['mie'] == 1){ $miecheck = "checked"; $conta=$conta+1;}
+                                                    if($cliente['jue'] == 1){ $juecheck = "checked"; $conta=$conta+1;}
+                                                    if($cliente['vie'] == 1){ $viecheck = "checked"; $conta=$conta+1;}
+                                                    if($cliente['sab'] == 1){ $sabcheck = "checked"; $conta=$conta+1;}
+                                                    if($cliente['dom'] == 1){ $domcheck = "checked"; $conta=$conta+1;}
+                                                    if($conta >6){ $todos = "checked";}
+                                                    ?>
+                                            <label for="dias_visita" class="control-label">Dias de Visita</label><input type="checkbox" id="select_all" onClick="toggle(this)" <?php echo $todos; ?> /> Todos
+						<div class="form-group">
+                                                    
+                                                    <label>Lunes<input class="checkbox" type="checkbox" name="lun" value="1" id="lun" <?php echo $luncheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Martes<input class="checkbox" type="checkbox" name="mar" value="1" id="mar" <?php echo $marcheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Miercoles<input class="checkbox" type="checkbox" name="mie" value="1" id="mie" <?php echo $miecheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Jueves<input class="checkbox" type="checkbox" name="jue" value="1" id="jue" <?php echo $juecheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Viernes<input class="checkbox" type="checkbox" name="vie" value="1" id="vie" <?php echo $viecheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Sábado<input class="checkbox" type="checkbox" name="sab" value="1" id="sab" <?php echo $sabcheck; ?> /></label>&nbsp;&nbsp;&nbsp;
+                                                    <label>Domingo<input class="checkbox" type="checkbox" name="dom" value="1" id="dom" <?php echo $domcheck; ?> /></label>
+                                                  
+						</div>
+					</div>
                                     
                                         <div class="col-md-2">
 						<label for="estado_id" class="control-label">Estado</label>

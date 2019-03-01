@@ -125,7 +125,11 @@ function reportedetservicio(){
                             html += "<td>"+(cont+1)+"</td>";
 
                             html += "<td id='horizontal'>";
-                            html += registros[i]["cliente_nombre"];
+                            var nombrecliente = "";
+                            if(registros[i]["cliente_nombre"] == null){ nombrecliente = "NO DEFINIDO"; }else{
+                                nombrecliente = registros[i]["cliente_nombre"];
+                            }
+                            html += nombrecliente;
                             html += "</td>";
                             html += "<td>"+registros[i]["servicio_id"]+"</td>";
                             html += "<td class='alinearcentro'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
@@ -188,7 +192,11 @@ function reportedetservicio(){
                             html += "<td>"+(cont+1)+"</td>";
 
                             html += "<td id='horizontal'>";
-                            html += registros[i]["cliente_nombre"];
+                             var nombrecliente = "";
+                            if(registros[i]["cliente_nombre"] == null){ nombrecliente = "NO DEFINIDO"; }else{
+                                nombrecliente = registros[i]["cliente_nombre"];
+                            }
+                            html += nombrecliente;
                             html += "</td>";
                             html += "<td>"+registros[i]["servicio_id"]+"</td>";
                             html += "<td class='alinearcentro'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";

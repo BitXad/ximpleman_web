@@ -38,7 +38,7 @@ function reportedetservicio(){
     var usuario_id     = document.getElementById('bususuario_id').value;
     var responsable_id = document.getElementById('busresponsable_id').value;
     var buscar_clie    = document.getElementById('buscar_cliente').value;
-    var lasfechas     = " and date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
+    var lasfechas     = " date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
     
     var esteestado_id = "";
     if(estado_id != 0){
@@ -106,7 +106,7 @@ function reportedetservicio(){
                         html += "<td  class='alinearcentro' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td class='alinearcentro'>"+registros[i]["tiposerv_descripcion"]+"</td>";
                         html += "<td>"+registros[i]["detalleserv_descripcion"]+"</td>";
-                        html += "<td>"+registros[i]["responsable_nombres"]+" "+registros[i]["responsable_apellidos"]+"</td>";
+                        html += "<td>"+registros[i]["respusuario_nombre"]+"</td>";
                         html += "<td>";
                         html += "<form action='"+base_url+"servicio/boletainftecdetalleserv/"+registros[i]["detalleserv_id"]+"' method='post' target='_blank'>";
                         html += "<button class='btn btn-success btn-xs' type='submit'><span class='fa fa-print'></span></button>";

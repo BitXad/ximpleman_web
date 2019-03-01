@@ -336,6 +336,8 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
+            
+	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
             /*
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
@@ -345,10 +347,10 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Subcategoria_servicio_model');
 	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-            
+            /*
             $this->load->model('Responsable_model');
 	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-                
+            */    
             $this->load->model('Tipo_servicio_model');
 	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
 	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
@@ -1017,9 +1019,12 @@ class Servicio extends CI_Controller{
         
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-        
+        /*
         $this->load->model('Responsable_model');
         $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+        */
+        $this->load->model('Usuario_model');
+        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
         
         $this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
@@ -1152,9 +1157,11 @@ class Servicio extends CI_Controller{
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
         
+        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+        /*
         $this->load->model('Responsable_model');
         $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-        
+        */
         $this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
         
@@ -1354,6 +1361,41 @@ class Servicio extends CI_Controller{
                 $datos = $this->Detalle_venta_model->get_costototal_insumos_usados($detalleserv_id);
                 echo json_encode($datos);
             }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    /* buscar servicios para repinforme */
+    function buscarservicios_infrep()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+                
+                
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            if ($parametro!=""){
+            $datos = $this->Servicio_model->get_busqueda_infservicio_parametro($parametro);
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+            }else{
+                $datos = $this->Servicio_model->get_all_servicios_pendientes();
+            echo json_encode($datos);
+            }
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
             else{
                 redirect('alerta');
             }
