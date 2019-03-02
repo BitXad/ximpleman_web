@@ -474,14 +474,14 @@ function resultadodetalleservicioview(servicio_id){
                         
                         html += "<a href='"+base_url+"detalle_serv/modificarmidetalle/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-info btn-xs' title='modificar detalle serv..'><span class='fa fa-pencil'></span> </a>";
                         if(registros[i]["esteestado"] != 6 && registros[i]["esteestado"] != 7 && registros[i]["esteestado"] != 16){
-                            html += "<a class='btn btn-info btn-xs' data-toggle='modal' data-target='#modaldst"+i+"' title='reporte serv. tecnico'><span class='fa fa-file-text'></span><br></a>";
+                            html += "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modaldst"+i+"' title='reporte serv. tecnico'><span class='fa fa-file-text'></span><br></a>";
                             html += "<a class='btn btn-info btn-xs' href='"+base_url+"categoria_insumo/verinsumosasignar/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' title='ver, asignar insumos'><span class='fa fa-file-text-o'></span><br></a>";
                             html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalanulardet"+i+"' title='anular detalle serv..'><span class='fa fa-minus-circle'></span></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modaleliminardet"+i+"' title='eliminar detalle serv..' ><span class='fa fa-trash'></span></a>";
                         }
                         if(registros[i]["esteestado"] == 6){
                             html += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalpagardetalle"+i+"' title='cobrar detalle serv..' onclick='refrescarhora()';><span class='fa fa-money'></span><br></a>";
-                            html += "<a class='btn  btn-success btn-xs' data-toggle='modal' data-target='#modalcreditodetalle"+i+"' title='credito detalle serv..' ><span class='fa fa-credit-card'></span><br></a>";
+                            html += "<a class='btn  btn-primary btn-xs' data-toggle='modal' data-target='#modalcreditodetalle"+i+"' title='credito detalle serv..' ><span class='fa fa-credit-card'></span><br></a>";
                         }
                         if(registros[i]["esteestado"] == 7){
                             var dir_url = "";
