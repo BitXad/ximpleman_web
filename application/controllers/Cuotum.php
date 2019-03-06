@@ -108,6 +108,27 @@ class Cuotum extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+    function cuenta_serv($credito_id)
+    {   
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+              $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                $usuario_id = $session_data['usuario_id'];
+        $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+        $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
+        $data['_view'] = 'cuotum/cuentas';
+        $this->load->view('layouts/main',$data);
+        }
+        else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
     function planCuenta($credito_id)
     {
         

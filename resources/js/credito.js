@@ -101,11 +101,11 @@ function buscar_fecha_cuenta()
    // alert(usuario_id[2]['value']);
     var estado = document.getElementById('estado_id').value;
     if (fecha_desde =='' && fecha_hasta ==''){
-           var  filtro = "and p.cliente_nombre like '%"+cliente+"%' and c.estado_id = '"+estado+"' ";
+           var  filtro = " and p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%' and c.estado_id = '"+estado+"' ";
           }
     else {
-    var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"'  and  date(credito_fecha) <='"+fecha_hasta+
-            "' and p.cliente_nombre like '%"+cliente+"%' and c.estado_id = '"+estado+"' ";
+    var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"' and  date(credito_fecha) <='"+fecha_hasta+
+            "' and p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%' and c.estado_id = '"+estado+"' ";
     }  
     
     tablacuentas(filtro);
@@ -142,15 +142,20 @@ function tablacuentas(filtro)
                    else x = limite;
                     
                     for (var i = 0; i < x ; i++){
-                        
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                         //subtotal += Number(registros[i]["detallecomp_subtotal"]);
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+registros[i]['cliente_nombre']+"</td>";
-                        html += "<td style='text-align: center'>"+registros[i]['venta_id']+"</td>";
+                        if (registros[i]['venta_id']>0) {
+                        html += "<td>"+registros[i]['kay']+"</td>";
+                        html += "<td style='text-align: center'>Venta: "+registros[i]['ventita']+"</td>";
+                        
+                        } else {    
+                        html += "<td>"+registros[i]['perro']+"</td>";
+                        html += "<td style='text-align: center'>Servicio: "+registros[i]['servicio_id']+"</td>";
+                        }
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
                         html += "<td style='text-align: right'>"+registros[i]['credito_monto']+"</td>";
                         html += "<td style='text-align: right'>"+registros[i]['credito_cuotainicial']+"</td>";
