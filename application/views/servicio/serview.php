@@ -567,8 +567,8 @@
               <button onclick="anulartotalservicio(<?php echo $servicio['servicio_id']; ?>)" class="btn btn-success" data-dismiss="modal">
                  <i class="fa fa-check"></i>Si
               </button>
-                      <!--<a href="<?php //echo site_url('servicio/anularserviciodet/'.$servicio['servicio_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>-->
-                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                <!--<a href="<?php //echo site_url('servicio/anularserviciodet/'.$servicio['servicio_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>-->
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
           </div>
         </div>
       </div>
