@@ -87,15 +87,14 @@ class Cuotum_model extends CI_Model
         
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*
+                c.*, k.cuota_fecha as fechacu, k.*, e.*
 
             FROM
-                credito c, cliente p, venta ve, cuota k, estado e
+                credito c, cuota k, estado e
 
             WHERE
                 k.credito_id = c.credito_id 
-                and c.venta_id = ve.venta_id
-                and p.cliente_id = ve.cliente_id
+               
                 and k.estado_id = e.estado_id
                 and ".$credito_id." = k.credito_id
 

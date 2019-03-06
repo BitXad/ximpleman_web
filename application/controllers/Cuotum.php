@@ -609,9 +609,13 @@ class Cuotum extends CI_Controller{
             $this->db->query($actualizar);
             }
 
-
-
+              $servi="SELECT servicio_id FROM credito WHERE credito_id=".$credito_id." ";
+              $servic=$this->db->query($servi);
+              if ($servic>0) {
+                 redirect('cuotum/cuenta_serv/'.$credito_id);
+               } else{
                 redirect('cuotum/cuentas/'.$credito_id);  
+              }
             }
             else{
                 redirect('alerta');
@@ -659,8 +663,13 @@ class Cuotum extends CI_Controller{
             $actualizar = "UPDATE credito SET credito.estado_id=8 WHERE credito.credito_id=".$credito_id;
             $this->db->query($actualizar);
             }
-
-            redirect('cuotum/cuentas/'.$credito_id);
+              $servi="SELECT servicio_id FROM credito WHERE credito_id=".$credito_id." ";
+              $servic=$this->db->query($servi);
+              if ($servic>0) {
+                 redirect('cuotum/cuenta_serv/'.$credito_id);
+               } else{
+                redirect('cuotum/cuentas/'.$credito_id);  
+              }
     }
 
 
