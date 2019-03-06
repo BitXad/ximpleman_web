@@ -958,7 +958,7 @@ class Detalle_serv extends CI_Controller{
                 $this->load->model('Servicio_model');
                 $this->Servicio_model->update_servicio($servicio_id,$params);
             }
-             redirect('servicio/serview/'.$servicio_id);
+             redirect('servicio/serviciocreado/'.$servicio_id);
                 }
             }
             else
