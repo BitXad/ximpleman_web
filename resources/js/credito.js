@@ -142,7 +142,6 @@ function tablacuentas(filtro)
                    else x = limite;
                     
                     for (var i = 0; i < x ; i++){
-                        
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                         //subtotal += Number(registros[i]["detallecomp_subtotal"]);
