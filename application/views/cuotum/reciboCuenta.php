@@ -43,8 +43,12 @@
     <font size="5"  ><b>COMPROBANTE DE PAGO</b></font><br>
      <font size="5"  ><b>No.:  <?php echo $cuota[0]['credito_id']; ?></b></font></center>
  <div class="box-tools" >
+    <?php if ($cuota[0]['venta_id']>0) { ?>
     <font size="3"><b>VENTA No.: </b><?php echo $cuota[0]['venta_id']; ?></font><br>
-    <font size="3"><b>Credito No.: </b><?php echo $cuota[0]['credito_id']; ?></font><br>
+    <?php } else { ?>
+    <font size="3"><b>SERVICIO No.: </b><?php echo $cuota[0]['servicio_id']; ?></font><br>
+    <?php } ?>
+    <font size="3"><b>CREDITO No.: </b><?php echo $cuota[0]['credito_id']; ?></font><br>
     <font size="3"><b>RECIBO EXT.: </b><?php echo $cuota[0]['cuota_numercibo']; ?></font><br>
     <font size="3"><b>ESTADO: </b><?php echo $cuota[0]['estado_descripcion']; ?></font> 
      </div>

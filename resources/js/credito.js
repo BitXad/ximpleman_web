@@ -101,11 +101,11 @@ function buscar_fecha_cuenta()
    // alert(usuario_id[2]['value']);
     var estado = document.getElementById('estado_id').value;
     if (fecha_desde =='' && fecha_hasta ==''){
-           var  filtro = " and p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%' and c.estado_id = '"+estado+"' ";
+           var  filtro = " and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' ";
           }
     else {
     var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"' and  date(credito_fecha) <='"+fecha_hasta+
-            "' and p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%' and c.estado_id = '"+estado+"' ";
+            "' and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' ";
     }  
     
     tablacuentas(filtro);
@@ -166,10 +166,12 @@ function tablacuentas(filtro)
                         html += "<td style='text-align: center'>"+registros[i]['credito_tipo']+"</td>";
                         if (registros[i]['venta_id']>0) {
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
-                        } else { 
-                        html += "<td><a href='"+base_url+"cuotum/cuenta_serv/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>"; 
-                        }
                         html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
+                        } else { 
+                        html += "<td><a href='"+base_url+"cuotum/cuenta_serv/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
+                        html += "<a href='"+base_url+"cuotum/planCuentaServ/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>"; 
+                        }
+                        
 }
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);

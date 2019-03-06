@@ -203,8 +203,13 @@ $(document).ready(function(){
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                           <?php }else { ?>
                             <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
+                            <?php if ($cuota[0]['venta_id']>0) { ?>
                              <a href="<?php echo site_url('cuotum/recibocuentas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
                              <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>
+                           <?php } else { ?>
+                             <a href="<?php echo site_url('cuotum/recibocuentaserv/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
+                             <a href="<?php echo site_url("cuotum/comprobantecuentaserv/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>
+                             <?php } ?>
                         </td>  
                        <?php } ?>
                         <!---------------------------------MODAL DE PAGAR------------------------->

@@ -66,7 +66,11 @@
                     <div class="columna_derecha">
                         <center> 
                        COD. CLIE.: <?php echo $cuota[0]['cliente_codigo']; ?><br>
-                       No. Venta: <?php echo $cuota[0]['venta_id']; ?><br>
+                    <?php if ($cuota[0]['venta_id']>0) { ?>
+                       No. Venta: <?php echo $cuota[0]['venta_id']; ?><br> 
+                     <?php } else { ?>
+                       No. Servicio: <?php echo $cuota[0]['servicio_id']; ?><br> 
+                     <?php } ?>
                        <!-- VENDEDOR: <?php echo $cuota[0]['usuario_nombre']; ?>-->
 
                     </center>
@@ -90,15 +94,14 @@
             <div class="cuerpo" >
 
                     <div class="columna_derecha">
-                      TOTAL: <b><?php echo  number_format($cuota[0]['venta_total'], 2, ".", ",") ?></b><br>
+                      TOTAL: <b><?php echo  number_format($cuota[0]['credito_monto'], 2, ".", ",") ?></b><br>
                       CUOTA INICIAL: <b><?php echo  number_format($cuota[0]['credito_cuotainicial'], 2, ".", ",") ?></b><br>
                       INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php  echo number_format($cuota[0]['credito_monto'], 2, ".", ",") ?></b><br>
                     </div>
                     <div class="columna_izquierda">
                     
-                       Fecha y Hora: <b><?php $fecha_format = date('d/m/Y', strtotime($cuota[0]['venta_fecha'])); echo $fecha_format; ?>   <?php echo $cuota[0]['venta_hora']; ?></b><br>
-                       COD./CI: <?php echo $cuota[0]['cliente_ci']; ?><br>
-                cliente: <?php echo $cuota[0]['cliente_nombre']; ?>
+                       Fecha y Hora: <b><?php $fecha_format = date('d/m/Y', strtotime($cuota[0]['credito_fecha'])); echo $fecha_format; ?>   <?php echo $cuota[0]['credito_hora']; ?></b><br>
+                       
                        
                     </div> 
 
