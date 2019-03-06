@@ -789,7 +789,7 @@ class Detalle_serv extends CI_Controller{
                     redirect('servicio/serviciocreado/'.$servicio_id);
                     
                 }elseif($estado_id == 7){ //el 7 representa a ENTREGADO
-                    
+                    $estado_credid = 16;
                     $fecha_finalizacion = date('Y-m-d');
                     $hora_finalizacion = date('H:i:s');
                     $fechahora = date('Y-m-d H:i:s');
@@ -820,7 +820,7 @@ class Detalle_serv extends CI_Controller{
                     $cont = 0;
                     foreach($res_ids as $ids)
                     {
-                        if($ids['estado_id'] == $estado_id){
+                        if($ids['estado_id'] == $estado_id || $ids['estado_id'] == $estado_credid){
                             $cont++;
                         }
                     }
@@ -888,6 +888,77 @@ class Detalle_serv extends CI_Controller{
 
                     $this->Servicio_model->update_servicio($servicio_id,$sumparams);
                     redirect('servicio/serviciocreado/'.$servicio_id);
+                }elseif($estado_id == 16){
+                    //este estado es CREDITO
+        $estado_terminadoid = 7; // estado ENTREGADO
+        $credito_monto = $inputsaldo;
+        
+            /* **********INICIO  poner en credito************* */
+            //8 = pendiente de Creditos
+            $estadocredito_id = 8;
+            $una_semana = time() + (7 * 24 * 60 * 60);
+            $credito_fechalimite = date('Y-m-d', $una_semana);
+            $credito_fecha = date("Y-m-d");
+            $credito_hora = date("H:i:s");
+            $cadcredito = array(
+                'estado_id' => $estadocredito_id,
+                'compra_id' => 0,
+                'venta_id' => 0,
+                'servicio_id' => $servicio_id,
+                'credito_monto' => $credito_monto,
+                'credito_cuotainicial' => 0,
+                'credito_interesproc' => 0,
+                'credito_interesmonto' => 0,
+                'credito_numpagos' => 1,
+                'credito_fechalimite' => $credito_fechalimite,
+                'credito_fecha' => $credito_fecha,
+                'credito_hora' => $credito_hora,
+                'credito_tipo' => 1,
+            );
+            $this->load->model('Credito_model');
+            $credito_id = $this->Credito_model->add_credito($cadcredito);
+            $usuario_id = $session_data['usuario_id'];
+            $cadcuota = array(
+                'credito_id' => $credito_id,
+                'usuario_id' => $usuario_id,
+                'estado_id' => $estadocredito_id,
+                'cuota_numcuota' => 1,
+                'cuota_capital' => $credito_monto,
+                'cuota_interes' => 0,
+                'cuota_moradias' => 0,
+                'cuota_multa' => 0,
+                'cuota_subtotal' => $credito_monto,
+                'cuota_descuento' => 0,
+                'cuota_total' => $credito_monto,
+                'cuota_fechalimite' => $credito_fechalimite,
+                'cuota_cancelado' => 0,
+                'cuota_saldo' => $credito_monto,
+                
+            );
+            $this->load->model('Cuotum_model');
+            $cuota_id = $this->Cuotum_model->add_cuotum($cadcuota);
+            /* **********F I N  poner en credito************* */
+            $cad = array(
+                    'estado_id' => $estado_id,
+                );
+            $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$cad);
+            
+            $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+            $cont = 0;
+            foreach ($res_ids as $ids)
+            {
+                if($ids['estado_id'] == $estado_id || $ids['estado_id'] == $estado_terminadoid){
+                    $cont++;
+                }
+            }
+            if($cont == count($res_ids)){
+                $params = array(
+                            'estado_id' => $estado_terminadoid,
+                );
+                $this->load->model('Servicio_model');
+                $this->Servicio_model->update_servicio($servicio_id,$params);
+            }
+             redirect('servicio/serview/'.$servicio_id);
                 }
             }
             else
@@ -1047,6 +1118,7 @@ class Detalle_serv extends CI_Controller{
                     redirect('servicio/serview/'.$servicio_id);
                     
                 }elseif($estado_id == 7){ //el 7 representa a ENTREGADO
+                    $estado_credid = 16;
                     $fecha_finalizacion = date('Y-m-d');
                     $hora_finalizacion = date('H:i:s');
                     $fechahora = date('Y-m-d H:i:s');
@@ -1077,7 +1149,7 @@ class Detalle_serv extends CI_Controller{
                     $cont = 0;
                     foreach($res_ids as $ids)
                     {
-                        if($ids['estado_id'] == $estado_id){
+                        if($ids['estado_id'] == $estado_id || $ids['estado_id'] == $estado_credid){
                             $cont++;
                         }
                     }
@@ -1147,7 +1219,79 @@ class Detalle_serv extends CI_Controller{
 
                     $this->Servicio_model->update_servicio($servicio_id,$sumparams);
                     redirect('servicio/serview/'.$servicio_id);
+                }elseif($estado_id == 16){
+                    //este estado es CREDITO
+        $estado_terminadoid = 7; // estado ENTREGADO
+        $credito_monto = $inputsaldo;
+        
+            /* **********INICIO  poner en credito************* */
+            //8 = pendiente de Creditos
+            $estadocredito_id = 8;
+            $una_semana = time() + (7 * 24 * 60 * 60);
+            $credito_fechalimite = date('Y-m-d', $una_semana);
+            $credito_fecha = date("Y-m-d");
+            $credito_hora = date("H:i:s");
+            $cadcredito = array(
+                'estado_id' => $estadocredito_id,
+                'compra_id' => 0,
+                'venta_id' => 0,
+                'servicio_id' => $servicio_id,
+                'credito_monto' => $credito_monto,
+                'credito_cuotainicial' => 0,
+                'credito_interesproc' => 0,
+                'credito_interesmonto' => 0,
+                'credito_numpagos' => 1,
+                'credito_fechalimite' => $credito_fechalimite,
+                'credito_fecha' => $credito_fecha,
+                'credito_hora' => $credito_hora,
+                'credito_tipo' => 1,
+            );
+            $this->load->model('Credito_model');
+            $credito_id = $this->Credito_model->add_credito($cadcredito);
+            $usuario_id = $session_data['usuario_id'];
+            $cadcuota = array(
+                'credito_id' => $credito_id,
+                'usuario_id' => $usuario_id,
+                'estado_id' => $estadocredito_id,
+                'cuota_numcuota' => 1,
+                'cuota_capital' => $credito_monto,
+                'cuota_interes' => 0,
+                'cuota_moradias' => 0,
+                'cuota_multa' => 0,
+                'cuota_subtotal' => $credito_monto,
+                'cuota_descuento' => 0,
+                'cuota_total' => $credito_monto,
+                'cuota_fechalimite' => $credito_fechalimite,
+                'cuota_cancelado' => 0,
+                'cuota_saldo' => $credito_monto,
+                
+            );
+            $this->load->model('Cuotum_model');
+            $cuota_id = $this->Cuotum_model->add_cuotum($cadcuota);
+            /* **********F I N  poner en credito************* */
+            $cad = array(
+                    'estado_id' => $estado_id,
+                );
+            $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$cad);
+            
+            $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+            $cont = 0;
+            foreach ($res_ids as $ids)
+            {
+                if($ids['estado_id'] == $estado_id || $ids['estado_id'] == $estado_terminadoid){
+                    $cont++;
                 }
+            }
+            if($cont == count($res_ids)){
+                $params = array(
+                            'estado_id' => $estado_terminadoid,
+                );
+                $this->load->model('Servicio_model');
+                $this->Servicio_model->update_servicio($servicio_id,$params);
+            }
+             redirect('servicio/serview/'.$servicio_id);
+            }
+            redirect('servicio/serview/'.$servicio_id);
             }
             else
             {
