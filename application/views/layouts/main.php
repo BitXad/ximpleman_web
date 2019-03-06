@@ -135,16 +135,16 @@
                     <a href="#"><i class="fa fa-list-ol"></i> <span>Parametros</span></a>
                     <ul class="treeview-menu">
                         <li>
-                            <a href="<?php echo site_url('categoria_cliente');?>"><i class="fa fa-user"></i>Categoria Cliente</a>
+                            <a href="<?php echo site_url('categoria_cliente');?>"><i class="fa fa-user"></i>Categoria Negocio</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('categoria_clientezona');?>"><i class="fa fa-user"></i>Categoria Cliente Zona</a>
+                            <a href="<?php echo site_url('categoria_clientezona');?>"><i class="fa fa-map-marker"></i>Categoria Zonas</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('categoria_egreso');?>"><i class="fa fa-user"></i>Categoria Egreso</a>
+                            <a href="<?php echo site_url('categoria_egreso');?>"><i class="fa fa-list"></i>Categoria Egreso</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('categoria_ingreso');?>"><i class="fa fa-user"></i>Categoria Ingreso</a>
+                            <a href="<?php echo site_url('categoria_ingreso');?>"><i class="fa fa-list-alt"></i>Categoria Ingreso</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('categoria_producto');?>"><i class="fa fa-cubes"></i>Categoria Productos</a>
@@ -241,6 +241,10 @@
                         <li>
                             <a href="<?php echo site_url('servicio/index');?>"><i class="fa fa-wrench"></i> Servicios</a>
                         </li>
+                        
+                        <li>
+                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
+                        </li>                        
                       
                     </ul>
                 </li>
@@ -313,8 +317,12 @@
                         <li>
                             <a href="#"><i class="fa fa-building"></i>En Construcción</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
+                        </li>
 
                     </ul>
+                   
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-sitemap"></i> <span>Web Site</span></a>

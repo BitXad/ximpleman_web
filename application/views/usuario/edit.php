@@ -7,11 +7,11 @@
               	<h3 class="box-title">Editar Usuario</h3>
             </div>
 
-<!--            <ol class="breadcrumb">
-                <li><a href="<?php //echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="<?php //echo site_url('usuario')?>">Usuarios</a></li>
+            <ol class="breadcrumb">
+                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <li><a href="<?php echo site_url('usuario')?>">Usuarios</a></li>
                 <li class="active">Editar Usuario</li>
-            </ol>-->
+            </ol>
 
             <?php $attributes = array("name" => "usuarioForm", "id"=>"usuarioForm");
             echo form_open_multipart("usuario/set", $attributes);?>
@@ -20,7 +20,7 @@
 						<div class="col-md-6">
 						<label for="usuario_nombre" class="control-label">Nombre</label>
 						<div class="form-group">
-							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required/>
 							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
 						</div>
 					</div>
@@ -44,7 +44,7 @@
 					<div class="col-md-6">
 						<label for="usuario_email" class="control-label">Email</label>
 						<div class="form-group">
-                                                    <input type="email" minlength="5" maxlength="250" name="usuario_email" value="<?php echo $usuario['usuario_email'] ?>" class="form-control" id="usuario_email" />
+							<input type="email" name="usuario_email" value="<?php echo $usuario['usuario_email'] ?>" class="form-control" id="usuario_email" />
 							<span class="text-danger"><?php echo form_error('usuario_email');?></span>
 						</div>
 					</div>

@@ -25,7 +25,7 @@
 					</div>
 					<div class="col-md-6">
 						<label for="cliente_id" class="control-label">Cliente</label>
-						<div class="form-group">
+						ccccccc
 							<select name="cliente_id" class="form-control">
 								<option value="">select cliente</option>
 								<?php 

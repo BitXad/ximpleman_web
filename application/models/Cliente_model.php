@@ -403,4 +403,30 @@ class Cliente_model extends CI_Model
         $cliente = $this->db->query($sql)->row_array();
         return $cliente['resultado'];
     }
+    
+   /*
+     * Funcion que busca clientes
+     */
+    function get_cliente_parametro($parametro)
+    {
+        $sql = "SELECT
+                c.*, e.estado_color, e.estado_descripcion
+
+            FROM
+                cliente c, estado e
+
+            WHERE
+                c.estado_id = e.estado_id
+                and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
+                   or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%')
+                
+            GROUP BY
+                c.cliente_id
+              ORDER By c.cliente_id ";
+
+        $cliente = $this->db->query($sql)->result_array();
+        return $cliente;
+
+    }    
+    
 }

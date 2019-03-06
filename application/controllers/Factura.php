@@ -12,7 +12,7 @@ class Factura extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Detalle_venta_model');
         $this->load->model('Parametro_model');
-        
+        $this->load->library('ControlCode');
     } 
 
     /*
@@ -629,4 +629,73 @@ class Factura extends CI_Controller{
             redirect('', 'refresh');
         }
     } 
+    
+    /*
+     * Realizado por: Roberto Carlos Soto Sierra
+     * Fecha: 05.03.2019
+     */
+    function verificador()
+    {
+//        if ($this->session->userdata('logged_in')) {
+//            $session_data = $this->session->userdata('logged_in');
+//            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+//                $data = array(
+//                    'page_title' => 'Admin >> Mi Cuenta'
+//                );
+        //**************** inicio contenido ***************            
+        
+            
+
+            $data['page_title'] = "Verificador";
+            $data['_view'] = 'factura/verificador';
+            $this->load->view('layouts/main',$data);
+    }
+
+    
+    function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
+    {
+
+        //include 'ControlCode.php';
+
+        $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
+                                                   $dosificacion_numfact,//Numero de factura
+                                                   $nit,//Número de Identificación Tributaria o Carnet de Identidad
+                                                   str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
+                                                   $monto,//Monto de la transacción
+                                                   $dosificacion_llave//Llave de dosificación
+                        );        
+         return $code;
+    }
+        
+    
+    function codigocontrol(){
+        
+        
+        
+        $llave = $this->input->post('llave');
+        $autorizacion = $this->input->post('autorizacion');
+        $numero = $this->input->post('numero');
+        $nit = $this->input->post('nit');
+        $fecha = $this->input->post('fecha');
+        $monto = $this->input->post('monto');
+        $bandera = $this->input->post('bandera');
+        
+        
+        
+        $codigo = $this->codigo_control($llave, $autorizacion, $numero, $nit,$fecha, $monto);
+
+        echo '[{codigocontrol:"'.$codigo.'"}]';
+
+    }
+
+
+
+        //**************** fin contenido ***************
+//        			}
+//        			else{ redirect('alerta'); }
+//        } else { redirect('', 'refresh'); }
+
+    
+    
+    
 }
