@@ -107,6 +107,33 @@ class Cuotum_model extends CI_Model
         return $credito;
     }
     
+    function get_all_cuenta_serv($credito_id)
+    {
+        $limit_condition = "";
+        if(isset($params) && !empty($params))
+            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
+        $credito = $this->db->query("
+            SELECT
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*
+
+            FROM
+                credito c, cliente p, servicio ve, cuota k, estado e
+
+            WHERE
+                k.credito_id = c.credito_id 
+                and c.servicio_id = ve.servicio_id
+                and p.cliente_id = ve.cliente_id
+                and k.estado_id = e.estado_id
+                and ".$credito_id." = k.credito_id
+
+            ORDER BY `cuota_numcuota` ASC
+
+            " . $limit_condition . "
+        ")->result_array();
+
+        return $credito;
+    }
     function get_recibo_deuda($cuota_id)
     {
         $limit_condition = "";
@@ -150,6 +177,34 @@ class Cuotum_model extends CI_Model
             WHERE
                 k.credito_id = c.credito_id 
                 and c.venta_id = co.venta_id
+                and p.cliente_id = co.cliente_id
+                and k.estado_id = e.estado_id
+                and ".$cuota_id." = k.cuota_id
+
+            ORDER BY `cuota_numcuota` ASC
+
+            " . $limit_condition . "
+        ")->result_array();
+
+        return $cuota_id;
+    }
+
+    function get_recibo_cuentaServ($cuota_id)
+    {
+        $limit_condition = "";
+        if(isset($params) && !empty($params))
+            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
+        $cuota_id = $this->db->query("
+            SELECT
+                c.*, p.*, co.*, k.*, e.*
+
+            FROM
+                credito c, cliente p, servicio co, cuota k, estado e
+
+            WHERE
+                k.credito_id = c.credito_id 
+                and c.servicio_id = co.servicio_id
                 and p.cliente_id = co.cliente_id
                 and k.estado_id = e.estado_id
                 and ".$cuota_id." = k.cuota_id
