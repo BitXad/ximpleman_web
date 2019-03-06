@@ -131,6 +131,29 @@ class Detalle_serv_model extends CI_Model
                 tu.tiempouso_descripcion
 
             FROM
+                detalle_serv ds
+            LEFT JOIN estado e on ds.estado_id = e.estado_id
+            LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+            LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+            LEFT JOIN categoria_servicio cs on ds.catserv_id = cs.catserv_id
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN subcategoria_servicio scs on ds.subcatserv_id = scs.subcatserv_id
+            LEFT JOIN procedencia p on ds.procedencia_id = p.procedencia_id
+            LEFT JOIN categoria_trabajo ct on ds.cattrab_id = ct.cattrab_id
+            LEFT JOIN tiempo_uso tu on ds.tiempouso_id = tu.tiempouso_id
+
+            WHERE
+                ds.servicio_id = ".$servicio_id."
+               
+            ORDER BY `detalleserv_id` DESC
+            
+            /* SELECT
+                ds.*, r.usuario_nombre as respusuario_nombre, u.usuario_nombre, e.estado_id as esteestado,
+                e.estado_color, e.estado_descripcion, p.procedencia_descripcion,
+                cs.catserv_descripcion, scs.subcatserv_descripcion, ct.cattrab_descripcion,
+                tu.tiempouso_descripcion
+
+            FROM
                 detalle_serv ds, estado e, usuario r, usuario u, categoria_servicio cs, servicio s,
                 subcategoria_servicio scs, procedencia p, categoria_trabajo ct, tiempo_uso tu
 
@@ -146,7 +169,7 @@ class Detalle_serv_model extends CI_Model
                 and ds.cattrab_id = ct.cattrab_id
                 and ds.tiempouso_id = tu.tiempouso_id
 
-            ORDER BY `detalleserv_id` DESC
+            ORDER BY `detalleserv_id` DESC */
 
         ")->result_array();
 

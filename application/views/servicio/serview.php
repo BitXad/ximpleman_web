@@ -418,7 +418,7 @@
     <div style="float: right">
     <center>
         <a class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalpagar" onclick="refrescarhora()" ><span class="fa fa-money fa-4x"></span><br>Cobrar Serv..</a>
-        <a class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalcredito" ><span class="fa fa-credit-card fa-4x"></span><br>Pagar a Credito</a>
+        <a class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalcredito" ><span class="fa fa-credit-card fa-4x"></span><br>Pagar a Credito</a>
         <a class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalanular" ><span class="fa fa-minus-circle fa-4x"></span><br>Anular Serv..</a>
         <a href="<?php echo site_url('servicio/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
     </center>
@@ -567,8 +567,8 @@
               <button onclick="anulartotalservicio(<?php echo $servicio['servicio_id']; ?>)" class="btn btn-success" data-dismiss="modal">
                  <i class="fa fa-check"></i>Si
               </button>
-                <!--<a href="<?php //echo site_url('servicio/anularserviciodet/'.$servicio['servicio_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>-->
-                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                      <!--<a href="<?php //echo site_url('servicio/anularserviciodet/'.$servicio['servicio_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>-->
+                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
           </div>
         </div>
       </div>
