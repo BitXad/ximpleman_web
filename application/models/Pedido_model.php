@@ -62,7 +62,7 @@ class Pedido_model extends CI_Model
      */
     function get_pedido($pedido_id,$usuario_id)
     {
-        $sql = "select p.*, 'NO DEFINIDO' as cliente_nombre,'NO DEFINIDO' as cliente_codigo,'-' as cliente_nombrenegocio, e.estado_descripcion from pedido p, estado e ".
+        $sql = "select p.*, 'NO DEFINIDO' as cliente_nombre,'NO DEFINIDO' as cliente_codigo,'-' as cliente_nombrenegocio,'-' as cliente_direccion, e.estado_descripcion from pedido p, estado e ".
                "where pedido_id = ".$pedido_id." and p.usuario_id = ".$usuario_id." and p.estado_id = e.estado_id";
         $result = $this->db->query($sql)->result_array();
         return $result;        
@@ -108,7 +108,7 @@ class Pedido_model extends CI_Model
      */
     function get_pedido_cliente($pedido_id,$usuario_id)
     {
-        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color from pedido p, estado e, cliente c ".
+        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,c.cliente_direccion,e.estado_descripcion,e.estado_color from pedido p, estado e, cliente c ".
                "where pedido_id = ".$pedido_id." and p.usuario_id = ".$usuario_id." and p.estado_id = e.estado_id".
                 " and p.cliente_id = c.cliente_id";
         $result = $this->db->query($sql)->result_array();
@@ -249,8 +249,8 @@ class Pedido_model extends CI_Model
                 p.*, e.*,c.cliente_id, c.tipocliente_id, c.categoriaclie_id, 
                 c.cliente_codigo, c.cliente_nombre, c.cliente_ci, c.cliente_direccion, 
                 c.cliente_telefono, c.cliente_celular, c.cliente_foto, c.cliente_email, 
-                c.cliente_nombrenegocio, c.cliente_aniversario, c.cliente_latitud, 
-                c.cliente_longitud, c.cliente_nit, c.cliente_razon
+                c.cliente_nombrenegocio, c.cliente_direccion, c.cliente_aniversario, 
+                c.cliente_latitud, c.cliente_longitud, c.cliente_nit, c.cliente_razon
             FROM
                 pedido p, estado e, cliente c, usuario u
 
@@ -316,4 +316,36 @@ class Pedido_model extends CI_Model
         return $result;        
     }    
     
+    function get_mis_entregas($usuario_id)
+    {
+        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
+                c.cliente_latitud, c.cliente_longitud, c.cliente_direccion, c.cliente_foto
+               from pedido p, estado e, cliente c 
+               where 
+                p.pedido_fechaentrega = date(now())
+                and p.estado_id = e.estado_id
+                and p.cliente_id = c.cliente_id
+                and p.usuario_id = ".$usuario_id;
+        
+        $result = $this->db->query($sql)->result_array();
+        return $result;        
+    }    
+    
+function get_pedido_id($pedido_id)
+{
+    $sql = "    select *
+                from pedido p, detalle_pedido d, cliente c, usuario u, producto t
+                where 
+                p.pedido_id = ".$pedido_id." and
+                d.pedido_id = ".$pedido_id." and
+                p.usuario_id = u.usuario_id and 
+                p.cliente_id = c.cliente_id and
+                d.producto_id = t.producto_id";
+    
+    $pedido = $this->db->query($sql)->result_array();
+
+    return $pedido;
 }
+}
+
+    

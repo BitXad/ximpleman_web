@@ -75,11 +75,7 @@
                     <!-------------------- aqui se muestra la tabla de productos del inventario--------------------->
                     
                     </div>
-                    
-
-
                 </div>
             </div>
 </div>
 </div>
-

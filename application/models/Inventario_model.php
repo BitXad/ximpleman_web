@@ -460,7 +460,7 @@ class Inventario_model extends CI_Model
     
     function mostrar_kardex($desde, $hasta, $producto_id){
         
-        
+        $desde ='1900-01-01';
         $sql = "select * from
                 (
                 select 

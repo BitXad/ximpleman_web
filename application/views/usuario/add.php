@@ -5,11 +5,11 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Añadir Usuario</h3>
             </div>
-<!--            <ol class="breadcrumb">
-                <li><a href="<?php //echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="<?php //echo site_url('usuario')?>">Usuarios</a></li>
+            <ol class="breadcrumb">
+                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
+                <li><a href="<?php echo site_url('usuario')?>">Usuarios</a></li>
                 <li class="active">Editar Usuario</li>
-            </ol>-->
+            </ol>
             <?php $attributes = array("name" => "usuarioForm", "id"=>"usuarioForm");
             echo form_open_multipart("usuario/add", $attributes);?>
           	<div class="box-body">
@@ -31,7 +31,7 @@
 						<div class="col-md-6">
 						<label for="usuario_nombre" class="control-label">Nombre</label>
 						<div class="form-group">
-							<input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required/>
 							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
 						</div>
 					</div>

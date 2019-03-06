@@ -31,31 +31,72 @@
 <input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >
 <input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
 
-
-<div class="box-header">
+<!--<div class="box-header">
+<div class="row clearfix">-->
+<div class="box-body col-md-6">
 <h3 class="box-title">Pedido</h3>
-            	<div class="box-tools">                    
-                    <select  class="btn btn-facebook btn-sm" id="select_pedidos" onclick="buscar_pedidos()">
-                        <option value="1">Pedidos de Hoy</option>
-                        <option value="2">Pedidos de Ayer</option>
-                        <option value="3">Pedidos de la semana</option>
-                        <option value="4">Todos los pedidos</option>
-                        <option value="5">Pedidos por fecha</option>
-                    </select>
-                    <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
-                    <a href="<?php echo site_url('pedido/mapa_pedido'); ?>" class="btn btn-facebook btn-sm"><span class="fa fa-map"></span> Mapa</a>
-                </div>
+</div>    
+<div class="box-body col-md-6">
+<div class="row clearfix">
+                    
+    <?php if($tipousuario_id == 1){ ?>
+    <div class="col-md-3">
+        <div class="form-group">
+        <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
+                    <option value="<?php echo $usuario_id; ?>"><?php echo $usuario_nombre; ?></option>
+            <?php foreach($usuario as $u){ ?>
+                    <option value="<?php echo $u['usuario_id']?>"><?php echo $u['usuario_nombre']?></option>
+            <?php } ?>
+        </select>                            
+        </div>
+    </div>
+    <?php } ?>
+                 
+    <div class="col-md-3">
+        <div class="form-group">
+        <select class="btn btn-facebook btn-sm form-control" id="select_pedidos" onclick="buscar_pedidos()">
+            <option value="1">Pedidos de Hoy</option>
+            <option value="2">Pedidos de Ayer</option>
+            <option value="3">Pedidos de la semana</option>
+            <option value="4">Todos los pedidos</option>
+            <option value="5">Pedidos por fecha</option>
+            <option value="6">Entregas de Hoy</option>
+            <option value="7">Entregas de Ayer</option>
+            <option value="8">Entregas de la semana</option>
+            <option value="9">Todos las Entregas</option>
+            <option value="10">Entregas por fecha</option>
+        </select>
+    </div>
+    </div>
+                
+    <div class="col-md-3">
+        <div class="form-group">
+                    <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm form-control"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
+                    <!--<a href="<?php echo site_url('pedido/mapa_pedido'); ?>" target="_blank" class="btn btn-facebook btn-sm"><span class="fa fa-map"></span> Mapa</a>-->
+                    <!--<a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm form-control"><span class="fa fa-map"></span> Mapa</a>-->
+                <!--</div>-->
+        </div>
+    </div>
+    
+    <div class="col-md-3">
+        <div class="form-group">
+                    <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm form-control"><span class="fa fa-map"></span> Mapa</a>
+        </div>
+    </div>
+</div>
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
-<form method="post" onclick="buscar_por_fecha()">
+<?php
+    $date = date('Y-m-d');
+?>
 <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none;'>
     <br>
     <center>            
         <div class="col-md-2">
-            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true" value="<?php echo $date; ?>">
         </div>
         <div class="col-md-2">
-            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true" value="<?php echo $date; ?>">
         </div>
         
         <div class="col-md-2">
@@ -68,20 +109,21 @@
         </div>
         <br>
         <div class="col-md-3">
+<!--<form method="post" onclick="buscar_por_fecha()">-->
             
 <!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
-            <button class="btn btn-sm btn-facebook btn-sm btn-block"  type="submit">
+            <button class="btn btn-sm btn-facebook btn-sm btn-block"  onclick="buscar_por_fecha()" type="submit">
                 <h4>
                 <span class="fa fa-search"></span>   Buscar
                 </h4>
           </button>
             <br>
+<!--</form>-->
         </div>
         
     </center>    
     <br>    
 </div>
-</form>
 <!------------------------------------------------------------------------------------------->
 
 

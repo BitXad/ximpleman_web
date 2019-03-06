@@ -8,6 +8,7 @@ class Pedido extends CI_Controller{
     function __construct()
     {
         parent::__construct();
+        $this->load->model('Empresa_model');
         $this->load->model('Pedido_model');
         $this->load->model('Producto_model');
         $this->load->model('Estado_model');
@@ -15,6 +16,7 @@ class Pedido extends CI_Controller{
         $this->load->model('Forma_pago_model');
         $this->load->model('Tipo_transaccion_model');
         $this->load->model('Venta_model');
+        $this->load->model('Usuario_model');
         
     } 
 
@@ -32,6 +34,8 @@ class Pedido extends CI_Controller{
                 );
         //**************** inicio contenido ***************            
         $usuario_id = $session_data['usuario_id'];
+        $usuario_nombre = $session_data['usuario_nombre'];
+        $tipousuario_id = $session_data['tipousuario_id'];
         
 //        $params['limit'] = RECORDS_PER_PAGE; 
 //        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -40,9 +44,14 @@ class Pedido extends CI_Controller{
 //        $config['base_url'] = site_url('pedido/index?');
 //        $config['total_rows'] = $this->Pedido_model->get_all_pedido_count();
 //        $this->pagination->initialize($config);
-
+        
+        
+        $data['page_title'] = "Pedidos";
+        $data['usuario'] = $this->Usuario_model->get_todos_usuario();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['usuario_id'] = $usuario_id;
+        $data['tipousuario_id'] = $tipousuario_id;
+        $data['usuario_nombre'] = $usuario_nombre;
         $data['usuarios'] = $this->Venta_model->get_usuarios();
         
         $filtro = $this->input->post('filtro');
@@ -58,6 +67,36 @@ class Pedido extends CI_Controller{
         $data['estado'] = $this->Estado_model->get_tipo_estado(5);
         
         $data['_view'] = 'pedido/index';
+        $this->load->view('layouts/main',$data);
+        
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }         
+        
+    }
+    /*
+     * Listing of pedido
+     */
+    function nota_pedido($pedido_id)
+    {
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************            
+        $usuario_id = $session_data['usuario_id'];
+        $empresa_id = 1;
+        
+        $data['page_title'] = "Nota de Pedido";
+        $data['pedido'] = $data['pedido'] = $this->Pedido_model->get_pedido_id($pedido_id);
+        $data['empresa'] = $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+        
+        $data['_view'] = 'pedido/nota_pedido';
         $this->load->view('layouts/main',$data);
         
         		
@@ -147,6 +186,7 @@ class Pedido extends CI_Controller{
                 );
         //**************** inicio contenido ***************            
         
+        $data['page_title'] = "Pedidos";
         $usuario_id = $session_data['usuario_id'];
         
 //        $usuarioped_id = $pedido[0]['usuario_id'];
@@ -174,10 +214,7 @@ class Pedido extends CI_Controller{
 //        
 //            
 //        }
-//            
-      
-
-        		
+//                          		
         //**************** fin contenido ***************
         			}
         			else{ redirect('alerta'); }
@@ -355,6 +392,11 @@ class Pedido extends CI_Controller{
 
         $this->Pedido_model->ejecutar($sql);
 
+        $sql = "update inventario i, detalle_pedido d set 
+                i.existencia = i.existencia - d.detalleped_cantidad 
+                where d.pedido_id = ".$pedido_id." and i.producto_id = d.producto_id";
+        $this->Pedido_model->ejecutar($sql);
+        
         redirect('pedido');
         		
         //**************** fin contenido ***************
@@ -796,11 +838,45 @@ class Pedido extends CI_Controller{
                 );
         //**************** inicio contenido ***************  
         
+            $data['page_title'] = "Mapa de Pedidos";
             $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
             
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
             $data['_view'] = 'pedido/mapapedidos';
+            
+            $this->load->view('layouts/main',$data);
+            
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+                    
+//        }
+//        else{ redirect('login'); }
+        
+    }
+
+    function mapa_entregas()
+    {
+
+        //control de sesion
+//        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
+            
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************  
+        
+            $data['page_title'] = "Mapa de Entregas";
+            $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
+            
+            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+            $data['_view'] = 'pedido/mapaentregas';
             
             $this->load->view('layouts/main',$data);
             
