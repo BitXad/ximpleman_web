@@ -82,8 +82,11 @@ body {
 
     <div class="cuerpo" >
                     <div class="columna_derecha" style="text-align: right;">
-                       
+                        <?php if ($cuota[0]['venta_id']>0) { ?>
                         <b>VENTA No.: </b><?php echo $cuota[0]['venta_id']; ?><br>
+                        <?php } else { ?>
+                        <b>SERVICIO No.: </b><?php echo $cuota[0]['servicio_id']; ?><br>
+                        <?php } ?>
                         <b>CREDITO No.: </b><?php echo $cuota[0]['credito_id']; ?><br>
                         <b>ESTADO: </b><?php echo $cuota[0]['estado_descripcion']; ?>
                     
