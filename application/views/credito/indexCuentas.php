@@ -77,7 +77,7 @@
 						<th>#</th>
                                              
 						<th>Cliente</th>
-                        <th>Venta</th>
+                        <th>Transaccion</th>
 						<th>Estado</th>
 						<th>Monto</th>
 						<th>Cuota Inicial</th>
@@ -94,9 +94,13 @@
                                  $cont = $cont+1;?>
                     <tr>
 						<td><?php echo $cont ?></td>
-                                                
-						<td><?php echo $c['cliente_nombre']; ?></td>
-                        <td style="text-align: center"><?php echo $c['venta_id']; ?></td>
+                        <?php if ($c['servicio_id']!=0) { ?>                       
+						<td><?php echo $c['perro']; ?></td>
+                        <td style="text-align: center">Servicio: <?php echo $c['servicio_id']; ?></td>
+                        <?php } else { ?>
+                        <td><?php echo $c['cliente_nombre']; ?></td>
+                        <td style="text-align: center">Venta: <?php echo $c['venta_id']; ?></td>    
+                        <?php } ?>
 						<td style="text-align: center"><?php echo $c['estado_descripcion']; ?></td>
                         <td style="text-align: right"><?php echo $c['credito_monto']; ?></td>
                         <td style="text-align: right"><?php echo $c['credito_cuotainicial']; ?></td>
@@ -108,7 +112,11 @@
 						<td>
                             <!--<a href="<?php echo site_url('credito/edit/'.$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a href="<?php echo site_url('credito/remove/'.$c['credito_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                            <?php if ($c['servicio_id']!=0) { ?>
+                                <a href="<?php echo site_url('cuotum/cuenta_serv/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
+                            <?php } else { ?>
                             <a href="<?php echo site_url('cuotum/cuentas/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
+                            <?php } ?>
                             <a href="<?php echo site_url('cuotum/planCuenta/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title="PLAN DE PAGOS"><span class="fa fa-print"></span></a>
 
                         </td>

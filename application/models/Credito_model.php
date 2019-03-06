@@ -113,19 +113,25 @@ class Credito_model extends CI_Model
     function get_cuentas($filtro)
     {
         $deuda = $this->db->query("
-            SELECT
-                c.*, p.*, co.*, e.*
+
+           SELECT
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro
 
             FROM
-                credito c, cliente p, venta co, estado e
+                credito c
+
+LEFT JOIN venta ve on c.venta_id = ve.venta_id
+LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
+LEFT JOIN estado e on c.estado_id = e.estado_id
+LEFT JOIN servicio s on c.servicio_id = s.servicio_id
+LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
 
             WHERE
-                c.venta_id = co.venta_id
-                and p.cliente_id = co.cliente_id
-                and c.estado_id = e.estado_id
-                ".$filtro." 
+                c.compra_id = 0
+                 ".$filtro." 
 
             ORDER BY c.credito_fecha DESC
+
 
             
         ")->result_array();
@@ -144,6 +150,29 @@ class Credito_model extends CI_Model
 
             WHERE
                 c.venta_id = co.venta_id
+                and p.cliente_id = co.cliente_id
+                and c.estado_id = e.estado_id
+                and c.credito_id=".$filtro." 
+
+            ORDER BY c.credito_fecha DESC
+
+            
+        ")->result_array();
+
+        return $deuda;
+    }
+
+    function dato_cuenta_serv($filtro)
+    {
+        $deuda = $this->db->query("
+            SELECT
+                c.*, p.*, co.*, e.*
+
+            FROM
+                credito c, cliente p, servicio co, estado e
+
+            WHERE
+                c.servicio_id = co.servicio_id
                 and p.cliente_id = co.cliente_id
                 and c.estado_id = e.estado_id
                 and c.credito_id=".$filtro." 
@@ -217,19 +246,22 @@ class Credito_model extends CI_Model
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
         $credito = $this->db->query("
-            SELECT
-                c.*, p.*, ve.*, e.*
+              SELECT
+                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro
 
             FROM
-                credito c, cliente p, venta ve, estado e
+                credito c
+
+LEFT JOIN venta ve on c.venta_id = ve.venta_id
+LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
+LEFT JOIN estado e on c.estado_id = e.estado_id
+LEFT JOIN servicio s on c.servicio_id = s.servicio_id
+LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
 
             WHERE
-                c.venta_id = ve.venta_id
-                and p.cliente_id = ve.cliente_id
-                and c.estado_id = e.estado_id
-                and c.estado_id = 8
+                 c.estado_id = 8
+                 and c.compra_id = 0
             ORDER BY `credito_id` DESC
-
             " . $limit_condition . "
         ")->result_array();
 
