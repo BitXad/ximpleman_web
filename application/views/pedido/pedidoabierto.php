@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/pedido.js'); ?>" type="text/javascript"></script>
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -81,8 +82,9 @@ $(document).ready(localize());
 <div class="container">
     <div class="panel panel-primary col-md-8">
         <h5><b>Cliente: </b><?php echo $pedido[0]['cliente_nombre']; ?> <br>
-        <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo']; ?> <br>
-        <b>Fecha/Hora: </b><?php echo $pedido[0]['pedido_fecha']; ?></h5>   
+            <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo'];?> <br>
+            <b>Dirección: </b><?php echo $pedido[0]['cliente_direccion']; ?><br>
+<!--        <b>Fecha/Hora: </b><?php echo $pedido[0]['pedido_fecha']; ?></h5>   -->
         
         <?php //$descuento =  "<script>descuento</script>"; ?>
         <?php //$totalfinal =  "<script>descuento</script>"; ?>
@@ -190,23 +192,6 @@ $(document).ready(localize());
 		<div class="modal-content">
 			<div class="modal-header">
                             
-<!--				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
-                                
-                                <div class="input-group  col-md-8" > <span class="input-group-addon">Buscar</span>
-                                    <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del cliente..." onkeypress="validar(event,8)">                                    
-                                    <input id="filtrar2" type="text" class="form-control  col-md-4" placeholder="Ingresa el nombre, apellidos o ci del cliente..." onkeypress="validar(event,8)">
-                                </div>
-                                
-                                <div class="input-group  col-md-1" > 
-                                    <select  id="tipo_cliente" class="form-control  col-md-4" onkeypress="validar(event,9)">
-                                        <option > </option>
-                                        
-                                    </select>
-                                </div>-->
-
                                 <div class="row">
 
                                            <!--------------------- parametro de buscador por codigo --------------------->
@@ -300,10 +285,10 @@ $(document).ready(localize());
                                         <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
                                         <?php                                                     
                                             $fecha = date('Y-m-d'); 
-                                            $hora = date('H:i');                                                                                         
+                                            $hora = date('H:i:s');                                                                                         
                                         ?>
                                         
-                                    <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>
+                                        <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>
                                     </div>
                                     
 
@@ -448,7 +433,6 @@ $(document).ready(localize());
         </div>
             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
             
-            
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit">
                 <h4>
                 <span class="fa fa-money"></span>   Finalizar Pedido  
@@ -540,6 +524,7 @@ function calcularCambio(pedido_subtotalx,pedido_descuentox,pedido_totalfinalx,pe
 
 <!--<button onclick="mostrarx(1)"> localizacion</button>-->
 
+<!--Permitir ubicacion de pedido-->
 <script type="text/javascript">
 function mostrarx(a) {
     obj = document.getElementById('oculto'+a);
@@ -564,8 +549,8 @@ function mostrarx(a) {
                                                 var coords_lng = {};    //coordenadas obtenidas con la geolocalización
                                                 
 
-                                                //Funcion principal
-                                                initMap = function () 
+                                                //Funcion principal initMap no Map_pita
+                                                initMap_pita = function () 
                                                 {
                                                     //usamos la API para geolocalizar el usuario
                                                         navigator.geolocation.getCurrentPosition(

@@ -1767,3 +1767,34 @@ function actualizar_caracteristicas(detalleven_id)
     });
    
 }   
+
+function verificador()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"factura/codigocontrol";
+    
+    var llave = document.getElementById('factura_llave').value;
+    var autorizacion = document.getElementById('factura_autorizacion').value;
+    var numero = document.getElementById('factura_numero').value;
+    var nit = document.getElementById('factura_nit').value;
+    var fecha = document.getElementById('factura_fecha').value;
+    var monto = document.getElementById('factura_total').value;
+    var bandera = 1;
+    
+    
+    //alert(llave+" | "+autorizacion+" | "+numero+" | "+nit+" | "+fecha+" | "+monto);
+    
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{llave:llave,autorizacion:autorizacion,numero:numero,nit:nit,fecha:fecha,monto:monto, bandera:bandera},
+        success:function(result){
+            var codigo = eval(result);
+           // alert(codigo);
+            $('#factura_codigocontrol').val(codigo[0]['codigocontrol']);
+            
+        }
+
+    });
+   
+}   

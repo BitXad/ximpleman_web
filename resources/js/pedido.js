@@ -76,12 +76,12 @@ function tabla_pedidos(filtro)
                 html += "     ";
                 html += "    </td> ";
                 html += "    <td align='center' bgcolor='"+p[i]["estado_color"]+"'> ";
-                html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"'> ";
+//                html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"'> ";
                 html += "        <font size='3' color='white'><b>"+'00'+p[i]["pedido_id"]+"</b></font> <br> ";
                 html += "        <font size='1' color='white'>"+p[i]["estado_descripcion"]+"</font> ";
                 html += "        "+'<br><b>'+tipotrans+" </b> ";                
                 html += "         ";
-                html += "        </a> ";
+//                html += "        </a> ";
                 html += "    </td> ";
 
 
@@ -106,11 +106,11 @@ function tabla_pedidos(filtro)
                     if (p[i]["estado_id"]>=11 && p[i]["estado_id"]<=14){
                         
                         if (p[i]["estado_id"]==13){
-                            html += "        <a href='"+base_url+'pedido/comprobante/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                            html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
                         }
                         else{
                             
-                        html += "        <a href='"+base_url+'pedido/comprobante/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                        html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
                         html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
 
                  // ****************************** anular pedido ***************************************
@@ -154,7 +154,7 @@ function tabla_pedidos(filtro)
                 // ****************************** fin anular pedido ***************************************
                  // ****************************** consolidar pedido a ventas ***************************************
                         html += "   <button type='button' class='btn btn-facebook btn-sm' data-toggle='modal'  title='Consolida Pedido' data-target='#modalconsolidar"+p[i]["pedido_id"]+"'> ";
-                        html += "           <span class='fa fa-money'></span>  ";
+                        html += "           <span class='fa fa-cart-plus'></span>  ";
                         html += "      </button>  ";
   
                 
@@ -167,7 +167,7 @@ function tabla_pedidos(filtro)
                         html += "      <div class='modal-header' style='background-color: #CDCDCD'> ";
                         html += "          <center> ";
 
-                        html += "          <h3 class='modal-title' id='exampleModalLabel'><b><span class='fa fa-money'></span>  Consolidar Pedido a Ventas <span class='fa fa-save'></span></b></h3> ";
+                        html += "          <h3 class='modal-title' id='exampleModalLabel'><b><span class='fa fa-cart-plus'></span>  Enviar pedido a ventas<span class='fa fa-cart-plus'></span></b></h3> ";
                         html += "        <button type='button' class='close' data-dismiss='modal' aria-label='Close'> ";
                         html += "          <span aria-hidden='true'>&times;</span> ";
                         html += "        </button>  ";
@@ -184,7 +184,7 @@ function tabla_pedidos(filtro)
                         html += "      </div> ";
                         html += "      <div class='modal-footer'> ";
                         html += "        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button> ";
-                        html += "        <button type='button' class='btn btn-primary' data-dismiss='modal'  onclick='consolidar_pedido("+p[i]["pedido_id"]+")'><span class='fa fa-money'></span> Consolidar</button> ";
+                        html += "        <button type='button' class='btn btn-primary' data-dismiss='modal'  onclick='consolidar_pedido("+p[i]["pedido_id"]+")'><span class='fa fa-cart-plus'></span> Vender</button> ";
                         html += "      </div> ";
                         html += "    </div> ";
                         html += "  </div> ";
@@ -504,9 +504,17 @@ function tablaresultadospedido(opcion)
                         html += " | <b>"+registros[i]["producto_codigo"]+"</b> <br>";                        
                         html += " ";
                         html += "<span class='btn btn-facebook btn-xs'>Desc.:<input size='4' class='input-xs' id='descuento"+registros[i]["producto_id"]+"' style='background-color: lightgrey; color: black;' name='descuento' type='text' class='form-control' value='0.00' required='true'></span>"
-                        html += "<span class='btn btn-facebook btn-xs'>Cant.:<input size='4' class='input-xs' id='cantidad"+registros[i]["producto_id"]+"' style='background-color: white; color: black;' name='cantidad' type='text' class='form-control' placeholder='cantidad' required='true' value='1'></span>"
+
+                           //html += "<span class='btn btn-facebook btn-xs'>Cant.:<input size='4' class='input-xs' id='cantidad"+registros[i]["producto_id"]+"' style='background-color: white; color: black;' name='cantidad' type='text' class='form-control' placeholder='cantidad' required='true' value='1'></span>"
+                        html += "<span class='btn btn-facebook btn-xs'>Cant.:";
+                        html += "<input type='number'  style='width: 70px;' class='input-xs btn-default' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad' placeholder='cantidad' required='true' value='1' min='1' max='"+registros[i]["existencia"]+"'></span>"
+                        
+// size='4' class='input-xs' id='cantidad"+registros[i]["producto_id"]+"' style='background-color: white; color: black;' name='cantidad' type='text' class='form-control' placeholder='cantidad' required='true' value='1'></span>"
+                        
                         html += "<br> <input class='input' size='35' id='preferencia"+registros[i]["producto_id"]+"' name='preferencia' type='text' placeholder='preferencia'><br>";
-                        html += "<br> <button type='submit' class='btn btn-block btn-success' style='width:200px'  onclick='agregar_producto("+registros[i]["producto_id"]+")'><i class='fa fa-cart-arrow-down'></i> Añadir</button>";
+                        if(registros[i]["existencia"]>0){
+                           html += "<br> <button type='submit' class='btn btn-block btn-success' style='width:200px'  onclick='agregar_producto("+registros[i]["producto_id"]+")'><i class='fa fa-cart-arrow-down'></i> Añadir</button>";
+                       }
                         html += " </b> ";
                         html += "</td>";
 
@@ -562,6 +570,35 @@ function buscar_pedidos()
     }
     
     if (opcion == 5) {
+
+        mostrar_ocultar_buscador("mostrar");
+        filtro = null;
+    }
+
+    if (opcion == 6) //entregas
+    {
+        filtro = " and pedido_fechaentrega = date(now())"+por_usuario;
+        mostrar_ocultar_buscador("ocultar");
+    }//entregas para hoy
+
+    if (opcion == 7)
+    {
+        filtro = " and pedido_fechaentrega = date_add(date(now()), INTERVAL -1 DAY)"+por_usuario;
+        mostrar_ocultar_buscador("ocultar");
+    }//pedidos de ayer
+    
+    if (opcion == 8) 
+    {
+        filtro = " and pedido_fechaentrega >= date_add(date(now()), INTERVAL -1 WEEK)"+por_usuario;//pedidos de la semana
+        mostrar_ocultar_buscador("ocultar");
+    }
+    
+    if (opcion == 9) 
+    {   filtro = " usuario_id = "+usuario_id+" ";//todos los pedidos
+        mostrar_ocultar_buscador("ocultar");
+    }
+    
+    if (opcion == 10) {
 
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
@@ -774,7 +811,7 @@ function validar(e,opcion) {
         }        
         
         if (opcion==8){   //si la tecla proviene del buscador de pedido abierto
-           buscar_clientes();               
+           buscar_clientes();
         }        
     } 
  
@@ -787,7 +824,7 @@ function buscar_clientes()
     var tipo = document.getElementById('tipo').value;
     var base_url    = document.getElementById('base_url').value;
     
-    var controlador = base_url+"cliente/buscarclientes";
+    var controlador = base_url+"cliente/buscarclientes_pedido";
     
     $.ajax({url:controlador,
         type:"POST",
@@ -843,4 +880,37 @@ function buscar_clientes()
             
         },        
     });
+}
+
+function buscar_por_fecha()
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"pedido";
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var estado_id = document.getElementById('estado_id').value;
+    
+    var opcion      = document.getElementById('select_pedidos').value;
+    
+    if (opcion >= 6)
+    {    
+        filtro = " and pedido_fechaentrega >= '"+fecha_desde+"'  and pedido_fechaentrega <='"+fecha_hasta+
+        "' and p.estado_id = "+estado_id;
+        tabla_pedidos(filtro);
+
+    
+    }
+    else
+    {
+        filtro = " and date(pedido_fecha) >= '"+fecha_desde+"'  and  date(pedido_fecha) <='"+fecha_hasta+
+        "' and p.estado_id = "+estado_id;
+        tabla_pedidos(filtro);
+    }
+
+}
+
+function cambiar_usuario(){
+    var usuario_id = document.getElementById('select_usuarios').value;
+    $('#usuario_id').val(usuario_id);
+    
 }

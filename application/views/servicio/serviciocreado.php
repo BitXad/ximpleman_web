@@ -632,7 +632,7 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_pesoentrada" class="control-label">Peso Entrada(Gr.)</label>
                                     <div class="form-group">
-                                            <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" onclick="this.select();" />
+                                            <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" />
                                     </div>
                             </div>
                             <div class="col-md-4">
