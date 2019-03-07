@@ -49,26 +49,16 @@ class Tipo_cliente_model extends CI_Model
     /*
      * Get all tipo_cliente
      */
-    function get_all_tipo_cliente($params = array())
+    function get_all_tipo_cliente()
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+//        $limit_condition = "";
+//        if(isset($params) && !empty($params))
+//            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
-        $tipo_cliente = $this->db->query("
-            SELECT
-                *
-
-            FROM
-                `tipo_cliente`
-
-            WHERE
-                1 = 1
-
-            ORDER BY `tipocliente_id` DESC
-
-            " . $limit_condition . "
-        ")->result_array();
+        $sql = "SELECT * FROM `tipo_cliente` WHERE 1 = 1
+                ORDER BY `tipocliente_id`";
+        
+        $tipo_cliente = $this->db->query($sql)->result_array();
 
         return $tipo_cliente;
     }
