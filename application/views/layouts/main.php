@@ -395,19 +395,19 @@
                             <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-cart-plus"></i>Compras</a>
+                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-cubes"></i>Compras</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambio</a>
+                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-chain"></i>Cambio</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-cart-plus"></i>Cotizaciones</a>
+                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-list-ul"></i>Cotizaciones</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-cart-plus"></i>Ordenes de Pago</a>
+                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
+                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-list-alt"></i>Movimiento Diario</a>
                         </li>
                     </ul>
                 </li>
