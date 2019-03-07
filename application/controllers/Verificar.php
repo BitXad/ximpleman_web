@@ -25,7 +25,7 @@ class Verificar extends CI_Controller
         //var_dump($result);
 
         if ($result) {
-            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 5 or $result->tipousuario_id == 4) {
+            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 5 or $result->tipousuario_id == 4) {
                 $thumb = "";
                 if($result->usuario_imagen <> null){
                     $thumb = $this->foto_thumb($result->usuario_imagen);
@@ -62,11 +62,11 @@ class Verificar extends CI_Controller
                 }
                 if($session_data['tipousuario_id'] == 5) {
                     $this->load->model('Cliente_model');
-                    $cliente_id = $this->cliente_model->get_cliente_from_ci($session_data['usuario_login']);
+                    //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']);
                     redirect('detalle_serv/kardexserviciocliente/'.$cliente_id);
                 }
 
-                if($session_data['tipousuario_id'] == 2 or $session_data['tipousuario_id'] == 4){
+                if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 4){
                     redirect('venta/ventas');
                 }
 

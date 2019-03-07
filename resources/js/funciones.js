@@ -1692,7 +1692,9 @@ function seleccionar_cliente(){
                     $("#telefono").val(resultado[0]["cliente_telefono"]);
                     $("#cliente_ci").val(resultado[0]["cliente_ci"]);     
                     $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
+                    $("#tipocliente_id").val(resultado[0]["tipocliente_id"]);  
                     $("#codigo").select();
+                    
                 }
        
 

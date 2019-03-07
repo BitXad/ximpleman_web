@@ -219,17 +219,26 @@ function mostrar_ocultar(){
 <div class="container" id="categoria">
     
     <span class="badge btn-danger">
+    
     Categoria:     
+    
     <select class="bange btn-danger" style="border-width: 0;" onchange="tablaresultados(2)" id="categoria_prod">
                 <option value="0" >Todas</option>
         <?php 
-            foreach($categoria_producto as $categ){ ?>
-                <option value="<?php echo $categ['categoria_id']; ?>"><?php echo $categ['categoria_nombre']; ?></option>
+            foreach($categoria_producto as $categ){ 
+                $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                ?>
+                
+                <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
         <?php
             }
         ?>
     </select>
+
+
+    
     </span>
+    
                 <!--------------------- indicador de resultados --------------------->
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
@@ -340,11 +349,12 @@ function mostrar_ocultar(){
                Finalizar Venta <br>
             </a>
 
-
+            <?php if ($tipousuario_id == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir <br>
             </a>    
+            <?php } ?>    
             </center>
             <br>
         </div>    
@@ -733,7 +743,13 @@ function mostrar_ocultar(){
 		</div>
 	</div>
 </div>
-
+            
+    <?php if($parametro[0]['parametro_mostrarcategoria']>0){ ?>
+            <script type="text/javascript">   
+               tablaresultados(2);
+            </script>
+     <?php       }
+    ?>
 <!---------------------- fin modal pedidos --------------------------------------------------->
 <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
