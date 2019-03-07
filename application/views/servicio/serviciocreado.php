@@ -449,7 +449,8 @@ $(document).ready(function(){
         
         <!--<a href="<?php //echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']); ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imp. Comprob.</a>
         <a href="<?php //echo $dir_url; ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br><?php echo $titprint; ?></a>-->
-        <a href="<?php echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']);  ?>" id="finalizar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="window.location.href='../../servicio'" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+        <a href="<?php echo site_url('servicio');  ?>" id="cancelar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Cancelar</a>
+        <a href="<?php echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']);  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
 </div>
 </div>
 

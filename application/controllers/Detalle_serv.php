@@ -18,7 +18,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -50,7 +50,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -101,7 +101,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -160,7 +160,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
 
         // check if the detalle_serv exists before trying to delete it
@@ -186,7 +186,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
 
         // check if the detalle_serv exists before trying to delete it
@@ -211,7 +211,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -291,7 +291,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -424,7 +424,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -529,7 +529,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -573,7 +573,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -623,7 +623,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -685,7 +685,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1015,7 +1015,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1348,7 +1348,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1410,7 +1410,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
         $cad = "";
         $servicio_total = $this->input->post('servicio_total');
@@ -1466,7 +1466,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
             $usuario_id = $session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
             $fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
@@ -1539,7 +1539,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $this->load->library('form_validation');
 
 	    $this->form_validation->set_rules('fecha_cobro','Detalle Servicio Fecha Cobro','required');
@@ -1604,7 +1604,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1644,7 +1644,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1684,7 +1684,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         //este estado es CREDITO
         $estado_id = 16;
         $estado_terminadoid = 7; // estado ENTREGADO
@@ -1781,7 +1781,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $usuario_id = $session_data['usuario_id'];
                 $fecha_finalizacion = date("Y-m-d");
                 $hora_finalizacion = date("H:i:s");
@@ -1880,7 +1880,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1918,7 +1918,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1957,7 +1957,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -2037,7 +2037,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 
 
@@ -2069,7 +2069,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -2116,7 +2116,7 @@ class Detalle_serv extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );

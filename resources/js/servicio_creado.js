@@ -784,7 +784,7 @@ function tablaresultadosclienteservicio(tabla_id){
                             html += "C.I.: "+registros[i]["cliente_ci"]+" | Telf.: "+registros[i]["cliente_telefono"]+"<br>";
                             //html += "<input type='hidden' id='servicio_id'  name='servicio_id' class='form-control' value='"+servicio_id+"' />";
                             //html += "<input type='hidden' id='cliente_id'  name='cliente_id' class='form-control' value='"+registros[i]["cliente_id"]+"' />";
-                            html += "<button class='btn btn-success btn-xs' onclick='asignarclienteregistrado("+servicio_id+", "+registros[i]["cliente_id"]+")' >";
+                            html += "<button class='btn btn-success btn-xs' onclick='asignarclienteregistrado("+servicio_id+", "+registros[i]["cliente_id"]+", "+registros[i]["cliente_nombre"]+")' >";
                             html += "<i class='fa fa-check'></i> Elegir Cliente";
                             html += "</button>";
                             //html += "</form>";
@@ -1459,7 +1459,7 @@ function registrarnuevocliente(servicio_id){
     });
 }
 /* ****************ASIGNAR CLIENTE REGISTRADO A UN SERVICIO*************** */
-function asignarclienteregistrado(servicio_id, cliente_id){
+function asignarclienteregistrado(servicio_id, cliente_id, cliente_nombre){
     var nombremodal = "modalbuscar";
     var base_url = document.getElementById('base_url').value;
 /*    var cliente_nombre = document.getElementById('cliente_nombre').value;
@@ -1468,10 +1468,12 @@ function asignarclienteregistrado(servicio_id, cliente_id){
     var cliente_nit = document.getElementById('cliente_nit').value;
     var cliente_telefono = document.getElementById('cliente_telefono').value;
 */
+    var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
+    
     var controlador = base_url+'servicio/asignarcliente/'+servicio_id;
     $.ajax({url: controlador,
            type:"POST",
-           data:{cliente_id:cliente_id},
+           data:{cliente_id:cliente_id, codigo_seg:codigo_seg},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
@@ -1884,4 +1886,30 @@ function resetearcamposdeinputcliente(){
         $('#cliente_nit').val('');
         $('#cliente_telefono').val('');
     });
+}
+/* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */
+function finalizarservicio(servicio_id){
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"servicio/modificarservicio";
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{servicio_id:servicio_id},
+            success:function(resul){
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    if(registros == "ok"){
+                        
+                    }else{
+                        alert("Hubo problemas al Finalizar el Servicio");
+                    }
+                }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           alert("Ocurrio un error inesperado");
+        }
+        
+    });   
+    window.location.href='../../servicio';
 }

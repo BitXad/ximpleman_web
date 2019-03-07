@@ -10,6 +10,7 @@ class Servicio extends CI_Controller{
         parent::__construct();
         $this->load->model('Servicio_model');
         $this->load->helper('numeros');
+        $this->load->library('ControlCode'); // para generar codigo
     } 
     
     /*
@@ -310,7 +311,6 @@ class Servicio extends CI_Controller{
             date_default_timezone_set('America/La_Paz');
             $fecha_res = date('Y-m-d');
             $hora_res = date('H:i:s');
-            
             $params = array(
                                 'estado_id' => $this->input->post('estado_id'),
 				'tiposerv_id' => $this->input->post('tiposerv_id'),
@@ -388,6 +388,8 @@ class Servicio extends CI_Controller{
             $session_data = $this->session->userdata('logged_in');
             if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
+                
+                
                 if ($this->input->is_ajax_request()){
                     $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
                     if(isset($data['servicio']['servicio_id']))
@@ -395,6 +397,7 @@ class Servicio extends CI_Controller{
                         $cliente_id = $this->input->post('cliente_id');
                         $params = array(
 					'cliente_id' => $cliente_id,
+                                        'servicio_codseguimiento' => $this->input->post('codigo_seg'),
                         );
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                         $this->load->model('Cliente_model');
@@ -1402,5 +1405,63 @@ class Servicio extends CI_Controller{
         } else {
             redirect('', 'refresh');
         }
+    }
+    /* modificar servicio fechas y generar su CODIGO seguimiento */
+    function modificarservicio()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                
+        if ($this->input->is_ajax_request())
+        {
+            $fecha_reg = date('Y-m-d');
+            $hora_reg = date('H:i:s');
+            $minseg = date('is');
+            $servicio_id = $this->input->post('servicio_id');
+            
+            $minutosegundo = date('is');
+        
+        $this->load->model('Dosificacion_model');
+        $dosificacion   = $this->Dosificacion_model->get_dosificacion_activa();
+        $autorizacion   = $dosificacion[0]['dosificacion_autorizacion'];
+        $llave          = $dosificacion[0]['dosificacion_llave'];
+        $codseguimiento = $this->codigo_control($llave, $autorizacion, $servicio_id, $servicio_id,$fecha_reg, $minseg);
+        
+            $params = array(
+                'servicio_fecharecepcion' => $fecha_reg,
+                'servicio_horarecepcion' => $hora_reg,
+                'servicio_codseguimiento' => $codseguimiento,
+            );
+            $this->Servicio_model->update_servicio($servicio_id,$params);
+
+            echo json_encode("ok");
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
+    {
+
+        //include 'ControlCode.php';
+
+        $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
+                                                   $dosificacion_numfact,//Numero de factura
+                                                   $nit,//Número de Identificación Tributaria o Carnet de Identidad
+                                                   str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
+                                                   $monto,//Monto de la transacción
+                                                   $dosificacion_llave//Llave de dosificación
+                        );        
+         return str_replace('-','',$code);
     }
 }

@@ -103,7 +103,7 @@ function tabla_pedidos(filtro)
                 html += "    <td> ";
                     
 
-                    if (p[i]["estado_id"]>=11 && p[i]["estado_id"]<=14){
+                    if (p[i]["estado_id"]>=10 && p[i]["estado_id"]<=14){
                         
                         if (p[i]["estado_id"]==13){
                             html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";

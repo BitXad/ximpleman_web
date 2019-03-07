@@ -449,7 +449,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -514,22 +514,11 @@ class Cliente extends CI_Controller{
                                         'usuario_id' => $this->input->post('usuario_id'),
                                     );
                                 $cliente_id = $this->Cliente_model->add_cliente($params);
-                                //tipousuario_id = 5 --> porque el tipo de usario es CLIENTE
-                                $param = array(
-                                                    'estado_id' => $estado_id,
-                                                    'tipousuario_id' => 5,
-                                                    'usuario_nombre' => $this->input->post('cliente_nombre'),
-                                                    'usuario_email' => $this->input->post('cliente_email'),
-                                                    'usuario_login' => $cliente_ci,
-                                                    'usuario_clave' => md5($this->input->post('cliente_codigo')),
-                                );
-
-                                $this->load->model('Usuario_model');
-                                $usuario_id = $this->Usuario_model->add_usuario($param);
-                                /*$mas_params = array('cliente_codigo' =>'CSRV-'.$cliente_id);
-                                $this->Cliente_model->update_cliente($cliente_id, $mas_params);
-                                */
-                                $params_serv = array('cliente_id' => $cliente_id);
+                                
+                                $params_serv = array(
+                                       'cliente_id' => $cliente_id,
+                                       'servicio_codseguimiento' => $this->input->post('codigo_seg'),
+                                    );
 
                                 $this->Servicio_model->update_servicio($servicio_id,$params_serv);
 
@@ -563,7 +552,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
@@ -645,7 +634,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
@@ -676,72 +665,265 @@ class Cliente extends CI_Controller{
      * Ingresar nuevo cliente
      */
     function clientenuevo($pedido_id)
-    {   
-        
+    {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+            $this->load->library('form_validation');
 
-        
-                $this->load->library('form_validation');
+            //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
+            $this->form_validation->set_rules('cliente_nombre','Cliente Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            //$this->form_validation->set_rules('cliente_nombrenegocio','Nombre Negocio','required');
 
-		$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
-		$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
-		
-        if($this->form_validation->run())     
-        {   
-            $usuario_id = $session_data['usuario_id'];
-            $params = array(
-				'estado_id' => $this->input->post('estado_id'),
-				'tipocliente_id' => $this->input->post('tipocliente_id'),
-				'categoriaclie_id' => $this->input->post('categoriaclie_id'),
-				'cliente_codigo' => $this->input->post('cliente_codigo'),
-				'zona_id' => $this->input->post('zona_id'),
-				'cliente_nombre' => $this->input->post('cliente_nombre'),
-				'cliente_ci' => $this->input->post('cliente_ci'),
-				'cliente_direccion' => $this->input->post('cliente_direccion'),
-				'cliente_telefono' => $this->input->post('cliente_telefono'),
-				'cliente_celular' => $this->input->post('cliente_celular'),
-				'cliente_foto' => $this->input->post('cliente_foto'),
-				'cliente_email' => $this->input->post('cliente_email'),
-				'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-				'cliente_aniversario' => $this->input->post('cliente_aniversario'),
-				'cliente_latitud' => $this->input->post('cliente_latitud'),
-				'cliente_longitud' => $this->input->post('cliente_longitud'),
-				'cliente_nit' => $this->input->post('cliente_nit'),
-				'cliente_razon' => $this->input->post('cliente_razon'),
-				'usuario_id' => $usuario_id,
-            );
+            if($this->form_validation->run())     
+            {
+                $this->input->post('cliente_nombre');
+                $resultado = $this->Cliente_model->es_cliente_registrado($this->input->post('cliente_nombre'));
+                if($resultado > 0){
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+                    $this->load->model('Categoria_clientezona_model');
+                    $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                    /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
+                    $this->load->model('Usuario_model');
+                    $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+                    $this->load->model('Tipo_cliente_model');
+                    $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+                    $this->load->model('Categoria_cliente_model');
+                    $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+		    
+                    $data['resultado'] = 1;
+                    $data['_view'] = 'cliente/add';
+                    $this->load->view('layouts/main',$data);
+                  
+                }else{
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                if (!empty($_FILES['cliente_foto']['name'])){
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/images/clientes/';
+                        $img_full_path = $config['upload_path'];
+
+                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 5900;
+                        $config['max_height'] = 5900;
+                        
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('cliente_foto');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/clientes/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/images/clientes/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/clientes/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 50;
+                        $confi['height'] = 50;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+
+                        $foto = $new_name.$extension;
+                    }
+            /* *********************FIN imagen***************************** */
+                $usuario_id = $session_data['usuario_id'];
+                //no es necesario porque se esta usando el date y ya no el date piker
+                //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                $estado_id = 1;
+                $lun = $this->input->post('lun');
+                if($lun != 1){ $lun = 0; }
+                $mar = $this->input->post('mar');
+                if($mar != 1){ $mar = 0; }
+                $mie = $this->input->post('mie');
+                if($mie != 1){ $mie = 0; }
+                $jue = $this->input->post('jue');
+                if($jue != 1){ $jue = 0; }
+                $vie = $this->input->post('vie');
+                if($vie != 1){ $vie = 0; }
+                $sab = $this->input->post('sab');
+                if($sab != 1){ $sab = 0; }
+                $dom = $this->input->post('dom');
+                if($dom != 1){ $dom = 0; }
+                $params = array(
+                            'estado_id' => $estado_id,
+                            'tipocliente_id' => $this->input->post('tipocliente_id'),
+                            'categoriaclie_id' => $this->input->post('categoriaclie_id'),
+                            'cliente_codigo' => $this->input->post('cliente_codigo'),
+                            'cliente_nombre' => $this->input->post('cliente_nombre'),
+                            'cliente_ci' => $this->input->post('cliente_ci'),
+                            'cliente_direccion' => $this->input->post('cliente_direccion'),
+                            'cliente_telefono' => $this->input->post('cliente_telefono'),
+                            'cliente_celular' => $this->input->post('cliente_celular'),
+                            'cliente_foto' => $foto,
+                            'cliente_email' => $this->input->post('cliente_email'),
+                            'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                            'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+                            'cliente_latitud' => $this->input->post('cliente_latitud'),
+                            'cliente_longitud' => $this->input->post('cliente_longitud'),
+                            'cliente_nit' => $this->input->post('cliente_nit'),
+                            'cliente_razon' => $this->input->post('cliente_razon'),
+                            'usuario_id' => $this->input->post('usuario_id'),
+                            'zona_id' => $this->input->post('zona_id'),
+                            'lun' => $lun,
+                            'mar' => $mar,
+                            'mie' => $mie,
+                            'jue' => $jue,
+                            'vie' => $vie,
+                            'sab' => $sab,
+                            'dom' => $dom,
+                );
             
-            $cliente_id = $this->Cliente_model->add_cliente($params);
-            $this->load->model('Pedido_model');
-            $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
-            redirect('pedido/pedidoabierto/'.$pedido_id);
+//            $cliente_id = $this->Cliente_model->add_cliente($params);
+//            redirect('cliente/index');
+//            
+                $cliente_id = $this->Cliente_model->add_cliente($params);
+                $this->load->model('Pedido_model');
+                $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
+                redirect('pedido/pedidoabierto/'.$pedido_id);            
+
+            }
         }
         else
         {
 			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
+			$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                        
+                        $this->load->model('Categoria_clientezona_model');
+                        $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                        /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
+                        $this->load->model('Usuario_model');
+			$data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
 
 			$this->load->model('Tipo_cliente_model');
 			$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-
-			$this->load->model('Categoria_cliente_model');
+			
+                        $this->load->model('Categoria_cliente_model');
 			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
-            $data['pedido_id'] = $pedido_id;
-            $data['_view'] = 'cliente/clientenuevo';
-            $this->load->view('layouts/main',$data);
+			
+                        $data['resultado'] = 0;
+//            
+//            $data['_view'] = 'cliente/add';
+//            $this->load->view('layouts/main',$data);
+
+                    $data['pedido_id'] = $pedido_id;
+                    $data['_view'] = 'cliente/clientenuevo';
+                    $this->load->view('layouts/main',$data);            
+            
         }
-        
-       }
+        }
             else{
                 redirect('alerta');
             }
         } else {
             redirect('', 'refresh');
-        }        
-        
-    } 
+        }
+    }  
+    
+    
+    
+//    {   
+//        
+//        if ($this->session->userdata('logged_in')) {
+//            $session_data = $this->session->userdata('logged_in');
+//            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+//
+//        
+//                $this->load->library('form_validation');
+//
+//		$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
+//		$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
+//		
+//        if($this->form_validation->run())     
+//        {   
+//            $usuario_id = $session_data['usuario_id'];
+//            $params = array(
+//				'estado_id' => $this->input->post('estado_id'),
+//				'tipocliente_id' => $this->input->post('tipocliente_id'),
+//				'categoriaclie_id' => $this->input->post('categoriaclie_id'),
+//				'cliente_codigo' => $this->input->post('cliente_codigo'),
+//				'zona_id' => $this->input->post('zona_id'),
+//				'cliente_nombre' => $this->input->post('cliente_nombre'),
+//				'cliente_ci' => $this->input->post('cliente_ci'),
+//				'cliente_direccion' => $this->input->post('cliente_direccion'),
+//				'cliente_telefono' => $this->input->post('cliente_telefono'),
+//				'cliente_celular' => $this->input->post('cliente_celular'),
+//				'cliente_foto' => $this->input->post('cliente_foto'),
+//				'cliente_email' => $this->input->post('cliente_email'),
+//				'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+//				'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+//				'cliente_latitud' => $this->input->post('cliente_latitud'),
+//				'cliente_longitud' => $this->input->post('cliente_longitud'),
+//				'cliente_nit' => $this->input->post('cliente_nit'),
+//				'cliente_razon' => $this->input->post('cliente_razon'),
+//				'usuario_id' => $usuario_id,
+//            );
+//            
+//            $cliente_id = $this->Cliente_model->add_cliente($params);
+//            $this->load->model('Pedido_model');
+//            $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
+//            redirect('pedido/pedidoabierto/'.$pedido_id);
+//        }
+//        else
+//        {
+//			$this->load->model('Estado_model');
+//			$data['all_estado'] = $this->Estado_model->get_all_estado();
+//
+//			$this->load->model('Tipo_cliente_model');
+//			$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+//
+//			$this->load->model('Categoria_cliente_model');
+//			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+//            $data['pedido_id'] = $pedido_id;
+//            $data['_view'] = 'cliente/clientenuevo';
+//            $this->load->view('layouts/main',$data);
+//        }
+//        
+//       }
+//            else{
+//                redirect('alerta');
+//            }
+//        } else {
+//            redirect('', 'refresh');
+//        }        
+//        
+//    }     
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     /*
