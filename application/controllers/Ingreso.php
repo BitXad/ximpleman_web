@@ -26,7 +26,7 @@ class Ingreso extends CI_Controller{
     {
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -76,7 +76,7 @@ class Ingreso extends CI_Controller{
     {   
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+           if($session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -138,7 +138,7 @@ class Ingreso extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -188,7 +188,7 @@ class Ingreso extends CI_Controller{
 public function pdf($ingreso_id){
     if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -209,7 +209,7 @@ public function pdf($ingreso_id){
 public function boucher($ingreso_id){
     if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
