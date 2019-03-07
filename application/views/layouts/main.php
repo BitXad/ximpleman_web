@@ -268,6 +268,9 @@
                             <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Factura</span></a>
                         </li>
                         <li>
+                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('reportes/ingresorep');?>"><i class="fa fa-arrow-right"></i>Ingresos</a>
                         </li>
                         <li>
