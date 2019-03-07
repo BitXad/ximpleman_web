@@ -401,7 +401,7 @@
                             <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambio</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-cart-plus"></i>Cotizaciónes</a>
+                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-cart-plus"></i>Cotizaciones</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-cart-plus"></i>Ordenes de Pago</a>
