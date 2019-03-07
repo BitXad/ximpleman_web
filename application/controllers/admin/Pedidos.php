@@ -59,6 +59,9 @@ class Pedidos extends CI_Controller
         if ($tipousuario_idol == 4) {
             $rol = 'PREVENDEDOR';
         }
+        if ($tipousuario_idol == 5) {
+            $rol = 'TECNICO';
+        }
         return $rol;
     }
 
