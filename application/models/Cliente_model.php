@@ -69,7 +69,7 @@ class Cliente_model extends CI_Model
             WHERE
                 c.estado_id = e.estado_id
                
-              ORDER By c.cliente_id DESC LIMIT 50";
+              ORDER By c.cliente_nombre ASC LIMIT 50";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
