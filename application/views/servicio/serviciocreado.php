@@ -197,11 +197,11 @@ $(document).ready(function(){
         </div>
         <div class="box-tools">
             <center>
-                <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv..</small></a>
+                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Nuevo Servicio</small></a>
                 <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#myModal" onclick="ponerfocus();"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie..</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Clie..</small></a>
-                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Nuevo Det. Serv.</small></a>
-                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Det. Serv.</small></a>
+                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" ><font size="5"><span class="fa fa-user-secret"></span></font><br><small>Buscar Clie..</small></a>
+                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Servicio</small></a>
+                <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv..</small></a>
             </center>
         </div>
     </div>
@@ -632,7 +632,7 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_pesoentrada" class="control-label">Peso Entrada(Gr.)</label>
                                     <div class="form-group">
-                                            <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" />
+                                            <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" onclick='this.select();' />
                                     </div>
                             </div>
                             <div class="col-md-4">
@@ -644,19 +644,19 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_total" class="control-label">Total</label>
                                     <div class="form-group">
-                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo number_format($this->input->post('detalleserv_total'),'2','.',','); ?>" class="form-control" id="detalleserv_total" />
+                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo number_format($this->input->post('detalleserv_total'),'2','.',','); ?>" class="form-control" id="detalleserv_total" onclick='this.select();' />
                                     </div>
                             </div>
                             <div class="col-md-4">
                                     <label for="detalleserv_acuenta" class="control-label">A cuenta</label>
                                     <div class="form-group">
-                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo number_format($this->input->post('detalleserv_acuenta'),'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" />
+                                            <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo number_format($this->input->post('detalleserv_acuenta'),'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" onclick='this.select();' />
                                     </div>
                             </div>
                             <div class="col-md-4">
                                     <label for="detalleserv_saldo" class="control-label">Saldo</label>
                                     <div class="form-group">
-                                        <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo number_format($this->input->post('detalleserv_saldo'),'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly />
+                                        <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo number_format($this->input->post('detalleserv_saldo'),'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly onclick='this.select();' />
                                     </div>
                             </div>
                             <div class="col-md-4">
@@ -675,7 +675,7 @@ $(document).ready(function(){
                                     <label for="responsable_id" class="control-label"><span class="text-danger">*</span>Tec. Responsable</label>
                                     <div class="form-group">
                                         <select name="responsable_id" class="form-control" id="responsable_id" required>
-                                                    <option value="">- RESPONSABLE -</option>
+                                                    <!--<option value="">- RESPONSABLE -</option>-->
                                                     <?php 
                                                     foreach($all_responsable as $responsable)
                                                     {

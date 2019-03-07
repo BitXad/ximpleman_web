@@ -119,10 +119,10 @@
         
         <div class="box-tools text-center">
             <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
-            <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></a>
+            <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Ver Todos</small></a>
             <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
-            <a class="btn btn-soundcloud btn-foursquarexs" onClick="muestra_oculta('mapa')" id="mosmapa" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-search-plus"></span></font><br><small>Detalle Servicio</small></a>
-            <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Kardex Cliente</small></a>
+            <a class="btn btn-soundcloud btn-foursquarexs" onClick="muestra_oculta('mapa')" id="mosmapa" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Buscar Detalle</small></a>
+            <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Kardex Cliente</small></a>
             <a href="<?php echo base_url('servicio/repserviciodiario'); ?>" class="btn btn-danger btn-foursquarexs" target="_blank" title="Reporte Diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Vista Previa</small></a>           
         </div>
     </div>
@@ -223,19 +223,20 @@
                                 Sub Categoria Servicio:
                                 <input type="text" name="buscarsubcat" id="buscarsubcat" class="btn btn-primary btn-sm form-control" style="background-color: white; color: black; text-align: left; cursor: auto;" placeholder="Ingrese Sub Categoria" />
                         </div>
-                        <div class="col-md-2">
-                            <br>
-                            <button class="btn btn-sm btn-primary btn-sm btn-block"  type="submit" onclick="buscar_detallepor_fecha()" style="height: 34px;">
-                                <span class="fa fa-search"></span>Buscar Detalle Serv.
-                          </button>
-                            <br>
-                        </div>
+                        
                         <div class="col-md-2">
                             <br>
                             <span class="badge btn-primary" style="height: 34px; padding-top: 5px;">Detalle Serv. encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="resdetserv" type="text" value="0" readonly="true"> </span></span>
                         </div>
                         <div class="col-md-2">
                             <br>
+                            <br>
+                        </div>
+                        <div class="col-md-2">
+                            <br>
+                            <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscar_detallepor_fecha()" style="height: 34px;">
+                                <span class="fa fa-search"></span>&nbsp;&nbsp;Buscar Detalle Serv.
+                          </button>
                             <br>
                         </div>
                         <div class="col-md-2">

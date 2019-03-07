@@ -1371,6 +1371,37 @@ function cambiartiposervicio(servicio_id){
         
     });
 }
+
+function getgenerarsegservicio(servicio_id, cliente_nombre){
+    var letraini = cliente_nombre.substring(0,1);
+    var letrafin = cliente_nombre.substring(cliente_nombre.length-1,cliente_nombre.length);
+    var estetime = new Date();
+    var anio = estetime.getFullYear();
+    anio = anio -2000;
+    var mes = parseInt(estetime.getMonth())+1;
+    if(mes>0&&mes<10){
+        mes = "0"+mes;
+    }
+    var dia = parseInt(estetime.getDate());
+    if(dia>0&&dia<10){
+        dia = "0"+dia;
+    }
+    var hora = estetime.getHours();
+    if(hora>0&&hora<10){
+        hora = "0"+hora;
+    }
+    var min = estetime.getMinutes();
+    if(min>0&&min<10){
+        min = "0"+min;
+    }
+    var seg = estetime.getSeconds();
+    if(seg>0&&seg<10){
+        seg = "0"+seg;
+    }
+    var codigo = seg+servicio_id+anio+letraini+hora+mes+letrafin+min+dia;
+    return codigo;
+}
+
 /* ****************REGISTRAR NUEVO CLIENTE PARA UN SERVICIO*************** */
 function registrarnuevocliente(servicio_id){
     var nombremodal = "myModal";
@@ -1380,11 +1411,11 @@ function registrarnuevocliente(servicio_id){
     var cliente_ci = document.getElementById('cliente_ci').value;
     var cliente_nit = document.getElementById('cliente_nit').value;
     var cliente_telefono = document.getElementById('cliente_telefono').value;
-
+    var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
     var controlador = base_url+'cliente/add_new/'+servicio_id;
     $.ajax({url: controlador,
            type:"POST",
-           data:{cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo, cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_telefono:cliente_telefono},
+           data:{cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo, cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_telefono:cliente_telefono, codigo_seg:codigo_seg},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
@@ -1579,17 +1610,19 @@ function resultadodetalleservicionew(servicio_id){
                             html += "<font size='1'><b>Proc.: </b>"+registros[i]["procedencia_descripcion"]+"</font><br>";
                         }
                         if(registros[i]["tiempouso_id"] != 0){
-                            html += "<font size='1'><b>T. uso.: </b>"+registros[i]["tiempouso_descripcion"]+"</font><br>";
+                            html += "<font size='1'><b>Tiempo Uso: </b>"+registros[i]["tiempouso_descripcion"]+"</font><br>";
                         }
                         var res = "";
-                        if(registros[i]["detalleserv_reclamo"] == "si"){ res = "Si";}else{ res = "No"; }
-                        html += "<font size='1'><b>¿Reclamo?: </b>"+res+"</font><br>";
+                        //if(registros[i]["detalleserv_reclamo"] == "si"){ res = "Si";}else{ res = "No"; }
+                        if(registros[i]["detalleserv_reclamo"] == "si"){ res = "Si";
+                            html += "<font size='1'><b>¿Reclamo?: </b>"+res+"</font><br>";
+                        }
                         html += "<font size='1'><b>Resp. Tec.: </b>"+registros[i]["respusuario_nombre"]+"</font><br>";
                         html += "<font size='1'><b>Recep.: </b>"+registros[i]["usuario_nombre"]+"</font><br>";
                         html += "<font size='1'><b>Entregar: </b>";
                         //var fechaentrega = "";
                         if(registros[i]["detalleserv_fechaentrega"] != null){
-                            html += convertDateFormat(registros[i]["detalleserv_fechaentrega"])+" <b>Hrs.: </b>"+registros[i]["detalleserv_horaentrega"]+"</font>";
+                            html += convertDateFormat(registros[i]["detalleserv_fechaentrega"])+" <b> - </b>"+registros[i]["detalleserv_horaentrega"]+"</font>";
                         }
                         //html += fechaentrega;
                         html += "</td>";
