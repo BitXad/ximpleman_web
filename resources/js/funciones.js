@@ -1658,7 +1658,10 @@ function buscar_clientes()
                 
                 for(var i = 0; i<fin; i++)
                 {
-                    html += "<option value='" +resultado[i]["cliente_id"]+"' label='"+resultado[i]["cliente_nombre"]+"'>"+resultado[i]["cliente_razon"]+"</option>";
+                    html += "<option value='" +resultado[i]["cliente_id"]+"' label='"+resultado[i]["cliente_nombre"];
+                    if (resultado[i]["cliente_nombrenegocio"]!=null)
+                    {    html += " ("+resultado[i]["cliente_nombrenegocio"]+")"; }
+                    html += "'>"+resultado[i]["cliente_razon"]+"</option>";
                 }    
                 $("#listaclientes").html(html);
 
