@@ -126,11 +126,7 @@
                         </li>
                     </ul>
                 </li>
-                <?php }?>
-
-                <?php
-                if($session_data['tipousuario_id']==1){
-                ?>
+                
                 <li>
                     <a href="#"><i class="fa fa-list-ol"></i> <span>Parametros</span></a>
                     <ul class="treeview-menu">
@@ -196,9 +192,7 @@
                         
                     </ul>
                 </li>
-
-                <?php }?>
-                <?php if($session_data['tipousuario_id']==1){ ?>
+                
                 <li>
                     <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
                     <ul class="treeview-menu">
@@ -248,10 +242,7 @@
                       
                     </ul>
                 </li>
-                <?php } ?>
-                <?php
-                    if($session_data['tipousuario_id']==1){
-                ?>
+                
                 <li>
                     <a href="#"><i class="fa fa-clipboard"></i> <span>Reportes</span></a>
                     <ul class="treeview-menu">
@@ -395,9 +386,8 @@
                         </li>
                     </ul>
                 </li>
-                    <?php }?>
-                <?php
-                if($session_data['tipousuario_id']==3){?>
+                <?php }
+                if($session_data['tipousuario_id']==2){ ?>
                 <li>
                     <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
                     <ul class="treeview-menu">
@@ -405,16 +395,40 @@
                             <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-cube"></i>Compras</a>
+                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-cart-plus"></i>Compras</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambio</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-cart-plus"></i>Cotizaciónes</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-cart-plus"></i>Ordenes de Pago</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
+                        </li>
                     </ul>
                 </li>
-                <?php } ?>
-                 <?php
-                if($session_data['tipousuario_id']==4){?>
+                <?php } 
+                if($session_data['tipousuario_id']==3){ ?>
+                <li>
+                    <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambio</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
+                        </li>
+                    </ul>
+                </li>
+                <?php }
+                if($session_data['tipousuario_id']==4){ ?>
                 <li>
                     <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
                     <ul class="treeview-menu">
@@ -426,6 +440,16 @@
                         </li>
                         <li>
                             <a href="<?php echo site_url('cliente');?>"><i class="fa fa-cart-plus"></i>Clientes</a>
+                        </li>
+                    </ul>
+                </li>
+                <?php }
+                if($session_data['tipousuario_id']==5){ ?>
+                <li>
+                    <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="<?php echo site_url('servicio');?>"><i class="fa fa-cart-plus"></i>Servicios</a>
                         </li>
                     </ul>
                 </li>
