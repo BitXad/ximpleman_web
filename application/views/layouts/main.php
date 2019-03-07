@@ -398,7 +398,7 @@
                             <a href="<?php echo site_url('compra');?>"><i class="fa fa-cubes"></i>Compras</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-chain"></i>Cambio</a>
+                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-chain"></i>Cambios/Devoluciones</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-list-ul"></i>Cotizaciones</a>
