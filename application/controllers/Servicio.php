@@ -19,7 +19,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -57,7 +57,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -121,7 +121,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -172,7 +172,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         $servicio = $this->Servicio_model->get_servicio($servicio_id);
 
         // check if the servicio exists before trying to delete it
@@ -199,7 +199,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -259,7 +259,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
         $usuario_id = $session_data['usuario_id'];
         $tiposerv_id = 1; //este valor (Servicio Normal) esta definido en la tabla tipo_servicio
@@ -294,7 +294,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -386,7 +386,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 if ($this->input->is_ajax_request()){
                     $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -424,7 +424,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 if ($this->input->is_ajax_request()){
                     $tiposerv_id = $this->input->post('tiposerv_id');   
@@ -455,7 +455,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -492,7 +492,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         $estado_id = 4; // este valor esta definido en la tabla Estado
         $usuario_id = $session_data['usuario_id'];
         
@@ -532,7 +532,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -574,7 +574,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         $estado_id = 4; // este valor esta definido en la tabla Estado
         $usuario_id = $session_data['usuario_id'];
         
@@ -613,7 +613,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
  
 //        if(isset($this->input->post('catserv_id')))
 //        {
@@ -636,7 +636,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         if(isset($_POST) && count($_POST) > 0)     
         {
             $servicio_id = $this->input->post('servicio_id');
@@ -666,7 +666,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         $estado_id = 4; // este valor esta definido en la tabla Estado = ANULADO
         $this->load->model('Detalle_serv_model');
         $detparams = array(
@@ -719,7 +719,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 
 
@@ -753,7 +753,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -792,7 +792,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -895,7 +895,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
         if ($this->input->is_ajax_request()) {
             
@@ -928,7 +928,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 if ($this->input->is_ajax_request()){
                     $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -961,7 +961,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 if ($this->input->is_ajax_request()){
                    $datos = $this->Servicio_model->get_servicio($servicio_id);
@@ -984,7 +984,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 $this->load->model('Detalle_venta_model');
                 $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
@@ -1004,7 +1004,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1047,7 +1047,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1077,7 +1077,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1103,7 +1103,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1141,7 +1141,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1183,7 +1183,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1223,7 +1223,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1268,7 +1268,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         if ($this->input->is_ajax_request()) {
             
             $datos = $this->Servicio_model->get_all_servicios_pendientes();
@@ -1293,7 +1293,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1332,7 +1332,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
         if ($this->input->is_ajax_request()) {
             
             $datos = $this->Servicio_model->get_all_servicios_dia();
@@ -1355,7 +1355,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 $this->load->model('Detalle_venta_model');
                 $datos = $this->Detalle_venta_model->get_costototal_insumos_usados($detalleserv_id);
@@ -1374,7 +1374,7 @@ class Servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 
 
