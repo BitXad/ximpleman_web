@@ -61,13 +61,17 @@ class Verificar extends CI_Controller
                     redirect('admin/dashb');
                 }
                 if($session_data['tipousuario_id'] == 5) {
-                    $this->load->model('Cliente_model');
+                   // $this->load->model('Cliente_model');
                     //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']);
-                    redirect('detalle_serv/kardexserviciocliente/'.$cliente_id);
+                    redirect('servicio');
                 }
 
-                if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 4){
+                if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 3){
                     redirect('venta/ventas');
+                }
+
+                if($session_data['tipousuario_id'] == 4){
+                    redirect('pedido');
                 }
 
 

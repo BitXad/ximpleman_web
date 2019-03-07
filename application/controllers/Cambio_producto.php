@@ -24,7 +24,7 @@ class Cambio_producto extends CI_Controller{
         
            if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -56,7 +56,7 @@ function devolverproducto()
         
           if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
                 $usuario_id = $session_data['usuario_id'];
         $cambio_producto_id = $this->input->post('cambio_producto_id');
         $producto_id = $this->input->post('producto_id');
@@ -121,7 +121,7 @@ function devolverproducto()
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {    
+             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) { 
                 $usuario_id = $session_data['usuario_id'];
         $cambio_producto_id = $this->Cambio_producto_model->crear_cambio($usuario_id);        
         redirect('cambio_producto/add/'.$cambio_producto_id);
@@ -202,7 +202,7 @@ function devolverproducto()
          
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -234,7 +234,7 @@ function devolverproducto()
        
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
              $usuario_id = $session_data['usuario_id'];
         
             $data['cambio_producto'] = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
@@ -266,7 +266,7 @@ function devolverproducto()
        
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {  
+             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {  
                  $usuario_id = $session_data['usuario_id'];
       //  $cambio_producto_id = $this->input->post('cambio_producto_id');
         $comp = "UPDATE detalle_compra
@@ -316,7 +316,7 @@ function devolverproducto()
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
                 $usuario_id = $session_data['usuario_id'];
         $cambio_producto_id = $this->input->post('cambio_producto_id');
         $producto_id = $this->input->post('producto_id');
@@ -413,7 +413,7 @@ function devolverproducto()
     
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
                 $usuario_id = $session_data['usuario_id'];
     $cambio_producto = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
      $params = array(
