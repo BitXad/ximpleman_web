@@ -86,7 +86,7 @@
                             <a href="<?php echo site_url('cambio_producto/add/'.$c['cambio_producto_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-edit"></span></a> 
                              
                              <a class="btn btn-warning btn-xs" data-toggle="modal" data-target="#myAnula<?php echo $t; ?>"  title="Anular"><em class="fa fa-remove"></em></a>
-                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>
+                            <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>-->
                         </td>
                     </tr>
                     <!---------------------- modal para eliminar el usuario ------------------->

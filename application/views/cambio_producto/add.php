@@ -127,7 +127,7 @@ input[type=number] { -moz-appearance:textfield; }
                          <form action="<?php echo base_url('cambio_producto/updateDetalle/'.$cambio_producto_id."/".$d['producto_id']); ?>"  method="POST" class="form">
                         <td> <input id="cambio_producto_id"  name="cambio_producto_id" type="hidden" class="form-control" value="<?php echo $cambio_producto_id; ?>">
                               <input id="producto_id"  name="producto_id" type="hidden" class="form-control" value="<?php echo $d['producto_id']; ?>">
-                            <input id="detallecomp_precio"  name="producto_precio" type="text" size="3" class="form-control" onkeypress="return pulsar(event)" value="<?php echo $d['detallecomp_precio']; ?>"  ></td>  
+                            <input id="detallecomp_precio"  name="producto_precio" type="text" size="3" class="form-control" onkeypress="return pulsar(event)" readonly="readonly" value="<?php echo $d['detallecomp_precio']; ?>"  ></td>  
                         <input id="detallecomp_costo"  name="producto_costo" type="hidden" size="3" class="form-control" onkeypress="return pulsar(event)" value="<?php echo $d['detallecomp_costo']; ?>" >
                         <td><input id="detallecomp_cantidad"  name="cantidad" size="3" type="text" readonly="readonly" class="form-control" value="<?php echo $d['detallecomp_cantidad'];?>" onkeypress="return pulsar(event)">
                             <input id="detallecomp_id"  name="detallecomp_id" type="hidden" class="form-control" value="<?php echo $d['detallecomp_id']; ?>"></td>
@@ -211,7 +211,7 @@ input[type=number] { -moz-appearance:textfield; }
                          <form action="<?php echo base_url('cambio_producto/updateDetalle/'.$cambio_producto_id."/".$d['producto_id']); ?>"  method="POST" class="form">
                         <td> <input id="cambio_producto_id"  name="cambio_producto_id" type="hidden" class="form-control" value="<?php echo $cambio_producto_id; ?>">
                               <input id="producto_id"  name="producto_id" type="hidden" class="form-control" value="<?php echo $d['producto_id']; ?>">
-                            <input id="detalleven_precio"  name="producto_precio" type="text" size="3" class="form-control" onkeypress="return pulsar(event)" value="<?php echo $d['detalleven_precio']; ?>" ></td>  
+                            <input id="detalleven_precio"  name="producto_precio" type="text" size="3" class="form-control" onkeypress="return pulsar(event)" readonly="readonly" value="<?php echo $d['detalleven_precio']; ?>" ></td>  
                         <input id="detalleven_costo"  name="producto_costo" type="hidden" size="3" class="form-control" onkeypress="return pulsar(event)" value="<?php echo $d['detalleven_costo']; ?>" >
                         <td><input id="detalleven_cantidad" readonly="readonly"  name="cantidad" size="3" type="text" class="form-control" value="<?php echo $d['detalleven_cantidad'];?>" onkeypress="return pulsar(event)">
                             <input id="detalleven_id"  name="detalleven_id" type="hidden" class="form-control" value="<?php echo $d['detalleven_id']; ?>"></td>
