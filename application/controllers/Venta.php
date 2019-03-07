@@ -34,7 +34,7 @@ class Venta extends CI_Controller{
 
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -73,7 +73,7 @@ class Venta extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -115,7 +115,7 @@ class Venta extends CI_Controller{
     {       
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -207,7 +207,7 @@ class Venta extends CI_Controller{
     {       
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -249,7 +249,7 @@ class Venta extends CI_Controller{
     {  
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -518,7 +518,7 @@ class Venta extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -599,7 +599,7 @@ class Venta extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -667,7 +667,7 @@ function edit($venta_id)
       
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -759,7 +759,7 @@ function edit($venta_id)
         
            if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -789,7 +789,7 @@ function edit($venta_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -813,7 +813,7 @@ function edit($venta_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -836,7 +836,7 @@ function edit($venta_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -869,7 +869,7 @@ function edit($venta_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -908,7 +908,7 @@ function edit($venta_id)
       
             if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -944,7 +944,7 @@ function edit($venta_id)
       
             if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -983,7 +983,7 @@ function edit($venta_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1015,7 +1015,7 @@ function edit($venta_id)
 
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1053,7 +1053,7 @@ function edit($venta_id)
      
             if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1097,7 +1097,7 @@ function buscarproductos()
 {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1135,7 +1135,7 @@ function buscarcategorias()
 {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1193,7 +1193,7 @@ function registrarcliente()
 {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1231,7 +1231,7 @@ function modificarcliente()
 {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1316,7 +1316,7 @@ function ultimaventa(){
     
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Imprimir factura'
                 );
@@ -1342,7 +1342,7 @@ function eliminar_venta($venta_id){
 
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1377,7 +1377,7 @@ function anular_venta($venta_id){
 
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1443,7 +1443,7 @@ function anular_venta($venta_id){
 
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Mostrar Ventas'
                 );
@@ -1481,7 +1481,7 @@ function anular_venta($venta_id){
 
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1522,7 +1522,7 @@ function anular_venta($venta_id){
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1563,7 +1563,7 @@ function anular_venta($venta_id){
     {
             if ($this->session->userdata('logged_in')) {
                 $session_data = $this->session->userdata('logged_in');
-                if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+                if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                     $data = array(
                         'page_title' => 'Admin >> Mi Cuenta'
                     );
@@ -1624,7 +1624,7 @@ function anular_venta($venta_id){
     {
             if ($this->session->userdata('logged_in')) {
                 $session_data = $this->session->userdata('logged_in');
-                if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+                if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                     $data = array(
                         'page_title' => 'Admin >> Mi Cuenta'
                     );
@@ -1681,7 +1681,7 @@ function anular_venta($venta_id){
 
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1718,7 +1718,7 @@ function anular_venta($venta_id){
     {       
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1751,7 +1751,7 @@ function anular_venta($venta_id){
     {       
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1781,7 +1781,7 @@ function anular_venta($venta_id){
     {       
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1808,7 +1808,7 @@ function anular_venta($venta_id){
     {       
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1841,7 +1841,7 @@ function anular_venta($venta_id){
     {       
          if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -1870,7 +1870,7 @@ function anular_venta($venta_id){
     function seleccionar_cliente($cliente_id){
         if ($this->session->userdata('logged_in')) {
                    $session_data = $this->session->userdata('logged_in');
-                   if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+                   if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                        $data = array(
                            'page_title' => 'Admin >> Mi Cuenta'
                        );
@@ -1896,7 +1896,7 @@ function anular_venta($venta_id){
     function registrar_caracteristicas(){
         if ($this->session->userdata('logged_in')) {
                    $session_data = $this->session->userdata('logged_in');
-                   if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
+                   if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                        $data = array(
                            'page_title' => 'Admin >> Mi Cuenta'
                        );
