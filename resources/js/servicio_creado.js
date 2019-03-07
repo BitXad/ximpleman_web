@@ -1887,3 +1887,29 @@ function resetearcamposdeinputcliente(){
         $('#cliente_telefono').val('');
     });
 }
+/* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */
+function finalizarservicio(servicio_id){
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"servicio/modificarservicio";
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{servicio_id:servicio_id},
+            success:function(resul){
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    if(registros == "ok"){
+                        
+                    }else{
+                        alert("Hubo problemas al Finalizar el Servicio");
+                    }
+                }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           alert("Ocurrio un error inesperado");
+        }
+        
+    });   
+    window.location.href='../../servicio';
+}
