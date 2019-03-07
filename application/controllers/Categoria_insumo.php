@@ -18,7 +18,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -40,7 +40,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -78,7 +78,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -123,7 +123,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
             $categoria_insumo = $this->Categoria_insumo_model->get_categoria_insumo($catinsumo_id);
 
             // check if the categoria_insumo exists before trying to delete it
@@ -147,7 +147,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -178,7 +178,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 if ($this->input->is_ajax_request()){
                     $subcatserv_id = $this->input->post('subcatserv_id');
                     $producto_id = $this->input->post('producto_id');
@@ -218,7 +218,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
 
                 if ($this->input->is_ajax_request()){
                     $params = array(
@@ -242,7 +242,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
 
                 if ($this->input->is_ajax_request()){
                     $params = array(
@@ -269,7 +269,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 if ($this->input->is_ajax_request()){
                     
                     $this->Categoria_insumo_model->delete_categoria_insumo($catinsumo_id);
@@ -293,7 +293,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 
                 $this->load->model('Detalle_venta_model');
                 $res = $this->Detalle_venta_model->get_cantidad_detalle_venta($detalleven_id);
@@ -316,7 +316,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -356,7 +356,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -474,7 +474,7 @@ class Categoria_insumo extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
  
 //        if(isset($this->input->post('catserv_id')))
 //        {

@@ -395,6 +395,7 @@ class Servicio extends CI_Controller{
                         $cliente_id = $this->input->post('cliente_id');
                         $params = array(
 					'cliente_id' => $cliente_id,
+                                        'servicio_codseguimiento' => $this->input->post('codigo_seg'),
                         );
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                         $this->load->model('Cliente_model');

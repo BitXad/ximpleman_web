@@ -449,7 +449,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -514,22 +514,11 @@ class Cliente extends CI_Controller{
                                         'usuario_id' => $this->input->post('usuario_id'),
                                     );
                                 $cliente_id = $this->Cliente_model->add_cliente($params);
-                                //tipousuario_id = 5 --> porque el tipo de usario es CLIENTE
-                                $param = array(
-                                                    'estado_id' => $estado_id,
-                                                    'tipousuario_id' => 5,
-                                                    'usuario_nombre' => $this->input->post('cliente_nombre'),
-                                                    'usuario_email' => $this->input->post('cliente_email'),
-                                                    'usuario_login' => $cliente_ci,
-                                                    'usuario_clave' => md5($this->input->post('cliente_codigo')),
-                                );
-
-                                $this->load->model('Usuario_model');
-                                $usuario_id = $this->Usuario_model->add_usuario($param);
-                                /*$mas_params = array('cliente_codigo' =>'CSRV-'.$cliente_id);
-                                $this->Cliente_model->update_cliente($cliente_id, $mas_params);
-                                */
-                                $params_serv = array('cliente_id' => $cliente_id);
+                                
+                                $params_serv = array(
+                                       'cliente_id' => $cliente_id,
+                                       'servicio_codseguimiento' => $this->input->post('codigo_seg'),
+                                    );
 
                                 $this->Servicio_model->update_servicio($servicio_id,$params_serv);
 
@@ -563,7 +552,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
@@ -645,7 +634,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
