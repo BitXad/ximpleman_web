@@ -624,7 +624,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    $("#tablatraspasoresultados").html(cabecerahtml9+html9+piehtml9);
                    $("#sumatablaingresosresultados").html(totaltablaingresoresultados);
                    $("#sumatablaingresosventas").html(totaltablaingresoventas);
-                   $("#sumatablautilidadventas").html(totaltablautilidadventas);
+                   //$("#sumatablautilidadventas").html(totaltablautilidadventas);
                    $("#tablaegresoresultados").html(cabecerahtml4+html4+piehtml4);
                    $("#tablacompraresultados").html(cabecerahtml5+html5+piehtml5);
                    $("#tablapagoresultados").html(cabecerahtml6+html6+piehtml6);
