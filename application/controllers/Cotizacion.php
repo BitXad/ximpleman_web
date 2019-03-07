@@ -21,7 +21,7 @@ class Cotizacion extends CI_Controller{
     {
            if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -44,7 +44,7 @@ function creacotizacion()
        
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $usuario_id = $session_data['usuario_id'];
         $cotizacion_id = $this->Cotizacion_model->crear_cotizacion($usuario_id);        
         redirect('cotizacion/add/'.$cotizacion_id);
@@ -65,7 +65,7 @@ function creacotizacion()
         
           if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -94,7 +94,7 @@ function creacotizacion()
         
           if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -237,7 +237,7 @@ function insertarproducto()
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -261,7 +261,7 @@ function insertarproducto()
     {   
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $usuario_id = $session_data['usuario_id'];
         // check if the cotizacion exists before trying to edit it
         $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
@@ -310,7 +310,7 @@ function insertarproducto()
     {   
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']<=3) {
                 $usuario_id = $session_data['usuario_id'];
         // check if the cotizacion exists before trying to edit it
         $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
