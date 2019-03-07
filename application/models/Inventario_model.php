@@ -17,7 +17,7 @@ class Inventario_model extends CI_Model
     function get_inventario()
     {
         $sql = "select p.* from inventario p where p.estado_id = 1
-                group by p.producto_id order by p.producto_id";
+                group by p.producto_id order by p.producto_nombre asc";
         
 //        $sql = "select p.*,
 //                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
@@ -45,7 +45,7 @@ class Inventario_model extends CI_Model
         $sql = "select p.* from inventario p
                 where p.estado_id=1 and p.producto_id between 1 and 10 
                 group by p.producto_id
-                order by p.producto_id";
+                order by p.producto_nombre asc";
 //        
 //        $sql = "select p.*,
 //                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
@@ -72,7 +72,7 @@ class Inventario_model extends CI_Model
         $sql = "select p.* from
                 inventario p where p.estado_id = 1 and p.producto_codigobarra='".$codigo."'
               group by p.producto_id
-              order by p.producto_id";
+              order by p.producto_nombre";
 
 //        $sql = "select p.*,
 //                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
@@ -101,7 +101,7 @@ class Inventario_model extends CI_Model
               WHERE p.estado_id=1 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
               GROUP BY
                 p.producto_id
-              ORDER By p.producto_id";
+              ORDER By p.producto_nombre asc";
   
 //        $sql = "SELECT p.*,
 //                (SELECT if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) AS FIELD_1 FROM detalle_compra d WHERE d.producto_id = p.producto_id) AS compras,
@@ -123,7 +123,7 @@ class Inventario_model extends CI_Model
     function get_inventario_categoria($parametro)
     {
         $sql = " select i.* from inventario i where i.estado_id = 1 and i.categoria_id = ".$parametro.
-               " group by i.producto_id order by i.producto_id";
+               " group by i.producto_id order by p.producto_nombre";
   
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -135,7 +135,7 @@ class Inventario_model extends CI_Model
      */
     function get_presentacion()
     {
-        $sql = "select * from presentacion order by producto_id";
+        $sql = "select * from presentacion order by p.producto_nombre";
         $presentacion = $this->db->query($sql)->result_array();
         return $presentacion;
     }

@@ -423,6 +423,15 @@
                             <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambio</a>
                         </li>
                         <li>
+                            <a href="<?php echo site_url('cliente');?>"><i class="fa fa-users"></i>Clientes</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('ingreso');?>"><i class="fa fa-arrow-right"></i> <span>Ingresos</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i> <span>Egresos</span></a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
                         </li>
                     </ul>

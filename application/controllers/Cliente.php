@@ -18,7 +18,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -66,7 +66,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -589,7 +589,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
@@ -854,7 +854,7 @@ class Cliente extends CI_Controller{
 //        
 //        if ($this->session->userdata('logged_in')) {
 //            $session_data = $this->session->userdata('logged_in');
-//            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+//            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
 //
 //        
 //                $this->load->library('form_validation');
@@ -953,7 +953,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
@@ -985,7 +985,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
@@ -1015,7 +1015,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
                 
                 $usuario_id = $session_data['usuario_id'];
 
