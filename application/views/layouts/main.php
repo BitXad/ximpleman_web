@@ -439,7 +439,7 @@
                             <a href="<?php echo site_url('pedido');?>"><i class="fa fa-cube"></i>Pedidos</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cliente');?>"><i class="fa fa-cart-plus"></i>Clientes</a>
+                            <a href="<?php echo site_url('cliente');?>"><i class="fa fa-users"></i>Clientes</a>
                         </li>
                     </ul>
                 </li>

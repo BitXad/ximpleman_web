@@ -84,7 +84,7 @@ class Pedido extends CI_Controller{
         
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 or $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -194,9 +194,14 @@ class Pedido extends CI_Controller{
 //        if ($usuario_id == $usuarioped_id){
             
         $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
-        $cliente_id = $pedido[0]['cliente_id'];
- 
-            if ($cliente_id==0) //si el pedido aun no fue registrado a un cliente
+        
+        if(sizeof($pedido)>0)        
+            $cliente_id = $pedido[0]['cliente_id'];
+        else
+            $cliente_id = 0;
+        
+        
+            if ($cliente_id == 0) //si el pedido aun no fue registrado a un cliente
             {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); }
             else
             {    $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); }
