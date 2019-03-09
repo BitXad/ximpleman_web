@@ -61,15 +61,18 @@ class Cliente_model extends CI_Model
     function get_all_cliente_limit()
     {
         $sql = "SELECT
-                c.*, e.estado_color, e.estado_descripcion
-
+                c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
+                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre
             FROM
-                cliente c, estado e
-
-            WHERE
-                c.estado_id = e.estado_id
-               
-              ORDER By c.cliente_nombre ASC LIMIT 50";
+                cliente c
+            LEFT JOIN estado e on c.estado_id = e.estado_id
+            LEFT JOIN tipo_cliente tc on c.tipocliente_id = tc.tipocliente_id
+            LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
+            LEFT JOIN usuario u on c.usuario_id = u.usuario_id
+            LEFT JOIN zona z on c.zona_id = z.zona_id
+            GROUP BY
+                c.cliente_id
+            ORDER By c.cliente_id DESC LIMIT 50";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
@@ -242,12 +245,17 @@ class Cliente_model extends CI_Model
     function get_busqueda_cliente_parametro($parametro, $categoria)
     {
         $sql = "SELECT
-                c.*, e.estado_color, e.estado_descripcion
+                c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
+                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre
 
             FROM
-                cliente c, estado e, categoria_cliente cc, zona z,
-                tipo_cliente tc, usuario u
-
+                cliente c
+            LEFT JOIN estado e on c.estado_id = e.estado_id
+            LEFT JOIN tipo_cliente tc on c.tipocliente_id = tc.tipocliente_id
+            LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
+            LEFT JOIN usuario u on c.usuario_id = u.usuario_id
+            LEFT JOIN zona z on c.zona_id = z.zona_id
+            
             WHERE
                 c.estado_id = e.estado_id
                 and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
@@ -368,19 +376,23 @@ class Cliente_model extends CI_Model
 
         return $cliente;
     }
+    
     /* Funcion que busca a TODOS los clientes */
     function get_all_cliente()
     {
         $sql = "SELECT
-                c.*, e.estado_color, e.estado_descripcion
-
+                c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
+                cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre
             FROM
-                cliente c, estado e
-
-            WHERE
-                c.estado_id = e.estado_id
-               
-              ORDER By c.cliente_id DESC";
+                cliente c
+            LEFT JOIN estado e on c.estado_id = e.estado_id
+            LEFT JOIN tipo_cliente tc on c.tipocliente_id = tc.tipocliente_id
+            LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
+            LEFT JOIN usuario u on c.usuario_id = u.usuario_id
+            LEFT JOIN zona z on c.zona_id = z.zona_id
+            GROUP BY
+                c.cliente_id
+            ORDER By c.cliente_id DESC";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
