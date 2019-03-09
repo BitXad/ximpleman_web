@@ -14,7 +14,9 @@
 <div class="cuerpo" style="height: 110px;">
                     <div class="columna_derecha">
                         <center> 
-                        <?php echo "<img src='../ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                        <?php $mimagen = $empresa[0]['empresa_imagen'];
+
+            echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" height="80px" width="80px" "/>'; ?>
                     </center>
                     </div>
                     <div class="columna_izquierda">

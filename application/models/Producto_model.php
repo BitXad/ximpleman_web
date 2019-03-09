@@ -48,7 +48,7 @@ class Producto_model extends CI_Model
                 and p.presentacion_id = pr.presentacion_id
                 and p.moneda_id = m.moneda_id
 
-            ORDER BY p.producto_id DESC
+            ORDER BY p.producto_nombre
 
         ")->row_array();
 
@@ -73,7 +73,7 @@ class Producto_model extends CI_Model
                 and p.presentacion_id = pr.presentacion_id
                 and p.moneda_id = m.moneda_id
 
-            ORDER BY p.producto_id DESC LIMIT 50
+            ORDER BY p.producto_nombre ASC LIMIT 50
 
         ")->result_array();
 
@@ -96,7 +96,7 @@ class Producto_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY producto_id DESC limit 10
+            ORDER BY producto_nombre limit 10
 
             " . $limit_condition . "
         ")->result_array();
@@ -182,7 +182,7 @@ class Producto_model extends CI_Model
                    or producto_industria like '%".$parametro."%')
                    ".$categoriaestado."
               GROUP By p.producto_id
-              ORDER By p.producto_id";
+              ORDER By p.producto_nombre";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -227,7 +227,7 @@ class Producto_model extends CI_Model
               WHERE 
                    p.estado_id = e.estado_id
                   
-              ORDER By p.producto_id desc LIMIT 50";
+              ORDER By p.producto_nombre LIMIT 50";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -245,7 +245,7 @@ class Producto_model extends CI_Model
               WHERE 
                    p.estado_id = e.estado_id
                   
-              ORDER By p.producto_id desc";
+              ORDER By p.producto_nombre";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -265,7 +265,7 @@ class Producto_model extends CI_Model
                    and p.categoria_id = cp.categoria_id
                    ".$parametro."
                   
-              ORDER By p.producto_id desc";
+              ORDER By p.producto_nombre";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
