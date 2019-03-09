@@ -40,6 +40,14 @@
 });
         }
 </script>
+<?php if($resultado == 1){ ?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        var esnombre = $("#producto_nombre").val();
+        alert("El producto '"+esnombre+"' \n ya se encuentra REGISTRADO");
+    });
+</script>
+<?php } ?>
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">

@@ -185,9 +185,11 @@
                         <li>
                             <a href="<?php echo site_url('tipo_servicio');?>"><i class="fa fa-wrench"></i>Tipo Servicio</a>
                         </li>
-                        
                         <li>
                             <a href="<?php echo site_url('tiempo_uso');?>"><i class="fa fa-hourglass"></i>Tiempo de Uso</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('unidad');?>"><i class="fa fa-hourglass"></i>Unidad</a>
                         </li>
                         
                     </ul>

@@ -271,4 +271,19 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+    /*
+     * Verifica si ya hay un prpducto registrado con un nombre
+     */
+    function es_producto_registrado($producto_nombre)
+    {
+        $sql = "SELECT
+                      count(p.producto_id) as resultado
+                  FROM
+                      producto p
+                 WHERE
+                      p.producto_nombre = '".$producto_nombre."'";
+
+        $producto = $this->db->query($sql)->row_array();
+        return $producto['resultado'];
+    }
 }

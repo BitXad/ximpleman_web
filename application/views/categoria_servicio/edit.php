@@ -10,7 +10,7 @@
 					<div class="col-md-6">
                                             <label for="catserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-							<input type="text" name="catserv_descripcion" value="<?php echo ($this->input->post('catserv_descripcion') ? $this->input->post('catserv_descripcion') : $categoria_servicio['catserv_descripcion']); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="catserv_descripcion" required />
+							<input type="text" name="catserv_descripcion" value="<?php echo ($this->input->post('catserv_descripcion') ? $this->input->post('catserv_descripcion') : $categoria_servicio['catserv_descripcion']); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="catserv_descripcion" required onKeyUp="this.value = this.value.toUpperCase();" />
                                                         <span class="text-danger"><?php echo form_error('catserv_descripcion');?></span>
 						</div>
 					</div>
@@ -18,7 +18,7 @@
 						<label for="estado_id" class="control-label">Estado</label>
 						<div class="form-group">
 							<select name="estado_id" class="form-control">
-								<option value="">- ESTADO -</option>
+								<!--<option value="">- ESTADO -</option>-->
 								<?php 
 								foreach($all_estado as $estado)
 								{

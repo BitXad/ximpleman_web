@@ -64,12 +64,27 @@ class Producto extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         $this->load->library('form_validation');
+        $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
+        $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
+        if($this->form_validation->run())     
+        {
+                $producto_nombre = $this->input->post('producto_nombre');
+                $resultado = $this->Producto_model->es_producto_registrado($producto_nombre);
+                if($resultado > 0){
+                    $this->load->model('Categoria_producto_model');
+                    $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
 
-		$this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
-		$this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
-                
-		if($this->form_validation->run())     
-        {   
+                    $this->load->model('Presentacion_model');
+                    $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
+
+                    $this->load->model('Moneda_model');
+                    $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+                    $data['unidades'] = $this->Producto_model->get_all_unidad();
+                    
+                    $data['resultado'] = 1;
+                    $data['_view'] = 'producto/add';
+                    $this->load->view('layouts/main',$data);
+                }else{
             /* *********************INICIO imagen***************************** */
             $foto="";
             if (!empty($_FILES['producto_foto']['name'])){
@@ -156,11 +171,7 @@ class Producto extends CI_Controller{
             $this->Inventario_model->ingresar_producto_inventario($producto_id);
             redirect('producto/index');
         }
-        else
-        {
-//			$this->load->model('Estado_model');
-//			$data['all_estado'] = $this->Estado_model->get_all_estado();
-
+        }else{
             $this->load->model('Categoria_producto_model');
             $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
 
@@ -171,6 +182,7 @@ class Producto extends CI_Controller{
             $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
             $data['unidades'] = $this->Producto_model->get_all_unidad();
             
+            $data['resultado'] = 0;
             $data['_view'] = 'producto/add';
             $this->load->view('layouts/main',$data);
         }

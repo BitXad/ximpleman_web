@@ -87,6 +87,7 @@
                     <tr>
 						<th>#</th>
 						<th>Descripción</th>
+						<th>Precio</th>
 						<th>Categoria</th>
 						<th>Estado</th>
 						<th></th>
