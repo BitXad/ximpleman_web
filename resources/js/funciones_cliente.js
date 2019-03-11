@@ -122,18 +122,14 @@ function tablaresultadoscliente(limite)
                 
                if (registros != null){
                    
-                   var tipocli = JSON.parse(document.getElementById('eltipo_cliente').value);
+                   /*var tipocli = JSON.parse(document.getElementById('eltipo_cliente').value);
                    var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
                    var categoriacliezona = JSON.parse(document.getElementById('lacategoria_clientezona').value);
-                   var usuariocli = JSON.parse(document.getElementById('elusuario').value);
-                    var cont = 0;
-                    var cant_total = 0;
-                    var total_detalle = 0;
+                   var usuariocli = JSON.parse(document.getElementById('elusuario').value);*/
+                   
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                   /*if (n <= limite) x = n; 
-                   else x = limite;*/
                     
                     for (var i = 0; i < n ; i++){
                         html += "<tr>";
@@ -208,11 +204,10 @@ function tablaresultadoscliente(limite)
                         html += "<b>Nit: </b>"+registros[i]["cliente_nit"]+"<br>";
                         html += "<b>Razon: </b>"+registros[i]["cliente_razon"]+"<br>";
                         var escategoria_clientezona="";
-                        if(registros[i]["zona_id"] == null || registros[i]["zona_id"] == 0 || registros[i]["zona_id"]-1 > categoriacliezona.length){
+                        if(registros[i]["zona_id"] == null || registros[i]["zona_id"] == 0 || registros[i]["zona_id"] == ""){
                             escategoria_clientezona = "No definido";
                         }else{
-                            escategoria_clientezona = categoriacliezona[registros[i]["zona_id"]-1]["zona_nombre"];
-                            //alert(categoriacliezona[registros[i]["zona_id"]-1]);
+                            escategoria_clientezona = registros[i]["zona_nombre"];
                         }
                         html += "<b>Zona: </b>"+escategoria_clientezona;
                         html += "</div>";
@@ -227,23 +222,22 @@ function tablaresultadoscliente(limite)
                         }
                         html += "</td>";
                         var estipo_cliente="";
-                        if(registros[i]["tipocliente_id"] == null || registros[i]["tipocliente_id"] == 0 || registros[i]["tipocliente_id"]-1 > tipocli.length){
+                        if(registros[i]["tipocliente_id"] == null || registros[i]["tipocliente_id"] == 0 || registros[i]["tipocliente_id"]== ""){
                             estipo_cliente = "No definido";
                         }else{
-                           
-                            estipo_cliente = tipocli[registros[i]["tipocliente_id"]-1]["tipocliente_descripcion"];
+                            estipo_cliente = registros[i]["tipocliente_descripcion"];
                         }
                         var escategoria_cliente="";
-                        if(registros[i]["categoriaclie_id"] == null || registros[i]["categoriaclie_id"] == 0 || registros[i]["categoriaclie_id"]-1 > categoriacli.length){
+                        if(registros[i]["categoriaclie_id"] == null || registros[i]["categoriaclie_id"] == 0 || registros[i]["categoriaclie_id"] == ""){
                             escategoria_cliente = "No definido";
                         }else{
-                            escategoria_cliente = categoriacli[registros[i]["categoriaclie_id"]-1]["categoriaclie_descripcion"];
+                            escategoria_cliente = registros[i]["categoriaclie_descripcion"];
                         }
                         var esusuario="";
-                        if(registros[i]["usuario_id"] == null || registros[i]["usuario_id"] == 0 || registros[i]["usuario_id"]-1 > usuariocli.length){ 
+                        if(registros[i]["usuario_id"] == null || registros[i]["usuario_id"] == 0 || registros[i]["usuario_id"] == ""){ 
                             esusuario = "No definido";
                         }else{
-                            esusuario = usuariocli[registros[i]["usuario_id"]-1]["usuario_nombre"];
+                            esusuario = registros[i]["usuario_nombre"];
                         }
                         html += "<td>"+corr+"<br>"+aniv+"<br>";
                         html += estipo_cliente+"<br>";
