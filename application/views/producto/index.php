@@ -93,7 +93,7 @@
             <div class="col-md-7">
                 <div class="input-group">
                     <span class="input-group-addon"> Buscar </span>           
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria" onkeypress="buscarproducto(event)" autocomplete="off">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." onkeypress="buscarproducto(event)" autocomplete="off">
                 </div>
             </div>
             <div class="col-md-3">
@@ -184,6 +184,7 @@
                             <th  role="columnheader" >#</th>
                             <th  role="columnheader" >Nombre</th>
                             <th  role="columnheader" >Categoria|<br>Presentación</th>
+                            <th  role="columnheader" style="width: 20%;" >Caracteristicas</th>
                             <th  role="columnheader" >Código|<br>Cód. Barra</th>
                             <th  role="columnheader" >Precio</th>
                             <th  role="columnheader" >Moneda</th>

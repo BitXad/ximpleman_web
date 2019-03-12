@@ -125,11 +125,19 @@
     padding: 0px;
 }
 
-#tablasinespacio td{
+#tablasinespacio tr{
     font-family: "Arial", Arial Narrow;
     border-collapse: collapse;
     background-color: #f2f2f2;
     font-size: 9pt;
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+#tablasinespacio tr:hover{
+    background-color: #00ca6d;
+}
+#tablasinespacio td{
     width: 100%;
     margin: 0px;
     padding: 0px;

@@ -121,9 +121,9 @@
                         <li>
                             <a href="<?php echo site_url('proveedor');?>"><i class="fa fa-truck"></i>Proveedores</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('responsable/index');?>"><i class="fa fa-user"></i>Responsable</a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('responsable/index');?>"><i class="fa fa-user"></i>Responsable</a>
+                        </li>-->
                     </ul>
                 </li>
                 

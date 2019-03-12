@@ -746,10 +746,11 @@ function cobrototalservicio(servicio_id){
     //var nombremodal = "modalpagar";
     
     var base_url = document.getElementById('base_url').value;
+    var fecha_cobro = document.getElementById('fecha_cobro').value;
     var controlador = base_url+'detalle_serv/registrarcobrototal/'+servicio_id;
     $.ajax({url: controlador,
            type:"POST",
-           data:{},
+           data:{fecha_cobro:fecha_cobro},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);

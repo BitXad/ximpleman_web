@@ -57,21 +57,7 @@ function tablaresultadosproducto(limite)
     }else if(limite == 3){
         controlador = base_url+'producto/buscarproductosall/';
      // busca por categoria
-    }/*else if(limite == 4){
-        var opcion      = document.getElementById('categoria_id').value;
-        sutext = $('select[name="categoria_id"] option:selected').text();
-        sutext = "Categoria: "+sutext;
-        $("#busquedacategoria").html(sutext);
-       controlador = base_url+'producto/buscarproductos_porcategoria/';
-       if(opcion == 0){
-           parametro = "";
-       }else{
-           parametro = " and p.categoria_id = "+opcion+" ";
-       }
-     // buscar por el texto y carga sol olo que encuentra
-    }else if(limite == 5){
-        
-    }*/else{
+    }else{
         controlador = base_url+'producto/buscarproductos/';
         var categoria = document.getElementById('categoria_id').value;
         var estado    = document.getElementById('estado_id').value;
@@ -172,6 +158,12 @@ function tablaresultadosproducto(limite)
                             cantmin = registros[i]["producto_cantidadminima"];
                         }
                         html += cantmin+"</td>";
+                        html += "<td>";
+                        var caracteristica = "";
+                        if(registros[i]["producto_caracteristicas"] != null){
+                            caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
+                        }
+                        html+= caracteristica+"</td>";
                         var codbarras = "";
                         if(!(registros[i]["producto_codigobarra"] == null)){
                             codbarras = registros[i]["producto_codigobarra"];

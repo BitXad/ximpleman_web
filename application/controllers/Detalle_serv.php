@@ -1472,6 +1472,7 @@ class Detalle_serv extends CI_Controller{
             $fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
             $hora_finalizacion = date("H:i:s", strtotime($fecha_cobro));
             $fechahora = date("Y-m-d H:i:s", strtotime($fecha_cobro));
+            
             $this->load->model('Servicio_model');
             //recupera a todos los detalles de servicio que su estado sean 6= TERMINADO
             $res_detalle_serv = $this->Detalle_serv_model->get_detalle_serv_all_terminado($servicio_id);

@@ -513,7 +513,7 @@ class Cliente extends CI_Controller{
                                 
                                 $params_serv = array(
                                        'cliente_id' => $cliente_id,
-                                       'servicio_codseguimiento' => $this->input->post('codigo_seg'),
+                                       //'servicio_codseguimiento' => $this->input->post('codigo_seg'),
                                     );
 
                                 $this->Servicio_model->update_servicio($servicio_id,$params_serv);

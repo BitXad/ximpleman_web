@@ -784,7 +784,7 @@ function tablaresultadosclienteservicio(tabla_id){
                             html += "C.I.: "+registros[i]["cliente_ci"]+" | Telf.: "+registros[i]["cliente_telefono"]+"<br>";
                             //html += "<input type='hidden' id='servicio_id'  name='servicio_id' class='form-control' value='"+servicio_id+"' />";
                             //html += "<input type='hidden' id='cliente_id'  name='cliente_id' class='form-control' value='"+registros[i]["cliente_id"]+"' />";
-                            html += "<button class='btn btn-success btn-xs' onclick='asignarclienteregistrado("+servicio_id+", "+registros[i]["cliente_id"]+", "+registros[i]["cliente_nombre"]+")' >";
+                            html += "<button class='btn btn-success btn-xs' onclick='asignarclienteregistrado("+servicio_id+", "+registros[i]["cliente_id"]+")' >";
                             html += "<i class='fa fa-check'></i> Elegir Cliente";
                             html += "</button>";
                             //html += "</form>";
@@ -1372,36 +1372,6 @@ function cambiartiposervicio(servicio_id){
     });
 }
 
-function getgenerarsegservicio(servicio_id, cliente_nombre){
-    var letraini = cliente_nombre.substring(0,1);
-    var letrafin = cliente_nombre.substring(cliente_nombre.length-1,cliente_nombre.length);
-    var estetime = new Date();
-    var anio = estetime.getFullYear();
-    anio = anio -2000;
-    var mes = parseInt(estetime.getMonth())+1;
-    if(mes>0&&mes<10){
-        mes = "0"+mes;
-    }
-    var dia = parseInt(estetime.getDate());
-    if(dia>0&&dia<10){
-        dia = "0"+dia;
-    }
-    var hora = estetime.getHours();
-    if(hora>0&&hora<10){
-        hora = "0"+hora;
-    }
-    var min = estetime.getMinutes();
-    if(min>0&&min<10){
-        min = "0"+min;
-    }
-    var seg = estetime.getSeconds();
-    if(seg>0&&seg<10){
-        seg = "0"+seg;
-    }
-    var codigo = seg+servicio_id+anio+letraini+hora+mes+letrafin+min+dia;
-    return codigo;
-}
-
 /* ****************REGISTRAR NUEVO CLIENTE PARA UN SERVICIO*************** */
 function registrarnuevocliente(servicio_id){
     var nombremodal = "myModal";
@@ -1411,11 +1381,11 @@ function registrarnuevocliente(servicio_id){
     var cliente_ci = document.getElementById('cliente_ci').value;
     var cliente_nit = document.getElementById('cliente_nit').value;
     var cliente_telefono = document.getElementById('cliente_telefono').value;
-    var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
+    //var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
     var controlador = base_url+'cliente/add_new/'+servicio_id;
     $.ajax({url: controlador,
            type:"POST",
-           data:{cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo, cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_telefono:cliente_telefono, codigo_seg:codigo_seg},
+           data:{cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo, cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_telefono:cliente_telefono},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
@@ -1459,7 +1429,7 @@ function registrarnuevocliente(servicio_id){
     });
 }
 /* ****************ASIGNAR CLIENTE REGISTRADO A UN SERVICIO*************** */
-function asignarclienteregistrado(servicio_id, cliente_id, cliente_nombre){
+function asignarclienteregistrado(servicio_id, cliente_id){
     var nombremodal = "modalbuscar";
     var base_url = document.getElementById('base_url').value;
 /*    var cliente_nombre = document.getElementById('cliente_nombre').value;
@@ -1468,12 +1438,12 @@ function asignarclienteregistrado(servicio_id, cliente_id, cliente_nombre){
     var cliente_nit = document.getElementById('cliente_nit').value;
     var cliente_telefono = document.getElementById('cliente_telefono').value;
 */
-    var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
+    //var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
     
     var controlador = base_url+'servicio/asignarcliente/'+servicio_id;
     $.ajax({url: controlador,
            type:"POST",
-           data:{cliente_id:cliente_id, codigo_seg:codigo_seg},
+           data:{cliente_id:cliente_id},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
