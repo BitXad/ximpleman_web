@@ -5,10 +5,12 @@
  */
  
 class Producto extends CI_Controller{
+    var $session_data;
     function __construct()
     {
         parent::__construct();
         $this->load->model('Producto_model');
+        $this->session_data = $this->session->userdata('logged_in');
     }
 
     /*
@@ -810,4 +812,59 @@ class Producto extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+    /*
+     * Listado de productos con existencia minima
+     */
+    function existenciaminima()
+    {
+        $this->acceso();
+        $usuario_id = $this->session_data['usuario_id'];  
+        $data = array(
+            'page_title' => 'Admin >> Mi Cuenta'
+        );
+        
+        $this->load->model('Categoria_producto_model');
+        $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
+
+        $this->load->model('Estado_model');
+        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+        
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        
+        $data['_view'] = 'producto/existenciaminima';
+        $this->load->view('layouts/main',$data);
+    }
+    
+    /*
+    * buscar productos con existencia minima
+    */
+    function buscarproductosexistmin()
+    {
+        $this->acceso();
+        if ($this->input->is_ajax_request()) {
+            $parametro       = $this->input->post('parametro');   
+            $categoriaestado = $this->input->post('categoriaestado'); 
+            $datos = $this->Producto_model->get_busqueda_producto_existmin($parametro, $categoriaestado);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
+    
+    private function acceso(){
+        if ($this->session->userdata('logged_in')) {
+            if( $this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==2) {
+                return;
+            } else {
+                redirect('alerta');
+            }
+        } else {
+            redirect('inicio', 'refresh');
+        }
+    }
+    
+    
 }

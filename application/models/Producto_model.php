@@ -286,4 +286,28 @@ class Producto_model extends CI_Model
         $producto = $this->db->query($sql)->row_array();
         return $producto['resultado'];
     }
+    /* prodcutos con existencia minima */
+    function get_busqueda_producto_existmin($parametro, $categoriaestado)
+    {
+        $sql = "SELECT
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
+
+              FROM
+              inventario p
+              LEFT JOIN estado e on p.estado_id = e.estado_id
+              LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+              WHERE 
+                   p.estado_id = e.estado_id
+                   and p.existencia <= p.producto_cantidadminima
+                   and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
+                   or producto_codigo like '%".$parametro."%' or producto_marca like '%".$parametro."%'
+                   or producto_industria like '%".$parametro."%' or producto_caracteristicas like '%".$parametro."%')
+                   ".$categoriaestado."
+              GROUP By p.producto_id
+              ORDER By p.producto_nombre";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
 }
