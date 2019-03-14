@@ -40,12 +40,6 @@
                 
                 }
                 
-function ponerdescripcion(catserv){
-         //$('#catserv_id').val();
-         $('#subcatserv_id').val();
-         $('#detalleserv_descripcion').val($('#catserv_id option:selected').text()+' '+$('#subcatserv_id option:selected').text());
-         $('#detalleserv_descripcion').focus();
-         }
     </script>
     
 <style type="text/css">
@@ -586,7 +580,7 @@ $(document).ready(function(){
                                 <label for="catserv_id" class="control-label">Categoria Producto</label>
                                     <div class="form-group">
                                         <select name="catserv_id" class="form-control" onchange="fetch_select(this.value);" id="catserv_id">
-                                                    <!--<option value="">- CATEGORIA -</option>-->
+                                                    <option value="">- CATEGORIA -</option>
                                                     <?php
                                                     foreach($all_categoria_servicio as $categoria_servicio)
                                                     {
@@ -621,13 +615,13 @@ $(document).ready(function(){
                             <div class="col-md-6">
                                     <label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo "REVISION";}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                        <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo "VACIO";}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
                                     </div>
                             </div>
                             <div class="col-md-4">
                                     <label for="detalleserv_solucion" class="control-label">Solución</label>
                                     <div class="form-group">
-                                            <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo "REVISION";}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                            <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo "RECARGA";}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
                                     </div>
                             </div>
                             <div class="col-md-4">

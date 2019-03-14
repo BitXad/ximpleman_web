@@ -8,16 +8,16 @@
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-6">
-						<label for="subcatserv_descripcion" class="control-label">Descripción</label>
+						<label for="subcatserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-							<input type="text" name="subcatserv_descripcion" value="<?php echo ($this->input->post('subcatserv_descripcion') ? $this->input->post('subcatserv_descripcion') : $subcategoria_servicio['subcatserv_descripcion']); ?>" class="form-control" id="subcatserv_descripcion" required />
+                                                    <input type="text" name="subcatserv_descripcion" value="<?php echo ($this->input->post('subcatserv_descripcion') ? $this->input->post('subcatserv_descripcion') : $subcategoria_servicio['subcatserv_descripcion']); ?>" class="form-control" id="subcatserv_descripcion" required onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					</div>
-                    <div class="col-md-6">
-						<label for="catserv_id" class="control-label">Categoria</label>
+                                        <div class="col-md-6">
+						<label for="catserv_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
 						<div class="form-group">
-							<select name="catserv_id" class="form-control">
-								<option value="">- CATEGORIA -</option>
+							<select name="catserv_id" class="form-control" required>
+								<!--<option value="">- CATEGORIA -</option>-->
 								<?php 
 								foreach($all_categoria_servicio as $catserv)
 								{
@@ -30,10 +30,10 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="estado_id" class="control-label">Estado</label>
+						<label for="estado_id" class="control-label"><span class="text-danger">*</span>Estado</label>
 						<div class="form-group">
-							<select name="estado_id" class="form-control">
-								<option value="">- ESTADO -</option>
+							<select name="estado_id" class="form-control" required>
+								<!--<option value="">- ESTADO -</option>-->
 								<?php 
 								foreach($all_estado as $estado)
 								{

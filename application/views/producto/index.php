@@ -74,7 +74,7 @@
 </div>
 <br>
 <div class="row no-print">
-        <div class="col-md-9">
+        <div class="col-md-8">
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
@@ -93,7 +93,7 @@
             <div class="col-md-7">
                 <div class="input-group">
                     <span class="input-group-addon"> Buscar </span>           
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria" onkeypress="buscarproducto(event)" autocomplete="off">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." onkeypress="buscarproducto(event)" autocomplete="off">
                 </div>
             </div>
             <div class="col-md-3">
@@ -156,15 +156,14 @@
         
     </div>
     <!---------------- BOTONES --------->
-    <div class="col-md-3">
+    <div class="col-md-4">
         
-            <div class="box-tools">
-        <center>            
+            <div class="box-tools text-center">
             <a href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
             <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-            <a onclick="imprimir_producto()" class="btn btn-info btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a href="<?php echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
+            <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
-        </center>            
     </div>
     </div>
     <!---------------- FIN BOTONES --------->
@@ -184,6 +183,7 @@
                             <th  role="columnheader" >#</th>
                             <th  role="columnheader" >Nombre</th>
                             <th  role="columnheader" >Categoria|<br>Presentación</th>
+                            <th  role="columnheader" style="width: 20%;" >Caracteristicas</th>
                             <th  role="columnheader" >Código|<br>Cód. Barra</th>
                             <th  role="columnheader" >Precio</th>
                             <th  role="columnheader" >Moneda</th>

@@ -41,10 +41,10 @@
 <link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<input type="hidden" name="eltipo_cliente" id="eltipo_cliente" value='<?php echo json_encode($all_tipo_cliente); ?>' />
+<!--<input type="hidden" name="eltipo_cliente" id="eltipo_cliente" value='<?php /* echo json_encode($all_tipo_cliente); ?>' />
 <input type="hidden" name="lacategoria_cliente" id="lacategoria_cliente" value='<?php echo json_encode($all_categoria_cliente); ?>' />
 <input type="hidden" name="lacategoria_clientezona" id="lacategoria_clientezona" value='<?php echo json_encode($all_categoria_clientezona);  ?>' />
-<input type="hidden" name="elusuario" id="elusuario" value='<?php echo json_encode($all_usuario);  ?>' />
+<input type="hidden" name="elusuario" id="elusuario" value='<?php echo json_encode($all_usuario); */ ?>' />-->
 <!-------------------------------------------------------->
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
     <div id="cabizquierda">

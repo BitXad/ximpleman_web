@@ -67,7 +67,9 @@
                     <tr>
                         <td><?php echo $cont ?></td>
                         <td><?php 
-                              echo $d['detalleserv_descripcion'];
+                              echo $d['detalleserv_descripcion']."<br>";
+                              echo "<div style='font-size: 5pt;'><span style='font-weight: bold'>Entregar:</span>".date("d/m/Y", strtotime($d['detalleserv_fechaentrega']));
+                              echo " - ".$d['detalleserv_horaentrega']."</div>";
                              ?>
                         </td>
                         <td><?php echo $d['detalleserv_codigo']; ?></td>

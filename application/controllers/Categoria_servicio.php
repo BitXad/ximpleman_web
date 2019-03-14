@@ -47,11 +47,9 @@ class Categoria_servicio extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
                 
-                $this->load->library('form_validation');
-
-                    $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-
-                    if($this->form_validation->run())     
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
             {
             //Estado ACTIVO por defecto
             $estado_id = 1;
@@ -94,14 +92,12 @@ class Categoria_servicio extends CI_Controller{
         if(isset($data['categoria_servicio']['catserv_id']))
         {
             $this->load->library('form_validation');
-
-                    $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-
-                    if($this->form_validation->run())     
+            $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
             {   
                 $params = array(
-					'catserv_descripcion' => $this->input->post('catserv_descripcion'),
-					'estado_id' => $this->input->post('estado_id'),
+                    'catserv_descripcion' => $this->input->post('catserv_descripcion'),
+                    'estado_id' => $this->input->post('estado_id'),
                 );
 
                 $this->Categoria_servicio_model->update_categoria_servicio($catserv_id,$params);            

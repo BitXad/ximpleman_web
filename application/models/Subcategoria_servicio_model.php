@@ -33,7 +33,7 @@ class Subcategoria_servicio_model extends CI_Model {
 
             WHERE
                 sc.catserv_id = cs.catserv_id
-				and cs.estado_id = e.estado_id
+	        and cs.estado_id = e.estado_id
             ORDER BY `subcatserv_id` DESC
         ")->result_array();
 

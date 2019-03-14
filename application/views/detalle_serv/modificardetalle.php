@@ -1,5 +1,6 @@
-<?php $usuario_id = 2; ?>
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/servicio_edit.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script>
         $(document).ready(function() {
 
@@ -38,12 +39,6 @@
                 $('#detalleserv_descripcion').focus();
                 }
                 
-function ponerdescripcion(catserv){
-         //$('#catserv_id').val();
-         $('#subcatserv_id').val();
-         $('#detalleserv_descripcion').val($('#catserv_id option:selected').text()+' '+$('#subcatserv_id option:selected').text());
-         $('#detalleserv_descripcion').focus();
-         }
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -305,7 +300,7 @@ function mostrarAlert(){
 						</div>
 					</div>
                             <!--<input type="hidden" name="estado_id" value="5" class="form-control" id="estado_id" />-->
-                            <input type="hidden" name="usuario_id" value="<?php echo $usuario_id ?>" class="form-control" id="usuario_id" />
+                            <!--<input type="hidden" name="usuario_id" value="<?php //echo $usuario_id ?>" class="form-control" id="usuario_id" />-->
                             <input type="hidden" name="servicio_id" value="<?php echo $servicio['servicio_id'] ?>" class="form-control" id="servicio_id" />
                             <input type="hidden" name="detalleserv_codigo" value="<?php echo $detalle_serv['detalleserv_codigo'] ?>" class="form-control" id="detalleserv_codigo" />
 		

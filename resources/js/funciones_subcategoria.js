@@ -29,6 +29,7 @@ function mostrarsubcategorias(){
                         
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>"+registros[i]["subcatserv_descripcion"]+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]["subcatserv_precio"]).toFixed(2)+"</td>";
                         html += "<td>"+registros[i]["catserv_descripcion"]+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td>";

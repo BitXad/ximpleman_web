@@ -46,12 +46,16 @@ class Subcategoria_servicio extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('subcatserv_descripcion','Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        if($this->form_validation->run())     
+        {
+            $estado_id = 1;
             $params = array(
 				'subcatserv_descripcion' => $this->input->post('subcatserv_descripcion'),
 				'catserv_id' => $this->input->post('catserv_id'),
-				'estado_id' => $this->input->post('estado_id'),
+				'estado_id' => $estado_id,
+				'subcatserv_precio' => $this->input->post('subcatserv_precio'),
             );
             
             $subcatserv_id = $this->Subcategoria_servicio_model->add_subcategoria_servicio($params);
@@ -187,7 +191,7 @@ class Subcategoria_servicio extends CI_Controller{
         }
     }
 	
-	/*
+    /*
      * funcion que devuelve las subcategorias
      */
     function getsubcategoriaserv()
@@ -208,4 +212,25 @@ class Subcategoria_servicio extends CI_Controller{
         }
     }
     
+    /*
+     * funcion que devuelve las subcategorias
+     */
+    function getprecio_subcategoriaserv()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+	    
+            $subcatserv_id = $this->input->post('subcatserv_id');
+	    $res = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
+ 
+            echo json_encode($res);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
 }
