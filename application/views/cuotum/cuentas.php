@@ -113,7 +113,7 @@
                                  $cancelados = $subcancelados + $cancelados;
                                  
                                  ?>
-                  <tr style="background-color: #<?php echo $c['estado_color'];?>" >
+                  <tr style="background-color: <?php echo $c['estado_color'];?>" >
 
 
 <script>
@@ -167,8 +167,13 @@ $(document).ready(function(){
                         <td><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
                         <td><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
                         <td><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                        <?php if($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { ?>
+                        <td></td> 
+                        <td></td>
+                        <?php } else { ?>
                         <td><?php echo date('d/m/Y',strtotime($c['cuota_fecha'])); ?></td>
                         <td><?php echo $c['cuota_hora']; ?></td>
+                         <?php } ?>
                         <td><?php echo $c['cuota_numercibo']; ?></td>
                         <td><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
                         <td><?php echo $c['cuota_glosa']; ?></td>

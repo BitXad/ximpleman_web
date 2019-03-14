@@ -65,6 +65,7 @@ class Usuario_model extends CI_Model
             WHERE
                 u.tipousuario_id=t.tipousuario_id and
                 u.estado_id=e.estado_id
+               
 
             ORDER BY `usuario_id` DESC
 
@@ -73,7 +74,31 @@ class Usuario_model extends CI_Model
 
         return $usuario;
     }
+    function get_all_usuactivo($params = array())
+    {
+        $limit_condition = "";
+        if(isset($params) && !empty($params))
+            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
+        $usuario = $this->db->query("
+            SELECT
+                u.*, t.*, e.*
+
+            FROM
+                usuario u, tipo_usuario t, estado e
+
+            WHERE
+                u.tipousuario_id=t.tipousuario_id and
+                u.estado_id=e.estado_id
+                and u.estado_id=1
+
+            ORDER BY `usuario_id` DESC
+
+            " . $limit_condition . "
+        ")->result_array();
+
+        return $usuario;
+    } 
     /*
      * function to add new usuario
      */
