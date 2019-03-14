@@ -64,6 +64,7 @@ class Estado extends CI_Controller{
             $params = array(
 				'estado_descripcion' => $this->input->post('estado_descripcion'),
 				'estado_tipo' => $this->input->post('estado_tipo'),
+                'estado_color' => $this->input->post('estado_color'),
             );
             
             $estado_id = $this->Estado_model->add_estado($params);
@@ -108,6 +109,7 @@ class Estado extends CI_Controller{
                 $params = array(
 					'estado_descripcion' => $this->input->post('estado_descripcion'),
 					'estado_tipo' => $this->input->post('estado_tipo'),
+                    'estado_color' => $this->input->post('estado_color'),
                 );
 
                 $this->Estado_model->update_estado($estado_id,$params);            
