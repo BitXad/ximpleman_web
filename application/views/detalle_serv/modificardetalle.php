@@ -186,6 +186,9 @@ function mostrarAlert(){
                                         <div class="col-md-4">
                                             <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                                 <div class="form-group" id="new_select">
+                                                    <!--<input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="<?php echo $detalle_serv['subcatserv_descripcion'] ?>" onkeydown="validar2(event,2)"  onchange="seleccionar_subcategoria()" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                                    <datalist id="listasubcatserv">
+                                                    </datalist> -->
                                                         <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
                                                             <?php
 								foreach($all_subcategoria_servicio as $subcategoria_servicio)
@@ -194,7 +197,7 @@ function mostrarAlert(){
 									echo '<option value="'.$subcategoria_servicio['subcatserv_id'].'" selected="selected" >'.$subcategoria_servicio['subcatserv_descripcion'].'</option>';
                                                                     }
 
-								} 
+								}
 								?>
                                                         </select>
                                                 </div>

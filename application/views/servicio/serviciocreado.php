@@ -8,12 +8,12 @@
         
         function fetch_select(id_cat){
 
-                var parametros = {
+                /*var parametros = {
                     catserv_id:id_cat
-                };
-                $.ajax({
+                }; */
+              /*  $.ajax({
                     data:  parametros,
-                    url:   '<?php echo base_url('servicio/fetch_data')?>',
+                    url:   '<?php //echo base_url('servicio/fetch_data')?>',
                     type:  'post',
                     
                     success:  function (response) {
@@ -26,17 +26,18 @@
                             value.subcatserv_descripcion+
                             '</option>';
 
-                });
+                }); *7
+                /*
                     subcat = "<select name='subcatserv_id' class='form-control' id='subcatserv_id' onchange='ponerdescripcion(this.value)'>"+
                             "<option value='0'>- MARCA/MODELO -</option>"+
                             subcat+"</select>"
-                    $('#subcatserv_id' ).replaceWith(''+subcat);
-                }
+                    $('#subcatserv_id' ).replaceWith(''+subcat); */
+            /*    }
                     
-                });
+                }); */
                 
                 $('#detalleserv_descripcion').val($('#catserv_id option:selected').text());
-                $('#detalleserv_descripcion').focus();
+                //$('#detalleserv_descripcion').focus();
                 
                 }
                 
@@ -436,7 +437,8 @@ $(document).ready(function(){
             $dir_url = site_url('servicio/boletarecepcion_boucher/'.$servicio['servicio_id']);
             $titprint = "Imp. Boucher";
         }else{
-            $dir_url = site_url('servicio/boletarecepcion/'.$servicio['servicio_id']);
+            //$dir_url = site_url('servicio/boletarecepcion/'.$servicio['servicio_id']);
+            $dir_url = site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']);
             $titprint = "Imp. Normal";
         }
         ?>
@@ -444,7 +446,7 @@ $(document).ready(function(){
         <!--<a href="<?php //echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']); ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imp. Comprob.</a>
         <a href="<?php //echo $dir_url; ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br><?php echo $titprint; ?></a>-->
         <a href="<?php echo site_url('servicio');  ?>" id="cancelar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Cancelar</a>
-        <a href="<?php echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']);  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+        <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
 </div>
 </div>
 
@@ -580,24 +582,28 @@ $(document).ready(function(){
                                 <label for="catserv_id" class="control-label">Categoria Producto</label>
                                     <div class="form-group">
                                         <select name="catserv_id" class="form-control" onchange="fetch_select(this.value);" id="catserv_id">
-                                                    <option value="">- CATEGORIA -</option>
-                                                    <?php
-                                                    foreach($all_categoria_servicio as $categoria_servicio)
-                                                    {
-                                                            $selected = ($categoria_servicio['catserv_id'] == $this->input->post('catserv_id')) ? ' selected="selected"' : "";
+                                            <option value="0">- CATEGORIA -</option>
+                                            <?php
+                                            foreach($all_categoria_servicio as $categoria_servicio)
+                                            {
+                                                    $selected = ($categoria_servicio['catserv_id'] == $this->input->post('catserv_id')) ? ' selected="selected"' : "";
 
-                                                            echo '<option value="'.$categoria_servicio['catserv_id'].'" '.$selected.'>'.$categoria_servicio['catserv_descripcion'].'</option>';
-                                                    } 
-                                                    ?>
-                                            </select>
+                                                    echo '<option value="'.$categoria_servicio['catserv_id'].'" '.$selected.'>'.$categoria_servicio['catserv_descripcion'].'</option>';
+                                            } 
+                                            ?>
+                                        </select>
                                     </div>
                             </div>
                             <div class="col-md-4">
                                 <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                     <div class="form-group" id="new_select">
-                                            <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
+                                        <input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="- MARCA/MODELO -" onkeypress="validar2(event,2)"  onchange="seleccionar_subcategoria()" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                        <datalist id="listasubcatserv">
+                                        </datalist>
+                                            <!-- <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
                                                     <option value="0">- MARCA/MODELO -</option>
-                                            </select>
+                                            </select> -->
+                                        <input type="hidden" name="estesubcatserv_id" id="estesubcatserv_id" />
                                     </div>
                             </div>
                             <div class="col-md-4">
