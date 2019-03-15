@@ -128,5 +128,42 @@ class Subcategoria_servicio_model extends CI_Model {
         $subcatserv_descripcion = $this->db->get_where('subcategoria_servicio', array('subcatserv_id' => $subcatserv_id))->row_array();
         return $subcatserv_descripcion['subcatserv_descripcion'];
     }
+    
+    /*
+     * Get busqueda all subcategoria_servicio ACTIVOS
+     */
+    function get_searchall_subcategoria_servicio_id1($parametro, $catserv_id){
+        $categoria = $this->db->query("
+            SELECT
+                ss.subcatserv_id, ss.subcatserv_descripcion
+            FROM
+                subcategoria_servicio ss, estado e, categoria_servicio cs
+            WHERE
+                ss.estado_id = e.estado_id
+                and e.estado_id = 1
+                and ss.catserv_id = cs.catserv_id
+                and ss.catserv_id = $catserv_id
+                and (ss.subcatserv_descripcion like '%".$parametro."%')
+            ORDER BY ss.subcatserv_id DESC
+        ")->result_array();
 
+        return $categoria;
+    }
+    /*
+     * Get this subcategoria
+     */
+    function get_this_subcatserv($subcatserv_id){
+        $categoria = $this->db->query("
+            SELECT
+                ss.subcatserv_id, ss.subcatserv_descripcion, ss.subcatserv_precio
+            FROM
+                subcategoria_servicio ss
+            WHERE
+                ss.subcatserv_id = $subcatserv_id
+                
+        ")->result_array();
+
+        return $categoria;
+    }
+    
 }

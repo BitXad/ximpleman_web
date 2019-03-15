@@ -18,11 +18,11 @@ class Detalle_serv_model extends CI_Model
     {
         $detalle_serv = $this->db->query("
             SELECT
-                *
+                ds.*, ss.subcatserv_descripcion
 
             FROM
-                `detalle_serv`
-
+                detalle_serv ds
+            LEFT JOIN subcategoria_servicio ss on ds.subcatserv_id = ss.subcatserv_id
             WHERE
                 `detalleserv_id` = ?
         ",array($detalleserv_id))->row_array();

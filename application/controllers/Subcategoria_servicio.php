@@ -233,4 +233,44 @@ class Subcategoria_servicio extends CI_Controller{
             redirect('', 'refresh');
         }
     }
+    /* funcion que busca y devuelve las subcategorias de una categoria */
+    function buscar_subcategoriaparam()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+	    
+            $parametro = $this->input->post('parametro');
+            $catserv_id = $this->input->post('catserv_id');
+	    $res = $this->Subcategoria_servicio_model->get_searchall_subcategoria_servicio_id1($parametro, $catserv_id);
+ 
+            echo json_encode($res);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /* funcion que busca y devuelve una subcategoria de una categoria */
+    function seleccionar_subcategoria()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1) {
+	    
+            $subcatserv_id = $this->input->post('subcatserv_id');
+	    $res = $this->Subcategoria_servicio_model->get_this_subcatserv($subcatserv_id);
+ 
+            echo json_encode($res);
+            }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
 }

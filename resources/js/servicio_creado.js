@@ -44,10 +44,9 @@ function validar2(e,opcion) {
         if (opcion==1){
             tablaresultadoscliente();            
         }
-/*
         if (opcion==2){
-            tablaresultadosclienteservicio();
-        } */
+            buscarsubcategorias();
+        }
         if (opcion==3){
             tablaresultadoservicios();
         } 
@@ -1499,7 +1498,8 @@ function registrarnuevodetalleservicio(servicio_id){
     var procedencia_id = document.getElementById('procedencia_id').value;
     var tiempouso_id = document.getElementById('tiempouso_id').value;
     var catserv_id = document.getElementById('catserv_id').value;
-    var subcatserv_id = document.getElementById('subcatserv_id').value;
+    //var subcatserv_id = document.getElementById('subcatserv_id').value;
+    var subcatserv_id = document.getElementById('estesubcatserv_id').value;
     var detalleserv_descripcion = document.getElementById('detalleserv_descripcion').value;
     var detalleserv_falla = document.getElementById('detalleserv_falla').value;
     var detalleserv_diagnostico = document.getElementById('detalleserv_diagnostico').value;
@@ -1601,7 +1601,7 @@ function resultadodetalleservicionew(servicio_id){
                         html += "<td>"+registros[i]["detalleserv_codigo"]+"</td>";
                         html += "<td>";
                         if(registros[i]["catserv_id"] !=0){ html+= registros[i]["catserv_descripcion"]; }
-                        if(registros[i]["subcatserv_id"] !=0){ html += "/"+registros[i]["subcatserv_descripcion"];}
+                        if(registros[i]["subcatserv_id"] !=0 && registros[i]["subcatserv_id"] != null){ html += "/"+registros[i]["subcatserv_descripcion"];}
                         html += "</td>";
                         html += "<td>";
                         if(registros[i]["cattrab_id"] !=0){ html += registros[i]["cattrab_descripcion"]; }
@@ -1820,12 +1820,17 @@ function resetearcamposdeinput(){
             $('#tiempouso_id').find('option:first').attr('selected', 'selected').parent('select');
             $('#catserv_id').find('option:first').attr('selected', 'selected').parent('select');
             //$('#subcatserv_id').val('');  // lo buelve en blanco solo el primero
-            subcat = "<select name='subcatserv_id' class='form-control' id='subcatserv_id' onchange='ponerdescripcion(this.value)'>"+
-                            "<option value='0'>- MARCA/MODELO -</option></select>"
+            subcat = "<input type='search' name='subcatserv_id' list='listasubcatserv' class='form-control' id='subcatserv_id' value='- MARCA/MODELO -' onkeypress='validar2(event,2)'  onchange='seleccionar_subcategoria()' onKeyUp='this.value = this.value.toUpperCase();' onclick='this.select();' />";
+            datal = "<datalist id='listasubcatserv'></datalist>";
+            
+            /*subcat = "<select name='subcatserv_id' class='form-control' id='subcatserv_id' onchange='ponerdescripcion(this.value)'>"+
+                            "<option value='0'>- MARCA/MODELO -</option></select>" */
                     $('#subcatserv_id' ).replaceWith(subcat);
+                    $('#listasubcatserv' ).replaceWith(datal);
             /*$("subcatserv_id select").empty();
              $("subcatserv_id select").append('<option value="0">- MARCA/MODELO -</option>');*/
             //find('option:first').attr('selected', 'selected').parent('select');
+            $('#estesubcatserv_id').val('');
             $('#detalleserv_descripcion').val('');
             $('#detalleserv_falla').val('');
             $('#detalleserv_diagnostico').val('REVISION');
@@ -1913,3 +1918,70 @@ function ponerdescripcion(subcatserv_id){
         
     });
 }
+/* buscar sub-categorias */
+function buscarsubcategorias(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"subcategoria_servicio/buscar_subcategoriaparam";
+    var parametro = document.getElementById('subcatserv_id').value;
+    var catserv_id = document.getElementById('catserv_id').value;
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro:parametro, catserv_id:catserv_id},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                fin = resultado.length;
+                html = "";
+                
+                for(var i = 0; i<fin; i++)
+                {
+                    html += "<option value='" +resultado[i]["subcatserv_id"]+"' label='"+resultado[i]["subcatserv_descripcion"];
+                    /*if (resultado[i]["subcatserv_descripcion"]!=null)
+                    {    html += " ("+resultado[i]["subcatserv_descripcion"]+")"; } */
+                    html += "'>"+resultado[i]["subcatserv_descripcion"]+"</option>";
+                }    
+                $("#listasubcatserv").html(html);
+
+            },
+            error: function(respuesta){
+            }
+        });
+}
+/* seleccionar sub-categoria */
+function seleccionar_subcategoria(){
+    var subcatserv_id = document.getElementById('subcatserv_id').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"subcategoria_servicio/seleccionar_subcategoria/";
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{subcatserv_id:subcatserv_id},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                tam = resultado.length;
+                
+//                alert(resultado[0]["cliente_nit"]);
+                
+                if (tam>=1){
+                    $("#subcatserv_id").val(resultado[0]["subcatserv_descripcion"]);
+                    $("#estesubcatserv_id").val(resultado[0]["subcatserv_id"]);
+                   var res = $("#detalleserv_descripcion").val();
+                   $('#detalleserv_total').val(resultado[0]['subcatserv_precio']);
+                    $('#detalleserv_saldo').val(resultado[0]['subcatserv_precio']);
+                    $("#detalleserv_descripcion").val(res+" "+resultado[0]["subcatserv_descripcion"]);
+                    $('#detalleserv_descripcion').focus();
+                    $('#detalleserv_descripcion').focus();
+                }
+                
+            },
+            error: function(respuesta){
+            }
+        });    
+    
+}
+
+//Selecciona los datos del nit
+/*function seleccionar() {
+    document.getElementById('subcatserv_id').select();
+}*/
