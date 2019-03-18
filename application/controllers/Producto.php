@@ -28,13 +28,13 @@ class Producto extends CI_Controller{
         $data['a'] = $a;
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
-        
+        /*
         $this->load->model('Presentacion_model');
         $data['all_presentacion'] = $this->Presentacion_model->get_alls_presentacion();
         
         $this->load->model('Moneda_model');
         $data['all_moneda'] = $this->Moneda_model->get_alls_moneda_asc();
-        
+        */
         $this->load->model('Estado_model');
         $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
         

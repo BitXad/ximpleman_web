@@ -102,11 +102,6 @@ function tablaresultadosproducto(limite)
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                   //var categ = new Array();
-                   var categ = JSON.parse(document.getElementById('lacategoria').value);
-                   var present = JSON.parse(document.getElementById('lapresentacion').value);
-                   var moned = JSON.parse(document.getElementById('lamoneda').value);
-                    
                     for (var i = 0; i < n ; i++){
                         html += "<tr>";
                         
@@ -132,24 +127,16 @@ function tablaresultadosproducto(limite)
                         html += "</div>";
                         html += "</td>";
                         var escategoria="";
-                        if(registros[i]["categoria_id"] == null || registros[i]["categoria_id"] == 0 || registros[i]["categoria_id"]-1 > categ.length){
+                        if(registros[i]["categoria_id"] == null || registros[i]["categoria_id"] == 0 || registros[i]["categoria_id"] ==""){
                             escategoria = "No definido";
                         }else{
-                            if (typeof(eval(categ[registros[i]["categoria_id"]-1])) != 'undefined'){
-                                escategoria = categ[registros[i]["categoria_id"]-1]["categoria_nombre"];
-                            }
+                            escategoria = registros[i]["categoria_nombre"];
                         }
-                        /*var espresentacion="";
-                        if(registros[i]["presentacion_id"] == null || registros[i]["presentacion_id"] == 0 || registros[i]["presentacion_id"]-1 > present.length){
-                            espresentacion = "No definido";
-                        }else{
-                            espresentacion = present[registros[i]["presentacion_id"]-1]["presentacion_nombre"];
-                        }*/
                         var esmoneda="";
-                        if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"]-1 > moned.length){ 
+                        if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"] == ""){ 
                             esmoneda = "No definido";
                         }else{
-                            esmoneda = moned[registros[i]["moneda_id"]-1]["moneda_descripcion"];
+                            esmoneda = registros[i]["moneda_descripcion"];
                         }
                         html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+registros[i]["producto_unidad"]+"<br>";
                         html += "<b>Cant. Min.: </b>";
