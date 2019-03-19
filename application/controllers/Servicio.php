@@ -1464,4 +1464,46 @@ class Servicio extends CI_Controller{
                         );        
          return str_replace('-','',$code);
     }
+    
+    /* elimina el servicio incluido sus detalles */
+    function removeall()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                
+        if ($this->input->is_ajax_request())
+        {
+            
+            $servicio_id = $this->input->post('servicio_id');
+            
+            $minutosegundo = date('is');
+        
+        $this->load->model('Dosificacion_model');
+        $dosificacion   = $this->Dosificacion_model->get_dosificacion_activa();
+        $autorizacion   = $dosificacion[0]['dosificacion_autorizacion'];
+        $llave          = $dosificacion[0]['dosificacion_llave'];
+        $codseguimiento = $this->codigo_control($llave, $autorizacion, $servicio_id, $servicio_id,$fecha_reg, $minseg);
+        
+            $params = array(
+                'servicio_fecharecepcion' => $fecha_reg,
+                'servicio_horarecepcion' => $hora_reg,
+                'servicio_codseguimiento' => $codseguimiento,
+            );
+            $this->Servicio_model->update_servicio($servicio_id,$params);
+
+            echo json_encode("ok");
+        }
+        else
+        {                 
+            show_404();
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
 }

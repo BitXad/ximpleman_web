@@ -23,7 +23,6 @@ class Venta extends CI_Controller{
         $this->load->model('Parametro_model');
         $this->load->model('Estado_model');
         $this->load->model('Usuario_model');
-        
     } 
 
     /*
@@ -412,32 +411,32 @@ class Venta extends CI_Controller{
            
            // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
             
-            $cuota_fechalimite = $fecha_inicio;        
+            $cuota_fechalimite = $fecha_inicio;
+            
             
             if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
             else $intervalo = 7; //si los pagos son semanales
                 
             
                 for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-
                     $cuota_numcuota = $i;
+                    
+                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                    if ($modalidad == "MENSUAL") 
+                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                    else 
+                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
                     
                     $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
                             $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
                             $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
                   
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex);
-                    //$cuota_fechalimite = strtotime($fecha_inicio."+ ".$i." month");
-                   // $cuota_fechalimite = 
-                    
-                    //echo($cuota);
                     $this->Venta_model->ejecutar($cuota);
-                    //$this->db->query($cuota);
-                    
-                    //$siguiente = $siguiente+$periodo;
-                    $saldo_deudor = $cuota_total - $cuota_capital;
-                    $cuota_total = $saldo_deudor;
+
+//                    $saldo_deudor = $cuota_total - $cuota_capital;
+//                    $cuota_total = $saldo_deudor;
+                    $saldo_deudor = $saldo_deudor - $cuota_capital;
+                    //$cuota_total = $saldo_deudor;
                 }
             
 

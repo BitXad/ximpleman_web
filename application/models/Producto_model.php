@@ -170,11 +170,15 @@ class Producto_model extends CI_Model
     function get_busqueda_producto_parametro($parametro, $categoriaestado)
     {
         $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+             cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion
 
               FROM
-              producto p, estado e, categoria_producto cp
-              
+              producto p
+              LEFT JOIN estado e on p.estado_id = e.estado_id
+              LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+              LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+              LEFT JOIN moneda m on p.moneda_id = m.moneda_id
               WHERE 
                    p.estado_id = e.estado_id
                    and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
@@ -219,11 +223,15 @@ class Producto_model extends CI_Model
      function get_busqueda_producto_limite()
     {
         $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+             cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion
 
               FROM
-              producto p, estado e
-              
+              producto p
+              LEFT JOIN estado e on p.estado_id = e.estado_id
+              LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+              LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+              LEFT JOIN moneda m on p.moneda_id = m.moneda_id
               WHERE 
                    p.estado_id = e.estado_id
                   
@@ -237,11 +245,15 @@ class Producto_model extends CI_Model
     function get_busqueda_productos_all()
     {
         $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+             cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion
 
               FROM
-              producto p, estado e
-              
+              producto p
+              LEFT JOIN estado e on p.estado_id = e.estado_id
+              LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+              LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+              LEFT JOIN moneda m on p.moneda_id = m.moneda_id
               WHERE 
                    p.estado_id = e.estado_id
                   

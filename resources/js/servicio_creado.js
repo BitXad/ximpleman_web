@@ -1888,7 +1888,10 @@ function finalizarservicio(servicio_id){
     });
     window.location.href='../../servicio';
 }
-
+/* Funcion que finaliza solo el servicio */
+function finalizarservicio2(){
+    window.location.href='../../servicio';
+}
 /* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */
 function ponerdescripcion(subcatserv_id){
     var base_url    = document.getElementById('base_url').value;
