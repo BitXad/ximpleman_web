@@ -1,7 +1,7 @@
 <script src="<?php echo base_url('resources/js/servicio_seguimiento.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <link href="<?php echo base_url('resources/css/lineatime.css'); ?>" rel="stylesheet">
-
+<div style="background: #ecf0f5">
 <section class="section intro">
   <div class="container">
     <h1>Seguimiento del Servicio de "<?php echo $servicio[0]['cliente_nombre']; ?>"</h1>
@@ -57,3 +57,4 @@
       <a href="<?php echo site_url(''); ?>" class="btn btn-danger"><span class="fa fa-times"></span> Salir</a>
   </div>
 </section>
+</div>
