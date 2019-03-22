@@ -366,18 +366,44 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                       }
                       // servicios
                       if(registros[i]['tipo'] == 11){
-                          totalingreso11  += parseFloat(registros[i]['ingreso']);
-                          if(registros[i]['utilidad'] != null){
-                              totalutilidad2 += parseFloat(registros[i]['utilidad']);
-                              totalutilidad += parseFloat(registros[i]['utilidad']);
+                          if(registros[i]['ingreso'] != 0){
+                              totalingreso11  += parseFloat(registros[i]['ingreso']);
+                              if(registros[i]['utilidad'] != null){
+                                  totalutilidad2 += parseFloat(registros[i]['utilidad']);
+                                  totalutilidad += parseFloat(registros[i]['utilidad']);
+                              }
+                              html11 += "<tr>";
+                              html11 += "<td>"+cont11+"</td>";
+                              html11 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                              var detalle = "Cliente no definido";
+                              if(registros[i]["detalle"] != null){
+                                  detalle = registros[i]["detalle"];
+                              }
+                              html11 += "<td>"+detalle+"</td>";
+                              html11 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
+                              html11 += "</tr>";
+                              cont11 += 1;
                           }
-                          html11 += "<tr>";
-                          html11 += "<td>"+cont11+"</td>";
-                          html11 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
-                          html11 += "<td>"+registros[i]["detalle"]+"</td>";
-                          html11 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
-                          html11 += "</tr>";
-                          cont11 += 1;
+                      }
+                      if(registros[i]['tipo'] == 12){
+                          if(registros[i]['ingreso'] != 0){
+                              totalingreso11  += parseFloat(registros[i]['ingreso']);
+                              if(registros[i]['utilidad'] != null){
+                                  totalutilidad2 += parseFloat(registros[i]['utilidad']);
+                                  totalutilidad += parseFloat(registros[i]['utilidad']);
+                              }
+                              html11 += "<tr>";
+                              html11 += "<td>"+cont11+"</td>";
+                              html11 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                              var detalle = "Cliente no definido";
+                              if(registros[i]["detalle"] != null){
+                                  detalle = registros[i]["detalle"];
+                              }
+                              html11 += "<td>"+detalle+"</td>";
+                              html11 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
+                              html11 += "</tr>";
+                              cont11 += 1;
+                          }
                       }
 
                         html += "<tr>";
