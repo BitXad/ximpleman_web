@@ -101,6 +101,7 @@ class Subcategoria_servicio extends CI_Controller{
             {   
                 $params = array(
 					'subcatserv_descripcion' => $this->input->post('subcatserv_descripcion'),
+					'subcatserv_precio' => $this->input->post('subcatserv_precio'),
 					'catserv_id' => $this->input->post('catserv_id'),
 					'estado_id' => $this->input->post('estado_id'),
                 );
@@ -109,13 +110,13 @@ class Subcategoria_servicio extends CI_Controller{
             }
             else
             {
-				$this->load->model('Categoria_servicio_model');
-	            $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
-                
+                $this->load->model('Categoria_servicio_model');
+                $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+
                 $this->load->model('Estado_model');
-	            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
                 
-				$data['_view'] = 'subcategoria_servicio/edit';
+                $data['_view'] = 'subcategoria_servicio/edit';
                 $this->load->view('layouts/main',$data);
             }
         }
