@@ -1334,7 +1334,7 @@ function pdf($compra_id){
 }
 private function acceso(){
         if ($this->session->userdata('logged_in')) {
-            if( $this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==2) {
+            if( $this->session_data['tipousuario_id']<=3) {
                 return;
             } else {
                 redirect('alerta');
