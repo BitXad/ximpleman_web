@@ -59,13 +59,45 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!------------------ MENU CABECERA  ----------------------------------->                    
                 <div class="agile-login">
                     <ul>
-
+                        <li><a href="" data-toggle="modal" data-target="#seguimientoservicio">servicio</a></li>
                         <?php foreach($menu_cabecera as $cabecera) { ?>
                         <li><a href="<?php echo base_url().$cabecera['menu_enlace']; ?>"><?php echo $cabecera['menu_nombre']; ?></a></li>
                         <?php } ?>
 
                     </ul>
                 </div>
+                    <!-- --------------- INICIO Modal para ver el avance de servicios --------------- -->
+                    <div class="modal fade" id="seguimientoservicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                            <br><br>
+                            <div class="modal-content text-left">
+                          <div class="modal-header">
+                              <label>Ingresar Codigo de Servicio</label>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                          </div>
+                            <?php
+                            echo form_open('seguimiento/index');
+                            ?>
+                          <div class="modal-body">
+                           <!-- --------------------------------------------------------------- -->
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <input type="text" name="codigo" id="codigo" class="form-control" required placeholder="Codigo del Servicio" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fa fa-binoculars"></i> Seguimiento
+                                </button>
+                            </div>
+                           <!------------------------------------------------------------------->
+                          </div>
+                          <div class="modal-footer"></div>
+                            <?php echo form_close(); ?>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- --------------- F I N Modal para ver el avance de servicios --------------- -->
                 <div class="product_list_header">  
                     <form action="#" method="post" class="last"> 
                         <input type="hidden" name="cmd" value="_cart">

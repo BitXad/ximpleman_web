@@ -37,7 +37,7 @@ span.glyphicon.glyphicon-shopping-cart.my-cart-icon.my-cart-icon-affix {
     border-color: #3399cc;
 }
 .modal-dialog {
-    width: 850px;
+    /*width: 850px;*/
 	margin:75px auto 30px;
 }
 .snipcart-thumb a {
