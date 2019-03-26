@@ -851,7 +851,7 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<td>"+cliente_nombre+"</td>";
                         html += "<td class='text-center'>";
                         if(registros[i]["estado_id"] == 5){
-                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='Añadir, Modificar Servicio Creado'>"+registros[i]["servicio_id"];
+                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3' class='btn btn-info btn-xs' title='Añadir, Modificar Servicio Creado'>"+registros[i]["servicio_id"];
                         }else{
                             html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
                         }

@@ -1863,7 +1863,7 @@ function resetearcamposdeinputcliente(){
     });
 }
 /* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */
-function finalizarservicio(servicio_id){
+function finalizarservicio(servicio_id, num){
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"servicio/modificarservicio";
     $.ajax({url: controlador,
@@ -1886,9 +1886,18 @@ function finalizarservicio(servicio_id){
         }
         
     });
-    window.location.href='../../servicio';
+    if(num == 2){
+        window.location.href='../../../servicio';
+    }else{
+        window.location.href='../../servicio';
+    }
 }
-
+/* Funcion que finaliza solo el servicio */
+function finalizarservicio2(num){
+    if(num == 2){
+        window.location.href='../../../servicio';
+    }
+}
 /* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */
 function ponerdescripcion(subcatserv_id){
     var base_url    = document.getElementById('base_url').value;

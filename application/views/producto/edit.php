@@ -59,21 +59,21 @@
 					</div>
                                     
                                     <div class="col-md-2">
-						<label for="producto_unidad" class="control-label">Unidad</label>
-						<div class="form-group">
-							<select name="producto_unidad" class="form-control">
-								<option value="">- UNIDAD -</option>
-								<?php 
-								foreach($unidades as $unidad)
-								{
-									$selected = ($unidad['unidad_nombre'] == $producto['producto_unidadfactor']) ? ' selected="selected"' : "";
+                                        <label for="producto_unidad" class="control-label">Unidad</label>
+                                        <div class="form-group">
+                                            <select name="producto_unidad" class="form-control">
+                                                <option value="">- UNIDAD -</option>
+                                                <?php 
+                                                foreach($unidades as $unidad)
+                                                {
+                                                    $selected = ($unidad['unidad_nombre'] == $producto['producto_unidad']) ? ' selected="selected"' : "";
 
-									echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
+                                                    echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
+                                                } 
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
 					<div class="col-md-2">
 						<label for="producto_marca" class="control-label">Marca</label>
 						<div class="form-group">

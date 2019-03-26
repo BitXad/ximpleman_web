@@ -29,6 +29,12 @@
 							</select>
 						</div>
 					</div>
+                                        <div class="col-md-6">
+                                            <label for="subcatserv_precio" class="control-label"><span class="text-danger">*</span>Precio</label>
+                                            <div class="form-group">
+                                                <input type="number" step="any" min="0" name="subcatserv_precio" value="<?php echo $subcategoria_servicio['subcatserv_precio']; ?>" class="form-control" id="subcatserv_precio" required />
+                                            </div>
+                                        </div>
 					<div class="col-md-6">
 						<label for="estado_id" class="control-label"><span class="text-danger">*</span>Estado</label>
 						<div class="form-group">
