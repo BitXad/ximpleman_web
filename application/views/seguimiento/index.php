@@ -1,7 +1,9 @@
-
+<html>
+    <head></head>
+    <body>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <link href="<?php echo base_url('resources/css/lineatime.css'); ?>" rel="stylesheet">
-<div style="background: #ecf0f5">
+<div>
 <section class="section intro">
   <div class="container">
     <h1>Seguimiento del Servicio
@@ -59,3 +61,5 @@
   </div>
 </section>
 </div>
+</body>
+</html>

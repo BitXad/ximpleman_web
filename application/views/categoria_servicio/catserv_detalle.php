@@ -1,4 +1,4 @@
-<script src="<?php echo base_url('resources/js/servicio_mostrarsubcat_serv.js'); ?>" type="text/javascript"></script>
+<!--<script src="<?php //echo base_url('resources/js/servicio_mostrarsubcat_serv.js'); ?>" type="text/javascript"></script>-->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">
@@ -19,51 +19,38 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <h3 class="box-title">Categoria Servicio con Sub Categorias:</h3>
-    
+    <h3 class="box-title">Sub Categorias(Marca/Modelo) de: <?php echo $nombre; ?></h3>
 </div>
 <div class="row">    
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group"> <span class="input-group-addon">Buscar</span>
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese categoria, sub categoria...">
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese sub categoria...">
           </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
-            
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Categoria</th>
-						<th>Sub<br>Categorias</th>
+                        <th>#</th>
+                        <th>Sub Categorias</th>
                     </tr>
                     <tbody class="buscar" id="subcatserv">
-                    <?php $i = 1; $cont = 0;
-                          $categoria = "";
-                          foreach($categoria_servicio as $c){
-                              $cont = $cont+1;
-                              if($c['catserv_id'] <> 0){
-                              ?>
+                    <?php
+                    $i = 0;
+                    foreach($all_subcategoria as $c){
+                    ?>
                     <tr>
-						<td><?php echo $cont; ?></td>
-                                                <?php if($c['catserv_descripcion'] != $categoria){ ?>
-						<td><?php echo $c['catserv_descripcion']; ?></td>
-                                                    <td></td>
-                                                <?php $i++; }else{ ?>
-                                                <td></td>
-                                                <td><?php echo $c['subcatserv_descripcion']; ?></td>
-                                                <?php } $categoria = $c['catserv_descripcion']; ?>
-						
+                        <td><?php echo $i+1; ?></td>
+                        <td><?php echo $c['subcatserv_descripcion']; ?></td>
                     </tr>
-                    <?php } } ?>
+                    <?php $i++; } ?>
                 </table>
-                                
             </div>
             <div class="box-footer">
-                    <a href="<?php echo site_url('categoria_servicio'); ?>" class="btn btn-danger">
-                                <i class="fa fa-arrow-left"></i> Atras</a>
-          	</div>
+                <a href="<?php echo site_url('categoria_servicio'); ?>" class="btn btn-danger">
+                    <i class="fa fa-arrow-left"></i> Atras</a>
+            </div>
         </div>
     </div>
 </div>

@@ -1405,6 +1405,7 @@ function registrarnuevocliente(servicio_id){
                 if(cliente_id == null || cliente_id == 0){
                     mires += "NO DEFINIDO";
                 }else{
+                    $('#concliente').val(cliente_id);
                     mires += cliente_nombre;
                     mirestel += cliente_telefono;
                 }
@@ -1466,6 +1467,7 @@ function asignarclienteregistrado(servicio_id, cliente_id){
                 if(cliente_id == null || cliente_id == 0){
                     mires += "NO DEFINIDO";
                 }else{
+                    $('#concliente').val(cliente_id);
                     mires += cliente_nombre;
                     mirestel += cliente_telefono;
                 }
@@ -1830,11 +1832,13 @@ function resetearcamposdeinput(){
             /*$("subcatserv_id select").empty();
              $("subcatserv_id select").append('<option value="0">- MARCA/MODELO -</option>');*/
             //find('option:first').attr('selected', 'selected').parent('select');
+            var diagnostico = $('#parametro_diagnostico').val();
+            var solucion    = $('#parametro_solucion').val();
             $('#estesubcatserv_id').val('');
             $('#detalleserv_descripcion').val('');
             $('#detalleserv_falla').val('');
-            $('#detalleserv_diagnostico').val('REVISION');
-            $('#detalleserv_solucion').val('REVISION');
+            $('#detalleserv_diagnostico').val(diagnostico);
+            $('#detalleserv_solucion').val(solucion);
             $('#detalleserv_pesoentrada').val('0.00');
             $('#detalleserv_glosa').val('');
             $('#detalleserv_total').val('0.00');
@@ -1863,8 +1867,10 @@ function resetearcamposdeinputcliente(){
     });
 }
 /* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */
-function finalizarservicio(servicio_id, num){
-    var base_url    = document.getElementById('base_url').value;
+function finalizarservicio(servicio_id, num, direccion){
+    var base_url   = document.getElementById('base_url').value;
+    var concliente = document.getElementById('concliente').value;
+    if(concliente != 0){
     var controlador = base_url+"servicio/modificarservicio";
     $.ajax({url: controlador,
            type:"POST",
@@ -1886,16 +1892,37 @@ function finalizarservicio(servicio_id, num){
         }
         
     });
-    if(num == 2){
-        window.location.href='../../../servicio';
+        if(num == 2){
+            location.href = base_url+'servicio';
+            window.open(direccion,'_blank');
+            //window.location.href='../../../servicio';
+        }else{
+            window.open(direccion,'_blank');
+            location.href = base_url+'servicio';
+            //window.location.href='../../servicio';
+        }
     }else{
-        window.location.href='../../servicio';
+        if(num ==2){
+            alert("El Servicio no tiene Cliente, debe asignar un cliente");
+            //location.href = base_url+"servicio/serviciocreado/"+servicio_id+"/3";
+        }else{
+            alert("El Servicio no tiene Cliente, debe asignar un cliente");
+            //location.href = base_url+"servicio/serviciocreado/"+servicio_id+"";
+        }
     }
 }
 /* Funcion que finaliza solo el servicio */
-function finalizarservicio2(num){
-    if(num == 2){
-        window.location.href='../../../servicio';
+function finalizarservicio2(num, direccion){
+    var base_url   = document.getElementById('base_url').value;
+    var concliente = document.getElementById('concliente').value;
+    if(concliente != 0){
+        if(num == 2){
+            window.open(direccion,'_blank');
+            location.href = base_url+'servicio';
+            //window.location.href='../../../servicio';
+        }
+    }else{
+        alert("El Servicio no tiene Cliente, debe asignar un cliente");
     }
 }
 /* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */

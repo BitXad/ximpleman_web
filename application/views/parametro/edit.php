@@ -7,25 +7,25 @@
 			<?php echo form_open('parametro/edit/'.$parametro['parametro_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="parametro_numrecegr" class="control-label"> NUMERO EGRESO</label>
 						<div class="form-group">
 							<input type="text" readonly name="parametro_numrecegr" value="<?php echo ($this->input->post('parametro_numrecegr') ? $this->input->post('parametro_numrecegr') : $parametro['parametro_numrecegr']); ?>" class="form-control" id="parametro_numrecegr" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="parametro_numrecing" class="control-label"> NUMERO INGRESO</label>
 						<div class="form-group">
 							<input type="text" readonly name="parametro_numrecing" value="<?php echo ($this->input->post('parametro_numrecing') ? $this->input->post('parametro_numrecing') : $parametro['parametro_numrecing']); ?>" class="form-control" id="parametro_numrecing" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="parametro_copiasfact" class="control-label"> NO. DE COPIAS FACTURA</label>
 						<div class="form-group">
 							<input type="text" name="parametro_copiasfact" value="<?php echo ($this->input->post('parametro_copiasfact') ? $this->input->post('parametro_copiasfact') : $parametro['parametro_copiasfact']); ?>" class="form-control" id="parametro_copiasfact" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="parametro_tipoimpresora" class="control-label"> TIPO DE IMPRESORA</label>
 						<div class="form-group">
 							<SELECT  name="parametro_tipoimpresora" value="<?php echo ($this->input->post('parametro_tipoimpresora') ? $this->input->post('parametro_tipoimpresora') : $parametro['parametro_tipoimpresora']); ?>" class="form-control" id="parametro_tipoimpresora" >
@@ -87,12 +87,24 @@
 							<input type="text" name="parametro_interes" value="<?php echo ($this->input->post('parametro_interes') ? $this->input->post('parametro_interes') : $parametro['parametro_interes']); ?>" class="form-control" id="parametro_interes" />
 						</div>
 					</div>
-					<div class="col-md-6">
-						<label for="parametro_tituldoc" class="control-label">tituldoc</label>
-						<div class="form-group">
-							<input type="text" name="parametro_tituldoc" value="<?php echo ($this->input->post('parametro_tituldoc') ? $this->input->post('parametro_tituldoc') : $parametro['parametro_tituldoc']); ?>" class="form-control" id="parametro_tituldoc" />
-						</div>
-					</div>
+                                    <div class="col-md-6">
+                                        <label for="parametro_tituldoc" class="control-label">tituldoc</label>
+                                        <div class="form-group">
+                                            <input type="text" name="parametro_tituldoc" value="<?php echo ($this->input->post('parametro_tituldoc') ? $this->input->post('parametro_tituldoc') : $parametro['parametro_tituldoc']); ?>" class="form-control" id="parametro_tituldoc" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="parametro_diagnostico" class="control-label">Diagnostico</label>
+                                        <div class="form-group">
+                                            <input type="text" name="parametro_diagnostico" value="<?php echo ($this->input->post('parametro_diagnostico') ? $this->input->post('parametro_diagnostico') : $parametro['parametro_diagnostico']); ?>" class="form-control" id="parametro_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="parametro_solucion" class="control-label">Solución</label>
+                                        <div class="form-group">
+                                            <input type="text" name="parametro_solucion" value="<?php echo ($this->input->post('parametro_solucion') ? $this->input->post('parametro_solucion') : $parametro['parametro_solucion']); ?>" class="form-control" id="parametro_solucion" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        </div>
+                                    </div>
 
 				</div>
 			</div>

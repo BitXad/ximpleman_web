@@ -94,7 +94,7 @@
             <!--este es INICIO de input buscador-->
              <div class="col-md- 6">
                 <div class="input-group">
-                          <span class="input-group-addon">Buscar</span>           
+                    <span class="input-group-addon">Buscar</span>           
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >
                 </div>
             </div>

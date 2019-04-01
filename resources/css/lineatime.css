@@ -21,15 +21,23 @@ body {
 }
 */
 
+body {
+  font-family: "Arial";
+  background: #979a9e;
+}
+
 /* .section SECTION
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-
 .section {
-  background: #979a9e;
+    /*font-family: "Arial";
+    background: #979a9e;*/
+  
   /*padding: 50px 0;*/
 }
 
 .section .container {
+    /*font-family: "Arial";
+    background: #979a9e;*/
   width: 90%;
   max-width: 100%;
   margin: 0 auto;
@@ -48,15 +56,20 @@ body {
 /* TIMELINE
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 .timeline:before {
-    background: #ECF0F5;
+    /*font-family: "Arial";
+    background: #979a9e;*/
 }
 
 .timeline {
+    /*font-family: "Arial";
+    background: #979a9e;*/
   white-space: nowrap;
   overflow-x: hidden;
 }
 
 .timeline ol {
+    /*font-family: "Arial";
+    background: #979a9e;*/
     border-left: 0px;
   font-size: 0;
   width: 100vw;
@@ -95,6 +108,7 @@ body {
 }
 
 .timeline ol li div {
+    
   position: absolute;
   left: calc(100% + 7px);
   width: 280px;
@@ -192,9 +206,10 @@ body {
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .timeline .arrows {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 20px;
+
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }
 
 .timeline .arrows .arrow__prev {

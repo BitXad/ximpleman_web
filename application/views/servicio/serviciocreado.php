@@ -1,5 +1,6 @@
 <script src="<?php echo base_url('resources/js/servicio_creado.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="concliente" id="concliente" value="<?php echo $servicio['cliente_id']; ?>" />
 <script>
         $(document).ready(function() {
 
@@ -170,6 +171,8 @@ $(document).ready(function(){
 </script>
 <div class="box-header with-border">
     <input type="hidden" value="<?php echo $servicio['servicio_id']; ?>" id="esteservicio_id">
+    <input type="hidden" value="<?php echo $parametro['parametro_diagnostico']; ?>" id="parametro_diagnostico">
+    <input type="hidden" value="<?php echo $parametro['parametro_solucion']; ?>" id="parametro_solucion">
     <h3 class="box-title"><b>Detalle del Servicio N°: <?php echo $servicio['servicio_id'] ?></b></h3>
     <div class="container">
         <div class="panel panel-primary col-md-5">
@@ -443,20 +446,18 @@ $(document).ready(function(){
         }
         ?>
         
-        <!--<a href="<?php //echo site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']); ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br>Imp. Comprob.</a>
-        <a href="<?php //echo $dir_url; ?>" id="imprimir" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" ><span class="fa fa-print fa-4x"></span><br><?php echo $titprint; ?></a>-->
         <a href="<?php echo site_url('servicio');  ?>" id="cancelar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Cancelar</a>
         <?php
         if($a == 3){
             if(is_null($servicio['servicio_codseguimiento'])){ ?>
-                <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
             <?php
             }else{ ?>
-                <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio2(2)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio2(2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
             <?php
             }
         }else{?>
-            <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+            <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
         <?php } ?>
 </div>
 </div>
@@ -630,22 +631,22 @@ $(document).ready(function(){
                                     </div>
                             </div>
                             <div class="col-md-6">
-                                    <label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
-                                    <div class="form-group">
-                                        <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo "VACIO";}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
-                                    </div>
+                                <label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
+                                <div class="form-group">
+                                    <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo $parametro['parametro_diagnostico'];}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                    <label for="detalleserv_solucion" class="control-label">Solución</label>
-                                    <div class="form-group">
-                                            <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo "RECARGA";}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
-                                    </div>
+                                <label for="detalleserv_solucion" class="control-label">Solución</label>
+                                <div class="form-group">
+                                    <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo $parametro['parametro_solucion'];}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                </div>
                             </div>
                             <div class="col-md-4">
-                                    <label for="detalleserv_pesoentrada" class="control-label">Peso Entrada(Gr.)</label>
-                                    <div class="form-group">
-                                            <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" onclick='this.select();' />
-                                    </div>
+                                <label for="detalleserv_pesoentrada" class="control-label">Peso Entrada(Gr.)</label>
+                                <div class="form-group">
+                                    <input type="number" step="any" min="0" name="detalleserv_pesoentrada" value="<?php echo number_format($this->input->post('detalleserv_pesoentrada'),'2','.',','); ?>" class="form-control" id="detalleserv_pesoentrada" onclick='this.select();' />
+                                </div>
                             </div>
                             <div class="col-md-4">
                                     <label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
@@ -722,12 +723,12 @@ $(document).ready(function(){
     alert('El Monto ingresado debe ser menor al Saldo');
     </script>
     <?php
-    }elseif($a == 2){
+    }else if($a == 2){
     ?>
     <script type="text/javascript">
     alert('El estado Entregado se cambia cuando el saldo  es 0, verifique sus saldos');
     </script>
-    <?php }elseif($a == "no"){ ?>
+    <?php }else if($a == "no"){ ?>
     <script type="text/javascript">
     alert('No se encontro ningun Detalle de Servicio con ese codigo.');
     </script>
