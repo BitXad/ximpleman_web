@@ -183,6 +183,7 @@ $(document).ready(function(){
                             <a href="<?php echo site_url('cuotum/editar/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                             <a href="#" data-toggle="modal" data-target="#pagar<?php echo $i; ?>" class="btn btn-success btn-xs"><span class="fa fa-dollar"></span></a>
+                            <a href="<?php echo site_url("cuotum/notacobro/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                                       <div class="modal-dialog" role="document">
