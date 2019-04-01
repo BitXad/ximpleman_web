@@ -29,6 +29,24 @@ class Cliente_model extends CI_Model
 
         return $cliente;
     }
+    /*
+     * Get cliente by cliente_id
+     */
+    function get_cliente_by_id($cliente_id)
+    {
+        $cliente = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `cliente`
+
+            WHERE
+                `cliente_id` = ?
+        ",array($cliente_id))->result_array();
+
+        return $cliente;
+    }
     
     /*
      * Get all cliente count

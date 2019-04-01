@@ -23,6 +23,7 @@ class Venta extends CI_Controller{
         $this->load->model('Parametro_model');
         $this->load->model('Estado_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Cliente_model');
     } 
 
     /*
@@ -90,6 +91,48 @@ class Venta extends CI_Controller{
         $data['page_title'] = "Ventas";
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['usuario_id'] = $usuario_id;
+        $data['tipousuario_id'] = $tipousuario_id;
+        
+        //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
+        
+        $data['_view'] = 'venta/ventas';
+        $this->load->view('layouts/main',$data);
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
+        
+    }
+    function ventas_cliente($cliente_id)
+    {    
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************        
+        
+        $usuario_id = $session_data['usuario_id'];
+        $tipousuario_id = $session_data['tipousuario_id'];
+        
+//        $params['limit'] = RECORDS_PER_PAGE; 
+//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        //$data['cliente'] = $this->Venta_model->get_all_cliente();
+        //$data['inventario'] = $this->Inventario_model->get_inventario_bloque();
+        //$data['presentacion'] = $this->Inventario_model->get_presentacion();  
+        //$data['detalle_venta'] = $this->Venta_model->get_detalle_aux($usuario_id);
+        $data['page_title'] = "Ventas";
+        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();

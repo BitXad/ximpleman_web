@@ -97,7 +97,7 @@ border-bottom : 1px solid #aaa;
 
 <font face="Arial">
 
-    <table class="table" style="width: 18cm;">
+    <table class="table" style="width: 20cm;">
         <tr>
             <td>
                     
@@ -137,7 +137,9 @@ border-bottom : 1px solid #aaa;
         </tr>
     </table>
 
-    <table class="table" id = "mitabla" style="width: 18cm; border-width:10px" cellpadding="0" cellspacing="0">
+    <table class="table" id="mitabla2" style="width: 20cm; border-width:10px;">
+    
+
         <tr>
             <th>#</th>
             <th>Descripción</th>

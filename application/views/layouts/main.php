@@ -414,9 +414,6 @@
                         <li>
                             <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-list-alt"></i>Movimiento Diario</a>
-                        </li>
                     </ul>
                 </li>
                 <?php } 

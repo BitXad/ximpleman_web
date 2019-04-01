@@ -442,7 +442,7 @@ class Inventario_model extends CI_Model
         return true;
     }
 
-    function incrementar_inventario($cant, $producto_id){
+    function incrementar_inventario($cant,$producto_id){
         $sql = "update inventario set existencia = existencia + ".$cant;
                " where producto_id = ".$producto_id;
         $this->db->query($sql);

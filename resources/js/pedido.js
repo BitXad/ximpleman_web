@@ -491,9 +491,12 @@ function tablaresultadospedido(opcion)
                         html += "   <td align='center'>";
                         html += "   <img src='"+base_url+'resources/images/productos/thumb_'+registros[i]["producto_foto"]+"' class='img-circle' width='50' height='50'>";
                         html += "    ";
-                        html += "<br><select class='btn btn-facebook btn-xs'>";
-                        html += "<option value='"+registros[i]["producto_precio"]+"' >"+registros[i]["producto_unidad"]+" Bs: "+registros[i]["producto_precio"]+"</option>";
-                        html += "</select>";
+                        html += "";
+                        html += "<br>"+registros[i]["producto_unidad"]+" Bs: "+"<input type='text' value='"+registros[i]["producto_precio"]+"' size='7'>";
+                        html
+//                        html += "<br><select class='btn btn-facebook btn-xs'>";
+//                        html += "<option value='"+registros[i]["producto_precio"]+"' >"+registros[i]["producto_unidad"]+" Bs: "+registros[i]["producto_precio"]+"</option>";
+//                        html += "</select>";
                         html += "<br> <span class='btn btn-danger btn-xs'><font size='3' face='Arial'><b>Saldo: "+parseFloat(registros[i]['existencia']).toFixed(2)+"</b></font></span>";
                         html += "    </td>";   
                         
