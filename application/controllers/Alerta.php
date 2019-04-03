@@ -12,4 +12,15 @@ class Alerta extends CI_Controller{
              '<br><a href="'.base_url('admin/dashb/logout').'" class="btn btn-info btn-xs">Cerrar Sesion</a><br>    <a href="javascript: history.go(-1)" class="btn btn-success">Volver atrás</a>';
     }
 
+public function dosificacion()
+{
+        $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
+                $dosificacion = $this->db->query($dosif)->row_array();
+
+        $data['diasdo'] = $dosificacion;
+        $data['_view'] = 'admin/dosificacion';
+        $this->load->view('layouts/main',$data);
+   
 }
+}
+
