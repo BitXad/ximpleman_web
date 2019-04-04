@@ -75,7 +75,8 @@ class Dosificacion_model extends CI_Model
                 d.`dosificacion_leyenda2`, d.`dosificacion_sucursal`,
                 d.`dosificacion_leyenda3`, d.`dosificacion_leyenda4`,
                 d.`dosificacion_sfc`, d.`dosificacion_actividad`,
-                d.`dosificacion_fechahora`, d.`dosificacion_leyenda5`
+                d.`dosificacion_fechahora`, d.`dosificacion_leyenda5`, 
+                d.`dosificacion_fechalimite`, d.`dosificasion_actividadsec`
 
             FROM
                 dosificacion d, estado e, empresa em
