@@ -23,7 +23,7 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<!--<div class="col-md-6">
 						<label for="dosificacion_fechahora" class="control-label">Fecha, Hora</label>
                                                 <?php
                                                 $fechayhora = ($this->input->post('dosificacion_fechahora') ? $this->input->post('dosificacion_fechahora') : $dosificacion['dosificacion_fechahora']);
@@ -32,6 +32,12 @@
                                                 ?>
 						<div class="form-group">
                                                     <input type="datetime-local" name="dosificacion_fechahora" value="<?php echo $fecha."T".$hora; ?>" class="form-control" id="dosificacion_fechahora" />
+						</div>
+					</div>-->
+					<div class="col-md-6">
+						<label for="dosificacion_fechalimite" class="control-label">Fecha Limite</label>
+						<div class="form-group">
+							<input type="text" name="dosificacion_fechalimite" value="<?php echo ($this->input->post('dosificacion_fechalimite') ? $this->input->post('dosificacion_fechalimite') : $dosificacion['dosificacion_fechalimite']); ?>" class="form-control" id="dosificacion_fechalimite" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -74,6 +80,12 @@
 						<label for="dosificacion_actividad" class="control-label">Actividad</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_actividad" value="<?php echo ($this->input->post('dosificacion_actividad') ? $this->input->post('dosificacion_actividad') : $dosificacion['dosificacion_actividad']); ?>" class="form-control" id="dosificacion_actividad" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="dosificasion_actividadsec" class="control-label">Actividad Secundaria</label>
+						<div class="form-group">
+							<input type="text" name="dosificasion_actividadsec" value="<?php echo ($this->input->post('dosificasion_actividadsec') ? $this->input->post('dosificasion_actividadsec') : $dosificacion['dosificasion_actividadsec']); ?>" class="form-control" id="dosificasion_actividadsec" />
 						</div>
 					</div>
 					<div class="col-md-6">

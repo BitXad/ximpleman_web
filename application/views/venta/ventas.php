@@ -64,7 +64,6 @@ function mostrar_ocultar(){
 <input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 
-
 <!-------------------- inicio collapse ---------------------->
 
 <div class="panel-group">
@@ -74,7 +73,7 @@ function mostrar_ocultar(){
         
 <!--------------------- cliente_id --------------------->
 <div class="container" hidden>
-    <input type="text" name="cliente_id" value="0" class="form-control" id="cliente_id" >
+    <input type="text" name="<?php echo $cliente[0]['cliente_id']; ?>" value="0" class="form-control" id="cliente_id" >
 </div>
 
 <!--------------------- fin cliente_id --------------------->
