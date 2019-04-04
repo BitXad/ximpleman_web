@@ -24,10 +24,53 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <!--<link href='//fonts.googleapis.com/css?family=Carrois+Gothic' rel='stylesheet' type='text/css'>
     <link href='//fonts.googleapis.com/css?family=Work+Sans:400,500,600' rel='stylesheet' type='text/css'>-->
     <!--static chart-->
-</head>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="<?php echo site_url('resources/css/AdminLTE.min.css');?>">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+   <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+</head>  
 <body>
+
+    <?php if($diaslic['dias'] < 0){ ?>
+<div class="info-box bg-red">
+                <span class="info-box-icon"><i class="ion-alert-circled"></i></span>
+
+                <div class="info-box-content">
+                  
+                  <span class="info-box-text"><font size="4"><b>LA LICENCIA ESTA EXPIRADA </b></font></span>
+                
+                  <span class="info-box-number"></span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 100%"></div>
+                  </div>
+                  <span class="progress-description">
+                    No podra ingresar al Sistema.  Consulte con el Proveedor
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>
+<?php } else if($diaslic == 5000){ ?>
+  <?php }  else { ?>  
+    <div class="info-box bg-red">
+                <span class="info-box-icon"><i class="ion-alert-circled"></i></span>
+
+                <div class="info-box-content">
+                               
+                  <span class="info-box-text"><font size="4">LA LICENCIA VENCERA EN: <font size="5"><b><?php echo $diaslic['dias']; ?></b></font> DIAS</font></span>
+                
+                  <span class="info-box-number"></span>
+                  <div class="progress">
+                    <div class="progress-bar" style="width: 100%"></div>
+                  </div>
+                  <span class="progress-description">
+                    No podra ingresar al Sistema.
+                  </span>
+                </div><!-- /.info-box-content -->
+              </div>  
+<?php } ?>
 <div class="login-page">
-    <div class="login-main">
+               <div class="login-main">
         <p class="center-block">
             <?php
  
@@ -38,10 +81,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
               <h2 class="text-center">Ximpleman</h2>
         </div>
         <div class="login-block">
-            <!--				<form>-->
+            <!--                <form>-->
             <?php echo form_open('verificar'); ?>
-            <input type="text" name="username" id="username" placeholder="Usuario" autocomplete="off" autofocus  required="">
-            <input type="password" name="password" id="password" class="lock" placeholder="Contraseña">
+            <input type="text" name="username" id="username" placeholder="Usuario" autocomplete="off" autofocus  required="" <?php if($diaslic['dias'] < 0){ ?> readonly <?php } ?> >
+            <input type="password" name="password" id="password" class="lock" placeholder="Contraseña" <?php if($diaslic['dias'] < 0){ ?> readonly <?php } ?> >
             <div class="forgot-top-grids">
                 <div class="forgot-grid">
                     <ul>
@@ -61,7 +104,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
             <h3>No estas registrado?<a href="#">  Registrate Ahora</a></h3>
 
-            <!--				</form>-->
+            <!--                </form>-->
             <h5><a href="<?php echo base_url(); ?>">Regresar</a></h5>
         </div>
     </div>
@@ -72,16 +115,4 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <p>© 2018 Password SRL. All Rights Reserved | Design by  <a href="http://www.passwordbolivia.com/" target="_blank">Password SRL</a> </p>
 </div>
 <!--COPY rights end here-->
-
-<!--scrolling js-->
-<script src="<?php echo base_url('resources/js/jquery.nicescroll.js'); ?>"></script>
-<script src="<?php echo base_url('resources/js/scripts.js'); ?>"></script>
-<!--//scrolling js-->
-<script src="<?php echo base_url('resources/js/bootstrap.js'); ?>"> </script>
-<!-- mother grid end here-->
-</body>
-</html>
-
-
-
 
