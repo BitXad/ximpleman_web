@@ -165,6 +165,7 @@ function buscarcliente(){
 function tablaproductos()
 {   
     var base_url = document.getElementById('base_url').value;
+    var categ = JSON.parse(document.getElementById('categoria_producto').value);
     var controlador = base_url+'venta/detalleventa';
     
     $.ajax({url: controlador,
@@ -199,10 +200,17 @@ function tablaproductos()
                     var cont = 0;
                     var cant_total = 0;
                     var total_detalle = 0;
+                    var categoria = '';
                     var x = registros.length; //tamaño del arreglo de la consulta
                       
                     for (var i = 0; i < x ; i++){
 
+                        categoria = '';
+                        if (registros[i]["categoria_id"]>0){
+                            categoria = categ[registros[i]["categoria_id"]-1]["categoria_nombre"]; 
+                        }
+
+                        //alert(categoria);
 
                            cont = cont+1;
                            cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
@@ -214,7 +222,7 @@ function tablaproductos()
                         html += "                    <tr>";
                         html += "			<td "+color+">"+cont+"</td>";
                         html += "                       <td "+color+"><b><font size=1>"+registros[i]["producto_nombre"]+"</font></b>";
-                        html += "                           <small><br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        html += "                           <small><br>"+categoria+"|"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
 

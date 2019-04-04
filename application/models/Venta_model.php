@@ -133,7 +133,7 @@ class Venta_model extends CI_Model
      */
     function get_categoria_producto()
     {
-        $sql = "select * from categoria_producto";
+        $sql = "select * from categoria_producto order by categoria_id";
         $categoria_producto = $this->db->query($sql)->result_array();
         return $categoria_producto;
     }
