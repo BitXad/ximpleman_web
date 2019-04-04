@@ -192,11 +192,11 @@ $(document).ready(function(){
         </div>
         <div class="box-tools">
             <center>
-                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Nuevo Servicio</small></a>
-                <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#myModal" onclick="ponerfocus();"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie..</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" ><font size="5"><span class="fa fa-user-secret"></span></font><br><small>Buscar Clie..</small></a>
-                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Servicio</small></a>
-                <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv..</small></a>
+                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Servicio</small></a>
+                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" ><font size="5"><span class="fa fa-user"></span></font><br><small>Cliente</small></a>
+                <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#myModal" onclick="ponerfocus();"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo</small></a>
+                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar</small></a>
+                <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv.</small></a>
             </center>
         </div>
     </div>
@@ -452,7 +452,7 @@ $(document).ready(function(){
                 <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
             <?php
             }else{ ?>
-                <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio2(2)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+                <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio2(2)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
             <?php
             }
         }else{?>

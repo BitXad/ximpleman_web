@@ -161,7 +161,7 @@ function buscarcliente(){
 
 }
 
-//muestra la tabla de productos disponibles para la venta
+//muestra la tabla de productos del detalle de la venta
 function tablaproductos()
 {   
     var base_url = document.getElementById('base_url').value;
@@ -956,7 +956,7 @@ function registrarcliente()
     var cliente_nombre = document.getElementById('cliente_nombre').value; 
     var cliente_id = document.getElementById('cliente_id').value; 
    
-   
+   alert(cliente_id);
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
         
         // alert(cliente_id+" * "+nit);
