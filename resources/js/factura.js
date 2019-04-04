@@ -85,7 +85,7 @@ function mostrar_facturas() {
                     for(var i = 0; i < tam; i++ ){                        
                         html += "<tr>";
                         html += "   <td>0</td>";
-                        html += "   <td>"+(i+1)+"</td>";
+                        html += "   <td>1</td>";
                         html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
                         html += "   <td>"+factura[i]["factura_numero"]+"</td>";
                         html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
@@ -96,6 +96,7 @@ function mostrar_facturas() {
                         html += "   <td>"+Number(factura[i]["factura_exento"]).toFixed(2)+"</td>";
                         html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
                         html += "   <td>"+Number(factura[i]["factura_descuento"]).toFixed(2)+"</td>";
+                        html += "   <td>0</td>";
                         html += "   <td>0</td>";
                         html += "   <td>"+Number(factura[i]["factura_total"]).toFixed(2)+"</td>";
                         html += "   <td>"+Number(factura[i]["factura_total"]*0.13).toFixed(2)+"</td>";
