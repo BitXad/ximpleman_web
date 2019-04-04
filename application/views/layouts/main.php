@@ -152,9 +152,6 @@
                             <a href="<?php echo site_url('categoria_trabajo');?>"><i class="fa fa-building"></i> Categoria Trabajo</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
-                        </li>
-                        <li>
                             <a href="<?php echo site_url('empresa');?>"><i class="fa fa-bank"></i>Empresas</a>
                         </li>
                         <li>
@@ -258,9 +255,6 @@
                             <a href="<?php echo site_url('reportes/egresorep');?>"><i class="fa fa-arrow-left"></i>Egresos</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Factura</span></a>
-                        </li>
-                        <li>
                             <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
                         </li>
                         <li>
@@ -311,12 +305,14 @@
                     <a href="#"><i class="fa fa-braille"></i> <span>Contabilidad</span></a>
                     <ul class="treeview-menu">
                         <li>
-                            <a href="#"><i class="fa fa-building"></i>En Construcción</a>
+                            <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Compras</span></a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
                         </li>
-
                     </ul>
                    
                 </li>
@@ -469,6 +465,23 @@
                             <a href="<?php echo site_url('servicio');?>"><i class="fa fa-cart-plus"></i>Servicios</a>
                         </li>
                     </ul>
+                </li>
+                <?php }
+                if($session_data['tipousuario_id']==6){ ?>
+                <li>
+                    <a href="#"><i class="fa fa-braille"></i> <span>Contabilidad</span></a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Compras</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
+                        </li>
+                    </ul>
+                   
                 </li>
                 <?php } ?>
             </ul>
