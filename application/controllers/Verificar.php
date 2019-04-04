@@ -26,7 +26,7 @@ class Verificar extends CI_Controller
         //var_dump($result);
 
         if ($result) {
-            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 5 or $result->tipousuario_id == 4) {
+            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 5 or $result->tipousuario_id == 4 or $result->tipousuario_id == 6) {
                 $thumb = "";
                 if($result->usuario_imagen <> null){
                     $thumb = $this->foto_thumb($result->usuario_imagen);
