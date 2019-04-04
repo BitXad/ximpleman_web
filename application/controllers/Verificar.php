@@ -88,6 +88,13 @@ class Verificar extends CI_Controller
                     redirect('pedido');
                 }
 
+                 if($session_data['tipousuario_id'] == 6){
+                    if ($dosificacion['dias']<=10) {
+                       redirect('alerta/dosificacion');
+                    }
+                    redirect('factura');
+                }
+
 
             } else {
                 $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO no es valido' . $result . '</div>');
