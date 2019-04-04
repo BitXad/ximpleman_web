@@ -20,8 +20,7 @@
 <div class="box-header">
     <h3 class="box-title">Categoria Servicio</h3>
     <div class="box-tools">
-        <a href="<?php echo site_url('categoria_servicio/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-        <a href="<?php echo site_url('categoria_servicio/catserv_detalle'); ?>" class="btn btn-info btn-sm"><span class="fa fa-eye"></span>Ver con Subcategorias</a> 
+        <a href="<?php echo site_url('categoria_servicio/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a>
     </div>
 </div>
 <div class="row">    
@@ -49,37 +48,37 @@
                                   $cont = $cont+1;
                               ?>
                     <tr>
-						<td><?php echo $cont; ?></td>
-						<td><?php echo $c['catserv_descripcion']; ?></td>
-                                                
-                                                <td style="background-color: #<?php echo $c['estado_color']; ?>"> <?php echo $c['estado_descripcion']; ?></td>
-                                                    <td>
-                               <!------------------------ INICIO modal para confirmar eliminación ------------------->
-                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                          </div>
-                                          <div class="modal-body">
-                                           <!------------------------------------------------------------------->
-                                           <h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la categoria <b> <?php echo $c['catserv_descripcion']; ?></b>?
-                                           </h3>
-                                           <!------------------------------------------------------------------->
-                                          </div>
-                                          <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_servicio/remove/'.$c['catserv_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
-                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                        <!------------------------ FIN modal para confirmar eliminación ------------------->
-                                                    <a href="<?php echo site_url('categoria_servicio/edit/'.$c['catserv_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                                                    <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
-                                                    </td>
+                        <td><?php echo $cont; ?></td>
+                        <td><?php echo $c['catserv_descripcion']; ?></td>
+
+                        <td style="background-color: #<?php echo $c['estado_color']; ?>"> <?php echo $c['estado_descripcion']; ?></td>
+                        <td>
+                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                            <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                              <div class="modal-dialog" role="document">
+                                    <br><br>
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                  </div>
+                                  <div class="modal-body">
+                                   <!------------------------------------------------------------------->
+                                   <h3><b> <span class="fa fa-trash"></span></b>
+                                       ¿Desea eliminar la categoria <b> <?php echo $c['catserv_descripcion']; ?></b>?
+                                   </h3>
+                                   <!------------------------------------------------------------------->
+                                  </div>
+                                  <div class="modal-footer aligncenter">
+                                              <a href="<?php echo site_url('categoria_servicio/remove/'.$c['catserv_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                              <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!------------------------ FIN modal para confirmar eliminación ------------------->
+                            <a href="<?php echo site_url('categoria_servicio/edit/'.$c['catserv_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                            <a href="<?php echo site_url('categoria_servicio/catserv_detalle/'.$c['catserv_id']); ?>" class="btn btn-warning btn-sm" title="Ver Subcategorias Asignadas"><span class="fa fa-eye"></span> Subcategorias</a>
+                        </td>
 						
                     </tr>
                               <?php $i++; } } ?>

@@ -84,4 +84,20 @@ class Parametro_model extends CI_Model
     {
         return $this->db->delete('parametros',array('parametro_id'=>$parametro_id));
     }
+    /*
+     * Get parametro servicio
+     */
+    function get_parametro_servicio()
+    {
+        $parametro = $this->db->query("
+           SELECT
+                p.parametro_diagnostico, p.parametro_solucion
+            FROM
+                parametros p
+            WHERE
+                1 = 1
+        ")->row_array();
+
+        return $parametro;
+    }
 }

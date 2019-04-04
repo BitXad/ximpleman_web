@@ -96,7 +96,7 @@ class Subcategoria_servicio_model extends CI_Model {
 
         $servicio = $this->db->query("
             SELECT
-                *
+                sc.*, e.estado_color, e.estado_descripcion
 
             FROM
                 subcategoria_servicio sc, estado e

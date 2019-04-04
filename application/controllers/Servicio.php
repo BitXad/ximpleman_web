@@ -300,35 +300,12 @@ class Servicio extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         $data['a'] = $a;
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('servicio_saldo','Servicio Saldo','required');
-		
-	if($this->form_validation->run())     
+        $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+	if(count($data['servicio']) >0)
         {
-            $usuario_id = $session_data['usuario_id'];
-            
-            date_default_timezone_set('America/La_Paz');
-            $fecha_res = date('Y-m-d');
-            $hora_res = date('H:i:s');
-            $params = array(
-                                'estado_id' => $this->input->post('estado_id'),
-				'tiposerv_id' => $this->input->post('tiposerv_id'),
-				'cliente_id' => $this->input->post('cliente_id'),
-				'usuario_id' => $usuario_id,
-				'servicio_fecharecepcion' => $fecha_res,
-				'servicio_horarecepcion' => $hora_res,
-				'servicio_total' => $this->input->post('servicio_total'),
-				'servicio_acuenta' => $this->input->post('servicio_acuenta'),
-				'servicio_saldo' => $this->input->post('servicio_saldo'),
-            );
-            
-            $servicio_id = $this->Servicio_model->add_servicio($params);
-            redirect('detalle_serv/detalle_nuevo/'.$servicio_id);
-        }
-        else
-        {
-            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            //$data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            $this->load->model('Parametro_model');
+	    $data['parametro'] = $this->Parametro_model->get_parametro_servicio();
             
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
@@ -338,10 +315,7 @@ class Servicio extends CI_Controller{
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
             
 	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
-            /*
-            $this->load->model('Detalle_serv_model');
-	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
-            */
+            
             $this->load->model('Categoria_servicio_model');
 	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
             
@@ -369,6 +343,8 @@ class Servicio extends CI_Controller{
             
             $data['_view'] = 'servicio/serviciocreado';
             $this->load->view('layouts/main',$data);
+        } else {
+            redirect('servicio');
         }
         }
             else{

@@ -1,4 +1,3 @@
-/*
 *,
 *::before,
 *::after {
@@ -15,23 +14,24 @@ button {
 }
 
 body {
-  font: normal 16px/1.5 "Helvetica Neue", sans-serif;
-  background: #456990;
-  color: #fff;
+  /*font: normal 16px/1.5 "Helvetica Neue", sans-serif;*/
+  font-family: "Arial";
+  background: #b3b3b7;
+  /*color: #fff;*/
 }
-*/
+
 
 /* .section SECTION
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
 
 .section {
-  background: #979a9e;
+  background: #b3b3b7;
   /*padding: 50px 0;*/
 }
 
 .section .container {
   width: 90%;
-  max-width: 100%;
+  max-width: 1200px;
   margin: 0 auto;
   text-align: center;
 }
@@ -47,9 +47,6 @@ body {
 
 /* TIMELINE
 –––––––––––––––––––––––––––––––––––––––––––––––––– */
-.timeline:before {
-    background: #ECF0F5;
-}
 
 .timeline {
   white-space: nowrap;
@@ -57,10 +54,9 @@ body {
 }
 
 .timeline ol {
-    border-left: 0px;
   font-size: 0;
   width: 100vw;
-  padding: 150px 0;
+  padding: 250px 0;
   transition: all 1s;
 }
 
@@ -68,7 +64,7 @@ body {
   position: relative;
   display: inline-block;
   list-style-type: none;
-  width: 160px;
+  width: 230px;
   height: 3px;
   background: #fff;
 }
@@ -78,7 +74,7 @@ body {
 }
 
 .timeline ol li:not(:first-child) {
-  margin-left: 14px;
+  margin-left: 24px;
 }
 
 .timeline ol li:not(:last-child)::after {
@@ -87,8 +83,8 @@ body {
   top: 50%;
   left: calc(100% + 1px);
   bottom: 0;
-  width: 12px;
-  height: 12px;
+  width: 22px;
+  height: 22px;
   transform: translateY(-50%);
   border-radius: 50%;
   background: #F45B69;
@@ -96,13 +92,13 @@ body {
 
 .timeline ol li div {
   position: absolute;
-  left: calc(100% + 7px);
+  left: calc(100% + 12px);
   width: 280px;
   padding: 15px;
   font-size: 1rem;
   white-space: normal;
   color: black;
-  /*background: white;*/
+  background: white;
 }
 
 .timeline ol li div::before {
@@ -119,66 +115,39 @@ body {
   top: -16px;
   transform: translateY(-100%);
 }
-/*
+
 .timeline ol li:nth-child(odd) div::before {
   top: 100%;
   border-width: 8px 8px 0 0;
   border-color: white transparent transparent transparent;
+  background-color: white transparent transparent transparent;
 }
-*/
+.colorarriba{
+    background: #ed632d;
+}
+.timeline ol li:nth-child(odd) .colorarriba::before {
+  top: 100%;
+  border-width: 8px 8px 0 0;
+  border-color: white transparent transparent transparent;
+  background-color: #ed632d transparent transparent transparent;
+}
 .timeline ol li:nth-child(even) div {
   top: calc(100% + 16px);
 }
-/*
+
 .timeline ol li:nth-child(even) div::before {
   top: -8px;
   border-width: 8px 0 0 8px;
   border-color: transparent transparent transparent white;
 }
-*/
-
-/* ********INICIO Coloreando los campos de tiempo******* */
-.recepcion{
-    background: #e0533a;
+.colorabajo{
+    background: #ed632d;
 }
-.timeline ol li:nth-child(odd) .recepcion::before {
-  top: 100%;
-  border-width: 8px 8px 0 0;
-  border-color: #e0533a transparent transparent transparent;
-}
-.pendiente{
-    background: #f9840e;
-}
-.timeline ol li:nth-child(even) .pendiente::before {
+.timeline ol li:nth-child(even) .colorabajo::before {
   top: -8px;
   border-width: 8px 0 0 8px;
-  border-color: transparent transparent transparent #f9840e;
+  border-color: transparent transparent transparent #ed632d;
 }
-.proceso{
-    background: #c7fc99;
-}
-.timeline ol li:nth-child(odd) .proceso::before {
-  top: 100%;
-  border-width: 8px 8px 0 0;
-  border-color: #c7fc99 transparent transparent transparent;
-}
-.finalizado{
-    background: #9bef8b;
-}
-.timeline ol li:nth-child(even) .finalizado::before {
-  top: -8px;
-  border-width: 8px 0 0 8px;
-  border-color: transparent transparent transparent #9bef8b;
-}
-.entregado{
-    background: #108c27;
-}
-.timeline ol li:nth-child(odd) .entregado::before {
-  top: 100%;
-  border-width: 8px 8px 0 0;
-  border-color: #108c27 transparent transparent transparent;
-}
-/* ********F I N Coloreando los campos de tiempo******* */
 
 .timeline time {
   display: block;
@@ -258,7 +227,7 @@ body {
     top: 100%;
     transform: translateX(-50%);
     border: none;
-    /*border-left: 1px solid white;*/
+    border-left: 1px solid white;
     height: 25px;
   }
   

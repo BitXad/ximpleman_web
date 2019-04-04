@@ -481,7 +481,7 @@ function resultadodetalleservicioview(servicio_id){
                         }
                         if(registros[i]["esteestado"] == 6){
                             html += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalpagardetalle"+i+"' title='cobrar detalle serv..' onclick='refrescarhora()';><span class='fa fa-money'></span><br></a>";
-                            html += "<a class='btn  btn-primary btn-xs' data-toggle='modal' data-target='#modalcreditodetalle"+i+"' title='credito detalle serv..' ><span class='fa fa-credit-card'></span><br></a>";
+                            html += "<a class='btn  btn-primary btn-xs' data-toggle='modal' data-target='#modalcreditodetalle"+i+"' title='pasar a credito este detalle..' ><span class='fa fa-credit-card'></span><br></a>";
                         }
                         if(registros[i]["esteestado"] == 7){
                             var dir_url = "";

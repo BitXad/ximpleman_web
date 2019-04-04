@@ -363,7 +363,7 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             select
                 d.*, s.servicio_fecharecepcion, s.servicio_horarecepcion, u.usuario_nombre,
-                c.cliente_nombre
+                c.cliente_nombre, s.servicio_codseguimiento
             from
                  detalle_serv d
             LEFT JOIN servicio s on d.servicio_id = s.servicio_id

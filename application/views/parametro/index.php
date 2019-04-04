@@ -84,6 +84,14 @@ break;
                         <th style="font-size: 11px;">TITULO DOC.</th>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>
                     </tr>
+                    <tr>
+                        <th style="font-size: 11px;">DIAGNOSTICO</th>
+                        <td><?php echo $p['parametro_diagnostico']; ?></td>
+                    </tr>
+                    <tr>
+                        <th style="font-size: 11px;">SOLUCION</th>
+                        <td><?php echo $p['parametro_solucion']; ?></td>
+                    </tr>
                    
                     
                   

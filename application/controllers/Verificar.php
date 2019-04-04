@@ -11,6 +11,7 @@ class Verificar extends CI_Controller
         $this->load->library('session');
         $this->load->model('login_model');
         $this->load->model('rol_model');
+        $this->load->model('Dosificacion_model');
     }
 
     function index()
@@ -54,23 +55,36 @@ class Verificar extends CI_Controller
 
                 $this->session->set_userdata('logged_in', $sess_array);
                 $session_data = $this->session->userdata('logged_in');
-
+                $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
+                $dosificacion = $this->db->query($dosif)->row_array();
                 //print "<pre>"; print_r( $session_data); print "</pre>";
 
                 if ($session_data['tipousuario_id'] == 1) {// admin page
+                    if ($dosificacion['dias']<=10) {
+                       redirect('alerta/dosificacion');
+                    }
                     redirect('admin/dashb');
                 }
                 if($session_data['tipousuario_id'] == 5) {
+                    if ($dosificacion['dias']<=10) {
+                       redirect('alerta/dosificacion');
+                    }
                    // $this->load->model('Cliente_model');
                     //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']);
                     redirect('servicio');
                 }
 
                 if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 3){
+                    if ($dosificacion['dias']<=10) {
+                       redirect('alerta/dosificacion');
+                    }
                     redirect('venta/ventas');
                 }
 
                 if($session_data['tipousuario_id'] == 4){
+                    if ($dosificacion['dias']<=10) {
+                       redirect('alerta/dosificacion');
+                    }
                     redirect('pedido');
                 }
 

@@ -152,7 +152,7 @@ class Categoria_servicio extends CI_Controller{
     /*
      * Listing of categoria_servicio
      */
-    function catserv_detalle()
+    function catserv_detalle($catserv_id)
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
@@ -161,7 +161,10 @@ class Categoria_servicio extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
                 
-                $data['categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_subcat_servicio();
+                $nombre = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
+                $data['nombre'] = $nombre['catserv_descripcion'];
+                $this->load->model('Subcategoria_servicio_model');
+                $data['all_subcategoria'] = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria2($catserv_id);
                 $data['_view'] = 'categoria_servicio/catserv_detalle';
                 $this->load->view('layouts/main',$data);
             }
