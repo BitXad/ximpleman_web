@@ -119,15 +119,15 @@ body {
     <table id="izquierdatabla">
             <tr>
                 <td>SALDO TOTAL:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"> <?php echo $cuota[0]['cuota_saldo']; ?></td>
+                <td style="text-align: right;"> <?php echo number_format($cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td>MONTO CUOTA:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td>MONTO CANCELADO:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_cancelado']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                <td style="text-align: right;">_________________</td> 
@@ -136,11 +136,11 @@ body {
             </tr>
             <tr>
                 <td>SALDO PARC:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td>SALDO DEUDOR:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ","); ?></td>
             </tr>
 
         </table><br>
@@ -154,15 +154,15 @@ body {
         <table id="derechatabla">
              <tr>
                 <td style="text-align: right;">SALDO TOTAL:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"> <?php echo $cuota[0]['cuota_saldo']; ?></td>
+                <td style="text-align: right;"> <?php echo number_format($cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td style="text-align: right;">MONTO CUOTA:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td style="text-align: right;">MONTO CANCELADO:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_cancelado']; ?></td><td style="width: 40px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td><td style="width: 40px;"></td>
                 <td style="text-align: right;">CANCELADO:....................</td>
             </tr>
             <tr>
@@ -172,12 +172,12 @@ body {
             </tr>
             <tr>
                 <td style="text-align: right;">SALDO PARC:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado']; ?></td><td></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td><td></td>
                 <td style="text-align: right;">SALDO:........................</td>
             </tr>
             <tr>
                 <td style="text-align: right;">SALDO DEUDOR:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td style="text-align: right;">GLOSA:</td><td style="width: 10px;"></td>
