@@ -964,7 +964,8 @@ function registrarcliente()
     var cliente_nombre = document.getElementById('cliente_nombre').value; 
     var cliente_id = document.getElementById('cliente_id').value; 
    
-   alert(cliente_id);
+   //alert(cliente_id);
+   
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
         
         // alert(cliente_id+" * "+nit);
@@ -1153,31 +1154,53 @@ function registrarventa(cliente_id)
 }
 
 function finalizarventa()
-{
-    
+{    
     var monto = document.getElementById('venta_totalfinal').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'/verificardetalle/'+monto;
+
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){
+            
+            var todo_bien = JSON.parse(respuesta);
+            
+            if(todo_bien[0]["resultado"]==1)
+            {    
+                if (monto>0)
+                {
+                   document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+                   document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
+                    registrarcliente();
+                }
+                else
+                {
+
+                    //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
+
+                    var txt;
+                    var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
+                    if (r == true) {
+                        document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+                        document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
+                      registrarcliente();
+                    } 
+                    //document.getElementById("demo").innerHTML = txt;
+                  }            
+
+            }
+            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
+
+        },
+        error: function(respuesta){
+            alert("Revise los datos de la venta por favor...!");   
+        }
+    });  
     
     
-    if (monto>0)
-    {
-       document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-       document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
-        registrarcliente();
-    }
-    else
-    {
-        
-        //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
-        
-        var txt;
-        var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
-        if (r == true) {
-            document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-            document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
-          registrarcliente();
-        } 
-        //document.getElementById("demo").innerHTML = txt;
-      }
+    
+    
 
 }
 

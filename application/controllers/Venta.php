@@ -1966,6 +1966,36 @@ function anular_venta($venta_id){
         
     }
   
-    
+        
+    function verificar_detalle($monto){
+        if ($this->session->userdata('logged_in')) {
+            
+                   $session_data = $this->session->userdata('logged_in');
+                   if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
+                       $data = array(
+                           'page_title' => 'Admin >> Mi Cuenta'
+                       );
+               //**************** inicio contenido ***************       
+
+               $usuario_id = $session_data['usuario_id'];
+               
+               
+               $sql =  "SELECT 
+                        if(round(sum(detalleven_total), 2) = round(".$monto.", 2), 1, 0) AS resultado
+                      FROM
+                        detalle_venta_aux
+                      WHERE
+                        usuario_id =".$usuario_id;
+               
+               $resultado = $this->Venta_model->consultar($sql);
+               echo json_encode($resultado);
+
+
+               //**************** fin contenido ***************
+                                       }
+                                       else{ redirect('alerta'); }
+               } else { redirect('', 'refresh'); }            
+        
+    }    
     
 }
