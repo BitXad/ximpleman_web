@@ -121,16 +121,25 @@ body {
 <div style="float:left; width:22%;">
     <table id="izquierdatabla">
             <tr>
-                <td>SALDO TOTAL:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"> <?php echo $cuota[0]['cuota_saldo']; ?></td>
+                <td>TOTAL CREDITO:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['credito_monto'], 2, ".", ","); ?></td>
+                
+            </tr>
+            <tr>
+                <td>TOTAL AMORTIZADO:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['credito_monto']-$cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
+            </tr>
+            <tr>
+                <td>SALDO:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"> <?php echo number_format($cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td>MONTO CUOTA:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td>MONTO CANCELADO:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_cancelado']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                <td style="text-align: right;">_________________</td> 
@@ -139,11 +148,11 @@ body {
             </tr>
             <tr>
                 <td>SALDO PARC:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td>SALDO DEUDOR:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ","); ?></td>
             </tr>
 
         </table><br>
@@ -155,17 +164,25 @@ body {
 <div style="float:right; width:78%;">
 <div style="float:left; width:70%;">
         <table id="derechatabla">
+            <tr>
+                <td style="text-align: right;">TOTAL CREDITO:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['credito_monto'], 2, ".", ","); ?></td>
+            </tr>
+            <tr>
+                <td style="text-align: right;">TOTAL AMORTIZADO:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['credito_monto']-$cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
+            </tr>
              <tr>
-                <td style="text-align: right;">SALDO TOTAL:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"> <?php echo $cuota[0]['cuota_saldo']; ?></td>
+                <td style="text-align: right;">SALDO:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"> <?php echo number_format($cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td style="text-align: right;">MONTO CUOTA:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td style="text-align: right;">MONTO CANCELADO:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_cancelado']; ?></td><td style="width: 40px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td><td style="width: 40px;"></td>
                 <td style="text-align: right;">CANCELADO:....................</td>
             </tr>
             <tr>
@@ -175,12 +192,12 @@ body {
             </tr>
             <tr>
                 <td style="text-align: right;">SALDO PARC:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado']; ?></td><td></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total']-$cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td><td></td>
                 <td style="text-align: right;">SALDO:........................</td>
             </tr>
             <tr>
                 <td style="text-align: right;">SALDO DEUDOR:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo $cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes']; ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ","); ?></td>
             </tr>
             <tr>
                 <td style="text-align: right;">GLOSA:</td><td style="width: 10px;"></td>
@@ -194,11 +211,11 @@ body {
         <table id="izquierdatabla">
             <?php $i=1; foreach($credito as $c){ ?>
              <tr>
-                 <td style="text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00') { echo ("");
+                 <td style="text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { echo ("");
                          
                         } else{ echo $fecha_format = date('d/m/Y', strtotime($c['cuota_fecha'])); } ?> </td>
-                         <td style="width: 22px; text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00') { echo (""); }else{ echo "Bs."; }  ?></td>
-                <td style="text-align: right;"><b><?php if ($c['cuota_fecha']=='0000-00-00') { echo ("");
+                         <td style="width: 22px; text-align: center;"><?php if ($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { echo (""); }else{ echo "Bs."; }  ?></td>
+                <td style="text-align: right;"><b><?php if ($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { echo ("");
                          
                         } else{ echo number_format($c['cuota_cancelado'], 2, ".", ","); }?></b></td>
                 <?php  } $i++; ?>
