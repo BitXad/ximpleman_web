@@ -35,12 +35,12 @@
     }
    
 </script>
-<script type="text/javascript">
+<!--<script type="text/javascript">
     function imprimirdetalle(){
         //$('#tituloimpresion').html('hola');
         window.print();
     }
-</script>
+</script>-->
 <script type="text/javascript">
     function estefocus(){
         $('#modalbuscarkardexcli').on('shown.bs.modal', function() {
@@ -68,7 +68,7 @@
 
 <div class="row">
     
-    <div class="col-md-6">
+    <div class="col-md-6 no-print">
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
@@ -267,6 +267,7 @@
                 </div>
                 <div id="cabcentro">
                     ORDENES DE DETALLES DE SERVICIO<br>
+                    <label id="fhimpresion"></label><br>
                     <label id="tituloimpresion"></label>
                 </div>
                 <div id="cabderecha">
@@ -278,7 +279,7 @@
                 
             </div>
             <div class="box-body table-responsive" id="cabizquierdafechas">
-                    <label id="tituloimpresion">fecha de</label>
+                    <label id="fechaimpresion"></label>
                 </div>
             <div class="box-body table-responsive" id="resbusquedadetalleserv">
 
