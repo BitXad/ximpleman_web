@@ -38,11 +38,66 @@ class Detalle_venta_model extends CI_Model
         return $venta;
     }
     
-
     function get_detalle_venta($venta_id)
     {
         $sql = "select * from detalle_venta d, producto p where d.producto_id = p.producto_id and venta_id = ".$venta_id;
         $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
+
+    function cargar_detalle_venta($venta_id,$usuario_id)
+    {
+        $sql = "delete from detalle_venta_aux where venta_id = ".$venta_id;
+        $this->db->query($sql);
+        
+        $sql =  "insert into detalle_venta_aux
+        (producto_id,
+          venta_id,
+          moneda_id,
+          detalleven_codigo,
+          detalleven_cantidad,
+          detalleven_unidad,
+          detalleven_costo,
+          detalleven_precio,
+          detalleven_subtotal,
+          detalleven_descuento,
+          detalleven_total,
+          detalleven_caracteristicas,
+          detalleven_preferencia,
+          detalleven_comision,
+          detalleven_tipocambio,
+          usuario_id
+        )
+
+
+        (SELECT 
+          producto_id,
+          ".$venta_id." as venta_id,
+          moneda_id,
+          detalleven_codigo,
+          detalleven_cantidad,
+          detalleven_unidad,
+          detalleven_costo,
+          detalleven_precio,
+          detalleven_subtotal,
+          detalleven_descuento,
+          detalleven_total,
+          detalleven_caracteristicas,
+          detalleven_preferencia,
+          detalleven_comision,
+          detalleven_tipocambio,
+          ".$usuario_id."
+        FROM
+          detalle_venta
+        WHERE 
+          venta_id=".$venta_id.")";
+        $this->db->query($sql);
+        
+        $sql =  "select * from detalle_venta_aux d, producto p where "
+                . " d.producto_id = p.producto_id and  venta_id=".$venta_id;        
+        $detalle_venta = $this->db->query($sql)->result_array();
+
+        
         return $detalle_venta;
     }
     

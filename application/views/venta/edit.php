@@ -9,7 +9,7 @@
 				<div class="row clearfix">
                                         
 					<div class="col-md-6">
-						<label for="cliente_id" class="control-label"><span class="text-danger">*</span>Cliente</label>
+						<label for="cliente_id" class="control-label"><span class="text-danger"></span>Cliente</label>
 						<div class="form-group">
 							<select name="cliente_id" class="form-control" required>
 								<option value="">- CLIENTE -</option>

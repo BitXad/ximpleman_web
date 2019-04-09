@@ -1158,46 +1158,94 @@ function finalizarventa()
     var monto = document.getElementById('venta_totalfinal').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'/verificardetalle/'+monto;
-
-    $.ajax({url: controlador,
-        type:"POST",
-        data:{},
-        success:function(respuesta){
-            
-            var todo_bien = JSON.parse(respuesta);
-            
-            if(todo_bien[0]["resultado"]==1)
-            {    
-                if (monto>0)
-                {
-                   document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-                   document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
-                    registrarcliente();
-                }
-                else
-                {
-
-                    //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
-
-                    var txt;
-                    var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
-                    if (r == true) {
-                        document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-                        document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
-                      registrarcliente();
-                    } 
-                    //document.getElementById("demo").innerHTML = txt;
-                  }            
-
-            }
-            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
-
-        },
-        error: function(respuesta){
-            alert("Revise los datos de la venta por favor...!");   
-        }
-    });  
     
+    if (monto>0)
+    {
+       document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+       document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
+    
+//        $.ajax({url: controlador,
+//        type:"POST",
+//        data:{},
+//        success:function(respuesta){
+//            
+//            var todo_bien = JSON.parse(respuesta);
+//            
+//            if(todo_bien[0]["resultado"]==1)
+//            {    
+//                    registrarcliente();
+//
+//            }
+//            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
+//
+//        },
+//        error: function(respuesta){
+//            alert("Revise los datos de la venta por favor...!");   
+//        }
+//        }); 
+        
+        
+        registrarcliente();
+    }
+    else
+    {
+
+        //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
+
+        var txt;
+        var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
+        if (r == true) {
+            document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
+            document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
+
+//            $.ajax({url: controlador,
+//        type:"POST",
+//        data:{},
+//        success:function(respuesta){
+//            
+//            var todo_bien = JSON.parse(respuesta);
+//            
+//            if(todo_bien[0]["resultado"]==1)
+//            {    
+//                    registrarcliente();
+//
+//            }
+//            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
+//
+//        },
+//        error: function(respuesta){
+//            alert("Revise los datos de la venta por favor...!");   
+//        }
+//        }); 
+//        
+        registrarcliente();
+    } 
+               
+        //document.getElementById("demo").innerHTML = txt;
+    }
+    
+    
+//
+//    $.ajax({url: controlador,
+//        type:"POST",
+//        data:{},
+//        success:function(respuesta){
+//            
+//            var todo_bien = JSON.parse(respuesta);
+//            
+//            if(todo_bien[0]["resultado"]==1)
+//            {    
+//                    
+//
+//            }
+//            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
+//
+//        },
+//        error: function(respuesta){
+//            alert("Revise los datos de la venta por favor...!");   
+//        }
+//    });  
+//    
     
     
     
@@ -1375,7 +1423,8 @@ function tabla_ventas(filtro)
 
                     html += "                       <td class='no-print'>";
                     html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print'><span class='fa fa-pencil'></span></a>";
-                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
+//                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
+                    html += "                           <a href='"+base_url+"factura/recibo_boucher/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank'><span class='fa fa-print'></span></a> ";
                     html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
                     html += "                           <br><br><button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Eliminar'><em class='fa fa-trash'></em></button>";
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
@@ -1426,7 +1475,7 @@ function tabla_ventas(filtro)
 //                    html += "                                       ?>";
 //                    html += "                                   ";
                     if (v[i]['venta_tipodoc']==1)
-                        html += "                                   <a href='"+base_url+"factura/factura_boucher/"+v[i]['venta_id']+"' class='btn btn-warning btn-xs' title='Ver factura/Nota de venta'><span class='fa fa-list-alt'></span></a> ";
+                        html += "                                   <a href='"+base_url+"factura/factura_boucher/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver factura/Nota de venta'><span class='fa fa-list-alt'></span></a> ";
 //                    html += "                           ";
 //                    html += "                           <?php } else{ ?>";
 //                    html += "                                   ";
@@ -1834,3 +1883,35 @@ function verificador()
     });
    
 }   
+
+
+function finalizarcambios()
+{
+    
+    var monto = document.getElementById('venta_totalfinal').value;
+    
+    
+    if (monto>0)
+    {
+        $("#diventas1").style = "display:block";
+        $("#diventas0").style = "display:none";
+        
+        registrarcliente2();
+    }
+    else
+    {
+        
+        //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
+        
+        var txt;
+        var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
+        if (r == true) {
+          registrarcliente2();
+        } 
+        //document.getElementById("demo").innerHTML = txt;
+      }
+
+        
+        
+        
+}
