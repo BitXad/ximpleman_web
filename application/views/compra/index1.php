@@ -216,12 +216,12 @@
                     <td align="center"> <?php echo $c['usuario_nombre']; ?></td>
                     <td class="no-print">
                         <?php if($c['compra_placamovil']==1) { ?>
-                         <a href="#" data-toggle="modal" data-target="#cambi" class="btn btn-info btn-xs" >
+                         <a href="#" data-toggle="modal" data-target="#cambi<?php echo $c['compra_id']; ?>" class="btn btn-info btn-xs" >
                            <i class="fa fa-pencil "></i>
 
                        </a>
 
-                       <div class="modal fade" id="cambi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                       <div class="modal fade" id="cambi<?php echo $c['compra_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
                           <div class="modal-dialog"  role="document">
                             <div class="modal-content">
