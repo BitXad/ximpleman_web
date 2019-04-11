@@ -35,12 +35,12 @@
     }
    
 </script>
-<script type="text/javascript">
+<!--<script type="text/javascript">
     function imprimirdetalle(){
         //$('#tituloimpresion').html('hola');
         window.print();
     }
-</script>
+</script>-->
 <script type="text/javascript">
     function estefocus(){
         $('#modalbuscarkardexcli').on('shown.bs.modal', function() {
@@ -68,7 +68,7 @@
 
 <div class="row">
     
-    <div class="col-md-6">
+    <div class="col-md-6 no-print">
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
@@ -267,6 +267,7 @@
                 </div>
                 <div id="cabcentro">
                     ORDENES DE DETALLES DE SERVICIO<br>
+                    <label id="fhimpresion"></label><br>
                     <label id="tituloimpresion"></label>
                 </div>
                 <div id="cabderecha">
@@ -278,7 +279,7 @@
                 
             </div>
             <div class="box-body table-responsive" id="cabizquierdafechas">
-                    <label id="tituloimpresion">fecha de</label>
+                    <label id="fechaimpresion"></label>
                 </div>
             <div class="box-body table-responsive" id="resbusquedadetalleserv">
 
@@ -335,7 +336,7 @@
             <div class="col-md-3">
 
     <!--            <a href="<?php //echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
-                <button class="btn btn-sm btn-primary btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
+                <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
                     <!--<h4>-->
                     <span class="fa fa-search"></span>Buscar Servicios
                     <!--</h4>-->

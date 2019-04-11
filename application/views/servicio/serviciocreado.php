@@ -450,18 +450,14 @@ $(document).ready(function(){
         <?php
         if($a == 3){
             if(is_null($servicio['servicio_codseguimiento'])){ ?>
-                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
             <?php
             }else{ ?>
-<<<<<<< HEAD
-                <a href="<?php echo $dir_url  ?>" id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" target="_blank" onclick="finalizarservicio2(2)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
-=======
-                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio2(2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
->>>>>>> master
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio2(2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
             <?php
             }
         }else{?>
-            <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+            <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
         <?php } ?>
 </div>
 </div>
