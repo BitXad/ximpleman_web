@@ -707,7 +707,6 @@ class Venta extends CI_Controller{
      */
 function edit($venta_id)
     {   
-      
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
@@ -717,8 +716,12 @@ function edit($venta_id)
         //**************** inicio contenido ***************      
       
         // check if the venta exists before trying to edit it
-        $data['venta'] = $this->Venta_model->get_venta($venta_id);
+        $venta = $this->Venta_model->get_venta($venta_id);
         
+        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
+        $cliente_id = $venta["cliente_id"];
+       
+        //echo "Cliente: ".$cliente_id;
         if(isset($data['venta']['venta_id']))
         {
             if(isset($_POST) && count($_POST) > 0)     
@@ -754,8 +757,8 @@ function edit($venta_id)
                 $this->load->model('Tipo_transaccion_model');
                 $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
 
-                //$this->load->model('Cliente_model');
-                //$data['all_cliente'] = $this->Cliente_model->get_clientes();
+                $this->load->model('Cliente_model');
+                $data['all_cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
 
                 $this->load->model('Moneda_model');
                 $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
@@ -802,6 +805,49 @@ function edit($venta_id)
      */
     
     function modificar_venta($venta_id)
+    {
+        
+        
+           if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************      
+        $usuario_id = $session_data['usuario_id'];
+        $tipousuario_id = $session_data['tipousuario_id'];
+        $data['page_title'] = "Modificar venta";
+        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['usuario_id'] = $usuario_id;
+        $data['tipousuario_id'] = $tipousuario_id;              
+                
+        //**************** inicio contenido ***************     
+                
+       
+        $data['venta_id'] = $venta_id;
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Nota de venta";        
+        
+        $data['_view'] = 'venta/modificar_venta';
+        $this->load->view('layouts/main',$data);    
+  
+        //**************** fin contenido ***************
+                }
+                else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+        
+    }
+    
+    function modificar_detalle()
     {
         
         

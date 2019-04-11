@@ -306,12 +306,12 @@ function mostrar_ocultar(){
             
     
             <!--------------- botones ---------------------->
-            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <!--<a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a>--> 
             <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> 
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
             <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span><b> - 0 -</b></button> 
             <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money'></span><b> costo</b></button> 
-            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
+            <!--<a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a>--> 
             
             <!--------------- fin botones ---------------------->
             
@@ -556,15 +556,11 @@ function mostrar_ocultar(){
                             <input class="btn btn-foursquarexs" id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
                 </tr>
-                
-                
-                
+
+
                 
             </table>
-            
-            
-
-          
+  
             <div class="col-md-12">
                 NOTA: <input type="text" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
             </div>
@@ -643,7 +639,7 @@ function mostrar_ocultar(){
                 </h4>
             </button>
             -->
-            <button class="btn btn-lg btn-info btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarcambios()" style="display: block;">
+            <button class="btn btn-lg btn-info btn-sm btn-block" id="boton_finalizar" data-dismiss="modal"  style="display: block;" onclick="finalizarcambios()">
                 <h4>
                 <span class="fa fa-save"></span>   Guardar Cambios  
                 </h4>
@@ -651,7 +647,7 @@ function mostrar_ocultar(){
 
             <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal">
                 <h4>
-                <span class="fa fa-close"></span>   Cancelar  
+                <span class="fa fa-close"></span>   Salir  
                 </h4>
             </button>
     <!--</form>-->

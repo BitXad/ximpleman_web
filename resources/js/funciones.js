@@ -1422,7 +1422,8 @@ function tabla_ventas(filtro)
 //                    html += "                       </td>";
 
                     html += "                       <td class='no-print'>";
-                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print'><span class='fa fa-pencil'></span></a>";
+                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank'><span class='fa fa-pencil'></span></a>";
+                    html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank'><span class='fa fa-pencil'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/recibo_boucher/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank'><span class='fa fa-print'></span></a> ";
                     html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
@@ -1885,6 +1886,77 @@ function verificador()
 }   
 
 
+
+function modificar_venta()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/modificar_detalle';
+    var venta_id = document.getElementById('venta_id').value;
+
+
+    
+}
+function registrarcliente_modificado()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/registrarcliente';
+    var nit = document.getElementById('nit').value;
+    var razon = document.getElementById('razon_social').value;
+    var telefono = document.getElementById('telefono').value;
+    var cliente_nombre = document.getElementById('cliente_nombre').value; 
+        var cliente_id = document.getElementById('cliente_id').value; 
+   
+   //alert(cliente_id);
+   
+    if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
+        
+        // alert(cliente_id+" * "+nit);
+        var controlador = base_url+'venta/modificarcliente';
+        $.ajax({url: controlador,
+                    type:"POST",
+                    data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre},
+                    success:function(respuesta){ 
+                        var datos = JSON.parse(respuesta)
+                        cliente_id = datos[0]["cliente_id"];
+                        
+                        //console.log(datos);
+                        
+                        if(cliente_id>0){
+                            modificar_venta(cliente_id);                            
+                        }
+                        else{
+                            modificar_venta(respuesta);                            
+                        }
+                    },
+                    error: function(respuesta){
+                        cliente_id = 0;            
+                    }
+        });
+        
+    }
+    else{ //Si el cliente es nuevo debe primero registrar al cliente
+    
+    
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{nit:nit,razon:razon,telefono:telefono},
+            success:function(respuesta){  
+            
+                var registro = JSON.parse(respuesta);
+                
+                cliente_id = registro[0]["cliente_id"];
+                //registrarventa(cliente_id);
+                modificarventa(cliente_id);
+                
+            },
+            error: function(respuesta){
+                cliente_id = 0;            
+            }
+        });
+    }
+    
+}
+
 function finalizarcambios()
 {
     
@@ -1896,7 +1968,7 @@ function finalizarcambios()
         $("#diventas1").style = "display:block";
         $("#diventas0").style = "display:none";
         
-        registrarcliente2();
+        registrarcliente_modificado();
     }
     else
     {
@@ -1906,7 +1978,7 @@ function finalizarcambios()
         var txt;
         var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
         if (r == true) {
-          registrarcliente2();
+          registrarcliente_modificado();
         } 
         //document.getElementById("demo").innerHTML = txt;
       }

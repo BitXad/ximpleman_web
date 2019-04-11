@@ -344,6 +344,7 @@ function mostrar_ocultar(){
         <div class="col-md-12">
 
             <center>
+
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br><br>
                Finalizar Venta <br>

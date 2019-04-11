@@ -29,6 +29,7 @@ class Cliente_model extends CI_Model
 
         return $cliente;
     }
+
     /*
      * Get cliente by cliente_id
      */
