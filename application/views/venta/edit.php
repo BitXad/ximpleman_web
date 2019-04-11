@@ -9,7 +9,7 @@
 				<div class="row clearfix">
                                         
 					<div class="col-md-6">
-						<label for="cliente_id" class="control-label"><span class="text-danger">*</span>Cliente</label>
+						<label for="cliente_id" class="control-label"><span class="text-danger"></span>Cliente</label>
 						<div class="form-group">
 							<select name="cliente_id" class="form-control" required>
 								<option value="">- CLIENTE -</option>
@@ -89,31 +89,31 @@
 					<div class="col-md-6">
 						<label for="venta_subtotal" class="control-label">Subtotal</label>
 						<div class="form-group">
-							<input type="number" name="venta_subtotal" value="<?php echo ($this->input->post('venta_subtotal') ? $this->input->post('venta_subtotal') : $venta['venta_subtotal']); ?>" class="form-control" id="venta_subtotal" />
+							<input type="text" name="venta_subtotal" value="<?php echo ($this->input->post('venta_subtotal') ? $this->input->post('venta_subtotal') : $venta['venta_subtotal']); ?>" class="form-control" id="venta_subtotal" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="venta_descuento" class="control-label">Descuento</label>
 						<div class="form-group">
-							<input type="number" name="venta_descuento" value="<?php echo ($this->input->post('venta_descuento') ? $this->input->post('venta_descuento') : $venta['venta_descuento']); ?>" class="form-control" id="venta_descuento" />
+							<input type="text" name="venta_descuento" value="<?php echo ($this->input->post('venta_descuento') ? $this->input->post('venta_descuento') : $venta['venta_descuento']); ?>" class="form-control" id="venta_descuento" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="venta_total" class="control-label">Total</label>
 						<div class="form-group">
-							<input type="number" name="venta_total" value="<?php echo ($this->input->post('venta_total') ? $this->input->post('venta_total') : $venta['venta_total']); ?>" class="form-control" id="venta_total" />
+							<input type="text" name="venta_total" value="<?php echo ($this->input->post('venta_total') ? $this->input->post('venta_total') : $venta['venta_total']); ?>" class="form-control" id="venta_total" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="venta_efectivo" class="control-label">Efectivo</label>
 						<div class="form-group">
-							<input type="number" name="venta_efectivo" value="<?php echo ($this->input->post('venta_efectivo') ? $this->input->post('venta_efectivo') : $venta['venta_efectivo']); ?>" class="form-control" id="venta_efectivo" />
+							<input type="text" name="venta_efectivo" value="<?php echo ($this->input->post('venta_efectivo') ? $this->input->post('venta_efectivo') : $venta['venta_efectivo']); ?>" class="form-control" id="venta_efectivo" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="venta_cambio" class="control-label">Cambio</label>
 						<div class="form-group">
-							<input type="number" name="venta_cambio" value="<?php echo ($this->input->post('venta_cambio') ? $this->input->post('venta_cambio') : $venta['venta_cambio']); ?>" class="form-control" id="venta_cambio" />
+							<input type="text" name="venta_cambio" value="<?php echo ($this->input->post('venta_cambio') ? $this->input->post('venta_cambio') : $venta['venta_cambio']); ?>" class="form-control" id="venta_cambio" />
 						</div>
 					</div>
 					<div class="col-md-6">
