@@ -68,7 +68,7 @@ class Credito extends CI_Controller{
         $this->pagination->initialize($config);
 
         $data['credito'] = $this->Credito_model->get_all_deuda($params);
-        
+        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
         $data['_view'] = 'credito/indexDeuda';
         $this->load->view('layouts/main',$data);
             }
@@ -127,7 +127,7 @@ class Credito extends CI_Controller{
         $this->pagination->initialize($config);
 
         $data['credito'] = $this->Credito_model->get_all_cuentas($params);
-        
+        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
         $data['_view'] = 'credito/indexCuentas';
         $this->load->view('layouts/main',$data);
             }
