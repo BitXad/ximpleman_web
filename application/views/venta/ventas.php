@@ -74,7 +74,7 @@ function mostrar_ocultar(){
         
 <!--------------------- cliente_id --------------------->
 <div class="container" hidden>
-    <input type="text" name="<?php echo $cliente[0]['cliente_id']; ?>" value="0" class="form-control" id="cliente_id" >
+    <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
 <!--------------------- fin cliente_id --------------------->

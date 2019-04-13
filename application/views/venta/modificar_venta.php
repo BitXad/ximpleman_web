@@ -57,6 +57,7 @@ function mostrar_ocultar(){
 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
+<input type="text" value="<?php echo $venta_id; ?>" id="venta_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
@@ -74,7 +75,7 @@ function mostrar_ocultar(){
         
 <!--------------------- cliente_id --------------------->
 <div class="container" hidden>
-    <input type="text" name="<?php echo $cliente[0]['cliente_id']; ?>" value="0" class="form-control" id="cliente_id" >
+    <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
 <!--------------------- fin cliente_id --------------------->

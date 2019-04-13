@@ -140,6 +140,7 @@ class Factura extends CI_Controller{
     
         $usuario_id = $session_data['usuario_id'];
         
+        $data['tipousuario_id'] = $session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -695,7 +696,73 @@ class Factura extends CI_Controller{
 //        			else{ redirect('alerta'); }
 //        } else { redirect('', 'refresh'); }
 
-    
-    
+    function anular_factura($factura_id, $venta_id){
+       if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4  or $session_data['tipousuario_id']==6) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************   
+                
+//        if($factura_id>0)
+//        {
+//            
+        $sql = "update factura set ".                
+                "factura_subtotal = 0".
+                ",factura_nit = 0".
+                ",factura_razonsocial   = 'ANULADO'".
+                ",factura_ice           = 0".
+                ",factura_exento        = 0".
+                ",factura_descuento     = 0".
+                ",factura_total         = 0".
+                ",factura_codigocontrol     = '0'".
+                ",estado_id     = 3".
+                " where factura_id = ".$factura_id;
+        
+        echo $sql;
+        // check if the factura exists before trying to delete it
+        $this->Factura_model->ejecutar($sql);
+            
+            redirect('factura/mensaje/'.$factura_id.'/'.$venta_id);
+//        }
+//        else
+//            show_error('The factura you are trying to delete does not exist.');
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }        
+        
+    }
+    /*
+     * Realizado por: Roberto Carlos Soto Sierra
+     * Fecha: 05.03.2019
+     */
+    function mensaje($factura_id, $venta_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************            
+        
+
+            $data['factura_id'] = $factura_id;
+            $data['venta_id'] = $venta_id;
+            $data['page_title'] = "Mensaje";
+            $data['_view'] = 'factura/mensaje';
+
+            $data['page_title'] = "Verificador";            
+            $this->load->view('layouts/main',$data);
+            
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+            
+    }    
     
 }

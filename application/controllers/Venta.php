@@ -817,9 +817,17 @@ function edit($venta_id)
         //**************** inicio contenido ***************      
         $usuario_id = $session_data['usuario_id'];
         $tipousuario_id = $session_data['tipousuario_id'];
+        
+                // check if the venta exists before trying to edit it
+        $venta = $this->Venta_model->get_venta($venta_id);
+        
+        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
+        $cliente_id = $venta["cliente_id"];
+       
+        
         $data['page_title'] = "Modificar venta";
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
@@ -858,36 +866,88 @@ function edit($venta_id)
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
         //**************** inicio contenido ***************      
+
+                
         $usuario_id = $session_data['usuario_id'];
-        $tipousuario_id = $session_data['tipousuario_id'];
-        $data['page_title'] = "Modificar venta";
-        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
-        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
-        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;              
-                
-        //**************** inicio contenido ***************     
-                
-       
-        $data['venta_id'] = $venta_id;
-        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
-        $data['page_title'] = "Nota de venta";        
+        $venta_id = $this->input->post('venta_id');
+        $cliente_id = $this->input->post('cliente_id');
+        $venta_fecha = $this->input->post('venta_fecha');
+        $venta_subtotal = $this->input->post('venta_subtotal');
+        $venta_descuento = $this->input->post('venta_descuento');
+        $venta_total = $this->input->post('venta_total');
+        $venta_efectivo = $this->input->post('venta_efectivo');
+        $venta_cambio = $this->input->post('venta_cambio');
         
-        $data['_view'] = 'venta/modificar_venta';
-        $this->load->view('layouts/main',$data);    
-  
+        $porcentaje = 0;
+        
+        $sql = "delete from detalle_venta where venta_id=".$venta_id;
+        $this->Venta_model->ejecutar($sql);
+        
+        $sql =  "insert into detalle_venta
+                (producto_id,
+                  venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_descuento,
+                  detalleven_total,
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                  usuario_id
+                )
+
+
+                (SELECT 
+                  producto_id,
+                  ".$venta_id." as venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_subtotal * ".$porcentaje.",
+                  detalleven_total - (detalleven_subtotal * ".$porcentaje."),
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                  usuario_id
+                FROM
+                  detalle_venta_aux
+                WHERE 
+                  usuario_id=".$usuario_id.")";
+        $this->Venta_model->ejecutar($sql);        
+        
+        $sql = "update venta set ".
+                "cliente_id = ".$cliente_id.
+                ",venta_fecha = '".$venta_fecha."'".
+                ",venta_subtotal = ".$venta_subtotal.
+                ",venta_descuento = ".$venta_descuento.
+                ",venta_total = ".$venta_total.
+                ",venta_efectivo = ".$venta_efectivo.
+                ",venta_cambio = ".$venta_cambio.                
+                " where venta_id = ".$venta_id;
+        
+        $this->Venta_model->ejecutar($sql);        
+        
+        $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
+        $this->Venta_model->ejecutar($sql);        
+        
+        
+        //**************** inicio contenido ***************     
+                  
         //**************** fin contenido ***************
                 }
                 else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
-        
+        } else { redirect('', 'refresh'); }       
     }
     
     
