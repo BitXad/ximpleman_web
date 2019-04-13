@@ -90,8 +90,12 @@
                     </tr>
                     <tbody class="buscar" id="tablacuentas">
                     <?php $cont = 0;
+                    $totalCreditos=0;
+                    $totalCancelados=0;
+                    $totalSaldos=0;
                           foreach($credito as $c){;
-                                 $cont = $cont+1;?>
+                                 $cont = $cont+1;
+                                  $totalCreditos+=$c['credito_monto']; ?>
                     <tr>
 						<td><?php echo $cont ?></td>
                         <?php if ($c['servicio_id']!=0) { ?>                       
@@ -105,6 +109,9 @@
                         <td style="text-align: right"><?php echo $c['credito_monto']; ?></td>
                         <td style="text-align: right"><?php echo $c['credito_cuotainicial']; ?></td>
                         <td style="text-align: right"><?php echo $c['credito_interesmonto']; ?> (<?php echo $c['credito_interesproc']; ?>)</td>
+                       <!-- <td style="text-align: right;"><?php $cancelado=0; foreach($cuota as $k){ if($c['credito_id']==$k['credito_id']){ 
+                        $cancelado+=$k['cuota_cancelado'];  }  } echo  number_format($cancelado, 2, ".", ",");  $totalCancelados+=$cancelado; ?></td>
+                        <td style="text-align: right;"><?php  $saldo=$c['credito_monto']-$cancelado; echo number_format($saldo, 2, ".", ","); $totalSaldos+=$saldo; ?></td>-->
                         <td style="text-align: center"><?php echo $c['credito_numpagos']; ?></td>
                         <td style="text-align: center"><?php echo date('d/m/Y', strtotime($c['credito_fecha'])); ?></td>
                         <td style="text-align: center"><?php echo $c['credito_hora']; ?></td>
@@ -125,6 +132,17 @@
                         </td>
                     </tr>
                     <?php } ?>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right; font-size: 12px;"><b><?php echo number_format($totalCreditos, 2, ".", ","); ?></td>
+                        <td></td>
+                        <td></td>
+                        
+                        <td></td>
+                    </tr>
                 </table>
                 
             </div>

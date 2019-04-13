@@ -96,7 +96,7 @@
                     <div class="columna_derecha">
                       TOTAL: <b><?php echo  number_format($cuota[0]['credito_monto'], 2, ".", ",") ?></b><br>
                       CUOTA INICIAL: <b><?php echo  number_format($cuota[0]['credito_cuotainicial'], 2, ".", ",") ?></b><br>
-                      INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php  echo number_format($cuota[0]['credito_monto'], 2, ".", ",") ?></b><br>
+                      INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?>
                     </div>
                     <div class="columna_izquierda">
                     

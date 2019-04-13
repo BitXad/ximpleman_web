@@ -177,7 +177,7 @@ body {
             </tr>
             <tr>
                 <td style="text-align: right;">SALDO DEUDOR:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ","); ?></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></td>
             </tr>
             <tr>
                 <td style="text-align: right;">GLOSA:</td><td style="width: 10px;"></td>

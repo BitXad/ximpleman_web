@@ -53,12 +53,12 @@ function tabladeudas(filtro)
                     html = "";
                    if (n <= limite) x = n; 
                    else x = limite;
-                    
+                        total = 0;
                     for (var i = 0; i < x ; i++){
                         
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
-                        //subtotal += Number(registros[i]["detallecomp_subtotal"]);
+                        total += Number(registros[i]["credito_monto"]);
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
@@ -69,12 +69,13 @@ function tabladeudas(filtro)
                         html += "<td style='text-align: right'>"+registros[i]['credito_cuotainicial']+"</td>";
                         html += "<td style='text-align: right'>"+registros[i]['credito_interesmonto']+"("+registros[i]['credito_interesproc']+")</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_fecha']+"</td>";
+                        html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_tipo']+"</td>";
                         html += "<td><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planDeuda/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
 }
+                   html += "<tr><td colspan=5 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
                    $("#tabladeudas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
                    
@@ -140,11 +141,11 @@ function tablacuentas(filtro)
                     html = "";
                    if (n <= limite) x = n; 
                    else x = limite;
-                    
+                    total=0;
                     for (var i = 0; i < x ; i++){
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
-                        //subtotal += Number(registros[i]["detallecomp_subtotal"]);
+                         total += Number(registros[i]["credito_monto"]);
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
@@ -161,7 +162,7 @@ function tablacuentas(filtro)
                         html += "<td style='text-align: right'>"+registros[i]['credito_cuotainicial']+"</td>";
                         html += "<td style='text-align: right'>"+registros[i]['credito_interesmonto']+"("+registros[i]['credito_interesproc']+")</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_fecha']+"</td>";
+                        html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_tipo']+"</td>";
                         if (registros[i]['venta_id']>0) {
@@ -173,6 +174,7 @@ function tablacuentas(filtro)
                         }
                         
 }
+                    html += "<tr><td colspan=5 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
                    
