@@ -1,8 +1,10 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/funciones_servicio.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/servicio_verinsumosasignar.js'); ?>" type="text/javascript"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="detalleserv_id" id="detalleserv_id" value="<?php echo $detalleserv_id; ?>" />
+<input type="hidden" name="servicio_id" id="servicio_id" value="<?php echo $servicio_id; ?>" />
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -38,25 +40,25 @@
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group"> <span class="input-group-addon">Buscar</span>
             <input id="filtrar3" type="text" class="form-control" placeholder="Ingrese descripción, código">
-          </div>
+        </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Descripción</th>
-						<th>Código</th>
-						<th>Cantidad</th>
-						<th>Precio(c/u)</th>
-						<th>Total</th>
-						<th>Preferencia</th>
-						<th>Caracteristicas</th>
-						<th></th>
+                        <th>#</th>
+                        <th>Descripción</th>
+                        <th>Código</th>
+                        <th>Cantidad</th>
+                        <th>Precio(c/u)</th>
+                        <th>Total</th>
+                        <th>Preferencia</th>
+                        <th>Caracteristicas</th>
+                        <th></th>
                     </tr>
-                    <tbody class="buscar3">
-                    <?php $cont = 0;
+                    <tbody class="buscar3" id="insumosresultados" >
+                    <?php /*$cont = 0;
                           $categoria = "";
                           foreach($insumos_usados as $c){
                               $cont = $cont+1;
@@ -74,38 +76,38 @@
                         </td>
                         <td><?php echo $c['detalleven_precio']; ?></td>
                         <td><?php echo $c['detalleven_total']; ?></td>
-                        <td><?php echo $c['detalleven_preferencia']; ?>
-                        <td><?php echo $c['detalleven_caracteristicas']; ?>
-                        </td>
+                        <td><?php echo $c['detalleven_preferencia']; ?></td>
+                        <td><?php echo $c['detalleven_caracteristicas']; ?></td>
 			<td>
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#modaleliminar<?php echo $cont; ?>" ><span class="fa fa-trash"></span><br></a>
                             
-                               <!------------------------ INICIO modal para ELIMINAR INSUMO ------------------->
-                                    <div class="modal fade" id="modaleliminar<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php //echo $i; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                          </div>
-                                          <div class="modal-body">
-                                           <!------------------------------------------------------------------->
-                                           <h3><b><span class="fa fa-trash"></span></b>
-                                               ¿Esta seguro que quiere quitar este Insumo asignado?
-                                            </h3>
-                                           <!------------------------------------------------------------------->
-                                          </div>
-                                          <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_insumo/eliminardetalleventa/'.$servicio_id.'/'.$detalleserv_id.'/'.$c['detalleven_id']); ?>" class="btn btn-success"><span class="fa fa-pencil"></span> Si </a>
-                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
+                           <!------------------------ INICIO modal para ELIMINAR INSUMO ------------------->
+                            <div class="modal fade" id="modaleliminar<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php //echo $i; ?>">
+                              <div class="modal-dialog" role="document">
+                                    <br><br>
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                  </div>
+                                  <div class="modal-body">
+                                   <!------------------------------------------------------------------->
+                                   <h3><b><span class="fa fa-trash"></span></b>
+                                       ¿Esta seguro que quiere quitar este Insumo asignado?
+                                    </h3>
+                                   <!------------------------------------------------------------------->
+                                  </div>
+                                  <div class="modal-footer aligncenter">
+                                              <a href="<?php echo site_url('categoria_insumo/eliminardetalleventa/'.$servicio_id.'/'.$detalleserv_id.'/'.$c['detalleven_id']); ?>" class="btn btn-success"><span class="fa fa-pencil"></span> Si </a>
+                                              <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
             <!-------------------------------------------------- FIN modal para ELIMINAR INSUMO --------------------------------------->
                         </td>
                     </tr>
-                    <?php } ?>
+                    <?php }*/ ?>
+                    </tbody>
                 </table>
                                 
             </div>              
@@ -265,7 +267,7 @@
                                 <span class="input-group-addon"> 
                                     Buscar 
                                 </span>           
-                                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código del Insumo" onkeypress="tablaresultadosinsumo(event, <?php echo $servicio_id; ?>, <?php echo $detalleserv_id; ?>)">
+                                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código del Insumo" onkeypress="tablaresultadosinsumo(event, <?php echo $servicio_id; ?>, <?php echo $detalleserv_id; ?>)" autocomplete="off">
                             </div>
                             <!--este es FIN de input buscador-->
                             <div class="container" id="categoria">

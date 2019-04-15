@@ -450,8 +450,6 @@ class Categoria_insumo extends CI_Controller{
     */
     function buscarinsumosnoasignados()
     {
-        $usuario_id = 1;
-
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   
@@ -493,4 +491,24 @@ class Categoria_insumo extends CI_Controller{
         }
     }
     
+    /*
+    * buscar los insumos asignados
+    */
+    function verinsumosasignados()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $detalleserv_id = $this->input->post('detalleserv_id');   
+            
+            if ($detalleserv_id!=""){
+                $datos = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
+            echo json_encode($datos);
+            }
+            else echo json_encode(null);
+        }
+        else
+        {                 
+            show_404();
+        }              
+    }
 }

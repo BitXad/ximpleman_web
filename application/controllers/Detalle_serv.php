@@ -371,14 +371,16 @@ class Detalle_serv extends CI_Controller{
                 if($data['categoria_servicio']['catserv_id'] == 0){
                     $codigodet = $detalle_serv_id;
                 }else{
-                    $res = strtok($data['categoria_servicio']['catserv_descripcion'], " ");
-                    $codigodet = "";
-                    while($res !== false){
+                    $res = str_replace(' ', '', $data['categoria_servicio']['catserv_descripcion']);
+                    //$res = strtok($data['categoria_servicio']['catserv_descripcion'], " ");
+                    $codigodet = $codigodet.substr($res,0,2);
+                    /*while($res !== false){
                         $codigodet = $codigodet.substr($res,0,1);
                         $res = strtok(" ");
-                    }
+                    }*/
 
-                    $codigodet = $codigodet.$subcatserv['subcatserv_descripcion'].$detalle_serv_id;
+                    $codigodet = $codigodet.$detalle_serv_id;
+                    //$codigodet = $codigodet.$subcatserv['subcatserv_descripcion'].$detalle_serv_id;
                 }
                 $mas_params = array('detalleserv_codigo' =>$codigodet);
                 $this->Detalle_serv_model->update_detalle_serv($detalle_serv_id, $mas_params);
@@ -441,9 +443,11 @@ class Detalle_serv extends CI_Controller{
             
 	    if($this->form_validation->run())     
             {
-                $fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                $fecha_entrega = $this->input->post('detalleserv_fechaentrega');
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
-            
+                //
+                $estado_id = 5;
                 $usuario_id = $session_data['usuario_id'];
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
@@ -452,7 +456,7 @@ class Detalle_serv extends CI_Controller{
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $params = array(
-                                    'estado_id' => $this->input->post('estado_id'),
+                                    'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
                                     'usuario_id' => $usuario_id,
                                     'servicio_id' => $servicio_id,
@@ -576,13 +580,16 @@ class Detalle_serv extends CI_Controller{
             if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $rescodigo = str_replace("%20", " ", $codigo);
-        $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($rescodigo);
+                    );
+        $data['codigo'] = $codigo;
+        //$rescodigo = str_replace("%20", " ", $codigo);
+        $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
+        
+        
         
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
-            
+        
         $this->load->model('Categoria_servicio_model');
         $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
         if(isset($data['detalle_serv'][0]['catserv_id'])){
@@ -592,8 +599,8 @@ class Detalle_serv extends CI_Controller{
         $this->load->model('Subcategoria_servicio_model');
         $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
         
-        $this->load->model('Responsable_model');
-        $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+        $this->load->model('Usuario_model');
+        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
         
         $this->load->model('Categoria_trabajo_model');
         $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
@@ -604,6 +611,9 @@ class Detalle_serv extends CI_Controller{
         $this->load->model('Procedencia_model');
         $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
 
+        $this->load->model('Parametro_model');
+	$data['parametro'] = $this->Parametro_model->get_parametro_servicio();
+        
         $data['_view'] = 'detalle_serv/kardex_detalle';
         $this->load->view('layouts/main',$data);
         }
@@ -2142,6 +2152,228 @@ class Detalle_serv extends CI_Controller{
             
             $data['_view'] = 'detalle_serv/compdetalle_pago_boucher';
             $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    /*
+     * ************* recupera el kardex por medio de un codigo ***********
+     */
+    function get_kardexdetalle()
+    {
+        if ($this->input->is_ajax_request()) {
+            $codigo = $this->input->post('codigo');
+            if ($codigo!=""){
+                $this->load->model('Detalle_serv_model');
+                $datos = $this->Detalle_serv_model->buscar_detalle_serv_all_codigo($codigo);
+                echo json_encode($datos);
+            }else echo json_encode("faltadatos");
+        }else{                 
+            show_404();
+        }
+    }
+    
+    /*
+     * Funcion Que busca el detalle de un producto, atravez de su codigo
+     */
+    function buscardetalleservk()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+	    if(isset($_POST) && count($_POST) > 0)     
+            {
+                $codigo = $this->input->post('codigo');
+                
+                $res = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
+                if(isset($res) && !empty($res))
+                {
+                    redirect('detalle_serv/kardex_detallek/'.$codigo);
+                }else{
+                    redirect('servicio/index/'.$servicio_id."/no");
+                }
+            }else{
+                $data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
+                $this->load->view('layouts/main',$data);
+            }
+        }else{
+            show_error('El servicio al cual desea añadir o ver un producto existente, no existe');
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+    }
+    
+    function kardex_detallek($codigo)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                    );
+        $data['codigo'] = $codigo;
+        //$rescodigo = str_replace("%20", " ", $codigo);
+        $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
+        
+        
+        
+        $this->load->model('Servicio_model');
+        //$data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+        
+        $this->load->model('Categoria_servicio_model');
+        $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+        if(isset($data['detalle_serv'][0]['catserv_id'])){
+            $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($data['detalle_serv'][0]['catserv_id']);
+        }
+
+        $this->load->model('Subcategoria_servicio_model');
+        $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
+        
+        $this->load->model('Usuario_model');
+        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+        
+        $this->load->model('Categoria_trabajo_model');
+        $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+
+        $this->load->model('Tiempo_uso_model');
+        $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
+
+        $this->load->model('Procedencia_model');
+        $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+
+        $this->load->model('Parametro_model');
+	$data['parametro'] = $this->Parametro_model->get_parametro_servicio();
+        
+        $data['_view'] = 'detalle_serv/kardex_detallek';
+        $this->load->view('layouts/main',$data);
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    /*
+     *  *********************Crea un nuevo Servicio con un detalle seleccionado por kardex **************
+     */
+    function nuevodetallek()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+                
+            $this->load->model('Servicio_model');
+            $this->load->library('form_validation');
+	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
+	    //$this->form_validation->set_rules('detalleserv_codigo','Detalle Servicio Codigo','required');
+	    $this->form_validation->set_rules('detalleserv_falla','Detalle Servicio Falla','required');
+            $codigo = $this->input->post('codigo');
+	    if($this->form_validation->run())     
+            {
+                /* ************ INICIO CREAR NUEVO SERVICIO ************** */
+                $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
+                $usuario_id = $session_data['usuario_id'];
+                $tiposerv_id = 1; //este valor (Servicio Normal) esta definido en la tabla tipo_servicio
+                $cliente_id = $this->input->post('cliente_id');
+
+                date_default_timezone_set('America/La_Paz');
+                $fecha_res = date('Y-m-d');
+                $hora_res = date('H:i:s');
+                $params = array(
+                                'estado_id' => $estado_id,
+                                'usuario_id' => $usuario_id,
+                                'tiposerv_id' => $tiposerv_id,
+                                'cliente_id' => $cliente_id,
+                                'servicio_fecharecepcion' => $fecha_res,
+                                'servicio_horarecepcion' => $hora_res,
+                );
+
+                $servicio_id = $this->Servicio_model->add_servicio($params);
+                /* ************ F I N  CREAR NUEVO SERVICIO ************** */
+                //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                $fecha_entrega = $this->input->post('detalleserv_fechaentrega');
+                $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
+                //
+                //$estado_id = 5;
+                //$usuario_id = $session_data['usuario_id'];
+                $catserv_id = $this->input->post('catserv_id');
+                $subcatserv_id = $this->input->post('subcatserv_id');
+                
+                $inputotal = $this->input->post('detalleserv_total'); 
+                $inputacuenta = $this->input->post('detalleserv_acuenta');
+                $inputsaldo = $this->input->post('detalleserv_saldo');
+                $params = array(
+                                    'estado_id' => $estado_id,
+                                    'responsable_id' => $this->input->post('responsable_id'),
+                                    'usuario_id' => $usuario_id,
+                                    'servicio_id' => $servicio_id,
+                                    'catserv_id' => $catserv_id,
+                                    'subcatserv_id' => $subcatserv_id,
+                                    'cattrab_id' => $this->input->post('cattrab_id'),
+                                    'tiempouso_id' => $this->input->post('tiempouso_id'),
+                                    'procedencia_id' => $this->input->post('procedencia_id'),
+                                    'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
+                                    'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_falla' => $this->input->post('detalleserv_falla'),
+                                    'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                                    'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
+                                    'detalleserv_pesoentrada' => $this->input->post('detalleserv_pesoentrada'),
+                                    'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
+                                    'detalleserv_total' => $inputotal,
+                                    'detalleserv_acuenta' => $inputacuenta,
+                                    'detalleserv_saldo' => $inputsaldo,
+//                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
+//                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
+                                    'detalleserv_fechaentrega' => $fecha_entrega,
+                                    'detalleserv_horaentrega' => $hora_entrega,
+                                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
+                );
+                $detalle_serv_id = $this->Detalle_serv_model->add_detalle_serv($params);
+
+                $facuenta = date('Y-m-d H:i:s');
+                if($inputacuenta >0)
+                {
+                    $detparam = array(
+                                'detalleserv_fpagoacuenta' => $facuenta,
+                                'usuariopacuenta_id' => $usuario_id,
+                    );
+                    $this->Detalle_serv_model->update_detalle_serv($detalle_serv_id, $detparam);
+                }
+                
+                $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                $total = $data['resultado']['total'];
+                $acuenta = $data['resultado']['acuenta'];
+                $saldo = $data['resultado']['saldo'];
+                $sumparams = array(
+                                    'servicio_total' => $total,
+                                    'servicio_acuenta' => $acuenta,
+                                    'servicio_saldo' => $saldo,
+                );
+
+                $this->load->model('Servicio_model');
+                $this->Servicio_model->update_servicio($servicio_id,$sumparams);            
+                
+                $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+        
+                redirect('servicio/serviciocreado/'.$servicio_id);
+            }else{
+                redirect('detalle_serv/kardex_detallek/'.$codigo);
+            }
         }
             else{
                 redirect('alerta');

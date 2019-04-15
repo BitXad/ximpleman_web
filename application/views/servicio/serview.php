@@ -87,21 +87,21 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Detalle</th>
-						<th>Código</th>
-						<th>Categoria/<br>Subcategoria</th>
-						<th>Tipo<br>Trabajo</th>
-						<th>Finalizado</th>
-						<th>Entregado</th>
-                                                <th>Estado</th>
-						<th>Informe</th>
-						<th>Peso<br>(Gr.)</th>
-						<th>Insumo</th>
-						<th>Datos<br>Adicionales</th>
-						<th>Total</th>
-						<th>A. C.</th>
-						<th>Saldo</th>
+                        <th>#</th>
+                        <th>Detalle</th>
+                        <th>Código</th>
+                        <th>Categoria/<br>Subcategoria</th>
+                        <th>Tipo<br>Trabajo</th>
+                        <th>Finalizado</th>
+                        <th>Entregado</th>
+                        <th>Estado</th>
+                        <th>Informe</th>
+                        <th>Peso<br>(Gr.)</th>
+                        <th>Insumo</th>
+                        <th>Datos<br>Adicionales</th>
+                        <th>Total</th>
+                        <th>A. C.</th>
+                        <th>Saldo</th>
 						<th></th>
                     </tr>
                     <tbody class="buscar" id="detalleservicio">

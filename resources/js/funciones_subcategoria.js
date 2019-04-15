@@ -81,7 +81,7 @@ function mostrarsubcategorias(){
                         html += "</div>";
                         html += "<!-- ---------------------- FIN modal para confirmar eliminación ----------------- -->";
                         html += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalverinsumo"+registros[i]["subcatserv_id"]+"' onclick='buscarinsumos("+registros[i]["subcatserv_id"]+");' title='Ver insumos asignados de: "+registros[i]["subcatserv_descripcion"]+"' ><span class='fa fa-eye'></span></a>";
-                        html += "<a href='"+base_url+"categoria_insumo/insumo/"+registros[i]["subcatserv_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-file-text-o' title='Asignar, quitar insumos'></span></a>";
+                        html += "<a href='"+base_url+"categoria_insumo/insumo/"+registros[i]["subcatserv_id"]+"' class='btn btn-primary btn-xs'><span class='fa fa-file-text-o' title='Asignar, quitar insumos'></span></a>";
                         html += "<a href='"+base_url+"subcategoria_servicio/edit/"+registros[i]["subcatserv_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil' title='Editar'></span></a> ";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"'  title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "</td>";
