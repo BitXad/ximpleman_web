@@ -707,7 +707,6 @@ class Venta extends CI_Controller{
      */
 function edit($venta_id)
     {   
-      
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
@@ -717,8 +716,12 @@ function edit($venta_id)
         //**************** inicio contenido ***************      
       
         // check if the venta exists before trying to edit it
-        $data['venta'] = $this->Venta_model->get_venta($venta_id);
+        $venta = $this->Venta_model->get_venta($venta_id);
         
+        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
+        $cliente_id = $venta["cliente_id"];
+       
+        //echo "Cliente: ".$cliente_id;
         if(isset($data['venta']['venta_id']))
         {
             if(isset($_POST) && count($_POST) > 0)     
@@ -754,8 +757,8 @@ function edit($venta_id)
                 $this->load->model('Tipo_transaccion_model');
                 $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
 
-                //$this->load->model('Cliente_model');
-                //$data['all_cliente'] = $this->Cliente_model->get_clientes();
+                $this->load->model('Cliente_model');
+                $data['all_cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
 
                 $this->load->model('Moneda_model');
                 $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
@@ -814,9 +817,17 @@ function edit($venta_id)
         //**************** inicio contenido ***************      
         $usuario_id = $session_data['usuario_id'];
         $tipousuario_id = $session_data['tipousuario_id'];
+        
+                // check if the venta exists before trying to edit it
+        $venta = $this->Venta_model->get_venta($venta_id);
+        
+        $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
+        $cliente_id = $venta["cliente_id"];
+       
+        
         $data['page_title'] = "Modificar venta";
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
@@ -842,6 +853,101 @@ function edit($venta_id)
                 else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }
         
+    }
+    
+    function modificar_detalle()
+    {
+        
+        
+           if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************      
+
+                
+        $usuario_id = $session_data['usuario_id'];
+        $venta_id = $this->input->post('venta_id');
+        $cliente_id = $this->input->post('cliente_id');
+        $venta_fecha = $this->input->post('venta_fecha');
+        $venta_subtotal = $this->input->post('venta_subtotal');
+        $venta_descuento = $this->input->post('venta_descuento');
+        $venta_total = $this->input->post('venta_total');
+        $venta_efectivo = $this->input->post('venta_efectivo');
+        $venta_cambio = $this->input->post('venta_cambio');
+        
+        $porcentaje = 0;
+        
+        $sql = "delete from detalle_venta where venta_id=".$venta_id;
+        $this->Venta_model->ejecutar($sql);
+        
+        $sql =  "insert into detalle_venta
+                (producto_id,
+                  venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_descuento,
+                  detalleven_total,
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                  usuario_id
+                )
+
+
+                (SELECT 
+                  producto_id,
+                  ".$venta_id." as venta_id,
+                  moneda_id,
+                  detalleven_codigo,
+                  detalleven_cantidad,
+                  detalleven_unidad,
+                  detalleven_costo,
+                  detalleven_precio,
+                  detalleven_subtotal,
+                  detalleven_subtotal * ".$porcentaje.",
+                  detalleven_total - (detalleven_subtotal * ".$porcentaje."),
+                  detalleven_caracteristicas,
+                  detalleven_preferencia,
+                  detalleven_comision,
+                  detalleven_tipocambio,
+                  usuario_id
+                FROM
+                  detalle_venta_aux
+                WHERE 
+                  usuario_id=".$usuario_id.")";
+        $this->Venta_model->ejecutar($sql);        
+        
+        $sql = "update venta set ".
+                "cliente_id = ".$cliente_id.
+                ",venta_fecha = '".$venta_fecha."'".
+                ",venta_subtotal = ".$venta_subtotal.
+                ",venta_descuento = ".$venta_descuento.
+                ",venta_total = ".$venta_total.
+                ",venta_efectivo = ".$venta_efectivo.
+                ",venta_cambio = ".$venta_cambio.                
+                " where venta_id = ".$venta_id;
+        
+        $this->Venta_model->ejecutar($sql);        
+        
+        $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
+        $this->Venta_model->ejecutar($sql);        
+        
+        
+        //**************** inicio contenido ***************     
+                  
+        //**************** fin contenido ***************
+                }
+                else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }       
     }
     
     

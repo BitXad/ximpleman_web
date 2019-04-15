@@ -17,9 +17,9 @@ class Venta_model extends CI_Model
      */
     function get_venta($venta_id)
     {
-        $sql = "select * from venta v, usuario u where v.usuario_id = u.usuario_id";
+        $sql = "select * from venta v, usuario u where v.usuario_id = u.usuario_id and v.venta_id = ".$venta_id;
         
-        $venta = $this->db->query($sql,array($venta_id))->row_array();
+        $venta = $this->db->query($sql)->row_array();
 
         return $venta;
     }

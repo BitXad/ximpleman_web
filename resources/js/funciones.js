@@ -168,6 +168,7 @@ function tablaproductos()
     var categ = JSON.parse(document.getElementById('categoria_producto').value);
     var controlador = base_url+'venta/detalleventa';
     
+    
     $.ajax({url: controlador,
            type:"POST",
            data:{datos:1},
@@ -205,8 +206,10 @@ function tablaproductos()
                       
                     for (var i = 0; i < x ; i++){
 
+                        //alert(registros[i]["categoria_id"]-1);
                         categoria = '';
-                        if (registros[i]["categoria_id"]>0){
+                        
+                        if ( Number(registros[i]["categoria_id"])>0){
                             categoria = categ[registros[i]["categoria_id"]-1]["categoria_nombre"]; 
                         }
 
@@ -244,7 +247,10 @@ html += "           </div>";
 html += "           <div class='col-md-12'>";
 //html += "               <label for='estado_descripcion' class='control-label'>Descripcion</label>";
 html += "               <div class='form-group'>";
-html += "               <textarea name='detalleven_caracteristicas' class='form-control' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];
+if (registros[i]['detalleven_caracteristicas']==null){ caracteristicas = "";
+    html += "               <textarea name='detalleven_caracteristicas' class='form-control' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+caracteristicas;}
+else
+{  html += "               <textarea name='detalleven_caracteristicas' class='form-control' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];}
 
 html += "               </textarea>";
 
@@ -1076,7 +1082,7 @@ function registrarventa(cliente_id)
     var hora = new Date();
     
     
-    var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getMinutes();
+    var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
 
     
     var venta_subtotal = document.getElementById('venta_subtotal').value;     
@@ -1422,11 +1428,14 @@ function tabla_ventas(filtro)
 //                    html += "                       </td>";
 
                     html += "                       <td class='no-print'>";
-                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print'><span class='fa fa-pencil'></span></a>";
+                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
+                    html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
-                    html += "                           <a href='"+base_url+"factura/recibo_boucher/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank'><span class='fa fa-print'></span></a> ";
+                    html += "                           <a href='"+base_url+"factura/recibo_boucher/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> ";
+                    if (v[i]['venta_tipodoc']==1)
+                        html += "                                   <a href='"+base_url+"factura/factura_boucher/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                     html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
-                    html += "                           <br><br><button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Eliminar'><em class='fa fa-trash'></em></button>";
+                    html += "                           <br><br><button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                     html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"'>";
                     html += "                                 <div class='modal-dialog' role='document'>";
@@ -1474,8 +1483,7 @@ function tabla_ventas(filtro)
 //                    html += "                                           else { $formato_boton = 'btn btn-facebook btn-xs';  $mensaje_title = 'Ver nota de venta'; }";
 //                    html += "                                       ?>";
 //                    html += "                                   ";
-                    if (v[i]['venta_tipodoc']==1)
-                        html += "                                   <a href='"+base_url+"factura/factura_boucher/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver factura/Nota de venta'><span class='fa fa-list-alt'></span></a> ";
+
 //                    html += "                           ";
 //                    html += "                           <?php } else{ ?>";
 //                    html += "                                   ";
@@ -1868,8 +1876,7 @@ function verificador()
     
     
     //alert(llave+" | "+autorizacion+" | "+numero+" | "+nit+" | "+fecha+" | "+monto);
-    
-    
+        
     $.ajax({url: controlador,
         type:"POST",
         data:{llave:llave,autorizacion:autorizacion,numero:numero,nit:nit,fecha:fecha,monto:monto, bandera:bandera},
@@ -1885,18 +1892,110 @@ function verificador()
 }   
 
 
+
+function modificar_venta(cliente_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/modificar_detalle';
+    var venta_id = document.getElementById('venta_id').value;
+    var venta_fecha = document.getElementById('venta_fecha').value;
+    var venta_subtotal = document.getElementById('venta_subtotal').value;
+    var venta_descuento = document.getElementById('venta_descuento').value;
+    var venta_total = document.getElementById('venta_total').value;
+    var venta_efectivo = document.getElementById('venta_efectivo').value;
+    var venta_cambio = document.getElementById('venta_cambio').value;
+    
+
+    //alert(venta_id+" - "+venta_fecha);
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{venta_id:venta_id, cliente_id:cliente_id, venta_fecha:venta_fecha,venta_subtotal:venta_subtotal,
+            venta_descuento:venta_descuento, venta_total:venta_total, venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
+            success:function(respuesta){ 
+                tablaproductos();
+            },
+            error: function(respuesta){
+                alert("Revise los datos de la venta por favor...!");   
+            }
+        });          
+    
+    window.close();
+  
+}
+
+
+function registrarcliente_modificado()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'venta/registrarcliente';
+    var nit = document.getElementById('nit').value;
+    var razon = document.getElementById('razon_social').value;
+    var telefono = document.getElementById('telefono').value;
+    var cliente_nombre = document.getElementById('cliente_nombre').value; 
+    var cliente_id = document.getElementById('cliente_id').value; 
+   
+   
+   
+    if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
+        //alert("nit:"+nit+",razon:"+razon+",telefono:"+telefono+",cliente_id:"+cliente_id+", cliente_nombre:"+cliente_nombre)
+        // alert(cliente_id+" * "+nit);
+        var controlador = base_url+'venta/modificarcliente';
+        
+        $.ajax({url: controlador,
+                    type:"POST",
+                    data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre},
+                    success:function(respuesta){ 
+                        var datos = JSON.parse(respuesta)
+                        cliente_id = datos[0]["cliente_id"];
+                        
+                        if(cliente_id>0){
+                            modificar_venta(cliente_id);                            
+                        }
+                        else{
+                            modificar_venta(respuesta);                            
+                        }
+                    },
+                    error: function(respuesta){
+                        cliente_id = 0;            
+                    }
+        });
+        
+    }
+    else{ //Si el cliente es nuevo debe primero registrar al cliente
+    
+    
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{nit:nit,razon:razon,telefono:telefono},
+            success:function(respuesta){  
+            
+                var registro = JSON.parse(respuesta);
+                
+                cliente_id = registro[0]["cliente_id"];
+                //registrarventa(cliente_id);
+                modificar_venta(cliente_id);
+                
+            },
+            error: function(respuesta){
+                cliente_id = 0;            
+            }
+        });
+    }
+    
+}
+
 function finalizarcambios()
 {
     
     var monto = document.getElementById('venta_totalfinal').value;
-    
-    
+
     if (monto>0)
     {
         $("#diventas1").style = "display:block";
         $("#diventas0").style = "display:none";
         
-        registrarcliente2();
+        registrarcliente_modificado();
     }
     else
     {
@@ -1906,7 +2005,7 @@ function finalizarcambios()
         var txt;
         var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
         if (r == true) {
-          registrarcliente2();
+          registrarcliente_modificado();
         } 
         //document.getElementById("demo").innerHTML = txt;
       }
@@ -1914,4 +2013,8 @@ function finalizarcambios()
         
         
         
+}
+
+function cerrar(){
+    window.close();
 }

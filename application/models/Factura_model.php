@@ -168,6 +168,12 @@ class Factura_model extends CI_Model
       
         return $factura;
     }
+
+    function ejecutar($sql)
+    {       
+        $this->db->query($sql);     
+        return $true;
+    }
             
     
 }

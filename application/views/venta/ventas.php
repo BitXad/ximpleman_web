@@ -74,7 +74,7 @@ function mostrar_ocultar(){
         
 <!--------------------- cliente_id --------------------->
 <div class="container" hidden>
-    <input type="text" name="<?php echo $cliente[0]['cliente_id']; ?>" value="0" class="form-control" id="cliente_id" >
+    <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
 <!--------------------- fin cliente_id --------------------->
@@ -344,6 +344,7 @@ function mostrar_ocultar(){
         <div class="col-md-12">
 
             <center>
+
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br><br>
                Finalizar Venta <br>

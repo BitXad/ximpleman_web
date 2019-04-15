@@ -122,6 +122,31 @@ border-bottom : 1px solid #aaa;
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
+<!---------------------- Modal ---------------------------->
+        <div id="myModalAnular" class="modal fade no-print" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Anular Factura</h4>
+              </div>
+              <div class="modal-body">
+                  <p>
+                  <h3>              
+                    ADVERTENCIA: La factura Nº: <?php echo $factura[0]['factura_numero']; ?>, esta a punto de ser ANULADA. ¿Desea continuar?
+                  </h3>
+                  </p>
+              </div>
+              <div class="modal-footer">
+                  <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id'].'/'.$venta[0]['venta_id']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
 <!-------------------------------------------------------->
 
 
@@ -178,7 +203,7 @@ border-bottom : 1px solid #aaa;
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
-                    <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
+                    <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
                 <br>_______________________________________________
 
             </center>                      
@@ -199,6 +224,7 @@ border-bottom : 1px solid #aaa;
                  $total_descuento = 0;
                  $total_final = 0;
 
+                if ($factura[0]['estado_id']<>3){ 
                  foreach($detalle_venta as $d){;
                         $cont = $cont+1;
                         $cantidad += $d['detalleven_cantidad'];
@@ -211,7 +237,7 @@ border-bottom : 1px solid #aaa;
                 <td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
                 <td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
            </tr>
-           <?php } ?>
+           <?php }} ?>
        </table>
         _____________________________________
 <table class="table" style="max-width: 7cm;">
@@ -280,3 +306,15 @@ border-bottom : 1px solid #aaa;
     
 </table>
   
+<?php if ($tipousuario_id == 1){ ?>
+        
+            
+    <div class="col-md-12 no-print" style="max-width: 7cm;">
+
+        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
+
+    </div>    
+    
+        
+<?php } ?>

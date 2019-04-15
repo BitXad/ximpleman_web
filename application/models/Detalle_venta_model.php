@@ -47,7 +47,7 @@ class Detalle_venta_model extends CI_Model
 
     function cargar_detalle_venta($venta_id,$usuario_id)
     {
-        $sql = "delete from detalle_venta_aux where venta_id = ".$venta_id;
+        $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
         $this->db->query($sql);
         
         $sql =  "insert into detalle_venta_aux
@@ -94,7 +94,7 @@ class Detalle_venta_model extends CI_Model
         $this->db->query($sql);
         
         $sql =  "select * from detalle_venta_aux d, producto p where "
-                . " d.producto_id = p.producto_id and  venta_id=".$venta_id;        
+               ." d.producto_id = p.producto_id and  d.venta_id=".$venta_id;        
         $detalle_venta = $this->db->query($sql)->result_array();
 
         
