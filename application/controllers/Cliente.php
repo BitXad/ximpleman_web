@@ -445,7 +445,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -630,7 +630,7 @@ class Cliente extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
                 
                 $usuario_id = $session_data['usuario_id'];
 

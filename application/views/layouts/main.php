@@ -230,11 +230,9 @@
                         <li>
                             <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-exchange"></i> <span>Cambios/Devoluciones</span></a>
                         </li>
-                        
                         <li>
-                            <a href="<?php echo site_url('servicio/index');?>"><i class="fa fa-wrench"></i> Servicios</a>
+                            <a href="<?php echo site_url('servicio');?>"><i class="fa fa-wrench"></i> Servicios</a>
                         </li>
-                        
                         <li>
                             <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
                         </li>                        
@@ -409,6 +407,9 @@
                         </li>
                         <li>
                             <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('servicio');?>"><i class="fa fa-wrench"></i> Servicios</a>
                         </li>
                     </ul>
                 </li>

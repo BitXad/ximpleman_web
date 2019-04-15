@@ -173,7 +173,7 @@ class Subcategoria_servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1  or $session_data['tipousuario_id']==2) {
  
 //        if(isset($this->input->post('catserv_id')))
 //        {
@@ -239,7 +239,7 @@ class Subcategoria_servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2) {
 	    
             $parametro = $this->input->post('parametro');
             $catserv_id = $this->input->post('catserv_id');
@@ -259,7 +259,7 @@ class Subcategoria_servicio extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2) {
 	    
             $subcatserv_id = $this->input->post('subcatserv_id');
 	    $res = $this->Subcategoria_servicio_model->get_this_subcatserv($subcatserv_id);
