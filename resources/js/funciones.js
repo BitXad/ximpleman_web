@@ -275,9 +275,11 @@ html += "  </div>";
                         
                         html += "			<td align='center' width='120' "+color+"> ";
                         html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
-                        html += "                       <input size='1' name='cantidad' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+" class='btn btn-warning')' style='background-color:lightgray' readonly>";
+                        
+                        html += "                       <input size='1' name='cantidad' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+" class='btn btn-warning')' style='background-color:white'>";
                         html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
-                        html += "                       <button onclick='incrementar(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
+                        
+                       html += "                       <button onclick='incrementar(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
 
                         html += "                       </td>";
                         html += "			<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
@@ -734,6 +736,9 @@ function tablaresultados(opcion)
     
     var base_url = document.getElementById('base_url').value;
     
+    var cantidad = 0;
+    var usuario_id = document.getElementById('usuario_id').value;
+    
     if (opcion == 1){
         controlador = base_url+'venta/buscarproductos/';
         parametro = document.getElementById('filtrar').value        
@@ -764,6 +769,8 @@ function tablaresultados(opcion)
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
+                    sql = ""; 
+                    comilla = "'";
                    if (n <= limite) x = n; 
                    else x = limite;
                     
@@ -823,6 +830,17 @@ function tablaresultados(opcion)
                                   html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",10)'><b>- 10 -</b></button> ";
                                   html += "</div>";   
                             }            
+                            
+                       cantidad = 1;
+                       descuento = 0;
+                       
+                        sql  = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ";
+                        sql += "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,detalleven_saldo) ";
+                        sql += "value(0,1,"+registros[i]['producto_id']+",'"+registros[i]['producto_codigo']+"',"+cantidad+",'"+registros[i]['producto_unidad']+"',"+registros[i]['producto_costo']+","+registros[i]['producto_precio']+","+registros[i]['producto_precio']+"*"+cantidad+",";
+                        sql += descuento+","+registros[i]['producto_precio']+"*"+cantidad+",'"+registros[i]['producto_caracteristicas']+"',"+"'-'"+",0,1,"+usuario_id+","+registros[i]['existencia']+")";
+                       
+                        html += "<textarea name='textarea' rows='10' cols='50'>"+sql+"</textarea>"
+                        
                         html += "</center>";
                         html += "</td>";
                         

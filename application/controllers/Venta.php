@@ -206,7 +206,8 @@ class Venta extends CI_Controller{
                     detalleven_preferencia,
                     detalleven_comision,
                     detalleven_tipocambio,
-                    usuario_id
+                    usuario_id,
+                    detalleven_saldo
                     ) 
                     ( select 
                     0,
@@ -224,7 +225,8 @@ class Venta extends CI_Controller{
                     "."''".",
                     0,
                     1,
-                    ".$usuario_id."
+                    ".$usuario_id.",
+                    ".$existencia."
                     from inventario
                     where producto_id=".$producto_id."
                     )";
@@ -1988,8 +1990,11 @@ function anular_venta($venta_id){
         
         $producto_id = $this->input->post('producto_id');
         
-        $sql =  "select existencia from inventario "
-                . " where producto_id =".$producto_id;
+//        $sql =  "select existencia from inventario "
+//                . " where producto_id =".$producto_id;
+        
+        $sql =  "select detalleven_saldo as existencia from detalle_venta_aux "
+                . " where producto_id =".$producto_id." and usuario_id = ".$usuario_id;
         
         $resultado = $this->Venta_model->consultar($sql);
         echo json_encode($resultado);

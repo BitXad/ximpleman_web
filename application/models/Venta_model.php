@@ -189,7 +189,8 @@ class Venta_model extends CI_Model
                 detalleven_preferencia,
                 detalleven_comision,
                 detalleven_tipocambio,
-                usuario_id
+                usuario_id,
+                detalleven_saldo
                 ) 
                 ( select 
                 0,
@@ -207,8 +208,9 @@ class Venta_model extends CI_Model
                 "."'-'".",
                 0,
                 1,
-                ".$usuario_id."
-                from producto
+                ".$usuario_id.",
+                existencia
+                from inventario
                 where producto_id=".$producto_id."
                 )";
         
