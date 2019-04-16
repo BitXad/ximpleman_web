@@ -183,20 +183,11 @@ class Detalle_serv_model extends CI_Model
     {
         $detalle_serv = $this->db->query("
             SELECT
-                *
-
+                ds.catserv_id
             FROM
-                detalle_serv ds, estado e, responsable r, usuario u, categoria_servicio cs, servicio s
-
+                detalle_serv ds
             WHERE
-                ds.estado_id = e.estado_id
-                and ds.responsable_id = r.responsable_id
-                and ds.usuario_id = u.usuario_id
-                and ds.catserv_id = cs.catserv_id
-                and ds.servicio_id = s.servicio_id
-                and ds.detalleserv_codigo = '".$codigo."'
-
-            ORDER BY `detalleserv_id` DESC
+                ds.detalleserv_codigo =  '".$codigo."'
 
         ")->result_array();
 
@@ -705,6 +696,36 @@ class Detalle_serv_model extends CI_Model
                 and s.tiposerv_id = ts.tiposerv_id 
                 and ds.detalleserv_id = ?
         ",array($detalleserv_id))->row_array();
+
+        return $detalle_serv;
+    }
+    
+    /*
+     * Obtiene todos los detalles de un servicio especifico(servicio_id)
+     */
+    function buscar_detalle_serv_all_codigo($codigo)
+    {
+        $detalle_serv = $this->db->query("
+            SELECT
+                ds.*, r.usuario_nombre as respusuario_nombre, u.usuario_nombre, e.estado_id as esteestado,
+                e.estado_color, e.estado_descripcion, p.procedencia_descripcion,
+                cs.catserv_descripcion, scs.subcatserv_descripcion, ct.cattrab_descripcion,
+                tu.tiempouso_descripcion, s.cliente_id
+            FROM
+                detalle_serv ds
+            LEFT JOIN estado e on ds.estado_id = e.estado_id
+            LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+            LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+            LEFT JOIN categoria_servicio cs on ds.catserv_id = cs.catserv_id
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN subcategoria_servicio scs on ds.subcatserv_id = scs.subcatserv_id
+            LEFT JOIN procedencia p on ds.procedencia_id = p.procedencia_id
+            LEFT JOIN categoria_trabajo ct on ds.cattrab_id = ct.cattrab_id
+            LEFT JOIN tiempo_uso tu on ds.tiempouso_id = tu.tiempouso_id
+            WHERE
+                ds.detalleserv_codigo = '".$codigo."'
+            ORDER BY `detalleserv_id` DESC
+        ")->result_array();
 
         return $detalle_serv;
     }

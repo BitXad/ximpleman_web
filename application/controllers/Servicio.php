@@ -5,6 +5,9 @@
  */
  
 class Servicio extends CI_Controller{
+    
+    var $session_data;
+    
     function __construct()
     {
         parent::__construct();
@@ -20,7 +23,7 @@ class Servicio extends CI_Controller{
     function index($es = null)
     {
         $this->acceso();
-        $usuario_id = $this->session_data['usuario_id'];  
+        $usuario_id = $this->session_data['usuario_id'];
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -934,7 +937,7 @@ class Servicio extends CI_Controller{
                if(isset($contitulo)){
                    $data['sintitulo']= 1;
                }
-               $data['usuario'] = $session_data['usuario_nombre'];
+               $data['usuario'] = $this->session_data['usuario_nombre'];
             $data['servicio'] = $this->Servicio_model->get_serviciorden_reptec($servicio_id);
             
             $this->load->model('Cliente_model');
@@ -1133,7 +1136,7 @@ class Servicio extends CI_Controller{
     private function acceso()
     {
         if ($this->session->userdata('logged_in')) {
-            if($this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==5) {
+            if($this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==2 or $this->session_data['tipousuario_id']==5) {
                 return;
             } else {
                 redirect('alerta');

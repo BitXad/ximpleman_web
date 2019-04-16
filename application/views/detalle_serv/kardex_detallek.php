@@ -1,7 +1,7 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/servicio_kardexdetalle.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/servicio_kardexdetallek.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<input type="hidden" name="esteservicio_id" id="esteservicio_id" value="<?php echo $servicio['servicio_id']; ?>" />
+<!--<input type="hidden" name="esteservicio_id" id="esteservicio_id" value="<?php //echo $servicio['servicio_id']; ?>" />-->
 <input type="hidden" name="codigo" id="codigo" value="<?php echo $codigo; ?>" />
 <input type="hidden" name="all_categoria_trabajo" id="all_categoria_trabajo" value='<?php echo json_encode($all_categoria_trabajo); ?>' />
 <input type="hidden" name="all_procedencia" id="all_procedencia" value='<?php echo json_encode($all_procedencia); ?>' />
@@ -419,12 +419,12 @@ $(document).ready(function(){
                 </table>
                             
             </div>
-             <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>  
-                <div style="float: right">
-                    <a href="<?php echo site_url('servicio/serviciocreado/'.$servicio['servicio_id']); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
-                </div>
+            <div class="pull-right">
+                <?php echo $this->pagination->create_links(); ?>                    
+            </div>  
+            <div style="float: right">
+                <a href="<?php echo site_url('servicio'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
+            </div>
         </div>
     </div>
 </div>

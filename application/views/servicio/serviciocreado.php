@@ -685,20 +685,19 @@ $(document).ready(function(){
                                     </div>
                             </div>
                             <div class="col-md-4">
-                                    <label for="responsable_id" class="control-label"><span class="text-danger">*</span>Tec. Responsable</label>
-                                    <div class="form-group">
-                                        <select name="responsable_id" class="form-control" id="responsable_id" required>
-                                                    <!--<option value="">- RESPONSABLE -</option>-->
-                                                    <?php 
-                                                    foreach($all_responsable as $responsable)
-                                                    {
-                                                            $selected = ($responsable['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
-
-                                                            echo '<option value="'.$responsable['usuario_id'].'" '.$selected.'>'.$responsable['usuario_nombre'].'</option>';
-                                                    } 
-                                                    ?>
-                                            </select>
-                                    </div>
+                                <label for="responsable_id" class="control-label"><span class="text-danger">*</span>Tec. Responsable</label>
+                                <div class="form-group">
+                                    <select name="responsable_id" class="form-control" id="responsable_id" required>
+                                        <!--<option value="">- RESPONSABLE -</option>-->
+                                        <?php 
+                                        foreach($all_responsable as $responsable)
+                                        {
+                                            $selected = ($responsable['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+                                            echo '<option value="'.$responsable['usuario_id'].'" '.$selected.'>'.$responsable['usuario_nombre'].'</option>';
+                                        } 
+                                        ?>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <!--    <input type="hidden" name="servicio_id" value="<?php //echo $servicio['servicio_id'] ?>" class="form-control" id="servicio_id" /> -->
@@ -812,7 +811,7 @@ $(document).ready(function(){
                                            
                                            <div class="col-md-6">
 						<div class="form-group">
-                                                    <input type="text" name="codigo" class="form-control" id="codigo" required placeholder="Codigo del Producto" />
+                                                    <input type="text" name="codigo" class="form-control" id="codigo" required placeholder="Codigo del Producto" autocomplete="off" onKeyUp="this.value = this.value.toUpperCase();" />
 						</div>
 					  </div>
                                           <div class="col-md-6">

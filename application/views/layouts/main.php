@@ -228,13 +228,11 @@
                             <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i> <span>Egresos</span></a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-exchange"></i> <span>Cambio</span></a>
+                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-exchange"></i> <span>Cambios/Devoluciones</span></a>
                         </li>
-                        
                         <li>
-                            <a href="<?php echo site_url('servicio/index');?>"><i class="fa fa-wrench"></i> Servicios</a>
+                            <a href="<?php echo site_url('servicio');?>"><i class="fa fa-wrench"></i> Servicios</a>
                         </li>
-                        
                         <li>
                             <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
                         </li>                        
@@ -308,7 +306,7 @@
                             <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Compras</span></a>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Ventas</span></a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
@@ -410,6 +408,9 @@
                         <li>
                             <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('servicio');?>"><i class="fa fa-wrench"></i> Servicios</a>
+                        </li>
                     </ul>
                 </li>
                 <?php } 
@@ -424,7 +425,7 @@
                             <a href="<?php echo site_url('compra');?>"><i class="fa fa-cubes"></i>Compras</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambio</a>
+                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambios/Devoluciones</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('cliente');?>"><i class="fa fa-users"></i>Clientes</a>
@@ -475,7 +476,7 @@
                             <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Compras</span></a>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Ventas</span></a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
