@@ -1,3 +1,47 @@
+<style type="text/css">
+ .boton-ayuda{
+    text-decoration: none;
+    padding: 3px;
+    font-weight: 600;
+    font-size: 12px;
+    color: #ffffff;
+    background-color: #1883ba;
+    border-radius: 6px;
+    border: 2px solid #0016b0;
+  }
+  .boton-ayuda:hover{
+    color: #1883ba;
+    background-color: #ffffff;
+  }
+	
+[data-title]:hover:after {
+    opacity: 1;
+    transition: all 0.1s ease 0.2s;
+    visibility: visible;
+}
+[data-title]:after {
+    content: attr(data-title);
+    background-color:  #aed6f1;
+    color: #111;
+    font-size: 100%;
+    position: absolute;
+    padding: 1px 5px 2px 5px;
+    bottom: -1.6em;
+    left: 100%;
+    white-space: nowrap;
+    box-shadow: 1px 1px 3px #222222;
+    opacity: 0;
+    border: 1px solid #111111;
+    z-index: 99999;
+    visibility: hidden;
+    border-radius:5px; 
+
+}
+[data-title] {
+    position: relative;
+}
+
+</style>
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -29,7 +73,7 @@
 									</div>
 								</div>
 							<div class="form-group">
-								<label for="ingreso_nombre" class="col-md-4 control-label">NOMBRE</label>
+								<label for="ingreso_nombre" class="col-md-4 control-label" data-title="asno">NOMBRE <a data-title="Nombre de la persona que realiza el ingreso" class="boton-ayuda">?</a></label>
 								<div class="col-md-8">
 									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" required/>
 								</div>

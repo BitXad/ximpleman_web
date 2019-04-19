@@ -23,13 +23,13 @@ class Login_model extends CI_Model {
     }
 
     public function login2($usuario_login,$usuario_clave){
-         $login = $this->db->query("SELECT usuario_login as loguear from usuario WHERE usuario_login='".$usuario_login."' ")->result_array();
-         
-         if ($login[0]['loguear']==$usuario_login){
+         $login = $this->db->query("SELECT usuario_login as loguear from usuario WHERE usuario_login='".$usuario_login."' ")->row_array();
+         if(!empty($login)){
+         if ($login['loguear']==$usuario_login){
 
         $query = $this->db->query("SELECT * from usuario WHERE usuario_login='".$usuario_login."' AND usuario_clave = '".md5($usuario_clave)."' and estado_id=1 ");
        return $query->row(); 
-    }  }
+    } } }
 
     public function read_user_information($username) {
         $this->db->select('*');
