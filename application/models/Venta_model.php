@@ -169,7 +169,7 @@ class Venta_model extends CI_Model
 
 // Agregar un producto por codigo
     
-   function agregarxCodigo($usuario_id,$producto_id,$cantidad)
+    function agregarxCodigo($usuario_id,$producto_id,$cantidad)
     {
         $descuento = 0;
         
