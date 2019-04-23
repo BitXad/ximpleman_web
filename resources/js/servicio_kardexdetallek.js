@@ -330,13 +330,13 @@ function resultadodetalleserviciokardex(codigo){
                         html += "<div class='col-md-4'>";
                         html += "<label for='detalleserv_total' class='control-label'>Total</label>";
                         html += "<div class='form-group'>";
-                        html += "<input style='background-color: #ffeebc;' type='number' step='any' min='0' name='detalleserv_total' value='"+Number(registros[i]["detalleserv_total"]).toFixed(2)+"' class='form-control' id='detalleserv_total' onclick='this.select();' />";
+                        html += "<input style='background-color: #ffeebc;' type='number' step='any' min='0' name='detalleserv_total' value='"+Number(registros[i]["detalleserv_total"]).toFixed(2)+"' class='form-control' id='detalleserv_total' onkeyup='functotal()' onclick='this.select();' />";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='col-md-4'>";
                         html += "<label for='detalleserv_acuenta' class='control-label'>A cuenta</label>";
                         html += "<div class='form-group'>";
-                        html += "<input style='background-color: #ffeebc;' type='number' step='any' min='0' name='detalleserv_acuenta' value='"+Number(registros[i]["detalleserv_acuenta"]).toFixed(2)+"' class='form-control' id='detalleserv_acuenta' onclick='this.select();' />";
+                        html += "<input style='background-color: #ffeebc;' type='number' step='any' min='0' name='detalleserv_acuenta' value='"+Number(registros[i]["detalleserv_acuenta"]).toFixed(2)+"' class='form-control' id='detalleserv_acuenta' onkeyup='funcacuenta()' onchange='funcacuentachange()' onclick='this.select();' />";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='col-md-4'>";
@@ -466,4 +466,52 @@ function resultadodetalleserviciokardex(codigo){
         
     });   
 
+}
+
+function restar(){
+    
+    var uno, dos, tres, operacion;
+  
+      uno = $('#detalleserv_total');
+      dos = $('#detalleserv_acuenta');
+      tres = $('#detalleserv_saldo');
+      
+      operacion = parseFloat(uno.val()) - parseFloat(dos.val());
+      tres.val(operacion);
+    
+  }
+function functotal(){
+      
+      var dos;
+      dos = $('#detalleserv_acuenta').val();
+      
+      if(dos != ""){
+        restar()
+      }
+      
+  }
+function funcacuenta(){
+    var uno;
+      uno = $('#detalleserv_total').val();
+      
+      if(uno != ""){
+        restar()
+      }
+}
+function funcacuentachange(){
+    if($("#detalleserv_saldo").val() <0){
+      alert("Saldo no debe ser negativo");
+      $('#detalleserv_acuenta').css('color', 'red');
+      $('#detalleserv_saldo').css('color', 'red');
+      $('#detalleserv_acuenta').focus();
+    }else{
+      $('#detalleserv_acuenta').css('color', 'black');
+      $('#detalleserv_saldo').css('color', 'black');
+    }
+}
+function ponerdescripcion(catserv){
+    //$('#catserv_id').val();
+    $('#subcatserv_id').val();
+    $('#detalleserv_descripcion').val($('#catserv_id option:selected').text()+' '+$('#subcatserv_id option:selected').text());
+    $('#detalleserv_descripcion').focus();
 }

@@ -90,57 +90,7 @@ function ponerdescripcion(catserv){
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-<script type="text/javascript">
-$(document).ready(function(){
-  
-  function restar(){
-    
-    var uno, dos, tres, operacion;
-  
-      uno = $('#detalleserv_total');
-      dos = $('#detalleserv_acuenta');
-      tres = $('#detalleserv_saldo');
-      
-      operacion = parseFloat(uno.val()) - parseFloat(dos.val());
-      tres.val(operacion);
-    
-  }
-  
-  $("#detalleserv_total").keyup(function(){
-      
-      var dos;
-      dos = $('#detalleserv_acuenta').val();
-      
-      if(dos != ""){
-        restar()
-      }
-      
-  });
-  
-  $("#detalleserv_acuenta").keyup(function(){
-      
-      var uno;
-      uno = $('#detalleserv_total').val();
-      
-      if(uno != ""){
-        restar()
-      }
-      
-  });
-  
-  $("#detalleserv_acuenta").change(function(){
-  if($("#detalleserv_saldo").val() <0){
-      alert("Saldo no debe ser negativo");
-      $('#detalleserv_acuenta').css('color', 'red');
-      $('#detalleserv_saldo').css('color', 'red');
-      $('#detalleserv_acuenta').focus();
-  }else{
-      $('#detalleserv_acuenta').css('color', 'black');
-      $('#detalleserv_saldo').css('color', 'black');
-  }});
-  
-})
-</script>
+
 <div class="box-header">
     <h3 class="box-title">Kardex de: <?php if(isset($categoria_servicio['catserv_descripcion'])){ echo $categoria_servicio['catserv_descripcion'];} ?> con el codigo <b><?php if(isset($detalle_serv[0]['detalleserv_codigo'])){ echo $detalle_serv[0]['detalleserv_codigo'];} ?></b></h3>
 
