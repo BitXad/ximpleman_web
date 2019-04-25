@@ -112,7 +112,8 @@ class Venta_model extends CI_Model
      */
     function get_detalle_aux($usuario_id)
     {
-        $sql = "select * from detalle_venta_aux d, producto p where d.producto_id = p.producto_id and d.usuario_id = ".$usuario_id." order by detalleven_id desc";
+        //$sql = "select * from detalle_venta_aux d, producto p where d.producto_id = p.producto_id and d.usuario_id = ".$usuario_id." order by detalleven_id desc";
+        $sql = "select * from detalle_venta_aux d where d.usuario_id = ".$usuario_id." order by d.detalleven_id desc";
         $detalle = $this->db->query($sql)->result_array();
         return $detalle;
     }

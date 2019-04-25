@@ -174,70 +174,18 @@ class Venta extends CI_Controller{
         $descuento = 0;
         
         $sql = "select if(sum(detalleven_cantidad)+".$cantidad.">".$existencia.",1,0) as resultado from detalle_venta_aux where producto_id = ".$producto_id;
-        echo $sql;
+
         $resultado = $this->Venta_model->consultar($sql);
         
         
-        if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
-        
-            
-                if ($this->Venta_model->existe($producto_id,$usuario_id)){
-
-//
-//                $sql = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
-//                        ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
-//                        ", detalleven_descuento = ".$descuento.
-//                        ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
-//                        "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
-        
-                $sql = $sql2;
-                
+        if ($resultado[0]['res<ultado']==0){ //si la cantidad aun es menor al inventario                   
+            if ($this->Venta_model->existe($producto_id,$usuario_id)){
+                $sql = $sql2;             
             }
             else{
                 $sql = $sql1;
-//            $sql = "insert into detalle_venta_aux(
-//                    venta_id,
-//                    moneda_id,
-//                    producto_id,
-//                    detalleven_codigo,
-//                    detalleven_cantidad,
-//                    detalleven_unidad,
-//                    detalleven_costo,
-//                    detalleven_precio,
-//                    detalleven_subtotal,
-//                    detalleven_descuento,
-//                    detalleven_total,
-//                    detalleven_caracteristicas,
-//                    detalleven_preferencia,
-//                    detalleven_comision,
-//                    detalleven_tipocambio,
-//                    usuario_id,
-//                    detalleven_saldo
-//                    ) 
-//                    ( select 
-//                    0,
-//                    1,
-//                    producto_id,
-//                    producto_codigo,
-//                    ".$cantidad.",
-//                    producto_unidad,
-//                    producto_costo,
-//                    producto_precio,
-//                    producto_precio*".$cantidad.",
-//                    ".$descuento.",
-//                    producto_precio*".$cantidad.",
-//                    "."producto_caracteristicas".",
-//                    "."''".",
-//                    0,
-//                    1,
-//                    ".$usuario_id.",
-//                    ".$existencia."
-//                    from inventario
-//                    where producto_id=".$producto_id."
-//                    )";
             }
 
-           // echo $sql;
            
             $this->Venta_model->ejecutar($sql);
             
@@ -254,6 +202,30 @@ class Venta extends CI_Controller{
                
     }
 
+    function eliminardetalle()
+    {       
+         if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************       
+        
+        $usuario_id = $session_data['usuario_id'];
+        
+        $sql =  "delete from detalle_venta_aux where usuario_id=".$usuario_id;
+        $this->Venta_model->ejecutar($sql);
+        return true;
+    
+            		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+        
+    }
+    
 //
 //    function insertarProducto()
 //    {       
@@ -349,31 +321,6 @@ class Venta extends CI_Controller{
 //               
 //    }
 //
-    function eliminardetalle()
-    {       
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        //**************** inicio contenido ***************       
-        
-        $usuario_id = $session_data['usuario_id'];
-        
-        $sql =  "delete from detalle_venta_aux where usuario_id=".$usuario_id;
-        $this->Venta_model->ejecutar($sql);
-        return true;
-    
-            		
-        //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }    
-        
-    }
-    
-
     
     
     function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)

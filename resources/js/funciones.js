@@ -449,10 +449,7 @@ function buscarporcodigojs()
            success:function(respuesta){
                
                res = JSON.parse(respuesta);
-              // alert(JSON.stringify(producto[0]));
-             // alert(producto[0].producto_nombre);
-//               if(producto[0].existencia<0){
-                                  
+
                     if (res.length>0){
                         
                          if (res[0].existencia > 0){   
@@ -473,19 +470,6 @@ function buscarporcodigojs()
                      }
                      else {alert('El producto no se encuentra registrado con el código especificado...!!'); }
 
-               //}
-//               else {
-//                   alert('El producto no se encuentra registrado con el código especificado.!!');
-//               }
-//               tablaproductos(); 
-//               $("#codigo").select();
-//               
-//               var resultado = JSON.parse(respuesta);                
-//
-//                if(resultado[0]["resultado"] == 0) alert('La cantidad excede la cantidad en inventario...!');
-//                if(resultado[0]["resultado"] == -1) alert('El producto no se encuentra registrado con el código especificado...!!');
-//               
-               
            },
            error:function(respuesta){
                alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
@@ -842,9 +826,13 @@ function ingresorapidojs(cantidad,producto)
     if (cantidad_total <= producto.existencia){
 
         sql1  = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ";
-        sql1 += "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia) ";
+        sql1 += "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,";
+        sql1 += "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra ) ";
         sql1 += "value(0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
-        sql1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+")";
+        sql1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
+        sql1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+        sql1 += producto.categoria_id+",'"+producto.producto_codigobarra+"')";
+        //alert(sql1);
 
         sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + "+cantidad+
                 ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
@@ -864,6 +852,7 @@ function ingresorapidojs(cantidad,producto)
     }
     else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
     
+   // alert('echo..!!');
 }
 
 function cambiarcantidadjs(e,producto)

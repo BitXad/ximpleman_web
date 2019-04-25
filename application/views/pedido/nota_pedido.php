@@ -1,23 +1,24 @@
 <style type="text/css">
 
-
 p {
-    font-family: Arial;
-    font-size: 7pt;
-    line-height: 120%;   /*esta es la propiedad para el interlineado*/
-    color: #000;
-    padding: 10px;
-}
-interlineado {
     font-family: Arial;
     font-size: 7pt;
     line-height: 80%;   /*esta es la propiedad para el interlineado*/
     color: #000;
-    padding: 10px;
+    padding: 5px;
 }
 
+interlineado {
+    font-family: Arial;
+    font-size: 7pt;
+    line-height: 50%;   /*esta es la propiedad para el interlineado*/
+    color: #000;
+    padding: 5px;
+}
+/*
+
 div {
-line-height: 80%;   /*esta es la propiedad para el interlineado*/    
+line-height: 80%;   esta es la propiedad para el interlineado    
 margin-top: 0px;
 margin-right: 0px;
 margin-bottom: 0px;
@@ -25,45 +26,97 @@ margin-left: 10px;
 margin: 0px;
 }
 
+*/
 
-table{
-line-height: 80%;   /*esta es la propiedad para el interlineado*/    
-width : 7cm;
+/*table{
+height: 50%;   esta es la propiedad para el interlineado    
+width : 8cm;
 margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
-font-size: 7pt;  
+font-family: Arial;
+font-size: 7pt; 
+marker-attachment: 0;
 
 }
 
 td {
 margin : 0px 0px 0px 0px;    
-line-height: 80%;   /*esta es la propiedad para el interlineado*/    
+height: 30%;   esta es la propiedad para el interlineado  
 
 }
 
 th {
 margin : 0px 0px 0px 0px;    
-line-height: 80%;   /*esta es la propiedad para el interlineado*/    
+line-height: 70%;   esta es la propiedad para el interlineado    
+
+
+}*/
+
+table {
+  //border: 1px solid #000;
+  border-collapse: collapse;
+  padding: 0;
+  margin: 0;
+}
+td {
+  //border: 1px solid #000;
+  //text-align: center;
+  padding: 0px;
+  /* Alto de las celdas */
+  height: 10px;
+font-family: Arial;
+font-size: 7pt;   
+margin: 0;
+margin-bottom: 0;
+margin-top: 0;
+padding: 0;
+
 
 }
+tr {
+  //border: 1px solid #000;
+  //text-align: center;
+  padding: 0px;
+  /* Alto de las celdas */
+  height: 10px;
+font-family: Arial;
+font-size: 7pt;   
+margin: 0;
+margin-bottom: 0;
+margin-top: 0;
+}
 
-td#comentario {
+td {
+  //border: 1px solid #000;
+  //text-align: center;
+  padding: 0px;
+  /* Alto de las celdas */
+  height: 10px;
+font-family: Arial;
+font-size: 7pt;   
+margin: 0;
+margin-bottom: 0;
+margin-top: 0;
+}
+
+
+
+/*td#comentario {
 vertical-align : bottom;
 border-spacing : 0;
 }
 div#content {
-line-height: 80%;   /*esta es la propiedad para el interlineado*/    
+line-height: 50%;   esta es la propiedad para el interlineado    
 background : #ddd;
-font-size : 7px;
+font-size : 8px;
 margin : 0 0 0 0;
-padding : 0 5px 0 5px;
+padding : 0 0px 0 0px;
 border-left : 1px solid #aaa;
 border-right : 1px solid #aaa;
 border-bottom : 1px solid #aaa;
-}
+}*/
 </style>
 
 <!----------------------------- script buscador --------------------------------------->
@@ -94,58 +147,57 @@ border-bottom : 1px solid #aaa;
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
-
+<p>
 <font face="Arial">
 
-    <table class="table" style="width: 20cm;">
-        <tr>
-            <td>
+    <table class="table" style="width: 20cm; padding: 0;" >
+        <tr style="padding: 0;">
+            <td  style="padding: 0;">
                     
                 <center>
-                <p>
+                
                     <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>                    
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="1" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->                    
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
 <!--                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>                    -->
-                </p>
+                
                 </center>
             </td>
-            <td>
+            <td  style="padding: 0;">
                 <center>
-                    <p>
+                 
                         
                     <br>
                     <font size="3" face="Arial"><b><?php echo "NOTA DE PEDIDO"; ?></b></font><br>
                     <font size="3" face="Arial"><b><?php echo "Nº 000".$pedido[0]['pedido_id']; ?></b></font><br>
                     <font size="1" face="Arial"><b><?php echo $pedido[0]['pedido_fecha']; ?></b></font><br>
-                    </p>
+                    
                 </center>                
             </td>
-            <td>
-                <p>
-                    
-                <font size="1" face="Arial">
-                    <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
-                    <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
-                    <br><b>DIRECCIÓN: </b><?php echo $pedido[0]['cliente_direccion']; ?>
-                    <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>                    
-                </font>
-                </p>
+            <td  style="padding: 0;">
+
+                        <font size="1" face="Arial">
+                            <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
+                            <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
+                            <br><b>DIRECCIÓN: </b><?php echo $pedido[0]['cliente_direccion']; ?>
+                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>                    
+                        </font>
+
+              
             </td>
         </tr>
     </table>
-
-    <table class="table" id="mitabla2" style="width: 20cm; border-width:10px;">
+ 
+    <table class="table" style="width: 20cm; height: 1px; padding: 0;" >
     
-
-        <tr>
-            <th>#</th>
-            <th>Descripción</th>
-            <th>Cant</th>
-            <th>P.Unit</th>
-            <th>Total</th>
+        <tr  style="border-bottom: solid; padding: 0;">
+            <!--<th>#</th>-->
+            <th><center>CANT</center></th>
+            <th><center>DESCRIPCIÓN</center></th>
+            <th><center>PREC.UNIT</th>
+            <th><center>TOTAL</th>
         </tr>
         
         <?php 
@@ -157,17 +209,17 @@ border-bottom : 1px solid #aaa;
                 
         ?>
         
-            <tr style="height:10px;">
-                <td>
+            <tr style="padding: 0;">
+<!--                <td>
                     <?php echo $i++; ?>
-                </td>
-                <td>
-                    <?php echo $p['producto_nombre']; ?>
-                </td>
+                </td>-->
                 <td>
                     <center>
                         <?php echo $p['detalleped_cantidad']; ?>
                     </center>
+                </td>
+                <td>
+                    <?php echo $p['producto_nombre']; ?>
                 </td>
                 <td align="right">
                     
@@ -181,18 +233,19 @@ border-bottom : 1px solid #aaa;
         <?php 
             }
         ?>
-        <tr>
-            <th></th>
-            <th colspan="3"><font size="2"> Total Bs</font></th>
+        <tr align="right" style="border-top: solid; border-bottom: solid;">
+<!--            <th></th>-->
+            <td colspan="3"><font size="3"><b>Total Bs</b></font></td>
 <!--            <th></th>
             <th></th>-->
-            <th><font size="2"> <?php echo number_format($total_final,2,".",","); ?></font></th>
+            <td align="right"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
         </tr>                        
+
     </table>    
 </font>
 
 <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?></font>
-<table class="table" style="width: 18cm;">
+<table class="table" style="width: 20cm;">
         <tr>
             <td>
                 <center>
@@ -210,3 +263,5 @@ border-bottom : 1px solid #aaa;
             </td>
         </tr>
     </table>
+
+</p>
