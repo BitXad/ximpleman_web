@@ -54,9 +54,9 @@ class Categoria_servicio extends CI_Controller{
             //Estado ACTIVO por defecto
             $estado_id = 1;
             $params = array(
-				'catserv_descripcion' => $this->input->post('catserv_descripcion'),
-				'estado_id' => $estado_id,
-            );
+                    'catserv_descripcion' => $this->input->post('catserv_descripcion'),
+                    'estado_id' => $estado_id,
+);
             
             $catserv_id = $this->Categoria_servicio_model->add_categoria_servicio($params);
             redirect('categoria_servicio/index');
