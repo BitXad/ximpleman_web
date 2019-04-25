@@ -810,22 +810,22 @@ class Cliente extends CI_Controller{
         }
         else
         {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                        
-                        $this->load->model('Categoria_clientezona_model');
-                        $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-                        /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
-                        $this->load->model('Usuario_model');
-			$data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 
-			$this->load->model('Tipo_cliente_model');
-			$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-			
-                        $this->load->model('Categoria_cliente_model');
-			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
-			
-                        $data['resultado'] = 0;
+            $this->load->model('Categoria_clientezona_model');
+            $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+            /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
+            $this->load->model('Usuario_model');
+            $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+            $this->load->model('Tipo_cliente_model');
+            $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+            $this->load->model('Categoria_cliente_model');
+            $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+
+            $data['resultado'] = 0;
 //            
 //            $data['_view'] = 'cliente/add';
 //            $this->load->view('layouts/main',$data);
@@ -843,84 +843,6 @@ class Cliente extends CI_Controller{
             redirect('', 'refresh');
         }
     }  
-    
-    
-    
-//    {   
-//        
-//        if ($this->session->userdata('logged_in')) {
-//            $session_data = $this->session->userdata('logged_in');
-//            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-//
-//        
-//                $this->load->library('form_validation');
-//
-//		$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
-//		$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
-//		
-//        if($this->form_validation->run())     
-//        {   
-//            $usuario_id = $session_data['usuario_id'];
-//            $params = array(
-//				'estado_id' => $this->input->post('estado_id'),
-//				'tipocliente_id' => $this->input->post('tipocliente_id'),
-//				'categoriaclie_id' => $this->input->post('categoriaclie_id'),
-//				'cliente_codigo' => $this->input->post('cliente_codigo'),
-//				'zona_id' => $this->input->post('zona_id'),
-//				'cliente_nombre' => $this->input->post('cliente_nombre'),
-//				'cliente_ci' => $this->input->post('cliente_ci'),
-//				'cliente_direccion' => $this->input->post('cliente_direccion'),
-//				'cliente_telefono' => $this->input->post('cliente_telefono'),
-//				'cliente_celular' => $this->input->post('cliente_celular'),
-//				'cliente_foto' => $this->input->post('cliente_foto'),
-//				'cliente_email' => $this->input->post('cliente_email'),
-//				'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-//				'cliente_aniversario' => $this->input->post('cliente_aniversario'),
-//				'cliente_latitud' => $this->input->post('cliente_latitud'),
-//				'cliente_longitud' => $this->input->post('cliente_longitud'),
-//				'cliente_nit' => $this->input->post('cliente_nit'),
-//				'cliente_razon' => $this->input->post('cliente_razon'),
-//				'usuario_id' => $usuario_id,
-//            );
-//            
-//            $cliente_id = $this->Cliente_model->add_cliente($params);
-//            $this->load->model('Pedido_model');
-//            $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
-//            redirect('pedido/pedidoabierto/'.$pedido_id);
-//        }
-//        else
-//        {
-//			$this->load->model('Estado_model');
-//			$data['all_estado'] = $this->Estado_model->get_all_estado();
-//
-//			$this->load->model('Tipo_cliente_model');
-//			$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-//
-//			$this->load->model('Categoria_cliente_model');
-//			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
-//            $data['pedido_id'] = $pedido_id;
-//            $data['_view'] = 'cliente/clientenuevo';
-//            $this->load->view('layouts/main',$data);
-//        }
-//        
-//       }
-//            else{
-//                redirect('alerta');
-//            }
-//        } else {
-//            redirect('', 'refresh');
-//        }        
-//        
-//    }     
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
     /*
      * Adding a new cliente
@@ -942,6 +864,37 @@ class Cliente extends CI_Controller{
         redirect('pedido/pedidoabierto/'.$pedido_id);
         
     }
+    
+    
+    function realizar_pedido($cliente_id)
+    {
+        
+        
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************     
+        //Crear el pedido
+        $usuario_id = $session_data['usuario_id'];
+        $this->load->model('Pedido_model');
+        $pedido_id = $this->Pedido_model->crear_pedido($usuario_id);
+        $cliente = $this->Cliente_model->get_cliente($cliente_id);
+        
+        $this->cambiarcliente($cliente_id, $pedido_id, $cliente['cliente_nit'], $cliente['cliente_razon']);
+        redirect('pedido/pedidoabierto/'.$pedido_id);
+        
+
+         		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }          
+    }
+    
+    
     /*
     * buscar clientes limite 50
     */
