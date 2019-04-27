@@ -156,11 +156,12 @@ class Factura_model extends CI_Model
                 *
 
             FROM
-                `factura`
+                `factura_compra`
 
             WHERE
                 factura_fecha >= '".$inicio."'
-                and factura_fecha <= '".$fin."' 
+                and factura_fecha <= '".$fin."'
+                and compra_id <> 0 
                 
             ORDER BY `factura_id` ASC";
         

@@ -115,7 +115,7 @@ class Credito_model extends CI_Model
         $deuda = $this->db->query("
 
            SELECT
-                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, k.*
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro
 
             FROM
                 credito c
@@ -125,7 +125,7 @@ LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
 LEFT JOIN estado e on c.estado_id = e.estado_id
 LEFT JOIN servicio s on c.servicio_id = s.servicio_id
 LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
-LEFT JOIN cuota k on c.credito_id = k.credito_id 
+
 
 
             WHERE

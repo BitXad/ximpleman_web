@@ -61,6 +61,36 @@ class Factura extends CI_Controller{
 // }
 // return $string;
 // }
+
+    function factura_compra()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==6) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************            
+        
+        $params['limit'] = RECORDS_PER_PAGE; 
+        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        
+        $config = $this->config->item('pagination');
+        $config['base_url'] = site_url('factura/index?');
+        $config['total_rows'] = $this->Factura_model->get_all_factura_count();
+        $this->pagination->initialize($config);
+
+        $data['factura'] = $this->Factura_model->get_all_factura($params);
+        
+        $data['_view'] = 'factura/factura_compra';
+        $this->load->view('layouts/main',$data);
+                
+        //**************** fin contenido ***************
+                    }
+                    else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+    }
+
     function factura_carta($venta_id)
     {
         
@@ -609,10 +639,12 @@ class Factura extends CI_Controller{
             $hasta = $this->input->post("hasta");            
             $opcion = $this->input->post('opcion');   
             
-            if ($opcion==1)
+            if ($opcion==1){
                 $datos = $this->Factura_model->get_factura_ventas($desde,$hasta);
-            else
+            }
+            else{
                 $datos = $this->Factura_model->get_factura_compras($desde,$hasta);
+            }
             
             echo json_encode($datos);
             

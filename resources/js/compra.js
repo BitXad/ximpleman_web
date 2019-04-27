@@ -278,6 +278,7 @@ function cambiarproveedores(compra_id,proveedor_id) {
                 var p = 0;
                
                html = "";   
+               html2 = "";   
 
                 
              
@@ -292,6 +293,15 @@ function cambiarproveedores(compra_id,proveedor_id) {
                   
                      html = "<a  href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-xs btn-success' ><i class='fa fa-money'></i>Finalizar compra</a>";
                     $("#provedorboton").html(html);
+
+                    html2 = registros[p]['proveedor_autorizacion'];
+                    var html3 = registros[p]['proveedor_nit'];
+                    var html4 = registros[p]['proveedor_razon'];
+                    $("#autori").val(html2); 
+                    $("#factura_nit").val(html3); 
+                    $("#factura_razonsocial").val(html4); 
+                    
+
             } else{
                     html = "<a  onclick='myFunction()' href='#' class='btn bbtn-xs btn-success' ></i>Finalizar compra </a>";
                         $("#provedorboton").html(html);
