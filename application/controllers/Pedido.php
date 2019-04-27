@@ -172,6 +172,7 @@ class Pedido extends CI_Controller{
         			else{ redirect('alerta'); }
         } else { redirect('', 'refresh'); }          
     }
+    
 
     /*
      * Registrar pedido

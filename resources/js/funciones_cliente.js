@@ -255,6 +255,9 @@ function tablaresultadoscliente(limite)
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+";'>"+esusuario+"<br>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td class='no-print'>";
                         html += "<a href='"+base_url+"venta/ventas_cliente/"+registros[i]["cliente_id"]+"' class='btn btn-success btn-xs' title='Vender'><span class='fa fa-cart-plus'></span></a>";
+                        
+                        html += "<a href='"+base_url+"cliente/realizar_pedido/"+registros[i]["cliente_id"]+"' class='btn btn-facebook btn-xs' title='Generar pedido/Pre-Venta'><span class='fa fa-clipboard'></span></a>";
+                        
                         html += "<a href='"+base_url+"cliente/edit/"+registros[i]["cliente_id"]+"' class='btn btn-info btn-xs' title='Modificar datos de Cliente'><span class='fa fa-pencil'></span></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
 

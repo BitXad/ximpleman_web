@@ -59,8 +59,8 @@ function validar(e,opcion) {
            document.getElementById('telefono').focus();
         } 
         
-        if (opcion==3){   //si la tecla proviene del input codigo de barras
-            buscarporcodigo();           
+        if (opcion==3){   //si la tecla proviene del input codigo de barras          
+            buscarporcodigojs();           
         } 
         
         if (opcion==4){   //si la tecla proviene del input codigo de barras
@@ -188,7 +188,7 @@ function tablaproductos()
                         html += "                            <th>#</th>";
                         html += "                            <th>Descripción</th>";                            
 //                        html += "                            <th>Código</th>";
-                        html += "                            <th>Cant</th>";
+                        html += "                            <th>Cant.</th>";
                         html += "                            <th>Precio</th>";
 //                        html += "                            <th>Sub <br> Total</th>";
 //                        html += "                            <th>Moneda</th>";
@@ -274,12 +274,18 @@ html += "  </div>";
 //                        html += "                       </td>";
                         
                         html += "			<td align='center' width='120' "+color+"> ";
-                        html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
+                     
+                        html += "                    <div class='btn-group'>      ";                           
+                        html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
+                        //html += "                              		<span class='btn btn-default  btn-xs'> "+registros[i]["detalleven_cantidad"]+"</span>";
                         
-                        html += "                       <input size='1' name='cantidad' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+" class='btn btn-warning')' style='background-color:white'>";
+                        html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' on ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'  onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
+                        
                         html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
-                        
-                       html += "                       <button onclick='incrementar(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
+                        html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
+                        html += "                    </div>";
+
+                    
 
                         html += "                       </td>";
                         html += "			<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
@@ -395,23 +401,75 @@ function buscarporcodigo()
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
-    //alert('por aqui');
-    
     $.ajax({url: controlador,
            type:"POST",
            data:{codigo:codigo},
-           success:function(respuesta){     
-    
+           success:function(respuesta){   
                tablaproductos(); 
                $("#codigo").select();
                
                var resultado = JSON.parse(respuesta);                
 
-                //if(resultado[0]["resultado"] == 1) alert('Todo positivo choco...!');
                 if(resultado[0]["resultado"] == 0) alert('La cantidad excede la cantidad en inventario...!');
                 if(resultado[0]["resultado"] == -1) alert('El producto no se encuentra registrado con el código especificado...!!');
-
                  
+           },
+           error:function(respuesta){
+               alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
+               
+               $("#codigo").select();
+
+           },
+            complete: function (respuesta) {
+               if (respuesta==null){
+                    alert('El producto no se encuentra registrado o se encuentra agostado en inventario..!!!');
+                }              
+             document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+              $("#codigo").select();
+              
+            }
+        });
+           
+        
+    document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+
+}
+
+function buscarporcodigojs()
+{
+   var base_url = document.getElementById('base_url').value;
+   var controlador = base_url+'venta/buscarcodigo';
+   var codigo = document.getElementById('codigo').value;
+    
+    document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{codigo:codigo},
+           success:function(respuesta){
+               
+               res = JSON.parse(respuesta);
+
+                    if (res.length>0){
+                        
+                         if (res[0].existencia > 0){   
+                             
+                            if (res[0].producto_codigobarra == codigo ) factor = 1;
+                            if (res[0].producto_codigofactor == codigo ) factor = res[0].producto_factor;
+                            
+                           
+                            html = "<input type='text' value='"+factor+"' id='select_factor"+res[0].producto_id+"' title='select_factor"+res[0].producto_id+"'>"
+                             $("#selector").html(html);
+                            
+                            ingresorapidojs(1,res[0]);
+                         }
+                         else{    
+                             alert('No existe la cantidad requerida en inventario...!');
+                         }
+                         
+                     }
+                     else {alert('El producto no se encuentra registrado con el código especificado...!!'); }
+
            },
            error:function(respuesta){
                alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
@@ -438,6 +496,32 @@ function cantidad_en_detalle(producto_id){
     
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'venta/cantidad_en_detalle';
+   var res = 0;
+   
+   $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id},
+           async: false, 
+           success:function(respuesta){
+               
+               var resultado = eval(respuesta);
+               
+                res = resultado[0]["cantidad"];
+           },
+           error:function(respuesta){
+               
+             res = 0;
+           }
+    });     
+    
+    return res;
+}
+
+function cantidad_en_detalle_otros(producto_id){
+    
+   var base_url = document.getElementById('base_url').value;
+   var controlador = base_url+'venta/cantidad_en_detalle_otros';
+   
    var res = 0;
    
    $.ajax({url: controlador,
@@ -486,6 +570,20 @@ function existencia(producto_id){
 
 //se encarga de ingresar una cantidad determinada de productos al detalle de la venta en base de id de producto
 // la cantidad debe estar registrada en el modal asignada para esta operacion
+function ingresardetallejs(producto_id,producto)
+{
+
+   var base_url = document.getElementById('base_url').value;
+   var controlador = base_url+'venta/insertarProducto';
+   var cantidad = parseFloat(document.getElementById('cantidad'+producto_id).value);
+   var existencia = document.getElementById('existencia'+producto_id).value;
+   
+   //var cantidad_total = parseFloat(cantidad_en_detalle(producto_id)) + cantidad; 
+   
+   ingresorapidojs(cantidad,producto)
+ 
+}
+
 function ingresardetalle(producto_id)
 {
 
@@ -600,19 +698,23 @@ function incrementar_detalle(cantidad,detalleven_id,venta_id)
 
 //esta funcion incrementar una cantidad determinada de productos
 function reducir(cantidad,detalleven_id)
-{    
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/reducir/";
-   
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{cantidad:cantidad,detalleven_id:detalleven_id},
-            success:function(respuesta){
-                tablaproductos();
-                tabladetalle();                
-            }
-        
-    });
+{
+    
+
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+"venta/reducir/";
+
+           $.ajax({url: controlador,
+                type:"POST",
+                data:{cantidad:cantidad,detalleven_id:detalleven_id},
+                success:function(respuesta){
+                    tablaproductos();
+                    tabladetalle();                
+                }
+
+        });     
+ 
+    
 }
 
 //reduce la cantidad de productos del detalle de venta
@@ -695,8 +797,113 @@ function ingresorapido(producto_id,cantidad)
     
 }
 
+function ingresorapidojs(cantidad,producto)
+{   
+    //alert(producto.existencia);
+    
+    var factor = document.getElementById("select_factor"+producto.producto_id).value;
+    cantidad = cantidad * factor;
+    var precio = 0;
+    
+    if (factor>1)
+        precio = producto.producto_preciofactor;
+    else 
+        precio = producto.producto_precio;
+    
+    //alert(precio);
+    
+    var base_url = document.getElementById('base_url').value;   
+    var controlador = base_url+"venta/ingresar_detalle";
+    var usuario_id = document.getElementById('usuario_id').value;
+    var existencia =  producto.existencia;    
+    var producto_id =  producto.producto_id;    
+    var sql1 = ""
+    var sql2 = ""
+    var descuento = 0;
+    var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
+
+
+    if (cantidad_total <= producto.existencia){
+
+        sql1  = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ";
+        sql1 += "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,";
+        sql1 += "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra ) ";
+        sql1 += "value(0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
+        sql1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
+        sql1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+        sql1 += producto.categoria_id+",'"+producto.producto_codigobarra+"')";
+        //alert(sql1);
+
+        sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + "+cantidad+
+                ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
+                ", detalleven_descuento = "+descuento+
+                ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
+                "  where producto_id = "+producto_id+" and usuario_id = "+usuario_id;
+
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{sql1:sql1,sql2:sql2, existencia:existencia,producto_id:producto_id,cantidad:cantidad},
+            success:function(respuesta){
+                tablaproductos();
+
+            }
+        });      
+    
+    }
+    else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+    
+   // alert('echo..!!');
+}
+
+function cambiarcantidadjs(e,producto)
+{   
+    tecla = (document.all) ? e.keyCode : e.which;
+    
+    if (tecla==13)
+    {
+  
+        var base_url = document.getElementById('base_url').value;   
+        var controlador = base_url+"venta/ejecutar_consulta";
+        var usuario_id = document.getElementById('usuario_id').value;
+        var existencia =  parseFloat(producto.existencia);    
+        var producto_id =  producto.producto_id; 
+        
+        var cantidad =  document.getElementById('cantidad'+producto.detalleven_id).value;
+         
+        var sql = ""
+        
+        var descuento = 0;
+        var cantidad_total = parseFloat(cantidad_en_detalle_otros(producto.producto_id)) + parseFloat(cantidad); 
+
+        if (parseFloat(cantidad_total) <= parseFloat(existencia)){
+
+            sql = "update detalle_venta_aux set detalleven_cantidad =  "+cantidad+
+                    ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
+                    ", detalleven_descuento = "+descuento+
+                    ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
+                    "  where producto_id = "+producto_id+" and usuario_id = "+usuario_id;
+           // alert(sql);
+            
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{sql:sql},
+                success:function(respuesta){
+                        //var r = JSON.parse(respuesta);                        
+                }
+            });      
+
+        }
+        else { 
+            
+            alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+        
+        tablaproductos();
+    }
+}
+
 function mostrar_saldo(existencia, producto_id)
 {
+
     var factor_seleccionado = parseInt(document.getElementById('select_factor'+producto_id).value);
     //alert(existencia+" "+producto_id+" "+factor);
     var unidad =document.getElementById('input_unidad'+producto_id).value;
@@ -811,7 +1018,7 @@ function tablaresultados(opcion)
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
 
                             html += "       <option value='"+registros[i]["producto_factor"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor+"/"+precio_factorcant;
+                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
                         
@@ -821,25 +1028,20 @@ function tablaresultados(opcion)
                         existencia = parseFloat(registros[i]["existencia"]);
                         html += "<br><font size='3'><b><input type='text' class='btn btn-default btn-xs' id='input_existencia"+registros[i]["producto_id"]+"' value='DISP: "+existencia+" "+registros[i]["producto_unidad"]+"' readonly='true'></b></font>";
                             if (parseFloat(registros[i]["existencia"])>0){
+                                
 
                                   html += "<br>";
                                   html += "<div class='btn-group'>";
-                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
-                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",2)'><b>- 2 -</b></button>";
-                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",5)'><b>- 5 -</b></button>";
-                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",10)'><b>- 10 -</b></button> ";
+//                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
+                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")'><b>- 1 -</b></button>";                                  
+                                  html +=     "<button class='btn btn-info btn-xs' onclick='ingresorapidojs(2,"+JSON.stringify(registros[i])+")'><b>- 2 -</b></button>";
+                                  html +=     "<button class='btn btn-primary btn-xs' onclick='ingresorapidojs(5,"+JSON.stringify(registros[i])+")'><b>- 5 -</b></button>";
+                                  html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+JSON.stringify(registros[i])+")'><b>- 10 -</b></button> ";
                                   html += "</div>";   
                             }            
                             
-                       cantidad = 1;
-                       descuento = 0;
-                       
-                        sql  = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ";
-                        sql += "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,detalleven_saldo) ";
-                        sql += "value(0,1,"+registros[i]['producto_id']+",'"+registros[i]['producto_codigo']+"',"+cantidad+",'"+registros[i]['producto_unidad']+"',"+registros[i]['producto_costo']+","+registros[i]['producto_precio']+","+registros[i]['producto_precio']+"*"+cantidad+",";
-                        sql += descuento+","+registros[i]['producto_precio']+"*"+cantidad+",'"+registros[i]['producto_caracteristicas']+"',"+"'-'"+",0,1,"+usuario_id+","+registros[i]['existencia']+")";
-                       
-                        html += "<textarea name='textarea' rows='10' cols='50'>"+sql+"</textarea>"
+                      
+                        //html += "<textarea name='textarea' rows='10' cols='50'>"+sql+"</textarea>"
                         
                         html += "</center>";
                         html += "</td>";
@@ -918,9 +1120,8 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
-                        html += "     <!-- button class='btn btn-success btn-foursquarexs' type='submit'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button-->";
-
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 
                         html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
                         html += "  </div>";                        
@@ -2035,4 +2236,9 @@ function finalizarcambios()
 
 function cerrar(){
     window.close();
+}
+
+function seleccionar_cantidad(parametro)
+{
+    $("#"+parametro).select();
 }

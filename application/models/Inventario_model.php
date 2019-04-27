@@ -69,29 +69,28 @@ class Inventario_model extends CI_Model
 
     function get_inventario_codigo($codigo)
     {
-        $sql = "select p.* from
-                inventario p where p.estado_id = 1 and p.producto_codigobarra='".$codigo."'
+        $sql = "select p.* from inventario p where p.estado_id = 1 and p.producto_codigobarra='".$codigo."' 
               group by p.producto_id
               order by p.producto_nombre";
-
-//        $sql = "select p.*,
-//                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-//                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-//                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-//              from
-//                producto p
-//              where p.estado_id=1 and p.producto_codigobarra='".$codigo."'
-//              group by
-//                p.producto_id
-//              order by p.producto_id";
-//
+       
         $producto = $this->db->query($sql)->result_array();
-        
-        //$producto = $this->db->query($sql,array('credito_id'))->row_array();
+
         return $producto;
     }
 
+
+    function get_inventario_codigo_factor($codigo)
+    {
+        $sql = "select p.* from inventario p where p.estado_id = 1 and p.producto_codigofactor='".$codigo."' 
+              group by p.producto_id
+              order by p.producto_nombre";
+       
+        $producto = $this->db->query($sql)->result_array();
+
+        return $producto;
+    }
+    
+    
     function get_inventario_parametro($parametro)
     {
 
