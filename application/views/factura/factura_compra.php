@@ -60,10 +60,9 @@
                         <div class="col-md-2" hidden>
                             <label for="tipo" class="control-label">Tipo:</label>
                             <div class="form-group">
-                                <select name="opcion" id="opcion" class="btn btn-warning btn-xs form-control">
-                                        <option value="2">COMPRAS</option>
+                                <input name="opcion" id="opcion" value="2" class="btn btn-warning btn-xs form-control">
                                         
-                                </select>
+                                 
                             </div>
                         </div>
                         

@@ -66,6 +66,20 @@ class Ingreso_model extends CI_Model
 
         return $ingresos;
     }
+
+    function mesango()
+    {
+        
+        $dia = $this->db->query("SELECT compra_fecha FROM compra where compra.compra_fecha >= '2019-04-22' ")->result_array();
+        return $dia;
+    }
+
+    function mesao()
+    {
+        
+        $dia = $this->db->query("SELECT compra_fecha FROM compra where compra.compra_fecha >= '2019-04-22' ")->row_array();
+        return $dia;
+    }
     
    function numero()
     {
