@@ -21,7 +21,7 @@ var options={
             text: 'Numero de Registros en el Mes'
         },
         subtitle: {
-            text: 'Source: Kay.net'
+            text: 'Source: PASSWORD SRL'
         },
         xAxis: {
             categories: [],
@@ -51,26 +51,37 @@ var options={
             }
         },
         series: [{
-            name: 'registros',
+            color: 'red',
+            name: 'Compras',
             data: []
 
+        },{
+           color: 'blue',
+            name: 'Ventas',
+            data: [] 
         }]
 }
 
 $("#div_grafica_barras").html( $("#cargador_empresa").html() );
 var base_url    = document.getElementById('base_url').value;
-var url = base_url+"reportes/mes/"+anio+"/"+mes+"";
-
-
-$.get(url,function(resul){
-var datos= jQuery.parseJSON(resul);
+var controlador = base_url+"reportes/mes/"+anio+"/"+mes+"";
+$.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+var datos= JSON.parse(respuesta);
 var totaldias=datos.totaldias;
 var registrosdia=datos.registrosdia;
+var registrosven=datos.registrosven;
 var i=0;
 	for(i=1;i<=totaldias;i++){
 	
 	options.series[0].data.push( registrosdia[i] );
-	options.xAxis.categories.push(i);
+	
+    options.series[1].data.push( registrosven[i] );
+    
+    options.xAxis.categories.push(i);
+
 
 
 	}
@@ -78,7 +89,7 @@ var i=0;
 
  //options.title.text="aqui e podria cambiar el titulo dinamicamente";
  chart = new Highcharts.Chart(options);
-
+}
 })
 
 
@@ -90,7 +101,7 @@ function cargar_grafica_lineas(anio,mes){
 
 var options={
      chart: {
-            renderTo: 'div_grafica_lineas',
+            renderTo: 'div_grafica_lineas'
            
         },
           title: {
@@ -98,7 +109,7 @@ var options={
             x: -20 //center
         },
         subtitle: {
-            text: 'Source: Kay.net',
+            text: 'Source: PASSWORD SRL',
             x: -20
         },
         xAxis: {
@@ -131,9 +142,12 @@ var options={
 
 $("#div_grafica_lineas").html( $("#cargador_empresa").html() );
 var base_url    = document.getElementById('base_url').value;
-var url = base_url+"reportes/mes/"+anio+"/"+mes+"";
-$.get(url,function(resul){
-var datos= jQuery.parseJSON(resul);
+var controlador = base_url+"reportes/mes/"+anio+"/"+mes+"";
+$.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+var datos= JSON.parse(respuesta);
 var totaldias=datos.totaldias;
 var registrosdia=datos.registrosdia;
 var i=0;
@@ -146,6 +160,7 @@ var i=0;
     }
  //options.title.text="aqui e podria cambiar el titulo dinamicamente";
  chart = new Highcharts.Chart(options);
+}
 
 })
 
@@ -193,11 +208,12 @@ var options={
 
 $("#div_grafica_pie").html( $("#cargador_empresa").html() );
 var base_url    = document.getElementById('base_url').value;
-var url = base_url+"reportes/mes"+anio+"/"+mes+"";
-
-
-$.get(url,function(resul){
-var datos= jQuery.parseJSON(resul);
+var controlador = base_url+"reportes/mes/"+anio+"/"+mes+"";
+$.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+var datos= JSON.parse(respuesta);
 var tipos=datos.tipos;
 var totattipos=datos.totaltipos;
 var numeropublicaciones=datos.numerodepubli;
@@ -209,7 +225,7 @@ var numeropublicaciones=datos.numerodepubli;
     }
  //options.title.text="aqui e podria cambiar el titulo dinamicamente";
  chart = new Highcharts.Chart(options);
-
+}
 })
 
 
@@ -220,3 +236,4 @@ var numeropublicaciones=datos.numerodepubli;
 
 
 }
+

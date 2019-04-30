@@ -87,10 +87,5 @@
 
 </div>
 
-<script>
-//cargar_grafica_barras(<?= $anio; ?>,<?= intval($mes); ?>);
-//cargar_grafica_lineas(<?= $anio; ?>,<?= intval($mes); ?>);
-//cargar_grafica_pie();
 
-</script>
 
