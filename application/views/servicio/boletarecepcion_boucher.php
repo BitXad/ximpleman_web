@@ -20,7 +20,8 @@
 
 <div class="micontenedor">
     <?php
-        $mimagen = "thumb_".$empresa[0]['empresa_imagen'];
+        //$mimagen = "thumb_".$empresa[0]['empresa_imagen'];
+        $mimagen = $empresa[0]['empresa_imagen'];
         echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
         ?>
     <br>
@@ -66,8 +67,12 @@
                              $cont = $cont+1; ?>
                     <tr>
                         <td><?php echo $cont ?></td>
-                        <td><?php 
-                              echo $d['detalleserv_descripcion']."<br>";
+                        <td><?php
+                            $tipotrabajo = "";
+                            if($d['cattrab_descripcion']){
+                                $tipotrabajo = " (".substr($d['cattrab_descripcion'], 0, 3).")";
+                            }
+                              echo $d['detalleserv_descripcion']."".$tipotrabajo."<br>";
                               echo "<div style='font-size: 5pt;'><span style='font-weight: bold'>Entregar:</span>".date("d/m/Y", strtotime($d['detalleserv_fechaentrega']));
                               echo " - ".$d['detalleserv_horaentrega']."</div>";
                              ?>

@@ -915,20 +915,48 @@ function mostrar_saldo(existencia, producto_id)
     if (factor_seleccionado == 1)
     {
           
-        $("#input_existencia"+producto_id).val(existencia+" "+unidad); //establece la cantidad requerida en el modal
+        //$("#input_existencia"+producto_id).val(existencia+" "+unidad); //establece la cantidad requerida en el modal
+        exist = "<center><font size='3'><b>"+existencia+"</b></font><br>"+unidad+"</center>";
+        $("#input_existencia"+producto_id).html(exist); //establece la cantidad requerida en el modal
 
     }
     else
     {
-        
-                
+                        
         var entero = parseInt(existencia / factor_seleccionado);
         var saldo = parseInt(existencia) - parseInt(entero*factor_seleccionado);
         
-        $("#input_existencia"+producto_id).val(entero+" "+unidadfactor+"+"+saldo+" "+unidad); //establece la cantidad requerida en el modal
+        //$("#input_existencia"+producto_id).val(entero+" "+unidadfactor+"+"+saldo+" "+unidad); //establece la cantidad requerida en el modal
+        $("#input_existencia"+producto_id).html("<center><b>"+entero+" "+unidadfactor+"+"+saldo+" "+unidad+"</center></b>"); //establece la cantidad requerida en el modal
     }
 }
 
+function esMobil(){
+    
+    var isMobile = {
+        Android: function() {
+            return navigator.userAgent.match(/Android/i);
+        },
+        BlackBerry: function() {
+            return navigator.userAgent.match(/BlackBerry/i);
+        },
+        iOS: function() {
+            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+        },
+        Opera: function() {
+            return navigator.userAgent.match(/Opera Mini/i);
+        },
+        Windows: function() {
+            return navigator.userAgent.match(/IEMobile/i);
+        },
+        any: function() {
+            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+        }
+    };    
+
+    return isMobile.any()
+    
+}
 //Tabla resultados de la busqueda
 function tablaresultados(opcion)
 {   
@@ -940,11 +968,16 @@ function tablaresultados(opcion)
     var precio_factor = 0;
     var precio_factorcant = 0;
     var existencia = 0;
-    
     var base_url = document.getElementById('base_url').value;
     
     var cantidad = 0;
     var usuario_id = document.getElementById('usuario_id').value;
+    
+    var modo_visualizacion = 2; // modo de visualizacion 1 = modo texto , 2 = modo grafico
+
+    if(esMobil()) { tamanio = 1; }
+    else{ tamanio = 3; }
+    
     
     if (opcion == 1){
         controlador = base_url+'venta/buscarproductos/';
@@ -969,6 +1002,9 @@ function tablaresultados(opcion)
                 
                if (registros != null){
                    
+                   if (modo_visualizacion == 1){ // visualziacion tipos texto, en lista
+                   
+                   /************** INICIO MODO TEXTO ***************/
                    
                     var cont = 0;
                     var cant_total = 0;
@@ -976,6 +1012,26 @@ function tablaresultados(opcion)
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
+                    
+                   html += "                <table class='table  table-condensed table-striped' id='mitabla'>";
+                   html += "                <tr>";
+                   html += "                <th>#</th> ";
+                   html += "                <th>Descripción</th>";
+                   
+                    if(! esMobil()) { //si no es dispositivo mobil
+                        mensajeboton = "";
+                        html += "                <th>Precio</th>";
+                        html += "                <th> </th>";
+                    }
+                    else{
+                        mensajeboton = " Añadir al detalle"; //mensaje para el boton del carrito
+                        
+                    }
+                        
+                    
+                   html += "                </tr>";
+                   html += "                <tbody class='buscar' >";
+         
                     sql = ""; 
                     comilla = "'";
                    if (n <= limite) x = n; 
@@ -999,15 +1055,23 @@ function tablaresultados(opcion)
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3' face='arial narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
-                        html += mimagen;   
+                        
+                        html += "<td><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        
+                       html += mimagen;   
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
+                        
+                       if(! esMobil()){
                         html += "</td>";
-                                                
-                        html += "<td style='space-white:nowarp'><center> ";                        
-                        html += "   <select style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
+                        
+                        
+                        html += "<td style='space-white:nowarp'>";
+                        }
+                        
+                        html += "<center> ";                        
+                        html += "   <select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1'>";
                         precio_unidad = registros[i]["producto_precio"];
                         html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
@@ -1024,12 +1088,17 @@ function tablaresultados(opcion)
                         
                         
                         html += "   </select>";
+                        
+                        
                         //html += "<br><font size='3'><b>"+registros[i]["producto_codigobarra"]+"</b></font>";                        
                         existencia = parseFloat(registros[i]["existencia"]);
-                        html += "<br><font size='3'><b><input type='text' class='btn btn-default btn-xs' id='input_existencia"+registros[i]["producto_id"]+"' value='DISP: "+existencia+" "+registros[i]["producto_unidad"]+"' readonly='true'></b></font>";
+                       
+//                       html += "<br><font size='3'><b><input type='text' class='btn btn-danger btn-xs' style='background-color: black' id='input_existencia"+registros[i]["producto_id"]+"' value='DISP: "+existencia+" "+registros[i]["producto_unidad"]+"' readonly='true'></b></font>";
+                       
+                       if(! esMobil()){
                             if (parseFloat(registros[i]["existencia"])>0){
                                 
-
+                                
                                   html += "<br>";
                                   html += "<div class='btn-group'>";
 //                                  html +=     "<button class='btn btn-success btn-xs' onclick='ingresorapido("+registros[i]['producto_id']+",1)'><b>- 1 -</b></button>";
@@ -1039,11 +1108,13 @@ function tablaresultados(opcion)
                                   html +=     "<button class='btn btn-warning btn-xs' onclick='ingresorapidojs(10,"+JSON.stringify(registros[i])+")'><b>- 10 -</b></button> ";
                                   html += "</div>";   
                             }            
-                            
+                        }
                       
                         //html += "<textarea name='textarea' rows='10' cols='50'>"+sql+"</textarea>"
                         
                         html += "</center>";
+                        if(! esMobil()){
+                       
                         html += "</td>";
                         
 //                        html += "<td> ";
@@ -1055,9 +1126,15 @@ function tablaresultados(opcion)
                         
                         
                         html += "<td>";
+                        }
+                        
+                        html += "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
+                    
                         if (parseFloat(registros[i]["existencia"])>0){
-                             html += "<button type='button' class='btn btn-warning btn-xl' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='vender' ><em class='fa fa-cart-arrow-down'></em></button>";                             
-                       }
+                             html += "<button type='button' class='btn btn-warning btn-xl btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' ><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
+                        }
+                        
+                            
                         
                         //html += "<button class='btn btn-success'><i class='fa fa-picture-o'></i></button>";
 
@@ -1100,10 +1177,159 @@ function tablaresultados(opcion)
 //                        html += "           <img  src='"+base_url+"/"+registros[i]["producto_foto"]+" width='50' heigth='50'>";  
 //                        html += "       </div>";
 //                        html += "       <div class='col-md-9'>";
+                    
                         html += "       <table style='space-white: nowrap;'>";
                         html += "           <tr>";
+                       
+                      
                         html += "               <td>";
+                      
+                     
+                       html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
+                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
+                        
+                        html += "               </td>";
+                        html += "          </tr>";
+                        html += "       </table>";
+                        
+//                        html += "       </div>";
+                        html += "       <!------------------------------------------------------------------->";
+                        html += "  </div>";
+                        
+                        html += "  <div class='modal-footer aligncenter'>";
+                        html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
+                        html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
+
+                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+
+                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
+                        html += "  </div>";                        
+                        html += "</div>";
+                        
+                        html += "  </div>";
+                        html += "</div>";
+
+                        html += "<!---------------------- fin modal cantidad ---------------------------------> ";
+
+                        html += "</td>";
+                        
+                        html += "</tr>";
+
+                   }
+                 
+                   html += " </tbody>";
+                   html += "</table>"
+                   $("#tablaresultados").html(html);
+                   
+                   /************** FIN MODO TEXTO ***************/
+               }// fin visualizacion modo texto
+ 
+                
+                if (modo_visualizacion == 2){
+                
+                       
+                   /************** INICIO MODO GRAFICO ***************/
+                   
+                   
+                    var cont = 0;
+                    var cant_total = 0;
+                    var total_detalle = 0;
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    $("#encontrados").val("- "+n+" -");
+                    html = "";
+                    
+                   html += "                <table class='table  table-condensed table-striped' id='mitabla'>";
+                   html += "                <tr>";
+
+                   html += "                <th>Descripción</th>";
+
+                    
+                   html += "                </tr>";
+                   html += "                <tbody class='buscar' >";
+         
+                    sql = ""; 
+                    comilla = "'";
+                   if (n <= limite) x = n; 
+                   else x = limite;
+                    
+                    for (var i = 0; i < x ; i++){
+                        
+                        var imagen_boton = "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='70' height='70' />";
+                 
+                        existencia = parseFloat(registros[i]["existencia"]);
+                        
+                        
+                        html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
+                        html += "<tr>";
+
+                        
+                        titulo = registros[i]["producto_nombre"]+" | ";
+                        titulo += registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"];
+//                        prod += "<td><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+//                        prod += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
+
+                        html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
+                        html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
+                        
+       
+                           
+                        html += "</td>";
+                        
+                        
+                        html += "<td style='space-white:nowarp'>";
+
+
+
+                        precio_cantidad = "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
+                    
+                        prod = registros[i]['producto_nombre'];
+                        html += "<center> ";   
                             
+                             html += "<button type='button' style='width: 120px !important; height: 120px !important;' class='btn btn-facebook btn-xl' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+prod+" ' >"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+"precio_cantidad+"</button>";                             
+
+                        
+                                             
+                        html += "<br><select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
+                        html += "       <option value='1'>";
+                        precio_unidad = registros[i]["producto_precio"];
+                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
+                        html += "       </option>";
+                        
+                        if(registros[i]["producto_factor"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+                        
+                        
+                        html += "   </select>";
+                        html += "   </center>";
+
+
+                        html += "<!---------------------- modal cantidad producto ------------------->";
+                        
+                        html += "<div class='modal fade' id='myModal"+registros[i]["producto_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModal"+registros[i]["producto_id"]+"'>";
+                        html += "  <div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "  <div class='modal-header'>";
+                        html += "       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "  </div>";                        
+                        html += "  <div class='modal-body'>";
+                        
+                        html += "  <!----------------------------------------------------------------->";                  
+                        html += "       <table style='space-white: nowrap;'>";
+                        html += "           <tr>";
+                       
+                      
+                        html += "               <td>";
+                      
+                     
                         html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
                         html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
@@ -1138,9 +1364,13 @@ function tablaresultados(opcion)
 
                    }
                  
-                   
+                   html += " </tbody>";
+                   html += "</table>"
                    $("#tablaresultados").html(html);
-                  
+                   
+                   /************** FIN MODO GRAFICO ***************/
+               }// fin visualizacion modo grafico
+               
             }
             
                 
@@ -2241,4 +2471,33 @@ function cerrar(){
 function seleccionar_cantidad(parametro)
 {
     $("#"+parametro).select();
+}
+
+function actualizar_inventario()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/actualizar_inventario/";
+    
+    document.getElementById('oculto').style.display = 'block'; //muestra el bloque del loader
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){     
+            alert('El inventario se actualizo exitosamente...! ');
+            //redirect('inventario/index');
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            //tabla_inventario();
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });   
+      
+}
+
+function ocultar_busqueda(){
+    var html = "";
+    
+    $("#tablaresultados").html("");
 }

@@ -403,7 +403,6 @@ class Categoria_insumo extends CI_Controller{
                     'detalleserv_id' => $detalleserv_id,
 
                 );
-            
             $detalleven_id = $this->Detalle_venta_model->update_detalle_venta($res['detalleven_id'], $detalleparams);
         }
         else{
@@ -432,10 +431,102 @@ class Categoria_insumo extends CI_Controller{
             
             $this->load->model('Inventario_model');
             $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
-            
             redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
         }else{
             redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
+        }
+        }
+            else{
+                redirect('alerta');
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    function usarinsumona($servicio_id, $detalleserv_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        
+        $producto_id = $this->input->post('producto_id');
+        $agrupar = $this->input->post('agrupar');
+        
+        $cantidad = $this->input->post('cantidad');
+        if($cantidad >0)
+        {
+            $venta_id = 0; //obliga a ponerle un id de venta
+            $usuario_id = $session_data['usuario_id'];
+
+            $producto_precio = $this->input->post('producto_precio');
+            $producto_descuento = $this->input->post('descuento');
+            $new_productoprecio = $producto_precio-$producto_descuento;
+            $subtotal = $cantidad * $new_productoprecio;
+            $total = ($producto_precio-$producto_descuento)*$cantidad;
+            
+            $this->load->model('Detalle_venta_model');
+            $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
+            if (isset($res) && $agrupar == 1){
+                $cantidad1 = $res['detalleven_cantidad'];
+                $rescantidad = $cantidad + $cantidad1;
+                $resubtotal = $subtotal + $res['detalleven_subtotal'];
+                $restotal = $total+ $res['detalleven_total'];
+                $detalleparams = array(
+                    'producto_id' => $producto_id,
+                    'venta_id' => $venta_id,
+                    'moneda_id' => $this->input->post('moneda_id'),
+                    'detalleven_codigo' => $this->input->post('producto_codigo'),
+                    'detalleven_cantidad' => $rescantidad,
+                    'detalleven_unidad' => $this->input->post('producto_unidad'),
+                    'detalleven_costo' => $this->input->post('producto_costo'),
+                    //'detalleven_precio' => $producto_precio,
+                    'detalleven_subtotal' => $resubtotal,
+                    'detalleven_descuento' => $producto_descuento,
+                    'detalleven_total' => $restotal,
+                    'detalleven_preferencia' => $res['detalleven_preferencia']." ".$this->input->post('preferencia'.$producto_id),
+                    'detalleven_caracteristicas' => $res['detalleven_caracteristicas']." ".$this->input->post('caracteristicas'.$producto_id),
+                    'detalleven_comision' => $this->input->post('producto_comision'),
+                    'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
+                    'usuario_id' => $usuario_id,
+                    'detalleserv_id' => $detalleserv_id,
+
+                );
+            $detalleven_id = $this->Detalle_venta_model->update_detalle_venta($res['detalleven_id'], $detalleparams);
+        }
+        else{
+            $detalleparams = array(
+                'producto_id' => $producto_id,
+                'venta_id' => $venta_id,
+                'moneda_id' => $this->input->post('moneda_id'),
+                'detalleven_codigo' => $this->input->post('producto_codigo'),
+                'detalleven_cantidad' => $cantidad,
+                'detalleven_unidad' => $this->input->post('producto_unidad'),
+                'detalleven_costo' => $this->input->post('producto_costo'),
+                'detalleven_precio' => $new_productoprecio,
+                'detalleven_subtotal' => $subtotal,
+                'detalleven_descuento' => $producto_descuento,
+                'detalleven_total' => $total,
+                'detalleven_preferencia' => $this->input->post('preferencia'.$producto_id),
+                'detalleven_caracteristicas' => $this->input->post('caracteristicas'.$producto_id),
+                'detalleven_comision' => $this->input->post('producto_comision'),
+                'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
+                'usuario_id' => $usuario_id,
+                'detalleserv_id' => $detalleserv_id,
+                
+            );
+            $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
+        }
+            
+            $this->load->model('Inventario_model');
+            $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
+            //redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
+            echo json_encode("ok");
+        }else{
+            //redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
+            echo json_encode(null);
         }
         }
             else{

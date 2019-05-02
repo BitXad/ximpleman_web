@@ -430,6 +430,7 @@ class Pedido extends CI_Controller{
         $cantidad = $this->input->post('cantidad'); 
         $descuento = $this->input->post('descuento'); 
         $preferencia = $this->input->post('preferencia'); 
+        $precio = $this->input->post('precio'); 
             
                 
         $sql = "insert into detalle_pedido(
@@ -457,10 +458,10 @@ class Pedido extends CI_Controller{
                 producto_unidad,
                 producto_costo,
                 ".$cantidad.",
-                producto_precio - ".$descuento.",
+                ".$precio." - ".$descuento.",
                  0,
-                ".$cantidad." * (producto_precio - ".$descuento."),
-                ".$cantidad." * (producto_precio - ".$descuento."),
+                ".$cantidad." * (".$precio." - ".$descuento."),
+                ".$cantidad." * (".$precio." - ".$descuento."),
                 '".$preferencia."'
                 from producto where producto_id = ".$producto_id."
                 )";
