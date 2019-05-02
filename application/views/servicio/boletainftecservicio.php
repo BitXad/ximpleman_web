@@ -183,7 +183,7 @@ if(isset($sintitulo)){
 </div>
 <div class="row micontenidoInforme">
     <div id="cabizquierda" style="width: 40%;">
-        PASSWORD S.R.L.<br>
+        <?php echo $empresa[0]['empresa_nombre']; ?><br>
         DPTO. TECNICO
     </div>
     <div id="cabcentro" style="width: 20%;">
@@ -195,6 +195,6 @@ if(isset($sintitulo)){
 </div>
 <div class="row micontenidoInforme">
     <div id="cabizquierda" style="width: 100%; text-align: left; font-size: 8pt;">
-        CCA: Sis.Inf.Password | <?php echo Date('d/m/Y h:i:s a'); ?>
+        CCA: Sis.Inf.<?php echo $empresa[0]['empresa_nombre']; ?> | <?php echo Date('d/m/Y h:i:s a'); ?>
     </div>
 </div>

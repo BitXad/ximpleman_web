@@ -827,6 +827,8 @@ function fechadeservicio(elfiltro, busquedade){
         
         controlador = base_url+'servicio/buscarservicios/';
         filtro = document.getElementById('filtrar').value
+    }else if(elfiltro == null){
+        controlador = base_url+'servicio/buscarserviciospendientes/';
     }else{
         controlador = base_url+"servicio/buscarserviciosfecha";
         filtro = elfiltro;

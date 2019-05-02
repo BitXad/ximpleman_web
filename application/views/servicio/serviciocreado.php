@@ -446,7 +446,7 @@ $(document).ready(function(){
         }
         ?>
         
-        <a href="<?php echo site_url('servicio');  ?>" id="cancelar" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Cancelar</a>
+        <a href="<?php echo site_url('servicio');  ?>" id="salir" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Salir</a>
         <?php
         if($a == 3){
             if(is_null($servicio['servicio_codseguimiento'])){ ?>
