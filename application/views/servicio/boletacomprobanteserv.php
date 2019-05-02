@@ -209,7 +209,7 @@ body {
                 <?php echo $dosificacion3['dosificacion_leyenda3']; ?>
             </div>
             <div style="width: 45%">
-                CCA: SIS.INF.pASSWORD | <?php echo date("d/m/Y - h:i:s a"); ?>
+                CCA: SIS.INF.<?php echo $empresa[0]['empresa_nombre']; ?> | <?php echo date("d/m/Y - h:i:s a"); ?>
             </div>
         </div>
         

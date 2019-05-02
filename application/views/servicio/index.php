@@ -76,7 +76,7 @@
             <option value="1">Servicios de Hoy</option>
             <option value="2">Servicios de Ayer</option>
             <option value="3">Servicios de la semana</option>
-            <option value="4">Todos los Servicios</option>
+            <!--<option value="4">Todos los Servicios</option>-->
             <option value="5">Servicios por fecha</option>
         </select>
   </div>

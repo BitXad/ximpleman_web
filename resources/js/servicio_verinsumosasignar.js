@@ -1,8 +1,8 @@
 $(document).on("ready",inicio);
 function inicio(){
-    var $detalleserv_id = document.getElementById('detalleserv_id').value;
-    var $servicio_id = document.getElementById('servicio_id').value;
-    showinsumosusados($servicio_id, $detalleserv_id);
+    var detalleserv_id = document.getElementById('detalleserv_id').value;
+    var servicio_id = document.getElementById('servicio_id').value;
+    showinsumosusados(servicio_id, detalleserv_id);
 }
 
 function showinsumosusados(servicio_id, detalleserv_id){
@@ -143,7 +143,7 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
                         html += "</td>";
                         html += "<td><label>Cant. a Usar:</label>";
                         
-                        html += "<form action='"+base_url+"categoria_insumo/usarinsumo/"+servicio_id+"/"+detalleserv_id+"' method='post' accept-charset='utf-8'>";
+                        //html += "<form action='"+base_url+"categoria_insumo/usarinsumo/"+servicio_id+"/"+detalleserv_id+"' method='post' accept-charset='utf-8'>";
                         
                         html += "<input name='cantidad"+registros[i]["producto_id"]+"' type='number' step='any' min='0' max='"+registros[i]["existencia"]+"' id='cantidad"+registros[i]["producto_id"]+"' value='";
                         var cantini = 0;
@@ -190,23 +190,23 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
                         html += "<br><label>Caracteristicas:</label>";
                         html += "<textarea name='caracteristicas"+registros[i]["producto_id"]+"' id='caracteristicas"+registros[i]["producto_id"]+"' class='form-control'></textarea>";
                         html += "<br>";
-                        html += "<input type='hidden' id='producto_tipocambio'  name='producto_tipocambio' class='form-control' value='"+registros[i]["producto_tipocambio"]+"' />";
-                        html += "<input type='hidden' id='producto_comision'  name='producto_comision' class='form-control' value='"+registros[i]["producto_comision"]+"' />";
-                        html += "<input type='hidden' id='producto_precio'  name='producto_precio' class='form-control' value='"+registros[i]["producto_precio"]+"' />";
-                        html += "<input type='hidden' id='producto_costo'  name='producto_costo' class='form-control' value='"+registros[i]["producto_costo"]+"' />";
-                        html += "<input type='hidden' id='producto_unidad'  name='producto_unidad' class='form-control' value='"+registros[i]["producto_unidad"]+"' />";
-                        html += "<input type='hidden' id='producto_codigo'  name='producto_codigo' class='form-control' value='"+registros[i]["producto_codigo"]+"' />";
-                        html += "<input type='hidden' id='moneda_id'  name='moneda_id' class='form-control' value='"+registros[i]["moneda_id"]+"' />";
-                        html += "<input type='hidden' id='producto_id'  name='producto_id' class='form-control' value='"+registros[i]["producto_id"]+"' />";
+                        html += "<input type='hidden' id='producto_tipocambio"+registros[i]["producto_id"]+"'  name='producto_tipocambio"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["producto_tipocambio"]+"' />";
+                        html += "<input type='hidden' id='producto_comision"+registros[i]["producto_id"]+"'  name='producto_comision"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["producto_comision"]+"' />";
+                        html += "<input type='hidden' id='producto_precio"+registros[i]["producto_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["producto_precio"]+"' />";
+                        html += "<input type='hidden' id='producto_costo"+registros[i]["producto_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["producto_costo"]+"' />";
+                        html += "<input type='hidden' id='producto_unidad"+registros[i]["producto_id"]+"'  name='producto_unidad"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["producto_unidad"]+"' />";
+                        html += "<input type='hidden' id='producto_codigo"+registros[i]["producto_id"]+"'  name='producto_codigo"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["producto_codigo"]+"' />";
+                        html += "<input type='hidden' id='moneda_id"+registros[i]["producto_id"]+"'  name='moneda_id"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["moneda_id"]+"' />";
+                        html += "<input type='hidden' id='producto_id"+registros[i]["producto_id"]+"'  name='producto_id"+registros[i]["producto_id"]+"' class='form-control' value='"+registros[i]["producto_id"]+"' />";
                         var deshabilitar = "";
                         if(registros[i]["existencia"] ==0){ deshabilitar = "disabled"; }
-                        html += "<button type='submit' class='btn btn-success btn-xs' "+deshabilitar+" >";
+                        
+                        html += "<button class='btn btn-success btn-xs' onclick='usarthisinsumo("+servicio_id+", "+detalleserv_id+", "+registros[i]["producto_id"]+")' "+deshabilitar+" >";
                         html += "<i class='fa fa-check'></i> Usar Insumo";
                         html += "</button>";
-                        
                         html += "</td>";
                         
-                        html += "</form>";
+                        //html += "</form>";
                         html += "</tr>";
 
                    }
@@ -225,5 +225,46 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
         
     });   
     }
-}    
+}
+function usarthisinsumo(servicio_id, detalleserv_id, producto_id){
     
+    var controlador = "";
+    var base_url = document.getElementById('base_url').value;
+    var agrupa = document.getElementById('agrupar'+producto_id).checked;
+    var cantidad = document.getElementById('cantidad'+producto_id).value;
+    var producto_precio = document.getElementById('producto_precio'+producto_id).value;
+    var descuento = document.getElementById('descuento'+producto_id).value;
+    var moneda_id = document.getElementById('moneda_id'+producto_id).value;
+    var producto_codigo = document.getElementById('producto_codigo'+producto_id).value;
+    var producto_unidad = document.getElementById('producto_unidad'+producto_id).value;
+    var producto_costo = document.getElementById('producto_costo'+producto_id).value;
+    var preferencia = document.getElementById('preferencia'+producto_id).value;
+    var caracteristicas = document.getElementById('caracteristicas'+producto_id).value;
+    var producto_comision = document.getElementById('producto_comision'+producto_id).value;
+    var producto_tipocambio = document.getElementById('producto_tipocambio'+producto_id).value;
+    controlador = base_url+'categoria_insumo/usarinsumona/'+servicio_id+'/'+detalleserv_id;
+    var agrupar = 0;
+    if(agrupa == 1){ agrupar = 1; }
+    alert(agrupar);
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id, agrupar:agrupar, cantidad:cantidad, producto_precio:producto_precio,
+               descuento:descuento, moneda_id:moneda_id, producto_codigo:producto_codigo, 
+               producto_unidad:producto_unidad, producto_costo:producto_costo, preferencia:preferencia, 
+               caracteristicas:caracteristicas, producto_comision:producto_comision, 
+               producto_tipocambio:producto_tipocambio},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                showinsumosusados(servicio_id, detalleserv_id);
+            }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#insumosresultados").html(html);
+        }
+        
+    });
+    
+}

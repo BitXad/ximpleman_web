@@ -1477,6 +1477,7 @@ class Detalle_serv extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                
             $usuario_id = $session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
             $fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
@@ -1512,7 +1513,7 @@ class Detalle_serv extends CI_Controller{
                 $params = array(
                             'estado_id' => $estado_id,
                             'servicio_fechafinalizacion' => $fecha_finalizacion,
-                            'servicio_fechafinalizacion' => $hora_finalizacion,
+                            'servicio_horafinalizacion' => $hora_finalizacion,
                 );
 
                 $this->Servicio_model->update_servicio($servicio_id,$params);
@@ -1551,9 +1552,9 @@ class Detalle_serv extends CI_Controller{
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
             if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+                
                 $this->load->library('form_validation');
-
-	    $this->form_validation->set_rules('fecha_cobro','Detalle Servicio Fecha Cobro','required');
+                $this->form_validation->set_rules('fecha_cobro','Detalle Servicio Fecha Cobro','required');
             
 	    if($this->form_validation->run())       
             {
@@ -1765,6 +1766,8 @@ class Detalle_serv extends CI_Controller{
             if($cont == count($res_ids)){
                 $params = array(
                             'estado_id' => $estado_terminadoid,
+                            'servicio_fechafinalizacion' => $credito_fecha,
+                            'servicio_horafinalizacion' => $credito_hora,
                 );
                 $this->load->model('Servicio_model');
                 $this->Servicio_model->update_servicio($servicio_id,$params);
@@ -1869,6 +1872,8 @@ class Detalle_serv extends CI_Controller{
                 if($cont == count($res_ids)){
                     $params = array(
                                 'estado_id' => $estado_identr,
+                                'servicio_fechafinalizacion' => $fecha_finalizacion,
+                                'servicio_horafinalizacion' => $hora_finalizacion,
                     );
                     $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
