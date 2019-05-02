@@ -54,6 +54,7 @@ function mostrar_facturas() {
                 var factura = JSON.parse(result);
                 var tam = factura.length;
                 var totalfinal = 0;
+                var mensaje = "";
                 
                 html = "";
                 if (opcion==1){
@@ -76,14 +77,19 @@ function mostrar_facturas() {
                     html += "<th>IMPORTE BASE PARA DEBITO FISCAL</th>";	
                     html += "<th>DEBITO FISCAL</th>";	
                     html += "<th>CODIGO DE CONTROL</th>";	
-                    html += "<th>TRANSACCION</th>";
+                    html += "<th>TRANS</th>";
+                    html += "<th> </th>";
                     html += "</tr>";
                     html += "<tbody class='buscar'>";
                     
                     
                     
                     for(var i = 0; i < tam; i++ ){                        
-                        html += "<tr>";
+                        if (factura[i]['estado_id']==3)
+                            color = "style = 'background-color:gray'";
+                        else
+                            color = "";
+                        html += "<tr  "+color+">";
                         html += "   <td>0</td>";
                         html += "   <td>1</td>";
                         html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
@@ -102,6 +108,7 @@ function mostrar_facturas() {
                         html += "   <td>"+Number(factura[i]["factura_total"]*0.13).toFixed(2)+"</td>";
                         html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
                         html += "   <td>"+factura[i]["venta_id"]+"</td>";
+                        html += "   <td><button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> Anular</button></td>";
                         html += "</tr>";
                         
                         totalfinal += Number(factura[i]["factura_total"]);
@@ -236,10 +243,31 @@ function mostrar_facturas2() {
                 }
             },
             error:function(result){alert("Ocurrio un error en la consulta. Revise los parametros por favor...!")},
-                   
-        
-            
             })
+}
 
+function anular_factura(factura_id, venta_id, factura_numero, factura_razon, factura_total, factura_fecha)
+{
     
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'factura/anular_factura/'+factura_id+"/"+venta_id;    
+
+        var txt;
+        var r = confirm("Esta a punto de anular una factura.\n"+"Factura Nº: "+factura_numero+"\n"+
+                                  "Monto Bs: "+factura_total+"\n"+
+                                  "Cliente: "+factura_razon+"\n"+
+                                  "Fecha: "+formato_fecha(factura_fecha)+ "\n Esta operación es irreversible, ¿Desea Continuar?");
+        if (r == true) {
+   
+            $.ajax({url:controlador,
+                    type:"POST",
+                    data:{},
+                    success:function(result){
+                        mostrar_facturas();
+                        alert('Factura anulada con éxito..!!')
+                    },
+            });
+        }
+
+
 }
