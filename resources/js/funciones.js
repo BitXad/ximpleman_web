@@ -1239,15 +1239,9 @@ function tablaresultados(opcion)
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                    
-                   html += "                <table class='table  table-condensed table-striped' id='mitabla'>";
-                   html += "                <tr>";
-
-                   html += "                <th>Descripción</th>";
-
-                    
-                   html += "                </tr>";
-                   html += "                <tbody class='buscar' >";
+                    html = "<div class='container'>";
+                    html = "<div class='row'>";
+                    html = "<div class='col-md-12'>";
          
                     sql = ""; 
                     comilla = "'";
@@ -1258,64 +1252,30 @@ function tablaresultados(opcion)
                         
                         var imagen_boton = "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='70' height='70' />";
                  
-                        existencia = parseFloat(registros[i]["existencia"]);
+                        existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | Bs "+registros[i]["producto_precio"];
                         
                         
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
-                        html += "<tr>";
 
                         
                         titulo = registros[i]["producto_nombre"]+" | ";
                         titulo += registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"];
-//                        prod += "<td><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
-//                        prod += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
 
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
-                        
-       
-                           
-                        html += "</td>";
-                        
-                        
-                        html += "<td style='space-white:nowarp'>";
 
-
-
-                        precio_cantidad = "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
+                        precio_cantidad = "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='1'><b>"+existencia+"</b></font></center></div>";
                     
-                        prod = registros[i]['producto_nombre'];
-                        html += "<center> ";   
-                            
-                             html += "<button type='button' style='width: 120px !important; height: 120px !important;' class='btn btn-facebook btn-xl' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+prod+" ' >"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+"precio_cantidad+"</button>";                             
-
+                        nombre_producto = registros[i]['producto_nombre'];
+                        prod = nombre_producto.substr(0,20);
                         
-                                             
-                        html += "<br><select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
-                        html += "       <option value='1'>";
-                        precio_unidad = registros[i]["producto_precio"];
-                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
-                        html += "       </option>";
-                        
-                        if(registros[i]["producto_factor"]>0){
-                            precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
-                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
-
-                            html += "       <option value='"+registros[i]["producto_factor"]+"'>";
-                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
-                            html += "       </option>";
-                        }
-                        
-                        
-                        html += "   </select>";
-                        html += "   </center>";
-
+                        html += "<button type='button' class='btn btn-sq-lg btn-danger' style='width: 115px !important; height: 115px !important;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' >"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
 
                         html += "<!---------------------- modal cantidad producto ------------------->";
                         
                         html += "<div class='modal fade' id='myModal"+registros[i]["producto_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModal"+registros[i]["producto_id"]+"'>";
                         html += "  <div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
+
                         html += "<div class='modal-content'>";
                         html += "  <div class='modal-header'>";
                         html += "       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
@@ -1333,6 +1293,27 @@ function tablaresultados(opcion)
                         html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
                         html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
+                        
+
+                        // ******************** inicio select   
+                        html += "<br><select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
+                        html += "       <option value='1'>";
+                        precio_unidad = registros[i]["producto_precio"];
+                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
+                        html += "       </option>";
+                        
+                        if(registros[i]["producto_factor"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+                                                
+                        html += "   </select>";                                                   
+                        // ******************** fin  select   
+                        
                         
                         html += "               </td>";
                         html += "          </tr>";
@@ -1358,14 +1339,11 @@ function tablaresultados(opcion)
 
                         html += "<!---------------------- fin modal cantidad ---------------------------------> ";
 
-                        html += "</td>";
-                        
-                        html += "</tr>";
-
                    }
                  
-                   html += " </tbody>";
-                   html += "</table>"
+                   html += "</div>"
+                   html += "</div>"
+                   html += "</div>"
                    $("#tablaresultados").html(html);
                    
                    /************** FIN MODO GRAFICO ***************/

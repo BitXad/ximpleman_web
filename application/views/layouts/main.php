@@ -26,8 +26,10 @@
 
     <!-- jQuery 2.2.3 -->
     <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
-
+    <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
+    
 </head>
+
 
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse">
 <div class="wrapper">
