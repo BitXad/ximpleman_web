@@ -492,7 +492,7 @@ function tablaresultadospedido(opcion)
                         html += "   <img src='"+base_url+'resources/images/productos/thumb_'+registros[i]["producto_foto"]+"' class='img-circle' width='50' height='50'>";
                         html += "    ";
                         html += "";
-                        html += "<br>"+registros[i]["producto_unidad"]+" Bs: "+"<input type='text' value='"+registros[i]["producto_precio"]+"' size='7'>";
+                        html += "<br>"+registros[i]["producto_unidad"]+" Bs: "+"<input type='text' value='"+registros[i]["producto_precio"]+"' size='7'  id='precio"+registros[i]['producto_id']+"'>";
                         html
 //                        html += "<br><select class='btn btn-facebook btn-xs'>";
 //                        html += "<option value='"+registros[i]["producto_precio"]+"' >"+registros[i]["producto_unidad"]+" Bs: "+registros[i]["producto_precio"]+"</option>";
@@ -749,6 +749,7 @@ function agregar_producto(producto_id)
     var cantidad    = document.getElementById('cantidad'+producto_id).value;
     var descuento   = document.getElementById('descuento'+producto_id).value;
     var preferencia = document.getElementById('preferencia'+producto_id).value;
+    var precio = document.getElementById('precio'+producto_id).value;
     
 
         document.getElementById('producto'+producto_id).style.display = 'none';
@@ -756,7 +757,7 @@ function agregar_producto(producto_id)
     
 $.ajax({url:controlador,
         type:"POST",
-        data:{pedido_id:pedido_id, cantidad:cantidad, descuento:descuento, preferencia:preferencia, producto_id:producto_id},
+        data:{pedido_id:pedido_id, cantidad:cantidad, descuento:descuento, preferencia:preferencia, producto_id:producto_id, precio:precio},
         success: function(response){    
             tabla_pedido_abierto();
         }
