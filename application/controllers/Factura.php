@@ -61,6 +61,36 @@ class Factura extends CI_Controller{
 // }
 // return $string;
 // }
+
+    function factura_compra()
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==6) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************            
+        
+        $params['limit'] = RECORDS_PER_PAGE; 
+        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        
+        $config = $this->config->item('pagination');
+        $config['base_url'] = site_url('factura/index?');
+        $config['total_rows'] = $this->Factura_model->get_all_factura_count();
+        $this->pagination->initialize($config);
+
+        $data['factura'] = $this->Factura_model->get_all_factura($params);
+        
+        $data['_view'] = 'factura/factura_compra';
+        $this->load->view('layouts/main',$data);
+                
+        //**************** fin contenido ***************
+                    }
+                    else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+    }
+
     function factura_carta($venta_id)
     {
         
@@ -386,7 +416,7 @@ class Factura extends CI_Controller{
     $fecha_desde = $this->input->post('fecha_desde');
     $fecha_hasta = $this->input->post('fecha_hasta');
     $opcion = $this->input->post('opcion');
-    
+    $cf=0.13;
     if ($opcion == 1) {
 
     $llamadas = $this->Factura_model->get_factura_ventas($fecha_desde, $fecha_hasta);
@@ -396,7 +426,7 @@ class Factura extends CI_Controller{
         $this->excel->getActiveSheet()->setTitle('ventas');
         //Contador de filas
         $contador = 1;
-        $cf=0.13;
+        
         //Le aplicamos ancho las columnas(OPCIONAL).
        /* $this->excel->getActiveSheet()->getColumnDimension('A')->setWidth(30);
         $this->excel->getActiveSheet()->getColumnDimension('B')->setWidth(30);
@@ -493,7 +523,7 @@ class Factura extends CI_Controller{
         exit;        
      }
  } else{
-         $llamadas = $this->Factura_model->get_all_factura();
+         $llamadas = $this->Factura_model->get_factura_compras($fecha_desde, $fecha_hasta);
     if(count($llamadas) > 0){
         //Cargamos la librería de excel.
         $this->load->library('excel'); $this->excel->setActiveSheetIndex(0);
@@ -554,30 +584,25 @@ class Factura extends CI_Controller{
        
         
         //Definimos la data del cuerpo.        
-      /*  foreach($llamadas as $l){
+        foreach($llamadas as $l){
            //Incrementamos una fila más, para ir a la siguiente.
            $contador++;
            //Informacion de las filas de la consulta.
          
            $this->excel->getActiveSheet()->setCellValue("A{$contador}", $l['factura_id']);
-           $this->excel->getActiveSheet()->setCellValue("B{$contador}", $l['factura_id']);
-           $this->excel->getActiveSheet()->setCellValue("C{$contador}", $l['factura_fecha']);
+           $this->excel->getActiveSheet()->setCellValue("B{$contador}", $l['factura_nit']);
+           $this->excel->getActiveSheet()->setCellValue("C{$contador}", $l['factura_id']);
            $this->excel->getActiveSheet()->setCellValue("D{$contador}", $l['factura_numero']);
            $this->excel->getActiveSheet()->setCellValue("E{$contador}", $l['factura_autorizacion']);
-           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $l['estado_id']);
-           $this->excel->getActiveSheet()->setCellValue("G{$contador}", $l['factura_nit']);
-           $this->excel->getActiveSheet()->setCellValue("H{$contador}", $l['factura_razonsocial']);
-           $this->excel->getActiveSheet()->setCellValue("I{$contador}", $l['factura_total']);
-           $this->excel->getActiveSheet()->setCellValue("J{$contador}", $l['factura_ice']);
-           $this->excel->getActiveSheet()->setCellValue("K{$contador}", $l['factura_exento']);
-           $this->excel->getActiveSheet()->setCellValue("L{$contador}", $l['factura_id']);
-           $this->excel->getActiveSheet()->setCellValue("M{$contador}", $l['factura_subtotaltotal']);
-           $this->excel->getActiveSheet()->setCellValue("N{$contador}", $l['factura_descuento']);
-           $this->excel->getActiveSheet()->setCellValue("O{$contador}", $l['factura_sfc']);
-           $this->excel->getActiveSheet()->setCellValue("P{$contador}", $l['factura_id']);
-           $this->excel->getActiveSheet()->setCellValue("Q{$contador}", $l['factura_codigocontrol']);
-           $this->excel->getActiveSheet()->setCellValue("R{$contador}", $l['venta_id']);
-        }*/
+           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $l['factura_fecha']);
+           $this->excel->getActiveSheet()->setCellValue("G{$contador}", $l['factura_total']);
+           $this->excel->getActiveSheet()->setCellValue("H{$contador}", $l['factura_ice']);
+           $this->excel->getActiveSheet()->setCellValue("I{$contador}", $l['factura_exento']);
+           $this->excel->getActiveSheet()->setCellValue("J{$contador}", $l['factura_total']);
+           $this->excel->getActiveSheet()->setCellValue("K{$contador}", $cf*$l['factura_total']);
+           $this->excel->getActiveSheet()->setCellValue("L{$contador}", $l['factura_codigocontrol']);
+           
+        }
         //Le ponemos un nombre al archivo que se va a generar.
         $hoy = date('d/m/Y H:i:s');
         $archivo = "Compras".$hoy.".xls";
@@ -609,10 +634,12 @@ class Factura extends CI_Controller{
             $hasta = $this->input->post("hasta");            
             $opcion = $this->input->post('opcion');   
             
-            if ($opcion==1)
+            if ($opcion==1){
                 $datos = $this->Factura_model->get_factura_ventas($desde,$hasta);
-            else
+            }
+            else{
                 $datos = $this->Factura_model->get_factura_compras($desde,$hasta);
+            }
             
             echo json_encode($datos);
             

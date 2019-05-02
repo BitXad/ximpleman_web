@@ -224,6 +224,18 @@ class Compra_model extends CI_Model
         $this->db->insert('compra',$params);
         return $this->db->insert_id();
     }
+
+    function add_facturacompra($params)
+    {
+        $this->db->insert('factura_compra',$params);
+        return $this->db->insert_id();
+    }
+
+    function update_facturacompra($factura_id,$params)
+    {
+        $this->db->where('factura_id',$factura_id);
+        return $this->db->update('factura_compra',$params);
+    }
     
     /*
      * function to update compra
@@ -332,7 +344,7 @@ class Compra_model extends CI_Model
 
     function get_compra_proveedor($compra_id)
     {
-        $sql = "select p.*,c.proveedor_nombre,c.proveedor_codigo,e.estado_descripcion from compra p, estado e, proveedor c ".
+        $sql = "select p.*,c.*,e.estado_descripcion from compra p, estado e, proveedor c ".
                "where p.compra_id = ".$compra_id." and p.estado_id = e.estado_id".
                 " and p.proveedor_id = c.proveedor_id";
         $result = $this->db->query($sql)->result_array();
