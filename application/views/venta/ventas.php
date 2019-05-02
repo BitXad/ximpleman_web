@@ -207,7 +207,7 @@ function mostrar_ocultar(){
 <!--            ------------------- parametro de buscador --------------------->
                        
                   <div class="input-group">
-                      <span class="input-group-addon"> 
+                      <span class="input-group-addon" onclick="ocultar_busqueda();"> 
                         Buscar 
                       </span>           
                       <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,4)">
@@ -223,10 +223,10 @@ function mostrar_ocultar(){
     
     <span class="badge btn-danger">
     
-    Categoria:     
+    
     
     <select class="bange btn-danger" style="border-width: 0;" onchange="tablaresultados(2)" id="categoria_prod">
-                <option value="0" >Todas</option>
+                <option value="0" >Todas las Categorias</option>
         <?php 
             foreach($categoria_producto as $categ){ 
                 $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
@@ -237,15 +237,14 @@ function mostrar_ocultar(){
             }
         ?>
     </select>
-
-
-    
+        <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span>
     </span>
+        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span>Inventario</button>
     
                 <!--------------------- indicador de resultados --------------------->
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
-                <span class="badge btn-danger">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                <!--<span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
                 <span class="badge btn-default">
 
                     <!--------------------- inicio loader ------------------------->
@@ -264,22 +263,10 @@ function mostrar_ocultar(){
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
         <div class="box">
-            <div class="box-body  table-responsive">
-                <table class="table  table-condensed table-striped" id="mitabla">
-                    <tr>
-                            <th>Nº</th> 
-                            <th>Descripción</th>
-                            <!--<th>Código</th>-->                            
-                            <th>Precio</th>
-<!--                            <th>Saldo</th>-->
-                            <th> </th>
-                    </tr>
-                    <tbody class="buscar" id="tablaresultados">
-                    
-                        <!------ aqui se vacia los resultados de la busqueda mediante JS --->
-                    
-                    </tbody>
-                </table>
+            <div class="box-body  table-responsive" id="tablaresultados">
+
+                <!------------------ aqui van los resultados de la busqueda --------------->
+                
             </div>
                
         </div>

@@ -667,9 +667,69 @@ function finalizarcompra($compra_id)
         'compra_cambio' => $this->input->post('compra_cambio'),
         'compra_caja' => $this->input->post('compra_caja'),
         'compra_placamovil' => $null,
+        'compra_codcontrol' => $this->input->post('compra_codcontrol'),
 
     );
+    $this->Compra_model->update_compra($compra_id,$params);
+    $facturation=$this->input->post('documento_respaldo_id');
+    if ($facturation==1){
+         $yafactu = "SELECT COUNT(factura_id) as 'facturas_compra', factura_id as facturanga FROM factura_compra WHERE factura_compra.compra_id=".$compra_id;
+     $tiene_factura = $this->db->query($yafactu)->result_array();
+     $fac_id = $tiene_factura[0]['facturanga'];
+     if ($tiene_factura[0]['facturas_compra']<1) {
     
+      $factur =  $params = array(
+        'estado_id' => 1,
+        'compra_id' => $compra_id,
+        'factura_tipo' => 0,
+        'factura_nit' => $this->input->post('factura_nit'),
+        'factura_razonsocial' => $this->input->post('factura_razonsocial'),
+        'factura_poliza' => 0,
+        'factura_fecha' => $this->input->post('factura_fecha'),
+        'factura_fechacompra' => $this->input->post('factura_fechacompra'),
+        'factura_hora' => $this->input->post('factura_hora'),
+        'factura_subtotal' => $this->input->post('compra_total'),
+        'factura_ice' => 0,
+        
+        'factura_exento' => 0,
+        'factura_descuento' => $this->input->post('compra_descglobal'),
+        'factura_total' => $this->input->post('compra_totalfinal'),
+        'factura_numero' => $this->input->post('compra_numdoc'),
+        'factura_autorizacion' => $this->input->post('autori'),
+        //'factura_llave' => $this->input->post('factura_llave'),
+        //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
+        'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
+        //'factura_leyenda' => $this->input->post('factura_leyenda'),
+            );
+      $factura_id = $this->Compra_model->add_facturacompra($params);
+         }else{
+          $factur =  $params = array(
+        'estado_id' => 1,
+        'compra_id' => $compra_id,
+        'factura_tipo' => 0,
+        'factura_nit' => $this->input->post('factura_nit'),
+        'factura_razonsocial' => $this->input->post('factura_razonsocial'),
+        'factura_poliza' => 0,
+        'factura_fecha' => $this->input->post('factura_fecha'),
+        'factura_fechacompra' => $this->input->post('factura_fechacompra'),
+        'factura_hora' => $this->input->post('factura_hora'),
+        'factura_subtotal' => $this->input->post('compra_total'),
+        'factura_ice' => 0,
+        
+        'factura_exento' => 0,
+        'factura_descuento' => $this->input->post('compra_descglobal'),
+        'factura_total' => $this->input->post('compra_totalfinal'),
+        'factura_numero' => $this->input->post('compra_numdoc'),
+        'factura_autorizacion' => $this->input->post('autori'),
+        //'factura_llave' => $this->input->post('factura_llave'),
+        //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
+        'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
+        //'factura_leyenda' => $this->input->post('factura_leyenda'),
+            );
+            $this->Compra_model->update_facturacompra($fac_id,$params);
+         }
+   }
+
     $actualizarprecios = $this->input->post('actualizarprecios');
     $fechalimite = $this->input->post('credito_fechalimite');
     $fecha = $this->Compra_model->normalize_date($fechalimite);
@@ -693,7 +753,7 @@ function finalizarcompra($compra_id)
     $this->load->model('Inventario_model');
 // actualizar inventario //
     
-    $this->Compra_model->update_compra($compra_id,$params);
+    
 
     $sacar = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra dc WHERE dc.compra_id=".$compra_id;
     $sacar_id=$this->db->query($sacar)->result_array();

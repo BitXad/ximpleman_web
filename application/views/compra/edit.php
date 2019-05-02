@@ -81,6 +81,17 @@ function pulsar(e) {
   });
   });
      
+
+function facturation(){
+  var selec=document.getElementById('documento_respaldo_id').value;
+
+  if (selec==1) {
+    document.getElementById('facturation').style.display = 'block';
+}else{
+   document.getElementById('facturation').style.display = 'none';
+}
+}
+
 function final(){
   document.getElementById('loader').style.display = 'block';
 }
@@ -887,7 +898,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     <div class="modal-dialog" role="document">
         <div class="modal-content">
          <div class="modal-header">
-               <form action="<?php echo base_url('compra/finalizarcompra/'.$compra_id); ?>"  method="POST" class="form" name="descuento">              
+               <form action="<?php echo base_url('compra/finalizarcompra/'.$compra_id); ?>"  method="POST" class="form" name="descuento" id="descuento">              
                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1064,12 +1075,12 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
              <div class="col-md-4">
                         <label for="documento_respaldo_id" class="control-label">Documento Respaldo</label>
                         <div class="form-group">
-                            <select name="documento_respaldo_id" class="form-control">
+                            <select name="documento_respaldo_id" class="form-control" onchange="facturation()" id="documento_respaldo_id">
                                 <option value="">- NINGUNO -</option>
                                 <?php 
                                 foreach($all_documento_respaldo as $documento_respaldo)
                                 {
-                                    $selected = ($documento_respaldo['documento_respaldo_id'] == $this->input->post('documento_respaldo_id')) ? ' selected="selected"' : "";
+                                    $selected = ($documento_respaldo['documento_respaldo_id'] == $compra[0]['documento_respaldo_id']) ? ' selected="selected"' : "";
 
                                     echo '<option value="'.$documento_respaldo['documento_respaldo_id'].'" '.$selected.'>'.$documento_respaldo['documento_respaldo_descripcion'].'</option>';
                                 } 
@@ -1088,7 +1099,42 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         <div class="form-group">
                            <input type="text" name="compra_glosa" value="<?php echo  $compra[0]['compra_glosa']; ?>" class="form-control" id="compra_glosa" />
                         </div>
-                    </div>           
+                    </div> 
+                    <div id="facturation" <?php if($compra[0]['documento_respaldo_id']==1) { ?> style="display: block;" <?php }else{?>style="display: none;" <?php } ?> >
+                    <div class="col-md-4" >
+                        <label for="compra_codcontrol" class="control-label">Codigo Control</label>
+                        <div class="form-group">
+                           <input type="text" name="compra_codcontrol" value="<?php echo  $compra[0]['compra_codcontrol']; ?>" class="form-control" id="compra_codcontrol" />
+                        </div>
+                    </div>    
+                    <div class="col-md-4" >
+                        <label for="autori" class="control-label">Autorizacion</label>
+                        <div class="form-group">
+                           <input type="text" name="autori" value="<?php echo  $compra[0]['proveedor_autorizacion']; ?>" class="form-control" id="autori" />
+                        </div>
+                    </div>
+                    <div class="col-md-4" >
+                        <label for="factura_fecha" class="control-label">Fecha Factura</label>
+                        <div class="form-group">
+                           <input type="date" name="factura_fecha" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="factura_fecha" />
+                        </div>
+                    </div>
+                    <div class="col-md-4" hidden>
+                        <label for="factura_nit" class="control-label">nit</label>
+                        <div class="form-group">
+                           <input type="text" name="factura_nit" value="<?php echo  $compra[0]['proveedor_nit']; ?>" class="form-control" id="factura_nit" />
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4" hidden>
+                        <label for="factura_hora" class="control-label">hora</label>
+                        <div class="form-group">
+                           <input type="text" name="factura_hora" value="<?php echo date("H:i:s"); ?>" class="form-control" id="factura_hora" />
+                           <input type="date" name="factura_fechacompra" value="<?php echo $compra[0]['compra_fecha']; ?>" class="form-control" id="factura_fechacompra" />
+                           <input type="text" name="factura_razonsocial" value="<?php echo  $compra[0]['proveedor_razon']; ?>" class="form-control" id="factura_razonsocial" />
+                        </div>
+                    </div>
+                     </div>             
         </div>
         </div>
             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->  

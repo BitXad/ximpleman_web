@@ -28,7 +28,7 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-                <h3 class="box-title">Facturas</h3>
+                <h3 class="box-title">LIBRO DE VENTAS</h3>
         <div class="box">
 
             <div class="box-header">
@@ -57,12 +57,12 @@
                             </div>
                         </div>
                         
-                        <div class="col-md-2">
+                        <div class="col-md-2" hidden>
                             <label for="tipo" class="control-label">Tipo:</label>
                             <div class="form-group">
                                 <select name="opcion" id="opcion" class="btn btn-warning btn-xs form-control">
                                         <option value="1">VENTAS</option>
-                                        <option value="2">COMPRAS</option>
+                                        
                                 </select>
                             </div>
                         </div>

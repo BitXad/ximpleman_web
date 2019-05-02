@@ -309,6 +309,9 @@
                             <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Ventas</span></a>
                         </li>
                         <li>
+                            <a href="<?php echo site_url('factura/factura_compra');?>"><i class="fa fa-table"></i> <span>Libro de Compras</span></a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
                         </li>
                     </ul>
