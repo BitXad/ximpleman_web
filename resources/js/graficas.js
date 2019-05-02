@@ -6,22 +6,26 @@ function cambiar_fecha_grafica(){
 
     cargar_grafica_barras(anio_sel,mes_sel);
     cargar_grafica_lineas(anio_sel,mes_sel);
+    //cargar_grafica_pie(anio_sel,mes_sel);
 }
 
 
 
 function cargar_grafica_barras(anio,mes){
 
+    var empresa = "Micromercado ROTE";
+    
+
 var options={
 	 chart: {
-	 	    renderTo: 'div_grafica_barras',
+            renderTo: 'div_grafica_barras',
             type: 'column'
         },
         title: {
-            text: 'Numero de Registros en el Mes'
+            text: 'Compras/Ventas del Mes'
         },
         subtitle: {
-            text: 'Source: PASSWORD SRL'
+            text: empresa
         },
         xAxis: {
             categories: [],
@@ -98,6 +102,8 @@ var i=0;
 
 
 function cargar_grafica_lineas(anio,mes){
+    var empresa = "Micromercado ROTE";
+    
 
 var options={
      chart: {
@@ -105,11 +111,11 @@ var options={
            
         },
           title: {
-            text: 'Numero de Registros en el Mes',
+            text: 'Ventas del Mes',
             x: -20 //center
         },
         subtitle: {
-            text: 'Source: PASSWORD SRL',
+            text: empresa,
             x: -20
         },
         xAxis: {

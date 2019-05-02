@@ -53,13 +53,11 @@
 		<div class="box-body" id="div_grafica_barras">
 		</div>
 
-	    <div class="box-footer">
-		</div>
+                <div class="box-footer">
+                </div>
 	</div>
 
-
-
-		<br/>
+        <br/>
 	<div class="box box-primary">
 		<div class="box-header">
 		</div>
@@ -67,12 +65,13 @@
 		<div class="box-body" id="div_grafica_lineas">
 		</div>
 
-	    <div class="box-footer">
-		</div>
+                <div class="box-footer">
+                </div>
 	</div>
 
 
 	<br/>
+        
 	<div class="box box-primary">
 		<div class="box-header">
 		</div>
@@ -80,8 +79,8 @@
 		<div class="box-body" id="div_grafica_pie">
 		</div>
 
-	    <div class="box-footer">
-		</div>
+                <div class="box-footer">
+                </div>
 	</div>
 
 

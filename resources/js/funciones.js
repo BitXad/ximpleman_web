@@ -1239,9 +1239,10 @@ function tablaresultados(opcion)
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
-                    html = "<div class='container'>";
-                    html = "<div class='row'>";
-                    html = "<div class='col-md-12'>";
+//                    html += "<div class='container'>";
+//                    html += "<div class='row'>";
+//                    html += "<div class='col-md-12'>";
+                    html += "<center>";
          
                     sql = ""; 
                     comilla = "'";
@@ -1341,9 +1342,9 @@ function tablaresultados(opcion)
 
                    }
                  
-                   html += "</div>"
-                   html += "</div>"
-                   html += "</div>"
+                   html += "</center>"
+//                   html += "</div>"
+//                   html += "</div>"
                    $("#tablaresultados").html(html);
                    
                    /************** FIN MODO GRAFICO ***************/
