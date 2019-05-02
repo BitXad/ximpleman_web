@@ -60,13 +60,13 @@ class Verificar extends CI_Controller
                 //print "<pre>"; print_r( $session_data); print "</pre>";
 
                 if ($session_data['tipousuario_id'] == 1) {// admin page
-                    if ($dosificacion['dias']<=10) {
+                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                        redirect('alerta/dosificacion');
                     }
                     redirect('admin/dashb');
                 }
                 if($session_data['tipousuario_id'] == 5) {
-                    if ($dosificacion['dias']<=10) {
+                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                        redirect('alerta/dosificacion');
                     }
                    // $this->load->model('Cliente_model');
@@ -75,21 +75,21 @@ class Verificar extends CI_Controller
                 }
 
                 if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 3){
-                    if ($dosificacion['dias']<=10) {
+                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                        redirect('alerta/dosificacion');
                     }
                     redirect('venta/ventas');
                 }
 
                 if($session_data['tipousuario_id'] == 4){
-                    if ($dosificacion['dias']<=10) {
+                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                        redirect('alerta/dosificacion');
                     }
                     redirect('pedido');
                 }
 
                  if($session_data['tipousuario_id'] == 6){
-                    if ($dosificacion['dias']<=10) {
+                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
                        redirect('alerta/dosificacion');
                     }
                     redirect('factura');
