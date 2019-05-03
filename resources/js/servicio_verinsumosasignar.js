@@ -57,7 +57,7 @@ function showinsumosusados(servicio_id, detalleserv_id){
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"categoria_insumo/eliminardetalleventa/"+servicio_id+"/"+detalleserv_id+"/"+registros[i]['detalleven_id']+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a href='"+base_url+"categoria_insumo/eliminardetalleventa/"+servicio_id+"/"+detalleserv_id+"/"+registros[i]['detalleven_id']+"' class='btn btn-success' name='eliminardetventa"+i+"' id='eliminardetventa"+i+"' ><span class='fa fa-check'></span> Si </a>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -201,7 +201,7 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
                         var deshabilitar = "";
                         if(registros[i]["existencia"] ==0){ deshabilitar = "disabled"; }
                         
-                        html += "<button class='btn btn-success btn-xs' onclick='usarthisinsumo("+servicio_id+", "+detalleserv_id+", "+registros[i]["producto_id"]+")' "+deshabilitar+" >";
+                        html += "<button class='btn btn-success btn-xs' onclick='usarthisinsumo("+servicio_id+", "+detalleserv_id+", "+registros[i]["producto_id"]+")' "+deshabilitar+" name='usarthisinsumo"+i+"' id='usarthisinsumo"+i+"' >";
                         html += "<i class='fa fa-check'></i> Usar Insumo";
                         html += "</button>";
                         html += "</td>";
@@ -245,7 +245,6 @@ function usarthisinsumo(servicio_id, detalleserv_id, producto_id){
     controlador = base_url+'categoria_insumo/usarinsumona/'+servicio_id+'/'+detalleserv_id;
     var agrupar = 0;
     if(agrupa == 1){ agrupar = 1; }
-    alert(agrupar);
     $.ajax({url: controlador,
            type:"POST",
            data:{producto_id:producto_id, agrupar:agrupar, cantidad:cantidad, producto_precio:producto_precio,
