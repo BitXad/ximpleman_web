@@ -90,6 +90,8 @@ class Venta extends CI_Controller{
         //$data['detalle_venta'] = $this->Venta_model->get_detalle_aux($usuario_id);
 
         $data['page_title'] = "Ventas";
+        
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
