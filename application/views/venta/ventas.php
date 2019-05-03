@@ -129,9 +129,15 @@ function mostrar_ocultar(){
         </div>        
         
       <h4 class="panel-title">
-        <input type="checkbox" id="facturado" value="1" name="facturado">
+        <?php if(sizeof($dosificacion)>0){ ?>
+          <input type="checkbox" id="facturado" value="1" name="facturado">
+        <?php } else{ ?>
+          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+          <font color="red" size="2"> Dosificación no activada</font>
+        <?php } ?>
         <a data-toggle="collapse" href="#collapse1">Más</a>
       </h4>
+
     </div>
     <div id="collapse1" class="panel-collapse collapse">
 <!--      <ul class="list-group">-->
@@ -559,7 +565,7 @@ function mostrar_ocultar(){
                 
                 
                            
-           <!************************************* datos credito ************************************************>
+           <!-- ************************************* datos credito ************************************************-->
                 
             <div class="row" id='creditooculto'  style='display:none;'>
                                     

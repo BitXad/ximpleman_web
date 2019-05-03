@@ -10,6 +10,17 @@ function cambiar_fecha_grafica(){
 }
 
 
+function mostrar_grafica(){
+
+        var hoy = new Date();
+        
+    var anio_sel = hoy.getFullYear();
+    var mes_sel = hoy.getMonth()+1;
+    alert(anio_sel+" - "+mes_sel);
+    cargar_grafica_barras(anio_sel,mes_sel);
+    //cargar_grafica_lineas(anio_sel,mes_sel);
+    //cargar_grafica_pie(anio_sel,mes_sel);
+}
 
 function cargar_grafica_barras(anio,mes){
 

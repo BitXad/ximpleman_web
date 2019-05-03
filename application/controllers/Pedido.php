@@ -276,6 +276,7 @@ class Pedido extends CI_Controller{
         $sql = "insert into detalle_venta_aux(
             producto_id,
             venta_id,
+            
             detalleven_codigo,
             detalleven_cantidad,
             detalleven_unidad,
@@ -288,7 +289,15 @@ class Pedido extends CI_Controller{
             detalleven_preferencia,
             detalleven_comision,
             detalleven_tipocambio,
-            usuario_id)
+            usuario_id,
+            producto_nombre,
+            producto_unidad,
+            producto_marca,
+            categoria_id,
+            producto_codigobarra
+
+            
+            )
             
             (select 
             d.producto_id,
@@ -305,10 +314,15 @@ class Pedido extends CI_Controller{
             d.detalleped_preferencia,
             d.detalleped_comision,
             1 as tipocambio,
-            e.usuario_id
-            
-            from detalle_pedido d, pedido e,usuario u
-            where e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
+            e.usuario_id,
+            p.producto_nombre,
+            p.producto_unidad,
+            p.producto_marca,
+            p.categoria_id,
+            p.producto_codigobarra
+
+            from detalle_pedido d, pedido e,usuario u, producto p
+            where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
         
         $this->Pedido_model->ejecutar($sql);
         return true;
