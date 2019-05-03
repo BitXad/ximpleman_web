@@ -7,7 +7,7 @@
 <input type="hidden" name="servicio_id" id="servicio_id" value="<?php echo $servicio_id; ?>" />
 
 <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function (){
             (function ($) {
                 $('#filtrar3').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
@@ -110,10 +110,7 @@
                     </tbody>
                 </table>
                                 
-            </div>              
-            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>
+            </div>
         </div>
         <a href="<?php echo site_url('servicio/serview/'.$servicio_id); ?>" class="btn btn-danger">
                 <i class="fa fa-arrow-left"></i> Atras</a>
@@ -148,11 +145,10 @@
         });
 </script>
 <!--------------------------------- INICIO MODAL MOSTRAR INSUMOS SELECCIONADOS ------------------------------------>
-<div class="modal fade" id="modalelegirinsumo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalelegirinsumo" tabindex="-1" role="dialog" aria-labelledby="modalelegirinsumoLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-                            
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
