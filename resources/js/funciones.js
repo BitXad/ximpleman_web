@@ -973,7 +973,7 @@ function tablaresultados(opcion)
     var cantidad = 0;
     var usuario_id = document.getElementById('usuario_id').value;
     
-    var modo_visualizacion = 2; // modo de visualizacion 1 = modo texto , 2 = modo grafico
+    var modo_visualizacion = 1; // modo de visualizacion 1 = modo texto , 2 = modo grafico
 
     if(esMobil()) { tamanio = 1; }
     else{ tamanio = 3; }
@@ -1284,6 +1284,7 @@ function tablaresultados(opcion)
                         html += "  <div class='modal-body'>";
                         
                         html += "  <!----------------------------------------------------------------->";                  
+                        html += "       <center>";
                         html += "       <table style='space-white: nowrap;'>";
                         html += "           <tr>";
                        
@@ -1319,6 +1320,7 @@ function tablaresultados(opcion)
                         html += "               </td>";
                         html += "          </tr>";
                         html += "       </table>";
+                        html += "       </center>";
                         
 //                        html += "       </div>";
                         html += "       <!------------------------------------------------------------------->";
@@ -1343,8 +1345,7 @@ function tablaresultados(opcion)
                    }
                  
                    html += "</center>"
-//                   html += "</div>"
-//                   html += "</div>"
+
                    $("#tablaresultados").html(html);
                    
                    /************** FIN MODO GRAFICO ***************/
