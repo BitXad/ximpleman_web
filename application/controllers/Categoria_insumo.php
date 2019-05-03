@@ -325,10 +325,10 @@ class Categoria_insumo extends CI_Controller{
 
                 $this->load->model('Detalle_serv_model');
                 $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
-        //        var_dump($detalle_serv['subcatserv_id']);
+              /*  var_dump($detalle_serv['subcatserv_id']);
                 $this->load->model('Subcategoria_servicio_model');
                 $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_subcategoria_servicio($detalle_serv['subcatserv_id']);
-
+                */
                 $data['detalleserv_codigo'] = $detalle_serv['detalleserv_codigo'];
                 $data['detalleserv_id'] = $detalleserv_id;
                 $data['servicio_id'] = $servicio_id;
@@ -486,17 +486,16 @@ class Categoria_insumo extends CI_Controller{
                     'detalleven_subtotal' => $resubtotal,
                     'detalleven_descuento' => $producto_descuento,
                     'detalleven_total' => $restotal,
-                    'detalleven_preferencia' => $res['detalleven_preferencia']." ".$this->input->post('preferencia'.$producto_id),
-                    'detalleven_caracteristicas' => $res['detalleven_caracteristicas']." ".$this->input->post('caracteristicas'.$producto_id),
+                    'detalleven_preferencia' => $res['detalleven_preferencia']." ".$this->input->post('preferencia'),
+                    'detalleven_caracteristicas' => $res['detalleven_caracteristicas']." ".$this->input->post('caracteristicas'),
                     'detalleven_comision' => $this->input->post('producto_comision'),
                     'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
                     'usuario_id' => $usuario_id,
                     'detalleserv_id' => $detalleserv_id,
 
                 );
-            $detalleven_id = $this->Detalle_venta_model->update_detalle_venta($res['detalleven_id'], $detalleparams);
-        }
-        else{
+            $this->Detalle_venta_model->update_detalle_venta($res['detalleven_id'], $detalleparams);
+        }else{
             $detalleparams = array(
                 'producto_id' => $producto_id,
                 'venta_id' => $venta_id,
@@ -509,8 +508,8 @@ class Categoria_insumo extends CI_Controller{
                 'detalleven_subtotal' => $subtotal,
                 'detalleven_descuento' => $producto_descuento,
                 'detalleven_total' => $total,
-                'detalleven_preferencia' => $this->input->post('preferencia'.$producto_id),
-                'detalleven_caracteristicas' => $this->input->post('caracteristicas'.$producto_id),
+                'detalleven_preferencia' => $this->input->post('preferencia'),
+                'detalleven_caracteristicas' => $this->input->post('caracteristicas'),
                 'detalleven_comision' => $this->input->post('producto_comision'),
                 'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
                 'usuario_id' => $usuario_id,

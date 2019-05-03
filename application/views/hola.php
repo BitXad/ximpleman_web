@@ -4,29 +4,38 @@
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
+<!--  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+   Font Awesome 
   <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
+   Ionicons 
   <link rel="stylesheet" href="bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
+   Theme style 
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
+   AdminLTE Skins. Choose a skin from the css/skins
+       folder instead of downloading all of them to reduce the load. 
   <link rel="stylesheet" href="dist/css/skins/_all-skins.min.css">
-  <!-- Morris chart -->
+   Morris chart 
   <link rel="stylesheet" href="bower_components/morris.js/morris.css">
-  <!-- jvectormap -->
+   jvectormap 
   <link rel="stylesheet" href="bower_components/jvectormap/jquery-jvectormap.css">
-  <!-- Date Picker -->
+   Date Picker 
   <link rel="stylesheet" href="bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-  <!-- Daterange picker -->
+   Daterange picker 
   <link rel="stylesheet" href="bower_components/bootstrap-daterangepicker/daterangepicker.css">
-  <!-- bootstrap wysihtml5 - text editor -->
-  <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
+   bootstrap wysihtml5 - text editor 
+  <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">-->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />  
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
+<!--
+<button onclick="mostrar_grafica()">
+ graficos    
+</button>-->
+<body onload="mostrar_grafica()">
+</body>
     <!-- Main content -->
     <section class="content">
       <!-- Small boxes (Stat box) -->
@@ -220,9 +229,9 @@
           <!-- quick email widget -->
           <div class="box box-info">
             <div class="box-header">
-              <i class="fa fa-envelope"></i>
+              <i class="fa fa-cart-plus"></i>
 
-              <h3 class="box-title">E-mail Rápido</h3>
+              <h3 class="box-title">Ventas del mes</h3>
               <!-- tools box -->
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
@@ -231,8 +240,14 @@
               </div>
               <!-- /. tools -->
             </div>
-            <div class="box-body">
-              <form action="#" method="post">
+              <div class="box-body">
+                                
+		<div class="box-body" id="div_grafica_barras">
+		
+                </div>
+
+              
+<!--                <form action="#" method="post">
                 <div class="form-group">
                   <input type="email" class="form-control" name="emailto" placeholder="Email to:">
                 </div>
@@ -243,12 +258,13 @@
                   <textarea class="textarea" placeholder="Message"
                             style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                 </div>
-              </form>
+              </form>-->
+            
             </div>
-            <div class="box-footer clearfix">
+<!--            <div class="box-footer clearfix">
               <button type="button" class="pull-right btn btn-default" id="sendEmail">Enviar
                 <i class="fa fa-arrow-circle-right"></i></button>
-            </div>
+            </div>-->
           </div>
 
         </section>   
@@ -333,39 +349,39 @@
     
 
 <!-- jQuery 3 -->
-<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<!--<script src="bower_components/jquery/dist/jquery.min.js"></script>-->
 <!-- jQuery UI 1.11.4 -->
-<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+<!--<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>-->
 <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
+<!--<script>
   $.widget.bridge('uibutton', $.ui.button);
-</script>
+</script>-->
 <!-- Bootstrap 3.3.7 -->
-<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- Morris.js charts -->
+<!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+ Morris.js charts 
 <script src="bower_components/raphael/raphael.min.js"></script>
 <script src="bower_components/morris.js/morris.min.js"></script>
-<!-- Sparkline -->
+ Sparkline 
 <script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
-<!-- jvectormap -->
+ jvectormap 
 <script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
 <script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
-<!-- jQuery Knob Chart -->
+ jQuery Knob Chart 
 <script src="bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
+ daterangepicker 
 <script src="bower_components/moment/min/moment.min.js"></script>
 <script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
-<!-- datepicker -->
+ datepicker 
 <script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<!-- Bootstrap WYSIHTML5 -->
+ Bootstrap WYSIHTML5 
 <script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
-<!-- Slimscroll -->
+ Slimscroll 
 <script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
+ FastClick 
 <script src="bower_components/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
+ AdminLTE App 
 <script src="dist/js/adminlte.min.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+ AdminLTE dashboard demo (This is only for demo purposes) 
 <script src="dist/js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
+ AdminLTE for demo purposes 
+<script src="dist/js/demo.js"></script>-->
