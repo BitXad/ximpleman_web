@@ -16,7 +16,7 @@ function mostrar_grafica(){
         
     var anio_sel = hoy.getFullYear();
     var mes_sel = hoy.getMonth()+1;
-    alert(anio_sel+" - "+mes_sel);
+    //alert(anio_sel+" - "+mes_sel);
     cargar_grafica_barras(anio_sel,mes_sel);
     //cargar_grafica_lineas(anio_sel,mes_sel);
     //cargar_grafica_pie(anio_sel,mes_sel);
