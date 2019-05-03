@@ -325,10 +325,10 @@ class Categoria_insumo extends CI_Controller{
 
                 $this->load->model('Detalle_serv_model');
                 $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
-        //        var_dump($detalle_serv['subcatserv_id']);
+              /*  var_dump($detalle_serv['subcatserv_id']);
                 $this->load->model('Subcategoria_servicio_model');
                 $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_subcategoria_servicio($detalle_serv['subcatserv_id']);
-
+                */
                 $data['detalleserv_codigo'] = $detalle_serv['detalleserv_codigo'];
                 $data['detalleserv_id'] = $detalleserv_id;
                 $data['servicio_id'] = $servicio_id;

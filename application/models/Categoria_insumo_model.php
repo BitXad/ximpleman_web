@@ -89,23 +89,15 @@ class Categoria_insumo_model extends CI_Model
     function get_all_categoria_insumo($subcatserv_id)
     {
         $categoria_insumo = $this->db->query("
-            SELECT p.*,
-                (SELECT if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) AS FIELD_1 FROM detalle_compra d WHERE d.producto_id = p.producto_id) AS compras,
-                (SELECT if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) AS FIELD_1 FROM detalle_venta d WHERE d.producto_id = p.producto_id) AS ventas,
-                (SELECT if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) AS FIELD_1 FROM detalle_pedido e, pedido t WHERE t.pedido_id = e.pedido_id AND e.producto_id = p.producto_id AND t.estado_id = 11) AS pedidos,
-                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) AS existencia,
-                e.estado_color, e.estado_descripcion
-              FROM
-                producto p, categoria_insumo ci, subcategoria_servicio sc, estado e
-              WHERE p.estado_id=1
-                    and p.estado_id = e.estado_id
-                    and ci.producto_id = p.producto_id
-                    and ci.subcatserv_id = sc.subcatserv_id
-                    and ci.subcatserv_id = '$subcatserv_id'
-              GROUP BY
-                p.producto_id
-              ORDER By p.producto_id
-
+            SELECT p.*
+              FROM inventario p, categoria_insumo ci, subcategoria_servicio sc, estado e
+             WHERE p.estado_id = 1
+                   and p.estado_id = e.estado_id
+                   and ci.producto_id = p.producto_id
+                   and ci.subcatserv_id = sc.subcatserv_id
+                   and ci.subcatserv_id = '$subcatserv_id'
+               GROUP BY p.producto_id
+               ORDER BY p.producto_nombre asc
         ")->result_array();
 
         return $categoria_insumo;
@@ -184,4 +176,30 @@ class Categoria_insumo_model extends CI_Model
 
         return $categoria_insumo['catinsumo_id'];
     }
+    
+    /*
+    function get_all_categoria_insumo($subcatserv_id)
+    {
+        $categoria_insumo = $this->db->query("
+            SELECT p.*,
+                (SELECT if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) AS FIELD_1 FROM detalle_compra d WHERE d.producto_id = p.producto_id) AS compras,
+                (SELECT if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) AS FIELD_1 FROM detalle_venta d WHERE d.producto_id = p.producto_id) AS ventas,
+                (SELECT if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) AS FIELD_1 FROM detalle_pedido e, pedido t WHERE t.pedido_id = e.pedido_id AND e.producto_id = p.producto_id AND t.estado_id = 11) AS pedidos,
+                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) AS existencia,
+                e.estado_color, e.estado_descripcion
+              FROM
+                producto p, categoria_insumo ci, subcategoria_servicio sc, estado e
+              WHERE p.estado_id=1
+                    and p.estado_id = e.estado_id
+                    and ci.producto_id = p.producto_id
+                    and ci.subcatserv_id = sc.subcatserv_id
+                    and ci.subcatserv_id = '$subcatserv_id'
+              GROUP BY
+                p.producto_id
+              ORDER By p.producto_id
+
+        ")->result_array();
+
+        return $categoria_insumo;
+    } */
 }
