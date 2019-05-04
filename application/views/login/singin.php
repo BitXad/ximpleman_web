@@ -112,7 +112,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--inner block end here-->
 <!--copy rights start here-->
 <div class="copyrights">
-    <p>© 2018 Password SRL. All Rights Reserved | Design by  <a href="http://www.passwordbolivia.com/" target="_blank">Password SRL</a> </p>
+    <p>All Rights Reserved © <?php $fecha = date('Y'); echo $fecha; ?> Password SRL | Design by  <a href="http://www.passwordbolivia.com/" target="_blank">Password SRL</a> </p>
 </div>
 <!--COPY rights end here-->
 
