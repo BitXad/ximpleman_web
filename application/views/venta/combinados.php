@@ -46,7 +46,7 @@
                             <input type="button" class="btn btn-primary btn-sm" name="pasarA&ntilde;o4" onClick="pasar('usuario_id','usu')" value="<<-- Quitar" style="margin:  10px;">
                         </div>
 
-                        <div class="col-md-4" style="padding-bottom:0px;font-size: 12px;" id="navTesiss">
+                        <div class="col-md-4" style="padding-bottom:0px;font-size: 10px;" id="navTesiss">
                             Usuario(s):<select multiple id="usuario_id"  name="usuario_id"  style="padding-bottom:0px;color: #fff; background-color: #31708f;border:none; width: 100%;" class="textarea" >
                                 <option value="-" >-</option>
                             </select>
@@ -59,7 +59,7 @@
         <div class="col-md-6" style="padding-left:45px; padding-top:0px;">
             
             <br class="no-print">        
-        <div class="row" style="font-size: 12px;">
+        <div class="row" style="font-size: 10px;">
             Desde: <input type="date" class="btn btn-primary btn-sm " style="border:none;" id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
        
             Hasta: <input type="date" class="btn btn-primary btn-sm" style="border:none;" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
@@ -67,7 +67,7 @@
         
           
        </div>
-        <div class="col-md-3" style="padding-top:17px;">
+        <div class="col-md-3 no-print" style="padding-top:17px;">
             
 <!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
             <button class="btn btn-primary btn-sm  no-print" onclick="buscar_fecha_ven(),final()" >
@@ -77,7 +77,7 @@
           </button>
            
         </div>
-        <div class="col-md-3" style="padding-top:17px;">
+        <div class="col-md-3 no-print" style="padding-top:17px;">
             <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
        </div>
       
@@ -94,12 +94,12 @@
                 <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="pillados" type="text" value="0" readonly="true"> </span></span>
 
 </div>
- <div class="row" id='loader'  style='display:none;'>
+ <div class="row no-print" id='loader'  style='display:none;'>
                         <center>
                             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
                         </center>
                     </div> 
-<div class="box">
+<div class="box" style="padding-top:-10px;">
             
             <div class="box-body table-responsive" >
                 <table class="table table-striped table-condensed" id="mitabla">

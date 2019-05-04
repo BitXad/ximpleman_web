@@ -470,22 +470,6 @@ class Cliente extends CI_Controller{
                             $usuario_id = $session_data['usuario_id'];
                             $tipocliente_id = 1;
                             $categoria_clie = 1;
-                            $cliente_ci = 0;
-                            $cliente_nit = 0;
-                            if($this->input->post('cliente_ci') == null){
-                                $cliente_ci = rand(1000000, 99999999);
-                            }else{
-                                $cliente_ci = $this->input->post('cliente_ci');
-                                $cliente_nit = $cliente_ci;
-                            }
-                            if($this->input->post('cliente_nit') == null){
-                                if($cliente_nit ==0){
-                                    $cliente_nit = rand(10000000, 999999999);
-                                }
-                            }else{
-                                $cliente_nit = $this->input->post('cliente_nit');
-                            }
-
 
                             $estado_id = 1; //$this->Estado_model->get_id_estado($estado_descripcion);
                             $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
@@ -495,7 +479,7 @@ class Cliente extends CI_Controller{
                                         'categoriaclie_id' => $categoria_clie,
                                         'cliente_codigo' => $this->input->post('cliente_codigo'),
                                         'cliente_nombre' => $this->input->post('cliente_nombre'),
-                                        'cliente_ci' => $cliente_ci,
+                                        'cliente_ci' => $this->input->post('cliente_ci'),
                                         'cliente_direccion' => $this->input->post('cliente_direccion'),
                                         'cliente_telefono' => $this->input->post('cliente_telefono'),
                                         'cliente_celular' => $this->input->post('cliente_celular'),
@@ -505,7 +489,7 @@ class Cliente extends CI_Controller{
                                         'cliente_aniversario' => $mifecha,
                                         'cliente_latitud' => $this->input->post('cliente_latitud'),
                                         'cliente_longitud' => $this->input->post('cliente_longitud'),
-                                        'cliente_nit' => $cliente_nit,
+                                        'cliente_nit' => $this->input->post('cliente_nit'),
                                         'cliente_razon' => $this->input->post('cliente_nombre'),
                                         'usuario_id' => $this->input->post('usuario_id'),
                                     );
