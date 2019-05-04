@@ -92,6 +92,8 @@ function tabladetallecompra(){
                        
                   
                         html += "</td>";
+
+                        html += "<td>"+Number(registros[i]["detallecomp_descglobal"]).toFixed(2)+"</td>";
                         html += "<td><center>";
                         html += "<span class='badge badge-success'>";
                         html += "<font size='2'> <b>"+Number(registros[i]["detallecomp_total"]).toFixed(2)+"</b></font> <br>";
