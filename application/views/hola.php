@@ -35,7 +35,9 @@
  graficos    
 </button>-->
 <body onload="mostrar_grafica()">
-</body>
+    
+
+
     <!-- Main content -->
     <section class="content">
       <!-- Small boxes (Stat box) -->
@@ -104,7 +106,7 @@
       
       <div class="row">
         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
+           <!--small box--> 
           <div class="small-box bg-fuchsia">
             <div class="inner">
                 <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
@@ -117,9 +119,9 @@
             <a href="<?php echo base_url('venta'); ?>" class="small-box-footer">Ventas del Dia <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        <!-- ./col -->
+         <!--./col--> 
         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
+           <!--small box--> 
           <div class="small-box bg-blue-active">
             <div class="inner">
                 <h4><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h4>
@@ -132,9 +134,9 @@
             <a href="<?php echo base_url('inventario'); ?>" class="small-box-footer">Inventario <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        <!-- ./col -->
+         <!--./col--> 
         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
+           <!--small box--> 
           <div class="small-box bg-purple">
             <div class="inner">
                 <h4><b><?php echo $clientes[0]['total_clientes']; ?></b></h4>
@@ -147,9 +149,9 @@
             <a href="<?php echo base_url('reporte'); ?>" class="small-box-footer">Reporte de Caja <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        <!-- ./col -->
+         <!--./col--> 
         <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
+           <!--small box--> 
           <div class="small-box bg-lime-active">
             <div class="inner">
                 <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
@@ -167,12 +169,58 @@
       <!-- /.row -->
       
       
-      
-      
-      <div class="box">
+ </section>      
+ 
+ <section class="col-lg-12 connectedSortable">
+          <div class="box box-info">
             <div class="box-header">
-              <h3 class="box-title">Resumen de actividades del dia</h3>
+              <i class="fa fa-money"></i>
+
+              <h3 class="box-title">Ventas del mes</h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
+                        title="Remove">
+                  <i class="fa fa-times"></i></button>
+              </div>
+              <!-- /. tools -->
             </div>
+              <div class="box-body">
+                  
+                  <div class="box-body" id="div_grafica_barras">
+		
+                </div>
+              </div>
+              </div>
+ </section>
+
+   
+    <!-- /.content -->
+    
+         <section class="col-lg-7 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          
+          <!-- /.box -->
+
+          <!-- quick email widget -->
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-cart-plus"></i>
+
+              <h3 class="box-title">Ventas del dia</h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
+                        title="Remove">
+                  <i class="fa fa-times"></i></button>
+              </div>
+              <!-- /. tools -->
+            </div>
+              <div class="box-body">
+                          
+<!--            <div class="box-header">
+              <h3 class="box-title">Resumen de actividades del dia</h3>
+            </div>-->
             <!-- /.box-header -->
             <div class="box-body no-padding">
               <table class="table table-condensed">
@@ -212,63 +260,13 @@
               </table>
             </div>
             <!-- /.box-body -->
-          </div> 
-      
-      
-
-
-
-    </section>
-    <!-- /.content -->
-    
-         <section class="col-lg-7 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
-          
-          <!-- /.box -->
-
-          <!-- quick email widget -->
-          <div class="box box-info">
-            <div class="box-header">
-              <i class="fa fa-cart-plus"></i>
-
-              <h3 class="box-title">Ventas del mes</h3>
-              <!-- tools box -->
-              <div class="pull-right box-tools">
-                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
-                        title="Remove">
-                  <i class="fa fa-times"></i></button>
-              </div>
-              <!-- /. tools -->
-            </div>
-              <div class="box-body">
-                                
-		<div class="box-body" id="div_grafica_barras">
-		
-                </div>
-
               
-<!--                <form action="#" method="post">
-                <div class="form-group">
-                  <input type="email" class="form-control" name="emailto" placeholder="Email to:">
-                </div>
-                <div class="form-group">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject">
-                </div>
-                <div>
-                  <textarea class="textarea" placeholder="Message"
-                            style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
-                </div>
-              </form>-->
-            
             </div>
-<!--            <div class="box-footer clearfix">
-              <button type="button" class="pull-right btn btn-default" id="sendEmail">Enviar
-                <i class="fa fa-arrow-circle-right"></i></button>
-            </div>-->
           </div>
-
         </section>   
-         <section class="col-lg-3 connectedSortable">
+    
+    
+         <section class="col-lg-5 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
           
           <!-- /.box -->
@@ -345,43 +343,10 @@
           </div>
 
         </section>   
-    
-    
+    <br>
+        <section>
+            <br>
+                Ximpleman ver 2.0
 
-<!-- jQuery 3 -->
-<!--<script src="bower_components/jquery/dist/jquery.min.js"></script>-->
-<!-- jQuery UI 1.11.4 -->
-<!--<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>-->
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<!--<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>-->
-<!-- Bootstrap 3.3.7 -->
-<!--<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
- Morris.js charts 
-<script src="bower_components/raphael/raphael.min.js"></script>
-<script src="bower_components/morris.js/morris.min.js"></script>
- Sparkline 
-<script src="bower_components/jquery-sparkline/dist/jquery.sparkline.min.js"></script>
- jvectormap 
-<script src="plugins/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="plugins/jvectormap/jquery-jvectormap-world-mill-en.js"></script>
- jQuery Knob Chart 
-<script src="bower_components/jquery-knob/dist/jquery.knob.min.js"></script>
- daterangepicker 
-<script src="bower_components/moment/min/moment.min.js"></script>
-<script src="bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
- datepicker 
-<script src="bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
- Bootstrap WYSIHTML5 
-<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
- Slimscroll 
-<script src="bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
- FastClick 
-<script src="bower_components/fastclick/lib/fastclick.js"></script>
- AdminLTE App 
-<script src="dist/js/adminlte.min.js"></script>
- AdminLTE dashboard demo (This is only for demo purposes) 
-<script src="dist/js/pages/dashboard.js"></script>
- AdminLTE for demo purposes 
-<script src="dist/js/demo.js"></script>-->
+        </section>   
+ </body>   

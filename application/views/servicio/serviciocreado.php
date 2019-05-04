@@ -372,7 +372,7 @@ $(document).ready(function(){
                                           <div class="col-md-6">
 						<label for="cliente_ci" class="control-label">C.I.</label>
 						<div class="form-group">
-							<input type="text" name="cliente_ci" value="<?php echo $this->input->post('cliente_ci'); ?>" class="form-control" id="cliente_ci" />
+							<input type="text" name="cliente_ci" value="<?php if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
 						</div>
 					  </div>
                                           <div class="col-md-6">
