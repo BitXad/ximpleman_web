@@ -91,9 +91,9 @@ var registrosven=datos.registrosven;
 var i=0;
 	for(i=1;i<=totaldias;i++){
 	
-	options.series[0].data.push( registrosdia[i] );
+	options.series[0].data.push( Math.round(registrosdia[i]*100)/100 );
 	
-    options.series[1].data.push( registrosven[i] );
+    options.series[1].data.push( Math.round(registrosven[i]*100)/100 );
     
     options.xAxis.categories.push(i);
 

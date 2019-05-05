@@ -168,6 +168,7 @@ border-bottom: 0px;
                             <th>UNIT.</th>
                             <th>SUBTOTAL</th>
                             <th>DESC.</th>
+                            <th>D.GLOB</th>
                             <th>TOTAL</th>
                         
                        
@@ -187,6 +188,7 @@ border-bottom: 0px;
                             <td><?php echo number_format($i[0]['detallecomp_costo'],'2','.',',');?></td>
                             <td><?php echo number_format($i[0]['detallecomp_subtotal'],'2','.',',');?></td>
                             <td><?php echo number_format($i[0]['detallecomp_descuento'],'2','.',',');?></td>
+                            <td><?php echo number_format($i[0]['detallecomp_descglobal'],'2','.',',');?></td>
                             <td><?php echo number_format($i[0]['detallecomp_total'],'2','.',',');?></td>
                           
         </tr> 

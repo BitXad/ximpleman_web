@@ -396,6 +396,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <th>Cant.</th>
                             <th>Subtotal</th>
                             <th>Desc.</th>
+                            <th>D.Glo</th>
                             <th>Total</th>
                     </tr>
                     <tbody class="buscar" id="detallecompringa">

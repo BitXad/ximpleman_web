@@ -646,6 +646,13 @@ function finalizarcompra($compra_id)
  $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
  $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
  $patron = ($numcuota*0.5) + 0.5;
+ $totalcompra=$this->input->post('compra_total');
+ $descglobal=$this->input->post('compra_descglobal');
+ if ($descglobal>0) {
+    $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
+
+        $this->db->query($descontar);
+ }
  if(isset($_POST) && count($_POST) > 0)     
  {   
      
@@ -809,20 +816,20 @@ function finalizarcompra($compra_id)
    $this->db->query($vaciar_detalle);
 ///////////// actualiza y promediaa precios////////////////////////
   if($actualizarprecios==1){
-   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_costo as 'nuevo_costo', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_total as 'nuevo_total', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
     $pr_id = $this->db->query($producto_ide)->result_array(); 
  foreach ($pr_id as $pr_ident) {
  
-    $nuevo = $pr_ident['nuevo_costo']*$pr_ident['nueva_cantidad'];
+    $nuevo = $pr_ident['nuevo_total'];
   $cantidad = $pr_ident['nueva_cantidad'];
  
-  $detalle_costo = "SELECT   i.detallecomp_costo as 'viejo_costo', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
+  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
   $det_costo=$this->db->query($detalle_costo)->result_array(); 
 $viejos = 0;
 $cantiviejas = 0;
   foreach ($det_costo as $costo_cantidad) {
       
-      $viejo = $costo_cantidad['viejo_costo']*$costo_cantidad['vieja_cantidad'];
+      $viejo = $costo_cantidad['viejo_total'];
       $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
       $cantidades = $cantiviejas+$cantidad;
       $viejos = $viejos + $viejo;
