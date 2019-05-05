@@ -259,6 +259,12 @@ function mostrar_ocultar(){
                             <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
                         </center>
                     </div> 
+                    
+                    <div class="row" id='loader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+                        </center>
+                    </div> 
                     <!--------------------- fin inicio loader ------------------------->
                     
                 </span>
