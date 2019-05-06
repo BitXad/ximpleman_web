@@ -134,6 +134,7 @@ class Venta extends CI_Controller{
         //$data['presentacion'] = $this->Inventario_model->get_presentacion();  
         //$data['detalle_venta'] = $this->Venta_model->get_detalle_aux($usuario_id);
         $data['page_title'] = "Ventas";
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();

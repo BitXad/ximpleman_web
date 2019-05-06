@@ -182,7 +182,7 @@ class Inventario_model extends CI_Model
 //                p.producto_id
 //                order by p.producto_nombre)";
         
-        $sql = "insert into inventario (select * from consinventario)";
+        $sql = "insert into inventario (select * from consinventario where estado_id = 1)";
         
         $this->db->query($sql);
         return true;
@@ -302,7 +302,7 @@ class Inventario_model extends CI_Model
                     i.compras = p.compras,
                     i.ventas = p.ventas,
                     i.pedidos = p.pedidos
-                where i.producto_id = p.producto_id";
+                where i.producto_id = p.producto_id and  p.estado_id = 1";
         
         $this->db->query($sql);
         return true;
