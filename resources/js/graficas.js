@@ -24,7 +24,7 @@ function mostrar_grafica(){
 
 function cargar_grafica_barras(anio,mes){
 
-    var empresa = "Micromercado ROTE";
+    var empresa = document.getElementById('empresa_nombre').value;
     
 
 var options={
@@ -113,7 +113,7 @@ var i=0;
 
 
 function cargar_grafica_lineas(anio,mes){
-    var empresa = "Micromercado ROTE";
+    var empresa = document.getElementById('empresa_nombre').value;
     
 
 var options={

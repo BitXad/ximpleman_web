@@ -61,13 +61,16 @@
 <!-------------------------------------------------------->
 
 <div class="box-header">
-                <h3 class="box-title">Cliente: <?php echo $credito[0]['cliente_nombre']; ?></h3><br>
-                <h3 class="box-title"> <?php if ($credito[0]['venta_id']!=0){ echo 'Venta N: '. $credito[0]['venta_id'];}else { echo 'Servicio N:'.$credito[0]['servicio_id']; } ?></h3><br>
-                <h3 class="box-title">Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($credito[0]['credito_fecha'])); ?>  <?php echo $credito[0]['credito_hora']; ?></b></h3><br>
-                <h3 class="box-title">Monto Credito: <b><?php echo $credito[0]['credito_monto']; ?></b></h3><br>
-                <h3 class="box-title">Nro. Credito: <b><?php echo $credito[0]['credito_id']; ?></b></h3>
-                
+    <center>
+        <h3 class="box-title"><b>PLAN DE PAGOS</b></h3>
+    </center>
 </div>
+<font size="2" face="Arial">Cliente: <b><?php echo $credito[0]['cliente_nombre']; ?></b><br>    
+                <?php if ($credito[0]['venta_id']!=0){ echo 'Venta N: <b>'. $credito[0]['venta_id'].'</b>';}else { echo 'Servicio N: <b>'.$credito[0]['servicio_id'].'</b>'; } ?><br>
+                Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($credito[0]['credito_fecha'])); ?>  <?php echo $credito[0]['credito_hora']; ?></b><br>
+                Monto Credito: <b><?php echo $credito[0]['credito_monto']; ?></b><br>
+                Nro. Credito: <b><?php echo $credito[0]['credito_id']; ?></b></font>
+
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador -
@@ -155,30 +158,38 @@ $(document).ready(function(){
   });
 })
 </script>
-                        <td><?php echo $cont ?></td>
+                    <?php 
+                        $color ="";
+                        if ($c['estado_id']==9){
+                            $color = " style='background-color: gray'";
+                        }
+                    
+                    ?>    
+                    
+                        <td <?php echo $color; ?>><?php echo $cont ?></td>
                                             
-                        <td>Cuota <?php echo $c['cuota_numcuota']; ?></td>
-                        <td><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_subtotal'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_descuento'], 2, ".", ","); ?></td>
-                        <td><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
-                        <td><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
-                        <td><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                        <td <?php echo $color; ?>>Cuota <?php echo $c['cuota_numcuota']; ?></td>
+                        <td <?php echo $color; ?>><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
+                        <td <?php echo $color; ?>><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
+                        <td <?php echo $color; ?>><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
+                        <td <?php echo $color; ?>><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
+                        <td <?php echo $color; ?>><?php echo number_format($c['cuota_subtotal'], 2, ".", ","); ?></td>
+                        <td <?php echo $color; ?>><?php echo number_format($c['cuota_descuento'], 2, ".", ","); ?></td>
+                        <td <?php echo $color; ?>><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
+                        <td <?php echo $color; ?>><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
+                        <td <?php echo $color; ?>><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
                         <?php if($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { ?>
-                        <td></td> 
-                        <td></td>
+                        <td <?php echo $color; ?>></td> 
+                        <td <?php echo $color; ?>></td>
                         <?php } else { ?>
-                        <td><?php echo date('d/m/Y',strtotime($c['cuota_fecha'])); ?></td>
-                        <td><?php echo $c['cuota_hora']; ?></td>
+                        <td <?php echo $color; ?>><?php echo date('d/m/Y',strtotime($c['cuota_fecha'])); ?></td>
+                        <td <?php echo $color; ?>><?php echo $c['cuota_hora']; ?></td>
                          <?php } ?>
-                        <td><?php echo $c['cuota_numercibo']; ?></td>
-                        <td><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
-                        <td><?php echo $c['cuota_glosa']; ?></td>
-                        <td><?php echo $c['estado_descripcion']; ?></td>
-                        <td> <?php if ($c['estado_id']==8) { ?>
+                        <td <?php echo $color; ?>><?php echo $c['cuota_numercibo']; ?></td>
+                        <td <?php echo $color; ?>><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
+                        <td <?php echo $color; ?>><?php echo $c['cuota_glosa']; ?></td>
+                        <td <?php echo $color; ?>><?php echo $c['estado_descripcion']; ?></td>
+                        <td <?php echo $color; ?>> <?php if ($c['estado_id']==8) { ?>
                       
                             <a href="<?php echo site_url('cuotum/editar/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
@@ -233,15 +244,15 @@ $(document).ready(function(){
                 <form action="<?php echo base_url('cuotum/cobrar/'.$c['cuota_id']); ?>"  method="POST" class="form" id="saldar">
 
          
-               <h1><b> <span class="btn-success" >Cancelar Cuota<br>
-                    <?php echo $c['cuota_total']; ?></span>
+               <h1><b> <span class="btn-success" >Cuota Bs: 
+                    <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
               </b></h1>
           </div>
           <div class="col-md-12">
             <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
             <input type="hidden" name="estado_id" value="9" class="form-control" id="estado_id" />
           <div class="col-md-6">
-                        <label for="cuota_cancelado" class="control-label">Cancelado</label>
+                        <label for="cuota_cancelado" class="control-label">Cancelado Bs</label>
                         <div class="form-group">
                             <input type="text" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
@@ -249,20 +260,20 @@ $(document).ready(function(){
                         </div>
                     </div>
                      <div class="col-md-6">
-                        <label for="cuota_saldo" class="control-label">Saldo</label>
+                        <label for="cuota_saldo" class="control-label">Saldo Bs</label>
                         <div class="form-group">
                             <input type="hidden"  name="cuota_interes" value="<?php echo $c['cuota_interes']; ?>" class="form-control" id="cuota_interes" />
                             <input type="hidden"  name="credito_tipointeres" value="<?php echo $c['credito_tipointeres']; ?>" class="form-control" id="credito_tipointeres" />
-                            <input type="text" name="cuota_capital" value="0" class="form-control" id="cuota_saldo<?php echo $c['cuota_id']; ?>" />
+                            <input type="text" name="cuota_capital" value="0" class="form-control" id="cuota_saldo<?php echo $c['cuota_id']; ?>" style="background-color: #C5C5C5" readonly/>
                             <input type="hidden" name="cuota_numcuota" value="<?php echo $c['cuota_numcuota']; ?>" class="form-control" id="cuota_numcuota" />
                              <input type="hidden" name="cuota_fechalimite" value="<?php echo $c['cuota_fechalimite']; ?>" class="form-control" id="cuota_fechalimite" />
                              <input type="hidden" name="cuota_fecha" value="<?php echo date('Y-m-d'); ?>" class="form-control" id="cuota_fecha" />
                              <input type="hidden" name="cuota_hora" value="<?php echo date('H:i:s'); ?>" class="form-control" id="cuota_hora" />
-                             <input type="hidden" name="cuota_saldo" value="<?php echo $c['cuota_saldo']; ?>" class="form-control" id="cuota_saldo" />
+                             <input type="hidden" name="cuota_saldo" value="<?php echo $c['cuota_saldo']; ?>" class="form-control" id="cuota_saldo"/>
                         </div>
                     </div>
           <div class="col-md-6">
-                        <label for="cuota_numercibo" class="control-label">Num. Recibo</label>
+                        <label for="cuota_numercibo" class="control-label">Recibo Num.</label>
                         <div class="form-group">
                             <input type="text" name="cuota_numercibo" value="" class="form-control" id="cuota_numercibo" />
                         </div>
@@ -278,7 +289,7 @@ $(document).ready(function(){
 
             <button class="btn btn-lg btn-success"  type="submit">
                 <h4>
-                <span class="fa fa-money"></span>   Pagar  
+                <span class="fa fa-money"></span>   Cobrar  
                 </h4>
             </button> 
             </form>

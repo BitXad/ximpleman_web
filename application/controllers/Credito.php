@@ -27,7 +27,9 @@ class Credito extends CI_Controller{
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-                $usuario_id = $session_data['usuario_id'];
+                
+        $usuario_id = $session_data['usuario_id'];
+        
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -36,6 +38,7 @@ class Credito extends CI_Controller{
         $config['total_rows'] = $this->Credito_model->get_all_credito_count();
         $this->pagination->initialize($config);
 
+        $data['page_title'] = "Creditos"; 
         $data['credito'] = $this->Credito_model->get_all_deuda($params);
         
         $data['_view'] = 'credito/index';
@@ -59,6 +62,7 @@ class Credito extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
+        
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -67,6 +71,7 @@ class Credito extends CI_Controller{
         $config['total_rows'] = $this->Credito_model->get_all_credito_count();
         $this->pagination->initialize($config);
 
+        $data['page_title'] = "Creditos"; 
         $data['credito'] = $this->Credito_model->get_all_deuda($params);
         $data['cuota'] = $this->Cuotum_model->get_all_cuota();
         $data['_view'] = 'credito/indexDeuda';
@@ -95,6 +100,8 @@ class Credito extends CI_Controller{
         $config['base_url'] = site_url('credito/repoDeudas?');
         $config['total_rows'] = $this->Credito_model->get_all_credito_count();
         $this->pagination->initialize($config);
+        
+        $data['page_title'] = "Comprobante"; 
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['credito'] = $this->Credito_model->get_all_deuda($params);
         $data['cuota'] = $this->Cuotum_model->get_all_cuota();
@@ -126,6 +133,7 @@ class Credito extends CI_Controller{
         $config['total_rows'] = $this->Credito_model->get_all_credito_count1();
         $this->pagination->initialize($config);
 
+        $data['page_title'] = "Cuentas x Cobrar"; 
         $data['credito'] = $this->Credito_model->get_all_cuentas($params);
         $data['cuota'] = $this->Cuotum_model->get_all_cuota();
         $data['_view'] = 'credito/indexCuentas';
@@ -155,6 +163,8 @@ class Credito extends CI_Controller{
         $config['base_url'] = site_url('credito/repoCuentas?');
         $config['total_rows'] = $this->Credito_model->get_all_credito_count();
         $this->pagination->initialize($config);
+        
+        $data['page_title'] = "Reporte"; 
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['credito'] = $this->Credito_model->get_all_cuentas($params);
         $data['cuota'] = $this->Cuotum_model->get_all_cuota();

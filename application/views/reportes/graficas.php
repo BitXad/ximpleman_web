@@ -6,6 +6,7 @@
 
 <?php  $nombremes=array("","ENERO","FEBRERO","MARZO","ABRIL","MAYO","JUNIO","JULIO","AGOSTO","SEPTIEMBRE","OCTUBRE","NOVIEMBRE","DICIEMBRE"); ?>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php echo $empresa[0]['empresa_nombre']; ?>" />
 <div  class="row" >
 <div class="col-md-6">
                   <label>Año</label>

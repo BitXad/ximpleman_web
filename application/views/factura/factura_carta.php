@@ -1,16 +1,57 @@
-<!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<!--<link href="<?php echo base_url('resources/css/factura_boucher.css'); ?>" rel="stylesheet">
+<!DOCTYPE html> 
+ 
+  <div class="ticket">
+    <img src="https://yt3.ggpht.com/-3BKTe8YFlbA/AAAAAAAAAAI/AAAAAAAAAAA/ad0jqQ4IkGE/s900-c-k-no-mo-rj-c0xffffff/photo.jpg" alt="Logotipo">
+    <p class="centrado">APPS PERFECTAS
+      <br>5 de mayo #1006
+      <br>23/08/2017 08:22 a.m.</p>
+    <table>
+      <thead>
+        <tr>
+          <th class="cantidad">CANT</th>
+          <th class="producto">PRODUCTO</th>
+          <th class="precio">$$</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="cantidad">1.00</td>
+          <td class="producto">CHEETOS VERDES 80 G</td>
+          <td class="precio">$8.50</td>
+        </tr>
+        <tr>
+          <td class="cantidad">2.00</td>
+          <td class="producto">KINDER DELICE</td>
+          <td class="precio">$10.00</td>
+        </tr>
+        <tr>
+          <td class="cantidad">1.00</td>
+          <td class="producto">COCA COLA 600 ML</td>
+          <td class="precio">$10.00</td>
+        </tr>
+        <tr>
+          <td class="cantidad"></td>
+          <td class="producto">TOTAL</td>
+          <td class="precio">$28.50</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="centrado">¡GRACIAS POR SU COMPRA!
+      <br>appsperfectas.com</p>
+  </div>-->
+
+
 <!--<script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
-                                            /*function imprimir()
-                                            {
-                                                /*$('#paraboucher').css('max-width','7cm !important');*/
-                                                /* window.print(); 
-                                            }*/
+
     });
 </script>-->
+<!----------------------------- script buscador --------------------------------------->
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -23,183 +64,206 @@
                 })
             }(jQuery));
         });
-</script>   
+</script> 
+
 <style type="text/css">
+
+
 p {
     font-family: Arial;
-    font-size: 8pt;
-    line-height: 100%;   /*esta es la propiedad para el interlineado*/
+    font-size: 7pt;
+    line-height: 120%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 10px;
 }
+
 div {
 margin-top: 0px;
 margin-right: 0px;
 margin-bottom: 0px;
-margin-left: 0px;
+margin-left: 10px;
 margin: 0px;
+}
+
+
+table{
+width : 7cm;
+margin : 0 0 0px 0;
+padding : 0 0 0 0;
+border-spacing : 0 0;
+border-collapse : collapse;
+font-family: Arial narrow;
+font-size: 7pt;  
+
+td {
+border:hidden;
+}
+}
+
+td#comentario {
+vertical-align : bottom;
+border-spacing : 0;
+}
+div#content {
+background : #ddd;
+font-size : 7px;
+margin : 0 0 0 0;
+padding : 0 5px 0 5px;
+border-left : 1px solid #aaa;
+border-right : 1px solid #aaa;
+border-bottom : 1px solid #aaa;
 }
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
+<!---------------------- Modal ---------------------------->
+        <div id="myModalAnular" class="modal fade no-print" role="dialog">
+          <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Anular Factura</h4>
+              </div>
+              <div class="modal-body">
+                  <p>
+                  <h3>              
+                    ADVERTENCIA: La factura Nº: <?php echo $factura[0]['factura_numero']; ?>, esta a punto de ser ANULADA. ¿Desea continuar?
+                  </h3>
+                  </p>
+              </div>
+              <div class="modal-footer">
+                  <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id'].'/'.$venta[0]['venta_id']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
 <!-------------------------------------------------------->
 
-<font face="Arial" size="1">
-<div class="row" >
-    
-<table class="table" >
+
+<table class="table" style="width: 18cm;" >
     <tr>
-        <td nowrap>
-            <div class="container"  style="width: 7cm;" >
+        <td style="width: 6cm;">
                 
             <center>
-                <p>
-                
-                    <img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                               
+                    <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>
-                    <font size="2" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
                     <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>                
 
-                </p>    
-            </center>           
-            </div>
+            </center>                      
         </td>
-        <td>
-            <div class="container"  style="width: 6cm;">
-                
-            <center>
+        <td style="width: 6cm;">
+            <center>            
                 <br>
-                <font size="5" face="arial"><b>FACTURA</b></font>   
+                <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
+                     else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>    
+                <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
+                <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>                    
             </center>
-            
-            </div>
         </td>
-        <td style="width: 7cm;">
-
-           
-        <div class="panel panel-primary col-md-12">
-            <font size="1">
-                
-            
-            <table>
-                <tr>
-                    <td>
-                        <b>NIT:      </b><br>
-                        <b>FACTURA No.:  </b><br>
-                        <b>AUTORIZACION: </b>
-                        
-                    </td>
-                    <td>
-                        <?php echo $factura[0]['factura_nitemisor']; ?> <br>
-                        <?php echo $factura[0]['factura_numero']; ?> <br>
-                        <?php echo $factura[0]['factura_autorizacion'] ?>           
-                    </td>
-                </tr>
-            </table>
-
-            </font>
-            </div>
-        <center>            
-            <font size="2" face="arial"><b>ORIGINAL</b></font>
-            <br><font size="1" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
-        </center>
-        </td>            
-    </tr>    
-</table>
-<?php $fecha = new DateTime($venta[0]['venta_fecha']); 
-      $fecha_d_m_a = $fecha->format('d/m/Y');
-?>    
-<div class="container">
-    <div class="panel panel-primary col-md-12">
-        
-        <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>            
-        <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_nombre'].""; ?>  <b>   NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> 
-    </div>
-</div>
-</div>
-
-
-
-<div class="box-header no-print">
-                <h3 class="box-title  no-print">Detalle Venta</h3>
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group  no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el codigo, venta, precio">
-                  </div>
-            <!--------------------- fin parametro de buscador --------------------->
-         <div class="panel panel-primary">
-            
-            <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed table-bordered" id="mitablaz">
+        <td style="width: 6cm;">
+                <table style="width: 6cm;">
                     <tr>
-						<th>Num.</th>
-						<th>Producto</th>
-						<th>Cant.</th>
-						<th>Precio</th>
-						<th>Subtotal</th>
+                        <td style="font-family: arial; font-size: 8pt;">
 
+                            <b>NIT:      </b><br>
+                            <b>FACTURA No.:  </b><br>
+                            <b>AUTORIZACION: </b>
+
+                        </td>
+                        <td style="font-family: arial; font-size: 8pt;">
+                            <?php echo $factura[0]['factura_nitemisor']; ?> <br>
+                            <?php echo $factura[0]['factura_numero']; ?> <br>
+                            <?php echo $factura[0]['factura_autorizacion'] ?>           
+                        </td>
                     </tr>
-                    <tbody class="buscar">
-                    <?php $cont = 0;
-                          $cantidad = 0;
-                          $total_descuento = 0;
-                          $total_final = 0;
-                          
-                          foreach($detalle_venta as $d){;
-                                 $cont = $cont+1;
-                                 $cantidad += $d['detalleven_cantidad'];
-                                 $total_descuento += $d['detalleven_descuento']; 
-                                 $total_final += $d['detalleven_total']; 
-                                 ?>
-                    <tr>
-						<td><?php echo $cont ?></td>
-						<td><?php echo $d['producto_nombre']; ?></td>
-						<td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
-						<td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
-						<td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
-						<td class="no-print">
-                                                    <a href="<?php //echo site_url('detalle_venta/edit/'.$d['detalleven_id']); ?>" class="btn btn-info btn-xs no-print"><span class="fa fa-pencil" ></span></a> 
-                                                    <a href="<?php //echo site_url('detalle_venta/remove/'.$d['detalleven_id']); ?>" class="btn btn-danger btn-xs no-print"><span class="fa fa-trash"></span></a>
-                                                </td>
-                    </tr>
-                    <?php } ?>
-                </table>
-            </div>
+                </table>            
             
-        </div>
-    </div>
-</div>
+                <center>
+                _________________________________________________
+                    <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
+                _________________________________________________
+                </center>
 
-
-    
-<table class="table">
+        </td>
+    </tr>
     <tr>
-        <td width="150"  rowspan="2">
-            <img src="<?php echo $codigoqr; ?>" width="100" height="100">          
+        <td colspan="3" style="font-family: arial; font-size: 8pt;">
+                            
+                <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
+                        $fecha_d_m_a = $fecha->format('d/m/Y');
+                  ?>    
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                    <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
+                    <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
         </td>
-        <td nowrap>
+    </tr>
+     
+</table>
+
+       <table class="table table-striped table-condensed"  style="width: 18cm;" >
+           <tr style="border-bottom:black; border-style: solid">
+                <td align="center"><b>CANT</b></td>
+                <td align="center"><b>DESCRIPCIÓN</b></td>
+                <td align="center"><b>P.UNIT</b></td>
+                <td align="center"><b>TOTAL</b></td>               
+           </tr>
+           <?php $cont = 0;
+                 $cantidad = 0;
+                 $total_descuento = 0;
+                 $total_final = 0;
+
+                if ($factura[0]['estado_id']<>3){ 
+                 foreach($detalle_venta as $d){;
+                        $cont = $cont+1;
+                        $cantidad += $d['detalleven_cantidad'];
+                        $total_descuento += $d['detalleven_descuento']; 
+                        $total_final += $d['detalleven_total']; 
+            ?>
+           <tr style="border-bottom-style: solid">
+                <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
+                <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre']; ?></td>
+                <td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
+                <td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
+           </tr>
+           <?php }} ?>
+       </table>
+       
+    <table class="table" style="max-width: 18cm;">
+    <tr >
+        
+        <td align="left" style="max-width: 2cm;">
             
+                <img src="<?php echo $codigoqr; ?>" width="100" height="100">
+                                    
+        </td>
+        
+       <td  align="left" nowrap style="max-width: 9cm;">
             <font size="2">
             
                 COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
-                LIMITE DE EMISIÓN: <b><?php echo $factura[0]['factura_fechalimite']; ?></b><br>
-                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
+                 <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
+                        $fecha_limite = $fecha_lim->format('d/m/Y');
+                  ?>    
+                LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
+                
+                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
+                TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
             </font>
-            
-
-        </td>
+        </td>  
         
-        <td nowrap align="right">
+        <td align="right" style="max-width: 8cm;">
             
             <font size="1">
                 <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
@@ -209,39 +273,46 @@ margin: 0px;
             <font size="1">
                 <?php echo "TOTAL DESCUENTO Bs ".number_format($total_descuento,2,'.',','); ?><br>
             </font>
-            <font size="3">
+            <font size="2">
             <b>
                 <?php echo "TOTAL FINAL Bs: ".number_format($factura[0]['factura_total'] ,2,'.',','); ?><br>
             </b>
             </font>
-            <font size="2">
-                <b><?php echo "LITERAL: ".num_to_letras($total_final,' Bolivianos'); ?></b><br>            
+            <font size="1" face="arial narrow">
+                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
             </font>
             <font size="1">
                 <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
                 <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
             </font>
             
-        </td>            
-    </tr>    
-    <tr >
-
-        
-        <td colspan="2">
+        </td>          
+    </tr>
+    <tr>
+        <td colspan="3">
             <center>
-
-                <br><small>
-                    <?php echo $factura[0]['factura_leyenda']; ?> <br>
+                    <?php echo $factura[0]['factura_leyenda1'];?> <br>
+            <font size="2">
+                    <?php echo $factura[0]['factura_leyenda2']; ?> 
+            </font>
+            <br>
                     <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
-
-                </small> 
             </center>
-    
-        </td>            
-    </tr>    
+        </td>
+    </tr>
+     
     
 </table>
+  
+<?php if ($tipousuario_id == 1){ ?>
+        
+            
+    <div class="col-md-12 no-print" style="max-width: 7cm;">
 
-</div>
+        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
+        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
 
-</font>
+    </div>    
+    
+        
+<?php } ?>

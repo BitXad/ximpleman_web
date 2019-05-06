@@ -358,7 +358,7 @@ function mostrar_ocultar(){
             </a>
 
             <?php if ($tipousuario_id == 1){ ?>
-            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+            <a  href="<?php echo site_url('venta/cancelar_cambios'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Cancelar <br>
             </a>    

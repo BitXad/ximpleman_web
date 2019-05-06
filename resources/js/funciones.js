@@ -207,11 +207,14 @@ function tablaproductos()
                     for (var i = 0; i < x ; i++){
 
                         //alert(registros[i]["categoria_id"]-1);
-                        categoria = '';
+                        categoria = "";
                         
-                        if ( Number(registros[i]["categoria_id"])>0){
-                            categoria = categ[registros[i]["categoria_id"]-1]["categoria_nombre"]; 
-                        }
+//                        if ( Number(registros[i]["categoria_id"])>0){
+//                        
+//                            if ((registros[i]["categoria_id"] - 1)<=categ.length){                               
+//                                categoria = categ[registros[i]["categoria_id"]-1]["categoria_nombre"]; 
+//                            }
+//                       }
 
                         //alert(categoria);
 
@@ -225,7 +228,7 @@ function tablaproductos()
                         html += "                    <tr>";
                         html += "			<td "+color+">"+cont+"</td>";
                         html += "                       <td "+color+"><b><font size=1>"+registros[i]["producto_nombre"]+"</font></b>";
-                        html += "                           <small><br>"+categoria+"|"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        html += "                           <small><br>"+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
 
@@ -1860,9 +1863,9 @@ function tabla_ventas(filtro)
                     html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
                     html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
-                    html += "                           <a href='"+base_url+"factura/recibo_boucher/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> ";
+                    html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> ";
                     if (v[i]['venta_tipodoc']==1)
-                        html += "                                   <a href='"+base_url+"factura/factura_boucher/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                        html += "                                   <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                     html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
                     html += "                           <br><br><button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
@@ -2039,31 +2042,7 @@ function verificar_ventas()
 {
     var base_url = document.getElementById('base_url').value;    
     var parametro = document.getElementById('parametro').value;
-    var controlador = base_url+'venta/verificar_ventas';        
-            
-//            var res = JSON.parse(parametro = document.getElementById('ventas').value);
-//            var max = res.length;
-//            
-//            for (var i = 0; i<max; i++){
-//                
-//                
-//                
-//                if (res[i]["resultado"] == 1){
-//                    
-//                    botoncito = "#boton"+res[i]["venta_id"];
-//                    document.getElementById(botoncito).style.display = 'block'; 
-//                    $(botoncito).val("CONFLICTO");
-//                    
-//                }
-//                else{
-//                    
-//                    botoncito = "#boton"+res[i]["venta_id"];
-//                    document.getElementById(botoncito).style.display = 'block'; 
-//                    $(botoncito).val("CONRRECTO");
-//                    
-//                }
-//            }
-            
+    var controlador = base_url+'venta/verificar_ventas';                       
             
     $.ajax({url: controlador,
         type:"POST",
@@ -2318,9 +2297,7 @@ function verificador()
 
     });
    
-}   
-
-
+}
 
 function modificar_venta(cliente_id)
 {
@@ -2333,24 +2310,20 @@ function modificar_venta(cliente_id)
     var venta_total = document.getElementById('venta_total').value;
     var venta_efectivo = document.getElementById('venta_efectivo').value;
     var venta_cambio = document.getElementById('venta_cambio').value;
-    
 
-    //alert(venta_id+" - "+venta_fecha);
-    
         $.ajax({url: controlador,
             type:"POST",
             data:{venta_id:venta_id, cliente_id:cliente_id, venta_fecha:venta_fecha,venta_subtotal:venta_subtotal,
             venta_descuento:venta_descuento, venta_total:venta_total, venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
             success:function(respuesta){ 
-                tablaproductos();
+                //tablaproductos();
+                window.close();
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
             }
         });          
-    
-    window.close();
-  
+
 }
 
 
@@ -2362,9 +2335,7 @@ function registrarcliente_modificado()
     var razon = document.getElementById('razon_social').value;
     var telefono = document.getElementById('telefono').value;
     var cliente_nombre = document.getElementById('cliente_nombre').value; 
-    var cliente_id = document.getElementById('cliente_id').value; 
-   
-   
+    var cliente_id = document.getElementById('cliente_id').value;
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
         //alert("nit:"+nit+",razon:"+razon+",telefono:"+telefono+",cliente_id:"+cliente_id+", cliente_nombre:"+cliente_nombre)
@@ -2372,22 +2343,22 @@ function registrarcliente_modificado()
         var controlador = base_url+'venta/modificarcliente';
         
         $.ajax({url: controlador,
-                    type:"POST",
-                    data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre},
-                    success:function(respuesta){ 
-                        var datos = JSON.parse(respuesta)
-                        cliente_id = datos[0]["cliente_id"];
-                        
-                        if(cliente_id>0){
-                            modificar_venta(cliente_id);                            
-                        }
-                        else{
-                            modificar_venta(respuesta);                            
-                        }
-                    },
-                    error: function(respuesta){
-                        cliente_id = 0;            
+                type:"POST",
+                data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre},
+                success:function(respuesta){ 
+                    var datos = JSON.parse(respuesta)
+                    cliente_id = datos[0]["cliente_id"];
+
+                    if(cliente_id>0){
+                        modificar_venta(cliente_id);                            
                     }
+                    else{
+                        modificar_venta(respuesta);                            
+                    }
+                },
+                error: function(respuesta){
+                    cliente_id = 0;            
+                }
         });
         
     }
@@ -2415,8 +2386,7 @@ function registrarcliente_modificado()
 }
 
 function finalizarcambios()
-{
-    
+{    
     var monto = document.getElementById('venta_totalfinal').value;
 
     if (monto>0)
@@ -2427,21 +2397,14 @@ function finalizarcambios()
         registrarcliente_modificado();
     }
     else
-    {
-        
-        //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
-        
+    {        
         var txt;
         var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
         if (r == true) {
           registrarcliente_modificado();
         } 
         //document.getElementById("demo").innerHTML = txt;
-      }
-
-        
-        
-        
+      }                
 }
 
 function cerrar(){
