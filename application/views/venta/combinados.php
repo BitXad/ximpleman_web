@@ -9,7 +9,7 @@
              window.print(); 
         }
 </script>
-<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitabladetalleimpresion.css'); ?>" rel="stylesheet">
 
 <div class="box-header">
     <center>
@@ -46,8 +46,8 @@
                             <input type="button" class="btn btn-primary btn-sm" name="pasarA&ntilde;o4" onClick="pasar('usuario_id','usu')" value="<<-- Quitar" style="margin:  10px;">
                         </div>
 
-                        <div class="col-md-4" style="padding-bottom:0px;font-size: 10px;" id="navTesiss">
-                            Usuario(s):<select multiple id="usuario_id"  name="usuario_id"  style="padding-bottom:0px;color: #fff; background-color: #31708f;border:none; width: 100%;" class="textarea" >
+                        <div class="col-md-4" style="padding-bottom:-1s0px;font-size: 10px;" id="navTesiss">
+                            Usuario(s):<select multiple id="usuario_id"  name="usuario_id"  style="padding-bottom:-10px;color: #fff; background-color: #31708f;border:none; width: 100%;"  >
                                 <option value="-" >-</option>
                             </select>
                         </div>
@@ -75,7 +75,11 @@
                 <span class="fa fa-search"></span>   Realizar Busqueda  
                 
           </button>
-           
+           <div class="row no-print" id='loader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                        </center>
+                    </div> 
         </div>
         <div class="col-md-3 no-print" style="padding-top:17px;">
             <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
@@ -85,24 +89,11 @@
 
 </div>
 </div>
-<div class="container no-print" id="categoria">
-    
  
-                <!--------------------- indicador de resultados --------------------->
-    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
-
-                <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="pillados" type="text" value="0" readonly="true"> </span></span>
-
-</div>
- <div class="row no-print" id='loader'  style='display:none;'>
-                        <center>
-                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
-                        </center>
-                    </div> 
-<div class="box" style="padding-top:-10px;">
+<div class="box" style="margin-top:-25px;">
             
             <div class="box-body table-responsive" >
-                <table class="table table-striped table-condensed" id="mitabla">
+                <table class="table table-striped table-condensed" id="mitabladetimpresion">
                     <tr>
                         <th>#</th>
                         <th>Producto</th>
