@@ -17,6 +17,8 @@ class Orden_pago extends CI_Controller{
      */
     function index()
     {
+        
+        $data['page_title'] = "Orden de pago";
         $data['orden_pago'] = $this->Orden_pago_model->get_pago_pendiente();
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
         

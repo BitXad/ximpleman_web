@@ -14,6 +14,7 @@ class Dashb extends CI_Controller
         $this->load->model('Venta_model');
         $this->load->model('Compra_model');
         $this->load->model('Cliente_model');
+        $this->load->model('Empresa_model');
         $this->session_data = $this->session->userdata('logged_in');
     }
 
@@ -23,7 +24,8 @@ class Dashb extends CI_Controller
             $session_data = $this->session->userdata('logged_in');
             if($session_data['tipousuario_id']==1){
 
-                $data['page_title'] = 'Admin >> Inicio';
+                $data['page_title'] = 'Principal';
+                $data['empresa'] = $this->Empresa_model->get_all_empresa();
                 $data['ventas'] = $this->Venta_model->get_ventas_dia();
                 $data['pedidos'] = $this->Pedido_model->get_pedidos_dia();
                 $data['compras'] = $this->Compra_model->get_compras_dia();
@@ -68,7 +70,7 @@ class Dashb extends CI_Controller
                 'page_title' => 'Admin >> Mi Cuenta',
                 'thumb'=> $session_data['thumb']
             );
-
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $data['user'] = $this->user_model->get_usuario($session_data['usuario_id']);
             $data['usuario_imagen'] = $session_data['usuario_imagen'];
 
@@ -108,7 +110,8 @@ class Dashb extends CI_Controller
 
             $data['user'] = $this->user_model->get_usuario($this->session_data['usuario_id']);
             $data['usuario_imagen'] = $this->session_data['usuario_imagen'];
-
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            
             $data['_view'] = 'admin/form_cuenta';
             $this->load->view('layouts/main',$data);
 

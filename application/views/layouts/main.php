@@ -31,6 +31,8 @@
 </head>
 
 
+<input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php if(isset($empresa)){ echo $empresa[0]['empresa_nombre'];} else {echo ""; }?>" />
+
 <body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse">
 <div class="wrapper">
     <header class="main-header">
@@ -216,10 +218,10 @@
                             <a href="#"><i class="fa fa-credit-card"></i> <span>Deudas</span></a>
                             <ul class="treeview-menu">
                                 <li>
-                                    <a href="<?php echo site_url('credito/indexDeuda');?>"><i class="fa fa-hand-o-right"></i><i class="fa fa-money"></i> Deudas por pagar</a>
+                                    <a href="<?php echo site_url('credito/indexDeuda');?>"><i class="fa fa-hand-o-right"></i><i class="fa fa-money"></i> Por Pagar</a>
                                 </li>
                                 <li>
-                                    <a href="<?php echo site_url('credito/indexCuenta');?>"><i class="fa fa-hand-o-left"></i><i class="fa fa-money"></i> Cuentas por cobrar</a>
+                                    <a href="<?php echo site_url('credito/indexCuenta');?>"><i class="fa fa-hand-o-left"></i><i class="fa fa-money"></i> Por Cobrar</a>
                                 </li>
                             </ul>
                         </li>
@@ -281,10 +283,13 @@
                         <li>
                             <a href="<?php echo site_url('venta/busquedacombi');?>"><i class="fa fa-file"></i>Reporte de Embarque</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bars"></i>Graficos</a>
+                        </li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#"><i class="fa fa-lock"></i><i class="fa fa-user"></i> <span>Seguridad</span></a>
+                    <a href="#"><!-- i class="fa fa-lock"></i--><i class="fa fa-lock"></i> <span>Seguridad</span></a>
                     <ul class="treeview-menu">
                         
                         <li>

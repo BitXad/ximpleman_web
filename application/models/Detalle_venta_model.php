@@ -66,31 +66,43 @@ class Detalle_venta_model extends CI_Model
           detalleven_preferencia,
           detalleven_comision,
           detalleven_tipocambio,
-          usuario_id
+          usuario_id,
+          existencia,
+          producto_nombre, 
+          producto_unidad, 
+          producto_marca, 
+          categoria_id, 
+          producto_codigobarra
         )
 
 
         (SELECT 
-          producto_id,
+          d.producto_id,
           ".$venta_id." as venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio,
-          detalleven_subtotal,
-          detalleven_descuento,
-          detalleven_total,
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-          ".$usuario_id."
+          d.moneda_id,
+          d.detalleven_codigo,
+          d.detalleven_cantidad,
+          d.detalleven_unidad,
+          d.detalleven_costo,
+          d.detalleven_precio,
+          d.detalleven_subtotal,
+          d.detalleven_descuento,
+          d.detalleven_total,
+          d.detalleven_caracteristicas,
+          d.detalleven_preferencia,
+          d.detalleven_comision,
+          d.detalleven_tipocambio,
+          ".$usuario_id.",
+          i.existencia,
+          i.producto_nombre, 
+          i.producto_unidad, 
+          i.producto_marca, 
+          i.categoria_id, 
+          i.producto_codigobarra              
         FROM
-          detalle_venta
-        WHERE 
-          venta_id=".$venta_id.")";
+          detalle_venta d, inventario i
+        WHERE           
+          venta_id=".$venta_id." and d.producto_id = i.producto_id )";
         $this->db->query($sql);
         
         $sql =  "select * from detalle_venta_aux d, producto p where "

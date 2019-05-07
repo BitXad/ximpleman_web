@@ -242,7 +242,7 @@ function actualizar_inventario()
             //tabla_inventario();
         }
     });   
-      
+    
 }
 
 

@@ -103,6 +103,7 @@ class Factura extends CI_Controller{
         //**************** inicio contenido ***************   
         $usuario_id = $session_data['usuario_id'];
         
+        $data['tipousuario_id'] = $session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -240,16 +241,48 @@ class Factura extends CI_Controller{
     
         $usuario_id = $session_data['usuario_id'];
         
+        $data['tipousuario_id'] = $session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
-        $data['page_title'] = "Factura";
+        $data['page_title'] = "Recibo";
 
         $data['parametro'] = $this->Parametro_model->get_parametros();
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
   
         $data['_view'] = 'factura/recibo_boucher';
+        $this->load->view('layouts/main',$data);       
+
+        		
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }
+    }
+    function recibo_carta($venta_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************           
+    
+        $usuario_id = $session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Recibo";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/recibo_carta';
         $this->load->view('layouts/main',$data);       
 
         		
@@ -770,7 +803,7 @@ class Factura extends CI_Controller{
     {
         if ($this->session->userdata('logged_in')) {
             $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+            if($session_data['tipousuario_id']>=1 or $session_data['tipousuario_id']<=4) {
                 $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
@@ -785,6 +818,64 @@ class Factura extends CI_Controller{
             $data['page_title'] = "Verificador";            
             $this->load->view('layouts/main',$data);
             
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+            
+    }    
+
+    /*
+     * Realizado por: Roberto Carlos Soto Sierra
+     * Fecha: 05.05.2019
+     */
+    function imprimir_factura($venta_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************            
+                
+            $parametros = $this->Parametro_model->get_parametros();
+
+            if (sizeof($parametros)>0){
+                
+                if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->factura_boucher($venta_id);
+                else
+                    $this->factura_carta($venta_id);
+            }
+
+        //**************** fin contenido ***************
+        			}
+        			else{ redirect('alerta'); }
+        } else { redirect('', 'refresh'); }    
+            
+    }    
+
+    function imprimir_recibo($venta_id)
+    {
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id']>=1 or $session_data['tipousuario_id']<=4) {
+                $data = array(
+                    'page_title' => 'Admin >> Mi Cuenta'
+                );
+        //**************** inicio contenido ***************            
+                
+            $parametros = $this->Parametro_model->get_parametros();
+
+            if (sizeof($parametros)>0){
+                
+                if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->recibo_boucher($venta_id);
+                else
+                    $this->recibo_carta($venta_id);
+            }
+
         //**************** fin contenido ***************
         			}
         			else{ redirect('alerta'); }

@@ -169,18 +169,20 @@ class Inventario_model extends CI_Model
         
         
         //cargar el inventario actualizado
-        $sql = "insert into inventario
-                (select p.*,
-                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-                from
-                producto p
-                where p.estado_id = 1
-                group by
-                p.producto_id
-                order by p.producto_nombre)";
+//        $sql = "insert into inventario
+//                (select p.*,
+//                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
+//                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
+//                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
+//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
+//                from
+//                producto p
+//                where p.estado_id = 1
+//                group by
+//                p.producto_id
+//                order by p.producto_nombre)";
+        
+        $sql = "insert into inventario (select * from consinventario where estado_id = 1)";
         
         $this->db->query($sql);
         return true;
@@ -197,18 +199,23 @@ class Inventario_model extends CI_Model
         
         
         //cargar el inventario actualizado
+//        $sql = "insert into inventario
+//                (select p.*,
+//                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
+//                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
+//                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
+//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
+//                from
+//                producto p  
+//                where p.producto_id = ".$producto_id."
+//                group by
+//                p.producto_id
+//                order by p.producto_nombre)";
+//        
         $sql = "insert into inventario
-                (select p.*,
-                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-                from
-                producto p  
-                where p.producto_id = ".$producto_id."
-                group by
-                p.producto_id
-                order by p.producto_nombre)";
+                (select p.*
+                 from consinventario p  
+                where p.producto_id = ".$producto_id.")";
         
         $this->db->query($sql);
         return true;
@@ -223,21 +230,24 @@ class Inventario_model extends CI_Model
 
         
         //cargar el inventario actualizado
+//        $sql = "update inventario set existencia = 
+//            
+//                (select 
+//                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
+//                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
+//                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
+//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
+//                from
+//                producto p  
+//                where p.producto_id = ".$producto_id."
+//                group by
+//                p.producto_id
+//                order by p.producto_nombre)
+//                
+//                where producto_id =".$producto_id;
+
         $sql = "update inventario set existencia = 
-                (select 
-                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-                from
-                producto p  
-                where p.producto_id = ".$producto_id."
-                group by
-                p.producto_id
-                order by p.producto_nombre)
-                
-                where producto_id =".$producto_id;
-        
+                (select c.existencia from consinventario c where c.producto_id = ".$producto_id.")";        
         $this->db->query($sql);
         return true;
     }
@@ -256,10 +266,7 @@ class Inventario_model extends CI_Model
         $sql = "insert into inventario
                 (select p.*,0 as compras, 0 as ventas, 0 as pedidos, 0 as existencia
                 from producto p  
-                where p.producto_id = ".$producto_id."
-                group by
-                p.producto_id
-                order by p.producto_nombre)";
+                where p.producto_id = ".$producto_id.")";
 
         $this->db->query($sql);
         return true;
@@ -276,10 +283,7 @@ class Inventario_model extends CI_Model
         $sql = "insert into inventario
                 (select p.*,".$existencia." as compras, 0 as ventas, 0 as pedidos, ".$existencia." as existencia
                 from producto p  
-                where p.producto_id = ".$producto_id."
-                group by
-                p.producto_id
-                order by p.producto_nombre)";
+                where p.producto_id = ".$producto_id.")";
 
         $this->db->query($sql);
         return true;
@@ -293,26 +297,12 @@ class Inventario_model extends CI_Model
     {        
         
         //cargar el inventario actualizado
-        $sql = "
-                update inventario i,              
-                (select p.*,
-                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-                from
-                producto p
-                group by
-                p.producto_id
-                order by p.producto_id) as t1
-                
+        $sql = "update inventario i, consinventario p
                 set
-                i.compras = t1.compras,
-                i.ventas = t1.ventas,
-                i.pedidos = t1.pedidos
-                
-                where i.producto_id = t1.producto_id
-                ";
+                    i.compras = p.compras,
+                    i.ventas = p.ventas,
+                    i.pedidos = p.pedidos
+                where i.producto_id = p.producto_id and  p.estado_id = 1";
         
         $this->db->query($sql);
         return true;

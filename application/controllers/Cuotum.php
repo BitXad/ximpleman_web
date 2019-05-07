@@ -27,6 +27,7 @@ class Cuotum extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
+        $data['page_title'] = "Cuota";
         $data['cuota'] = $this->Cuotum_model->get_all_cuota();
         
         $data['_view'] = 'cuotum/index';
@@ -50,6 +51,8 @@ class Cuotum extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
+        
+        $data['page_title'] = "Cuota";
         $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
         $data['credito'] = $this->Credito_model->dato_deudas($credito_id);
         $data['_view'] = 'cuotum/deudas';
@@ -73,6 +76,7 @@ class Cuotum extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
+        $data['page_title'] = "Cuota";
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
         //$data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
@@ -95,7 +99,9 @@ class Cuotum extends CI_Controller{
               $data = array(
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
-                $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $session_data['usuario_id'];
+        
+        $data['page_title'] = "Plan de pagos";
         $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
         $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
         $data['_view'] = 'cuotum/cuentas';
@@ -204,6 +210,7 @@ class Cuotum extends CI_Controller{
                     'page_title' => 'Admin >> Mi Cuenta'
                 );
                 $usuario_id = $session_data['usuario_id'];
+        $data['page_title'] = "Comprobante";
         $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
        // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
         $data['_view'] = 'cuotum/reciboCuenta';
