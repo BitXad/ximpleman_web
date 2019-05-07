@@ -151,6 +151,7 @@ class Proveedor extends CI_Controller{
 
     function rapido()
     {   
+         if($this->acceso(4)){
          $this->load->library('form_validation');
         $this->form_validation->set_rules('proveedor_nombre','Proveedor Nombre','required');
         
@@ -197,10 +198,13 @@ class Proveedor extends CI_Controller{
         }
 
     }
+}
 
 
     function cambiarproveedor()
-    {   
+    { 
+
+         if($this->acceso(4)){  
 
          if ($this->input->is_ajax_request()) {
        
@@ -232,6 +236,7 @@ class Proveedor extends CI_Controller{
                     show_404();
         }          
     }
+}
 
     /*
      * Editing a proveedor
