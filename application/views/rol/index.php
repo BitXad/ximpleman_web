@@ -20,49 +20,59 @@
 <div class="box-header">
                 <h3 class="box-title">Rol</h3>
             	<div class="box-tools">
-                    <a href="<?php echo site_url('rol/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+                    <a href="<?php echo site_url('rol/add'); ?>" class="btn btn-success btn-sm">+ A帽adir</a> 
                 </div>
             </div>
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripci贸n">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
+                    <?php
                     
-
-    <?php foreach($rol as $r){ if ($r['rol_idfk']==0)  { ?>
-    <tr>             <th>Rol Id</th>
-                        <th>Rol Superior</th>
-                        <th>Estado Id</th>
-                        <th>Rol Descripcion</th>
-                        <th></th>
-                      </tr>
-                        <td><?php echo $r['rol_id']; ?></td>
-                        <td><?php echo $r['Rol_superior']; ?></td>
-                        <td><?php echo $r['estado_descripcion']; ?></td>
-                        <td><b><?php echo $r['rol_descripcion']; ?></td></b>
-                   
-                         <?php foreach($rol as $rh){  if ($r['rol_id']==$rh['rol_idfk'])  { ?> 
+                    foreach($all_rolpadre as $rolpadre){
+                        $i = 0;
+                    ?>
+                    <tr>
+                        <th colspan="5"><b><?php echo $rolpadre['rol_nombre']; ?>
+                            <a href="<?php echo site_url('rol/edit/'.$rolpadre['rol_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                        </th>
+                    </tr>
+                    <?php
+                    $band = true;
+                    foreach($all_rolhijo as $rolhijo){
+                        if($rolhijo['rol_idfk'] ==$rolpadre['rol_id']){
+                        $colorbaja = "style='background-color:".$rolhijo['estado_color']."'";
+                        if($band == true){
+                    ?>
                             <tr>
-                       
-</tr>  
-                        
-                        <td><?php echo $rh['rol_id']; ?></td>
-                        <td><?php echo $rh['Rol_superior']; ?></td>
-                        <td><?php echo $rh['estado_descripcion']; ?></td>
-                        <td><?php echo $rh['rol_descripcion']; ?></td>
-                        <td>
-                            <a href="<?php echo site_url('rol/edit/'.$r['rol_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                           
+                        <td>#</td>
+                        <td>Nombre
                         </td>
-                  
-                    <?php } } } } ?>
+                        <td>Descripci贸n</td>
+                        <td>Estado</td>
+                        <td></td>
+                    </tr>
+                    <?php
+                    $band = false;
+                        }
+                    ?>
+                    <tr <?php echo $colorbaja; ?>>
+                        <td><?php echo $i+1; ?></td>
+                        <td><b><?php echo $rolhijo['rol_nombre']; ?></td>
+                        <td><b><?php echo $rolhijo['rol_descripcion']; ?></td>
+                        <td class="text-center"><?php echo $rolhijo['estado_descripcion']; ?></td>
+                        <td>
+                            <a href="<?php echo site_url('rol/edit/'.$rolhijo['rol_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                        </td>
+                    </tr>
+                    <?php $i++; } } } ?>
                 </table>
                                
             </div>

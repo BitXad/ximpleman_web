@@ -5,65 +5,84 @@
  */
  
 class Mapa extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Mapa_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of mapa
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('mapa/index?');
-        $config['total_rows'] = $this->Mapa_model->get_all_mapa_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['mapa'] = $this->Mapa_model->get_all_mapa($params);
-        
-        $data['_view'] = 'mapa/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('mapa/index?');
+            $config['total_rows'] = $this->Mapa_model->get_all_mapa_count();
+            $this->pagination->initialize($config);
+
+            $data['mapa'] = $this->Mapa_model->get_all_mapa($params);
+
+            $data['_view'] = 'mapa/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new mapa
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('mapa_titulo','Mapa Titulo','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'pagina_id' => $this->input->post('pagina_id'),
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'mapa_titulo' => $this->input->post('mapa_titulo'),
-				'mapa_descripcion' => $this->input->post('mapa_descripcion'),
-				'mapa_latitud' => $this->input->post('mapa_latitud'),
-				'mapa_longitud' => $this->input->post('mapa_longitud'),
-				'mapa_indicador' => $this->input->post('mapa_indicador'),
-            );
-            
-            $mapa_id = $this->Mapa_model->add_mapa($params);
-            redirect('mapa/index');
-        }
-        else
-        {
-			$this->load->model('Pagina_web_model');
-			$data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+                    $this->form_validation->set_rules('mapa_titulo','Mapa Titulo','required');
 
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-            
-            $data['_view'] = 'mapa/add';
-            $this->load->view('layouts/main',$data);
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'pagina_id' => $this->input->post('pagina_id'),
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'mapa_titulo' => $this->input->post('mapa_titulo'),
+                                    'mapa_descripcion' => $this->input->post('mapa_descripcion'),
+                                    'mapa_latitud' => $this->input->post('mapa_latitud'),
+                                    'mapa_longitud' => $this->input->post('mapa_longitud'),
+                                    'mapa_indicador' => $this->input->post('mapa_indicador'),
+                );
+
+                $mapa_id = $this->Mapa_model->add_mapa($params);
+                redirect('mapa/index');
+            }
+            else
+            {
+                            $this->load->model('Pagina_web_model');
+                            $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                $data['_view'] = 'mapa/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -71,45 +90,47 @@ class Mapa extends CI_Controller{
      * Editing a mapa
      */
     function edit($mapa_id)
-    {   
-        // check if the mapa exists before trying to edit it
-        $data['mapa'] = $this->Mapa_model->get_mapa($mapa_id);
-        
-        if(isset($data['mapa']['mapa_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the mapa exists before trying to edit it
+            $data['mapa'] = $this->Mapa_model->get_mapa($mapa_id);
 
-			$this->form_validation->set_rules('mapa_titulo','Mapa Titulo','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'pagina_id' => $this->input->post('pagina_id'),
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'mapa_titulo' => $this->input->post('mapa_titulo'),
-					'mapa_descripcion' => $this->input->post('mapa_descripcion'),
-					'mapa_latitud' => $this->input->post('mapa_latitud'),
-					'mapa_longitud' => $this->input->post('mapa_longitud'),
-					'mapa_indicador' => $this->input->post('mapa_indicador'),
-                );
+            if(isset($data['mapa']['mapa_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Mapa_model->update_mapa($mapa_id,$params);            
-                redirect('mapa/index');
+                            $this->form_validation->set_rules('mapa_titulo','Mapa Titulo','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'pagina_id' => $this->input->post('pagina_id'),
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'mapa_titulo' => $this->input->post('mapa_titulo'),
+                                            'mapa_descripcion' => $this->input->post('mapa_descripcion'),
+                                            'mapa_latitud' => $this->input->post('mapa_latitud'),
+                                            'mapa_longitud' => $this->input->post('mapa_longitud'),
+                                            'mapa_indicador' => $this->input->post('mapa_indicador'),
+                    );
+
+                    $this->Mapa_model->update_mapa($mapa_id,$params);            
+                    redirect('mapa/index');
+                }
+                else
+                {
+                                    $this->load->model('Pagina_web_model');
+                                    $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                    $data['_view'] = 'mapa/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Pagina_web_model');
-				$data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
-
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-                $data['_view'] = 'mapa/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The mapa you are trying to edit does not exist.');
         }
-        else
-            show_error('The mapa you are trying to edit does not exist.');
     } 
 
     /*
@@ -117,16 +138,18 @@ class Mapa extends CI_Controller{
      */
     function remove($mapa_id)
     {
-        $mapa = $this->Mapa_model->get_mapa($mapa_id);
+        if($this->acceso(155)){
+            $mapa = $this->Mapa_model->get_mapa($mapa_id);
 
-        // check if the mapa exists before trying to delete it
-        if(isset($mapa['mapa_id']))
-        {
-            $this->Mapa_model->delete_mapa($mapa_id);
-            redirect('mapa/index');
+            // check if the mapa exists before trying to delete it
+            if(isset($mapa['mapa_id']))
+            {
+                $this->Mapa_model->delete_mapa($mapa_id);
+                redirect('mapa/index');
+            }
+            else
+                show_error('The mapa you are trying to delete does not exist.');
         }
-        else
-            show_error('The mapa you are trying to delete does not exist.');
     }
     
 }

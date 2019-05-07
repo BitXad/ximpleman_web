@@ -46,8 +46,8 @@ class Usuario extends CI_Controller
                 $this->pagination->initialize($config);
 
                 $data['usuario'] = $this->Usuario_model->get_all_usuario($params);
-                $data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario($params);
-                $data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario($params);
+                //$data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario($params);
+                //$data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario($params);
 
 
                 $data['_view'] = 'usuario/index';

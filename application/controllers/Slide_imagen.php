@@ -5,56 +5,75 @@
  */
  
 class Slide_imagen extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Slide_imagen_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of slide_imagen
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('slide_imagen/index?');
-        $config['total_rows'] = $this->Slide_imagen_model->get_all_slide_imagen_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['slide_imagen'] = $this->Slide_imagen_model->get_all_slide_imagen($params);
-        
-        $data['_view'] = 'slide_imagen/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('slide_imagen/index?');
+            $config['total_rows'] = $this->Slide_imagen_model->get_all_slide_imagen_count();
+            $this->pagination->initialize($config);
+
+            $data['slide_imagen'] = $this->Slide_imagen_model->get_all_slide_imagen($params);
+
+            $data['_view'] = 'slide_imagen/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new slide_imagen
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'slide_id' => $this->input->post('slide_id'),
-				'imagen_id' => $this->input->post('imagen_id'),
-            );
-            
-            $slide_imagen_id = $this->Slide_imagen_model->add_slide_imagen($params);
-            redirect('slide_imagen/index');
-        }
-        else
-        {
-			$this->load->model('Slide_model');
-			$data['all_slide'] = $this->Slide_model->get_all_slide();
+    {
+        if($this->acceso(155)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                                    'slide_id' => $this->input->post('slide_id'),
+                                    'imagen_id' => $this->input->post('imagen_id'),
+                );
 
-			$this->load->model('Imagen_model');
-			$data['all_imagen'] = $this->Imagen_model->get_all_imagen();
-            
-            $data['_view'] = 'slide_imagen/add';
-            $this->load->view('layouts/main',$data);
+                $slide_imagen_id = $this->Slide_imagen_model->add_slide_imagen($params);
+                redirect('slide_imagen/index');
+            }
+            else
+            {
+                            $this->load->model('Slide_model');
+                            $data['all_slide'] = $this->Slide_model->get_all_slide();
+
+                            $this->load->model('Imagen_model');
+                            $data['all_imagen'] = $this->Imagen_model->get_all_imagen();
+
+                $data['_view'] = 'slide_imagen/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -62,36 +81,38 @@ class Slide_imagen extends CI_Controller{
      * Editing a slide_imagen
      */
     function edit($slideimagen_id)
-    {   
-        // check if the slide_imagen exists before trying to edit it
-        $data['slide_imagen'] = $this->Slide_imagen_model->get_slide_imagen($slideimagen_id);
-        
-        if(isset($data['slide_imagen']['slideimagen_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'slide_id' => $this->input->post('slide_id'),
-					'imagen_id' => $this->input->post('imagen_id'),
-                );
+    {
+        if($this->acceso(155)){
+            // check if the slide_imagen exists before trying to edit it
+            $data['slide_imagen'] = $this->Slide_imagen_model->get_slide_imagen($slideimagen_id);
 
-                $this->Slide_imagen_model->update_slide_imagen($slideimagen_id,$params);            
-                redirect('slide_imagen/index');
+            if(isset($data['slide_imagen']['slideimagen_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'slide_id' => $this->input->post('slide_id'),
+                                            'imagen_id' => $this->input->post('imagen_id'),
+                    );
+
+                    $this->Slide_imagen_model->update_slide_imagen($slideimagen_id,$params);            
+                    redirect('slide_imagen/index');
+                }
+                else
+                {
+                                    $this->load->model('Slide_model');
+                                    $data['all_slide'] = $this->Slide_model->get_all_slide();
+
+                                    $this->load->model('Imagen_model');
+                                    $data['all_imagen'] = $this->Imagen_model->get_all_imagen();
+
+                    $data['_view'] = 'slide_imagen/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Slide_model');
-				$data['all_slide'] = $this->Slide_model->get_all_slide();
-
-				$this->load->model('Imagen_model');
-				$data['all_imagen'] = $this->Imagen_model->get_all_imagen();
-
-                $data['_view'] = 'slide_imagen/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The slide_imagen you are trying to edit does not exist.');
         }
-        else
-            show_error('The slide_imagen you are trying to edit does not exist.');
     } 
 
     /*
@@ -99,16 +120,18 @@ class Slide_imagen extends CI_Controller{
      */
     function remove($slideimagen_id)
     {
-        $slide_imagen = $this->Slide_imagen_model->get_slide_imagen($slideimagen_id);
+        if($this->acceso(155)){
+            $slide_imagen = $this->Slide_imagen_model->get_slide_imagen($slideimagen_id);
 
-        // check if the slide_imagen exists before trying to delete it
-        if(isset($slide_imagen['slideimagen_id']))
-        {
-            $this->Slide_imagen_model->delete_slide_imagen($slideimagen_id);
-            redirect('slide_imagen/index');
+            // check if the slide_imagen exists before trying to delete it
+            if(isset($slide_imagen['slideimagen_id']))
+            {
+                $this->Slide_imagen_model->delete_slide_imagen($slideimagen_id);
+                redirect('slide_imagen/index');
+            }
+            else
+                show_error('The slide_imagen you are trying to delete does not exist.');
         }
-        else
-            show_error('The slide_imagen you are trying to delete does not exist.');
     }
     
 }

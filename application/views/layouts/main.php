@@ -295,9 +295,9 @@
                         <li>
                             <a href="<?php echo site_url('rol');?>"><i class="fa fa-gg"></i>Roles</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('rol_usuario');?>"><i class="fa fa-compress"></i> <span>Rol Usuario</span></a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('rol_usuario');?>"><i class="fa fa-compress"></i> <span>Rol Usuario</span></a>
+                        </li>-->
                         <li>
                             <a href="<?php echo site_url('tipo_usuario');?>"><i class="fa fa-list-ul"></i>Tipo Usuario</a>
                         </li>

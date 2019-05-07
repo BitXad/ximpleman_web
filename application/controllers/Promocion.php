@@ -5,66 +5,85 @@
  */
  
 class Promocion extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Promocion_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of promocion
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('promocion/index?');
-        $config['total_rows'] = $this->Promocion_model->get_all_promocion_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['promocion'] = $this->Promocion_model->get_all_promocion($params);
-        
-        $data['_view'] = 'promocion/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('promocion/index?');
+            $config['total_rows'] = $this->Promocion_model->get_all_promocion_count();
+            $this->pagination->initialize($config);
+
+            $data['promocion'] = $this->Promocion_model->get_all_promocion($params);
+
+            $data['_view'] = 'promocion/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new promocion
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('promocion_titulo','Promocion Titulo','required');
-		$this->form_validation->set_rules('promocion_cantidad','Promocion Cantidad','required');
-		$this->form_validation->set_rules('promocion_preciototal','Promocion Preciototal','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'producto_id' => $this->input->post('producto_id'),
-				'estado_id' => $this->input->post('estado_id'),
-				'promocion_titulo' => $this->input->post('promocion_titulo'),
-				'promocion_cantidad' => $this->input->post('promocion_cantidad'),
-				'promocion_preciototal' => $this->input->post('promocion_preciototal'),
-				'promocion_descripcion' => $this->input->post('promocion_descripcion'),
-            );
-            
-            $promocion_id = $this->Promocion_model->add_promocion($params);
-            redirect('promocion/index');
-        }
-        else
-        {
-			$this->load->model('Producto_model');
-			$data['all_producto'] = $this->Producto_model->get_all_producto();
+                    $this->form_validation->set_rules('promocion_titulo','Promocion Titulo','required');
+                    $this->form_validation->set_rules('promocion_cantidad','Promocion Cantidad','required');
+                    $this->form_validation->set_rules('promocion_preciototal','Promocion Preciototal','required');
 
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-            
-            $data['_view'] = 'promocion/add';
-            $this->load->view('layouts/main',$data);
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'producto_id' => $this->input->post('producto_id'),
+                                    'estado_id' => $this->input->post('estado_id'),
+                                    'promocion_titulo' => $this->input->post('promocion_titulo'),
+                                    'promocion_cantidad' => $this->input->post('promocion_cantidad'),
+                                    'promocion_preciototal' => $this->input->post('promocion_preciototal'),
+                                    'promocion_descripcion' => $this->input->post('promocion_descripcion'),
+                );
+
+                $promocion_id = $this->Promocion_model->add_promocion($params);
+                redirect('promocion/index');
+            }
+            else
+            {
+                            $this->load->model('Producto_model');
+                            $data['all_producto'] = $this->Producto_model->get_all_producto();
+
+                            $this->load->model('Estado_model');
+                            $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                $data['_view'] = 'promocion/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -72,46 +91,48 @@ class Promocion extends CI_Controller{
      * Editing a promocion
      */
     function edit($promocion_id)
-    {   
-        // check if the promocion exists before trying to edit it
-        $data['promocion'] = $this->Promocion_model->get_promocion($promocion_id);
-        
-        if(isset($data['promocion']['promocion_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the promocion exists before trying to edit it
+            $data['promocion'] = $this->Promocion_model->get_promocion($promocion_id);
 
-			$this->form_validation->set_rules('promocion_titulo','Promocion Titulo','required');
-			$this->form_validation->set_rules('promocion_cantidad','Promocion Cantidad','required');
-			$this->form_validation->set_rules('promocion_preciototal','Promocion Preciototal','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'producto_id' => $this->input->post('producto_id'),
-					'estado_id' => $this->input->post('estado_id'),
-					'promocion_titulo' => $this->input->post('promocion_titulo'),
-					'promocion_cantidad' => $this->input->post('promocion_cantidad'),
-					'promocion_preciototal' => $this->input->post('promocion_preciototal'),
-					'promocion_descripcion' => $this->input->post('promocion_descripcion'),
-                );
+            if(isset($data['promocion']['promocion_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Promocion_model->update_promocion($promocion_id,$params);            
-                redirect('promocion/index');
+                            $this->form_validation->set_rules('promocion_titulo','Promocion Titulo','required');
+                            $this->form_validation->set_rules('promocion_cantidad','Promocion Cantidad','required');
+                            $this->form_validation->set_rules('promocion_preciototal','Promocion Preciototal','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'producto_id' => $this->input->post('producto_id'),
+                                            'estado_id' => $this->input->post('estado_id'),
+                                            'promocion_titulo' => $this->input->post('promocion_titulo'),
+                                            'promocion_cantidad' => $this->input->post('promocion_cantidad'),
+                                            'promocion_preciototal' => $this->input->post('promocion_preciototal'),
+                                            'promocion_descripcion' => $this->input->post('promocion_descripcion'),
+                    );
+
+                    $this->Promocion_model->update_promocion($promocion_id,$params);            
+                    redirect('promocion/index');
+                }
+                else
+                {
+                                    $this->load->model('Producto_model');
+                                    $data['all_producto'] = $this->Producto_model->get_all_producto();
+
+                                    $this->load->model('Estado_model');
+                                    $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                    $data['_view'] = 'promocion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Producto_model');
-				$data['all_producto'] = $this->Producto_model->get_all_producto();
-
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
-
-                $data['_view'] = 'promocion/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The promocion you are trying to edit does not exist.');
         }
-        else
-            show_error('The promocion you are trying to edit does not exist.');
     } 
 
     /*
@@ -119,16 +140,18 @@ class Promocion extends CI_Controller{
      */
     function remove($promocion_id)
     {
-        $promocion = $this->Promocion_model->get_promocion($promocion_id);
+        if($this->acceso(155)){
+            $promocion = $this->Promocion_model->get_promocion($promocion_id);
 
-        // check if the promocion exists before trying to delete it
-        if(isset($promocion['promocion_id']))
-        {
-            $this->Promocion_model->delete_promocion($promocion_id);
-            redirect('promocion/index');
+            // check if the promocion exists before trying to delete it
+            if(isset($promocion['promocion_id']))
+            {
+                $this->Promocion_model->delete_promocion($promocion_id);
+                redirect('promocion/index');
+            }
+            else
+                show_error('The promocion you are trying to delete does not exist.');
         }
-        else
-            show_error('The promocion you are trying to delete does not exist.');
     }
     
 }

@@ -5,59 +5,79 @@
  */
  
 class Boton extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Boton_model');
-    } 
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of boton
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('boton/index?');
-        $config['total_rows'] = $this->Boton_model->get_all_boton_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['boton'] = $this->Boton_model->get_all_boton($params);
-        
-        $data['_view'] = 'boton/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('boton/index?');
+            $config['total_rows'] = $this->Boton_model->get_all_boton_count();
+            $this->pagination->initialize($config);
+
+            $data['boton'] = $this->Boton_model->get_all_boton($params);
+
+            $data['_view'] = 'boton/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new boton
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('boton_titulo','Boton Titulo','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'boton_titulo' => $this->input->post('boton_titulo'),
-				'boton_descripcion' => $this->input->post('boton_descripcion'),
-				'boton_enlace' => $this->input->post('boton_enlace'),
-            );
-            
-            $boton_id = $this->Boton_model->add_boton($params);
-            redirect('boton/index');
-        }
-        else
-        {
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-            
-            $data['_view'] = 'boton/add';
-            $this->load->view('layouts/main',$data);
+                    $this->form_validation->set_rules('boton_titulo','Boton Titulo','required');
+
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'boton_titulo' => $this->input->post('boton_titulo'),
+                                    'boton_descripcion' => $this->input->post('boton_descripcion'),
+                                    'boton_enlace' => $this->input->post('boton_enlace'),
+                );
+
+                $boton_id = $this->Boton_model->add_boton($params);
+                redirect('boton/index');
+            }
+            else
+            {
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                $data['_view'] = 'boton/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -65,39 +85,41 @@ class Boton extends CI_Controller{
      * Editing a boton
      */
     function edit($boton_id)
-    {   
-        // check if the boton exists before trying to edit it
-        $data['boton'] = $this->Boton_model->get_boton($boton_id);
-        
-        if(isset($data['boton']['boton_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the boton exists before trying to edit it
+            $data['boton'] = $this->Boton_model->get_boton($boton_id);
 
-			$this->form_validation->set_rules('boton_titulo','Boton Titulo','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'boton_titulo' => $this->input->post('boton_titulo'),
-					'boton_descripcion' => $this->input->post('boton_descripcion'),
-					'boton_enlace' => $this->input->post('boton_enlace'),
-                );
+            if(isset($data['boton']['boton_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Boton_model->update_boton($boton_id,$params);            
-                redirect('boton/index');
+                            $this->form_validation->set_rules('boton_titulo','Boton Titulo','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'boton_titulo' => $this->input->post('boton_titulo'),
+                                            'boton_descripcion' => $this->input->post('boton_descripcion'),
+                                            'boton_enlace' => $this->input->post('boton_enlace'),
+                    );
+
+                    $this->Boton_model->update_boton($boton_id,$params);            
+                    redirect('boton/index');
+                }
+                else
+                {
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                    $data['_view'] = 'boton/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-                $data['_view'] = 'boton/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The boton you are trying to edit does not exist.');
         }
-        else
-            show_error('The boton you are trying to edit does not exist.');
     } 
 
     /*
@@ -105,16 +127,18 @@ class Boton extends CI_Controller{
      */
     function remove($boton_id)
     {
-        $boton = $this->Boton_model->get_boton($boton_id);
+        if($this->acceso(155)){
+            $boton = $this->Boton_model->get_boton($boton_id);
 
-        // check if the boton exists before trying to delete it
-        if(isset($boton['boton_id']))
-        {
-            $this->Boton_model->delete_boton($boton_id);
-            redirect('boton/index');
+            // check if the boton exists before trying to delete it
+            if(isset($boton['boton_id']))
+            {
+                $this->Boton_model->delete_boton($boton_id);
+                redirect('boton/index');
+            }
+            else
+                show_error('The boton you are trying to delete does not exist.');
         }
-        else
-            show_error('The boton you are trying to delete does not exist.');
     }
     
 }

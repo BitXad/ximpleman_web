@@ -5,56 +5,75 @@
  */
  
 class Boton_articulo extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Boton_articulo_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of boton_articulo
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('boton_articulo/index?');
-        $config['total_rows'] = $this->Boton_articulo_model->get_all_boton_articulo_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['boton_articulo'] = $this->Boton_articulo_model->get_all_boton_articulo($params);
-        
-        $data['_view'] = 'boton_articulo/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('boton_articulo/index?');
+            $config['total_rows'] = $this->Boton_articulo_model->get_all_boton_articulo_count();
+            $this->pagination->initialize($config);
+
+            $data['boton_articulo'] = $this->Boton_articulo_model->get_all_boton_articulo($params);
+
+            $data['_view'] = 'boton_articulo/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new boton_articulo
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'articulo_id' => $this->input->post('articulo_id'),
-				'boton_id' => $this->input->post('boton_id'),
-            );
-            
-            $boton_articulo_id = $this->Boton_articulo_model->add_boton_articulo($params);
-            redirect('boton_articulo/index');
-        }
-        else
-        {
-			$this->load->model('Articulo_model');
-			$data['all_articulo'] = $this->Articulo_model->get_all_articulo();
+    {
+        if($this->acceso(155)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                                    'articulo_id' => $this->input->post('articulo_id'),
+                                    'boton_id' => $this->input->post('boton_id'),
+                );
 
-			$this->load->model('Boton_model');
-			$data['all_boton'] = $this->Boton_model->get_all_boton();
-            
-            $data['_view'] = 'boton_articulo/add';
-            $this->load->view('layouts/main',$data);
+                $boton_articulo_id = $this->Boton_articulo_model->add_boton_articulo($params);
+                redirect('boton_articulo/index');
+            }
+            else
+            {
+                            $this->load->model('Articulo_model');
+                            $data['all_articulo'] = $this->Articulo_model->get_all_articulo();
+
+                            $this->load->model('Boton_model');
+                            $data['all_boton'] = $this->Boton_model->get_all_boton();
+
+                $data['_view'] = 'boton_articulo/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -62,36 +81,38 @@ class Boton_articulo extends CI_Controller{
      * Editing a boton_articulo
      */
     function edit($botonartic_id)
-    {   
-        // check if the boton_articulo exists before trying to edit it
-        $data['boton_articulo'] = $this->Boton_articulo_model->get_boton_articulo($botonartic_id);
-        
-        if(isset($data['boton_articulo']['botonartic_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'articulo_id' => $this->input->post('articulo_id'),
-					'boton_id' => $this->input->post('boton_id'),
-                );
+    {
+        if($this->acceso(155)){
+            // check if the boton_articulo exists before trying to edit it
+            $data['boton_articulo'] = $this->Boton_articulo_model->get_boton_articulo($botonartic_id);
 
-                $this->Boton_articulo_model->update_boton_articulo($botonartic_id,$params);            
-                redirect('boton_articulo/index');
+            if(isset($data['boton_articulo']['botonartic_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'articulo_id' => $this->input->post('articulo_id'),
+                                            'boton_id' => $this->input->post('boton_id'),
+                    );
+
+                    $this->Boton_articulo_model->update_boton_articulo($botonartic_id,$params);            
+                    redirect('boton_articulo/index');
+                }
+                else
+                {
+                                    $this->load->model('Articulo_model');
+                                    $data['all_articulo'] = $this->Articulo_model->get_all_articulo();
+
+                                    $this->load->model('Boton_model');
+                                    $data['all_boton'] = $this->Boton_model->get_all_boton();
+
+                    $data['_view'] = 'boton_articulo/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Articulo_model');
-				$data['all_articulo'] = $this->Articulo_model->get_all_articulo();
-
-				$this->load->model('Boton_model');
-				$data['all_boton'] = $this->Boton_model->get_all_boton();
-
-                $data['_view'] = 'boton_articulo/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The boton_articulo you are trying to edit does not exist.');
         }
-        else
-            show_error('The boton_articulo you are trying to edit does not exist.');
     } 
 
     /*
@@ -99,16 +120,18 @@ class Boton_articulo extends CI_Controller{
      */
     function remove($botonartic_id)
     {
-        $boton_articulo = $this->Boton_articulo_model->get_boton_articulo($botonartic_id);
+        if($this->acceso(155)){
+            $boton_articulo = $this->Boton_articulo_model->get_boton_articulo($botonartic_id);
 
-        // check if the boton_articulo exists before trying to delete it
-        if(isset($boton_articulo['botonartic_id']))
-        {
-            $this->Boton_articulo_model->delete_boton_articulo($botonartic_id);
-            redirect('boton_articulo/index');
+            // check if the boton_articulo exists before trying to delete it
+            if(isset($boton_articulo['botonartic_id']))
+            {
+                $this->Boton_articulo_model->delete_boton_articulo($botonartic_id);
+                redirect('boton_articulo/index');
+            }
+            else
+                show_error('The boton_articulo you are trying to delete does not exist.');
         }
-        else
-            show_error('The boton_articulo you are trying to delete does not exist.');
     }
     
 }

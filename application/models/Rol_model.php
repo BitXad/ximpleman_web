@@ -32,38 +32,19 @@ class Rol_model extends CI_Model
      * Get all rol
      */
     function get_all_rol($params = array())
-      
     {
-$limit_condition = "";
+        $limit_condition = "";
         if(isset($params) && !empty($params))
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         {
           $rol = $this->db->query("
             SELECT
-                r.*, e.*, y.rol_descripcion AS Rol_superior
-
+                r.*, e.estado_color, e.estado_descripcion
             FROM
-                rol r, estado e, rol y
-
+                rol r, estado e
             WHERE
-                r.estado_id = e.estado_id and 
-                y.rol_id = r.rol_idfk 
-
-            UNION 
-
-            SELECT
-                  q.*, w.*, 'Superior' AS Rol_superior
-            FROM
-                rol q, estado w
-
-            WHERE
-                q.estado_id = w.estado_id   and
-                q.rol_idfk = 0         
-
-               
-
+                r.estado_id = e.estado_id               
              ORDER BY `rol_id` ASC
-
             " . $limit_condition . "
         ")->result_array();
 
@@ -126,5 +107,41 @@ $limit_condition = "";
         $query = $this->db->get();
         return $query->result();
     }
-
+    
+    function get_allrol()
+    {
+        $rol = $this->db->query("
+            SELECT
+                r.*
+            FROM
+                rol r
+        ")->result_array();
+        return $rol;
+   }
+   function get_allrol_padre()
+    {
+        $rol = $this->db->query("
+            SELECT
+                r.*, estado_color, estado_descripcion
+            FROM
+                rol r, estado e
+            WHERE
+                e.estado_id = r.estado_id
+                and r.rol_idfk = 0
+        ")->result_array();
+        return $rol;
+   }
+   function get_allrol_hijo()
+    {
+        $rol = $this->db->query("
+            SELECT
+                r.*, e.estado_color, e.estado_descripcion
+            FROM
+                rol r, estado e
+            WHERE
+                e.estado_id = r.estado_id
+                and r.rol_idfk != 0
+        ")->result_array();
+        return $rol;
+   }
 }

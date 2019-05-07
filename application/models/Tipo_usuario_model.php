@@ -29,41 +29,26 @@ class Tipo_usuario_model extends CI_Model
 
         return $tipo_usuario;
     }
-    
-    /*
-     * Get all tipo_usuario count
-     */
-    function get_all_tipo_usuario_count()
-    {
-        $tipo_usuario = $this->db->query("
-            SELECT
-                count(*) as count
-
-            FROM
-                `tipo_usuario`
-        ")->row_array();
-
-        return $tipo_usuario['count'];
-    }
         
     /*
      * Get all tipo_usuario
      */
-    function get_all_tipo_usuario($params = array())
+    function get_all_tipo_usuario()
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
-        
         $tipo_usuario = $this->db->query("
-            SELECT * FROM tipo_usuario t,estado e
-            WHERE t.estado_id = e.estado_id ORDER BY `tipousuario_id` ASC
-            " . $limit_condition . "
+            SELECT
+                *
+
+            FROM
+                `tipo_usuario`
+
+            WHERE
+                1 = 1
+
+            ORDER BY `tipousuario_id` 
         ")->result_array();
 
         return $tipo_usuario;
-        
-         
     }
         
     /*
@@ -90,5 +75,30 @@ class Tipo_usuario_model extends CI_Model
     function delete_tipo_usuario($tipousuario_id)
     {
         return $this->db->delete('tipo_usuario',array('tipousuario_id'=>$tipousuario_id));
+    }
+
+    function inactivar_tipo_usuario($tipousuario_id)
+    {
+        $sql = "update tipo_usuario set estado_id = 2 where tipousuario_id = ".$tipousuario_id;
+        
+        return $this->db->query($sql);
+    }
+    /*
+     * Get nombre detipo_usuario by tipousuario_id
+     */
+    function get_tipousuario_nombre($tipousuario_id)
+    {
+        $tipo_usuario = $this->db->query("
+            SELECT
+                t.tipousuario_descripcion
+
+            FROM
+                tipo_usuario t
+
+            WHERE
+                t.tipousuario_id = ?
+        ",array($tipousuario_id))->row_array();
+
+        return $tipo_usuario['tipousuario_descripcion'];
     }
 }

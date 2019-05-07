@@ -5,55 +5,74 @@
  */
  
 class Idioma extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Idioma_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of idioma
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('idioma/index?');
-        $config['total_rows'] = $this->Idioma_model->get_all_idioma_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['idioma'] = $this->Idioma_model->get_all_idioma($params);
-        
-        $data['_view'] = 'idioma/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('idioma/index?');
+            $config['total_rows'] = $this->Idioma_model->get_all_idioma_count();
+            $this->pagination->initialize($config);
+
+            $data['idioma'] = $this->Idioma_model->get_all_idioma($params);
+
+            $data['_view'] = 'idioma/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new idioma
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('idioma_descripcion','Idioma Descripcion','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'idioma_descripcion' => $this->input->post('idioma_descripcion'),
-				'idioma_imagen' => $this->input->post('idioma_imagen'),
-				'idioma_enlace' => $this->input->post('idioma_enlace'),
-            );
-            
-            $idioma_id = $this->Idioma_model->add_idioma($params);
-            redirect('idioma/index');
-        }
-        else
-        {            
-            $data['_view'] = 'idioma/add';
-            $this->load->view('layouts/main',$data);
+                    $this->form_validation->set_rules('idioma_descripcion','Idioma Descripcion','required');
+
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'idioma_descripcion' => $this->input->post('idioma_descripcion'),
+                                    'idioma_imagen' => $this->input->post('idioma_imagen'),
+                                    'idioma_enlace' => $this->input->post('idioma_enlace'),
+                );
+
+                $idioma_id = $this->Idioma_model->add_idioma($params);
+                redirect('idioma/index');
+            }
+            else
+            {            
+                $data['_view'] = 'idioma/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -61,35 +80,37 @@ class Idioma extends CI_Controller{
      * Editing a idioma
      */
     function edit($idioma_id)
-    {   
-        // check if the idioma exists before trying to edit it
-        $data['idioma'] = $this->Idioma_model->get_idioma($idioma_id);
-        
-        if(isset($data['idioma']['idioma_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the idioma exists before trying to edit it
+            $data['idioma'] = $this->Idioma_model->get_idioma($idioma_id);
 
-			$this->form_validation->set_rules('idioma_descripcion','Idioma Descripcion','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'idioma_descripcion' => $this->input->post('idioma_descripcion'),
-					'idioma_imagen' => $this->input->post('idioma_imagen'),
-					'idioma_enlace' => $this->input->post('idioma_enlace'),
-                );
+            if(isset($data['idioma']['idioma_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Idioma_model->update_idioma($idioma_id,$params);            
-                redirect('idioma/index');
+                            $this->form_validation->set_rules('idioma_descripcion','Idioma Descripcion','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'idioma_descripcion' => $this->input->post('idioma_descripcion'),
+                                            'idioma_imagen' => $this->input->post('idioma_imagen'),
+                                            'idioma_enlace' => $this->input->post('idioma_enlace'),
+                    );
+
+                    $this->Idioma_model->update_idioma($idioma_id,$params);            
+                    redirect('idioma/index');
+                }
+                else
+                {
+                    $data['_view'] = 'idioma/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'idioma/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The idioma you are trying to edit does not exist.');
         }
-        else
-            show_error('The idioma you are trying to edit does not exist.');
     } 
 
     /*
@@ -97,16 +118,18 @@ class Idioma extends CI_Controller{
      */
     function remove($idioma_id)
     {
-        $idioma = $this->Idioma_model->get_idioma($idioma_id);
+        if($this->acceso(155)){
+            $idioma = $this->Idioma_model->get_idioma($idioma_id);
 
-        // check if the idioma exists before trying to delete it
-        if(isset($idioma['idioma_id']))
-        {
-            $this->Idioma_model->delete_idioma($idioma_id);
-            redirect('idioma/index');
+            // check if the idioma exists before trying to delete it
+            if(isset($idioma['idioma_id']))
+            {
+                $this->Idioma_model->delete_idioma($idioma_id);
+                redirect('idioma/index');
+            }
+            else
+                show_error('The idioma you are trying to delete does not exist.');
         }
-        else
-            show_error('The idioma you are trying to delete does not exist.');
     }
     
 }
