@@ -39,7 +39,7 @@ class Ingreso extends CI_Controller{
     function index()
     {
          if($this->acceso(53)){
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
         $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
         $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
         $data['_view'] = 'ingreso/index';
@@ -79,7 +79,7 @@ class Ingreso extends CI_Controller{
     function add()
     {   
          if($this->acceso(54)){
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
         $this->load->library('form_validation');
       $this->form_validation->set_rules(
         'ingreso_nombre', 'ingreso_nombre',
@@ -131,7 +131,7 @@ class Ingreso extends CI_Controller{
     {   
         
         if($this->acceso(55)){
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
         // check if the ingreso exists before trying to edit it
         $data['ingreso'] = $this->Ingreso_model->get_ingreso($ingreso_id);
         

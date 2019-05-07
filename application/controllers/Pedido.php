@@ -93,7 +93,7 @@ class Pedido extends CI_Controller{
         
         if($this->acceso(32)) {
         //**************** inicio contenido ***************            
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         $empresa_id = 1;
         
         $data['page_title'] = "Nota de Pedido";
@@ -116,7 +116,7 @@ class Pedido extends CI_Controller{
         if($this->acceso(30)) {
         //**************** inicio contenido ***************            
         
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -150,7 +150,7 @@ class Pedido extends CI_Controller{
         
         if($this->acceso(31)) {
         //**************** inicio contenido ***************            
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
         //Registrar Pedido
         $pedido_id = $this->Pedido_model->crear_pedido($usuario_id);        
@@ -172,7 +172,7 @@ class Pedido extends CI_Controller{
         //**************** inicio contenido ***************            
         
         $data['page_title'] = "Pedidos";
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
 //        $usuarioped_id = $pedido[0]['usuario_id'];
         
@@ -243,7 +243,7 @@ class Pedido extends CI_Controller{
     {
         if($this->acceso(30)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
                 
         $sql = "insert into detalle_venta_aux(
             producto_id,
@@ -334,7 +334,7 @@ class Pedido extends CI_Controller{
         
        if($this->acceso(30)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];     
+        $usuario_id = $this->session_data['usuario_id'];     
         $estado_id = 3;
 
         $tipotrans_id = $this->input->post('tipo_transaccion');
@@ -562,7 +562,7 @@ class Pedido extends CI_Controller{
         
            if($this->acceso(30)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
         if ($this->input->is_ajax_request()){
             
@@ -613,7 +613,7 @@ class Pedido extends CI_Controller{
         
             if($this->acceso(34)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
         if ($this->input->is_ajax_request()){
             
@@ -674,7 +674,7 @@ class Pedido extends CI_Controller{
         if($this->acceso(30)) {
         //**************** inicio contenido ***************            
        
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         $sql = "delete from detalle_pedido where pedido_id = ".$pedido_id;
         $this->Pedido_model->ejecutar($sql);
         return true;
@@ -753,7 +753,7 @@ class Pedido extends CI_Controller{
         //**************** inicio contenido ***************  
         
             $data['page_title'] = "Mapa de Pedidos";
-            $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
+            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
             
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
@@ -779,7 +779,7 @@ class Pedido extends CI_Controller{
         //**************** inicio contenido ***************  
         
             $data['page_title'] = "Mapa de Entregas";
-            $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
+            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
             
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
