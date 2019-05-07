@@ -73,7 +73,7 @@
 									</div>
 								</div>
 							<div class="form-group">
-								<label for="ingreso_nombre" class="col-md-4 control-label" data-title="asno">NOMBRE <a data-title="Nombre de la persona que realiza el ingreso" class="boton-ayuda">?</a></label>
+								<label for="ingreso_nombre" class="col-md-4 control-label">NOMBRE <a data-title="Nombre de la persona que realiza el ingreso" class="boton-ayuda">?</a></label>
 								<div class="col-md-8">
 									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" required/>
 								</div>

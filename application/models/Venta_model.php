@@ -417,20 +417,20 @@ function get_busqueda($condicion)
         
         $detalle_venta = $this->db->query("
             SELECT
-                dv.*, v.*, u.*, i.*, SUM(dv.detalleven_cantidad) as cantidades, SUM(dv.detalleven_total) as totales
+                dv.*, v.*, i.*, SUM(dv.detalleven_cantidad) as cantidades, SUM(dv.detalleven_total) as totales
 
             FROM
-                detalle_venta dv, venta v, usuario u, inventario i
+                detalle_venta dv 
+            LEFT JOIN venta v on dv.venta_id = v.venta_id
+            LEFT JOIN inventario i on dv.producto_id = i.producto_id
 
             WHERE
-                v.usuario_id = u.usuario_id
-                and dv.venta_id = v.venta_id
-                and dv.producto_id = i.producto_id
+                1=1
                 ".$condicion." 
-              GROUP BY `producto_codigo` 
+              GROUP BY dv.producto_id 
 
 
-            ORDER BY `detalleven_id` DESC limit 50
+            ORDER BY dv.detalleven_id DESC 
 
         ")->result_array();
 
