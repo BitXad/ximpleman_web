@@ -10,14 +10,28 @@ class Orden_pago extends CI_Controller{
         parent::__construct();
         $this->load->model('Orden_pago_model');
         $this->load->model('Usuario_model');
-    } 
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }  
 
     /*
      * Listing of orden_pago
      */
     function index()
     {
-        
+        if($this->acceso(89)) {
         $data['page_title'] = "Orden de pago";
         $data['orden_pago'] = $this->Orden_pago_model->get_pago_pendiente();
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
@@ -26,24 +40,29 @@ class Orden_pago extends CI_Controller{
         $data['_view'] = 'orden_pago/index';
         $this->load->view('layouts/main',$data);
     }
+    }
 
     function pagadas_hoy()
     {
+        if($this->acceso(89)) {
         $data['orden_pago'] = $this->Orden_pago_model->get_pagadas_hoy();
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
         
         $data['_view'] = 'orden_pago/index';
         $this->load->view('layouts/main',$data);
     }
+}
 
     function pagadas_antes()
     {
+        if($this->acceso(89)) {
         $data['orden_pago'] = $this->Orden_pago_model->get_pagadas_antes();
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
         
         $data['_view'] = 'orden_pago/index';
         $this->load->view('layouts/main',$data);
     }
+}
 
     /*
      * Adding a new orden_pago
@@ -100,16 +119,11 @@ class Orden_pago extends CI_Controller{
      */
     function nueva_orden()
     {   
+        if($this->acceso(90)) {
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
         //**************** inicio contenido ***************            
         
-        $usuario_id = $session_data['usuario_id']; 
+        $usuario_id = $this->session_data['usuario_id'];
         $orden_fecha = "'".date("Y-m-d")."'"; 
         $orden_hora = "'".date("H:n:s")."'"; 
         $orden_monto = $this->input->post('orden_monto');
@@ -151,23 +165,17 @@ class Orden_pago extends CI_Controller{
         
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }            
+        			         
         
     }  
 
     function generar_orden($orden_monto,$orden_motivo,$orden_destinatario,$compra_id,$cuota_id)
     {   
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(90)) {
         //**************** inicio contenido ***************            
         
-        $usuario_id = $session_data['usuario_id']; 
+        $usuario_id = $this->session_data['usuario_id'];
         $orden_fecha = "'".date("Y-m-d")."'"; 
         $orden_hora = "'".date("H:n:s")."'"; 
         
@@ -210,23 +218,17 @@ class Orden_pago extends CI_Controller{
         
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }            
+        			  
         
     }  
 
     function pagar_orden($orden_id){
         
+        if($this->acceso(89)) {
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
         //**************** inicio contenido ***************            
         
-        $usuario_id2 = $session_data['usuario_id']; 
+        $usuario_id2 = $this->session_data['usuario_id'];
         $orden_fechapago = "'".date("Y-m-d")."'"; 
         $orden_horapago = "'".date("H:n:s")."'"; 
         $orden_cancelado = $this->input->post('orden_cancelado'.$orden_id);
@@ -255,8 +257,7 @@ class Orden_pago extends CI_Controller{
         
         //**************** fin contenido ***************
             }
-            else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }                    
+                           
         
     }         
     

@@ -9,30 +9,33 @@ class Unidad extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Unidad_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
-    
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of unidad
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(136)){
         $data['unidad'] = $this->Unidad_model->get_all_unidad();
         
         $data['_view'] = 'unidad/index';
         $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+          
     }
 
     /*
@@ -40,12 +43,7 @@ class Unidad extends CI_Controller{
      */
     function add()
     {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(136)){
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('unidad_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -64,12 +62,7 @@ class Unidad extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }  
 
     /*
@@ -77,12 +70,7 @@ class Unidad extends CI_Controller{
      */
     function edit($unidad_id)
     {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(136)){
         // check if the tipo_servicio exists before trying to edit it
         $data['unidad'] = $this->Unidad_model->get_unidad($unidad_id);
         
@@ -108,12 +96,7 @@ class Unidad extends CI_Controller{
         else
             show_error('La Unidad que estas intentando editar no existe.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     } 
 
     /*
@@ -121,10 +104,7 @@ class Unidad extends CI_Controller{
      */
     function remove($unidad_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-        $unidad = $this->Unidad_model->get_unidad($unidad_id);
+       if($this->acceso(136)){
 
         // check if the unidad exists before trying to delete it
         if(isset($unidad['unidad_id']))
@@ -135,12 +115,7 @@ class Unidad extends CI_Controller{
         else
             show_error('La unidad que estas intentando eliminar no existe.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+          
     }
     
 }

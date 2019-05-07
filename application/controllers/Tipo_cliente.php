@@ -9,13 +9,28 @@ class Tipo_cliente extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Tipo_cliente_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of tipo_cliente
      */
     function index()
     {
+        if($this->acceso(148)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -29,12 +44,14 @@ class Tipo_cliente extends CI_Controller{
         $data['_view'] = 'tipo_cliente/index';
         $this->load->view('layouts/main',$data);
     }
+    }
 
     /*
      * Adding a new tipo_cliente
      */
     function add()
     {   
+        if($this->acceso(148)){
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('tipocliente_descripcion','Tipocliente Descripcion','required');
@@ -55,6 +72,7 @@ class Tipo_cliente extends CI_Controller{
             $data['_view'] = 'tipo_cliente/add';
             $this->load->view('layouts/main',$data);
         }
+    }
     }  
 
     /*
@@ -62,6 +80,7 @@ class Tipo_cliente extends CI_Controller{
      */
     function edit($tipocliente_id)
     {   
+        if($this->acceso(148)){
         // check if the tipo_cliente exists before trying to edit it
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
         
@@ -90,6 +109,7 @@ class Tipo_cliente extends CI_Controller{
         }
         else
             show_error('The tipo_cliente you are trying to edit does not exist.');
+    }
     } 
 
     /*
@@ -97,6 +117,7 @@ class Tipo_cliente extends CI_Controller{
      */
     function remove($tipocliente_id)
     {
+        if($this->acceso(148)){
         $tipo_cliente = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
 
         // check if the tipo_cliente exists before trying to delete it
@@ -108,5 +129,6 @@ class Tipo_cliente extends CI_Controller{
         else
             show_error('The tipo_cliente you are trying to delete does not exist.');
     }
+}
     
 }

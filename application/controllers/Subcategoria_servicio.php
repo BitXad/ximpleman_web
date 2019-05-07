@@ -9,6 +9,20 @@ class Subcategoria_servicio extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Subcategoria_servicio_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -16,23 +30,13 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1){
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(127)){
         $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio();
         
         $data['_view'] = 'subcategoria_servicio/index';
         $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 
     /*
@@ -40,12 +44,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(127)){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('subcatserv_descripcion','Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         if($this->form_validation->run())     
@@ -73,12 +72,7 @@ class Subcategoria_servicio extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     }  
 
     /*
@@ -86,12 +80,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function edit($subcatserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(127)){
         // check if the subcategoria_servicio exists before trying to edit it
         $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
         
@@ -123,12 +112,7 @@ class Subcategoria_servicio extends CI_Controller{
         else
             show_error('The subcategoria_servicio you are trying to edit does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     } 
 
     /*
@@ -136,9 +120,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function remove($subcatserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(127)){
                $subcategoria_servicio = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
 
             // check if the subcategoria_servicio exists before trying to delete it
@@ -158,12 +140,7 @@ class Subcategoria_servicio extends CI_Controller{
             else
                 show_error('The subcategoria_servicio you are trying to delete does not exist.');
             }
-                else{
-                    redirect('alerta');
-                }
-        } else {
-            redirect('', 'refresh');
-        }
+               
     }
     
     /*
@@ -171,10 +148,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function buscarinsumosasignados()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1  or $session_data['tipousuario_id']==2) {
- 
+        if($this->acceso(127)){
 //        if(isset($this->input->post('catserv_id')))
 //        {
             $subcatserv_id = $this->input->post('subcatserv_id');
@@ -184,12 +158,7 @@ class Subcategoria_servicio extends CI_Controller{
            // $res = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria($catserv_id);
             echo json_encode($res);
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 	
     /*
@@ -197,20 +166,13 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function getsubcategoriaserv()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(127)){
 			
 			$res = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio();
  
             echo json_encode($res);
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     
     /*
@@ -218,28 +180,19 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function getprecio_subcategoriaserv()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(127)){
 	    
             $subcatserv_id = $this->input->post('subcatserv_id');
 	    $res = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
  
             echo json_encode($res);
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     /* funcion que busca y devuelve las subcategorias de una categoria */
     function buscar_subcategoriaparam()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2) {
+        if($this->acceso(127)){
 	    
             $parametro = $this->input->post('parametro');
             $catserv_id = $this->input->post('catserv_id');
@@ -247,31 +200,19 @@ class Subcategoria_servicio extends CI_Controller{
  
             echo json_encode($res);
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     /* funcion que busca y devuelve una subcategoria de una categoria */
     function seleccionar_subcategoria()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2) {
+       if($this->acceso(127)){
 	    
             $subcatserv_id = $this->input->post('subcatserv_id');
 	    $res = $this->Subcategoria_servicio_model->get_this_subcatserv($subcatserv_id);
  
             echo json_encode($res);
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     
 }

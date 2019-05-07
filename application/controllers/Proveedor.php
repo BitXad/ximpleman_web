@@ -9,7 +9,22 @@ class Proveedor extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Proveedor_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in')
+            ;
+        }else {
+            redirect('', 'refresh');
+        }
     } 
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of proveedor
@@ -17,13 +32,8 @@ class Proveedor extends CI_Controller{
      
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(110)) {
+                $usuario_id = $this->session_data['usuario_id'];
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         $this->load->model('Empresa_model');
@@ -38,12 +48,7 @@ class Proveedor extends CI_Controller{
         $data['_view'] = 'proveedor/index';
         $this->load->view('layouts/main',$data);
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 
     /*
@@ -51,13 +56,8 @@ class Proveedor extends CI_Controller{
      */
     function add()
     {   
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
+         if($this->acceso(111)){
+                $usuario_id = $this->session_data['usuario_id'];
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('proveedor_codigo','Proveedor Codigo','required');
@@ -146,12 +146,7 @@ class Proveedor extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 
     function rapido()
@@ -243,13 +238,8 @@ class Proveedor extends CI_Controller{
      */
     function edit($proveedor_id)
     {   
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
+         if($this->acceso(112)){
+                $usuario_id = $this->session_data['usuario_id'];
         // check if the proveedor exists before trying to edit it
         $data['proveedor'] = $this->Proveedor_model->get_proveedor($proveedor_id);
         
@@ -357,12 +347,7 @@ class Proveedor extends CI_Controller{
         else
             show_error('The proveedor you are trying to edit does not exist.');
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     }
 
 
@@ -385,23 +370,13 @@ class Proveedor extends CI_Controller{
     /* *********Busca proveedores*********** */
     function buscarproveedor($filtro)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(113)){
                 
                 $data['proveedor'] = $this->Proveedor_model->get_busqueda_proveedor($filtro);
                 $data['a'] = "1";
                 $data['_view'] = 'proveedor/index';
                 $this->load->view('layouts/main',$data);
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 }
