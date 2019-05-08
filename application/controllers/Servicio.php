@@ -14,15 +14,29 @@ class Servicio extends CI_Controller{
         $this->load->model('Servicio_model');
         $this->load->helper('numeros');
         $this->load->library('ControlCode'); // para generar codigo
-        $this->session_data = $this->session->userdata('logged_in');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
+
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     
     /*
      * Listing of servicio
      */
     function index($es = null)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $usuario_id = $this->session_data['usuario_id'];
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -49,10 +63,11 @@ class Servicio extends CI_Controller{
         $data['_view'] = 'servicio/index';
         $this->load->view('layouts/main',$data);
     }
+}
 
     function add()
     {
-        $this->acceso();
+        if($this->acceso(70)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -101,13 +116,14 @@ class Servicio extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+}
     
     /*
      * Editing a servicio
      */
     function edit($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(71)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -144,13 +160,14 @@ class Servicio extends CI_Controller{
         else
             show_error('The servicio you are trying to edit does not exist.');
     } 
+}
 
     /*
      * Deleting servicio
      */
     function remove($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         
         $servicio = $this->Servicio_model->get_servicio($servicio_id);
 
@@ -163,13 +180,14 @@ class Servicio extends CI_Controller{
         else
             show_error('The servicio you are trying to delete does not exist.');
     }
+}
     
     /*
      * Añadir nuevo servicio y un cliente nuevo
      */
     function nuevo_servicio_cliente($cliente_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -216,11 +234,12 @@ class Servicio extends CI_Controller{
         }else
             show_error('The servicio you are trying to edit does not exist.');
     }
+}
     
     /* *************Al añadir nuevo servicio; se crea un nuevo servicio con estos parametros**************  */
     function crearservicio()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
         $usuario_id = $this->session_data['usuario_id'];
         $tiposerv_id = 1; //este valor (Servicio Normal) esta definido en la tabla tipo_servicio
@@ -240,13 +259,14 @@ class Servicio extends CI_Controller{
         $servicio_id = $this->Servicio_model->add_servicio($params);
         redirect('servicio/serviciocreado/'.$servicio_id);
     }
+}
     /*
      * Crea un Nuevo SERVICIO en donde se puede registrar productos para
      * dar amntenimineto, reparar, diagnosticar...
      */
     function serviciocreado($servicio_id, $a = null)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -298,13 +318,14 @@ class Servicio extends CI_Controller{
             redirect('servicio');
         }
     }
+}
     
     /*
      * Asigna un cliente a un servicio determinado
      */
     function asignarcliente($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );  
@@ -330,13 +351,14 @@ class Servicio extends CI_Controller{
                     show_404();
                 }
     }
+}
     
     /*
      * Asigna un tipo de servicio a un servicio determinado
      */
     function asignartiposervicio($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );  
@@ -357,10 +379,11 @@ class Servicio extends CI_Controller{
                 }
                 
     }
+}
     
     function buscardetalleservicio($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(74)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -379,6 +402,7 @@ class Servicio extends CI_Controller{
                 redirect('servicio/serviciocreado/'.$servicio_id);
             }
     }
+}
     
     
     /*
@@ -388,7 +412,7 @@ class Servicio extends CI_Controller{
      */
     function anularserviciodet($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(82)){
         $usuario_id = $this->session_data['usuario_id'];  
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -419,10 +443,11 @@ class Servicio extends CI_Controller{
         echo json_encode("ok");
         //redirect('servicio/serview/'.$servicio_id);
     }
+}
     
     function serview($servicio_id, $a = null)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -448,6 +473,7 @@ class Servicio extends CI_Controller{
         $data['_view'] = 'servicio/serview';
         $this->load->view('layouts/main',$data);
     }
+}
     /* 
      * viene de servicio
      * *************Deja en cero todos los montos del servicio ($servicio_id)
@@ -455,7 +481,7 @@ class Servicio extends CI_Controller{
      */
     function anularserv($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(86)){
         $usuario_id = $this->session_data['usuario_id'];
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -483,23 +509,25 @@ class Servicio extends CI_Controller{
         echo json_encode("ok");
         //redirect('servicio');
     }
+}
     /*
      * Funcion para buscar(dado una categoria) y redibujar las subcategorias 
      */
     function fetch_data()
     {
-        $this->acceso();
+        if($this->acceso(69)){
             $catserv_id = $this->input->post('catserv_id');
             $this->load->model('Subcategoria_servicio_model');
             $res = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria($catserv_id);
             echo json_encode($res);
     }
+}
     /*
      * Funcion que busca un servicio dado un codigo determinado
      */
     function buscarporcod()
     {
-        $this->acceso();
+        if($this->acceso(73)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -518,12 +546,13 @@ class Servicio extends CI_Controller{
             redirect('servicio/index/1');
         }
     }
+}
     /*
      * Anula un detalle (detalleserv_id) de un Servicio
      */
     function anulardetalle($servicio_id, $detalleserv_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $estado_id = 4; // este valor esta definido en la tabla Estado = ANULADO
         $this->load->model('Detalle_serv_model');
         $detparams = array(
@@ -562,12 +591,13 @@ class Servicio extends CI_Controller{
         $this->Servicio_model->update_servicio($servicio_id,$sumparams);
         echo json_encode("ok");
     }
+}
     /*
     * buscar servicios
     */
     function buscarservicios()
     {
-        $this->acceso();  
+        if($this->acceso(69)){  
 
         if ($this->input->is_ajax_request()) {
             
@@ -587,10 +617,11 @@ class Servicio extends CI_Controller{
             show_404();
         }
     }
+}
     
     function boletarecepcion_boucher($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
             
@@ -614,10 +645,11 @@ class Servicio extends CI_Controller{
             $data['_view'] = 'servicio/boletarecepcion_boucher';
             $this->load->view('layouts/main',$data);
     }
+}
     
     function boletarecepcion($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -643,12 +675,13 @@ class Servicio extends CI_Controller{
             $data['_view'] = 'servicio/boletarecepcion';
             $this->load->view('layouts/main',$data);
     }
+}
     /*
      * muestra el detalle de un servicio a un usuario CLIENTE
      */
     function verservdet($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -695,13 +728,14 @@ class Servicio extends CI_Controller{
         $data['_view'] = 'servicio/verservdet';
         $this->load->view('layouts/main',$data);
     }
+}
     
     /*
     * buscar servicios por fechas
     */
     function buscarserviciosfecha()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');   
@@ -718,13 +752,14 @@ class Servicio extends CI_Controller{
             show_404();
         }
     }
+}
     
     /*
      * obtenemos los detalles de un determinado servicio
     */
     function getdetalleservicio($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
                 if ($this->input->is_ajax_request()){
                     $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
                     if(isset($data['servicio']['servicio_id']))
@@ -741,13 +776,14 @@ class Servicio extends CI_Controller{
                     show_404();
                 }
     }
+}
     
     /*
      * Obtiene los datos de un servicio; lo que recupera son los montos
      */
     function getmontoservicio($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
                 if ($this->input->is_ajax_request()){
                    $datos = $this->Servicio_model->get_servicio($servicio_id);
                     echo json_encode($datos);
@@ -757,20 +793,22 @@ class Servicio extends CI_Controller{
                     show_404();
                 }
     }
+}
     /* **********Obtiene todos los insumos usados en un determinado detalle de servicio*************** */
     function obtenerinsumosusados($detalleserv_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
                 $this->load->model('Detalle_venta_model');
                 $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
                 echo json_encode($datos);
     }
+}
     /*
      * Reporte de los servicios por fechas
      */
     function repserviciofechas($es = null)
     {
-        $this->acceso();  
+        if($this->acceso(69)){  
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -799,12 +837,13 @@ class Servicio extends CI_Controller{
         $data['_view'] = 'servicio/repserviciofechas';
         $this->load->view('layouts/main',$data);
     }
+}
     /*
      * Reporte de los servicios por fechas
      */
     function buscarrepservicioall()
     {
-        $this->acceso();
+        if($this->acceso(69)){
                 if ($this->input->is_ajax_request()){
                     $filtro = $this->input->post('filtro');
                     $datos = $this->Servicio_model->get_all_busquedarepservicios($filtro);
@@ -815,12 +854,13 @@ class Servicio extends CI_Controller{
                     show_404();
                 }
     }
+}
     /*
      * Lista de Servicios para Informes Tecnicos
      */
     function repinftecservicio()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -832,12 +872,13 @@ class Servicio extends CI_Controller{
         $data['_view'] = 'servicio/repinftecservicio';
         $this->load->view('layouts/main',$data);
     }
+}
     /*
      * Boleta de impresion de informe tecnico de un Servicio
      */
     function boletainftecservicio($servicio_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -860,13 +901,14 @@ class Servicio extends CI_Controller{
             $data['_view'] = 'servicio/boletainftecservicio';
             $this->load->view('layouts/main',$data);
     }
+}
     /*
      * Lista de detalles de servicio para Informes Tecnicos
      */
 
     function repinftecdetalleserv($es = null)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -894,12 +936,13 @@ class Servicio extends CI_Controller{
         $data['_view'] = 'servicio/repinftecdetalleserv';
         $this->load->view('layouts/main',$data);
     }
+}
     /*
      * Boleta de impresion de informe tecnico de un detalle de Servicio
      */
     function boletainftecdetalleserv($detalleserv_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -924,12 +967,13 @@ class Servicio extends CI_Controller{
             $data['_view'] = 'servicio/boletainftecdetalleserv';
             $this->load->view('layouts/main',$data);
     }
+}
     /*
      * Boleta de impresion de orden de SERVICIO
      */
     function boletacomprobanteserv($servicio_id)
     {
-        $this->acceso(); 
+        if($this->acceso(69)){ 
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -960,12 +1004,13 @@ class Servicio extends CI_Controller{
             $data['_view'] = 'servicio/boletacomprobanteserv';
             $this->load->view('layouts/main',$data);
     }
+}
     /*
     * buscar servicios pendientes
     */
     function buscarserviciospendientes()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         if ($this->input->is_ajax_request()) {
             
             $datos = $this->Servicio_model->get_all_servicios_pendientes();
@@ -976,12 +1021,13 @@ class Servicio extends CI_Controller{
             show_404();
         }
     }
+}
     /*
      * Reporte de los servicios diario
      */
     function repserviciodiario()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -1006,12 +1052,13 @@ class Servicio extends CI_Controller{
         $data['_view'] = 'servicio/repserviciodiario';
         $this->load->view('layouts/main',$data);
     }
+}
     /*
     * buscar servicios del dia
     */
     function buscardetalleserv_dia()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         if ($this->input->is_ajax_request()) {
             
             $datos = $this->Servicio_model->get_all_servicios_dia();
@@ -1022,19 +1069,21 @@ class Servicio extends CI_Controller{
             show_404();
         }
     }
+}
     /* **********Obtiene Precio de un detalle de venta*************** */
     function obtener_preciosinsumosusados($detalleserv_id)
     {
-        $this->acceso();
+        if($this->acceso(69)){
                 $this->load->model('Detalle_venta_model');
                 $datos = $this->Detalle_venta_model->get_costototal_insumos_usados($detalleserv_id);
                 echo json_encode($datos);
     }
+}
     
     /* buscar servicios para repinforme */
     function buscarservicios_infrep()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   
@@ -1053,10 +1102,11 @@ class Servicio extends CI_Controller{
             show_404();
         }
     }
+}
     /* modificar servicio fechas y generar su CODIGO seguimiento */
     function modificarservicio()
     {
-        $this->acceso();
+        if($this->acceso(69)){
         if ($this->input->is_ajax_request())
         {
             $fecha_reg = date('Y-m-d');
@@ -1086,6 +1136,7 @@ class Servicio extends CI_Controller{
             show_404();
         }
     }
+}
     
     function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
     {
@@ -1105,7 +1156,7 @@ class Servicio extends CI_Controller{
     /* elimina el servicio incluido sus detalles */
     function removeall()
     {
-        $this->acceso();
+        if($this->acceso(78)){
         if ($this->input->is_ajax_request())
         {
             
@@ -1133,16 +1184,6 @@ class Servicio extends CI_Controller{
             show_404();
         }
     }
-    private function acceso()
-    {
-        if ($this->session->userdata('logged_in')) {
-            if($this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==2 or $this->session_data['tipousuario_id']==5) {
-                return;
-            } else {
-                redirect('alerta');
-            }
-        } else {
-            redirect('inicio', 'refresh');
-        }
-    }
+}
+   
 }

@@ -9,29 +9,32 @@ class Tipo_servicio extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Tipo_servicio_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-    
+     private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    } 
     /*
      * Listing of tipo_servicio
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(134)){
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         
         $data['_view'] = 'tipo_servicio/index';
         $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        
         }
     }
 
@@ -40,12 +43,7 @@ class Tipo_servicio extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(134)){
                 
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('tiposerv_descripcion','Tipo Servicio Descripción','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -68,12 +66,7 @@ class Tipo_servicio extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     }  
 
     /*
@@ -81,12 +74,7 @@ class Tipo_servicio extends CI_Controller{
      */
     function edit($tiposerv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(134)){
         // check if the tipo_servicio exists before trying to edit it
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($tiposerv_id);
         
@@ -116,12 +104,7 @@ class Tipo_servicio extends CI_Controller{
         else
             show_error('The tipo_servicio you are trying to edit does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     } 
 
     /*
@@ -129,10 +112,7 @@ class Tipo_servicio extends CI_Controller{
      */
     function remove($tiposerv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-        $tipo_servicio = $this->Tipo_servicio_model->get_tipo_servicio($tiposerv_id);
+        if($this->acceso(134)){
 
         // check if the tipo_servicio exists before trying to delete it
         if(isset($tipo_servicio['tiposerv_id']))
@@ -143,12 +123,7 @@ class Tipo_servicio extends CI_Controller{
         else
             show_error('The tipo_servicio you are trying to delete does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     
 }

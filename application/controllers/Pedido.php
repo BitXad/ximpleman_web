@@ -17,7 +17,21 @@ class Pedido extends CI_Controller{
         $this->load->model('Tipo_transaccion_model');
         $this->load->model('Venta_model');
         $this->load->model('Usuario_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
         
+    }
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
     } 
 
     /*
@@ -26,16 +40,12 @@ class Pedido extends CI_Controller{
     function index()
     {
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
+                
         //**************** inicio contenido ***************            
-        $usuario_id = $session_data['usuario_id'];
-        $usuario_nombre = $session_data['usuario_nombre'];
-        $tipousuario_id = $session_data['tipousuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_nombre = $this->session_data['usuario_nombre'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];
         
 //        $params['limit'] = RECORDS_PER_PAGE; 
 //        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -72,8 +82,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }         
+        			       
         
     }
     /*
@@ -82,14 +91,9 @@ class Pedido extends CI_Controller{
     function nota_pedido($pedido_id)
     {
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 or $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(32)) {
         //**************** inicio contenido ***************            
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         $empresa_id = 1;
         
         $data['page_title'] = "Nota de Pedido";
@@ -102,24 +106,17 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }         
-        
+        		
     }
     /*
      * Listing of pedido
      */
     function mostrar_pedidos()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************            
         
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -142,9 +139,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }  
-        
+        			
     }
 
     /*
@@ -153,14 +148,9 @@ class Pedido extends CI_Controller{
     function crearpedido()
     {
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(31)) {
         //**************** inicio contenido ***************            
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
         //Registrar Pedido
         $pedido_id = $this->Pedido_model->crear_pedido($usuario_id);        
@@ -169,8 +159,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			        
     }
     
 
@@ -179,16 +168,11 @@ class Pedido extends CI_Controller{
      */
     function pedidoabierto($pedido_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************            
         
         $data['page_title'] = "Pedidos";
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
 //        $usuarioped_id = $pedido[0]['usuario_id'];
         
@@ -223,8 +207,7 @@ class Pedido extends CI_Controller{
 //                          		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }         
+        			     
     }
 
     /*
@@ -233,12 +216,7 @@ class Pedido extends CI_Controller{
     function detalle_pedido()
     {
         
-            if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+           if($this->acceso(30)) {
         //**************** inicio contenido ***************    
         if ($this->input->is_ajax_request()) {
              
@@ -255,8 +233,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }              
+        			      
     }
 
     /*
@@ -264,14 +241,9 @@ class Pedido extends CI_Controller{
      */
     function pasaraventas($pedido_id,$cliente_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
                 
         $sql = "insert into detalle_venta_aux(
             producto_id,
@@ -329,20 +301,14 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			         
     }
     /*
      * Pasar un pedido a ventas
      */
     function datoscliente()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************    
         if ($this->input->is_ajax_request()) {
             
@@ -360,21 +326,15 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }  
+        			
     }
     
     function finalizarpedido()
     {
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+       if($this->acceso(30)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];     
+        $usuario_id = $this->session_data['usuario_id'];     
         $estado_id = 3;
 
         $tipotrans_id = $this->input->post('tipo_transaccion');
@@ -421,8 +381,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }              
+        			         
     }
 
     /*
@@ -430,12 +389,7 @@ class Pedido extends CI_Controller{
      */
     function ingresarproducto()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+       if($this->acceso(30)) {
         //**************** inicio contenido ***************            $usuario_id = 1;    
         
         
@@ -484,8 +438,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			          
         
     }
 
@@ -495,12 +448,7 @@ class Pedido extends CI_Controller{
     function add()
     {   
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(31)) {
         //**************** inicio contenido ***************  
                 
         if(isset($_POST) && count($_POST) > 0)     
@@ -534,8 +482,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			          
     }  
 
     /*
@@ -543,12 +490,7 @@ class Pedido extends CI_Controller{
      */
     function edit($pedido_id)
     {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(33)) {
         //**************** inicio contenido ***************    
         // check if the pedido exists before trying to edit it
         $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id);
@@ -590,8 +532,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			      
         
     } 
 
@@ -600,12 +541,7 @@ class Pedido extends CI_Controller{
      */
     function remove($pedido_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(34)) {
         //**************** inicio contenido ***************    
         
         if($pedido_id>0)
@@ -619,20 +555,14 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			    
     }
     
     function pedido_a_ventas(){
         
-            if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+           if($this->acceso(30)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
         if ($this->input->is_ajax_request()){
             
@@ -675,21 +605,15 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			         
     }
     
     
     function anular_pedido(){
         
-            if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+            if($this->acceso(34)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
         if ($this->input->is_ajax_request()){
             
@@ -720,8 +644,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+        			      
     }
     
 
@@ -730,12 +653,7 @@ class Pedido extends CI_Controller{
      */
     function eliminaritem($detalleped_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************                            
 
         $sql = "delete from detalle_pedido where detalleped_id = ".$detalleped_id;
@@ -744,8 +662,7 @@ class Pedido extends CI_Controller{
             		
         //**************** fin contenido ***************
         }
-        else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+       
         		         
     }
 
@@ -754,15 +671,10 @@ class Pedido extends CI_Controller{
      */
     function eliminartodo($pedido_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************            
        
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         $sql = "delete from detalle_pedido where pedido_id = ".$pedido_id;
         $this->Pedido_model->ejecutar($sql);
         return true;
@@ -770,8 +682,7 @@ class Pedido extends CI_Controller{
         		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }  
+        			
         
     }
     /*
@@ -779,12 +690,7 @@ class Pedido extends CI_Controller{
      */
     function incrementar()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************            
          
         
@@ -804,8 +710,7 @@ class Pedido extends CI_Controller{
             		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        			
         
     }
 
@@ -814,12 +719,7 @@ class Pedido extends CI_Controller{
      */
     function reducir()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************    
         
         
@@ -839,8 +739,7 @@ class Pedido extends CI_Controller{
             		
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        			
         
     }
 
@@ -850,16 +749,11 @@ class Pedido extends CI_Controller{
         //control de sesion
 //        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
             
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(30)) {
         //**************** inicio contenido ***************  
         
             $data['page_title'] = "Mapa de Pedidos";
-            $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
+            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
             
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
@@ -869,9 +763,7 @@ class Pedido extends CI_Controller{
             
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
-                    
+        	         
 //        }
 //        else{ redirect('login'); }
         
@@ -883,16 +775,11 @@ class Pedido extends CI_Controller{
         //control de sesion
 //        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
             
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+       if($this->acceso(30)) {
         //**************** inicio contenido ***************  
         
             $data['page_title'] = "Mapa de Entregas";
-            $usuario_id = $session_data['usuario_id']; //$this->session->userdata('id_usu');
+            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
             
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
@@ -902,8 +789,7 @@ class Pedido extends CI_Controller{
             
         //**************** fin contenido ***************
         			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        		
                     
 //        }
 //        else{ redirect('login'); }

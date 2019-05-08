@@ -9,30 +9,33 @@ class Procedencia extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Procedencia_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-
+private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of procedencia
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(126)) {
         $data['procedencia'] = $this->Procedencia_model->get_all_procedencia();
         
         $data['_view'] = 'procedencia/index';
         $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 
     /*
@@ -40,12 +43,7 @@ class Procedencia extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(126)) {
         if(isset($_POST) && count($_POST) > 0)     
         {   
             //se inicia en ACTIVO
@@ -64,12 +62,7 @@ class Procedencia extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 
     /*
@@ -77,12 +70,7 @@ class Procedencia extends CI_Controller{
      */
     function edit($procedencia_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(126)) {
         // check if the procedencia exists before trying to edit it
         $data['procedencia'] = $this->Procedencia_model->get_procedencia($procedencia_id);
         
@@ -109,12 +97,7 @@ class Procedencia extends CI_Controller{
         else
             show_error('La procedencia que estas intentando editar, no existe.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     } 
 
     /*
@@ -122,9 +105,7 @@ class Procedencia extends CI_Controller{
      */
     function remove($procedencia_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(126)) {
         $procedencia = $this->Procedencia_model->get_procedencia($procedencia_id);
 
         // check if the procedencia exists before trying to delete it
@@ -136,12 +117,7 @@ class Procedencia extends CI_Controller{
         else
             show_error('La procedencia que quiere eliminar, no existe.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     
 }
