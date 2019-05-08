@@ -5,177 +5,126 @@
  */
  
 class Credito extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Credito_model');
         $this->load->model('Empresa_model');
         $this->load->model('Cuotum_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of credito
      */
-     
-       
-    
     function index()
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                
-        $usuario_id = $session_data['usuario_id'];
-        
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/index?');
-        $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(41)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['page_title'] = "Creditos"; 
-        $data['credito'] = $this->Credito_model->get_all_deuda($params);
-        
-        $data['_view'] = 'credito/index';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('credito/index?');
+            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+            $this->pagination->initialize($config);
+
+            $data['page_title'] = "Creditos"; 
+            $data['credito'] = $this->Credito_model->get_all_deuda($params);
+
+            $data['_view'] = 'credito/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
     
     function indexDeuda()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/indexDeuda?');
-        $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(41)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['page_title'] = "Creditos"; 
-        $data['credito'] = $this->Credito_model->get_all_deuda($params);
-        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
-        $data['_view'] = 'credito/indexDeuda';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('credito/indexDeuda?');
+            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+            $this->pagination->initialize($config);
+
+            $data['page_title'] = "Creditos"; 
+            $data['credito'] = $this->Credito_model->get_all_deuda($params);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['_view'] = 'credito/indexDeuda';
+            $this->load->view('layouts/main',$data);
         }
     }
     function repoDeudas()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $params['limit'] = 300; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/repoDeudas?');
-        $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-        $this->pagination->initialize($config);
-        
-        $data['page_title'] = "Comprobante"; 
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['credito'] = $this->Credito_model->get_all_deuda($params);
-        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
-        $data['_view'] = 'credito/repoDeudas';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(41)){
+            $params['limit'] = 300; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('credito/repoDeudas?');
+            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+            $this->pagination->initialize($config);
+
+            $data['page_title'] = "Comprobante"; 
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['credito'] = $this->Credito_model->get_all_deuda($params);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['_view'] = 'credito/repoDeudas';
+            $this->load->view('layouts/main',$data);
         }
     }
     
      function indexCuenta()
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/indexCuenta?');
-        $config['total_rows'] = $this->Credito_model->get_all_credito_count1();
-        $this->pagination->initialize($config);
+         if($this->acceso(47)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['page_title'] = "Cuentas x Cobrar"; 
-        $data['credito'] = $this->Credito_model->get_all_cuentas($params);
-        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
-        $data['_view'] = 'credito/indexCuentas';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('credito/indexCuenta?');
+            $config['total_rows'] = $this->Credito_model->get_all_credito_count1();
+            $this->pagination->initialize($config);
+
+            $data['page_title'] = "Cuentas x Cobrar"; 
+            $data['credito'] = $this->Credito_model->get_all_cuentas($params);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['_view'] = 'credito/indexCuentas';
+            $this->load->view('layouts/main',$data);
         }
     }
 
     function repoCuentas()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $params['limit'] = 300; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('credito/repoCuentas?');
-        $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-        $this->pagination->initialize($config);
-        
-        $data['page_title'] = "Reporte"; 
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['credito'] = $this->Credito_model->get_all_cuentas($params);
-        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
-        $data['_view'] = 'credito/repoCuentas';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(47)){
+            $params['limit'] = 300; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('credito/repoCuentas?');
+            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+            $this->pagination->initialize($config);
+
+            $data['page_title'] = "Reporte"; 
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['credito'] = $this->Credito_model->get_all_cuentas($params);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['_view'] = 'credito/repoCuentas';
+            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -213,45 +162,33 @@ class Credito extends CI_Controller{
      * Adding a new credito
      */
     function add()
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-               $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'estado_id' => $this->input->post('estado_id'),
-				'compra_id' => $this->input->post('compra_id'),
-				'venta_id' => $this->input->post('venta_id'),
-				'credito_monto' => $this->input->post('credito_monto'),
-				'credito_cuotainicial' => $this->input->post('credito_cuotainicial'),
-				'credito_interesproc' => $this->input->post('credito_interesproc'),
-				'credito_interesmonto' => $this->input->post('credito_interesmonto'),
-				'credito_numpagos' => $this->input->post('credito_numpagos'),
-                'credito_fecha' => $this->input->post('credito_fecha'),
-				'credito_fechalimite' => $this->input->post('credito_fechalimite'),
-				'credito_hora' => $this->input->post('credito_hora'),
-				'credito_tipo' => $this->input->post('credito_tipo'),
+    {
+        if($this->acceso(41)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'estado_id' => $this->input->post('estado_id'),
+                    'compra_id' => $this->input->post('compra_id'),
+                    'venta_id' => $this->input->post('venta_id'),
+                    'credito_monto' => $this->input->post('credito_monto'),
+                    'credito_cuotainicial' => $this->input->post('credito_cuotainicial'),
+                    'credito_interesproc' => $this->input->post('credito_interesproc'),
+                    'credito_interesmonto' => $this->input->post('credito_interesmonto'),
+                    'credito_numpagos' => $this->input->post('credito_numpagos'),
+                    'credito_fecha' => $this->input->post('credito_fecha'),
+                    'credito_fechalimite' => $this->input->post('credito_fechalimite'),
+                    'credito_hora' => $this->input->post('credito_hora'),
+                    'credito_tipo' => $this->input->post('credito_tipo'),
             );
             
-            $credito_id = $this->Credito_model->add_credito($params);
-            redirect('credito/index');
-        }
-        else
-        {            
-            $data['_view'] = 'credito/add';
-            $this->load->view('layouts/main',$data);
-        }
+                $credito_id = $this->Credito_model->add_credito($params);
+                redirect('credito/index');
             }
-            else{
-                redirect('alerta');
+            else
+            {            
+                $data['_view'] = 'credito/add';
+                $this->load->view('layouts/main',$data);
             }
-        } else {
-            redirect('', 'refresh');
         }
     } 
 
@@ -259,40 +196,42 @@ class Credito extends CI_Controller{
      * Editing a credito
      */
     function edit($credito_id)
-    {   
-        // check if the credito exists before trying to edit it
-        $data['credito'] = $this->Credito_model->get_credito($credito_id);
-        
-        if(isset($data['credito']['credito_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'compra_id' => $this->input->post('compra_id'),
-					'venta_id' => $this->input->post('venta_id'),
-					'credito_monto' => $this->input->post('credito_monto'),
-					'credito_cuotainicial' => $this->input->post('credito_cuotainicial'),
-					'credito_interesproc' => $this->input->post('credito_interesproc'),
-					'credito_interesmonto' => $this->input->post('credito_interesmonto'),
-					'credito_numpagos' => $this->input->post('credito_numpagos'),
-                    'credito_fechalimite' => $this->input->post('credito_fechalimite'),
-					'credito_fecha' => $this->input->post('credito_fecha'),
-					'credito_hora' => $this->input->post('credito_hora'),
-					'credito_tipo' => $this->input->post('credito_tipo'),
-                );
+    {
+        if($this->acceso(41)){
+            // check if the credito exists before trying to edit it
+            $data['credito'] = $this->Credito_model->get_credito($credito_id);
 
-                $this->Credito_model->update_credito($credito_id,$params);            
-                redirect('credito/index');
+            if(isset($data['credito']['credito_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                        'estado_id' => $this->input->post('estado_id'),
+                        'compra_id' => $this->input->post('compra_id'),
+                        'venta_id' => $this->input->post('venta_id'),
+                        'credito_monto' => $this->input->post('credito_monto'),
+                        'credito_cuotainicial' => $this->input->post('credito_cuotainicial'),
+                        'credito_interesproc' => $this->input->post('credito_interesproc'),
+                        'credito_interesmonto' => $this->input->post('credito_interesmonto'),
+                        'credito_numpagos' => $this->input->post('credito_numpagos'),
+                        'credito_fechalimite' => $this->input->post('credito_fechalimite'),
+                        'credito_fecha' => $this->input->post('credito_fecha'),
+                        'credito_hora' => $this->input->post('credito_hora'),
+                        'credito_tipo' => $this->input->post('credito_tipo'),
+                    );
+
+                    $this->Credito_model->update_credito($credito_id,$params);            
+                    redirect('credito/index');
+                }
+                else
+                {
+                    $data['_view'] = 'credito/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'credito/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The credito you are trying to edit does not exist.');
         }
-        else
-            show_error('The credito you are trying to edit does not exist.');
     } 
 
     /*
@@ -300,16 +239,18 @@ class Credito extends CI_Controller{
      */
     function remove($credito_id)
     {
-        $credito = $this->Credito_model->get_credito($credito_id);
+        if($this->acceso(41)){
+            $credito = $this->Credito_model->get_credito($credito_id);
 
-        // check if the credito exists before trying to delete it
-        if(isset($credito['credito_id']))
-        {
-            $this->Credito_model->delete_credito($credito_id);
-            redirect('credito/index');
+            // check if the credito exists before trying to delete it
+            if(isset($credito['credito_id']))
+            {
+                $this->Credito_model->delete_credito($credito_id);
+                redirect('credito/index');
+            }
+            else
+                show_error('The credito you are trying to delete does not exist.');
         }
-        else
-            show_error('The credito you are trying to delete does not exist.');
     }
     
 }

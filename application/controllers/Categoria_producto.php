@@ -5,41 +5,45 @@
  */
  
 class Categoria_producto extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_producto_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_producto
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('categoria_producto/index?');
-        $config['total_rows'] = $this->Categoria_producto_model->get_all_categoria_producto_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(118)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto($params);
-        
-        $data['_view'] = 'categoria_producto/index';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('categoria_producto/index?');
+            $config['total_rows'] = $this->Categoria_producto_model->get_all_categoria_producto_count();
+            $this->pagination->initialize($config);
+
+            $data['categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto($params);
+
+            $data['_view'] = 'categoria_producto/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -48,36 +52,24 @@ class Categoria_producto extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $this->load->library('form_validation');
-
-                $this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'categoria_nombre' => $this->input->post('categoria_nombre'),
-            );
+        if($this->acceso(118)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             
-            $categoria_producto_id = $this->Categoria_producto_model->add_categoria_producto($params);
-            redirect('categoria_producto/index');
-        }
-        else
-        {            
-            $data['_view'] = 'categoria_producto/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-            else{
-                redirect('alerta');
+            if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'categoria_nombre' => $this->input->post('categoria_nombre'),
+                );
+
+                $categoria_producto_id = $this->Categoria_producto_model->add_categoria_producto($params);
+                redirect('categoria_producto/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {            
+                $data['_view'] = 'categoria_producto/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -86,44 +78,29 @@ class Categoria_producto extends CI_Controller{
      */
     function edit($categoria_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        // check if the categoria_producto exists before trying to edit it
-        $data['categoria_producto'] = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
-        
-        if(isset($data['categoria_producto']['categoria_id']))
-        {
-            $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'categoria_nombre' => $this->input->post('categoria_nombre'),
-                );
-
-                $this->Categoria_producto_model->update_categoria_producto($categoria_id,$params);            
-                redirect('categoria_producto/index');
+        if($this->acceso(118)){
+            // check if the categoria_producto exists before trying to edit it
+            $data['categoria_producto'] = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
+            if(isset($data['categoria_producto']['categoria_id']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())     
+                {   
+                    $params = array(
+                            'categoria_nombre' => $this->input->post('categoria_nombre'),
+                    );
+                    $this->Categoria_producto_model->update_categoria_producto($categoria_id,$params);            
+                    redirect('categoria_producto/index');
+                }
+                else
+                {
+                    $data['_view'] = 'categoria_producto/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'categoria_producto/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The categoria_producto you are trying to edit does not exist.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+                show_error('The categoria_producto you are trying to edit does not exist.');
         }
     } 
 
@@ -132,11 +109,8 @@ class Categoria_producto extends CI_Controller{
      */
     function remove($categoria_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(118)){
         $categoria_producto = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
-
         // check if the categoria_producto exists before trying to delete it
         if(isset($categoria_producto['categoria_id']))
         {
@@ -145,12 +119,6 @@ class Categoria_producto extends CI_Controller{
         }
         else
             show_error('The categoria_producto you are trying to delete does not exist.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     

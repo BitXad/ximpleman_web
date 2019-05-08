@@ -5,17 +5,33 @@
  */
  
 class Imagen_producto extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Imagen_producto_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of imagen_producto
      */
     function index()
     {
+        if($this->acceso(109)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -28,6 +44,7 @@ class Imagen_producto extends CI_Controller{
         
         $data['_view'] = 'imagen_producto/index';
         $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -35,6 +52,7 @@ class Imagen_producto extends CI_Controller{
      */
     function add($producto_id)
     {
+        if($this->acceso(109)){
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('imagenprod_titulo','Imagen producto Titulo','required');
@@ -114,13 +132,15 @@ class Imagen_producto extends CI_Controller{
             $data['_view'] = 'imagen_producto/add';
             $this->load->view('layouts/main',$data);
         }
+        }
     }  
 
     /*
      * Editing a imagen_producto
      */
     function edit($producto_id, $imagenprod_id)
-    {   
+    {
+        if($this->acceso(109)){
         // check if the imagen_producto exists before trying to edit it
         $data['imagen_producto'] = $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
         
@@ -218,6 +238,7 @@ class Imagen_producto extends CI_Controller{
         }
         else
             show_error('The imagen_producto you are trying to edit does not exist.');
+        }
     } 
 
     /*
@@ -225,6 +246,7 @@ class Imagen_producto extends CI_Controller{
      */
     function remove($imagenprod_id)
     {
+        if($this->acceso(109)){
         $imagen_producto = $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
 
         // check if the imagen_producto exists before trying to delete it
@@ -235,12 +257,14 @@ class Imagen_producto extends CI_Controller{
         }
         else
             show_error('The imagen_producto you are trying to delete does not exist.');
+        }
     }
     /*
      * Funcion que muestra las imagenes de un producto
      */
     function catalogoprod($producto_id)
     {
+        if($this->acceso(109)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -257,6 +281,7 @@ class Imagen_producto extends CI_Controller{
         
         $data['_view'] = 'imagen_producto/catalogoprod';
         $this->load->view('layouts/main',$data);
+        }
     }
     
     /*
@@ -264,6 +289,7 @@ class Imagen_producto extends CI_Controller{
      */
     function galeriaproducto($producto_id)
     {
+        if($this->acceso(109)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -280,6 +306,7 @@ class Imagen_producto extends CI_Controller{
         
         $data['_view'] = 'imagen_producto/galeriaproducto';
         $this->load->view('layouts/main',$data);
+        }
     }
     
 }

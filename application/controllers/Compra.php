@@ -4,9 +4,7 @@
  * www.crudigniter.com
  */
 class Compra extends CI_Controller{
-
-    var $session_data;
-
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
@@ -20,146 +18,150 @@ class Compra extends CI_Controller{
         $this->load->model('Detalle_compra_model');
         $this->load->helper('numeros');
         $this->load->model('Usuario_model');
-        $this->session_data = $this->session->userdata('logged_in');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     public function boucher($compra_id){
 
-     $this->acceso();
-     $usuario_id = $this->session_data['usuario_id'];  
-     $data = array(
-        'page_title' => 'Admin >> Mi Cuenta'
-    );
-     $this->load->model('Empresa_model');
-     $data['empresa'] = $this->Empresa_model->get_empresa(1);
-     $data['compra'] = $this->Compra_model->join_compras($compra_id);
-     $this->load->model('detalle_compra_model');
-     $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
-     $data['_view'] = 'compra/boucher';
-     $this->load->view('layouts/main',$data);
-
-
-
-     
+     if($this->acceso(1)){
+         $usuario_id = $this->session_data['usuario_id'];
+         $this->load->model('Empresa_model');
+         $data['empresa'] = $this->Empresa_model->get_empresa(1);
+         $data['compra'] = $this->Compra_model->join_compras($compra_id);
+         $this->load->model('detalle_compra_model');
+         $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+         $data['_view'] = 'compra/boucher';
+         $this->load->view('layouts/main',$data);
+     }
  } 
     /*
      * Listing of compra
      */
     function index()
     {
-        $this->acceso();
-        
-        
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        $usuario_id = $this->session_data['usuario_id'];  
-       // $config = $this->config->item('pagination');
-        //$config['base_url'] = site_url('compra/index?');
-       // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
-        //$this->pagination->initialize($config);
+        if($this->acceso(1)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+            $usuario_id = $this->session_data['usuario_id'];
 
-        $filtro = $this->input->post('filtro');
-        
-        if ($filtro == null){
-            $data['compra'] = $this->Compra_model->get_all_compra($params);
+            $filtro = $this->input->post('filtro');
+
+            if ($filtro == null){
+                $data['compra'] = $this->Compra_model->get_all_compra($params);
+            }
+            else{
+                $data['compra'] = $this->Compra_model->fechacompras($filtro);            
+            }
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+            $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $data['estado'] = $this->Estado_model->get_tipo_estado(1);
+            $data['_view'] = 'compra/index1';
+            $this->load->view('layouts/main',$data);
         }
-        else{
-            $data['compra'] = $this->Compra_model->fechacompras($filtro);            
-        }
-        $this->load->model('Empresa_model');
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['parametro'] = $this->Parametro_model->get_parametro(1);
-        $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-        $data['estado'] = $this->Estado_model->get_tipo_estado(1);
-        $data['_view'] = 'compra/index1';
-        $this->load->view('layouts/main',$data);
-        
     }
     
     function reportes()
     {
-        $usuario_id = 1;
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-       // $config = $this->config->item('pagination');
-        //$config['base_url'] = site_url('compra/index?');
-       // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
-        //$this->pagination->initialize($config);
-        $filtro = $this->input->post('filtro');
-        
-        if ($filtro == null){
-            $data['compra'] = $this->Compra_model->get_all_compra($params);
-        }
-        else{
-            $data['compra'] = $this->Compra_model->fechacompras($filtro);            
-        }
+        if($this->acceso(1)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-        $data['estado'] = $this->Estado_model->get_tipo_estado(1);
-        $data['_view'] = 'compra/reportesCompra';
-        $this->load->view('layouts/main',$data);
+           // $config = $this->config->item('pagination');
+            //$config['base_url'] = site_url('compra/index?');
+           // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
+            //$this->pagination->initialize($config);
+            $filtro = $this->input->post('filtro');
+
+            if ($filtro == null){
+                $data['compra'] = $this->Compra_model->get_all_compra($params);
+            }
+            else{
+                $data['compra'] = $this->Compra_model->fechacompras($filtro);            
+            }
+
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $data['estado'] = $this->Estado_model->get_tipo_estado(1);
+            $data['_view'] = 'compra/reportesCompra';
+            $this->load->view('layouts/main',$data);
+        }
     }
     function repoProveedor()
     {
-        $usuario_id = 1;
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-       // $config = $this->config->item('pagination');
-        //$config['base_url'] = site_url('compra/index?');
-       // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
-        //$this->pagination->initialize($config);
-        $filtro = $this->input->post('filtro');
-        
-        if ($filtro == null){
-            $data['compra'] = $this->Compra_model->get_all_compra($params);
-        }
-        else{
-            $data['compra'] = $this->Compra_model->fechacompras($filtro);            
-        }
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $this->load->model('Proveedor_model');
-        $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
-        $data['_view'] = 'compra/compraProveedor';
-        $this->load->view('layouts/main',$data);
+           // $config = $this->config->item('pagination');
+            //$config['base_url'] = site_url('compra/index?');
+           // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
+            //$this->pagination->initialize($config);
+            $filtro = $this->input->post('filtro');
+
+            if ($filtro == null){
+                $data['compra'] = $this->Compra_model->get_all_compra($params);
+            }
+            else{
+                $data['compra'] = $this->Compra_model->fechacompras($filtro);            
+            }
+
+            $this->load->model('Proveedor_model');
+            $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
+            $data['_view'] = 'compra/compraProveedor';
+            $this->load->view('layouts/main',$data);
+        }
     }
     function repoProducto()
     {
-        $usuario_id = 1;
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-       // $this->load->model('Inventario_model');
-       // $config = $this->config->item('pagination');
-        //$config['base_url'] = site_url('compra/index?');
-       // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
-        //$this->pagination->initialize($config);
-        $filtro = $this->input->post('filtro');
-        
-        if ($filtro == null){
-            $data['compra'] = $this->Compra_model->get_all_compra($params);
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+           // $this->load->model('Inventario_model');
+           // $config = $this->config->item('pagination');
+            //$config['base_url'] = site_url('compra/index?');
+           // $config['total_rows'] = $this->Compra_model->get_all_compra_count();
+            //$this->pagination->initialize($config);
+            $filtro = $this->input->post('filtro');
+
+            if ($filtro == null){
+                $data['compra'] = $this->Compra_model->get_all_compra($params);
+            }
+            else{
+                $data['compra'] = $this->Compra_model->fechacompras($filtro);            
+            }
+            $data['inventario'] = $this->Producto_model->get_all_productos(); 
+            $this->load->model('Proveedor_model');
+            $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
+            $data['_view'] = 'compra/compraProducto';
+            $this->load->view('layouts/main',$data);
         }
-        else{
-            $data['compra'] = $this->Compra_model->fechacompras($filtro);            
-        }
-        $data['inventario'] = $this->Producto_model->get_all_productos(); 
-        $this->load->model('Proveedor_model');
-        $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
-        $data['_view'] = 'compra/compraProducto';
-        $this->load->view('layouts/main',$data);
     }
 
 
     function buscarprove()
     {
-       
-
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   
@@ -179,7 +181,6 @@ class Compra extends CI_Controller{
 
     function buscarfecha()
     {
-       
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');
@@ -201,8 +202,6 @@ class Compra extends CI_Controller{
     
     function buscarrepofecha()
     {
-       
-       $usuario_id = 1;
 
        if ($this->input->is_ajax_request()) {
         
@@ -225,7 +224,6 @@ class Compra extends CI_Controller{
 
  function cambiarfecha()
     {
-       
        if ($this->input->is_ajax_request()) {
         
         $fecha = $this->input->post('fecha');
@@ -245,126 +243,127 @@ class Compra extends CI_Controller{
 }
 
 
-function anula()
-{
-  $this->acceso();
-  $usuario_id = $this->session_data['usuario_id'];
-  $bandera = 1;
-  $params['limit'] = RECORDS_PER_PAGE; 
-  $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-  
-  $config = $this->config->item('pagination');
-  $config['base_url'] = site_url('compra/index?');
-  $config['total_rows'] = $this->Compra_model->get_all_compra_count();
-  $this->pagination->initialize($config);
+    function anula()
+    {
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $bandera = 1;
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-  $data['compra'] = $this->Compra_model->get_all_compra($params);
-  $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
-  
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('compra/index?');
+            $config['total_rows'] = $this->Compra_model->get_all_compra_count();
+            $this->pagination->initialize($config);
 
-  
-  $data['_view'] = 'compra/anula';
-  $this->load->view('layouts/main',$data);
-  
-}
+            $data['compra'] = $this->Compra_model->get_all_compra($params);
+            $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
 
-function crearcompra()
-{
- $this->acceso();
- $usuario_id = $this->session_data['usuario_id'];
- $bandera = 0;
-        //Registrar Compra
- $compra_id = $this->Compra_model->crear_compra($usuario_id);        
- redirect('compra/edit/'.$compra_id.'/'.$bandera);
- 
-}
-
-function buscarcompra()
-{
-    $usuario_id = 1;
-
-    if ($this->input->is_ajax_request()) {
-        
-        $parametro = $this->input->post('parametro');   
-        
-        if ($parametro!=""){
-            $datos = $this->Inventario_model->get_inventario_coti($parametro);            
-            //$datos = $this->Inventario_model->get_inventario_bloque();
-            echo json_encode($datos);
+            $data['_view'] = 'compra/anula';
+            $this->load->view('layouts/main',$data);
         }
-        else echo json_encode(null);
     }
-    else
-    {                 
-        show_404();
-    }              
-}
+
+    function crearcompra()
+    {
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $bandera = 0;
+                    //Registrar Compra
+            $compra_id = $this->Compra_model->crear_compra($usuario_id);        
+            redirect('compra/edit/'.$compra_id.'/'.$bandera);
+        }
+    }
+
+    function buscarcompra()
+    {
+        if($this->acceso(1)){
+            if ($this->input->is_ajax_request()) {
+
+                $parametro = $this->input->post('parametro');   
+
+                if ($parametro!=""){
+                    $datos = $this->Inventario_model->get_inventario_coti($parametro);            
+                    //$datos = $this->Inventario_model->get_inventario_bloque();
+                    echo json_encode($datos);
+                }
+                else echo json_encode(null);
+            }
+            else
+            {                 
+                show_404();
+            }     
+        }    
+    }
 
     /*
      * Adding a new compra
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-                'estado_id' => $this->input->post('estado_id'),
-                'tipotrans_id' => $this->input->post('tipotrans_id'),
-                'usuario_id' => $this->input->post('usuario_id'),
-                'moneda_id' => $this->input->post('moneda_id'),
-                'proveedor_id' => $this->input->post('proveedor_id'),
-                'forma_id' => $this->input->post('forma_id'),
-                'compra_fecha' => $this->input->post('compra_fecha'),
-                'compra_hora' => $this->input->post('compra_hora'),
-                'compra_subtotal' => $this->input->post('compra_subtotal'),
-                'compra_descuento' => $this->input->post('compra_descuento'),
-                'compra_descglobal' => $this->input->post('compra_descglobal'),
-                'compra_total' => $this->input->post('compra_total'),
-                'compra_efectivo' => $this->input->post('compra_efectivo'),
-                'compra_cambio' => $this->input->post('compra_cambio'),
-                'compra_glosa' => $this->input->post('compra_glosa'),
-                'compra_tipocambio' => $this->input->post('compra_tipocambio'),
-                'compra_chofer' => $this->input->post('compra_chofer'),
-                'compra_placamovil' => $this->input->post('compra_placamovil'),
-                'compra_fechallegada' => $this->input->post('compra_fechallegada'),
-                'compra_horallegada' => $this->input->post('compra_horallegada'),
-                'compra_numdoc' => $this->input->post('compra_numdoc'),
-                'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
-            );
-            
-            $compra_id = $this->Compra_model->add_compra($params);
-            redirect('compra/index');
+    {
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'estado_id' => $this->input->post('estado_id'),
+                    'tipotrans_id' => $this->input->post('tipotrans_id'),
+                    'usuario_id' => $this->input->post('usuario_id'),
+                    'moneda_id' => $this->input->post('moneda_id'),
+                    'proveedor_id' => $this->input->post('proveedor_id'),
+                    'forma_id' => $this->input->post('forma_id'),
+                    'compra_fecha' => $this->input->post('compra_fecha'),
+                    'compra_hora' => $this->input->post('compra_hora'),
+                    'compra_subtotal' => $this->input->post('compra_subtotal'),
+                    'compra_descuento' => $this->input->post('compra_descuento'),
+                    'compra_descglobal' => $this->input->post('compra_descglobal'),
+                    'compra_total' => $this->input->post('compra_total'),
+                    'compra_efectivo' => $this->input->post('compra_efectivo'),
+                    'compra_cambio' => $this->input->post('compra_cambio'),
+                    'compra_glosa' => $this->input->post('compra_glosa'),
+                    'compra_tipocambio' => $this->input->post('compra_tipocambio'),
+                    'compra_chofer' => $this->input->post('compra_chofer'),
+                    'compra_placamovil' => $this->input->post('compra_placamovil'),
+                    'compra_fechallegada' => $this->input->post('compra_fechallegada'),
+                    'compra_horallegada' => $this->input->post('compra_horallegada'),
+                    'compra_numdoc' => $this->input->post('compra_numdoc'),
+                    'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+                );
+
+                $compra_id = $this->Compra_model->add_compra($params);
+                redirect('compra/index');
+            }
+            else
+            {
+                $data['compra'] = $this->Compra_model->get_all_compra($params);
+                $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);
+
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                $this->load->model('Tipo_transaccion_model');
+                $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+
+                $this->load->model('Usuario_model');
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
+                $this->load->model('Moneda_model');
+                $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+
+                $this->load->model('Proveedor_model');
+                $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
+
+                $this->load->model('Forma_pago_model');
+                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
+
+                $this->load->model('Detalle_compra_model');
+                $data['all_detalle_compra'] = $this->Detalle_compra_model->get_all_detalle_compra();
+
+                $data['_view'] = 'compra/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
-        else
-        {
-            $data['compra'] = $this->Compra_model->get_all_compra($params);
-            $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);
-
-            $this->load->model('Estado_model');
-            $data['all_estado'] = $this->Estado_model->get_all_estado();
-
-            $this->load->model('Tipo_transaccion_model');
-            $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-
-            $this->load->model('Usuario_model');
-            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-            $this->load->model('Moneda_model');
-            $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
-            $this->load->model('Proveedor_model');
-            $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
-
-            $this->load->model('Forma_pago_model');
-            $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
-
-            $this->load->model('Detalle_compra_model');
-            $data['all_detalle_compra'] = $this->Detalle_compra_model->get_all_detalle_compra();
-            
-            $data['_view'] = 'compra/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
+    }
 
     /*
      * Editing a compra
@@ -436,202 +435,200 @@ function buscarcompra()
 
 
 
-function edit($compra_id,$bandera)
-{   
-
- $this->acceso();
- $usuario_id = $this->session_data['usuario_id'];      
- $data = array(
-    'page_title' => 'Admin >> Mi Cuenta'
-);
-        // check if the compra exists before trying to edit it
- $data['compra'] = $this->Compra_model->get_compra($compra_id);
- $compra = $this->Compra_model->get_proveedor_id($compra_id);
- $proveedor_id = $compra[0]['proveedor_id'];
- if ($bandera==0) {
-  $this->Compra_model->volvermal($compra_id);
- }
- 
- 
- if($proveedor_id==0)     
- {   
-   $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
-   /* $data['compra'] = $this->Compra_model->get_all_compra($params);*/
-
-   $data['compra_id'] = $compra_id;
-   $data['compra'] = $this->Compra_model->get_compra($compra_id);
-   $data['bandera'] = $bandera;
-   /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
-
-   $this->load->model('Estado_model');
-   $data['all_estado'] = $this->Estado_model->get_all_estado();
-
-   $this->load->model('Tipo_transaccion_model');
-   $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-
-   $this->load->model('Usuario_model');
-   $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-   $this->load->model('Moneda_model');
-   $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
-   $this->load->model('Proveedor_model');
-   $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
-
-   $this->load->model('Forma_pago_model');
-   $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
-
-   $this->load->model('Detalle_compra_model');
-   $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
-
-   
-   $this->load->model('Producto_model');
-   $data['inventario'] = $this->Producto_model->get_all_productos();  
-            //$this->load->model('Inventario_model');
-            //$data['inventario'] = $this->Inventario_model->get_all_inventario();
-   $this->load->model('Documento_respaldo_model');
-   $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
-
-   $this->load->model('Categoria_producto_model');
-   $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
-   $this->load->model('Presentacion_model');
-   $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-   
-
-   $data['_view'] = 'compra/edit';
-   $this->load->view('layouts/main',$data);
-   
-   
-} 
-else
-{
-    $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
-    /* $data['compra'] = $this->Compra_model->get_all_compra($params);*/
-
-    $data['compra_id'] = $compra_id;
-
-    $data['bandera'] = $bandera;
-    /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
-
-    $this->load->model('Estado_model');
-    $data['all_estado'] = $this->Estado_model->get_all_estado();
-
-    $this->load->model('Tipo_transaccion_model');
-    $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-
-    $this->load->model('Usuario_model');
-    $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-    $this->load->model('Moneda_model');
-    $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
-    $this->load->model('Proveedor_model');
-    $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
-
-    $this->load->model('Forma_pago_model');
-    $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
-
-    $this->load->model('Detalle_compra_model');
-    $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
-
-    $this->load->model('Producto_model');
-    $data['inventario'] = $this->Producto_model->get_all_productos();  
-    $this->load->model('Inventario_model');
-            //$data['inventario'] = $this->Inventario_model->get_all_inventario();
-    
-    $this->load->model('Documento_respaldo_model');
-    $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
-
-    $this->load->model('Categoria_producto_model');
-    $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
-    $this->load->model('Presentacion_model');
-    $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-    
-
-    $data['_view'] = 'compra/edit';
-    $this->load->view('layouts/main',$data);
-}
+    function edit($compra_id,$bandera)
+    {
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
+             $data = array(
+                'page_title' => 'Admin >> Mi Cuenta'
+            );
+                    // check if the compra exists before trying to edit it
+             $data['compra'] = $this->Compra_model->get_compra($compra_id);
+             $compra = $this->Compra_model->get_proveedor_id($compra_id);
+             $proveedor_id = $compra[0]['proveedor_id'];
+             if ($bandera==0) {
+              $this->Compra_model->volvermal($compra_id);
+             }
 
 
-}
+             if($proveedor_id==0)     
+             {   
+               $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
+               /* $data['compra'] = $this->Compra_model->get_all_compra($params);*/
 
-function anular()
-{
-    
-  $this->acceso();
-  $usuario_id = $this->session_data['usuario_id'];  
-  $compra_id = $this->input->post('compra_id');
-  $vaciar =    "UPDATE inventario i, detalle_compra_aux d
-  SET i.existencia =  i.existencia-d.detallecomp_cantidad 
-  WHERE  d.compra_id = ".$compra_id." 
-  and i.producto_id = d.producto_id ";
-  
-  $this->db->query($vaciar);
-  $sql = "UPDATE detalle_compra_aux
-  SET
-  detallecomp_cantidad = 0,               
-  detallecomp_descuento = 0,
-  detallecomp_subtotal = 0,
-  detallecomp_total = 0                       
-  WHERE compra_id = ".$compra_id."
-  ";
+               $data['compra_id'] = $compra_id;
+               $data['compra'] = $this->Compra_model->get_compra($compra_id);
+               $data['bandera'] = $bandera;
+               /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
 
-  $this->Compra_model->ejecutar($sql);
-  
+               $this->load->model('Estado_model');
+               $data['all_estado'] = $this->Estado_model->get_all_estado();
 
-  $comp = "UPDATE compra
-  SET
-  estado_id = 3,
-  compra_subtotal = 0,
-  compra_descuento = 0,
-  compra_descglobal = 0,
-  compra_total = 0,
-  compra_totalfinal = 0
-  WHERE compra_id = ".$compra_id."
-  ";
-  $this->Compra_model->ejecutar($comp);
+               $this->load->model('Tipo_transaccion_model');
+               $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
 
-  redirect('compra/index');
-  
-}
+               $this->load->model('Usuario_model');
+               $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
 
-function ajustarcosto($compra_id)
-{
-   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_costo as 'nuevo_costo', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
-    $pr_id = $this->db->query($producto_ide)->result_array(); 
- foreach ($pr_id as $pr_ident) {
- 
-    $nuevo = $pr_ident['nuevo_costo']*$pr_ident['nueva_cantidad'];
-  $cantidad = $pr_ident['nueva_cantidad'];
- 
-  $detalle_costo = "SELECT   i.detallecomp_costo as 'viejo_costo', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
-  $det_costo=$this->db->query($detalle_costo)->result_array(); 
-$viejos = 0;
-$cantiviejas = 0;
-  foreach ($det_costo as $costo_cantidad) {
-      
-      $viejo = $costo_cantidad['viejo_costo']*$costo_cantidad['vieja_cantidad'];
-      $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
-      $cantidades = $cantiviejas+$cantidad;
-      $viejos = $viejos + $viejo;
-      $sumas =  $nuevo+$viejos;
-      $costo_promedio = $sumas/$cantidades;
-      $sql = "update inventario set inventario.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
+               $this->load->model('Moneda_model');
+               $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
 
-        $this->db->query($sql);
-   }    }
+               $this->load->model('Proveedor_model');
+               $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
 
-   redirect('compra/index');
-   /////////aca redirect////////////
-}
+               $this->load->model('Forma_pago_model');
+               $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
 
-function finalizarcompra($compra_id)
-{
+               $this->load->model('Detalle_compra_model');
+               $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
 
- $this->acceso();
- $usuario_id = $this->session_data['usuario_id'];
+
+               $this->load->model('Producto_model');
+               $data['inventario'] = $this->Producto_model->get_all_productos();  
+                        //$this->load->model('Inventario_model');
+                        //$data['inventario'] = $this->Inventario_model->get_all_inventario();
+               $this->load->model('Documento_respaldo_model');
+               $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
+
+               $this->load->model('Categoria_producto_model');
+               $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+
+               $this->load->model('Presentacion_model');
+               $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
+
+
+               $data['_view'] = 'compra/edit';
+               $this->load->view('layouts/main',$data);
+
+
+            } 
+            else
+            {
+                $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
+                /* $data['compra'] = $this->Compra_model->get_all_compra($params);*/
+
+                $data['compra_id'] = $compra_id;
+
+                $data['bandera'] = $bandera;
+                /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
+
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                $this->load->model('Tipo_transaccion_model');
+                $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+
+                $this->load->model('Usuario_model');
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
+                $this->load->model('Moneda_model');
+                $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+
+                $this->load->model('Proveedor_model');
+                $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
+
+                $this->load->model('Forma_pago_model');
+                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
+
+                $this->load->model('Detalle_compra_model');
+                $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
+
+                $this->load->model('Producto_model');
+                $data['inventario'] = $this->Producto_model->get_all_productos();  
+                $this->load->model('Inventario_model');
+                        //$data['inventario'] = $this->Inventario_model->get_all_inventario();
+
+                $this->load->model('Documento_respaldo_model');
+                $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
+
+                $this->load->model('Categoria_producto_model');
+                $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+
+                $this->load->model('Presentacion_model');
+                $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
+
+
+                $data['_view'] = 'compra/edit';
+                $this->load->view('layouts/main',$data);
+            }
+        }
+    }
+
+    function anular()
+    {
+
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id']; 
+            $compra_id = $this->input->post('compra_id');
+            $vaciar =    "UPDATE inventario i, detalle_compra_aux d
+            SET i.existencia =  i.existencia-d.detallecomp_cantidad 
+            WHERE  d.compra_id = ".$compra_id." 
+            and i.producto_id = d.producto_id ";
+
+            $this->db->query($vaciar);
+            $sql = "UPDATE detalle_compra_aux
+            SET
+            detallecomp_cantidad = 0,               
+            detallecomp_descuento = 0,
+            detallecomp_subtotal = 0,
+            detallecomp_total = 0                       
+            WHERE compra_id = ".$compra_id."
+            ";
+
+            $this->Compra_model->ejecutar($sql);
+
+
+            $comp = "UPDATE compra
+            SET
+            estado_id = 3,
+            compra_subtotal = 0,
+            compra_descuento = 0,
+            compra_descglobal = 0,
+            compra_total = 0,
+            compra_totalfinal = 0
+            WHERE compra_id = ".$compra_id."
+            ";
+            $this->Compra_model->ejecutar($comp);
+
+            redirect('compra/index');
+        }
+    }
+
+    function ajustarcosto($compra_id)
+    {
+       $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_costo as 'nuevo_costo', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+        $pr_id = $this->db->query($producto_ide)->result_array(); 
+     foreach ($pr_id as $pr_ident) {
+
+        $nuevo = $pr_ident['nuevo_costo']*$pr_ident['nueva_cantidad'];
+      $cantidad = $pr_ident['nueva_cantidad'];
+
+      $detalle_costo = "SELECT   i.detallecomp_costo as 'viejo_costo', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
+      $det_costo=$this->db->query($detalle_costo)->result_array(); 
+    $viejos = 0;
+    $cantiviejas = 0;
+      foreach ($det_costo as $costo_cantidad) {
+
+          $viejo = $costo_cantidad['viejo_costo']*$costo_cantidad['vieja_cantidad'];
+          $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
+          $cantidades = $cantiviejas+$cantidad;
+          $viejos = $viejos + $viejo;
+          $sumas =  $nuevo+$viejos;
+          $costo_promedio = $sumas/$cantidades;
+          $sql = "update inventario set inventario.producto_costo=".$costo_promedio." where producto_id=".$pr_ident['product']."";
+
+            $this->db->query($sql);
+       }    }
+
+       redirect('compra/index');
+       /////////aca redirect////////////
+    }
+
+    function finalizarcompra($compra_id)
+    {
+
+    if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
  $this->load->model('Compra_model');
  $null = NULL;
  $num = $this->Compra_model->numero();
@@ -1058,38 +1055,32 @@ $this->db->query($chaucre);
         $saldo_deudor = $cuota_total - $cuota_capital;
         $cuota_total = $saldo_deudor;
     }
-}
-    
-} }
+        }
+
+        } }
 
 
-redirect('compra/index');
+        redirect('compra/index');
 
- }
+         }
+    }
 
-}
+    }
 
 function detallecompra()
 {
-
-   if ($this->input->is_ajax_request()) {  
+   if ($this->input->is_ajax_request()) {
     $compra_id = $this->input->post('compra_id');
     $datos = $this->Compra_model->get_detalle_compra_aux($compra_id);
     if(isset($datos)){
         echo json_encode($datos);
     }else echo json_encode(null);
-}
-else
-{                 
-    show_404();
-}          
-
-}
+    }else{                 
+        show_404();
+    }
+    }
 function ingresarproducto()
 {
- 
-    
-    
     if ($this->input->is_ajax_request()) {
      
         $compra_id = $this->input->post('compra_id');
@@ -1194,8 +1185,7 @@ else
 
 function updateDetalle()
 {
-    
-    
+    if($this->acceso(1)){
     $detallecomp_id = $this->input->post('detallecomp_id');
     $cantidad = $this->input->post('cantidad'); 
     $descuento = $this->input->post('descuento'); 
@@ -1204,8 +1194,6 @@ function updateDetalle()
     $producto_id = $this->input->post('producto_id');    
     $compra_id = $this->input->post('compra_id');
 
-    
-    
     $sql = "UPDATE detalle_compra_aux
     SET
     
@@ -1219,20 +1207,14 @@ function updateDetalle()
     WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id." and detallecomp_id = ".$detallecomp_id."
     ";
     $this->Compra_model->ejecutar($sql);
-
-    
     
     return true;
-    
-    
+    }
 }
 
 function quitar($detallecomp_id)
 {
- $this->acceso();
- $data = array(
-    'page_title' => 'Admin >> Mi Cuenta'
-);
+    if($this->acceso(1)){
         //**************** inicio contenido ***************        
  
  $sql = "delete from detalle_compra_aux where detallecomp_id = ".$detallecomp_id;
@@ -1241,137 +1223,135 @@ function quitar($detallecomp_id)
  return true;
  
         //**************** fin contenido ***************
- 
- 
+    }
 }
 
     /*
      * Deleting compra
      */
     function edito($compra_id)
-    {   
-        // check if the compra exists before trying to edit it
-        $data['compra'] = $this->Compra_model->get_compra($compra_id);
-        
-        if(isset($data['compra']['compra_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-                    'estado_id' => $this->input->post('estado_id'),
-                    'tipotrans_id' => $this->input->post('tipotrans_id'),
-                    'usuario_id' => $this->input->post('usuario_id'),
-                    'moneda_id' => $this->input->post('moneda_id'),
-                    'proveedor_id' => $this->input->post('proveedor_id'),
-                    'forma_id' => $this->input->post('forma_id'),
-                    'compra_fecha' => $this->input->post('compra_fecha'),
-                    'compra_hora' => $this->input->post('compra_hora'),
-                    'compra_subtotal' => $this->input->post('compra_subtotal'),
-                    'compra_descuento' => $this->input->post('compra_descuento'),
-                    'compra_descglobal' => $this->input->post('compra_descglobal'),
-                    'compra_total' => $this->input->post('compra_total'),
-                    'compra_efectivo' => $this->input->post('compra_efectivo'),
-                    'compra_cambio' => $this->input->post('compra_cambio'),
-                    'compra_glosa' => $this->input->post('compra_glosa'),
-                    'compra_tipocambio' => $this->input->post('compra_tipocambio'),
-                    'compra_chofer' => $this->input->post('compra_chofer'),
-                    'compra_placamovil' => $this->input->post('compra_placamovil'),
-                    'compra_fechallegada' => $this->input->post('compra_fechallegada'),
-                    'compra_horallegada' => $this->input->post('compra_horallegada'),
-                    'compra_numdoc' => $this->input->post('compra_numdoc'),
-                    'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
-                );
+    {
+        if($this->acceso(1)){
+            // check if the compra exists before trying to edit it
+            $data['compra'] = $this->Compra_model->get_compra($compra_id);
 
-                $this->Compra_model->update_compra($compra_id,$params);            
-                redirect('compra/index');
+            if(isset($data['compra']['compra_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                        'estado_id' => $this->input->post('estado_id'),
+                        'tipotrans_id' => $this->input->post('tipotrans_id'),
+                        'usuario_id' => $this->input->post('usuario_id'),
+                        'moneda_id' => $this->input->post('moneda_id'),
+                        'proveedor_id' => $this->input->post('proveedor_id'),
+                        'forma_id' => $this->input->post('forma_id'),
+                        'compra_fecha' => $this->input->post('compra_fecha'),
+                        'compra_hora' => $this->input->post('compra_hora'),
+                        'compra_subtotal' => $this->input->post('compra_subtotal'),
+                        'compra_descuento' => $this->input->post('compra_descuento'),
+                        'compra_descglobal' => $this->input->post('compra_descglobal'),
+                        'compra_total' => $this->input->post('compra_total'),
+                        'compra_efectivo' => $this->input->post('compra_efectivo'),
+                        'compra_cambio' => $this->input->post('compra_cambio'),
+                        'compra_glosa' => $this->input->post('compra_glosa'),
+                        'compra_tipocambio' => $this->input->post('compra_tipocambio'),
+                        'compra_chofer' => $this->input->post('compra_chofer'),
+                        'compra_placamovil' => $this->input->post('compra_placamovil'),
+                        'compra_fechallegada' => $this->input->post('compra_fechallegada'),
+                        'compra_horallegada' => $this->input->post('compra_horallegada'),
+                        'compra_numdoc' => $this->input->post('compra_numdoc'),
+                        'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+                    );
+
+                    $this->Compra_model->update_compra($compra_id,$params);            
+                    redirect('compra/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado();
+
+                    $this->load->model('Tipo_transaccion_model');
+                    $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+
+                    $this->load->model('Usuario_model');
+                    $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
+                    $this->load->model('Moneda_model');
+                    $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+
+                    $this->load->model('Proveedor_model');
+                    $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
+
+                    $this->load->model('Forma_pago_model');
+                    $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
+
+                    $data['_view'] = 'compra/edito';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $this->load->model('Estado_model');
-                $data['all_estado'] = $this->Estado_model->get_all_estado();
-
-                $this->load->model('Tipo_transaccion_model');
-                $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-
-                $this->load->model('Usuario_model');
-                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-                $this->load->model('Moneda_model');
-                $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
-                $this->load->model('Proveedor_model');
-                $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
-
-                $this->load->model('Forma_pago_model');
-                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
-
-                $data['_view'] = 'compra/edito';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The compra you are trying to edit does not exist.');
         }
-        else
-            show_error('The compra you are trying to edit does not exist.');
     } 
     function editar()
-
-    {   
-
-       $data['compra'] = $this->Compra_model->get_all_compra($params);
-       $compra_id = $this->input->post('compra_id');
-
-       if(isset($_POST) && count($_POST) > 0)     
-       {   
-        $params = array(
-            
-          
-          
-         
-            'compra_glosa' => $this->input->post('compra_glosa'),
-            'compra_tipocambio' => $this->input->post('compra_tipocambio'),
-            'compra_chofer' => $this->input->post('compra_chofer'),
-            'compra_placamovil' => $this->input->post('compra_placamovil'),
-            'compra_fechallegada' => $this->input->post('compra_fechallegada'),
-            'compra_horallegada' => $this->input->post('compra_horallegada'),
-            'compra_numdoc' => $this->input->post('compra_numdoc'),
-            'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
-        );
-        
-        $this->Compra_model->update_compra($compra_id,$params);            
-        redirect('compra/edit/'.$compra_id);
-    }
-    else
     {
-      $this->load->model('Compra_model');
-      $data['compra'] = $this->Compra_model->get_all_compra($params);
-      $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);
+        if($this->acceso(1)){
+           $data['compra'] = $this->Compra_model->get_all_compra($params);
+           $compra_id = $this->input->post('compra_id');
 
-      $this->load->model('Estado_model');
-      $data['all_estado'] = $this->Estado_model->get_all_estado();
+           if(isset($_POST) && count($_POST) > 0)     
+           {   
+            $params = array(
 
-      $this->load->model('Tipo_transaccion_model');
-      $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+                'compra_glosa' => $this->input->post('compra_glosa'),
+                'compra_tipocambio' => $this->input->post('compra_tipocambio'),
+                'compra_chofer' => $this->input->post('compra_chofer'),
+                'compra_placamovil' => $this->input->post('compra_placamovil'),
+                'compra_fechallegada' => $this->input->post('compra_fechallegada'),
+                'compra_horallegada' => $this->input->post('compra_horallegada'),
+                'compra_numdoc' => $this->input->post('compra_numdoc'),
+                'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+            );
 
-      $this->load->model('Usuario_model');
-      $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+            $this->Compra_model->update_compra($compra_id,$params);            
+            redirect('compra/edit/'.$compra_id);
+        }
+        else
+        {
+          $this->load->model('Compra_model');
+          $data['compra'] = $this->Compra_model->get_all_compra($params);
+          $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);
 
-      $this->load->model('Moneda_model');
-      $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
+          $this->load->model('Estado_model');
+          $data['all_estado'] = $this->Estado_model->get_all_estado();
 
-      $this->load->model('Proveedor_model');
-      $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
+          $this->load->model('Tipo_transaccion_model');
+          $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
 
-      $this->load->model('Forma_pago_model');
-      $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
+          $this->load->model('Usuario_model');
+          $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
 
-      $this->load->model('Detalle_compra_model');
-      $data['all_detalle_compra_aux'] = $this->Detalle_compra_model->get_all_detalle_compra();
+          $this->load->model('Moneda_model');
+          $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
 
-      $this->load->model('Documento_respaldo_model');
-      $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
-      
-      
-      $data['_view'] = 'compra/add';
-      $this->load->view('layouts/main',$data);
+          $this->load->model('Proveedor_model');
+          $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
+
+          $this->load->model('Forma_pago_model');
+          $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
+
+          $this->load->model('Detalle_compra_model');
+          $data['all_detalle_compra_aux'] = $this->Detalle_compra_model->get_all_detalle_compra();
+
+          $this->load->model('Documento_respaldo_model');
+          $data['all_documento_respaldo'] = $this->Documento_respaldo_model->get_all_documento_respaldo(); 
+
+
+          $data['_view'] = 'compra/add';
+          $this->load->view('layouts/main',$data);
+      }
   }
 } 
 
@@ -1379,36 +1359,38 @@ function quitar($detallecomp_id)
 
 function remove($compra_id)
 {
-    $compra = $this->Compra_model->get_compra($compra_id);
+    if($this->acceso(1)){
+        $compra = $this->Compra_model->get_compra($compra_id);
 
-        // check if the compra exists before trying to delete it
-    if(isset($compra['compra_id']))
-    {
-        $this->Compra_model->delete_compra($compra_id);
-        redirect('compra/index');
+            // check if the compra exists before trying to delete it
+        if(isset($compra['compra_id']))
+        {
+            $this->Compra_model->delete_compra($compra_id);
+            redirect('compra/index');
+        }
+        else
+            show_error('The compra you are trying to delete does not exist.');
     }
-    else
-        show_error('The compra you are trying to delete does not exist.');
 }
 
 function pdf($compra_id){
-    $this->acceso();
-    $usuario_id = $this->session_data['usuario_id'];  
-    $data = array(
-        'page_title' => 'Admin >> Mi Cuenta'
-    );
-    $this->load->model('Empresa_model');
-    $data['empresa'] = $this->Empresa_model->get_empresa(1);
-    $data['compra'] = $this->Compra_model->join_compras($compra_id);
-    $this->load->model('Detalle_compra_model');
-    $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
-    $data['_view'] = 'compra/reciboCompra';
-    $this->load->view('layouts/main',$data);
-        
-    
+    if($this->acceso(1)){
+        $usuario_id = $this->session_data['usuario_id'];
+        $data = array(
+            'page_title' => 'Admin >> Mi Cuenta'
+        );
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['compra'] = $this->Compra_model->join_compras($compra_id);
+        $this->load->model('Detalle_compra_model');
+        $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+        $data['_view'] = 'compra/reciboCompra';
+        $this->load->view('layouts/main',$data);
+    }
 }
 function ingreso_rapido($cantidad,$producto_id,$producto_costo){
-        $usuario_id = $this->session_data['usuario_id'];
+        if($this->acceso(1)){
+            $usuario_id = $this->session_data['usuario_id'];
         $compra_fecha = "now()";
         $compra_hora = "'".date('H:i:s')."'";
         $compra = array(
@@ -1461,19 +1443,7 @@ $detalle = "INSERT into detalle_compra(
     $inventario = "update inventario set inventario.existencia=inventario.existencia+".$cantidad." where producto_id=".$producto_id."";
 
         $this->db->query($inventario);
-
-}
-
-private function acceso(){
-        if ($this->session->userdata('logged_in')) {
-            if( $this->session_data['tipousuario_id']<=3) {
-                return;
-            } else {
-                redirect('alerta');
-            }
-        } else {
-            redirect('inicio', 'refresh');
-        }
     }
+}
 
 }

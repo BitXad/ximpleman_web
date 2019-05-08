@@ -5,33 +5,37 @@
  */
  
 class Categoria_trabajo extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_trabajo_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
-    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_trabajo
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $data['categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();
-        
-        $data['_view'] = 'categoria_trabajo/index';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(120)){
+            $data['categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();
+
+            $data['_view'] = 'categoria_trabajo/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -39,41 +43,29 @@ class Categoria_trabajo extends CI_Controller{
      * Adding a new categoria_trabajo
      */
     function add()
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(120)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('cattrab_descripcion','Categoria Trabajo Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 
-			$this->form_validation->set_rules('cattrab_descripcion','Categoria Trabajo Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-		
-			if($this->form_validation->run())     
+            if($this->form_validation->run())     
             {
-            $estado_id = 1;
-            $params = array(
-				'cattrab_descripcion' => $this->input->post('cattrab_descripcion'),
-				'estado_id' => $estado_id,
-            );
-            
-            $cattrab_id = $this->Categoria_trabajo_model->add_categoria_trabajo($params);
-            redirect('categoria_trabajo/index');
-        }
-        else
-        {
-            $this->load->model('Estado_model');
-	    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-            $data['_view'] = 'categoria_trabajo/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-            else{
-                redirect('alerta');
+                $estado_id = 1;
+                $params = array(
+                    'cattrab_descripcion' => $this->input->post('cattrab_descripcion'),
+                    'estado_id' => $estado_id,
+                );
+
+                $cattrab_id = $this->Categoria_trabajo_model->add_categoria_trabajo($params);
+                redirect('categoria_trabajo/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $data['_view'] = 'categoria_trabajo/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -81,48 +73,37 @@ class Categoria_trabajo extends CI_Controller{
      * Editing a categoria_trabajo
      */
     function edit($cattrab_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        // check if the tipo_servicio exists before trying to edit it
-        $data['categoria_trabajo'] = $this->Categoria_trabajo_model->get_categoria_trabajo($cattrab_id);
-        
-        if(isset($data['categoria_trabajo']['cattrab_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(120)){
+            // check if the tipo_servicio exists before trying to edit it
+            $data['categoria_trabajo'] = $this->Categoria_trabajo_model->get_categoria_trabajo($cattrab_id);
 
-			$this->form_validation->set_rules('cattrab_descripcion','Categoria Trabajo Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-		
-			if($this->form_validation->run())     
+            if(isset($data['categoria_trabajo']['cattrab_id']))
             {
-                $params = array(
-					'cattrab_descripcion' => $this->input->post('cattrab_descripcion'),
-					'estado_id' => $this->input->post('estado_id'),
-                );
+                $this->load->library('form_validation');
 
-                $this->Categoria_trabajo_model->update_categoria_trabajo($cattrab_id,$params);            
-                redirect('categoria_trabajo/index');
+                            $this->form_validation->set_rules('cattrab_descripcion','Categoria Trabajo Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+
+                            if($this->form_validation->run())     
+                {
+                    $params = array(
+                                            'cattrab_descripcion' => $this->input->post('cattrab_descripcion'),
+                                            'estado_id' => $this->input->post('estado_id'),
+                    );
+
+                    $this->Categoria_trabajo_model->update_categoria_trabajo($cattrab_id,$params);            
+                    redirect('categoria_trabajo/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                    $data['_view'] = 'categoria_trabajo/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $this->load->model('Estado_model');
-	        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                $data['_view'] = 'categoria_trabajo/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('La Categoria de Trabajo que estas intentando editar no existe.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+                show_error('La Categoria de Trabajo que estas intentando editar no existe.');
         }
     } 
 
@@ -131,25 +112,17 @@ class Categoria_trabajo extends CI_Controller{
      */
     function remove($cattrab_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-        $categoria_trabajo = $this->Categoria_trabajo_model->get_categoria_trabajo($cattrab_id);
+        if($this->acceso(120)){
+            $categoria_trabajo = $this->Categoria_trabajo_model->get_categoria_trabajo($cattrab_id);
 
-        // check if the categoria_trabajo exists before trying to delete it
-        if(isset($categoria_trabajo['cattrab_id']))
-        {
-            $this->Categoria_trabajo_model->delete_categoria_trabajo($cattrab_id);
-            redirect('categoria_trabajo/index');
-        }
-        else
-            show_error('El tipo de categoria_trabajo que estas intentando eliminar no existe.');
-        }
-            else{
-                redirect('alerta');
+            // check if the categoria_trabajo exists before trying to delete it
+            if(isset($categoria_trabajo['cattrab_id']))
+            {
+                $this->Categoria_trabajo_model->delete_categoria_trabajo($cattrab_id);
+                redirect('categoria_trabajo/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+                show_error('El tipo de categoria_trabajo que estas intentando eliminar no existe.');
         }
     }
     

@@ -257,13 +257,13 @@
                             <a href="<?php echo site_url('reportes/egresorep');?>"><i class="fa fa-arrow-left"></i>Egresos</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
-                        </li>
-                        <li>
                             <a href="<?php echo site_url('reportes/ingresorep');?>"><i class="fa fa-arrow-right"></i>Ingresos</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Ingresos/Egresos</a>
+                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Mi Movimiento Diario</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/planillacaja');?>"><i class="fa fa-exchange"></i>Planilla de Caja</a>

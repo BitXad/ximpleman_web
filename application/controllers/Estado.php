@@ -5,24 +5,33 @@
  */
  
 class Estado extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Estado_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
-    
-
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of estado
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(122)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -36,12 +45,6 @@ class Estado extends CI_Controller{
         $data['_view'] = 'estado/index';
         $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
 
     /*
@@ -49,12 +52,7 @@ class Estado extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(122)){
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('estado_descripcion','Estado Descripcion','required');
@@ -76,12 +74,6 @@ class Estado extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }  
 
     /*
@@ -89,12 +81,7 @@ class Estado extends CI_Controller{
      */
     function edit($estado_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(122)){
         // check if the estado exists before trying to edit it
         $data['estado'] = $this->Estado_model->get_estado($estado_id);
         
@@ -124,12 +111,6 @@ class Estado extends CI_Controller{
         else
             show_error('The estado you are trying to edit does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     } 
 
     /*
@@ -137,9 +118,7 @@ class Estado extends CI_Controller{
      */
     function remove($estado_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(122)){
         $estado = $this->Estado_model->get_estado($estado_id);
 
         // check if the estado exists before trying to delete it
@@ -151,12 +130,6 @@ class Estado extends CI_Controller{
         else
             show_error('The estado you are trying to delete does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
 
     /*
@@ -164,9 +137,7 @@ class Estado extends CI_Controller{
      */
     function vaciartabla()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(122)){
         $all_tabla = $this->Estado_model->get_all_tabla();
 
         foreach ($all_tabla as $tabla) {
@@ -174,12 +145,6 @@ class Estado extends CI_Controller{
         }
         redirect('estado');
 
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     
