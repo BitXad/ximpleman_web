@@ -76,12 +76,13 @@ class Compra_model extends CI_Model
                 *
 
             FROM
-                compra c, estado e, proveedor p, tipo_transaccion t
+                compra c, estado e, proveedor p, tipo_transaccion t, usuario u
 
             WHERE
                 c.estado_id = e.estado_id
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
+                and c.usuario_id=u.usuario_id
                 and p.proveedor_nombre like '%".$parametro."%'
 
             ORDER BY `compra_id` DESC
