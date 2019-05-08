@@ -37,7 +37,7 @@ private function acceso($id_rol){
     {
         if($this->acceso(148)){
 
-                $data = array(
+                /*$data = array(
                     'usuario_login' => $session_data['usuario_login'],
                     'usuario_id' => $session_data['usuario_id'],
                     'usuario_nombre' => $session_data['usuario_nombre'],
@@ -47,7 +47,7 @@ private function acceso($id_rol){
                     'usuario_email' => $session_data['usuario_email'],
                     'page_title' => 'Admin >> Mi Cuenta',
                     'thumb' => $session_data['thumb']
-                );
+                );*/
 
                 $params['limit'] = RECORDS_PER_PAGE;
                 $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -77,7 +77,7 @@ private function acceso($id_rol){
     {
         if($this->acceso(148)){
 
-                $data = array(
+               /* $data = array(
                     'usuario_login' => $session_data['usuario_login'],
                     'usuario_id' => $session_data['usuario_id'],
                     'usuario_nombre' => $session_data['usuario_nombre'],
@@ -87,7 +87,7 @@ private function acceso($id_rol){
                     'usuario_email' => $session_data['usuario_email'],
                     'page_title' => 'Admin >> Nuevo Usuario',
                     'thumb' => $session_data['thumb']
-                );
+                );*/
 
                 $this->form_validation->set_rules('usuario_nombre', 'Usuario Nombre', 'required');
                 $this->form_validation->set_rules('usuario_email', 'Usuario Email', 'valid_email');
@@ -184,7 +184,7 @@ private function acceso($id_rol){
         if($this->acceso(148)){
 
 
-                $data = array(
+                /*$data = array(
                     'usuario_login' => $session_data['usuario_login'],
                     'usuario_id' => $session_data['usuario_id'],
                     'usuario_nombre' => $session_data['usuario_nombre'],
@@ -194,7 +194,7 @@ private function acceso($id_rol){
                     'usuario_email' => $session_data['usuario_email'],
                     'page_title' => 'Admin >> Nuevo Usuario',
                     'thumb' => $session_data['thumb']
-                );
+                );*/
 
                 $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
 
