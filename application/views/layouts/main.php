@@ -69,7 +69,7 @@
                             <li class="user-header">
                                 <img src="<?php echo site_url('resources/images/usuarios/'.$session_data['usuario_imagen']);?>" class="img-circle" alt="User Image">
                                 <p>
-                                    <?php echo $session_data['usuario_nombre'].' - '.$session_data['rol']  ?>
+                                    <?php echo $session_data['usuario_nombre'].' - '.$session_data['tipousuario_descripcion']  ?>
                                     <small><?php echo $session_data['usuario_email']?></small>
                                 </p>
                             </li>
