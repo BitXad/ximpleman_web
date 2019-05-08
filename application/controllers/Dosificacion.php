@@ -5,39 +5,57 @@
  */
  
 class Dosificacion extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Dosificacion_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of dosificacion
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('dosificacion/index?');
-        $config['total_rows'] = $this->Dosificacion_model->get_all_dosificacion_count();
-        $this->pagination->initialize($config);
-        if($config['total_rows'] > 0){
-            $data['newdosif'] = 1;
-        }else{ $data['newdosif'] =0; }
-        
-        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion($params);
-        
-        $data['_view'] = 'dosificacion/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(149)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('dosificacion/index?');
+            $config['total_rows'] = $this->Dosificacion_model->get_all_dosificacion_count();
+            $this->pagination->initialize($config);
+            if($config['total_rows'] > 0){
+                $data['newdosif'] = 1;
+            }else{ $data['newdosif'] =0; }
+
+            $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion($params);
+
+            $data['_view'] = 'dosificacion/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new dosificacion
      */
     function add()
-    {   
+    {
+        if($this->acceso(150)){
         if(isset($_POST) && count($_POST) > 0)     
         {   
             //estado activo al crear
@@ -71,13 +89,15 @@ class Dosificacion extends CI_Controller{
             $data['_view'] = 'dosificacion/add';
             $this->load->view('layouts/main',$data);
         }
+        }
     }  
 
     /*
      * Editing a dosificacion
      */
     function edit($dosificacion_id)
-    {   
+    {
+        if($this->acceso(151)){
         // check if the dosificacion exists before trying to edit it
         $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
         
@@ -122,6 +142,7 @@ class Dosificacion extends CI_Controller{
         }
         else
             show_error('The dosificacion you are trying to edit does not exist.');
+        }
     } 
 
     /*
@@ -129,6 +150,7 @@ class Dosificacion extends CI_Controller{
      */
     function remove($dosificacion_id)
     {
+        if($this->acceso(149)){
         $dosificacion = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
 
         // check if the dosificacion exists before trying to delete it
@@ -139,6 +161,7 @@ class Dosificacion extends CI_Controller{
         }
         else
             show_error('The dosificacion you are trying to delete does not exist.');
+        }
     }
     
 }

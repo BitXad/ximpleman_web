@@ -5,162 +5,34 @@
  */
  
 class Detalle_serv extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Detalle_serv_model');
-    }
-    
-    /*
-     * Listing of detalle_serv
-     */
-    function index()
-    {
         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('detalle_serv/index?');
-        $config['total_rows'] = $this->Detalle_serv_model->get_all_detalle_serv_count();
-        $this->pagination->initialize($config);
-
-        $data['detalle_serv'] = $this->Detalle_serv_model->get_all_detalle_serv($params);
-        
-        $data['_view'] = 'detalle_serv/index';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
             redirect('', 'refresh');
         }
     }
-
-    /*
-     * Adding a new detalle_serv
-     */
-    function add()
-    {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'estado_id' => $this->input->post('estado_id'),
-				'categoria_id' => $this->input->post('categoria_id'),
-				'usuario_id' => $this->input->post('usuario_id'),
-				'responsable_id' => $this->input->post('responsable_id'),
-				'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-				'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
-				'detalleserv_falla' => $this->input->post('detalleserv_falla'),
-				'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
-				'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
-				'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
-				'detalleserv_total' => $this->input->post('detalleserv_total'),
-				'detalleserv_acuenta' => $this->input->post('detalleserv_acuenta'),
-				'detalleserv_saldo' => $this->input->post('detalleserv_saldo'),
-				'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
-				'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
-				'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
-				'detalleserv_horaentrega' => $this->input->post('detalleserv_horaentrega'),
-				'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
-            );
-            
-            $detalle_serv_id = $this->Detalle_serv_model->add_detalle_serv($params);
-            redirect('detalle_serv/index');
-        }
-        else
-        {            
-            $data['_view'] = 'detalle_serv/add';
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
-    }  
-
-    /*
-     * Editing a detalle_serv
-     */
-    function edit($detalleserv_id)
-    {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        // check if the detalle_serv exists before trying to edit it
-        $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
-        
-        if(isset($data['detalle_serv']['detalleserv_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'categoria_id' => $this->input->post('categoria_id'),
-					'usuario_id' => $this->input->post('usuario_id'),
-					'responsable_id' => $this->input->post('responsable_id'),
-					'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-					'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
-					'detalleserv_falla' => $this->input->post('detalleserv_falla'),
-					'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
-					'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
-					'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
-					'detalleserv_total' => $this->input->post('detalleserv_total'),
-					'detalleserv_acuenta' => $this->input->post('detalleserv_acuenta'),
-					'detalleserv_saldo' => $this->input->post('detalleserv_saldo'),
-					'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
-					'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
-					'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
-					'detalleserv_horaentrega' => $this->input->post('detalleserv_horaentrega'),
-					'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
-                );
-
-                $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);            
-                redirect('detalle_serv/index');
-            }
-            else
-            {
-                $data['_view'] = 'detalle_serv/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The detalle_serv you are trying to edit does not exist.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
-    } 
+    }
 
     /*
      * Deleting detalle_serv
      */
     function remove($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
+        if($this->acceso(83)){
         $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
 
         // check if the detalle_serv exists before trying to delete it
@@ -171,12 +43,6 @@ class Detalle_serv extends CI_Controller{
         }
         else
             show_error('El detalle_serv que intentas borrar no existe.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     /*
@@ -184,37 +50,24 @@ class Detalle_serv extends CI_Controller{
      */
     function removedet($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-        $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+        if($this->acceso(83)){
+            $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
 
-        // check if the detalle_serv exists before trying to delete it
-        if(isset($detalle_serv['detalleserv_id']))
-        {
-            $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
-            echo json_encode("ok");
-            //redirect('servicio/serview/'.$servicio_id);
-        }
-        else
-            show_error('El detalle_serv que intentas borrar no existe.');
-        }
-            else{
-                redirect('alerta');
+            // check if the detalle_serv exists before trying to delete it
+            if(isset($detalle_serv['detalleserv_id']))
+            {
+                $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
+                echo json_encode("ok");
+                //redirect('servicio/serview/'.$servicio_id);
             }
-        } else {
-            redirect('', 'refresh');
+            else
+                show_error('El detalle_serv que intentas borrar no existe.');
         }
     }
     
     function detalle_nuevo($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -277,24 +130,13 @@ class Detalle_serv extends CI_Controller{
         else
             show_error('The detalle_serv you are trying to edit does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      *  *********************Crea un nuevo detalle para un servicio*******************************
      */
     function nuevodetalle($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -312,7 +154,7 @@ class Detalle_serv extends CI_Controller{
                 //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
             
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
                 //estado 5 por que es PENDIENTE para Servicios en la BD
                 $estado_id = 5;
                 $catserv_id = $this->input->post('catserv_id');
@@ -412,24 +254,13 @@ class Detalle_serv extends CI_Controller{
         else
             echo json_encode("noexiste");
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      *  *********************Crea un nuevo detalle para un servicio SIN modificar su codigo*******************************
      */
     function nuevodetalle1($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -448,7 +279,7 @@ class Detalle_serv extends CI_Controller{
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
                 //
                 $estado_id = 5;
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
                 
@@ -519,24 +350,13 @@ class Detalle_serv extends CI_Controller{
         else
             show_error('El Servicio que al que intenta registrar un detalle no existe');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      * Funcion Que busca el detalle de un producto, atravez de su codigo
      */
     function buscardetalleserv($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         // check if the servicio exists before trying to edit it
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -565,63 +385,46 @@ class Detalle_serv extends CI_Controller{
             show_error('El servicio al cual desea añadir o ver un producto existente, no existe');
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     function kardex_detalle($servicio_id, $codigo)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                    );
-        $data['codigo'] = $codigo;
-        //$rescodigo = str_replace("%20", " ", $codigo);
-        $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
-        
-        
-        
-        $this->load->model('Servicio_model');
-        $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
-        
-        $this->load->model('Categoria_servicio_model');
-        $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
-        if(isset($data['detalle_serv'][0]['catserv_id'])){
-            $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($data['detalle_serv'][0]['catserv_id']);
-        }
+        if($this->acceso(74)){
+            $data['codigo'] = $codigo;
+            //$rescodigo = str_replace("%20", " ", $codigo);
+            $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
 
-        $this->load->model('Subcategoria_servicio_model');
-        $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-        
-        $this->load->model('Usuario_model');
-        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
-        
-        $this->load->model('Categoria_trabajo_model');
-        $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
 
-        $this->load->model('Tiempo_uso_model');
-        $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
 
-        $this->load->model('Procedencia_model');
-        $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+            $this->load->model('Servicio_model');
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 
-        $this->load->model('Parametro_model');
-	$data['parametro'] = $this->Parametro_model->get_parametro_servicio();
-        
-        $data['_view'] = 'detalle_serv/kardex_detalle';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
+            $this->load->model('Categoria_servicio_model');
+            $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+            if(isset($data['detalle_serv'][0]['catserv_id'])){
+                $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($data['detalle_serv'][0]['catserv_id']);
             }
-        } else {
-            redirect('', 'refresh');
+
+            $this->load->model('Subcategoria_servicio_model');
+            $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
+
+            $this->load->model('Usuario_model');
+            $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+
+            $this->load->model('Categoria_trabajo_model');
+            $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+
+            $this->load->model('Tiempo_uso_model');
+            $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
+
+            $this->load->model('Procedencia_model');
+            $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro_servicio();
+
+            $data['_view'] = 'detalle_serv/kardex_detalle';
+            $this->load->view('layouts/main',$data);
         }
     }
     
@@ -631,14 +434,9 @@ class Detalle_serv extends CI_Controller{
      */
     function anulardetalleserv($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(82)){
         $estado_id = 4; // este valor esta definido en la tabla Estado
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
         $detparams = array(
                         'detalleserv_total' => 0,
@@ -681,24 +479,13 @@ class Detalle_serv extends CI_Controller{
                 
         echo json_encode("ok");
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      *  *********************Modifica el detalle cuando se esta añadiendo mas detalles, no modifica el codigo*******************************
      */
     function modificardetalle($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -716,7 +503,7 @@ class Detalle_serv extends CI_Controller{
                 //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
             
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $catserv_id = $this->input->post('catserv_id');
@@ -927,7 +714,7 @@ class Detalle_serv extends CI_Controller{
             );
             $this->load->model('Credito_model');
             $credito_id = $this->Credito_model->add_credito($cadcredito);
-            $usuario_id = $session_data['usuario_id'];
+            $usuario_id = $this->session_data['usuario_id'];
             $cadcuota = array(
                 'credito_id' => $credito_id,
                 'usuario_id' => $usuario_id,
@@ -1011,24 +798,13 @@ class Detalle_serv extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      *  *********************Modifica el detalle cuando se va a ver un servicio, no mmodifica el codigo*******************************
      */
     function modificarmidetalle($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -1046,7 +822,7 @@ class Detalle_serv extends CI_Controller{
                 //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
                 $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
             
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $catserv_id = $this->input->post('catserv_id');
@@ -1258,7 +1034,7 @@ class Detalle_serv extends CI_Controller{
             );
             $this->load->model('Credito_model');
             $credito_id = $this->Credito_model->add_credito($cadcredito);
-            $usuario_id = $session_data['usuario_id'];
+            $usuario_id = $this->session_data['usuario_id'];
             $cadcuota = array(
                 'credito_id' => $credito_id,
                 'usuario_id' => $usuario_id,
@@ -1343,12 +1119,6 @@ class Detalle_serv extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      * *************Modifica los datos de Diagnostico, Solucion,
@@ -1356,12 +1126,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrartec($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(80)){
                 
             $this->load->library('form_validation');
 
@@ -1405,12 +1170,6 @@ class Detalle_serv extends CI_Controller{
                 echo json_encode("faltadatos");
             }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      * *************Registra el cobro total de un servicio *********************
@@ -1418,10 +1177,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcobroTotalOK($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                
+        if($this->acceso(84)){
         $cad = "";
         $servicio_total = $this->input->post('servicio_total');
         if(isset($servicio_total))
@@ -1461,12 +1217,6 @@ class Detalle_serv extends CI_Controller{
             redirect('servicio/serview/'.$servicio_id);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      * *************Registra el cobro total (DE TODOS LOS DETALLES QUE ESTEN EN TERMINADO(estado_id = 6)) de un servicio *********************
@@ -1474,11 +1224,8 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcobroTotal($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                
-            $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(84)){ 
+            $usuario_id = $this->session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
             $fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
             $hora_finalizacion = date("H:i:s", strtotime($fecha_cobro));
@@ -1535,12 +1282,6 @@ class Detalle_serv extends CI_Controller{
             */
            echo json_encode("ok");
              //redirect('servicio/serview/'.$servicio_id);
-             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     /*
@@ -1549,10 +1290,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcobrodetalle($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                
+        if($this->acceso(87)){
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('fecha_cobro','Detalle Servicio Fecha Cobro','required');
             
@@ -1562,7 +1300,7 @@ class Detalle_serv extends CI_Controller{
             //Este estado_id 7 es ENTREGADO, que tambien significa que es pagado
             $estado_id  = 7;
             $estado_id2 = 16;
-            $usuario_id = $session_data['usuario_id'];
+            $usuario_id = $this->session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
             $fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
             $hora_finalizacion = date("H:i:s", strtotime($fecha_cobro));
@@ -1601,12 +1339,6 @@ class Detalle_serv extends CI_Controller{
                 echo json_encode("faltadatos");
             }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      * Funcion que busca todos los detalles de los servicios con un determiando estado(estado_id)
@@ -1614,37 +1346,26 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarporestado()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $estado_id = $this->input->post('estado_id');
-        if(isset($estado_id))
-        {
-            $params['limit'] = RECORDS_PER_PAGE; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+        if($this->acceso(69)){
+            $estado_id = $this->input->post('estado_id');
+            if(isset($estado_id))
+            {
+                $params['limit'] = RECORDS_PER_PAGE; 
+                $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('detalle_serv/buscarporestado?');
-            $config['total_rows'] = $this->Detalle_serv_model->get_all_detalle_serv_count_estado($estado_id);
-            $this->pagination->initialize($config);
+                $config = $this->config->item('pagination');
+                $config['base_url'] = site_url('detalle_serv/buscarporestado?');
+                $config['total_rows'] = $this->Detalle_serv_model->get_all_detalle_serv_count_estado($estado_id);
+                $this->pagination->initialize($config);
 
-            $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all_for_estado($estado_id, $params);
-        
-            $data['_view'] = 'detalle_serv/buscarporestado';
-            $this->load->view('layouts/main',$data);
-            
-        }else{
-            redirect('servicio/index');
-        }
-        }
-            else{
-                redirect('alerta');
+                $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all_for_estado($estado_id, $params);
+
+                $data['_view'] = 'detalle_serv/buscarporestado';
+                $this->load->view('layouts/main',$data);
+
+            }else{
+                redirect('servicio/index');
             }
-        } else {
-            redirect('', 'refresh');
         }
     }
     /*
@@ -1654,12 +1375,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarportrabajo()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $cattrab_id = $this->input->post('cattrab_id');
         if(isset($cattrab_id))
         {
@@ -1680,12 +1396,6 @@ class Detalle_serv extends CI_Controller{
             redirect('servicio/index');
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     /*
@@ -1694,9 +1404,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcreditodetalle()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+        if($this->acceso(88)){
         //este estado es CREDITO
         $estado_id = 16;
         $estado_terminadoid = 7; // estado ENTREGADO
@@ -1729,7 +1437,7 @@ class Detalle_serv extends CI_Controller{
             );
             $this->load->model('Credito_model');
             $credito_id = $this->Credito_model->add_credito($cadcredito);
-            $usuario_id = $session_data['usuario_id'];
+            $usuario_id = $this->session_data['usuario_id'];
             $cadcuota = array(
                 'credito_id' => $credito_id,
                 'usuario_id' => $usuario_id,
@@ -1779,12 +1487,6 @@ class Detalle_serv extends CI_Controller{
             //redirect('servicio/serview/'.$servicio_id);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     /*
@@ -1793,10 +1495,8 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcreditoTotal($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(85)){
+                $usuario_id = $this->session_data['usuario_id'];
                 $fecha_finalizacion = date("Y-m-d");
                 $hora_finalizacion = date("H:i:s");
                 $fechahora = date("Y-m-d H:i:s");
@@ -1879,12 +1579,6 @@ class Detalle_serv extends CI_Controller{
                     }
                 echo json_encode("ok");
                 //redirect('servicio/serview/'.$servicio_id);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     /*
@@ -1894,12 +1588,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarporcatserv()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $catserv_id = $this->input->post('catserv_id');
         if(isset($catserv_id))
         {
@@ -1920,24 +1609,13 @@ class Detalle_serv extends CI_Controller{
             redirect('servicio/index');
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /*
      * Funcion que busca todos las subcategorias de los servicios
      */
     function buscarporsubcatserv()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $parametro = $this->input->post('buscarsubcat');
         if(isset($parametro))
         {
@@ -1958,12 +1636,6 @@ class Detalle_serv extends CI_Controller{
             redirect('servicio/index');
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     /*
@@ -1971,12 +1643,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarcliente()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
         $parametro = $this->input->post('buscarcliente');
         if(isset($parametro))
         {
@@ -1997,12 +1664,6 @@ class Detalle_serv extends CI_Controller{
             redirect('servicio/index');
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     /*
@@ -2010,12 +1671,7 @@ class Detalle_serv extends CI_Controller{
      */
     function kardexserviciocliente($cliente_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Cliente >> Mi Cuenta'
-                );
+        if($this->acceso(75)){
         //$parametro = $this->input->post('buscarcliente');
         if(isset($cliente_id))
         {
@@ -2038,12 +1694,6 @@ class Detalle_serv extends CI_Controller{
             redirect('servicio/index');
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     /*
@@ -2051,11 +1701,7 @@ class Detalle_serv extends CI_Controller{
     */
     function buscardetserviciosfecha()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                
-                
+        if($this->acceso(69)){  
 
         if ($this->input->is_ajax_request()) {
             
@@ -2073,31 +1719,11 @@ class Detalle_serv extends CI_Controller{
             show_404();
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta********** */
     function compdetalle_pago($detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                
-            
-            /*
-            $this->load->model('Cliente_model');
-	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
-//	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
-            
-            
-            */
+        if($this->acceso(69)){
 
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             
@@ -2120,22 +1746,11 @@ class Detalle_serv extends CI_Controller{
             $data['_view'] = 'detalle_serv/compdetalle_pago';
             $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher********** */
     function compdetalle_pago_boucher($detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
 
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             
@@ -2157,12 +1772,6 @@ class Detalle_serv extends CI_Controller{
             
             $data['_view'] = 'detalle_serv/compdetalle_pago_boucher';
             $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     
@@ -2188,12 +1797,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscardetalleservk()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
 	    if(isset($_POST) && count($_POST) > 0)     
             {
                 $codigo = $this->input->post('codigo');
@@ -2209,64 +1813,45 @@ class Detalle_serv extends CI_Controller{
                 $data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
                 $this->load->view('layouts/main',$data);
             }
-        }else{
-            show_error('El servicio al cual desea añadir o ver un producto existente, no existe');
         }
-        }
-            else{
-                redirect('alerta');
-            }
     }
     
     function kardex_detallek($codigo)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                    );
-        $data['codigo'] = $codigo;
-        //$rescodigo = str_replace("%20", " ", $codigo);
-        $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
-        
-        
-        
-        $this->load->model('Servicio_model');
-        //$data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
-        
-        $this->load->model('Categoria_servicio_model');
-        $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
-        if(isset($data['detalle_serv'][0]['catserv_id'])){
-            $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($data['detalle_serv'][0]['catserv_id']);
-        }
+        if($this->acceso(69)){
+            $data['codigo'] = $codigo;
+            //$rescodigo = str_replace("%20", " ", $codigo);
+            $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
 
-        $this->load->model('Subcategoria_servicio_model');
-        $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
-        
-        $this->load->model('Usuario_model');
-        $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
-        
-        $this->load->model('Categoria_trabajo_model');
-        $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+            $this->load->model('Servicio_model');
+            //$data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 
-        $this->load->model('Tiempo_uso_model');
-        $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
-
-        $this->load->model('Procedencia_model');
-        $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
-
-        $this->load->model('Parametro_model');
-	$data['parametro'] = $this->Parametro_model->get_parametro_servicio();
-        
-        $data['_view'] = 'detalle_serv/kardex_detallek';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
+            $this->load->model('Categoria_servicio_model');
+            $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+            if(isset($data['detalle_serv'][0]['catserv_id'])){
+                $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($data['detalle_serv'][0]['catserv_id']);
             }
-        } else {
-            redirect('', 'refresh');
+
+            $this->load->model('Subcategoria_servicio_model');
+            $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
+
+            $this->load->model('Usuario_model');
+            $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+
+            $this->load->model('Categoria_trabajo_model');
+            $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+
+            $this->load->model('Tiempo_uso_model');
+            $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
+
+            $this->load->model('Procedencia_model');
+            $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro_servicio();
+
+            $data['_view'] = 'detalle_serv/kardex_detallek';
+            $this->load->view('layouts/main',$data);
         }
     }
     /*
@@ -2274,12 +1859,7 @@ class Detalle_serv extends CI_Controller{
      */
     function nuevodetallek()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if( $session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(69)){
                 
             $this->load->model('Servicio_model');
             $this->load->library('form_validation');
@@ -2291,7 +1871,7 @@ class Detalle_serv extends CI_Controller{
             {
                 /* ************ INICIO CREAR NUEVO SERVICIO ************** */
                 $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
                 $tiposerv_id = 1; //este valor (Servicio Normal) esta definido en la tabla tipo_servicio
                 $cliente_id = $this->input->post('cliente_id');
 
@@ -2379,12 +1959,6 @@ class Detalle_serv extends CI_Controller{
             }else{
                 redirect('detalle_serv/kardex_detallek/'.$codigo);
             }
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
 }

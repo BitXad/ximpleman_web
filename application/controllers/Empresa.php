@@ -5,23 +5,33 @@
  */
  
 class Empresa extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Empresa_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of empresa
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(121)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -35,12 +45,6 @@ class Empresa extends CI_Controller{
         $data['_view'] = 'empresa/index';
         $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
 
     /*
@@ -48,12 +52,7 @@ class Empresa extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(121)){
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('empresa_nombre','Empresa Nombre','required');
@@ -131,29 +130,18 @@ class Empresa extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
-    }  
+    }
 
     /*
      * Editing a empresa
      */
     function edit($empresa_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(121)){
         // check if the empresa exists before trying to edit it
-        $data['empresa'] = $this->Empresa_model->get_this_empresa($empresa_id);
+        $data['empresas'] = $this->Empresa_model->get_this_empresa($empresa_id);
         
-        if(isset($data['empresa']['empresa_id']))
+        if(isset($data['empresas']['empresa_id']))
         {
             $this->load->library('form_validation');
 
@@ -247,12 +235,6 @@ class Empresa extends CI_Controller{
         else
             show_error('The empresa you are trying to edit does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     } 
 
     /*
@@ -260,12 +242,7 @@ class Empresa extends CI_Controller{
      */
     function remove($empresa_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(121)){
         $empresa = $this->Empresa_model->get_this_empresa($empresa_id);
 
         // check if the empresa exists before trying to delete it
@@ -276,12 +253,6 @@ class Empresa extends CI_Controller{
         }
         else
             show_error('The empresa you are trying to delete does not exist.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
 
