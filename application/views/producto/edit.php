@@ -34,7 +34,20 @@
 });
         }
 </script>
-
+<script>
+      function verificar_precio(){
+              var venta = $("#producto_precio").val();
+              var costo = $("#producto_costo").val();
+              if(costo >= venta){
+                  alert("El Precio de Compra es mayor o igual a Precio de Compra");
+              }
+      };
+      function loader() {
+     	$("form").submit(function() {
+   document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+});
+        }
+</script>
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
@@ -144,7 +157,7 @@
 					<div class="col-md-3">
 						<label for="producto_precio" class="control-label">Precio de Venta</label>
 						<div class="form-group">
-							<input type="number" step="any" min="0" name="producto_precio" value="<?php echo ($this->input->post('producto_precio') ? $this->input->post('producto_precio') : $producto['producto_precio']); ?>" class="form-control" id="producto_precio" />
+                                                    <input type="number" step="any" min="0" name="producto_precio" value="<?php echo ($this->input->post('producto_precio') ? $this->input->post('producto_precio') : $producto['producto_precio']); ?>" class="form-control" id="producto_precio" onchange="verificar_precio();" />
 						</div>
 					</div>
 

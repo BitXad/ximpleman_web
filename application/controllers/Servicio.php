@@ -5,9 +5,7 @@
  */
  
 class Servicio extends CI_Controller{
-    
     var $session_data;
-    
     function __construct()
     {
         parent::__construct();
@@ -30,7 +28,6 @@ class Servicio extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
-    
     /*
      * Listing of servicio
      */
@@ -62,106 +59,8 @@ class Servicio extends CI_Controller{
         
         $data['_view'] = 'servicio/index';
         $this->load->view('layouts/main',$data);
-    }
-}
-
-    function add()
-    {
-        if($this->acceso(70)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
-        $this->load->library('form_validation');
-
-		$this->form_validation->set_rules('servicio_saldo','Servicio Saldo','required');
-		
-	if($this->form_validation->run())     
-        {
-            $usuario_id = $this->session_data['usuario_id'];
-            
-            date_default_timezone_set('America/La_Paz');
-            $fecha_res = date('Y-m-d');
-            $hora_res = date('H:i:s');
-            
-            $params = array(
-                                'estado_id' => $this->input->post('estado_id'),
-				'tiposerv_id' => $this->input->post('tiposerv_id'),
-				'cliente_id' => $this->input->post('cliente_id'),
-				'usuario_id' => $usuario_id,
-				'servicio_fecharecepcion' => $fecha_res,
-				'servicio_horarecepcion' => $hora_res,
-				'servicio_total' => $this->input->post('servicio_total'),
-				'servicio_acuenta' => $this->input->post('servicio_acuenta'),
-				'servicio_saldo' => $this->input->post('servicio_saldo'),
-            );
-            
-            $servicio_id = $this->Servicio_model->add_servicio($params);
-            redirect('detalle_serv/detalle_nuevo/'.$servicio_id);
-        }
-        else
-        {
-            $this->load->model('Estado_model');
-            $data['all_estado'] = $this->Estado_model->get_all_estado();
-
-            $this->load->model('Tipo_servicio_model');
-            $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
-
-            $this->load->model('Cliente_model');
-            $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
-
-//			$this->load->model('Usuario_model');
-//			$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-            
-            $data['_view'] = 'servicio/add';
-            $this->load->view('layouts/main',$data);
         }
     }
-}
-    
-    /*
-     * Editing a servicio
-     */
-    function edit($servicio_id)
-    {
-        if($this->acceso(71)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
-        
-        // check if the servicio exists before trying to edit it
-        $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
-        
-        if(isset($data['servicio']['servicio_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {
-                $usuario_id = $this->session_data['usuario_id'];
-                $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'tiposerv_id' => $this->input->post('tiposerv_id'),
-					'cliente_id' => $this->input->post('cliente_id'),
-					'usuario_id' => $usuario_id,
-					'servicio_fecharecepcion' => $this->input->post('servicio_fecharecepcion'),
-					'servicio_horarecepcion' => $this->input->post('servicio_horarecepcion'),
-					'servicio_total' => $this->input->post('servicio_total'),
-					'servicio_acuenta' => $this->input->post('servicio_acuenta'),
-					'servicio_saldo' => $this->input->post('servicio_saldo'),
-                );
-
-                $this->Servicio_model->update_servicio($servicio_id,$params);            
-                redirect('servicio/index');
-            }
-            else
-            {
-                $data['_view'] = 'servicio/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The servicio you are trying to edit does not exist.');
-    } 
-}
-
     /*
      * Deleting servicio
      */
