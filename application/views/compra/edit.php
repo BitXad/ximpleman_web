@@ -1256,6 +1256,15 @@ function calcularCambio(compra_subtotalx,compra_descuentox,compra_totalfinalx,co
       });
 </script>
 <script>
+$("#texto2").change(function(){
+            var costo = Number($('#texto1').val());
+            var precio = $(this).val();
+            if (costo > precio) {
+            alert("El precio de costo es mayor que el precio de venta");
+            }
+        }); 
+</script>
+<script>
       $(document).ready(function () {
           $("#producto_codigobarra").keyup(function () {
               var value = $(this).val();
