@@ -40,15 +40,15 @@ class Detalle_serv extends CI_Controller{
             {
                 $this->load->model('Detalle_venta_model');
                 $detalle_venta = $this->Detalle_venta_model->get_all_detalle_ventas_servicio($detalleserv_id);
-                if(isset($detalle_venta['detalleven_id']))
-                {
+              /*  if(isset($detalle_venta['detalleven_id']))
+                {*/
                     $this->load->model('Inventario_model');
                     foreach ($detalle_venta as $detalle) {
                         $this->Inventario_model->incrementar_inventario($detalle['detalleven_cantidad'], $detalle['producto_id']);
                         $this->Detalle_venta_model->delete_detalle_venta($detalle['detalleven_id']);
                     }
 
-                }
+               // }
                 $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
                 echo json_encode("ok");
             }
@@ -69,15 +69,15 @@ class Detalle_serv extends CI_Controller{
             {
                 $this->load->model('Detalle_venta_model');
                 $detalle_venta = $this->Detalle_venta_model->get_all_detalle_ventas_servicio($detalleserv_id);
-                if(isset($detalle_venta['detalleven_id']))
-                {
+              /*  if(isset($detalle_venta['detalleven_id']))
+                {*/
                     $this->load->model('Inventario_model');
                     foreach ($detalle_venta as $detalle) {
                         $this->Inventario_model->incrementar_inventario($detalle['detalleven_cantidad'], $detalle['producto_id']);
                         $this->Detalle_venta_model->delete_detalle_venta($detalle['detalleven_id']);
                     }
 
-                }
+               // }
                 $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
                 echo json_encode("ok");
                 //redirect('servicio/serview/'.$servicio_id);

@@ -1061,21 +1061,21 @@ class Servicio extends CI_Controller{
             $this->load->model('Detalle_serv_model');
             
             $servicio_id = $this->input->post('servicio_id');
-            $detalle_serv = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
-            if(isset($detalle_serv['detalleserv_id']))
+            $detalle_serv = $this->Detalle_serv_model->get_ids_detalleserv_all($servicio_id);
+          /*  if(isset($detalle_serv['detalleserv_id']))
+            {*/
+            $this->load->model('Detalle_venta_model');
+            $this->load->model('Inventario_model');
+            foreach($detalle_serv as $det_serv)
             {
-                $this->load->model('Detalle_venta_model');
-                $this->load->model('Inventario_model');
-                foreach($detalle_serv as $det_serv)
-                {
-                    $detalle_venta = $this->Detalle_venta_model->get_all_detalle_ventas_servicio($det_serv['detalleserv_id']);
-                    foreach($detalle_venta as $detalle){
-                        $this->Inventario_model->incrementar_inventario($detalle['detalleven_cantidad'], $detalle['producto_id']);
-                        $this->Detalle_venta_model->delete_detalle_venta($detalle['detalleven_id']);
-                    }
+                $detalle_venta = $this->Detalle_venta_model->get_all_detalle_ventas_servicio($det_serv['detalleserv_id']);
+                foreach($detalle_venta as $detalle){
+                    $this->Inventario_model->incrementar_inventario($detalle['detalleven_cantidad'], $detalle['producto_id']);
+                    $this->Detalle_venta_model->delete_detalle_venta($detalle['detalleven_id']);
                 }
             }
-            $detalle_serv = $this->Detalle_serv_model->delete_detalle_serv_all($servicio_id);
+           // }
+            $this->Detalle_serv_model->delete_detalle_serv_all($servicio_id);
             
             $this->Servicio_model->delete_servicio($servicio_id);
 

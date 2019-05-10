@@ -1443,7 +1443,7 @@ function anulartodoelservicio(servicio_id, num){
     });
 }
 
-/* ****************Anular todos los detalles de servicio*************** */
+/* ****************Eliminar todos los detalles de servicio*************** */
 function eliminartodoelservicio(servicio_id, num){
     var nombremodal = "modaleliminar"+num;
     var base_url = document.getElementById('base_url').value;

@@ -729,5 +729,19 @@ class Detalle_serv_model extends CI_Model
 
         return $detalle_serv;
     }
+    /* Obtiene todos los IDS. de detalles de un servicio especifico(servicio_id) */
+    function get_ids_detalleserv_all($servicio_id)
+    {
+        $detalle_serv = $this->db->query("
+            SELECT
+                ds.detalleserv_id
+            FROM
+                detalle_serv ds
+            WHERE
+                ds.servicio_id = ".$servicio_id."
+        ")->result_array();
+
+        return $detalle_serv;
+    }
     
 }

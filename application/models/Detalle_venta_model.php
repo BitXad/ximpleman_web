@@ -265,7 +265,8 @@ class Detalle_venta_model extends CI_Model
                 detalle_venta dv, producto p
 
             WHERE
-                dv.detalleserv_id = $detalleserv_id
+                dv.producto_id = p.producto_id
+                and dv.detalleserv_id = $detalleserv_id
 
 
         ")->result_array();
