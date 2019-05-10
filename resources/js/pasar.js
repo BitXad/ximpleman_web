@@ -117,7 +117,7 @@ function ventacombi(filtro)
                         
                        // html += "<td align='right' >"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<br></td>";                                          
                         html += "<td align='right' >"+Number(total/canti).toFixed(2)+"<br></td>";                                          
-                        html += "<td align='center' >"+Number(registros[i]["cantidades"]).toFixed(2)+"<br></td>";
+                        html += "<td align='center' >"+Number(registros[i]["cantidades"])+"<br></td>";
                         html += "<td align='right' style='font-size:12px;'><b>"+Number(registros[i]["totales"]).toFixed(2)+"</b></td>";
                      // html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                                                
@@ -133,7 +133,7 @@ function ventacombi(filtro)
                         html += "<td style= 'font-size:12px;' ><b>TOTAL</b></td>";
                         html += "<td></td>";
                        
-                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalCan).toFixed(2)+"</td>";
+                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalCan)+"</td>";
                         html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalTo).toFixed(2)+"</td>";
                        
                         html += "</tr>";
