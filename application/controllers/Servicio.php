@@ -138,7 +138,7 @@ class Servicio extends CI_Controller{
     /* *************Al añadir nuevo servicio; se crea un nuevo servicio con estos parametros**************  */
     function crearservicio()
     {
-        if($this->acceso(69)){
+        if($this->acceso(70)){
         $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
         $usuario_id = $this->session_data['usuario_id'];
         $tiposerv_id = 1; //este valor (Servicio Normal) esta definido en la tabla tipo_servicio
@@ -165,7 +165,7 @@ class Servicio extends CI_Controller{
      */
     function serviciocreado($servicio_id, $a = null)
     {
-        if($this->acceso(69)){
+        if($this->acceso(70)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -224,7 +224,7 @@ class Servicio extends CI_Controller{
      */
     function asignarcliente($servicio_id)
     {
-        if($this->acceso(69)){
+        if($this->acceso(70)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );  
@@ -311,7 +311,7 @@ class Servicio extends CI_Controller{
      */
     function anularserviciodet($servicio_id)
     {
-        if($this->acceso(82)){
+        if($this->acceso(77)){
         $usuario_id = $this->session_data['usuario_id'];  
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -346,7 +346,7 @@ class Servicio extends CI_Controller{
     
     function serview($servicio_id, $a = null)
     {
-        if($this->acceso(69)){
+        if($this->acceso(71)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -380,7 +380,7 @@ class Servicio extends CI_Controller{
      */
     function anularserv($servicio_id)
     {
-        if($this->acceso(86)){
+        if($this->acceso(77)){
         $usuario_id = $this->session_data['usuario_id'];
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -451,7 +451,7 @@ class Servicio extends CI_Controller{
      */
     function anulardetalle($servicio_id, $detalleserv_id)
     {
-        if($this->acceso(69)){
+        if($this->acceso(82)){
         $estado_id = 4; // este valor esta definido en la tabla Estado = ANULADO
         $this->load->model('Detalle_serv_model');
         $detparams = array(
@@ -777,7 +777,7 @@ class Servicio extends CI_Controller{
      */
     function boletainftecservicio($servicio_id)
     {
-        if($this->acceso(69)){
+        if($this->acceso(79)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -926,7 +926,7 @@ class Servicio extends CI_Controller{
      */
     function repserviciodiario()
     {
-        if($this->acceso(69)){
+        if($this->acceso(76)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -1058,23 +1058,26 @@ class Servicio extends CI_Controller{
         if($this->acceso(78)){
         if ($this->input->is_ajax_request())
         {
+            $this->load->model('Detalle_serv_model');
             
             $servicio_id = $this->input->post('servicio_id');
+            $detalle_serv = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            if(isset($detalle_serv['detalleserv_id']))
+            {
+                $this->load->model('Detalle_venta_model');
+                $this->load->model('Inventario_model');
+                foreach($detalle_serv as $det_serv)
+                {
+                    $detalle_venta = $this->Detalle_venta_model->get_all_detalle_ventas_servicio($det_serv['detalleserv_id']);
+                    foreach($detalle_venta as $detalle){
+                        $this->Inventario_model->incrementar_inventario($detalle['detalleven_cantidad'], $detalle['producto_id']);
+                        $this->Detalle_venta_model->delete_detalle_venta($detalle['detalleven_id']);
+                    }
+                }
+            }
+            $detalle_serv = $this->Detalle_serv_model->delete_detalle_serv_all($servicio_id);
             
-            $minutosegundo = date('is');
-        
-        $this->load->model('Dosificacion_model');
-        $dosificacion   = $this->Dosificacion_model->get_dosificacion_activa();
-        $autorizacion   = $dosificacion[0]['dosificacion_autorizacion'];
-        $llave          = $dosificacion[0]['dosificacion_llave'];
-        $codseguimiento = $this->codigo_control($llave, $autorizacion, $servicio_id, $servicio_id,$fecha_reg, $minseg);
-        
-            $params = array(
-                'servicio_fecharecepcion' => $fecha_reg,
-                'servicio_horarecepcion' => $hora_reg,
-                'servicio_codseguimiento' => $codseguimiento,
-            );
-            $this->Servicio_model->update_servicio($servicio_id,$params);
+            $this->Servicio_model->delete_servicio($servicio_id);
 
             echo json_encode("ok");
         }

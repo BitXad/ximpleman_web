@@ -416,7 +416,7 @@ class Cliente extends CI_Controller{
      */
     function add_new($servicio_id)
     {
-        if($this->acceso(94)){
+        if($this->acceso(69)){
             $this->load->model('Servicio_model');
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 
@@ -550,7 +550,7 @@ class Cliente extends CI_Controller{
     */
     function buscarclientesactivos()
     {
-        if($this->acceso(94)){
+        if($this->acceso(70)){
             if ($this->input->is_ajax_request()) {
 
                 $parametro = $this->input->post('parametro');   

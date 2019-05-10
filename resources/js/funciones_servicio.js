@@ -668,7 +668,7 @@ function tablaresultadosinsumo(e, servicio_id, detalleserv_id){
     });   
     }
 }    
-    //Tabla resultados de la busqueda en el index de cliente
+  /*  //Tabla resultados de la busqueda en el index de cliente
 function tablaresultadosclienteservicio(tabla_id){
         var controlador = "";
         var parametro = "";
@@ -698,13 +698,13 @@ function tablaresultadosclienteservicio(tabla_id){
                         /*var cont = 0;
                         var cant_total = 0;
                         var total_detalle = 0; */
-                        var n = registros.length; //tamaño del arreglo de la consulta
+       /*                 var n = registros.length; //tamaño del arreglo de la consulta
                         $("#encontrados").val("- "+n+" -");
                         html = "";
                        /*if (n <= limite) x = n; 
                        else x = limite;*/
 
-                        for (var i = 0; i < n ; i++){
+       /*                 for (var i = 0; i < n ; i++){
                             html += "<tr>";
                             
                             html += "<td>"+(i+1)+"</td>";
@@ -745,7 +745,7 @@ function tablaresultadosclienteservicio(tabla_id){
             }
         });
 }
-
+*/
 function buscar_servicioporfechas()
 {
     /*var base_url    = document.getElementById('base_url').value;
@@ -1447,11 +1447,11 @@ function anulartodoelservicio(servicio_id, num){
 function eliminartodoelservicio(servicio_id, num){
     var nombremodal = "modaleliminar"+num;
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'servicio/removeall/'+servicio_id;
+    var controlador = base_url+'servicio/removeall';
     $('#'+nombremodal).modal('hide');
     $.ajax({url: controlador,
            type:"POST",
-           data:{},
+           data:{servicio_id:servicio_id},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
