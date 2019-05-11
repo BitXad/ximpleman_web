@@ -50,8 +50,26 @@
 							<input type="text" name="empresa_ubicacion" value="<?php echo $this->input->post('empresa_ubicacion'); ?>" class="form-control" id="empresa_ubicacion" />
 						</div>
 					</div>
-				</div>
-			</div>
+                            <div class="col-md-6">
+                                <label for="empresa_departamento" class="control-label">Departamento</label>
+                                <div class="form-group">
+                                    <input type="text" name="empresa_departamento" value="<?php echo $this->input->post('empresa_departamento'); ?>" class="form-control" id="empresa_departamento" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="empresa_propietario" class="control-label">Propietario</label>
+                                <div class="form-group">
+                                    <input type="text" name="empresa_propietario" value="<?php echo $this->input->post('empresa_propietario'); ?>" class="form-control" id="empresa_propietario" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="empresa_codigo" class="control-label">Código</label>
+                                <div class="form-group">
+                                    <input type="text" name="empresa_codigo" value="<?php echo $this->input->post('empresa_codigo'); ?>" class="form-control" id="empresa_codigo" />
+                                </div>
+                            </div>
+                        </div>
+                </div>
           	<div class="box-footer">
             	<button type="submit" class="btn btn-success">
             		<i class="fa fa-check"></i> Guardar
