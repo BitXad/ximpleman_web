@@ -99,7 +99,7 @@ class Factura extends CI_Controller{
         //**************** inicio contenido ***************   
         $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -160,7 +160,7 @@ class Factura extends CI_Controller{
     
         $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -223,7 +223,7 @@ class Factura extends CI_Controller{
     
         $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -247,7 +247,7 @@ class Factura extends CI_Controller{
     
         $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -638,8 +638,8 @@ class Factura extends CI_Controller{
     function verificador()
     {
 //        if ($this->session->userdata('logged_in')) {
-//            $session_data = $this->session->userdata('logged_in');
-//            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+//            $this->session_data = $this->session->userdata('logged_in');
+//            if($this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==4) {
 //                $data = array(
 //                    'page_title' => 'Admin >> Mi Cuenta'
 //                );
