@@ -255,5 +255,23 @@ class Detalle_venta_model extends CI_Model
         $res = $this->db->query($sql)->row_array();
         return $res['total'];
     }
+    function get_all_detalle_ventas_servicio($detalleserv_id)
+    {
+        $detalle_ventaservicio = $this->db->query("
+           SELECT
+                dv.detalleven_id, p.producto_id, detalleven_cantidad
+
+            FROM
+                detalle_venta dv, producto p
+
+            WHERE
+                dv.producto_id = p.producto_id
+                and dv.detalleserv_id = $detalleserv_id
+
+
+        ")->result_array();
+
+        return $detalle_ventaservicio;
+    }
     
 }

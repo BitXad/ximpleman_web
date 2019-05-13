@@ -93,7 +93,7 @@
             <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
             <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Kardex Detalle</small></a>
             <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Kardex Cliente</small></a>
-            <a href="<?php echo base_url('servicio/repserviciodiario'); ?>" class="btn btn-danger btn-foursquarexs" target="_blank" title="Reporte Diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Vista Previa</small></a>           
+            <a href="<?php echo base_url('servicio/repserviciodiario'); ?>" class="btn btn-danger btn-foursquarexs" target="_blank" title="Movimiento economico diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Reporte Diario</small></a>           
         </div>
     </div>
     <!---------------- FIN BOTONES --------->

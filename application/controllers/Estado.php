@@ -32,15 +32,8 @@ class Estado extends CI_Controller{
     function index()
     {
         if($this->acceso(122)){
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('estado/index?');
-        $config['total_rows'] = $this->Estado_model->get_all_estado_count();
-        $this->pagination->initialize($config);
-
-        $data['estado'] = $this->Estado_model->get_all_estado($params);
+        $data['estado'] = $this->Estado_model->get_all_estado();
         
         $data['_view'] = 'estado/index';
         $this->load->view('layouts/main',$data);

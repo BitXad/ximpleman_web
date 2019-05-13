@@ -28,21 +28,32 @@ class Detalle_serv extends CI_Controller{
     }
 
     /*
-     * Deleting detalle_serv
+     * Deleting detalle_serv AL CREAR(REGISTRAR un servicio)
      */
     function remove($servicio_id, $detalleserv_id)
     {
         if($this->acceso(83)){
-        $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
 
-        // check if the detalle_serv exists before trying to delete it
-        if(isset($detalle_serv['detalleserv_id']))
-        {
-            $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
-            echo json_encode("ok");
-        }
-        else
-            show_error('El detalle_serv que intentas borrar no existe.');
+            // check if the detalle_serv exists before trying to delete it
+            if(isset($detalle_serv['detalleserv_id']))
+            {
+                $this->load->model('Detalle_venta_model');
+                $detalle_venta = $this->Detalle_venta_model->get_all_detalle_ventas_servicio($detalleserv_id);
+              /*  if(isset($detalle_venta['detalleven_id']))
+                {*/
+                    $this->load->model('Inventario_model');
+                    foreach ($detalle_venta as $detalle) {
+                        $this->Inventario_model->incrementar_inventario($detalle['detalleven_cantidad'], $detalle['producto_id']);
+                        $this->Detalle_venta_model->delete_detalle_venta($detalle['detalleven_id']);
+                    }
+
+               // }
+                $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
+                echo json_encode("ok");
+            }
+            else
+                show_error('El detalle_serv que intentas borrar no existe.');
         }
     }
     /*
@@ -56,6 +67,17 @@ class Detalle_serv extends CI_Controller{
             // check if the detalle_serv exists before trying to delete it
             if(isset($detalle_serv['detalleserv_id']))
             {
+                $this->load->model('Detalle_venta_model');
+                $detalle_venta = $this->Detalle_venta_model->get_all_detalle_ventas_servicio($detalleserv_id);
+              /*  if(isset($detalle_venta['detalleven_id']))
+                {*/
+                    $this->load->model('Inventario_model');
+                    foreach ($detalle_venta as $detalle) {
+                        $this->Inventario_model->incrementar_inventario($detalle['detalleven_cantidad'], $detalle['producto_id']);
+                        $this->Detalle_venta_model->delete_detalle_venta($detalle['detalleven_id']);
+                    }
+
+               // }
                 $this->Detalle_serv_model->delete_detalle_serv($detalleserv_id);
                 echo json_encode("ok");
                 //redirect('servicio/serview/'.$servicio_id);
@@ -136,7 +158,7 @@ class Detalle_serv extends CI_Controller{
      */
     function nuevodetalle($servicio_id)
     {
-        if($this->acceso(69)){
+        if($this->acceso(70)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -485,7 +507,7 @@ class Detalle_serv extends CI_Controller{
      */
     function modificardetalle($servicio_id, $detalleserv_id)
     {
-        if($this->acceso(69)){
+        if($this->acceso(86)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -804,7 +826,7 @@ class Detalle_serv extends CI_Controller{
      */
     function modificarmidetalle($servicio_id, $detalleserv_id)
     {
-        if($this->acceso(69)){
+        if($this->acceso(86)){
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -1643,7 +1665,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscarcliente()
     {
-        if($this->acceso(69)){
+        if($this->acceso(75)){
         $parametro = $this->input->post('buscarcliente');
         if(isset($parametro))
         {
@@ -1797,7 +1819,7 @@ class Detalle_serv extends CI_Controller{
      */
     function buscardetalleservk()
     {
-        if($this->acceso(69)){
+        if($this->acceso(74)){
 	    if(isset($_POST) && count($_POST) > 0)     
             {
                 $codigo = $this->input->post('codigo');

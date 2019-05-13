@@ -49,12 +49,8 @@ class Estado_model extends CI_Model
     /*
      * Get all estado
      */
-    function get_all_estado($params = array())
+    function get_all_estado()
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
-        
         $estado = $this->db->query("
             SELECT
                 *
@@ -67,7 +63,6 @@ class Estado_model extends CI_Model
 
             ORDER BY `estado_id` DESC
 
-            " . $limit_condition . "
         ")->result_array();
 
         return $estado;

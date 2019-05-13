@@ -66,6 +66,7 @@
                         <th>Teléfono</th>
                         <th>Zona</th>
                         <th>Ubicación</th>
+                        <th>Departamento</th>
                         <th></th>
                     </tr>
                     <tbody class="buscar">
@@ -94,7 +95,14 @@
                                     ?>
                                 </div>
                                     <div style="padding-left: 4px">
-                                        <?php echo "<b id='masg'>".$e['empresa_nombre']."</b>";?>
+                                        <?php echo "<b id='masg'>".$e['empresa_nombre']."</b>";
+                                        if($e['empresa_propietario']){
+                                            echo "<br><b>de: </b>".$e['empresa_propietario'];
+                                        }
+                                        if($e['empresa_codigo']){
+                                            echo "<br><b>Código: </b>".$e['empresa_codigo'];
+                                        }
+                                        ?>
                                     </div>
                             </div>
                             
@@ -104,6 +112,7 @@
                         <td><?php echo $e['empresa_telefono']; ?></td>
                         <td><?php echo $e['empresa_zona']; ?></td>
                         <td><?php echo $e['empresa_ubicacion']; ?></td>
+                        <td><?php echo $e['empresa_departamento']; ?></td>
                         <td>
                             <a href="<?php echo site_url('empresa/edit/'.$e['empresa_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
