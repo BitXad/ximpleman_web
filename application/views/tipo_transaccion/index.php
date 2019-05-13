@@ -50,7 +50,7 @@
 						<td><?php echo $t['tipotrans_nombre']; ?></td>
 						<td>
                             <a href="<?php echo site_url('tipo_transaccion/edit/'.$t['tipotrans_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('tipo_transaccion/remove/'.$t['tipotrans_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <!--<a href="<?php //echo site_url('tipo_transaccion/remove/'.$t['tipotrans_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php } ?>
