@@ -1526,7 +1526,7 @@ function anular_venta($venta_id){
         }
         
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario($params);
-         
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
       
         $data['_view'] = 'venta/combinados';
         $this->load->view('layouts/main',$data);

@@ -430,7 +430,7 @@ function get_busqueda($condicion)
               GROUP BY dv.producto_id 
 
 
-            ORDER BY i.producto_nombre DESC 
+            ORDER BY i.producto_nombre ASC 
 
         ")->result_array();
 
