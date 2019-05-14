@@ -485,6 +485,7 @@ class Compra extends CI_Controller{
 
                $this->load->model('Producto_model');
                $data['inventario'] = $this->Producto_model->get_all_productos();  
+               $data['unidades'] = $this->Producto_model->get_all_unidad();
                         //$this->load->model('Inventario_model');
                         //$data['inventario'] = $this->Inventario_model->get_all_inventario();
                $this->load->model('Documento_respaldo_model');
@@ -534,7 +535,8 @@ class Compra extends CI_Controller{
                 $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
 
                 $this->load->model('Producto_model');
-                $data['inventario'] = $this->Producto_model->get_all_productos();  
+                $data['inventario'] = $this->Producto_model->get_all_productos();
+                $data['unidades'] = $this->Producto_model->get_all_unidad();  
                 $this->load->model('Inventario_model');
                         //$data['inventario'] = $this->Inventario_model->get_all_inventario();
 
@@ -1091,6 +1093,8 @@ function ingresarproducto()
         $producto_precio = $this->input->post('producto_precio');
         $agrupar = $this->input->post('agrupar');
         $fecha_venc = $this->input->post('producto_fechavenc');
+        $factor = $this->input->post('producto_factor');
+        $nuevacan = $cantidad * $factor;
       if ($agrupar==1) {
 
 
@@ -1098,9 +1102,9 @@ function ingresarproducto()
         $exis=$this->db->query($existe)->result_array();
         if ($exis[0]['producto_id'] > 0) {
          $sumar="UPDATE detalle_compra_aux
-          SET detallecomp_cantidad=detallecomp_cantidad+".$cantidad.",
-              detallecomp_subtotal = detallecomp_subtotal+(".$cantidad." * detallecomp_costo),
-              detallecomp_total = detallecomp_total+(".$cantidad." * detallecomp_costo) - ".$descuento."  
+          SET detallecomp_cantidad=detallecomp_cantidad+".$nuevacan.",
+              detallecomp_subtotal = detallecomp_subtotal+(".$nuevacan." * detallecomp_costo),
+              detallecomp_total = detallecomp_total+(".$nuevacan." * detallecomp_costo) - ".$descuento."  
               WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id."
     ";
          $this->db->query($sumar);
@@ -1125,12 +1129,12 @@ function ingresarproducto()
         producto_codigo,
         producto_unidad,
         ".$producto_costo."- ".$descuento.",
-        ".$cantidad.",
+        ".$nuevacan.",
         ".$producto_precio.",
         '".$fecha_venc."',
-        0,
-        (".$producto_costo." - ".$descuento.") * ".$cantidad.",
-        (".$producto_costo." - ".$descuento.") * ".$cantidad."
+        ".$descuento.",
+        (".$producto_costo." - ".$descuento.") * ".$nuevacan.",
+        (".$producto_costo." - ".$descuento.") * ".$nuevacan."
         
         from producto where producto_id = ".$producto_id."
     )";
@@ -1160,11 +1164,11 @@ function ingresarproducto()
         producto_codigo,
         producto_unidad,
         ".$producto_costo.",
-        ".$cantidad.",
+        ".$nuevacan.",
         ".$producto_precio.",
         ".$descuento.",
-        ".$cantidad." * ".$producto_costo.",
-        (".$cantidad." * ".$producto_costo.") - ".$descuento."
+        ".$nuevacan." * ".$producto_costo.",
+        (".$nuevacan." * ".$producto_costo.") - ".$descuento."
         
         from producto where producto_id = ".$producto_id."
     )";

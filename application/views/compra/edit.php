@@ -395,7 +395,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <th>Costo</th>
                             <th>Cant.</th>
                             <th>Subtotal</th>
-                            <th>Desc.</th>
+                            <th>Desc. U.</th>
                             <th>D.Glo</th>
                             <th>Total</th>
                     </tr>
@@ -519,51 +519,33 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="box-body">
                 <div class="row clearfix">
                        
-                    <div class="col-md-6">
+                    <div class="col-md-8">
                         <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
                             <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="producto_nombre" required/>
                             
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label for="producto_marca" class="control-label">Marca</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_marca" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Codigo Barra</label>
                         <div class="form-group">
                             <input type="text" name="producto_codigobarra" onkeypress="return pulsar(event)" value="<?php echo $this->input->post('producto_codigobarra'); ?>" class="form-control" id="producto_codigobarra" required/>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
                         <div class="form-group">
                             <input type="text" name="producto_codigo" value="<?php echo $this->input->post('producto_codigo'); ?>" class="form-control" id="producto_codigo" />
                             <span class="text-danger"><?php echo form_error('producto_codigo');?></span>
                         </div>
                     </div>
-                    
-                              <div class="col-md-6" hidden>
-                    <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
-                        </div>  
-                    <div class="col-md-6">
-                        <label for="producto_costo" class="control-label">Costo</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_costo" value="<?php echo $this->input->post('producto_costo'); ?>" class="form-control" id="texto1" required/>
-                        </div>  
-                    </div>
-                    <div class="col-md-6">
-                        <label for="producto_precio" class="control-label">Precio de Venta</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="cantidad" class="control-label">Cantidad</label>
-                        <div class="form-group">
-                            <input type="text" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
-                             <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
-                            <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="categoria_id" class="control-label">Categoria</label>
                         <div class="form-group">
                             <select name="categoria_id" id="categoria_id" class="form-control">
@@ -579,13 +561,57 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             </select>
                         </div>
                     </div>
-                   
-                   <div class="col-md-6">
+                    
+                              <div class="col-md-6" hidden>
+                    <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
+                        </div>
+                        <div class="col-md-4">
                         <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
-                            <input type="text" name="producto_unidad" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_unidad'); ?>" class="form-control" id="producto_unidad" />
+                            <select name="producto_unidad" class="form-control" id="producto_unidad" onchange="select_unidad()">
+                                <option value="PIEZA">--Unidad--</option>
+                               <?php 
+                foreach($unidades as $u){ ?>
+                                                                    
+                          <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
+                         
+
+                      <?php } ?>
+                            </select>
+                        </div>
+                    </div>  
+                    <div class="col-md-4">
+                        <label for="producto_costo" class="control-label">Costo</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_costo" value="<?php echo $this->input->post('producto_costo'); ?>" class="form-control" id="texto1" required/>
+                        </div>  
+                    </div>
+                    <div class="col-md-4">
+                        <label for="producto_precio" class="control-label">Precio de Venta</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label for="cantidad" class="control-label">Cantidad Compra</label>
+                        <div class="form-group">
+                            <input type="text" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
+                             <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
+                            <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
+                        </div>
+                    </div>
+                    <div class="col-md-6" id="select_unidad">
+                        <label for="unidad_compra" class="control-label">Unidad Compra</label>
+                        <div class="form-group">
+                            <select name="unidad_compra" class="form-control" id="unidad_compra" >
+                                <option value="1">--Unidad--</option>
+                               
+                            </select>
+                        </div>
+                    </div>  
+                    
+                   
+                   
 </div>
 <div class="box collapsed-box">
             <div class="box-header with-border">
@@ -596,7 +622,46 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     
 
                     <div class="box-body" style="display: none;">
-                        <div class="col-md-6">
+                      <div class="col-md-6">
+                        <label for="producto_unidadfactor" class="control-label">Unidad Factor</label>
+                        <div class="form-group">
+                            <select name="producto_unidadfactor" class="form-control" id="producto_unidadfactor">
+                                <option value="PIEZA">--Unidad--</option>
+                               <?php 
+                foreach($unidades as $u){ ?>
+                                                                    
+                          <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
+                         
+
+                      <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="producto_codigofactor" class="control-label">Codigo Factor</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_codigofactor" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="producto_codigofactor" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="producto_factor" class="control-label">Factor</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_factor"  class="form-control" id="producto_factor" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="producto_preciofactor" class="control-label">Precio Factor</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_preciofactor"  class="form-control" id="producto_preciofactor" />
+                        </div> 
+                    </div>
+                    <div class="col-md-4">
+                      <label class="control-label">_</label>
+                      <div class="form-group">
+                            <button type="button" class="form-control btn-sm btn-info" onclick="unidad_factor()"> Asignar Factor </button>
+                        </div> 
+                    </div>
+                        <div class="col-md-4">
                         <label for="producto_foto" class="control-label">Foto</label>
                         <div class="form-group">
                             <input type="file" name="chivo" class="btn btn-box-tool" id="chivox" kl_virtual_keyboard_secure_input="on" />
@@ -606,43 +671,23 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                        
-                    <div class="col-md-6">
-                        <label for="producto_marca" class="control-label">Marca</label>
-                        <div class="form-group">
-                            <input type="text" name="producto_marca" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-4">
                         <label for="producto_industria" class="control-label">Industria</label>
                         <div class="form-group">
                             <input type="text" name="producto_industria" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_industria'); ?>" class="form-control" id="producto_industria" />
                         </div>
                     </div>
-                     <div class="col-md-6">
-                        <label for="presentacion_id" class="control-label">Presentación</label>
-                        <div class="form-group">
-                            <select name="presentacion_id" class="form-control">
-                                <option value="1">Unidad</option>
-                               <!-- <?php 
-                                foreach($all_presentacion as $presentacion)
-                                {
-                                    $selected = ($presentacion['presentacion_id'] == $this->input->post('presentacion_id')) ? ' selected="selected"' : "";
-
-                                    echo '<option value="'.$presentacion['presentacion_id'].'" '.$selected.'>'.$presentacion['presentacion_nombre'].'</option>';
-                                } 
-                                ?>   -->
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                   
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="producto_comision" class="control-label">Comision</label>
                         <div class="form-group">
                             <input type="text" name="producto_comision" value="0" class="form-control" id="producto_comision" />
                         </div>
-                    </div>
+                    </div> 
+                    
+                    
+                   
+                    
                     <div class="col-md-6">
                     
                         <div class="form-group">
@@ -653,7 +698,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
 
-                </div>
+                
             </div>
            
                 <button type="submit" class="btn btn-success">
