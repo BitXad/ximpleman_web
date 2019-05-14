@@ -5,6 +5,7 @@
  */
  
 class Factura extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
@@ -13,19 +14,28 @@ class Factura extends CI_Controller{
         $this->load->model('Detalle_venta_model');
         $this->load->model('Parametro_model');
         $this->load->library('ControlCode');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of factura
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==6) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************            
         
         $params['limit'] = RECORDS_PER_PAGE; 
@@ -43,9 +53,7 @@ class Factura extends CI_Controller{
         $this->load->view('layouts/main',$data);
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }
 
 
@@ -65,12 +73,7 @@ class Factura extends CI_Controller{
 
     function factura_compra()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==6) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************            
         
         $params['limit'] = RECORDS_PER_PAGE; 
@@ -87,24 +90,17 @@ class Factura extends CI_Controller{
         $this->load->view('layouts/main',$data);
                 
         //**************** fin contenido ***************
-                    }
-                    else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }
 
     function factura_carta($venta_id)
     {
         
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==6) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************   
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -155,24 +151,17 @@ class Factura extends CI_Controller{
         }
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }    
     
     function factura_boucher($venta_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************           
     
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -225,24 +214,17 @@ class Factura extends CI_Controller{
         }
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }
 
     function recibo_boucher($venta_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************           
     
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -257,23 +239,16 @@ class Factura extends CI_Controller{
 
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }
     function recibo_carta($venta_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************           
     
-        $usuario_id = $session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
         
-        $data['tipousuario_id'] = $session_data['tipousuario_id'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
@@ -288,9 +263,7 @@ class Factura extends CI_Controller{
 
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }
 
     /*
@@ -298,13 +271,7 @@ class Factura extends CI_Controller{
      */
     function add()
     {   
-        
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4  or $session_data['tipousuario_id']==6) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************   
                 
         if(isset($_POST) && count($_POST) > 0)     
@@ -343,9 +310,7 @@ class Factura extends CI_Controller{
         }
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }
 
 
@@ -354,16 +319,9 @@ class Factura extends CI_Controller{
      */
     function edit($factura_id)
     {   
-        
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4  or $session_data['tipousuario_id']==6) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************   
         
-                
         // check if the factura exists before trying to edit it
         $data['factura'] = $this->Factura_model->get_factura($factura_id);
         
@@ -408,23 +366,15 @@ class Factura extends CI_Controller{
             show_error('The factura you are trying to edit does not exist.');
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
-}
+        }
+    }
 
     /*
      * Deleting factura
      */
     function remove($factura_id)
     {
-        
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4  or $session_data['tipousuario_id']==6) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************   
                 
         $factura = $this->Factura_model->get_factura($factura_id);
@@ -439,9 +389,7 @@ class Factura extends CI_Controller{
             show_error('The factura you are trying to delete does not exist.');
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
+        }
     }
 
 
@@ -656,11 +604,9 @@ class Factura extends CI_Controller{
   
     function mostrar_facturas()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(154)){
                 
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -684,12 +630,6 @@ class Factura extends CI_Controller{
             show_404();
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     } 
     
     /*
@@ -699,8 +639,8 @@ class Factura extends CI_Controller{
     function verificador()
     {
 //        if ($this->session->userdata('logged_in')) {
-//            $session_data = $this->session->userdata('logged_in');
-//            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
+//            $this->session_data = $this->session->userdata('logged_in');
+//            if($this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==4) {
 //                $data = array(
 //                    'page_title' => 'Admin >> Mi Cuenta'
 //                );
@@ -758,12 +698,7 @@ class Factura extends CI_Controller{
 //        } else { redirect('', 'refresh'); }
 
     function anular_factura($factura_id, $venta_id){
-       if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4  or $session_data['tipousuario_id']==6) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************   
                 
 //        if($factura_id>0)
@@ -791,9 +726,7 @@ class Factura extends CI_Controller{
 //            show_error('The factura you are trying to delete does not exist.');
         		
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }        
+        }      
         
     }
     /*
@@ -802,12 +735,7 @@ class Factura extends CI_Controller{
      */
     function mensaje($factura_id, $venta_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 or $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************            
         
 
@@ -820,9 +748,7 @@ class Factura extends CI_Controller{
             $this->load->view('layouts/main',$data);
             
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }    
+        }   
             
     }    
 
@@ -832,12 +758,7 @@ class Factura extends CI_Controller{
      */
     function imprimir_factura($venta_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************            
                 
             $parametros = $this->Parametro_model->get_parametros();
@@ -851,20 +772,13 @@ class Factura extends CI_Controller{
             }
 
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }    
+        } 
             
     }    
 
     function imprimir_recibo($venta_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 or $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(154)){
         //**************** inicio contenido ***************            
                 
             $parametros = $this->Parametro_model->get_parametros();
@@ -878,9 +792,7 @@ class Factura extends CI_Controller{
             }
 
         //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }    
+        }   
             
     }    
     

@@ -77,7 +77,7 @@ function ventacombi(filtro)
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"venta/buscarporvendedores";
     var limite = 1000;
-    
+    var usuario_id = document.getElementById('usuario_id');
     $.ajax({url: controlador,
            type:"POST",
            data:{filtro:filtro},
@@ -98,6 +98,7 @@ function ventacombi(filtro)
                     $("#pillados").val("- "+n+" -");
                    
                     html = "";
+                    usuarios = "<b>Vendedor(es): </b>";
                    if (n <= limite) x = n; 
                    else x = limite;
                     
@@ -117,27 +118,39 @@ function ventacombi(filtro)
                         
                        // html += "<td align='right' >"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<br></td>";                                          
                         html += "<td align='right' >"+Number(total/canti).toFixed(2)+"<br></td>";                                          
-                        html += "<td align='center' >"+Number(registros[i]["cantidades"]).toFixed(2)+"<br></td>";
-                        html += "<td align='right' style='font-size:12px;'><b>"+Number(registros[i]["totales"]).toFixed(2)+"</b></td>";
+                        html += "<td align='center' >"+Number(registros[i]["cantidades"])+"<br></td>";
+                        html += "<td align='right'><b>"+Number(registros[i]["totales"]).toFixed(2)+"</b></td>";
                      // html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
-                                               
+                        //usuarios += "<b>"+registros[i]["usuario_id"]+"</b>";                       
             
                        
                        
                         html += "</tr>";
-                       
+                        
                        
                    }
+                         for (var i=0; i<usuario_id.length; i++)
+    {
+      if (i==0)
+      {
+        usuarios += ""+usuario_id.options[i].text+" , ";
+      }
+      else
+      {
+        usuarios += ""+usuario_id.options[i].text+" , ";
+      }
+    }
                         html += "<tr>";
                         html += "<td></td>";
                         html += "<td style= 'font-size:12px;' ><b>TOTAL</b></td>";
                         html += "<td></td>";
                        
-                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalCan).toFixed(2)+"</td>";
-                        html += "<td style= 'font-size:12px;' align='right'><b> "+Number(totalTo).toFixed(2)+"</td>";
+                        html += "<td style= 'font-size:13px;' align='right'><b> "+Number(totalCan)+"</td>";
+                        html += "<td style= 'font-size:13px;' align='right'><b> "+Number(totalTo).toFixed(2)+"</td>";
                        
                         html += "</tr>";
-                   
+
+                   $("#usus").html(usuarios);
                    $("#ventacombi").html(html);
                     document.getElementById('loader').style.display = 'none';
             }

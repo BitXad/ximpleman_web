@@ -5,42 +5,61 @@
  */
  
 class Categoria_egreso extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_egreso_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_egreso
      */
     function index()
     {
-        $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
-        
-        $data['_view'] = 'categoria_egreso/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(116)){
+            $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+
+            $data['_view'] = 'categoria_egreso/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new categoria_egreso
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'categoria_categr' => $this->input->post('categoria_categr'),
-				'descrip_categr' => $this->input->post('descrip_categr'),
-            );
-            
-            $categoria_egreso_id = $this->Categoria_egreso_model->add_categoria_egreso($params);
-            redirect('categoria_egreso/index');
-        }
-        else
-        {            
-            $data['_view'] = 'categoria_egreso/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(116)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'categoria_categr' => $this->input->post('categoria_categr'),
+                    'descrip_categr' => $this->input->post('descrip_categr'),
+                );
+
+                $categoria_egreso_id = $this->Categoria_egreso_model->add_categoria_egreso($params);
+                redirect('categoria_egreso/index');
+            }
+            else
+            {            
+                $data['_view'] = 'categoria_egreso/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -48,30 +67,32 @@ class Categoria_egreso extends CI_Controller{
      * Editing a categoria_egreso
      */
     function edit($id_categr)
-    {   
-        // check if the categoria_egreso exists before trying to edit it
-        $data['categoria_egreso'] = $this->Categoria_egreso_model->get_categoria_egreso($id_categr);
-        
-        if(isset($data['categoria_egreso']['id_categr']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'categoria_categr' => $this->input->post('categoria_categr'),
-					'descrip_categr' => $this->input->post('descrip_categr'),
-                );
+    {
+        if($this->acceso(116)){
+            // check if the categoria_egreso exists before trying to edit it
+            $data['categoria_egreso'] = $this->Categoria_egreso_model->get_categoria_egreso($id_categr);
 
-                $this->Categoria_egreso_model->update_categoria_egreso($id_categr,$params);            
-                redirect('categoria_egreso/index');
+            if(isset($data['categoria_egreso']['id_categr']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'categoria_categr' => $this->input->post('categoria_categr'),
+                                            'descrip_categr' => $this->input->post('descrip_categr'),
+                    );
+
+                    $this->Categoria_egreso_model->update_categoria_egreso($id_categr,$params);            
+                    redirect('categoria_egreso/index');
+                }
+                else
+                {
+                    $data['_view'] = 'categoria_egreso/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'categoria_egreso/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The categoria_egreso you are trying to edit does not exist.');
         }
-        else
-            show_error('The categoria_egreso you are trying to edit does not exist.');
     } 
 
     /*
@@ -79,16 +100,18 @@ class Categoria_egreso extends CI_Controller{
      */
     function remove($id_categr)
     {
-        $categoria_egreso = $this->Categoria_egreso_model->get_categoria_egreso($id_categr);
+        if($this->acceso(116)){
+            $categoria_egreso = $this->Categoria_egreso_model->get_categoria_egreso($id_categr);
 
-        // check if the categoria_egreso exists before trying to delete it
-        if(isset($categoria_egreso['id_categr']))
-        {
-            $this->Categoria_egreso_model->delete_categoria_egreso($id_categr);
-            redirect('categoria_egreso/index');
+            // check if the categoria_egreso exists before trying to delete it
+            if(isset($categoria_egreso['id_categr']))
+            {
+                $this->Categoria_egreso_model->delete_categoria_egreso($id_categr);
+                redirect('categoria_egreso/index');
+            }
+            else
+                show_error('The categoria_egreso you are trying to delete does not exist.');
         }
-        else
-            show_error('The categoria_egreso you are trying to delete does not exist.');
     }
     
 }

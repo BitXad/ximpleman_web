@@ -6,7 +6,7 @@ function cambiar_fecha_grafica(){
 
     cargar_grafica_barras(anio_sel,mes_sel);
     cargar_grafica_lineas(anio_sel,mes_sel);
-    //cargar_grafica_pie(anio_sel,mes_sel);
+    cargar_grafica_pie(anio_sel,mes_sel);
 }
 
 
@@ -187,7 +187,7 @@ var i=0;
 
 
 
-function cargar_grafica_pie(){
+function cargar_grafica_pie(anio,mes){
 
 var options={
      // Build the chart
@@ -200,10 +200,10 @@ var options={
                 type: 'pie'
             },
             title: {
-                text: 'Grafica publicaciones'
+                text: 'Ventas del mes'
             },
             tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                pointFormat: '{series.name}: <b>{point.y}</b>'
             },
             plotOptions: {
                 pie: {
@@ -216,7 +216,7 @@ var options={
                 }
             },
             series: [{
-                name: 'Brands',
+                name: 'Ventas',
                 colorByPoint: true,
                 data: []
             }]
@@ -225,29 +225,25 @@ var options={
 
 $("#div_grafica_pie").html( $("#cargador_empresa").html() );
 var base_url    = document.getElementById('base_url').value;
-var controlador = base_url+"reportes/mes/"+anio+"/"+mes+"";
+var controlador = base_url+"reportes/torta/"+anio+"/"+mes+"";
 $.ajax({url: controlador,
            type:"POST",
            data:{},
            success:function(respuesta){
 var datos= JSON.parse(respuesta);
-var tipos=datos.tipos;
+var tippos=datos.tipos;
 var totattipos=datos.totaltipos;
 var numeropublicaciones=datos.numerodepubli;
 
     for(i=0;i<=totattipos-1;i++){  
-    var idTP=parseInt(tipos[i].id);
-    var objeto= {name: tipos[i].titulo, y:numeropublicaciones[idTP] };     
+    var idTP=tippos[i].usuario_id;
+    var objeto= {name: tippos[i].usuario_nombre, y:numeropublicaciones[idTP] };     
     options.series[0].data.push( objeto );  
     }
  //options.title.text="aqui e podria cambiar el titulo dinamicamente";
  chart = new Highcharts.Chart(options);
 }
 })
-
-
-
-
 
 
 

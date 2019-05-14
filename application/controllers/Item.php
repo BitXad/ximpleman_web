@@ -5,68 +5,87 @@
  */
  
 class Item extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Item_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of item
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('item/index?');
-        $config['total_rows'] = $this->Item_model->get_all_item_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['item'] = $this->Item_model->get_all_item($params);
-        
-        $data['_view'] = 'item/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('item/index?');
+            $config['total_rows'] = $this->Item_model->get_all_item_count();
+            $this->pagination->initialize($config);
+
+            $data['item'] = $this->Item_model->get_all_item($params);
+
+            $data['_view'] = 'item/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new item
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('item_nombre','Item Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'submenu_id' => $this->input->post('submenu_id'),
-				'menu_id' => $this->input->post('menu_id'),
-				'item_nombre' => $this->input->post('item_nombre'),
-				'item_descripcion' => $this->input->post('item_descripcion'),
-				'item_enlace' => $this->input->post('item_enlace'),
-				'item_imagen' => $this->input->post('item_imagen'),
-            );
-            
-            $item_id = $this->Item_model->add_item($params);
-            redirect('item/index');
-        }
-        else
-        {
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+                    $this->form_validation->set_rules('item_nombre','Item Nombre','required');
 
-			$this->load->model('Submenu_model');
-			$data['all_submenu'] = $this->Submenu_model->get_all_submenu();
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'submenu_id' => $this->input->post('submenu_id'),
+                                    'menu_id' => $this->input->post('menu_id'),
+                                    'item_nombre' => $this->input->post('item_nombre'),
+                                    'item_descripcion' => $this->input->post('item_descripcion'),
+                                    'item_enlace' => $this->input->post('item_enlace'),
+                                    'item_imagen' => $this->input->post('item_imagen'),
+                );
 
-			$this->load->model('Menu_model');
-			$data['all_menu'] = $this->Menu_model->get_all_menu();
-            
-            $data['_view'] = 'item/add';
-            $this->load->view('layouts/main',$data);
+                $item_id = $this->Item_model->add_item($params);
+                redirect('item/index');
+            }
+            else
+            {
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                            $this->load->model('Submenu_model');
+                            $data['all_submenu'] = $this->Submenu_model->get_all_submenu();
+
+                            $this->load->model('Menu_model');
+                            $data['all_menu'] = $this->Menu_model->get_all_menu();
+
+                $data['_view'] = 'item/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -74,48 +93,50 @@ class Item extends CI_Controller{
      * Editing a item
      */
     function edit($item_id)
-    {   
-        // check if the item exists before trying to edit it
-        $data['item'] = $this->Item_model->get_item($item_id);
-        
-        if(isset($data['item']['item_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the item exists before trying to edit it
+            $data['item'] = $this->Item_model->get_item($item_id);
 
-			$this->form_validation->set_rules('item_nombre','Item Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'submenu_id' => $this->input->post('submenu_id'),
-					'menu_id' => $this->input->post('menu_id'),
-					'item_nombre' => $this->input->post('item_nombre'),
-					'item_descripcion' => $this->input->post('item_descripcion'),
-					'item_enlace' => $this->input->post('item_enlace'),
-					'item_imagen' => $this->input->post('item_imagen'),
-                );
+            if(isset($data['item']['item_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Item_model->update_item($item_id,$params);            
-                redirect('item/index');
+                            $this->form_validation->set_rules('item_nombre','Item Nombre','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'submenu_id' => $this->input->post('submenu_id'),
+                                            'menu_id' => $this->input->post('menu_id'),
+                                            'item_nombre' => $this->input->post('item_nombre'),
+                                            'item_descripcion' => $this->input->post('item_descripcion'),
+                                            'item_enlace' => $this->input->post('item_enlace'),
+                                            'item_imagen' => $this->input->post('item_imagen'),
+                    );
+
+                    $this->Item_model->update_item($item_id,$params);            
+                    redirect('item/index');
+                }
+                else
+                {
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                                    $this->load->model('Submenu_model');
+                                    $data['all_submenu'] = $this->Submenu_model->get_all_submenu();
+
+                                    $this->load->model('Menu_model');
+                                    $data['all_menu'] = $this->Menu_model->get_all_menu();
+
+                    $data['_view'] = 'item/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-				$this->load->model('Submenu_model');
-				$data['all_submenu'] = $this->Submenu_model->get_all_submenu();
-
-				$this->load->model('Menu_model');
-				$data['all_menu'] = $this->Menu_model->get_all_menu();
-
-                $data['_view'] = 'item/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The item you are trying to edit does not exist.');
         }
-        else
-            show_error('The item you are trying to edit does not exist.');
     } 
 
     /*
@@ -123,16 +144,18 @@ class Item extends CI_Controller{
      */
     function remove($item_id)
     {
-        $item = $this->Item_model->get_item($item_id);
+        if($this->acceso(155)){
+            $item = $this->Item_model->get_item($item_id);
 
-        // check if the item exists before trying to delete it
-        if(isset($item['item_id']))
-        {
-            $this->Item_model->delete_item($item_id);
-            redirect('item/index');
+            // check if the item exists before trying to delete it
+            if(isset($item['item_id']))
+            {
+                $this->Item_model->delete_item($item_id);
+                redirect('item/index');
+            }
+            else
+                show_error('The item you are trying to delete does not exist.');
         }
-        else
-            show_error('The item you are trying to delete does not exist.');
     }
     
 }

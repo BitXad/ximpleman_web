@@ -5,33 +5,37 @@
  */
  
 class Categoria_clientezona extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_clientezona_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
-    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_clientezona
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-        
-        $data['_view'] = 'categoria_clientezona/index';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(115)){
+            $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+
+            $data['_view'] = 'categoria_clientezona/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -40,40 +44,26 @@ class Categoria_clientezona extends CI_Controller{
      */
     function add()
     {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
+        if($this->acceso(115)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('zona_nombre','Nombre es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+
+            if($this->form_validation->run())     
+            {
+                        //estado_id = 1    --->por defecto lo crea activo
+                $params = array(
+                    'zona_nombre' => $this->input->post('zona_nombre'),
+                    'estado_id' => 1,
                 );
-                
-                $this->load->library('form_validation');
-		$this->form_validation->set_rules('zona_nombre','Nombre es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-		
-		if($this->form_validation->run())     
-                {
-                    //estado_id = 1    --->por defecto lo crea activo
-            $params = array(
-				'zona_nombre' => $this->input->post('zona_nombre'),
-				'estado_id' => 1,
-            );
-            
-            $categoriacliezona_id = $this->Categoria_clientezona_model->add_categoria_clientezona($params);
-            redirect('categoria_clientezona/index');
-        }
-        else
-        {
-            /*$this->load->model('Estado_model');
-	    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();*/
-            $data['_view'] = 'categoria_clientezona/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-            else{
-                redirect('alerta');
+
+                $categoriacliezona_id = $this->Categoria_clientezona_model->add_categoria_clientezona($params);
+                redirect('categoria_clientezona/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {
+                $data['_view'] = 'categoria_clientezona/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -81,47 +71,36 @@ class Categoria_clientezona extends CI_Controller{
      * Editing a categoria_clientezona
      */
     function edit($categoriacliezona_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        // check if the tipo_servicio exists before trying to edit it
-        $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
-        
-        if(isset($data['categoria_clientezona']['zona_id']))
-        {
-            $this->load->library('form_validation');
-		$this->form_validation->set_rules('zona_nombre','Nobre es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-		
-		if($this->form_validation->run())     
-                {
-                $params = array(
-					'zona_nombre' => $this->input->post('zona_nombre'),
-					'estado_id' => $this->input->post('estado_id'),
-                );
+    {
+        if($this->acceso(115)){
+            // check if the tipo_servicio exists before trying to edit it
+            $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
 
-                $this->Categoria_clientezona_model->update_categoria_clientezona($categoriacliezona_id,$params);            
-                redirect('categoria_clientezona/index');
+            if(isset($data['categoria_clientezona']['zona_id']))
+            {
+                $this->load->library('form_validation');
+                    $this->form_validation->set_rules('zona_nombre','Nobre es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+
+                    if($this->form_validation->run())     
+                    {
+                    $params = array(
+                                            'zona_nombre' => $this->input->post('zona_nombre'),
+                                            'estado_id' => $this->input->post('estado_id'),
+                    );
+
+                    $this->Categoria_clientezona_model->update_categoria_clientezona($categoriacliezona_id,$params);            
+                    redirect('categoria_clientezona/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                    $data['_view'] = 'categoria_clientezona/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $this->load->model('Estado_model');
-	        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                $data['_view'] = 'categoria_clientezona/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('La Categoria Cliente zona que estas intentando editar no existe.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+                show_error('La Categoria Cliente zona que estas intentando editar no existe.');
         }
     } 
 
@@ -130,25 +109,17 @@ class Categoria_clientezona extends CI_Controller{
      */
     function remove($categoriacliezona_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-        $categoria_clientezona = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
+        if($this->acceso(115)){
+            $categoria_clientezona = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
 
-        // check if the categoria_clientezona exists before trying to delete it
-        if(isset($categoria_clientezona['zona_id']))
-        {
-            $this->Categoria_clientezona_model->delete_categoria_clientezona($categoriacliezona_id);
-            redirect('categoria_clientezona/index');
-        }
-        else
-            show_error('La categoria Cliente zona que estas intentando eliminar no existe.');
-        }
-            else{
-                redirect('alerta');
+            // check if the categoria_clientezona exists before trying to delete it
+            if(isset($categoria_clientezona['zona_id']))
+            {
+                $this->Categoria_clientezona_model->delete_categoria_clientezona($categoriacliezona_id);
+                redirect('categoria_clientezona/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+                show_error('La categoria Cliente zona que estas intentando eliminar no existe.');
         }
     }
     

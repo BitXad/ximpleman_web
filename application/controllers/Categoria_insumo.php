@@ -5,32 +5,37 @@
  */
  
 class Categoria_insumo extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_insumo_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
-
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_insumo
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $data['categoria_insumo'] = $this->Categoria_insumo_model->get_all_categoria_insumo();
+        if($this->acceso(81)){
+            $data['categoria_insumo'] = $this->Categoria_insumo_model->get_all_categoria_insumo();
 
-                $data['_view'] = 'categoria_insumo/index';
-                $this->load->view('layouts/main',$data);
-            }else{
-                redirect('alerta');
-            }
-        }else{
-            redirect('', 'refresh');
+            $data['_view'] = 'categoria_insumo/index';
+            $this->load->view('layouts/main',$data);
         }
     }
     /*
@@ -38,36 +43,25 @@ class Categoria_insumo extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
+        if($this->acceso(81)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                        'subcatinsumo_id' => $this->input->post('subcatinsumo_id'),
+                        'producto_id' => $this->input->post('producto_id'),
+                        'estado_id' => $this->input->post('estado_id'),
                 );
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'subcatinsumo_id' => $this->input->post('subcatinsumo_id'),
-				'producto_id' => $this->input->post('producto_id'),
-				'estado_id' => $this->input->post('estado_id'),
-            );
-            
-            $catinsumo_id = $this->Categoria_insumo_model->add_categoria_insumo($params);
-            redirect('categoria_insumo/index');
-        }
-        else
-        {
-            $this->load->model('Estado_model');
-	    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-            $data['_view'] = 'categoria_insumo/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-            else{
-                redirect('alerta');
+
+                $catinsumo_id = $this->Categoria_insumo_model->add_categoria_insumo($params);
+                redirect('categoria_insumo/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $data['_view'] = 'categoria_insumo/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }
 
@@ -76,43 +70,32 @@ class Categoria_insumo extends CI_Controller{
      */
     function edit($catinsumo_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        // check if the categoria_insumo exists before trying to edit it
-        $data['categoria_insumo'] = $this->Categoria_insumo_model->get_categoria_insumo($catinsumo_id);
-        
-        if(isset($data['categoria_insumo']['catinsumo_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'subcatserv_id' => $this->input->post('subcatserv_id'),
-					'estado_id' => $this->input->post('estado_id'),
-                );
+        if($this->acceso(81)){
+            // check if the categoria_insumo exists before trying to edit it
+            $data['categoria_insumo'] = $this->Categoria_insumo_model->get_categoria_insumo($catinsumo_id);
 
-                $this->Categoria_insumo_model->update_categoria_insumo($catinsumo_id,$params);            
-                redirect('categoria_insumo/index');
+            if(isset($data['categoria_insumo']['catinsumo_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'subcatserv_id' => $this->input->post('subcatserv_id'),
+                                            'estado_id' => $this->input->post('estado_id'),
+                    );
+
+                    $this->Categoria_insumo_model->update_categoria_insumo($catinsumo_id,$params);            
+                    redirect('categoria_insumo/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                    $data['_view'] = 'categoria_insumo/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $this->load->model('Estado_model');
-	        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                $data['_view'] = 'categoria_insumo/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The categoria_insumo you are trying to edit does not exist.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+                show_error('The categoria_insumo you are trying to edit does not exist.');
         }
     } 
 
@@ -121,9 +104,7 @@ class Categoria_insumo extends CI_Controller{
      */
     function remove($catinsumo_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+        if($this->acceso(81)){
             $categoria_insumo = $this->Categoria_insumo_model->get_categoria_insumo($catinsumo_id);
 
             // check if the categoria_insumo exists before trying to delete it
@@ -134,92 +115,60 @@ class Categoria_insumo extends CI_Controller{
             }
             else
                 show_error('The categoria_insumo you are trying to delete does not exist.');
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
+            
     }
     
     function insumo($subcatserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                
+        if($this->acceso(81)){
             $data['subcatserv_id'] = $subcatserv_id;
             $this->load->model('Subcategoria_servicio_model');
             $nombre = $this->Subcategoria_servicio_model->get_nombre_subcategoria_servicio($subcatserv_id);
             $data['nombre'] = $nombre;
-
-            //$this->load->model('Inventario_model');
-            //$data['inventario'] = $this->Inventario_model->get_inventario();
-
 
             $data['categoria_insumo'] = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
 
             $data['_view'] = 'categoria_insumo/insumo';
             $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     function asignarinsumo($subcatserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                if ($this->input->is_ajax_request()){
-                    $subcatserv_id = $this->input->post('subcatserv_id');
-                    $producto_id = $this->input->post('producto_id');
-                    $params = array(
-                        'producto_id' => $producto_id,
-                        'subcatserv_id' => $subcatserv_id,
-                        'estado_id' => 1,
-                    );
-                    $dato = $this->Categoria_insumo_model->get_exist_insumo_asignado($subcatserv_id, $producto_id);
-                    if(empty($dato)){
-                        $catinsumo_id = $this->Categoria_insumo_model->add_categoria_insumo($params);
-                        $datos = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
-                        if(isset($datos)){
-                            echo json_encode($datos);
-                        }else echo json_encode(null);
-                    }else{
-                        $a = "no";
-                        echo json_encode($a);
-                    }
-                    
+        if($this->acceso(81)){
+            if ($this->input->is_ajax_request()){
+                $subcatserv_id = $this->input->post('subcatserv_id');
+                $producto_id = $this->input->post('producto_id');
+                $params = array(
+                    'producto_id' => $producto_id,
+                    'subcatserv_id' => $subcatserv_id,
+                    'estado_id' => 1,
+                );
+                $dato = $this->Categoria_insumo_model->get_exist_insumo_asignado($subcatserv_id, $producto_id);
+                if(empty($dato)){
+                    $catinsumo_id = $this->Categoria_insumo_model->add_categoria_insumo($params);
+                    $datos = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
+                    if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+                }else{
+                    $a = "no";
+                    echo json_encode($a);
                 }
-                else
-                {                 
-                    show_404();
-                }
-                
-        }
-            else{
-                redirect('alerta');
+
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {                 
+                show_404();
+            }
+                
         }
     }
     
     function activar($subcatserv_id, $catinsumo_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-
+        if($this->acceso(81)){
                 if ($this->input->is_ajax_request()){
                     $params = array(
                         'estado_id' => 1,
@@ -230,20 +179,11 @@ class Categoria_insumo extends CI_Controller{
                     show_404();
                 }
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     function desactivar($subcatserv_id, $catinsumo_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-
+        if($this->acceso(81)){
                 if ($this->input->is_ajax_request()){
                     $params = array(
                     'estado_id' => 2,
@@ -257,19 +197,11 @@ class Categoria_insumo extends CI_Controller{
                 }
 
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     function eliminar($subcatserv_id, $catinsumo_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
+        if($this->acceso(81)){
                 if ($this->input->is_ajax_request()){
                     
                     $this->Categoria_insumo_model->delete_categoria_insumo($catinsumo_id);
@@ -281,85 +213,43 @@ class Categoria_insumo extends CI_Controller{
                 }
                 
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     function eliminardetalleventa($servicio_id, $detalleserv_id, $detalleven_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                
-                $this->load->model('Detalle_venta_model');
-                $res = $this->Detalle_venta_model->get_cantidad_detalle_venta($detalleven_id);
-                if(isset($res)){
-                    $this->load->model('Inventario_model');
-                    $this->Inventario_model->incrementar_inventario($res['detalleven_cantidad'], $res['producto_id']);
-                
-                }
-                $this->Detalle_venta_model->delete_detalle_venta($detalleven_id);
-                redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
+        if($this->acceso(81)){
+            $this->load->model('Detalle_venta_model');
+            $res = $this->Detalle_venta_model->get_cantidad_detalle_venta($detalleven_id);
+            if(isset($res)){
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->incrementar_inventario($res['detalleven_cantidad'], $res['producto_id']);
+
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+            $this->Detalle_venta_model->delete_detalle_venta($detalleven_id);
+            redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
         }
     }
     function verinsumosasignar($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-               $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                //$this->load->model('Inventario_model');
-                //$data['inventario'] = $this->Inventario_model->get_inventario();
+        if($this->acceso(81)){
+            $this->load->model('Detalle_serv_model');
+            $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            $data['detalleserv_codigo'] = $detalle_serv['detalleserv_codigo'];
+            $data['detalleserv_id'] = $detalleserv_id;
+            $data['servicio_id'] = $servicio_id;
+            //$data['categoria_insumo'] = $this->Inventario_model->get_inventario_producto_id($producto_id);
+            $data['insumos_usados'] = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
 
-                $this->load->model('Detalle_serv_model');
-                $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
-              /*  var_dump($detalle_serv['subcatserv_id']);
-                $this->load->model('Subcategoria_servicio_model');
-                $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_subcategoria_servicio($detalle_serv['subcatserv_id']);
-                */
-                $data['detalleserv_codigo'] = $detalle_serv['detalleserv_codigo'];
-                $data['detalleserv_id'] = $detalleserv_id;
-                $data['servicio_id'] = $servicio_id;
-                //$data['categoria_insumo'] = $this->Inventario_model->get_inventario_producto_id($producto_id);
-                $data['insumos_usados'] = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
+            $data['categoria_mis_insumos'] = $this->Categoria_insumo_model->get_all_categoria_insumo($detalle_serv['subcatserv_id']);
 
-                $data['categoria_mis_insumos'] = $this->Categoria_insumo_model->get_all_categoria_insumo($detalle_serv['subcatserv_id']);
-                /*
-                foreach ($data['categoria_insumo'] as $insumo_asignado){
-                    $mis_insumos[] = $this->Inventario_model->get_inventario_producto_id($insumo_asignado['producto_id']);
-                }
-                $data['mis_insumos'] = $mis_insumos; */
-                $data['_view'] = 'categoria_insumo/verinsumosasignar';
-                $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+            $data['_view'] = 'categoria_insumo/verinsumosasignar';
+            $this->load->view('layouts/main',$data);
         }
     }
     
     function usarinsumo($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(81)){
         
         $producto_id = $this->input->post('producto_id');
         $agrupar = $this->input->post('agrupar'.$producto_id);
@@ -368,7 +258,7 @@ class Categoria_insumo extends CI_Controller{
         if($cantidad >0)
         {
             $venta_id = 0; //obliga a ponerle un id de venta
-            $usuario_id = $session_data['usuario_id'];
+            $usuario_id = $this->session_data['usuario_id'];
 
             $producto_precio = $this->input->post('producto_precio');
             $producto_descuento = $this->input->post('descuento'.$producto_id);
@@ -436,103 +326,85 @@ class Categoria_insumo extends CI_Controller{
             redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     function usarinsumona($servicio_id, $detalleserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        
-        $producto_id = $this->input->post('producto_id');
-        $agrupar = $this->input->post('agrupar');
-        
-        $cantidad = $this->input->post('cantidad');
-        if($cantidad >0)
-        {
-            $venta_id = 0; //obliga a ponerle un id de venta
-            $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(81)){
+            $producto_id = $this->input->post('producto_id');
+            $agrupar = $this->input->post('agrupar');
 
-            $producto_precio = $this->input->post('producto_precio');
-            $producto_descuento = $this->input->post('descuento');
-            $new_productoprecio = $producto_precio-$producto_descuento;
-            $subtotal = $cantidad * $new_productoprecio;
-            $total = ($producto_precio-$producto_descuento)*$cantidad;
-            
-            $this->load->model('Detalle_venta_model');
-            $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
-            if (isset($res) && $agrupar == 1){
-                $cantidad1 = $res['detalleven_cantidad'];
-                $rescantidad = $cantidad + $cantidad1;
-                $resubtotal = $subtotal + $res['detalleven_subtotal'];
-                $restotal = $total+ $res['detalleven_total'];
+            $cantidad = $this->input->post('cantidad');
+            if($cantidad >0)
+            {
+                $venta_id = 0; //obliga a ponerle un id de venta
+                $usuario_id = $this->session_data['usuario_id'];
+
+                $producto_precio = $this->input->post('producto_precio');
+                $producto_descuento = $this->input->post('descuento');
+                $new_productoprecio = $producto_precio-$producto_descuento;
+                $subtotal = $cantidad * $new_productoprecio;
+                $total = ($producto_precio-$producto_descuento)*$cantidad;
+
+                $this->load->model('Detalle_venta_model');
+                $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
+                if (isset($res) && $agrupar == 1){
+                    $cantidad1 = $res['detalleven_cantidad'];
+                    $rescantidad = $cantidad + $cantidad1;
+                    $resubtotal = $subtotal + $res['detalleven_subtotal'];
+                    $restotal = $total+ $res['detalleven_total'];
+                    $detalleparams = array(
+                        'producto_id' => $producto_id,
+                        'venta_id' => $venta_id,
+                        'moneda_id' => $this->input->post('moneda_id'),
+                        'detalleven_codigo' => $this->input->post('producto_codigo'),
+                        'detalleven_cantidad' => $rescantidad,
+                        'detalleven_unidad' => $this->input->post('producto_unidad'),
+                        'detalleven_costo' => $this->input->post('producto_costo'),
+                        //'detalleven_precio' => $producto_precio,
+                        'detalleven_subtotal' => $resubtotal,
+                        'detalleven_descuento' => $producto_descuento,
+                        'detalleven_total' => $restotal,
+                        'detalleven_preferencia' => $res['detalleven_preferencia']." ".$this->input->post('preferencia'),
+                        'detalleven_caracteristicas' => $res['detalleven_caracteristicas']." ".$this->input->post('caracteristicas'),
+                        'detalleven_comision' => $this->input->post('producto_comision'),
+                        'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
+                        'usuario_id' => $usuario_id,
+                        'detalleserv_id' => $detalleserv_id,
+
+                    );
+                $this->Detalle_venta_model->update_detalle_venta($res['detalleven_id'], $detalleparams);
+            }else{
                 $detalleparams = array(
                     'producto_id' => $producto_id,
                     'venta_id' => $venta_id,
                     'moneda_id' => $this->input->post('moneda_id'),
                     'detalleven_codigo' => $this->input->post('producto_codigo'),
-                    'detalleven_cantidad' => $rescantidad,
+                    'detalleven_cantidad' => $cantidad,
                     'detalleven_unidad' => $this->input->post('producto_unidad'),
                     'detalleven_costo' => $this->input->post('producto_costo'),
-                    //'detalleven_precio' => $producto_precio,
-                    'detalleven_subtotal' => $resubtotal,
+                    'detalleven_precio' => $new_productoprecio,
+                    'detalleven_subtotal' => $subtotal,
                     'detalleven_descuento' => $producto_descuento,
-                    'detalleven_total' => $restotal,
-                    'detalleven_preferencia' => $res['detalleven_preferencia']." ".$this->input->post('preferencia'),
-                    'detalleven_caracteristicas' => $res['detalleven_caracteristicas']." ".$this->input->post('caracteristicas'),
+                    'detalleven_total' => $total,
+                    'detalleven_preferencia' => $this->input->post('preferencia'),
+                    'detalleven_caracteristicas' => $this->input->post('caracteristicas'),
                     'detalleven_comision' => $this->input->post('producto_comision'),
                     'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
                     'usuario_id' => $usuario_id,
                     'detalleserv_id' => $detalleserv_id,
 
                 );
-            $this->Detalle_venta_model->update_detalle_venta($res['detalleven_id'], $detalleparams);
-        }else{
-            $detalleparams = array(
-                'producto_id' => $producto_id,
-                'venta_id' => $venta_id,
-                'moneda_id' => $this->input->post('moneda_id'),
-                'detalleven_codigo' => $this->input->post('producto_codigo'),
-                'detalleven_cantidad' => $cantidad,
-                'detalleven_unidad' => $this->input->post('producto_unidad'),
-                'detalleven_costo' => $this->input->post('producto_costo'),
-                'detalleven_precio' => $new_productoprecio,
-                'detalleven_subtotal' => $subtotal,
-                'detalleven_descuento' => $producto_descuento,
-                'detalleven_total' => $total,
-                'detalleven_preferencia' => $this->input->post('preferencia'),
-                'detalleven_caracteristicas' => $this->input->post('caracteristicas'),
-                'detalleven_comision' => $this->input->post('producto_comision'),
-                'detalleven_tipocambio' => $this->input->post('producto_tipocambio'),
-                'usuario_id' => $usuario_id,
-                'detalleserv_id' => $detalleserv_id,
-                
-            );
-            $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
-        }
-            
-            $this->load->model('Inventario_model');
-            $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
-            //redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
-            echo json_encode("ok");
-        }else{
-            //redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
-            echo json_encode(null);
-        }
-        }
-            else{
-                redirect('alerta');
+                $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
             }
-        } else {
-            redirect('', 'refresh');
+
+                $this->load->model('Inventario_model');
+                $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
+                //redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
+                echo json_encode("ok");
+            }else{
+                //redirect('categoria_insumo/verinsumosasignar/'.$servicio_id.'/'.$detalleserv_id);
+                echo json_encode(null);
+            }
         }
     }
     /*
@@ -560,24 +432,13 @@ class Categoria_insumo extends CI_Controller{
     
     function insumosasignados()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==5) {
- 
-//        if(isset($this->input->post('catserv_id')))
-//        {
+        if($this->acceso(81)){
             $subcatserv_id = $this->input->post('subcatserv_id');
             //$this->load->model('Categoria_insumo_model');
             $res = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
             
            // $res = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria($catserv_id);
             echo json_encode($res);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     

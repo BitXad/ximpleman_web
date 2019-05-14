@@ -10,7 +10,20 @@ class Producto extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Producto_model');
-        $this->session_data = $this->session->userdata('logged_in');
+       if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -18,12 +31,7 @@ class Producto extends CI_Controller{
      */
     function index($a = null)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(102)) {
                 
         $data['a'] = $a;
         $this->load->model('Categoria_producto_model');
@@ -46,12 +54,7 @@ class Producto extends CI_Controller{
         $data['_view'] = 'producto/index';
         $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 
     /*
@@ -59,12 +62,7 @@ class Producto extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(103)) {
         $this->load->library('form_validation');
         $this->form_validation->set_rules('producto_codigo','Producto Codigo','required');
         $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
@@ -189,12 +187,7 @@ class Producto extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+          
     }  
 
     /*
@@ -202,12 +195,7 @@ class Producto extends CI_Controller{
      */
     function edit($producto_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(107)) {
         // check if the producto exists before trying to edit it
         $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
         
@@ -340,12 +328,7 @@ class Producto extends CI_Controller{
         else
             show_error('The producto you are trying to edit does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+          
  }
  
 
@@ -354,12 +337,7 @@ class Producto extends CI_Controller{
      */
     function edit2($producto_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(107)) {
         // check if the producto exists before trying to edit it
         $data['producto'] = $this->Producto_model->get_esteproducto($producto_id);
         
@@ -481,22 +459,12 @@ class Producto extends CI_Controller{
         else
             show_error('The producto you are trying to edit does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
  }
  
  function rapido()
  {
-     if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=3) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+     if($this->acceso(3)) {
         $estado_id = 1;        
         $compra_id = $this->input->post('compra_id');
         $bandera = $this->input->post('bandera');
@@ -641,20 +609,13 @@ class Producto extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }  
 
      
     function remove($producto_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(108)) {
         $producto = $this->Producto_model->get_producto($producto_id);
 
         // check if the producto exists before trying to delete it
@@ -676,12 +637,7 @@ class Producto extends CI_Controller{
         else
             show_error('El producto que intentas borrar no existe.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     }
     
     /*
@@ -689,11 +645,9 @@ class Producto extends CI_Controller{
     */
     function buscarproductos()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+       if($this->acceso(25)) {
                 
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -714,23 +668,16 @@ class Producto extends CI_Controller{
             show_404();
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     }
     /*
     * buscar productos con LIMITE
     */
     function buscarproductoslimit()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(110)) {
                 
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -744,12 +691,7 @@ class Producto extends CI_Controller{
         {                 
             show_404();
         }
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+         
         }
     }
     /*
@@ -757,11 +699,8 @@ class Producto extends CI_Controller{
     */
     function buscarproductosall()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(104)) {
+                $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -776,21 +715,14 @@ class Producto extends CI_Controller{
             show_404();
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     /* buscar productos por Categoria */
     function buscarproductos_porcategoria()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(104)) {
                 
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -805,19 +737,14 @@ class Producto extends CI_Controller{
             show_404();
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+          
     }
     /*
      * Listado de productos con existencia minima
      */
     function existenciaminima()
     {
-        $this->acceso();
+        if($this->acceso(105)) {
         $usuario_id = $this->session_data['usuario_id'];  
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
@@ -835,13 +762,14 @@ class Producto extends CI_Controller{
         $data['_view'] = 'producto/existenciaminima';
         $this->load->view('layouts/main',$data);
     }
+}
     
     /*
     * buscar productos con existencia minima
     */
     function buscarproductosexistmin()
     {
-        $this->acceso();
+        if($this->acceso(105)) {
         if ($this->input->is_ajax_request()) {
             $parametro       = $this->input->post('parametro');   
             $categoriaestado = $this->input->post('categoriaestado'); 
@@ -853,18 +781,8 @@ class Producto extends CI_Controller{
             show_404();
         }
     }
+}
     
-    private function acceso(){
-        if ($this->session->userdata('logged_in')) {
-            if( $this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==2) {
-                return;
-            } else {
-                redirect('alerta');
-            }
-        } else {
-            redirect('inicio', 'refresh');
-        }
-    }
     
     
 }

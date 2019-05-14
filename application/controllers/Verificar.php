@@ -26,33 +26,31 @@ class Verificar extends CI_Controller
         //var_dump($result);
 
         if ($result) {
-            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 5 or $result->tipousuario_id == 4 or $result->tipousuario_id == 6) {
-                $thumb = "";
-                if($result->usuario_imagen <> null){
-                    $thumb = $this->foto_thumb($result->usuario_imagen);
+            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 4 or $result->tipousuario_id == 5 or $result->tipousuario_id == 6) {
+                $this->load->model('Rol_usuario_model');
+                $this->load->model('Tipo_usuario_model');
+                $thumb = "default_thumb.jpg";
+                if ($result->usuario_imagen <> null) {
+                    $thumb = "thumb_".$result->usuario_imagen;
+                    //$thumb = $this->foto_thumb($result->usuario_imagen);
                 }
-                $permisos = $this->rol_model->get_permisos($result->tipousuario_id);
-
-                $descrip = array();
-                foreach ($permisos as $per){
-                    array_push($descrip, $per->rol_descripcion);
-                }
-
+                $rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
+                $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
                 $sess_array = array(
                     'usuario_login' => $result->usuario_login,
                     'usuario_id' => $result->usuario_id,
                     'usuario_nombre' => $result->usuario_nombre,
                     'estado_id' => $result->estado_id,
                     'tipousuario_id' => $result->tipousuario_id,
+                    'tipousuario_descripcion' => $tipousuario_nombre,
                     'usuario_imagen' => $result->usuario_imagen,
                     'usuario_email' => $result->usuario_email,
                     'usuario_clave' => $result->usuario_clave,
                     'thumb' => $thumb,
-                    'rol' => $this->getTipo_usuario($result->tipousuario_id),
-                    'permisos' => $descrip,
+                    'rol' => $rolusuario,
                     'codigo' => $this->get_codigo_empresa()
                 );
-
+                
                 $this->session->set_userdata('logged_in', $sess_array);
                 $session_data = $this->session->userdata('logged_in');
                 $dosif="SELECT DATEDIFF(dosificacion_fechalimite, CURDATE()) as dias FROM dosificacion WHERE dosificacion_id = 1";
@@ -110,11 +108,11 @@ class Verificar extends CI_Controller
         // }
     }
 
-    public function foto_thumb($foto)
+    /*public function foto_thumb($foto)
     {
         $path_parts = pathinfo('./uploads/profile/' . $foto);
         return 'thumb_'.$path_parts['filename'].'.' . $path_parts['extension'];
-    }
+    }*/
 
     public function logout()
     {
@@ -127,7 +125,7 @@ class Verificar extends CI_Controller
         redirect('');
     }
 
-    public function getTipo_usuario($tipousuario_id)
+   /* public function getTipo_usuario($tipousuario_id)
     {
         $tipo_usuarios = $this->rol_model->get_tipousuarios();
 
@@ -141,7 +139,7 @@ class Verificar extends CI_Controller
         {
             return '----';
         }
-    }
+    }*/
 
     public function check_user($username, $clave)
     {
@@ -157,33 +155,31 @@ class Verificar extends CI_Controller
         if($token=='mbUdgZWkgqyODuHFVDlsFIZOPkBzuiBI'){
             $result = $this->login_model->login2($username,$clave);
             if($result){
-                if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 5) {
-                    $thumb = "";
-                    if($result->usuario_imagen <> null){
-                        $thumb = $this->foto_thumb($result->usuario_imagen);
+                if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 4 or $result->tipousuario_id == 5 or $result->tipousuario_id == 6) {
+                    $this->load->model('Rol_usuario_model');
+                    $this->load->model('Tipo_usuario_model');
+                    $thumb = "default_thumb.jpg";
+                    if ($result->usuario_imagen <> null) {
+                        $thumb = "thumb_".$result->usuario_imagen;
+                        //$thumb = $this->foto_thumb($result->usuario_imagen);
                     }
-                    $permisos = $this->rol_model->get_permisos($result->tipousuario_id);
-
-                    $descrip = array();
-                    foreach ($permisos as $per){
-                        array_push($descrip, $per->rol_descripcion);
-                    }
-
+                    $rolusuario = $this->Rol_usuario_model->getall_rolusuario($result->tipousuario_id);
+                    $tipousuario_nombre = $this->Tipo_usuario_model->get_tipousuario_nombre($result->tipousuario_id);
                     $sess_array = array(
                         'usuario_login' => $result->usuario_login,
                         'usuario_id' => $result->usuario_id,
                         'usuario_nombre' => $result->usuario_nombre,
                         'estado_id' => $result->estado_id,
                         'tipousuario_id' => $result->tipousuario_id,
+                        'tipousuario_descripcion' => $tipousuario_nombre,
                         'usuario_imagen' => $result->usuario_imagen,
                         'usuario_email' => $result->usuario_email,
                         'usuario_clave' => $result->usuario_clave,
                         'thumb' => $thumb,
-                        'rol' => $this->getTipo_usuario($result->tipousuario_id),
-                        'permisos' => $descrip,
+                        'rol' => $rolusuario,
                         'codigo' => $this->get_codigo_empresa()
                     );
-
+                    
                     $this->session->set_userdata('logged_in', $sess_array);
                     $session_data = $this->session->userdata('logged_in');
 

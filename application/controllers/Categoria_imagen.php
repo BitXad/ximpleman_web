@@ -5,62 +5,81 @@
  */
  
 class Categoria_imagen extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_imagen_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_imagen
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('categoria_imagen/index?');
-        $config['total_rows'] = $this->Categoria_imagen_model->get_all_categoria_imagen_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['categoria_imagen'] = $this->Categoria_imagen_model->get_all_categoria_imagen($params);
-        
-        $data['_view'] = 'categoria_imagen/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('categoria_imagen/index?');
+            $config['total_rows'] = $this->Categoria_imagen_model->get_all_categoria_imagen_count();
+            $this->pagination->initialize($config);
+
+            $data['categoria_imagen'] = $this->Categoria_imagen_model->get_all_categoria_imagen($params);
+
+            $data['_view'] = 'categoria_imagen/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new categoria_imagen
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('catimg_nombre','Catimg Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'galeria_id' => $this->input->post('galeria_id'),
-				'catimg_nombre' => $this->input->post('catimg_nombre'),
-				'catimg_descripcion' => $this->input->post('catimg_descripcion'),
-            );
-            
-            $categoria_imagen_id = $this->Categoria_imagen_model->add_categoria_imagen($params);
-            redirect('categoria_imagen/index');
-        }
-        else
-        {
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+                    $this->form_validation->set_rules('catimg_nombre','Catimg Nombre','required');
 
-			$this->load->model('Galeria_model');
-			$data['all_galeria'] = $this->Galeria_model->get_all_galeria();
-            
-            $data['_view'] = 'categoria_imagen/add';
-            $this->load->view('layouts/main',$data);
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'galeria_id' => $this->input->post('galeria_id'),
+                                    'catimg_nombre' => $this->input->post('catimg_nombre'),
+                                    'catimg_descripcion' => $this->input->post('catimg_descripcion'),
+                );
+
+                $categoria_imagen_id = $this->Categoria_imagen_model->add_categoria_imagen($params);
+                redirect('categoria_imagen/index');
+            }
+            else
+            {
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                            $this->load->model('Galeria_model');
+                            $data['all_galeria'] = $this->Galeria_model->get_all_galeria();
+
+                $data['_view'] = 'categoria_imagen/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -68,42 +87,44 @@ class Categoria_imagen extends CI_Controller{
      * Editing a categoria_imagen
      */
     function edit($catimg_id)
-    {   
-        // check if the categoria_imagen exists before trying to edit it
-        $data['categoria_imagen'] = $this->Categoria_imagen_model->get_categoria_imagen($catimg_id);
-        
-        if(isset($data['categoria_imagen']['catimg_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the categoria_imagen exists before trying to edit it
+            $data['categoria_imagen'] = $this->Categoria_imagen_model->get_categoria_imagen($catimg_id);
 
-			$this->form_validation->set_rules('catimg_nombre','Catimg Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'galeria_id' => $this->input->post('galeria_id'),
-					'catimg_nombre' => $this->input->post('catimg_nombre'),
-					'catimg_descripcion' => $this->input->post('catimg_descripcion'),
-                );
+            if(isset($data['categoria_imagen']['catimg_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Categoria_imagen_model->update_categoria_imagen($catimg_id,$params);            
-                redirect('categoria_imagen/index');
+                            $this->form_validation->set_rules('catimg_nombre','Catimg Nombre','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'galeria_id' => $this->input->post('galeria_id'),
+                                            'catimg_nombre' => $this->input->post('catimg_nombre'),
+                                            'catimg_descripcion' => $this->input->post('catimg_descripcion'),
+                    );
+
+                    $this->Categoria_imagen_model->update_categoria_imagen($catimg_id,$params);            
+                    redirect('categoria_imagen/index');
+                }
+                else
+                {
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                                    $this->load->model('Galeria_model');
+                                    $data['all_galeria'] = $this->Galeria_model->get_all_galeria();
+
+                    $data['_view'] = 'categoria_imagen/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-				$this->load->model('Galeria_model');
-				$data['all_galeria'] = $this->Galeria_model->get_all_galeria();
-
-                $data['_view'] = 'categoria_imagen/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The categoria_imagen you are trying to edit does not exist.');
         }
-        else
-            show_error('The categoria_imagen you are trying to edit does not exist.');
     } 
 
     /*
@@ -111,16 +132,18 @@ class Categoria_imagen extends CI_Controller{
      */
     function remove($catimg_id)
     {
-        $categoria_imagen = $this->Categoria_imagen_model->get_categoria_imagen($catimg_id);
+        if($this->acceso(155)){
+            $categoria_imagen = $this->Categoria_imagen_model->get_categoria_imagen($catimg_id);
 
-        // check if the categoria_imagen exists before trying to delete it
-        if(isset($categoria_imagen['catimg_id']))
-        {
-            $this->Categoria_imagen_model->delete_categoria_imagen($catimg_id);
-            redirect('categoria_imagen/index');
+            // check if the categoria_imagen exists before trying to delete it
+            if(isset($categoria_imagen['catimg_id']))
+            {
+                $this->Categoria_imagen_model->delete_categoria_imagen($catimg_id);
+                redirect('categoria_imagen/index');
+            }
+            else
+                show_error('The categoria_imagen you are trying to delete does not exist.');
         }
-        else
-            show_error('The categoria_imagen you are trying to delete does not exist.');
     }
     
 }

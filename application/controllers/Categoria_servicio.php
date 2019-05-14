@@ -5,33 +5,37 @@
  */
  
 class Categoria_servicio extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_servicio_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_servicio
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $data['categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio();
-        
-        $data['_view'] = 'categoria_servicio/index';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(119)){
+            $data['categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio();
+
+            $data['_view'] = 'categoria_servicio/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -40,38 +44,26 @@ class Categoria_servicio extends CI_Controller{
      */
     function add()
     {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                
+        if($this->acceso(119)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())     
             {
-            //Estado ACTIVO por defecto
-            $estado_id = 1;
-            $params = array(
+                //Estado ACTIVO por defecto
+                $estado_id = 1;
+                $params = array(
                     'catserv_descripcion' => $this->input->post('catserv_descripcion'),
                     'estado_id' => $estado_id,
-);
-            
-            $catserv_id = $this->Categoria_servicio_model->add_categoria_servicio($params);
-            redirect('categoria_servicio/index');
-        }
-        else
-        {
-            $data['_view'] = 'categoria_servicio/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-            else{
-                redirect('alerta');
+                );
+
+                $catserv_id = $this->Categoria_servicio_model->add_categoria_servicio($params);
+                redirect('categoria_servicio/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {
+                $data['_view'] = 'categoria_servicio/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -79,46 +71,35 @@ class Categoria_servicio extends CI_Controller{
      * Editing a categoria_servicio
      */
     function edit($catserv_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        // check if the categoria_servicio exists before trying to edit it
-        $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
-        
-        if(isset($data['categoria_servicio']['catserv_id']))
-        {
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            if($this->form_validation->run())
-            {   
-                $params = array(
-                    'catserv_descripcion' => $this->input->post('catserv_descripcion'),
-                    'estado_id' => $this->input->post('estado_id'),
-                );
+    {
+        if($this->acceso(119)){
+            // check if the categoria_servicio exists before trying to edit it
+            $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
 
-                $this->Categoria_servicio_model->update_categoria_servicio($catserv_id,$params);            
-                redirect('categoria_servicio/index');
+            if(isset($data['categoria_servicio']['catserv_id']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
+                {   
+                    $params = array(
+                        'catserv_descripcion' => $this->input->post('catserv_descripcion'),
+                        'estado_id' => $this->input->post('estado_id'),
+                    );
+
+                    $this->Categoria_servicio_model->update_categoria_servicio($catserv_id,$params);            
+                    redirect('categoria_servicio/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                    $data['_view'] = 'categoria_servicio/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $this->load->model('Estado_model');
-	        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                $data['_view'] = 'categoria_servicio/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The categoria_servicio you are trying to edit does not exist.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+                show_error('The categoria_servicio you are trying to edit does not exist.');
         }
     } 
 
@@ -127,25 +108,17 @@ class Categoria_servicio extends CI_Controller{
      */
     function remove($catserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-        $categoria_servicio = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
+        if($this->acceso(119)){
+            $categoria_servicio = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
 
-        // check if the categoria_servicio exists before trying to delete it
-        if(isset($categoria_servicio['catserv_id']))
-        {
-            $this->Categoria_servicio_model->delete_categoria_servicio($catserv_id);
-            redirect('categoria_servicio/index');
-        }
-        else
-            show_error('The categoria_servicio you are trying to delete does not exist.');
-        }
-            else{
-                redirect('alerta');
+            // check if the categoria_servicio exists before trying to delete it
+            if(isset($categoria_servicio['catserv_id']))
+            {
+                $this->Categoria_servicio_model->delete_categoria_servicio($catserv_id);
+                redirect('categoria_servicio/index');
             }
-        } else {
-            redirect('', 'refresh');
+            else
+                show_error('The categoria_servicio you are trying to delete does not exist.');
         }
     }
     
@@ -154,25 +127,13 @@ class Categoria_servicio extends CI_Controller{
      */
     function catserv_detalle($catserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                
-                $nombre = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
-                $data['nombre'] = $nombre['catserv_descripcion'];
-                $this->load->model('Subcategoria_servicio_model');
-                $data['all_subcategoria'] = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria2($catserv_id);
-                $data['_view'] = 'categoria_servicio/catserv_detalle';
-                $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(119)){
+            $nombre = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
+            $data['nombre'] = $nombre['catserv_descripcion'];
+            $this->load->model('Subcategoria_servicio_model');
+            $data['all_subcategoria'] = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria2($catserv_id);
+            $data['_view'] = 'categoria_servicio/catserv_detalle';
+            $this->load->view('layouts/main',$data);
         }
     }
     /*
@@ -180,24 +141,9 @@ class Categoria_servicio extends CI_Controller{
      */
     function getcatserv_detalle()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        //$data['categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_subcat_servicio();
-                
-                $datos = $this->Categoria_servicio_model->get_all_categoria_servicio();
-                echo json_encode($datos);
-                /*$data['_view'] = 'categoria_servicio/catserv_detalle';
-                $this->load->view('layouts/main',$data);*/
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(119)){
+            $datos = $this->Categoria_servicio_model->get_all_categoria_servicio();
+            echo json_encode($datos);
         }
     }
      /*
@@ -205,23 +151,10 @@ class Categoria_servicio extends CI_Controller{
      */
     function obtenersubcatserv($catserv_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $this->load->model('Subcategoria_servicio_model');
-                $datos = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria2($catserv_id);
-                echo json_encode($datos);
-                /*$data['_view'] = 'categoria_servicio/catserv_detalle';
-                $this->load->view('layouts/main',$data);*/
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(119)){
+            $this->load->model('Subcategoria_servicio_model');
+            $datos = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria2($catserv_id);
+            echo json_encode($datos);
         }
     }
 }

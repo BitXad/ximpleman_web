@@ -5,64 +5,83 @@
  */
  
 class Seccion extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Seccion_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of seccion
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('seccion/index?');
-        $config['total_rows'] = $this->Seccion_model->get_all_seccion_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['seccion'] = $this->Seccion_model->get_all_seccion($params);
-        
-        $data['_view'] = 'seccion/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('seccion/index?');
+            $config['total_rows'] = $this->Seccion_model->get_all_seccion_count();
+            $this->pagination->initialize($config);
+
+            $data['seccion'] = $this->Seccion_model->get_all_seccion($params);
+
+            $data['_view'] = 'seccion/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new seccion
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('seccion_titulo','Seccion Titulo','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'seccion_tipo' => $this->input->post('seccion_tipo'),
-				'pagina_id' => $this->input->post('pagina_id'),
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'seccion_titulo' => $this->input->post('seccion_titulo'),
-				'seccion_descripcion' => $this->input->post('seccion_descripcion'),
-				'seccion_texto' => $this->input->post('seccion_texto'),
-            );
-            
-            $seccion_id = $this->Seccion_model->add_seccion($params);
-            redirect('seccion/index');
-        }
-        else
-        {
-			$this->load->model('Pagina_web_model');
-			$data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+                    $this->form_validation->set_rules('seccion_titulo','Seccion Titulo','required');
 
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-            
-            $data['_view'] = 'seccion/add';
-            $this->load->view('layouts/main',$data);
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'seccion_tipo' => $this->input->post('seccion_tipo'),
+                                    'pagina_id' => $this->input->post('pagina_id'),
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'seccion_titulo' => $this->input->post('seccion_titulo'),
+                                    'seccion_descripcion' => $this->input->post('seccion_descripcion'),
+                                    'seccion_texto' => $this->input->post('seccion_texto'),
+                );
+
+                $seccion_id = $this->Seccion_model->add_seccion($params);
+                redirect('seccion/index');
+            }
+            else
+            {
+                            $this->load->model('Pagina_web_model');
+                            $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                $data['_view'] = 'seccion/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -70,44 +89,46 @@ class Seccion extends CI_Controller{
      * Editing a seccion
      */
     function edit($seccion_id)
-    {   
-        // check if the seccion exists before trying to edit it
-        $data['seccion'] = $this->Seccion_model->get_seccion($seccion_id);
-        
-        if(isset($data['seccion']['seccion_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the seccion exists before trying to edit it
+            $data['seccion'] = $this->Seccion_model->get_seccion($seccion_id);
 
-			$this->form_validation->set_rules('seccion_titulo','Seccion Titulo','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'seccion_tipo' => $this->input->post('seccion_tipo'),
-					'pagina_id' => $this->input->post('pagina_id'),
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'seccion_titulo' => $this->input->post('seccion_titulo'),
-					'seccion_descripcion' => $this->input->post('seccion_descripcion'),
-					'seccion_texto' => $this->input->post('seccion_texto'),
-                );
+            if(isset($data['seccion']['seccion_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Seccion_model->update_seccion($seccion_id,$params);            
-                redirect('seccion/index');
+                            $this->form_validation->set_rules('seccion_titulo','Seccion Titulo','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'seccion_tipo' => $this->input->post('seccion_tipo'),
+                                            'pagina_id' => $this->input->post('pagina_id'),
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'seccion_titulo' => $this->input->post('seccion_titulo'),
+                                            'seccion_descripcion' => $this->input->post('seccion_descripcion'),
+                                            'seccion_texto' => $this->input->post('seccion_texto'),
+                    );
+
+                    $this->Seccion_model->update_seccion($seccion_id,$params);            
+                    redirect('seccion/index');
+                }
+                else
+                {
+                                    $this->load->model('Pagina_web_model');
+                                    $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                    $data['_view'] = 'seccion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Pagina_web_model');
-				$data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
-
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-                $data['_view'] = 'seccion/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The seccion you are trying to edit does not exist.');
         }
-        else
-            show_error('The seccion you are trying to edit does not exist.');
     } 
 
     /*
@@ -115,16 +136,18 @@ class Seccion extends CI_Controller{
      */
     function remove($seccion_id)
     {
-        $seccion = $this->Seccion_model->get_seccion($seccion_id);
+        if($this->acceso(155)){
+            $seccion = $this->Seccion_model->get_seccion($seccion_id);
 
-        // check if the seccion exists before trying to delete it
-        if(isset($seccion['seccion_id']))
-        {
-            $this->Seccion_model->delete_seccion($seccion_id);
-            redirect('seccion/index');
+            // check if the seccion exists before trying to delete it
+            if(isset($seccion['seccion_id']))
+            {
+                $this->Seccion_model->delete_seccion($seccion_id);
+                redirect('seccion/index');
+            }
+            else
+                show_error('The seccion you are trying to delete does not exist.');
         }
-        else
-            show_error('The seccion you are trying to delete does not exist.');
     }
     
 }

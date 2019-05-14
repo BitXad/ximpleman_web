@@ -5,65 +5,84 @@
  */
  
 class Slide extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Slide_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of slide
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('slide/index?');
-        $config['total_rows'] = $this->Slide_model->get_all_slide_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['slide'] = $this->Slide_model->get_all_slide($params);
-        
-        $data['_view'] = 'slide/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('slide/index?');
+            $config['total_rows'] = $this->Slide_model->get_all_slide_count();
+            $this->pagination->initialize($config);
+
+            $data['slide'] = $this->Slide_model->get_all_slide($params);
+
+            $data['_view'] = 'slide/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new slide
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'pagina_id' => $this->input->post('pagina_id'),
-				'slide_titulo' => $this->input->post('slide_titulo'),
-				'slide_leyenda1' => $this->input->post('slide_leyenda1'),
-				'slide_leyenda2' => $this->input->post('slide_leyenda2'),
-				'slide_leyenda3' => $this->input->post('slide_leyenda3'),
-				'slide_enlace' => $this->input->post('slide_enlace'),
-            );
-            
-            $slide_id = $this->Slide_model->add_slide($params);
-            redirect('slide/index');
-        }
-        else
-        {
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+                    $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
 
-			$this->load->model('Pagina_web_model');
-			$data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
-            
-            $data['_view'] = 'slide/add';
-            $this->load->view('layouts/main',$data);
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'pagina_id' => $this->input->post('pagina_id'),
+                                    'slide_titulo' => $this->input->post('slide_titulo'),
+                                    'slide_leyenda1' => $this->input->post('slide_leyenda1'),
+                                    'slide_leyenda2' => $this->input->post('slide_leyenda2'),
+                                    'slide_leyenda3' => $this->input->post('slide_leyenda3'),
+                                    'slide_enlace' => $this->input->post('slide_enlace'),
+                );
+
+                $slide_id = $this->Slide_model->add_slide($params);
+                redirect('slide/index');
+            }
+            else
+            {
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                            $this->load->model('Pagina_web_model');
+                            $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+
+                $data['_view'] = 'slide/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -71,45 +90,47 @@ class Slide extends CI_Controller{
      * Editing a slide
      */
     function edit($slide_id)
-    {   
-        // check if the slide exists before trying to edit it
-        $data['slide'] = $this->Slide_model->get_slide($slide_id);
-        
-        if(isset($data['slide']['slide_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the slide exists before trying to edit it
+            $data['slide'] = $this->Slide_model->get_slide($slide_id);
 
-			$this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'pagina_id' => $this->input->post('pagina_id'),
-					'slide_titulo' => $this->input->post('slide_titulo'),
-					'slide_leyenda1' => $this->input->post('slide_leyenda1'),
-					'slide_leyenda2' => $this->input->post('slide_leyenda2'),
-					'slide_leyenda3' => $this->input->post('slide_leyenda3'),
-					'slide_enlace' => $this->input->post('slide_enlace'),
-                );
+            if(isset($data['slide']['slide_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Slide_model->update_slide($slide_id,$params);            
-                redirect('slide/index');
+                            $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'pagina_id' => $this->input->post('pagina_id'),
+                                            'slide_titulo' => $this->input->post('slide_titulo'),
+                                            'slide_leyenda1' => $this->input->post('slide_leyenda1'),
+                                            'slide_leyenda2' => $this->input->post('slide_leyenda2'),
+                                            'slide_leyenda3' => $this->input->post('slide_leyenda3'),
+                                            'slide_enlace' => $this->input->post('slide_enlace'),
+                    );
+
+                    $this->Slide_model->update_slide($slide_id,$params);            
+                    redirect('slide/index');
+                }
+                else
+                {
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                                    $this->load->model('Pagina_web_model');
+                                    $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+
+                    $data['_view'] = 'slide/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-				$this->load->model('Pagina_web_model');
-				$data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
-
-                $data['_view'] = 'slide/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The slide you are trying to edit does not exist.');
         }
-        else
-            show_error('The slide you are trying to edit does not exist.');
     } 
 
     /*
@@ -117,16 +138,18 @@ class Slide extends CI_Controller{
      */
     function remove($slide_id)
     {
-        $slide = $this->Slide_model->get_slide($slide_id);
+        if($this->acceso(155)){
+            $slide = $this->Slide_model->get_slide($slide_id);
 
-        // check if the slide exists before trying to delete it
-        if(isset($slide['slide_id']))
-        {
-            $this->Slide_model->delete_slide($slide_id);
-            redirect('slide/index');
+            // check if the slide exists before trying to delete it
+            if(isset($slide['slide_id']))
+            {
+                $this->Slide_model->delete_slide($slide_id);
+                redirect('slide/index');
+            }
+            else
+                show_error('The slide you are trying to delete does not exist.');
         }
-        else
-            show_error('The slide you are trying to delete does not exist.');
     }
     
 }

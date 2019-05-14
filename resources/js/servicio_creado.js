@@ -11,7 +11,7 @@ function inicio(){
 function validar(e,opcion,tabla_id) {
   tecla = (document.all) ? e.keyCode : e.which;
   
-    if (tecla==13){ 
+    if (tecla==13){
     /*
         if (opcion==1){             
             buscarcliente();            

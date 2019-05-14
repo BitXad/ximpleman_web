@@ -33,6 +33,13 @@
               var value = $(this).val();
               $("#producto_precio").val(value/0.8);
           });
+          $("#producto_precio").change(function () {
+              var value = $(this).val();
+              var costo = $("#producto_costo").val();
+              if(costo >= value){
+                  alert("El Precio de Compra es mayor o igual a Precio de Compra");
+              }
+          });
       });
       function loader() {
      	$("form").submit(function() {

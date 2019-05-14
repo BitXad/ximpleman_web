@@ -5,29 +5,46 @@
  */
  
 class Pagina_web extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Pagina_web_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of pagina_web
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('pagina_web/index?');
-        $config['total_rows'] = $this->Pagina_web_model->get_all_pagina_web_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['pagina_web'] = $this->Pagina_web_model->get_all_pagina_web($params);
-        
-        $data['_view'] = 'pagina_web/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('pagina_web/index?');
+            $config['total_rows'] = $this->Pagina_web_model->get_all_pagina_web_count();
+            $this->pagination->initialize($config);
+
+            $data['pagina_web'] = $this->Pagina_web_model->get_all_pagina_web($params);
+
+            $data['_view'] = 'pagina_web/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     function login()
@@ -50,40 +67,42 @@ class Pagina_web extends CI_Controller{
      * Adding a new pagina_web
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('pagina_nombre','Pagina Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'idioma_id' => $this->input->post('idioma_id'),
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'empresa_id' => $this->input->post('empresa_id'),
-				'pagina_nombre' => $this->input->post('pagina_nombre'),
-				'pagina_telefono' => $this->input->post('pagina_telefono'),
-				'pagina_direccion' => $this->input->post('pagina_direccion'),
-				'pagina_informacion' => $this->input->post('pagina_informacion'),
-				'pagina_imagen' => $this->input->post('pagina_imagen'),
-            );
-            
-            $pagina_web_id = $this->Pagina_web_model->add_pagina_web($params);
-            redirect('pagina_web/index');
-        }
-        else
-        {
-			$this->load->model('Idioma_model');
-			$data['all_idioma'] = $this->Idioma_model->get_all_idioma();
+                    $this->form_validation->set_rules('pagina_nombre','Pagina Nombre','required');
 
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'idioma_id' => $this->input->post('idioma_id'),
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'empresa_id' => $this->input->post('empresa_id'),
+                                    'pagina_nombre' => $this->input->post('pagina_nombre'),
+                                    'pagina_telefono' => $this->input->post('pagina_telefono'),
+                                    'pagina_direccion' => $this->input->post('pagina_direccion'),
+                                    'pagina_informacion' => $this->input->post('pagina_informacion'),
+                                    'pagina_imagen' => $this->input->post('pagina_imagen'),
+                );
 
-			$this->load->model('Empresa_model');
-			$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-            
-            $data['_view'] = 'pagina_web/add';
-            $this->load->view('layouts/main',$data);
+                $pagina_web_id = $this->Pagina_web_model->add_pagina_web($params);
+                redirect('pagina_web/index');
+            }
+            else
+            {
+                            $this->load->model('Idioma_model');
+                            $data['all_idioma'] = $this->Idioma_model->get_all_idioma();
+
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                            $this->load->model('Empresa_model');
+                            $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+
+                $data['_view'] = 'pagina_web/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -91,49 +110,51 @@ class Pagina_web extends CI_Controller{
      * Editing a pagina_web
      */
     function edit($pagina_id)
-    {   
-        // check if the pagina_web exists before trying to edit it
-        $data['pagina_web'] = $this->Pagina_web_model->get_pagina_web($pagina_id);
-        
-        if(isset($data['pagina_web']['pagina_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the pagina_web exists before trying to edit it
+            $data['pagina_web'] = $this->Pagina_web_model->get_pagina_web($pagina_id);
 
-			$this->form_validation->set_rules('pagina_nombre','Pagina Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'idioma_id' => $this->input->post('idioma_id'),
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'empresa_id' => $this->input->post('empresa_id'),
-					'pagina_nombre' => $this->input->post('pagina_nombre'),
-					'pagina_telefono' => $this->input->post('pagina_telefono'),
-					'pagina_direccion' => $this->input->post('pagina_direccion'),
-					'pagina_informacion' => $this->input->post('pagina_informacion'),
-					'pagina_imagen' => $this->input->post('pagina_imagen'),
-                );
+            if(isset($data['pagina_web']['pagina_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Pagina_web_model->update_pagina_web($pagina_id,$params);            
-                redirect('pagina_web/index');
+                            $this->form_validation->set_rules('pagina_nombre','Pagina Nombre','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'idioma_id' => $this->input->post('idioma_id'),
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'empresa_id' => $this->input->post('empresa_id'),
+                                            'pagina_nombre' => $this->input->post('pagina_nombre'),
+                                            'pagina_telefono' => $this->input->post('pagina_telefono'),
+                                            'pagina_direccion' => $this->input->post('pagina_direccion'),
+                                            'pagina_informacion' => $this->input->post('pagina_informacion'),
+                                            'pagina_imagen' => $this->input->post('pagina_imagen'),
+                    );
+
+                    $this->Pagina_web_model->update_pagina_web($pagina_id,$params);            
+                    redirect('pagina_web/index');
+                }
+                else
+                {
+                                    $this->load->model('Idioma_model');
+                                    $data['all_idioma'] = $this->Idioma_model->get_all_idioma();
+
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                                    $this->load->model('Empresa_model');
+                                    $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+
+                    $data['_view'] = 'pagina_web/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Idioma_model');
-				$data['all_idioma'] = $this->Idioma_model->get_all_idioma();
-
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-				$this->load->model('Empresa_model');
-				$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-
-                $data['_view'] = 'pagina_web/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The pagina_web you are trying to edit does not exist.');
         }
-        else
-            show_error('The pagina_web you are trying to edit does not exist.');
     } 
 
     /*
@@ -141,16 +162,18 @@ class Pagina_web extends CI_Controller{
      */
     function remove($pagina_id)
     {
-        $pagina_web = $this->Pagina_web_model->get_pagina_web($pagina_id);
+        if($this->acceso(155)){
+            $pagina_web = $this->Pagina_web_model->get_pagina_web($pagina_id);
 
-        // check if the pagina_web exists before trying to delete it
-        if(isset($pagina_web['pagina_id']))
-        {
-            $this->Pagina_web_model->delete_pagina_web($pagina_id);
-            redirect('pagina_web/index');
+            // check if the pagina_web exists before trying to delete it
+            if(isset($pagina_web['pagina_id']))
+            {
+                $this->Pagina_web_model->delete_pagina_web($pagina_id);
+                redirect('pagina_web/index');
+            }
+            else
+                show_error('The pagina_web you are trying to delete does not exist.');
         }
-        else
-            show_error('The pagina_web you are trying to delete does not exist.');
     }
     
 }

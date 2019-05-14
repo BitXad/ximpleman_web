@@ -5,42 +5,61 @@
  */
  
 class Categoria_ingreso extends CI_Controller{
+    private $session_data = "";private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Categoria_ingreso_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of categoria_ingreso
      */
     function index()
     {
-        $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-        
-        $data['_view'] = 'categoria_ingreso/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(117)){
+            $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+
+            $data['_view'] = 'categoria_ingreso/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new categoria_ingreso
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'categoria_cating' => $this->input->post('categoria_cating'),
-				'descrip_cating' => $this->input->post('descrip_cating'),
-            );
-            
-            $categoria_ingreso_id = $this->Categoria_ingreso_model->add_categoria_ingreso($params);
-            redirect('categoria_ingreso/index');
-        }
-        else
-        {            
-            $data['_view'] = 'categoria_ingreso/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(117)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'categoria_cating' => $this->input->post('categoria_cating'),
+                    'descrip_cating' => $this->input->post('descrip_cating'),
+                );
+
+                $categoria_ingreso_id = $this->Categoria_ingreso_model->add_categoria_ingreso($params);
+                redirect('categoria_ingreso/index');
+            }
+            else
+            {            
+                $data['_view'] = 'categoria_ingreso/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -48,30 +67,32 @@ class Categoria_ingreso extends CI_Controller{
      * Editing a categoria_ingreso
      */
     function edit($id_cating)
-    {   
-        // check if the categoria_ingreso exists before trying to edit it
-        $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
-        
-        if(isset($data['categoria_ingreso']['id_cating']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'categoria_cating' => $this->input->post('categoria_cating'),
-					'descrip_cating' => $this->input->post('descrip_cating'),
-                );
+    {
+        if($this->acceso(117)){
+            // check if the categoria_ingreso exists before trying to edit it
+            $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
 
-                $this->Categoria_ingreso_model->update_categoria_ingreso($id_cating,$params);            
-                redirect('categoria_ingreso/index');
+            if(isset($data['categoria_ingreso']['id_cating']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'categoria_cating' => $this->input->post('categoria_cating'),
+                                            'descrip_cating' => $this->input->post('descrip_cating'),
+                    );
+
+                    $this->Categoria_ingreso_model->update_categoria_ingreso($id_cating,$params);            
+                    redirect('categoria_ingreso/index');
+                }
+                else
+                {
+                    $data['_view'] = 'categoria_ingreso/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'categoria_ingreso/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The categoria_ingreso you are trying to edit does not exist.');
         }
-        else
-            show_error('The categoria_ingreso you are trying to edit does not exist.');
     } 
 
     /*
@@ -79,16 +100,18 @@ class Categoria_ingreso extends CI_Controller{
      */
     function remove($id_cating)
     {
-        $categoria_ingreso = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
+        if($this->acceso(117)){
+            $categoria_ingreso = $this->Categoria_ingreso_model->get_categoria_ingreso($id_cating);
 
-        // check if the categoria_ingreso exists before trying to delete it
-        if(isset($categoria_ingreso['id_cating']))
-        {
-            $this->Categoria_ingreso_model->delete_categoria_ingreso($id_cating);
-            redirect('categoria_ingreso/index');
+            // check if the categoria_ingreso exists before trying to delete it
+            if(isset($categoria_ingreso['id_cating']))
+            {
+                $this->Categoria_ingreso_model->delete_categoria_ingreso($id_cating);
+                redirect('categoria_ingreso/index');
+            }
+            else
+                show_error('The categoria_ingreso you are trying to delete does not exist.');
         }
-        else
-            show_error('The categoria_ingreso you are trying to delete does not exist.');
     }
     
 }

@@ -9,30 +9,34 @@ class Tiempo_uso extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Tiempo_uso_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
-
+private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of tiempo_uso
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(135)){
+        
         $data['tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso();
         
         $data['_view'] = 'tiempo_uso/index';
         $this->load->view('layouts/main',$data);
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
 
     /*
@@ -40,12 +44,7 @@ class Tiempo_uso extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(135)){
                 
                 $this->load->library('form_validation');
                 $this->form_validation->set_rules('tiempouso_descripcion','Tiempo Uso Descripción','trim|required', array('required' => 'Este Campo no debe ser vacio'));
@@ -68,12 +67,7 @@ class Tiempo_uso extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     }  
 
     /*
@@ -81,12 +75,7 @@ class Tiempo_uso extends CI_Controller{
      */
     function edit($tiempouso_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(135)){
         // check if the tiempo_uso exists before trying to edit it
         $data['tiempo_uso'] = $this->Tiempo_uso_model->get_tiempo_uso($tiempouso_id);
         
@@ -116,12 +105,7 @@ class Tiempo_uso extends CI_Controller{
         else
             show_error('El tiempo de uso que intentas editar, no existe.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+           
     } 
 
     /*
@@ -129,10 +113,7 @@ class Tiempo_uso extends CI_Controller{
      */
     function remove($tiempouso_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-        $tiempo_uso = $this->Tiempo_uso_model->get_tiempo_uso($tiempouso_id);
+        if($this->acceso(135)){
 
         // check if the tiempo_uso exists before trying to delete it
         if(isset($tiempo_uso['tiempouso_id']))
@@ -143,12 +124,7 @@ class Tiempo_uso extends CI_Controller{
         else
             show_error('El tiempo de uso que intentas eliminar no existe.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            
     }
     
 }

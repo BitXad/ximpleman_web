@@ -5,59 +5,78 @@
  */
  
 class Galeria extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Galeria_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of galeria
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('galeria/index?');
-        $config['total_rows'] = $this->Galeria_model->get_all_galeria_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['galeria'] = $this->Galeria_model->get_all_galeria($params);
-        
-        $data['_view'] = 'galeria/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('galeria/index?');
+            $config['total_rows'] = $this->Galeria_model->get_all_galeria_count();
+            $this->pagination->initialize($config);
+
+            $data['galeria'] = $this->Galeria_model->get_all_galeria($params);
+
+            $data['_view'] = 'galeria/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new galeria
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('galeria_titulo','Galeria Titulo','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'galeria_titulo' => $this->input->post('galeria_titulo'),
-				'galeria_descripcion' => $this->input->post('galeria_descripcion'),
-				'galeria_texto' => $this->input->post('galeria_texto'),
-            );
-            
-            $galeria_id = $this->Galeria_model->add_galeria($params);
-            redirect('galeria/index');
-        }
-        else
-        {
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-            
-            $data['_view'] = 'galeria/add';
-            $this->load->view('layouts/main',$data);
+                    $this->form_validation->set_rules('galeria_titulo','Galeria Titulo','required');
+
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'galeria_titulo' => $this->input->post('galeria_titulo'),
+                                    'galeria_descripcion' => $this->input->post('galeria_descripcion'),
+                                    'galeria_texto' => $this->input->post('galeria_texto'),
+                );
+
+                $galeria_id = $this->Galeria_model->add_galeria($params);
+                redirect('galeria/index');
+            }
+            else
+            {
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                $data['_view'] = 'galeria/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -65,39 +84,41 @@ class Galeria extends CI_Controller{
      * Editing a galeria
      */
     function edit($galeria_id)
-    {   
-        // check if the galeria exists before trying to edit it
-        $data['galeria'] = $this->Galeria_model->get_galeria($galeria_id);
-        
-        if(isset($data['galeria']['galeria_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the galeria exists before trying to edit it
+            $data['galeria'] = $this->Galeria_model->get_galeria($galeria_id);
 
-			$this->form_validation->set_rules('galeria_titulo','Galeria Titulo','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'galeria_titulo' => $this->input->post('galeria_titulo'),
-					'galeria_descripcion' => $this->input->post('galeria_descripcion'),
-					'galeria_texto' => $this->input->post('galeria_texto'),
-                );
+            if(isset($data['galeria']['galeria_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Galeria_model->update_galeria($galeria_id,$params);            
-                redirect('galeria/index');
+                            $this->form_validation->set_rules('galeria_titulo','Galeria Titulo','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'galeria_titulo' => $this->input->post('galeria_titulo'),
+                                            'galeria_descripcion' => $this->input->post('galeria_descripcion'),
+                                            'galeria_texto' => $this->input->post('galeria_texto'),
+                    );
+
+                    $this->Galeria_model->update_galeria($galeria_id,$params);            
+                    redirect('galeria/index');
+                }
+                else
+                {
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                    $data['_view'] = 'galeria/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-                $data['_view'] = 'galeria/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The galeria you are trying to edit does not exist.');
         }
-        else
-            show_error('The galeria you are trying to edit does not exist.');
     } 
 
     /*
@@ -105,16 +126,18 @@ class Galeria extends CI_Controller{
      */
     function remove($galeria_id)
     {
-        $galeria = $this->Galeria_model->get_galeria($galeria_id);
+        if($this->acceso(155)){
+            $galeria = $this->Galeria_model->get_galeria($galeria_id);
 
-        // check if the galeria exists before trying to delete it
-        if(isset($galeria['galeria_id']))
-        {
-            $this->Galeria_model->delete_galeria($galeria_id);
-            redirect('galeria/index');
+            // check if the galeria exists before trying to delete it
+            if(isset($galeria['galeria_id']))
+            {
+                $this->Galeria_model->delete_galeria($galeria_id);
+                redirect('galeria/index');
+            }
+            else
+                show_error('The galeria you are trying to delete does not exist.');
         }
-        else
-            show_error('The galeria you are trying to delete does not exist.');
     }
     
 }

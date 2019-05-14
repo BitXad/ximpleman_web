@@ -14,18 +14,30 @@ class Usuario extends CI_Controller
         $this->load->model('Tipo_usuario_model');
         $this->load->library('form_validation');
         $this->load->model('user_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     }
 
+private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of usuario
      */
     function index()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if ($session_data['tipousuario_id'] == 1) {
+        if($this->acceso(148)){
 
-                $data = array(
+                /*$data = array(
                     'usuario_login' => $session_data['usuario_login'],
                     'usuario_id' => $session_data['usuario_id'],
                     'usuario_nombre' => $session_data['usuario_nombre'],
@@ -35,7 +47,7 @@ class Usuario extends CI_Controller
                     'usuario_email' => $session_data['usuario_email'],
                     'page_title' => 'Admin >> Mi Cuenta',
                     'thumb' => $session_data['thumb']
-                );
+                );*/
 
                 $params['limit'] = RECORDS_PER_PAGE;
                 $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -46,20 +58,15 @@ class Usuario extends CI_Controller
                 $this->pagination->initialize($config);
 
                 $data['usuario'] = $this->Usuario_model->get_all_usuario($params);
-                $data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario($params);
-                $data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario($params);
+                //$data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario($params);
+                //$data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario($params);
 
 
                 $data['_view'] = 'usuario/index';
 
                 $this->load->view('layouts/main', $data);
 
-            } else {
-                redirect('alerta');
             }
-        } else {
-            redirect('', 'refresh');
-        }
 
     }
 
@@ -68,11 +75,9 @@ class Usuario extends CI_Controller
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if ($session_data['tipousuario_id'] == 1) {
+        if($this->acceso(148)){
 
-                $data = array(
+               /* $data = array(
                     'usuario_login' => $session_data['usuario_login'],
                     'usuario_id' => $session_data['usuario_id'],
                     'usuario_nombre' => $session_data['usuario_nombre'],
@@ -82,7 +87,7 @@ class Usuario extends CI_Controller
                     'usuario_email' => $session_data['usuario_email'],
                     'page_title' => 'Admin >> Nuevo Usuario',
                     'thumb' => $session_data['thumb']
-                );
+                );*/
 
                 $this->form_validation->set_rules('usuario_nombre', 'Usuario Nombre', 'required');
                 $this->form_validation->set_rules('usuario_email', 'Usuario Email', 'valid_email');
@@ -170,23 +175,16 @@ class Usuario extends CI_Controller
                     $this->load->view('layouts/main', $data);
                 }
 
-            } else {
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            } 
 
     }
 
     function editar($usuario_id){
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1){
+        if($this->acceso(148)){
 
 
-                $data = array(
+                /*$data = array(
                     'usuario_login' => $session_data['usuario_login'],
                     'usuario_id' => $session_data['usuario_id'],
                     'usuario_nombre' => $session_data['usuario_nombre'],
@@ -196,7 +194,7 @@ class Usuario extends CI_Controller
                     'usuario_email' => $session_data['usuario_email'],
                     'page_title' => 'Admin >> Nuevo Usuario',
                     'thumb' => $session_data['thumb']
-                );
+                );*/
 
                 $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
 
@@ -210,12 +208,7 @@ class Usuario extends CI_Controller
                 $this->load->view('layouts/main', $data);
 
 
-            }else{
-                redirect('alerta');
             }
-        } else {
-            redirect('', 'refresh');
-        }
     }
 
     /*
@@ -223,6 +216,7 @@ class Usuario extends CI_Controller
      */
     function edit($usuario_id)
     {
+        if($this->acceso(148)){
         $original_value = $this->db->query("SELECT usuario_login FROM usuario WHERE usuario_id = " . $usuario_id)->row()->usuario_login;
 
         if ($this->input->post('usuario_login') != $original_value) {
@@ -331,12 +325,14 @@ class Usuario extends CI_Controller
             }
         } else
             show_error('The usuario you are trying to edit does not exist.');
+        }
     }
 
 
     function password($usuario_id)
     {
         // check if the usuario exists before trying to edit it
+        if($this->acceso(148)){
         $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
 
         if (isset($data['usuario']['usuario_id'])) {
@@ -387,6 +383,7 @@ class Usuario extends CI_Controller
             }
         } else
             show_error('The usuario you are trying to edit does not exist.');
+        }
     }
 
     /*
@@ -394,6 +391,7 @@ class Usuario extends CI_Controller
      */
     function remove($usuario_id)
     {
+        if($this->acceso(148)){
         $usuario = $this->Usuario_model->get_usuario($usuario_id);
 
         // check if the usuario exists before trying to delete it
@@ -402,6 +400,7 @@ class Usuario extends CI_Controller
             redirect('usuario/index');
         } else
             show_error('The usuario you are trying to delete does not exist.');
+        }
     }
 
     public function getRol($tipousuario_idol)
@@ -424,9 +423,7 @@ class Usuario extends CI_Controller
 
     function set()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if ($session_data['tipousuario_id'] == 1) {
+        if($this->acceso(148)){
 
                 $this->form_validation->set_rules('usuario_nombre', 'Nombre', 'trim|required|min_length[3]|max_length[150]');
                 $this->form_validation->set_rules('usuario_email', 'Email', 'trim|required|valid_email|min_length[5]|max_length[250]|callback_hay_email2');//OJO
@@ -555,12 +552,7 @@ class Usuario extends CI_Controller
                         redirect('usuario');
                     }
                 }
-            } else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
+            } 
     }
 
     public function hay_email2($email_field)

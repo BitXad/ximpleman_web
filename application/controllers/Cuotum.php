@@ -5,337 +5,182 @@
  */
  
 class Cuotum extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
         $this->load->model('Credito_model');
-         $this->load->helper('numeros');  
-    } 
-
+        $this->load->helper('numeros');  
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of cuota
      */
-    
     function index()
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['page_title'] = "Cuota";
-        $data['cuota'] = $this->Cuotum_model->get_all_cuota();
-        
-        $data['_view'] = 'cuotum/index';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(41)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $data['page_title'] = "Cuota";
+            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+
+            $data['_view'] = 'cuotum/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
     function deudas($credito_id)
     {
-        
-      if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        
-        $data['page_title'] = "Cuota";
-        $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
-        $data['credito'] = $this->Credito_model->dato_deudas($credito_id);
-        $data['_view'] = 'cuotum/deudas';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(41)){
+            $data['page_title'] = "Cuota";
+            $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
+            $data['credito'] = $this->Credito_model->dato_deudas($credito_id);
+            $data['_view'] = 'cuotum/deudas';
+            $this->load->view('layouts/main',$data);
         }
     }
 
     function planDeuda($credito_id)
     {
-        
-      if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['page_title'] = "Cuota";
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
-        //$data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-        $data['_view'] = 'cuotum/planDeudas';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(41)){
+            $data['page_title'] = "Cuota";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
+            //$data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+            $data['_view'] = 'cuotum/planDeudas';
+            $this->load->view('layouts/main',$data);
         }
     }
     
     function cuentas($credito_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        $usuario_id = $session_data['usuario_id'];
-        
-        $data['page_title'] = "Plan de pagos";
-        $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
-        $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
-        $data['_view'] = 'cuotum/cuentas';
-        $this->load->view('layouts/main',$data);
-        }
-        else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+    {
+        if($this->acceso(47)){
+            $data['page_title'] = "Plan de pagos";
+            $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+            $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
+            $data['_view'] = 'cuotum/cuentas';
+            $this->load->view('layouts/main',$data);
         }
     }
     function cuenta_serv($credito_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
-        $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
-        $data['_view'] = 'cuotum/cuentas';
-        $this->load->view('layouts/main',$data);
-        }
-        else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+    {
+        if($this->acceso(47)){
+            $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
+            $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
+            $data['_view'] = 'cuotum/cuentas';
+            $this->load->view('layouts/main',$data);
         }
     }
     function planCuenta($credito_id)
     {
-        
-       if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-         $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
-       // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-        $data['_view'] = 'cuotum/planCuentas';
-        $this->load->view('layouts/main',$data);
-        }
-        else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(47)){
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+           // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+            $data['_view'] = 'cuotum/planCuentas';
+            $this->load->view('layouts/main',$data);
         }
     }
     function planCuentaServ($credito_id)
     {
-        
-       if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-         $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
-       // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-        $data['_view'] = 'cuotum/planCuentas';
-        $this->load->view('layouts/main',$data);
-        }
-        else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(47)){
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
+           // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+            $data['_view'] = 'cuotum/planCuentas';
+            $this->load->view('layouts/main',$data);
         }
     }
     function recibodeudas($cuota_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
-       // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-        $data['_view'] = 'cuotum/reciboDeuda';
-        $this->load->view('layouts/main',$data);
-    }else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+    {
+        if($this->acceso(41)){
+            $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
+           // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+            $data['_view'] = 'cuotum/reciboDeuda';
+            $this->load->view('layouts/main',$data);
         }
     }
      function recibocuentas($cuota_id)
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['page_title'] = "Comprobante";
-        $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
-       // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-        $data['_view'] = 'cuotum/reciboCuenta';
-        $this->load->view('layouts/main',$data);
-    }else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+         if($this->acceso(47)){
+            $data['page_title'] = "Comprobante";
+            $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
+           // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+            $data['_view'] = 'cuotum/reciboCuenta';
+            $this->load->view('layouts/main',$data);
         }
     }
 
    function recibocuentaserv($cuota_id)
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
-       // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-        $data['_view'] = 'cuotum/reciboCuenta';
-        $this->load->view('layouts/main',$data);
-    }else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+       if($this->acceso(47)){
+            $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
+           // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
+            $data['_view'] = 'cuotum/reciboCuenta';
+            $this->load->view('layouts/main',$data);
         }
     }
     function comprobantedeudas($cuota_id,$credito_id)
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['credito'] = $this->Cuotum_model->get_all_deuda($credito_id);
-        $data['_view'] = 'cuotum/comprobanteDeuda';
-        $this->load->view('layouts/main',$data);
-    }else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(41)){
+            $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['credito'] = $this->Cuotum_model->get_all_deuda($credito_id);
+            $data['_view'] = 'cuotum/comprobanteDeuda';
+            $this->load->view('layouts/main',$data);
         }
     }
     function comprobantecuentas($cuota_id,$credito_id)
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
-        $data['_view'] = 'cuotum/comprobanteCuenta';
-        $this->load->view('layouts/main',$data);
-    }else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(47)){
+            $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+            $data['_view'] = 'cuotum/comprobanteCuenta';
+            $this->load->view('layouts/main',$data);
         }
     }
 
     function notacobro($cuota_id,$credito_id)
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
-        $data['_view'] = 'cuotum/notaCobro';
-        $this->load->view('layouts/main',$data);
-    }else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(41) or $this->acceso(47)){
+            $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+            $data['_view'] = 'cuotum/notaCobro';
+            $this->load->view('layouts/main',$data);
         }
     }
 
     function comprobantecuentaserv($cuota_id,$credito_id)
     {
-         if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                $usuario_id = $session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);
-        $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
-        $data['_view'] = 'cuotum/comprobanteCuenta';
-        $this->load->view('layouts/main',$data);
-    }else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(47)){
+            $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
+            $data['_view'] = 'cuotum/comprobanteCuenta';
+            $this->load->view('layouts/main',$data);
         }
     }
     function pagar($cuota_id)
     {
-        
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(41)){
+            $usuario_id = $this->session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_cuotum($cuota_id);
        //  $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
         $estado_id = 8;
@@ -524,20 +369,12 @@ class Cuotum extends CI_Controller{
                  redirect('cuotum/deudas/'.$credito_id);  
 
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     function cobrar($cuota_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(47)){
+            $usuario_id = $this->session_data['usuario_id'];
         $data['cuota'] = $this->Cuotum_model->get_cuotum($cuota_id);
        //  $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
       
@@ -712,16 +549,12 @@ class Cuotum extends CI_Controller{
                 redirect('cuotum/cuentas/'.$credito_id);  
                 }
             }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
 
     function pendiente($cuota_id,$credito_id)
-    {       
+    {
+        if($this->acceso(41)){
+            $usuario_id = $this->session_data['usuario_id'];
             
             $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
@@ -739,10 +572,13 @@ class Cuotum extends CI_Controller{
             }
 
             redirect('cuotum/deudas/'.$credito_id);
+        }
     }
 
     function pendiente1($cuota_id,$credito_id)
-    {       
+    {
+        if($this->acceso(47)){
+            $usuario_id = $this->session_data['usuario_id'];
             
             $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
@@ -765,12 +601,13 @@ class Cuotum extends CI_Controller{
                } else {
                 redirect('cuotum/cuentas/'.$credito_id);  
                 } 
-              
+        }
     }
 
 
     function add()
-    {   
+    {
+        if($this->acceso(41) or $this->acceso(47)){
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -811,6 +648,7 @@ class Cuotum extends CI_Controller{
             $data['_view'] = 'cuotum/add';
             $this->load->view('layouts/main',$data);
         }
+        }
     }  
     /*
      * Adding a new cuotum
@@ -820,14 +658,9 @@ class Cuotum extends CI_Controller{
      * Editing a cuotum
      */
     function edit($cuota_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $usuario_id = $session_data['usuario_id'];
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+    {
+        if($this->acceso(41)){
+            $usuario_id = $this->session_data['usuario_id'];
         // check if the cuotum exists before trying to edit it
         $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
         $credito_id = $this->input->post('credito_id');
@@ -877,23 +710,13 @@ class Cuotum extends CI_Controller{
         else
             show_error('The cuotum you are trying to edit does not exist.');
     }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
- function editar($cuota_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
-                $usuario_id = $session_data['usuario_id'];
-              $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+     function editar($cuota_id)
+    {
+         if($this->acceso(47)){
+            $usuario_id = $this->session_data['usuario_id'];
+     
         // check if the cuotum exists before trying to edit it
         $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
         $credito_id = $this->input->post('credito_id');
@@ -942,12 +765,6 @@ class Cuotum extends CI_Controller{
         }
         else
             show_error('The cuotum you are trying to edit does not exist.');
-    }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     /*
@@ -955,30 +772,34 @@ class Cuotum extends CI_Controller{
      */
     function remove($cuota_id,$credito_id)
     {
-        $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
+        if($this->acceso(41)){
+            $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
 
-        // check if the cuotum exists before trying to delete it
-        if(isset($cuotum['cuota_id']))
-        {
-            $this->Cuotum_model->delete_cuotum($cuota_id);
-            redirect('cuotum/deudas/'.$credito_id);
+            // check if the cuotum exists before trying to delete it
+            if(isset($cuotum['cuota_id']))
+            {
+                $this->Cuotum_model->delete_cuotum($cuota_id);
+                redirect('cuotum/deudas/'.$credito_id);
+            }
+            else
+                show_error('The cuotum you are trying to delete does not exist.');
         }
-        else
-            show_error('The cuotum you are trying to delete does not exist.');
     }
 
     function remover($cuota_id,$credito_id)
     {
-        $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
+        if($this->acceso(47)){
+            $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
 
-        // check if the cuotum exists before trying to delete it
-        if(isset($cuotum['cuota_id']))
-        {
-            $this->Cuotum_model->delete_cuotum($cuota_id);
-            redirect('cuotum/cuentas/'.$credito_id);
+            // check if the cuotum exists before trying to delete it
+            if(isset($cuotum['cuota_id']))
+            {
+                $this->Cuotum_model->delete_cuotum($cuota_id);
+                redirect('cuotum/cuentas/'.$credito_id);
+            }
+            else
+                show_error('The cuotum you are trying to delete does not exist.');
         }
-        else
-            show_error('The cuotum you are trying to delete does not exist.');
     }
     
 }

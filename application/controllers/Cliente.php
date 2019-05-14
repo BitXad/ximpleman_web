@@ -5,53 +5,56 @@
  */
  
 class Cliente extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Cliente_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of cliente
      */
     function index($a = null)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-               $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(94)){
+            $data['a'] = $a;
+            $data['err'] ="";
 
-        $data['a'] = $a;
-        $data['err'] ="";
-        
-        $this->load->model('Categoria_cliente_model');
-        $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_cat_cliente();
-        
-        $this->load->model('Categoria_clientezona_model');
-        $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
-        
-        $this->load->model('Tipo_cliente_model');
-        $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
-        
-        $this->load->model('Usuario_model');
-        $data['all_prevendedor'] = $this->Usuario_model->get_all_usuario_prev();
-        
-        $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-        
-        $this->load->model('Empresa_model');
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        
-        $data['_view'] = 'cliente/index';
-        $this->load->view('layouts/main',$data);
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+            $this->load->model('Categoria_cliente_model');
+            $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_cat_cliente();
+
+            $this->load->model('Categoria_clientezona_model');
+            $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
+
+            $this->load->model('Tipo_cliente_model');
+            $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
+
+            $this->load->model('Usuario_model');
+            $data['all_prevendedor'] = $this->Usuario_model->get_all_usuario_prev();
+
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+
+            $data['_view'] = 'cliente/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -60,12 +63,7 @@ class Cliente extends CI_Controller{
      */
     function add()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(95)){
             $this->load->library('form_validation');
 
             //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
@@ -149,7 +147,7 @@ class Cliente extends CI_Controller{
                         $foto = $new_name.$extension;
                     }
             /* *********************FIN imagen***************************** */
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
                 //no es necesario porque se esta usando el date y ya no el date piker
                 //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                 $estado_id = 1;
@@ -196,38 +194,32 @@ class Cliente extends CI_Controller{
                             'dom' => $dom,
                 );
             
-            $cliente_id = $this->Cliente_model->add_cliente($params);
-            redirect('cliente/index');
+                $cliente_id = $this->Cliente_model->add_cliente($params);
+                redirect('cliente/index');
+                }
             }
-        }
-        else
-        {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                        
-                        $this->load->model('Categoria_clientezona_model');
-                        $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-                        /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
-                        $this->load->model('Usuario_model');
-			$data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+            else
+            {
+                            $this->load->model('Estado_model');
+                            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 
-			$this->load->model('Tipo_cliente_model');
-			$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-			
-                        $this->load->model('Categoria_cliente_model');
-			$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
-			
-                        $data['resultado'] = 0;
-            
-            $data['_view'] = 'cliente/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-            else{
-                redirect('alerta');
+                            $this->load->model('Categoria_clientezona_model');
+                            $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                            /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
+                            $this->load->model('Usuario_model');
+                            $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+                            $this->load->model('Tipo_cliente_model');
+                            $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+                            $this->load->model('Categoria_cliente_model');
+                            $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+
+                            $data['resultado'] = 0;
+
+                $data['_view'] = 'cliente/add';
+                $this->load->view('layouts/main',$data);
             }
-        } else {
-            redirect('', 'refresh');
         }
     }  
 
@@ -236,12 +228,7 @@ class Cliente extends CI_Controller{
      */
     function edit($cliente_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1  or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(98)){
         // check if the cliente exists before trying to edit it
         $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
         
@@ -255,7 +242,7 @@ class Cliente extends CI_Controller{
 		
 	    if($this->form_validation->run())     
             {
-                $usuario_id = $session_data['usuario_id'];
+                $usuario_id = $this->session_data['usuario_id'];
                 /* *********************INICIO imagen***************************** */
                 $foto="";
                 $foto1= $this->input->post('cliente_foto1');
@@ -325,93 +312,85 @@ class Cliente extends CI_Controller{
                             //$this->input->post('cliente_foto'),
                            //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
                             //$mifecha = normalize_date($this->input->post('cliente_aniversario'));
-                $lun = $this->input->post('lun');
-                if($lun != 1){ $lun = 0; }
-                $mar = $this->input->post('mar');
-                if($mar != 1){ $mar = 0; }
-                $mie = $this->input->post('mie');
-                if($mie != 1){ $mie = 0; }
-                $jue = $this->input->post('jue');
-                if($jue != 1){ $jue = 0; }
-                $vie = $this->input->post('vie');
-                if($vie != 1){ $vie = 0; }
-                $sab = $this->input->post('sab');
-                if($sab != 1){ $sab = 0; }
-                $dom = $this->input->post('dom');
-                if($dom != 1){ $dom = 0; }
-                $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'tipocliente_id' => $this->input->post('tipocliente_id'),
-					'categoriaclie_id' => $this->input->post('categoriaclie_id'),
-					'cliente_codigo' => $this->input->post('cliente_codigo'),
-					'zona_id' => $this->input->post('zona_id'),
-					'cliente_nombre' => $this->input->post('cliente_nombre'),
-					'cliente_ci' => $this->input->post('cliente_ci'),
-					'cliente_direccion' => $this->input->post('cliente_direccion'),
-					'cliente_telefono' => $this->input->post('cliente_telefono'),
-					'cliente_celular' => $this->input->post('cliente_celular'),
-					'cliente_foto' => $foto,
-					'cliente_email' => $this->input->post('cliente_email'),
-					'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-					'cliente_aniversario' => $this->input->post('cliente_aniversario'),
-					'cliente_latitud' => $this->input->post('cliente_latitud'),
-					'cliente_longitud' => $this->input->post('cliente_longitud'),
-					'cliente_nit' => $this->input->post('cliente_nit'),
-					'cliente_razon' => $this->input->post('cliente_razon'),
-					'usuario_id' => $this->input->post('usuario_id'),
-                                        'lun' => $lun,
-                                        'mar' => $mar,
-                                        'mie' => $mie,
-                                        'jue' => $jue,
-                                        'vie' => $vie,
-                                        'sab' => $sab,
-                                        'dom' => $dom,
-                    
-                );
+                    $lun = $this->input->post('lun');
+                    if($lun != 1){ $lun = 0; }
+                    $mar = $this->input->post('mar');
+                    if($mar != 1){ $mar = 0; }
+                    $mie = $this->input->post('mie');
+                    if($mie != 1){ $mie = 0; }
+                    $jue = $this->input->post('jue');
+                    if($jue != 1){ $jue = 0; }
+                    $vie = $this->input->post('vie');
+                    if($vie != 1){ $vie = 0; }
+                    $sab = $this->input->post('sab');
+                    if($sab != 1){ $sab = 0; }
+                    $dom = $this->input->post('dom');
+                    if($dom != 1){ $dom = 0; }
+                    $params = array(
+                        'estado_id' => $this->input->post('estado_id'),
+                        'tipocliente_id' => $this->input->post('tipocliente_id'),
+                        'categoriaclie_id' => $this->input->post('categoriaclie_id'),
+                        'cliente_codigo' => $this->input->post('cliente_codigo'),
+                        'zona_id' => $this->input->post('zona_id'),
+                        'cliente_nombre' => $this->input->post('cliente_nombre'),
+                        'cliente_ci' => $this->input->post('cliente_ci'),
+                        'cliente_direccion' => $this->input->post('cliente_direccion'),
+                        'cliente_telefono' => $this->input->post('cliente_telefono'),
+                        'cliente_celular' => $this->input->post('cliente_celular'),
+                        'cliente_foto' => $foto,
+                        'cliente_email' => $this->input->post('cliente_email'),
+                        'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                        'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+                        'cliente_latitud' => $this->input->post('cliente_latitud'),
+                        'cliente_longitud' => $this->input->post('cliente_longitud'),
+                        'cliente_nit' => $this->input->post('cliente_nit'),
+                        'cliente_razon' => $this->input->post('cliente_razon'),
+                        'usuario_id' => $this->input->post('usuario_id'),
+                        'lun' => $lun,
+                        'mar' => $mar,
+                        'mie' => $mie,
+                        'jue' => $jue,
+                        'vie' => $vie,
+                        'sab' => $sab,
+                        'dom' => $dom,
 
-                $this->Cliente_model->update_cliente($cliente_id,$params);            
-                redirect('cliente/index');
+                    );
+
+                    $this->Cliente_model->update_cliente($cliente_id,$params);            
+                    redirect('cliente/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+                    $this->load->model('Categoria_clientezona_model');
+                    $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                    /***Añadido por Mario Escobar parqa asignarle a un usuario prevendedor***/
+                    $this->load->model('Usuario_model');
+                    $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+                    $this->load->model('Tipo_cliente_model');
+                    $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+                    $this->load->model('Categoria_cliente_model');
+                    $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+
+                    $data['_view'] = 'cliente/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                                
-                                $this->load->model('Categoria_clientezona_model');
-                                $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-                                /***Añadido por Mario Escobar parqa asignarle a un usuario prevendedor***/
-                                $this->load->model('Usuario_model');
-			        $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
-
-				$this->load->model('Tipo_cliente_model');
-				$data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-
-				$this->load->model('Categoria_cliente_model');
-				$data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
-
-                $data['_view'] = 'cliente/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The cliente you are trying to edit does not exist.');
         }
-        else
-            show_error('The cliente you are trying to edit does not exist.');
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
-    } 
+    }
 
     /*
      * Deleting cliente
      */
     function remove($cliente_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1) {
+        if($this->acceso(99)){
         $cliente = $this->Cliente_model->get_cliente($cliente_id);
 
         // check if the cliente exists before trying to delete it
@@ -430,12 +409,6 @@ class Cliente extends CI_Controller{
         else
             show_error('The cliente you are trying to delete does not exist.');
         }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
     
     /*
@@ -443,85 +416,71 @@ class Cliente extends CI_Controller{
      */
     function add_new($servicio_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-                
-                $this->load->model('Servicio_model');
-                $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+        if($this->acceso(69)){
+            $this->load->model('Servicio_model');
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 
-                if(isset($data['servicio']['servicio_id']))
+            if(isset($data['servicio']['servicio_id']))
+            {
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('cliente_nombre','Cliente telefono','required');
+                $this->form_validation->set_rules('cliente_codigo','Cliente telefono','required');
+                $this->form_validation->set_rules('cliente_telefono','Cliente telefono','required');
+
+                if($this->form_validation->run())     
                 {
-                    $this->load->library('form_validation');
-                    $this->form_validation->set_rules('cliente_nombre','Cliente telefono','required');
-                    $this->form_validation->set_rules('cliente_codigo','Cliente telefono','required');
-                    $this->form_validation->set_rules('cliente_telefono','Cliente telefono','required');
-                        
-                    if($this->form_validation->run())     
-                    {
-                        $nombre = $this->input->post('cliente_nombre');
-                        $resultado = $this->Cliente_model->es_cliente_registrado($nombre);
-                        if($resultado <= 0){
-                            if ($this->input->is_ajax_request()){
+                    $nombre = $this->input->post('cliente_nombre');
+                    $resultado = $this->Cliente_model->es_cliente_registrado($nombre);
+                    if($resultado <= 0){
+                        if ($this->input->is_ajax_request()){
+                        $usuario_id = $this->session_data['usuario_id'];
+                        $tipocliente_id = 1;
+                        $categoria_clie = 1;
 
-                            $usuario_id = $session_data['usuario_id'];
-                            $tipocliente_id = 1;
-                            $categoria_clie = 1;
+                        $estado_id = 1; //$this->Estado_model->get_id_estado($estado_descripcion);
+                        $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                                    'tipocliente_id' => $tipocliente_id,
+                                    'categoriaclie_id' => $categoria_clie,
+                                    'cliente_codigo' => $this->input->post('cliente_codigo'),
+                                    'cliente_nombre' => $this->input->post('cliente_nombre'),
+                                    'cliente_ci' => $this->input->post('cliente_ci'),
+                                    'cliente_direccion' => $this->input->post('cliente_direccion'),
+                                    'cliente_telefono' => $this->input->post('cliente_telefono'),
+                                    'cliente_celular' => $this->input->post('cliente_celular'),
+                                    'cliente_foto' => $this->input->post('cliente_foto'),
+                                    'cliente_email' => $this->input->post('cliente_email'),
+                                    'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                                    'cliente_aniversario' => $mifecha,
+                                    'cliente_latitud' => $this->input->post('cliente_latitud'),
+                                    'cliente_longitud' => $this->input->post('cliente_longitud'),
+                                    'cliente_nit' => $this->input->post('cliente_nit'),
+                                    'cliente_razon' => $this->input->post('cliente_nombre'),
+                                    'usuario_id' => $this->input->post('usuario_id'),
+                                );
+                            $cliente_id = $this->Cliente_model->add_cliente($params);
 
-                            $estado_id = 1; //$this->Estado_model->get_id_estado($estado_descripcion);
-                            $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
-                            $params = array(
-                                        'estado_id' => $estado_id,
-                                        'tipocliente_id' => $tipocliente_id,
-                                        'categoriaclie_id' => $categoria_clie,
-                                        'cliente_codigo' => $this->input->post('cliente_codigo'),
-                                        'cliente_nombre' => $this->input->post('cliente_nombre'),
-                                        'cliente_ci' => $this->input->post('cliente_ci'),
-                                        'cliente_direccion' => $this->input->post('cliente_direccion'),
-                                        'cliente_telefono' => $this->input->post('cliente_telefono'),
-                                        'cliente_celular' => $this->input->post('cliente_celular'),
-                                        'cliente_foto' => $this->input->post('cliente_foto'),
-                                        'cliente_email' => $this->input->post('cliente_email'),
-                                        'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-                                        'cliente_aniversario' => $mifecha,
-                                        'cliente_latitud' => $this->input->post('cliente_latitud'),
-                                        'cliente_longitud' => $this->input->post('cliente_longitud'),
-                                        'cliente_nit' => $this->input->post('cliente_nit'),
-                                        'cliente_razon' => $this->input->post('cliente_nombre'),
-                                        'usuario_id' => $this->input->post('usuario_id'),
-                                    );
-                                $cliente_id = $this->Cliente_model->add_cliente($params);
-                                
-                                $params_serv = array(
-                                       'cliente_id' => $cliente_id,
-                                       //'servicio_codseguimiento' => $this->input->post('codigo_seg'),
-                                    );
+                            $params_serv = array(
+                                   'cliente_id' => $cliente_id,
+                                   //'servicio_codseguimiento' => $this->input->post('codigo_seg'),
+                                );
 
-                                $this->Servicio_model->update_servicio($servicio_id,$params_serv);
+                            $this->Servicio_model->update_servicio($servicio_id,$params_serv);
 
-                            $datos = $this->Cliente_model->get_cliente($cliente_id);
-                        echo json_encode($datos);
-                        }else{ show_404(); }
-                    }else{
-                        $a = array('0' => "sonduplicados", '1' => $nombre);
-                        echo json_encode($a);
-                    }
+                        $datos = $this->Cliente_model->get_cliente($cliente_id);
+                    echo json_encode($datos);
+                    }else{ show_404(); }
                 }else{
-                    echo json_encode("faltadatos");
+                    $a = array('0' => "sonduplicados", '1' => $nombre);
+                    echo json_encode($a);
                 }
-                }else{
-                        show_error('El servicio al cual desea asignar un cliente, no existe');
-                }
-                
-        }
-            else{
-                redirect('alerta');
+            }else{
+                echo json_encode("faltadatos");
             }
-        } else {
-            redirect('', 'refresh');
+            }else{
+                    show_error('El servicio al cual desea asignar un cliente, no existe');
+            }
         }
     }
     
@@ -530,34 +489,23 @@ class Cliente extends CI_Controller{
     */
     function buscarclientes()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
-                
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(94)){
+            if ($this->input->is_ajax_request()) {
 
-        if ($this->input->is_ajax_request()) {
-            
-            $parametro = $this->input->post('parametro');   
-            $categoria = $this->input->post('categoriaestado');   
-            //$limite = $this->input->post('limite');   
-            
-            //if ($parametro!=""){
-            $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro, $categoria);
-            echo json_encode($datos);
-            /*}
-            else echo json_encode(null);*/
-        }
-        else
-        {                 
-            show_404();
-        }
-        }
-            else{
-                redirect('alerta');
+                $parametro = $this->input->post('parametro');   
+                $categoria = $this->input->post('categoriaestado');   
+                //$limite = $this->input->post('limite');   
+
+                //if ($parametro!=""){
+                $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro, $categoria);
+                echo json_encode($datos);
+                /*}
+                else echo json_encode(null);*/
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {                 
+                show_404();
+            }
         }
     }
     
@@ -567,43 +515,33 @@ class Cliente extends CI_Controller{
     */
     function buscarclientes_usuario()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(94)){   
+            $usuario_id = $this->session_data['usuario_id'];
+            if ($this->input->is_ajax_request()) {
 
-        if ($this->input->is_ajax_request()) {
-            
-            $parametro = $this->input->post('parametro');   
-            $tipo = $this->input->post('tipo');
-            
-            if($tipo == 1){ //busque de solo mis clientes
-                $condicion = " c.usuario_id = ".$usuario_id;
-             
-            }
-            else{
-                $condicion = " "; //busqueda de todos los clientes
+                $parametro = $this->input->post('parametro');   
+                $tipo = $this->input->post('tipo');
 
+                if($tipo == 1){ //busque de solo mis clientes
+                    $condicion = " c.usuario_id = ".$usuario_id;
+
+                }
+                else{
+                    $condicion = " "; //busqueda de todos los clientes
+
+                }
+
+
+                if ($parametro!=""){
+                $datos = $this->Cliente_model->get_cliente_por_usuario($parametro,$condicion);
+                echo json_encode($datos);
+                }
+                else echo json_encode(null);
             }
-            
-            
-            if ($parametro!=""){
-            $datos = $this->Cliente_model->get_cliente_por_usuario($parametro,$condicion);
-            echo json_encode($datos);
+            else
+            {                 
+                show_404();
             }
-            else echo json_encode(null);
-        }
-        else
-        {                 
-            show_404();
-        }
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
     
@@ -612,32 +550,21 @@ class Cliente extends CI_Controller{
     */
     function buscarclientesactivos()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==2 or $session_data['tipousuario_id']==4 or $session_data['tipousuario_id']==5) {
-                
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(70)){
+            if ($this->input->is_ajax_request()) {
 
-        if ($this->input->is_ajax_request()) {
-            
-            $parametro = $this->input->post('parametro');   
-            
-            if ($parametro!=""){
-            $datos = $this->Cliente_model->get_busqueda_cliente_activo_parametro($parametro);
-            echo json_encode($datos);
+                $parametro = $this->input->post('parametro');   
+
+                if ($parametro!=""){
+                $datos = $this->Cliente_model->get_busqueda_cliente_activo_parametro($parametro);
+                echo json_encode($datos);
+                }
+                else echo json_encode(null);
             }
-            else echo json_encode(null);
-        }
-        else
-        {                 
-            show_404();
-        }
-        }
-            else{
-                redirect('alerta');
+            else
+            {                 
+                show_404();
             }
-        } else {
-            redirect('', 'refresh');
         }
     }
     
@@ -646,12 +573,7 @@ class Cliente extends CI_Controller{
      */
     function clientenuevo($pedido_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(94)){
             $this->load->library('form_validation');
 
             //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
@@ -734,97 +656,91 @@ class Cliente extends CI_Controller{
 
                         $foto = $new_name.$extension;
                     }
-            /* *********************FIN imagen***************************** */
-                $usuario_id = $session_data['usuario_id'];
-                //no es necesario porque se esta usando el date y ya no el date piker
-                //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
-                $estado_id = 1;
-                $lun = $this->input->post('lun');
-                if($lun != 1){ $lun = 0; }
-                $mar = $this->input->post('mar');
-                if($mar != 1){ $mar = 0; }
-                $mie = $this->input->post('mie');
-                if($mie != 1){ $mie = 0; }
-                $jue = $this->input->post('jue');
-                if($jue != 1){ $jue = 0; }
-                $vie = $this->input->post('vie');
-                if($vie != 1){ $vie = 0; }
-                $sab = $this->input->post('sab');
-                if($sab != 1){ $sab = 0; }
-                $dom = $this->input->post('dom');
-                if($dom != 1){ $dom = 0; }
-                $params = array(
-                            'estado_id' => $estado_id,
-                            'tipocliente_id' => $this->input->post('tipocliente_id'),
-                            'categoriaclie_id' => $this->input->post('categoriaclie_id'),
-                            'cliente_codigo' => $this->input->post('cliente_codigo'),
-                            'cliente_nombre' => $this->input->post('cliente_nombre'),
-                            'cliente_ci' => $this->input->post('cliente_ci'),
-                            'cliente_direccion' => $this->input->post('cliente_direccion'),
-                            'cliente_telefono' => $this->input->post('cliente_telefono'),
-                            'cliente_celular' => $this->input->post('cliente_celular'),
-                            'cliente_foto' => $foto,
-                            'cliente_email' => $this->input->post('cliente_email'),
-                            'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-                            'cliente_aniversario' => $this->input->post('cliente_aniversario'),
-                            'cliente_latitud' => $this->input->post('cliente_latitud'),
-                            'cliente_longitud' => $this->input->post('cliente_longitud'),
-                            'cliente_nit' => $this->input->post('cliente_nit'),
-                            'cliente_razon' => $this->input->post('cliente_razon'),
-                            'usuario_id' => $this->input->post('usuario_id'),
-                            'zona_id' => $this->input->post('zona_id'),
-                            'lun' => $lun,
-                            'mar' => $mar,
-                            'mie' => $mie,
-                            'jue' => $jue,
-                            'vie' => $vie,
-                            'sab' => $sab,
-                            'dom' => $dom,
-                );
-            
-//            $cliente_id = $this->Cliente_model->add_cliente($params);
-//            redirect('cliente/index');
-//            
-                $cliente_id = $this->Cliente_model->add_cliente($params);
-                $this->load->model('Pedido_model');
-                $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
-                redirect('pedido/pedidoabierto/'.$pedido_id);            
+                /* *********************FIN imagen***************************** */
+                    $usuario_id = $this->session_data['usuario_id'];
+                    //no es necesario porque se esta usando el date y ya no el date piker
+                    //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                    $estado_id = 1;
+                    $lun = $this->input->post('lun');
+                    if($lun != 1){ $lun = 0; }
+                    $mar = $this->input->post('mar');
+                    if($mar != 1){ $mar = 0; }
+                    $mie = $this->input->post('mie');
+                    if($mie != 1){ $mie = 0; }
+                    $jue = $this->input->post('jue');
+                    if($jue != 1){ $jue = 0; }
+                    $vie = $this->input->post('vie');
+                    if($vie != 1){ $vie = 0; }
+                    $sab = $this->input->post('sab');
+                    if($sab != 1){ $sab = 0; }
+                    $dom = $this->input->post('dom');
+                    if($dom != 1){ $dom = 0; }
+                    $params = array(
+                                'estado_id' => $estado_id,
+                                'tipocliente_id' => $this->input->post('tipocliente_id'),
+                                'categoriaclie_id' => $this->input->post('categoriaclie_id'),
+                                'cliente_codigo' => $this->input->post('cliente_codigo'),
+                                'cliente_nombre' => $this->input->post('cliente_nombre'),
+                                'cliente_ci' => $this->input->post('cliente_ci'),
+                                'cliente_direccion' => $this->input->post('cliente_direccion'),
+                                'cliente_telefono' => $this->input->post('cliente_telefono'),
+                                'cliente_celular' => $this->input->post('cliente_celular'),
+                                'cliente_foto' => $foto,
+                                'cliente_email' => $this->input->post('cliente_email'),
+                                'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                                'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+                                'cliente_latitud' => $this->input->post('cliente_latitud'),
+                                'cliente_longitud' => $this->input->post('cliente_longitud'),
+                                'cliente_nit' => $this->input->post('cliente_nit'),
+                                'cliente_razon' => $this->input->post('cliente_razon'),
+                                'usuario_id' => $this->input->post('usuario_id'),
+                                'zona_id' => $this->input->post('zona_id'),
+                                'lun' => $lun,
+                                'mar' => $mar,
+                                'mie' => $mie,
+                                'jue' => $jue,
+                                'vie' => $vie,
+                                'sab' => $sab,
+                                'dom' => $dom,
+                    );
+
+    //            $cliente_id = $this->Cliente_model->add_cliente($params);
+    //            redirect('cliente/index');
+    //            
+                    $cliente_id = $this->Cliente_model->add_cliente($params);
+                    $this->load->model('Pedido_model');
+                    $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
+                    redirect('pedido/pedidoabierto/'.$pedido_id);            
+
+                }
+            }
+            else
+            {
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+                $this->load->model('Categoria_clientezona_model');
+                $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
+                $this->load->model('Usuario_model');
+                $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+                $this->load->model('Tipo_cliente_model');
+                $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+                $this->load->model('Categoria_cliente_model');
+                $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+
+                $data['resultado'] = 0;
+    //            
+    //            $data['_view'] = 'cliente/add';
+    //            $this->load->view('layouts/main',$data);
+
+                        $data['pedido_id'] = $pedido_id;
+                        $data['_view'] = 'cliente/clientenuevo';
+                        $this->load->view('layouts/main',$data);            
 
             }
-        }
-        else
-        {
-            $this->load->model('Estado_model');
-            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-
-            $this->load->model('Categoria_clientezona_model');
-            $data['zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-            /***Añadido por Mario Escobar para asignarle a un usuario prevendedor***/
-            $this->load->model('Usuario_model');
-            $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
-
-            $this->load->model('Tipo_cliente_model');
-            $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
-
-            $this->load->model('Categoria_cliente_model');
-            $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
-
-            $data['resultado'] = 0;
-//            
-//            $data['_view'] = 'cliente/add';
-//            $this->load->view('layouts/main',$data);
-
-                    $data['pedido_id'] = $pedido_id;
-                    $data['_view'] = 'cliente/clientenuevo';
-                    $this->load->view('layouts/main',$data);            
-            
-        }
-        }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }  
     
@@ -832,13 +748,7 @@ class Cliente extends CI_Controller{
      * Adding a new cliente
      */
     function cambiarcliente($cliente_id,$pedido_id,$cliente_nit,$cliente_razon)
-    {   
-//        $cliente_id = $this->input->post('cliente_id');
-//        $pedido_id = $this->input->post('pedido_id');
-//        $cliente_nit = $this->input->post('cliente_nit');
-//        $cliente_razon = $this->input->post('cliente_razon');
-//                  
-
+    {
         $this->load->model('Pedido_model');
         $sql = "update cliente set cliente_nit = '".$cliente_nit."',".
                 "cliente_razon = '".$cliente_razon."' ".
@@ -852,30 +762,17 @@ class Cliente extends CI_Controller{
     
     function realizar_pedido($cliente_id)
     {
-        
-        
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-        //**************** inicio contenido ***************     
-        //Crear el pedido
-        $usuario_id = $session_data['usuario_id'];
-        $this->load->model('Pedido_model');
-        $pedido_id = $this->Pedido_model->crear_pedido($usuario_id);
-        $cliente = $this->Cliente_model->get_cliente($cliente_id);
-        
-        $this->cambiarcliente($cliente_id, $pedido_id, $cliente['cliente_nit'], $cliente['cliente_razon']);
-        redirect('pedido/pedidoabierto/'.$pedido_id);
-        
+        if($this->acceso(94)){
+            //**************** inicio contenido ***************     
+            //Crear el pedido
+            $usuario_id = $this->session_data['usuario_id'];
+            $this->load->model('Pedido_model');
+            $pedido_id = $this->Pedido_model->crear_pedido($usuario_id);
+            $cliente = $this->Cliente_model->get_cliente($cliente_id);
 
-         		
-        //**************** fin contenido ***************
-        			}
-        			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+            $this->cambiarcliente($cliente_id, $pedido_id, $cliente['cliente_nit'], $cliente['cliente_razon']);
+            redirect('pedido/pedidoabierto/'.$pedido_id);
+        }         
     }
     
     
@@ -884,59 +781,37 @@ class Cliente extends CI_Controller{
     */
     function buscarclienteslimit()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(94)){
+            if ($this->input->is_ajax_request()) {
 
-        if ($this->input->is_ajax_request()) {
-            
-            $parametro = $this->input->post('parametro');   
-            //$limite = $this->input->post('limite');   
-            
-            /*if ($parametro!=""){*/
-            $datos = $this->Cliente_model->get_all_cliente_limit();
-            echo json_encode($datos);
-            /*}
-            else echo json_encode(null);*/
-        }
-        else
-        {                 
-            show_404();
-        }
-        }
-            else{
-                redirect('alerta');
+                $parametro = $this->input->post('parametro');   
+                //$limite = $this->input->post('limite');   
+
+                /*if ($parametro!=""){*/
+                $datos = $this->Cliente_model->get_all_cliente_limit();
+                echo json_encode($datos);
+                /*}
+                else echo json_encode(null);*/
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {                 
+                show_404();
+            }
         }
     }
     /* buscar Todos los clientes */
     function buscarclientesall()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                
-                $usuario_id = $session_data['usuario_id'];
-
-        if ($this->input->is_ajax_request())
-        {
-            $datos = $this->Cliente_model->get_all_cliente();
-            echo json_encode($datos);
-        }
-        else
-        {                 
-            show_404();
-        }
-        }
-            else{
-                redirect('alerta');
+        if($this->acceso(94)){
+            if ($this->input->is_ajax_request())
+            {
+                $datos = $this->Cliente_model->get_all_cliente();
+                echo json_encode($datos);
             }
-        } else {
-            redirect('', 'refresh');
+            else
+            {                 
+                show_404();
+            }
         }
     }
     
@@ -946,33 +821,20 @@ class Cliente extends CI_Controller{
     */
     function buscarclientes_pedido()
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']>=1 and $session_data['tipousuario_id']<=4) {
-                
-                $usuario_id = $session_data['usuario_id'];
+        if($this->acceso(94)){
+            if ($this->input->is_ajax_request()) {
+                $parametro = $this->input->post('parametro');
 
-        if ($this->input->is_ajax_request()) {
-            
-            $parametro = $this->input->post('parametro');   
-            //$limite = $this->input->post('limite');   
-            
-            if ($parametro!=""){
-            $datos = $this->Cliente_model->get_cliente_parametro($parametro);
-            echo json_encode($datos);
+                if ($parametro!=""){
+                $datos = $this->Cliente_model->get_cliente_parametro($parametro);
+                echo json_encode($datos);
+                }
+                else echo json_encode(null);
             }
-            else echo json_encode(null);
-        }
-        else
-        {                 
-            show_404();
-        }
-        }
-            else{
-                redirect('alerta');
+            else
+            {                 
+                show_404();
             }
-        } else {
-            redirect('', 'refresh');
         }
     }
         

@@ -5,100 +5,72 @@
  */
  
 class Cotizacion extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Cotizacion_model');
-         $this->load->helper('numeros');    
+        $this->load->helper('numeros');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
-
-
-      
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of cotizacion
      */
     function index()
     {
-           if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=3) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-            $usuario_id = $session_data['usuario_id'];
-        $data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
-        
-        $data['_view'] = 'cotizacion/index';
-        $this->load->view('layouts/main',$data);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(36)){
+            $data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
+
+            $data['_view'] = 'cotizacion/index';
+            $this->load->view('layouts/main',$data);
         }
     }
 
-function creacotizacion()
+    function creacotizacion()
     {
-       
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=3) {
-                $usuario_id = $session_data['usuario_id'];
-        $cotizacion_id = $this->Cotizacion_model->crear_cotizacion($usuario_id);        
-        redirect('cotizacion/add/'.$cotizacion_id);
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+        if($this->acceso(36)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $cotizacion_id = $this->Cotizacion_model->crear_cotizacion($usuario_id);        
+            redirect('cotizacion/add/'.$cotizacion_id);
         }
     }
     /*
      * Adding a new cotizacion
      */
     function add($cotizacion_id)
-    {   
-
-        
-          if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=3) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-            $usuario_id = $session_data['usuario_id'];
+    {
+        if($this->acceso(36)){
+            $usuario_id = $this->session_data['usuario_id'];
             $data['cotizacion_id'] = $cotizacion_id; 
             $this->load->model('Detalle_cotizacion_model');
             $data['detalle_cotizacion'] = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
-           $this->load->model('Producto_model');
+            $this->load->model('Producto_model');
             //$data['producto'] = $this->Producto_model->get_all_productos();  
             $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);     
             $data['_view'] = 'cotizacion/add';
             $this->load->view('layouts/main',$data);
        
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
 
- function cotizarecibo($cotizacion_id)
-    {   
-
-        
-          if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=3) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
-            $usuario_id = $session_data['usuario_id'];
+    function cotizarecibo($cotizacion_id)
+    {
+        if($this->acceso(36)){
+            $usuario_id = $this->session_data['usuario_id'];
             $data['cotizacion_id'] = $cotizacion_id;
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -109,20 +81,12 @@ function creacotizacion()
             $data['_view'] = 'cotizacion/cotiza';
             $this->load->view('layouts/main',$data);
        
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
         }
     }
 
-function detallecotizacion()
+    function detallecotizacion()
     {
-    
-
-         if ($this->input->is_ajax_request()) {  
+        if ($this->input->is_ajax_request()) {  
         $cotizacion_id = $this->input->post('cotizacion_id');
         $datos = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
      if(isset($datos)){
@@ -136,10 +100,8 @@ function detallecotizacion()
      
     
     }    
-function insertarproducto()
-    {   
-       
-
+    function insertarproducto()
+    {
         if ($this->input->is_ajax_request()) {
         $cotizacion_id = $this->input->post('cotizacion_id');
         $descripcion = $this->input->post('descripcion');
@@ -235,12 +197,7 @@ function insertarproducto()
 
     function quitar($detallecot_id)
     {
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=3) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(40)){
         //**************** inicio contenido ***************        
         
         $sql = "delete from detalle_cotizacion where detallecot_id = ".$detallecot_id;
@@ -249,109 +206,89 @@ function insertarproducto()
         return true;
                     
         //**************** fin contenido ***************
-                    }
-                    else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }
-        
+        }
     }
     /*
      * Editing a cotizacion
      */
     function edit($cotizacion_id)
-    {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=3) {
-                $usuario_id = $session_data['usuario_id'];
-        // check if the cotizacion exists before trying to edit it
-        $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
-        
-        if(isset($data['cotizacion']['cotizacion_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $fechacot = $this->input->post('cotizacion_fecha');
-                $fecha = $this->Cotizacion_model->normalize_date($fechacot);
+    {
+        if($this->acceso(38)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
 
-                $params = array(
-					'cotizacion_fecha' => $fecha,
-					'cotizacion_validez' => $this->input->post('cotizacion_validez'),
-					'cotizacion_formapago' => $this->input->post('cotizacion_formapago'),
-					'cotizacion_tiempoentrega' => $this->input->post('cotizacion_tiempoentrega'),
-					'usuario_id' => $usuario_id,
-					'cotizacion_total' => $this->input->post('cotizacion_total'),
-                    'cotizacion_glosa' => $this->input->post('cotizacion_glosa'),
-                    'cotizacion_cliente' => $this->input->post('cotizacion_cliente'),
-                );
+            if(isset($data['cotizacion']['cotizacion_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $fechacot = $this->input->post('cotizacion_fecha');
+                    $fecha = $this->Cotizacion_model->normalize_date($fechacot);
+
+                    $params = array(
+                                            'cotizacion_fecha' => $fecha,
+                                            'cotizacion_validez' => $this->input->post('cotizacion_validez'),
+                                            'cotizacion_formapago' => $this->input->post('cotizacion_formapago'),
+                                            'cotizacion_tiempoentrega' => $this->input->post('cotizacion_tiempoentrega'),
+                                            'usuario_id' => $usuario_id,
+                                            'cotizacion_total' => $this->input->post('cotizacion_total'),
+                        'cotizacion_glosa' => $this->input->post('cotizacion_glosa'),
+                        'cotizacion_cliente' => $this->input->post('cotizacion_cliente'),
+                    );
 
 
 
-                $this->Cotizacion_model->update_cotizacion($cotizacion_id,$params);            
-                 redirect('cotizacion/add/'.$cotizacion_id);
+                    $this->Cotizacion_model->update_cotizacion($cotizacion_id,$params);            
+                     redirect('cotizacion/add/'.$cotizacion_id);
+                }
+                else
+                {
+                    $data['_view'] = 'cotizacion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'cotizacion/edit';
-                $this->load->view('layouts/main',$data);
+                show_error('The cotizacion you are trying to edit does not exist.');
             }
-        }
-        else
-            show_error('The cotizacion you are trying to edit does not exist.');
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
-        }
     }
 
     function finalizar($cotizacion_id)
     {   
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']<=3) {
-                $usuario_id = $session_data['usuario_id'];
-        // check if the cotizacion exists before trying to edit it
-        $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
-        
-        if(isset($data['cotizacion']['cotizacion_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $fechacot = $this->input->post('cotizacion_fecha');
-                $fecha = $this->Cotizacion_model->normalize_date($fechacot);
+        if($this->acceso(36)){
+            $usuario_id = $this->session_data['usuario_id'];
+            // check if the cotizacion exists before trying to edit it
+            $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
 
-                $params = array(
-                    'cotizacion_fecha' => $fecha,
-                    'cotizacion_validez' => $this->input->post('cotizacion_validez'),
-                    'cotizacion_formapago' => $this->input->post('cotizacion_formapago'),
-                    'cotizacion_tiempoentrega' => $this->input->post('cotizacion_tiempoentrega'),
-                    'usuario_id' => $usuario_id,
-                    'cotizacion_total' => $this->input->post('cotizacion_total'),
-                     'cotizacion_glosa' => $this->input->post('cotizacion_glosa'),
-                     'cotizacion_cliente' => $this->input->post('cotizacion_cliente')
-                );
+            if(isset($data['cotizacion']['cotizacion_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $fechacot = $this->input->post('cotizacion_fecha');
+                    $fecha = $this->Cotizacion_model->normalize_date($fechacot);
+
+                    $params = array(
+                        'cotizacion_fecha' => $fecha,
+                        'cotizacion_validez' => $this->input->post('cotizacion_validez'),
+                        'cotizacion_formapago' => $this->input->post('cotizacion_formapago'),
+                        'cotizacion_tiempoentrega' => $this->input->post('cotizacion_tiempoentrega'),
+                        'usuario_id' => $usuario_id,
+                        'cotizacion_total' => $this->input->post('cotizacion_total'),
+                         'cotizacion_glosa' => $this->input->post('cotizacion_glosa'),
+                         'cotizacion_cliente' => $this->input->post('cotizacion_cliente')
+                    );
 
 
 
-                $this->Cotizacion_model->update_cotizacion($cotizacion_id,$params);            
-                 redirect('cotizacion/index');
+                    $this->Cotizacion_model->update_cotizacion($cotizacion_id,$params);            
+                     redirect('cotizacion/index');
+                }
+                else
+                {
+                    $data['_view'] = 'cotizacion/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'cotizacion/edit';
-                $this->load->view('layouts/main',$data);
-            }
-        }
-        else
-            show_error('The cotizacion you are trying to edit does not exist.');
-            }
-            else{
-                redirect('alerta');
-            }
-        } else {
-            redirect('', 'refresh');
+                show_error('The cotizacion you are trying to edit does not exist.');
         }
     }
     /*
@@ -359,16 +296,18 @@ function insertarproducto()
      */
     function remove($cotizacion_id)
     {
-        $cotizacion = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
+        if($this->acceso(40)){
+            $cotizacion = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
 
-        // check if the cotizacion exists before trying to delete it
-        if(isset($cotizacion['cotizacion_id']))
-        {
-            $this->Cotizacion_model->delete_cotizacion($cotizacion_id);
-            redirect('cotizacion/index');
+            // check if the cotizacion exists before trying to delete it
+            if(isset($cotizacion['cotizacion_id']))
+            {
+                $this->Cotizacion_model->delete_cotizacion($cotizacion_id);
+                redirect('cotizacion/index');
+            }
+            else
+                show_error('The cotizacion you are trying to delete does not exist.');
         }
-        else
-            show_error('The cotizacion you are trying to delete does not exist.');
     }
     
 }

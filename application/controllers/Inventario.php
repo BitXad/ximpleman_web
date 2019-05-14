@@ -5,13 +5,27 @@
  */
  
 class Inventario extends CI_Controller{
-    
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Inventario_model');
         $this->load->model('Empresa_model');
         $this->load->model('Producto_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
     } 
 
     /*
@@ -21,12 +35,7 @@ class Inventario extends CI_Controller{
     {
         
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(24)){
         //**************** inicio contenido ***************
 		        
         $empresa_id = 1;
@@ -37,8 +46,7 @@ class Inventario extends CI_Controller{
 		
         //**************** fin contenido ***************
 			}
-			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }  
+			
     }
 
     /*
@@ -47,12 +55,7 @@ class Inventario extends CI_Controller{
     function kardex($producto_id)
     {
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(24)){
         //**************** inicio contenido ***************
 		  
                 
@@ -72,8 +75,7 @@ class Inventario extends CI_Controller{
 	
         //**************** fin contenido ***************
 			}
-			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+			 
         
     }
     /*
@@ -82,12 +84,7 @@ class Inventario extends CI_Controller{
     function buscar_kardex()
     {
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(29)){
         //**************** inicio contenido ***************
 		  
                 
@@ -103,8 +100,7 @@ class Inventario extends CI_Controller{
 	
         //**************** fin contenido ***************
 			}
-			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
+			      
         
     }
 
@@ -114,12 +110,7 @@ class Inventario extends CI_Controller{
     function actualizar_inventario()
     {   
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(26)){
         //**************** inicio contenido ***************
 		       
         $usuario_id = 1;
@@ -129,9 +120,7 @@ class Inventario extends CI_Controller{
 		
         //**************** fin contenido ***************
 			}
-			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
-        
+			
     }  
 
     /*
@@ -141,12 +130,7 @@ class Inventario extends CI_Controller{
     {      
        
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(27)){
         //**************** inicio contenido ***************
 		
             $parametro = $this->input->post("parametro");
@@ -159,9 +143,7 @@ class Inventario extends CI_Controller{
 		
         //**************** fin contenido ***************
 			}
-			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }  
-        
+			
     }  
     
     /*
@@ -170,12 +152,7 @@ class Inventario extends CI_Controller{
     function actualizar_cantidad_inventario()
     {   
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(26)){
         //**************** inicio contenido ***************
 		       
         $usuario_id = 1;
@@ -185,9 +162,7 @@ class Inventario extends CI_Controller{
 		
         //**************** fin contenido ***************
 			}
-			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }          
-        
+			
     }  
     
     /*
@@ -197,12 +172,7 @@ class Inventario extends CI_Controller{
     {
      
 
-        if ($this->session->userdata('logged_in')) {
-            $session_data = $this->session->userdata('logged_in');
-            if($session_data['tipousuario_id']==1 or $session_data['tipousuario_id']==4) {
-                $data = array(
-                    'page_title' => 'Admin >> Mi Cuenta'
-                );
+        if($this->acceso(28)){
         //**************** inicio contenido ***************
 		        
         if($this->input->is_ajax_request()){
@@ -215,8 +185,7 @@ class Inventario extends CI_Controller{
 		
         //**************** fin contenido ***************
 			}
-			else{ redirect('alerta'); }
-        } else { redirect('', 'refresh'); }  
+			
         
     }  
     

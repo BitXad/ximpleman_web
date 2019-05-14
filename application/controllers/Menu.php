@@ -5,65 +5,84 @@
  */
  
 class Menu extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Menu_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of menu
      */
     function index()
     {
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('menu/index?');
-        $config['total_rows'] = $this->Menu_model->get_all_menu_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(155)){
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['menu'] = $this->Menu_model->get_all_menu($params);
-        
-        $data['_view'] = 'menu/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('menu/index?');
+            $config['total_rows'] = $this->Menu_model->get_all_menu_count();
+            $this->pagination->initialize($config);
+
+            $data['menu'] = $this->Menu_model->get_all_menu($params);
+
+            $data['_view'] = 'menu/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new menu
      */
     function add()
-    {   
-        $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('menu_nombre','Menu Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estadopag_id' => $this->input->post('estadopag_id'),
-				'menup_id' => $this->input->post('menup_id'),
-				'menu_nombre' => $this->input->post('menu_nombre'),
-				'menu_tipo' => $this->input->post('menu_tipo'),
-				'menu_descripcion' => $this->input->post('menu_descripcion'),
-				'menu_enlace' => $this->input->post('menu_enlace'),
-				'menu_imagen' => $this->input->post('menu_imagen'),
-            );
-            
-            $menu_id = $this->Menu_model->add_menu($params);
-            redirect('menu/index');
-        }
-        else
-        {
-			$this->load->model('Estado_pagina_model');
-			$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+                    $this->form_validation->set_rules('menu_nombre','Menu Nombre','required');
 
-			$this->load->model('Menu_principal_model');
-			$data['all_menu_principal'] = $this->Menu_principal_model->get_all_menu_principal();
-            
-            $data['_view'] = 'menu/add';
-            $this->load->view('layouts/main',$data);
+                    if($this->form_validation->run())     
+            {   
+                $params = array(
+                                    'estadopag_id' => $this->input->post('estadopag_id'),
+                                    'menup_id' => $this->input->post('menup_id'),
+                                    'menu_nombre' => $this->input->post('menu_nombre'),
+                                    'menu_tipo' => $this->input->post('menu_tipo'),
+                                    'menu_descripcion' => $this->input->post('menu_descripcion'),
+                                    'menu_enlace' => $this->input->post('menu_enlace'),
+                                    'menu_imagen' => $this->input->post('menu_imagen'),
+                );
+
+                $menu_id = $this->Menu_model->add_menu($params);
+                redirect('menu/index');
+            }
+            else
+            {
+                            $this->load->model('Estado_pagina_model');
+                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                            $this->load->model('Menu_principal_model');
+                            $data['all_menu_principal'] = $this->Menu_principal_model->get_all_menu_principal();
+
+                $data['_view'] = 'menu/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -71,45 +90,47 @@ class Menu extends CI_Controller{
      * Editing a menu
      */
     function edit($menu_id)
-    {   
-        // check if the menu exists before trying to edit it
-        $data['menu'] = $this->Menu_model->get_menu($menu_id);
-        
-        if(isset($data['menu']['menu_id']))
-        {
-            $this->load->library('form_validation');
+    {
+        if($this->acceso(155)){
+            // check if the menu exists before trying to edit it
+            $data['menu'] = $this->Menu_model->get_menu($menu_id);
 
-			$this->form_validation->set_rules('menu_nombre','Menu Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'estadopag_id' => $this->input->post('estadopag_id'),
-					'menup_id' => $this->input->post('menup_id'),
-					'menu_nombre' => $this->input->post('menu_nombre'),
-					'menu_tipo' => $this->input->post('menu_tipo'),
-					'menu_descripcion' => $this->input->post('menu_descripcion'),
-					'menu_enlace' => $this->input->post('menu_enlace'),
-					'menu_imagen' => $this->input->post('menu_imagen'),
-                );
+            if(isset($data['menu']['menu_id']))
+            {
+                $this->load->library('form_validation');
 
-                $this->Menu_model->update_menu($menu_id,$params);            
-                redirect('menu/index');
+                            $this->form_validation->set_rules('menu_nombre','Menu Nombre','required');
+
+                            if($this->form_validation->run())     
+                {   
+                    $params = array(
+                                            'estadopag_id' => $this->input->post('estadopag_id'),
+                                            'menup_id' => $this->input->post('menup_id'),
+                                            'menu_nombre' => $this->input->post('menu_nombre'),
+                                            'menu_tipo' => $this->input->post('menu_tipo'),
+                                            'menu_descripcion' => $this->input->post('menu_descripcion'),
+                                            'menu_enlace' => $this->input->post('menu_enlace'),
+                                            'menu_imagen' => $this->input->post('menu_imagen'),
+                    );
+
+                    $this->Menu_model->update_menu($menu_id,$params);            
+                    redirect('menu/index');
+                }
+                else
+                {
+                                    $this->load->model('Estado_pagina_model');
+                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+
+                                    $this->load->model('Menu_principal_model');
+                                    $data['all_menu_principal'] = $this->Menu_principal_model->get_all_menu_principal();
+
+                    $data['_view'] = 'menu/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Estado_pagina_model');
-				$data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-				$this->load->model('Menu_principal_model');
-				$data['all_menu_principal'] = $this->Menu_principal_model->get_all_menu_principal();
-
-                $data['_view'] = 'menu/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The menu you are trying to edit does not exist.');
         }
-        else
-            show_error('The menu you are trying to edit does not exist.');
     } 
 
     /*
@@ -117,16 +138,18 @@ class Menu extends CI_Controller{
      */
     function remove($menu_id)
     {
-        $menu = $this->Menu_model->get_menu($menu_id);
+        if($this->acceso(155)){
+            $menu = $this->Menu_model->get_menu($menu_id);
 
-        // check if the menu exists before trying to delete it
-        if(isset($menu['menu_id']))
-        {
-            $this->Menu_model->delete_menu($menu_id);
-            redirect('menu/index');
+            // check if the menu exists before trying to delete it
+            if(isset($menu['menu_id']))
+            {
+                $this->Menu_model->delete_menu($menu_id);
+                redirect('menu/index');
+            }
+            else
+                show_error('The menu you are trying to delete does not exist.');
         }
-        else
-            show_error('The menu you are trying to delete does not exist.');
     }
     
 }
