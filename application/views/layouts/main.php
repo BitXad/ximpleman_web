@@ -227,7 +227,7 @@
                         if($rolusuario[125-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('presentacion');?>"><i class="fa fa-connectdevelop"></i> <span>Presentación</span></a>
+                            <a href="<?php echo site_url('parametro');?>"><i class="fa fa-connectdevelop"></i> <span>Parametros</span></a>
                         </li>
                         <?php
                         }
