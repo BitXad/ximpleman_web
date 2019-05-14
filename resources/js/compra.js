@@ -266,14 +266,14 @@ function cambiarproveedores(compra_id,proveedor_id) {
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+'proveedor/cambiarproveedor/';
     var limite = 500;
-    var nit = document.getElementById('proveedor_nit'+proveedor_id).value;
-                var razon_social = document.getElementById('proveedor_razon'+proveedor_id).value;
+    //var nit = document.getElementById('proveedor_nit'+proveedor_id).value;
+               // var razon_social = document.getElementById('proveedor_razon'+proveedor_id).value;
                 //var codigo_control = document.getElementById('proveedor_codigo'+proveedor_id).value;
                 //var autorzacion = document.getElementById('proveedor_autorizacion'+proveedor_id).value;
                
     $.ajax({url: controlador,
            type:"POST",
-           data:{compra_id:compra_id,proveedor_id:proveedor_id,nit:nit,razon_social:razon_social},
+           data:{compra_id:compra_id,proveedor_id:proveedor_id},
            success:function(respuesta){ 
                var registros =  JSON.parse(respuesta);
               if (registros != null){
@@ -297,7 +297,7 @@ function cambiarproveedores(compra_id,proveedor_id) {
                      html = "<a  href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-xs btn-success' ><i class='fa fa-money'></i>Finalizar compra</a>";
                     $("#provedorboton").html(html);
 
-                    html2 = registros[p]['proveedor_autorizacion'];
+                    html2 += registros[p]['proveedor_autorizacion'];
                     var html3 = registros[p]['proveedor_nit'];
                     var html4 = registros[p]['proveedor_razon'];
                     $("#autori").val(html2); 
@@ -573,11 +573,13 @@ function mostrar_radio(){
      if (opcionradio == 2) {
 
        document.getElementById('radio').style.display = 'none';
+       document.getElementById('credin').style.display = 'block';
        document.getElementById('compra_caja0').checked = true;
        
     }
      else{
-        document.getElementById('radio').style.display = 'block';}
+        document.getElementById('radio').style.display = 'block';
+        document.getElementById('credin').style.display = 'none';}
 }
 
 

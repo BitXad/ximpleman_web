@@ -869,7 +869,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
                                     <td>
                                         <div class="col-md-3">
-                                            <center>
+                                           
                                                 
                                             <?php //$imagen = base_url('resources/img/').$h['huesped_foto'];
 //                                                if (is_file($imagen)){ ?>
@@ -881,7 +881,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                                     <!--<img src="<?php echo base_url('resources/img/foto0.jpg'); ?>"  class="img-responsive"  title="<?php echo $imagen;?>">-->
                                             <?php //} ?>
                                             
-                                            </center>    
+                                             
                                         </div>
                                         <div class="col-md-9">
 
@@ -956,8 +956,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </center>
                     </div> 
                             <div class="container">
-                                <center>
-                                  
+                                
+                             
                     <div class="col-md-3">
                         <label for="forma_id" class="control-label">Forma Pago</label>
                         <div class="form-group">
@@ -990,7 +990,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             </select>
                         </div>
                     </div>  
-                                </center>
+                            
                                 
 
 <!--      <div class="input-group"> <span class="input-group-addon">Buscar</span>
@@ -1016,7 +1016,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     //$total_consumo = 0;
     
 ?>              
-        <div class="col-md-8" id='radio' style='display:block;'>
+        <div class="col-md-12" id='radio' style='display:block;'>
                     <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="compra_caja0"
      name="compra_caja" value="" <?php if ($compra[0]['compra_caja']=='' || $compra[0]['compra_caja']==0 || $compra[0]['compra_caja']==null){ ?> checked <?php } ?> >
@@ -1087,8 +1087,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </tr>               
             </table>
               </div>
-
-                <table class="oscaer4 hidden" >
+               <div id="credin" style="display: none;">
+                <table class="oscaer4" >
                    <tr>  
                          <td>
                             <div class="col-md-4">
@@ -1100,13 +1100,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             
                         <div class="col-md-4">
                         <div class="form-group">
-                        <label for="credito_numpagos" class="control-label"></label>
-                            <input type="hidden" id="credito_numpagos" class="form-control" name="credito_numpagos" value="1" >
+                        <label for="credito_numpagos" class="control-label">N de pagos</label>
+                            <input type="number" step="1" min="1" id="credito_numpagos" class="form-control" name="credito_numpagos" value="1" >
                             <input type="hidden" id="credito_monto"  name="credito_monto" value="<?php echo $totalfinal; ?>" >
                             <input type="hidden" name="compra_id" value="<?php echo $compra_id; ?>">
                         </div></div>
                         
-                        <div class="col-md-4">
+                        <div class="col-md-4" hidden>
                         <div class="form-group">    
                         <label for="credito_tipointeres" class="control-label">Tipo Interes</label>
                             <select name="credito_tipointeres" class="form-control">
@@ -1117,7 +1117,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div></div>
                         </td>
                </tr>
-           </table>
+           </table></div>
              <div class="col-md-4">
                         <label for="documento_respaldo_id" class="control-label">Documento Respaldo</label>
                         <div class="form-group">
@@ -1146,7 +1146,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                            <input type="text" name="compra_glosa" value="<?php echo  $compra[0]['compra_glosa']; ?>" class="form-control" id="compra_glosa" />
                         </div>
                     </div> 
-                    <div id="facturation" <?php if($compra[0]['documento_respaldo_id']==1) { ?> style="display: block;" <?php }else{?>style="display: none;" <?php } ?> >
+                    <div id="facturation" <?php if($compra[0]['documento_respaldo_id']==1) { ?> style="display: block;" <?php }else{ ?>style="display: none;" <?php } ?> >
                     <div class="col-md-4" >
                         <label for="compra_codcontrol" class="control-label">Codigo Control</label>
                         <div class="form-group">
@@ -1165,14 +1165,14 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                            <input type="date" name="factura_fecha" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="factura_fecha" />
                         </div>
                     </div>
-                    <div class="col-md-4" hidden>
+                    <div class="col-md-4" >
                         <label for="factura_nit" class="control-label">nit</label>
                         <div class="form-group">
                            <input type="text" name="factura_nit" value="<?php echo  $compra[0]['proveedor_nit']; ?>" class="form-control" id="factura_nit" />
                         </div>
                     </div>
                     
-                    <div class="col-md-4" hidden>
+                    <div class="col-md-4" >
                         <label for="factura_hora" class="control-label">hora</label>
                         <div class="form-group">
                            <input type="text" name="factura_hora" value="<?php echo date("H:i:s"); ?>" class="form-control" id="factura_hora" />
@@ -1198,8 +1198,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             </button>
     <!--</form>--></div>
         </div>
-        </div>
+        
  </form>
+</div>
 </div>
 </div>
 </div>

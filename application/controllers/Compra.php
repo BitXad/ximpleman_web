@@ -461,17 +461,10 @@ class Compra extends CI_Controller{
                $data['bandera'] = $bandera;
                /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
 
-               $this->load->model('Estado_model');
-               $data['all_estado'] = $this->Estado_model->get_all_estado();
-
+               
                $this->load->model('Tipo_transaccion_model');
                $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
 
-               $this->load->model('Usuario_model');
-               $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-               $this->load->model('Moneda_model');
-               $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
 
                $this->load->model('Proveedor_model');
                $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
@@ -494,9 +487,7 @@ class Compra extends CI_Controller{
                $this->load->model('Categoria_producto_model');
                $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
 
-               $this->load->model('Presentacion_model');
-               $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-
+              
 
                $data['_view'] = 'compra/edit';
                $this->load->view('layouts/main',$data);
@@ -513,17 +504,11 @@ class Compra extends CI_Controller{
                 $data['bandera'] = $bandera;
                 /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
 
-                $this->load->model('Estado_model');
-                $data['all_estado'] = $this->Estado_model->get_all_estado();
+                
 
                 $this->load->model('Tipo_transaccion_model');
                 $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
 
-                $this->load->model('Usuario_model');
-                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-                $this->load->model('Moneda_model');
-                $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
 
                 $this->load->model('Proveedor_model');
                 $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
@@ -546,10 +531,7 @@ class Compra extends CI_Controller{
                 $this->load->model('Categoria_producto_model');
                 $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
 
-                $this->load->model('Presentacion_model');
-                $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-
-
+              
                 $data['_view'] = 'compra/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -638,7 +620,7 @@ class Compra extends CI_Controller{
  $diasgra = $num[0]['parametro_diasgracia'];
  $diapago = $num[0]['parametro_diapago'];
  $periodo = $num[0]['parametro_periododias'];
- $numcuota = $num[0]['parametro_numcuotas'];
+ $numcuota =$this->input->post('credito_numpagos');
  $interes = $num[0]['parametro_interes'];
  $nroDia = date('N');
  $proxima_semana = time() + (7 * 24 * 60 * 60); 
@@ -741,7 +723,7 @@ class Compra extends CI_Controller{
     $fecha = $this->Compra_model->normalize_date($fechalimite);
     $estado_id = 8;
     $compra_id = $this->input->post('compra_id');
-    $credito_monto =  $this->input->post('compra_totalfinal');
+    $credito_montoparcial =  $this->input->post('compra_totalfinal');
     $credito_cuotainicial = $this->input->post('credito_cuotainicial');
     $credito_interesproc = 0;
     $credito_interesmonto = 0;
@@ -750,8 +732,8 @@ class Compra extends CI_Controller{
     $credito_fecha = "'".date('Y-m-d')."'";               
     $credito_tipo = $this->input->post('credito_tipo');
     $credito_hora = "'".date('H:i:s')."'";      
-    $saldo = $credito_monto - $credito_cuotainicial;
-    $cuota_total = $saldo;
+    $credito_monto = $credito_montoparcial - $credito_cuotainicial;
+    $cuota_total = $credito_monto;
 
     $credito_fechalimite = "'".date('Y-m-d', $proximo_martes)."'";
     

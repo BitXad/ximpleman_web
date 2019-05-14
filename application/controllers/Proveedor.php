@@ -211,9 +211,7 @@ class Proveedor extends CI_Controller{
    
         $proveedor_id = $this->input->post('proveedor_id');
         $compra_id = $this->input->post('compra_id');
-        $proveedor_nit = $this->input->post('nit');
-       // $proveedor_codigo = $this->input->post('codigo_control');     
-        $proveedor_razon = $this->input->post('razon_social');
+        
         
         
         $this->load->model('Compra_model');
@@ -223,9 +221,7 @@ class Proveedor extends CI_Controller{
        
         $datos =  $this->Compra_model->get_compra_proveedor($compra_id);
     
-            $sql= "UPDATE proveedor SET proveedor.proveedor_nit='".$proveedor_nit."', proveedor.proveedor_razon='".$proveedor_razon."' WHERE proveedor.proveedor_id=".$proveedor_id." ";
-            $this->db->query($sql); 
-        
+            
 
         if(isset($datos)){
                         echo json_encode($datos);
