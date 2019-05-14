@@ -30,14 +30,14 @@
 					</div>
 				</div>
 			</div>
-			<div class="box-footer">
-            	<button type="submit" class="btn btn-success">
-		    <i class="fa fa-check"></i> Guardar
-		</button>
-                <a href="<?php echo site_url('categoria_cliente'); ?>" class="btn btn-danger">
-                       <i class="fa fa-times"></i> Cancelar</a>
-	        </div>				
-			<?php echo form_close(); ?>
-		</div>
+                <div class="box-footer">
+            <button type="submit" class="btn btn-success">
+                <i class="fa fa-check"></i> Guardar
+            </button>
+            <a href="<?php echo site_url('categoria_cliente'); ?>" class="btn btn-danger">
+                   <i class="fa fa-times"></i> Cancelar</a>
+            </div>				
+                    <?php echo form_close(); ?>
+            </div>
     </div>
 </div>
