@@ -5,7 +5,7 @@
  */
  
 class Categoria_ingreso extends CI_Controller{
-    private $session_data = "";private $session_data = "";
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
