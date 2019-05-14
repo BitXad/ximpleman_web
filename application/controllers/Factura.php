@@ -46,6 +46,7 @@ class Factura extends CI_Controller{
         $config['total_rows'] = $this->Factura_model->get_all_factura_count();
         $this->pagination->initialize($config);
 
+        $data['page_title'] = "Libro de Ventas";
         $data['factura'] = $this->Factura_model->get_all_factura($params);
         
         $data['_view'] = 'factura/index';
