@@ -49,18 +49,7 @@ class Venta extends CI_Controller{
 
         if($this->acceso(12)){
         //**************** inicio contenido ***************
-		
-        
-        
-//        $params['limit'] = RECORDS_PER_PAGE;
-//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-//        
-//        $config = $this->config->item('pagination');
-//        $config['base_url'] = site_url('venta/index?');
-//        $config['total_rows'] = $this->Venta_model->get_all_venta_count();
-//        $this->pagination->initialize($config);
 
-       
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
         $data['page_title'] = "Ventas del dia";
         $data['parametro'] = $this->Parametro_model->get_parametros();

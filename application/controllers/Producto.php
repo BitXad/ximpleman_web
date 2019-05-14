@@ -472,6 +472,7 @@ class Producto extends CI_Controller{
         $descuento = $this->input->post('descuento'); 
         $producto_costo = $this->input->post('producto_costo');
         $producto_precio = $this->input->post('producto_precio');
+        $factor = $this->input->post('unidad_compra');
         
      $this->load->model('Compra_model');
       $this->load->library('form_validation');
@@ -551,6 +552,10 @@ class Producto extends CI_Controller{
                 'producto_foto' => $foto,
                 'producto_comision' => $this->input->post('producto_comision'),
                 'producto_tipocambio' => $this->input->post('producto_tipocambio'),
+                'producto_factor' => $this->input->post('producto_factor'),
+                'producto_unidadfactor' => $this->input->post('producto_unidadfactor'),
+                'producto_codigofactor' => $this->input->post('producto_codigofactor'),
+                'producto_preciofactor' => $this->input->post('producto_preciofactor'),
             );
             $producto_id = $this->Producto_model->add_producto($params);
 
@@ -576,7 +581,7 @@ class Producto extends CI_Controller{
                 producto_codigo,
                 producto_unidad,
                 ".$producto_costo.",
-                ".$cantidad.",
+                ".$cantidad." * ".$factor.",
                 ".$producto_precio.",
                 ".$descuento.",
                 ".$cantidad." * ".$producto_costo.",
