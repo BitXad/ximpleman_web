@@ -32,6 +32,7 @@ class Forma_pago extends CI_Controller{
     function index()
     {
         if($this->acceso(123)){
+            $data['page_title'] = "Forma Pago";
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -53,6 +54,7 @@ class Forma_pago extends CI_Controller{
     function add()
     {
         if($this->acceso(123)){
+            $data['page_title'] = "Forma Pago";
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('forma_nombre','Forma Nombre','required');
@@ -80,6 +82,7 @@ class Forma_pago extends CI_Controller{
     function edit($forma_id)
     {
         if($this->acceso(123)){
+            $data['page_title'] = "Forma Pago";
         // check if the forma_pago exists before trying to edit it
         $data['forma_pago'] = $this->Forma_pago_model->get_forma_pago($forma_id);
         

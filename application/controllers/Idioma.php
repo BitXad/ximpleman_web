@@ -32,6 +32,7 @@ class Idioma extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Idioma";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Idioma extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Idioma";
             $this->load->library('form_validation');
 
                     $this->form_validation->set_rules('idioma_descripcion','Idioma Descripcion','required');
@@ -82,6 +84,7 @@ class Idioma extends CI_Controller{
     function edit($idioma_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Idioma";
             // check if the idioma exists before trying to edit it
             $data['idioma'] = $this->Idioma_model->get_idioma($idioma_id);
 

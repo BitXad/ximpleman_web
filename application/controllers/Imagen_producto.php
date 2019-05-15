@@ -32,6 +32,7 @@ class Imagen_producto extends CI_Controller{
     function index()
     {
         if($this->acceso(109)){
+            $data['page_title'] = "Imagen Producto";
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -53,6 +54,7 @@ class Imagen_producto extends CI_Controller{
     function add($producto_id)
     {
         if($this->acceso(109)){
+            $data['page_title'] = "Imagen Producto";
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('imagenprod_titulo','Imagen producto Titulo','required');
@@ -141,6 +143,7 @@ class Imagen_producto extends CI_Controller{
     function edit($producto_id, $imagenprod_id)
     {
         if($this->acceso(109)){
+            $data['page_title'] = "Imagen Producto";
         // check if the imagen_producto exists before trying to edit it
         $data['imagen_producto'] = $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
         
@@ -265,6 +268,7 @@ class Imagen_producto extends CI_Controller{
     function catalogoprod($producto_id)
     {
         if($this->acceso(109)){
+            $data['page_title'] = "Imagenen Producto";
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -290,6 +294,7 @@ class Imagen_producto extends CI_Controller{
     function galeriaproducto($producto_id)
     {
         if($this->acceso(109)){
+            $data['page_title'] = "Galeria Producto";
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         

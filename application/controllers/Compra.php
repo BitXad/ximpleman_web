@@ -37,6 +37,7 @@ class Compra extends CI_Controller{
     public function boucher($compra_id){
 
      if($this->acceso(1)){
+         $data['page_title'] = "Compra";
          $usuario_id = $this->session_data['usuario_id'];
          $this->load->model('Empresa_model');
          $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -53,6 +54,7 @@ class Compra extends CI_Controller{
     function index()
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
             $usuario_id = $this->session_data['usuario_id'];
@@ -79,6 +81,7 @@ class Compra extends CI_Controller{
     function reportes()
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -105,6 +108,7 @@ class Compra extends CI_Controller{
     function repoProveedor()
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -133,6 +137,7 @@ class Compra extends CI_Controller{
     function repoProducto()
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -246,6 +251,7 @@ class Compra extends CI_Controller{
     function anula()
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             $bandera = 1;
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -302,6 +308,7 @@ class Compra extends CI_Controller{
     function add()
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             if(isset($_POST) && count($_POST) > 0)     
             {   
@@ -438,11 +445,9 @@ class Compra extends CI_Controller{
     function edit($compra_id,$bandera)
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
-             $data = array(
-                'page_title' => 'Admin >> Mi Cuenta'
-            );
-                    // check if the compra exists before trying to edit it
+            // check if the compra exists before trying to edit it
              $data['compra'] = $this->Compra_model->get_compra($compra_id);
              $compra = $this->Compra_model->get_proveedor_id($compra_id);
              $proveedor_id = $compra[0]['proveedor_id'];
@@ -1218,6 +1223,7 @@ function quitar($detallecomp_id)
     function edito($compra_id)
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
             // check if the compra exists before trying to edit it
             $data['compra'] = $this->Compra_model->get_compra($compra_id);
 
@@ -1284,6 +1290,7 @@ function quitar($detallecomp_id)
     function editar()
     {
         if($this->acceso(1)){
+            $data['page_title'] = "Compra";
            $data['compra'] = $this->Compra_model->get_all_compra($params);
            $compra_id = $this->input->post('compra_id');
 
@@ -1361,10 +1368,8 @@ function remove($compra_id)
 
 function pdf($compra_id){
     if($this->acceso(1)){
+        $data['page_title'] = "Compra";
         $usuario_id = $this->session_data['usuario_id'];
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
         $this->load->model('Empresa_model');
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['compra'] = $this->Compra_model->join_compras($compra_id);

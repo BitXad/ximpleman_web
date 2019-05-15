@@ -32,6 +32,7 @@ class Galeria extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Galeria";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Galeria extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Galeria";
             $this->load->library('form_validation');
 
                     $this->form_validation->set_rules('galeria_titulo','Galeria Titulo','required');
@@ -86,6 +88,7 @@ class Galeria extends CI_Controller{
     function edit($galeria_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Galeria";
             // check if the galeria exists before trying to edit it
             $data['galeria'] = $this->Galeria_model->get_galeria($galeria_id);
 

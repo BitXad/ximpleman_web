@@ -32,6 +32,7 @@ class Imagen extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Imagen";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Imagen extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Imagen";
             $this->load->library('form_validation');
 
                     $this->form_validation->set_rules('imagen_titulo','Imagen Titulo','required');
@@ -90,6 +92,7 @@ class Imagen extends CI_Controller{
     function edit($imagen_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Imagen";
             // check if the imagen exists before trying to edit it
             $data['imagen'] = $this->Imagen_model->get_imagen($imagen_id);
 

@@ -90,6 +90,7 @@ class Detalle_serv extends CI_Controller{
     function detalle_nuevo($servicio_id)
     {
         if($this->acceso(69)){
+            $data['page_title'] = "Detalle de Servicio";
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -379,6 +380,7 @@ class Detalle_serv extends CI_Controller{
     function buscardetalleserv($servicio_id)
     {
         if($this->acceso(69)){
+            $data['page_title'] = "Detalle de Servicio";
         // check if the servicio exists before trying to edit it
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
@@ -412,6 +414,7 @@ class Detalle_serv extends CI_Controller{
     function kardex_detalle($servicio_id, $codigo)
     {
         if($this->acceso(74)){
+            $data['page_title'] = "Kardex Detalle de Servicio";
             $data['codigo'] = $codigo;
             //$rescodigo = str_replace("%20", " ", $codigo);
             $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
@@ -508,6 +511,7 @@ class Detalle_serv extends CI_Controller{
     function modificardetalle($servicio_id, $detalleserv_id)
     {
         if($this->acceso(86)){
+            $data['page_title'] = "Detalle de Servicio";
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -827,6 +831,7 @@ class Detalle_serv extends CI_Controller{
     function modificarmidetalle($servicio_id, $detalleserv_id)
     {
         if($this->acceso(86)){
+            $data['page_title'] = "Detalle de Servicio";
         $this->load->model('Servicio_model');
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
         
@@ -1149,7 +1154,6 @@ class Detalle_serv extends CI_Controller{
     function registrartec($servicio_id, $detalleserv_id)
     {
         if($this->acceso(80)){
-                
             $this->load->library('form_validation');
 
 	    $this->form_validation->set_rules('detalleserv_diagnostico','Detalle Servicio Diagnostico','required');
@@ -1246,7 +1250,7 @@ class Detalle_serv extends CI_Controller{
      */
     function registrarcobroTotal($servicio_id)
     {
-        if($this->acceso(84)){ 
+        if($this->acceso(84)){
             $usuario_id = $this->session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
             $fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
@@ -1369,6 +1373,7 @@ class Detalle_serv extends CI_Controller{
     function buscarporestado()
     {
         if($this->acceso(69)){
+            $data['page_title'] = "Detalle de Servicio";
             $estado_id = $this->input->post('estado_id');
             if(isset($estado_id))
             {
@@ -1398,6 +1403,7 @@ class Detalle_serv extends CI_Controller{
     function buscarportrabajo()
     {
         if($this->acceso(69)){
+            $data['page_title'] = "Detalle de Servicio";
         $cattrab_id = $this->input->post('cattrab_id');
         if(isset($cattrab_id))
         {
@@ -1611,6 +1617,7 @@ class Detalle_serv extends CI_Controller{
     function buscarporcatserv()
     {
         if($this->acceso(69)){
+            $data['page_title'] = "Detalle de Servicio";
         $catserv_id = $this->input->post('catserv_id');
         if(isset($catserv_id))
         {
@@ -1638,6 +1645,7 @@ class Detalle_serv extends CI_Controller{
     function buscarporsubcatserv()
     {
         if($this->acceso(69)){
+            $data['page_title'] = "Detalle de Servicio";
         $parametro = $this->input->post('buscarsubcat');
         if(isset($parametro))
         {
@@ -1666,6 +1674,7 @@ class Detalle_serv extends CI_Controller{
     function buscarcliente()
     {
         if($this->acceso(75)){
+            $data['page_title'] = "Detalle de Servicio";
         $parametro = $this->input->post('buscarcliente');
         if(isset($parametro))
         {
@@ -1694,6 +1703,7 @@ class Detalle_serv extends CI_Controller{
     function kardexserviciocliente($cliente_id)
     {
         if($this->acceso(75)){
+            $data['page_title'] = "Kardex Cliente";
         //$parametro = $this->input->post('buscarcliente');
         if(isset($cliente_id))
         {
@@ -1746,7 +1756,7 @@ class Detalle_serv extends CI_Controller{
     function compdetalle_pago($detalleserv_id)
     {
         if($this->acceso(69)){
-
+            $data['page_title'] = "Comprobante de Servicio";
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             
             $this->load->model('Servicio_model');
@@ -1773,7 +1783,7 @@ class Detalle_serv extends CI_Controller{
     function compdetalle_pago_boucher($detalleserv_id)
     {
         if($this->acceso(69)){
-
+            $data['page_title'] = "Comprobante de Servicio";
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             
             $this->load->model('Servicio_model');
@@ -1820,6 +1830,7 @@ class Detalle_serv extends CI_Controller{
     function buscardetalleservk()
     {
         if($this->acceso(74)){
+            $data['page_title'] = "Detalle de Servicio";
 	    if(isset($_POST) && count($_POST) > 0)     
             {
                 $codigo = $this->input->post('codigo');
@@ -1841,6 +1852,7 @@ class Detalle_serv extends CI_Controller{
     function kardex_detallek($codigo)
     {
         if($this->acceso(69)){
+            $data['page_title'] = "Detalle de Servicio";
             $data['codigo'] = $codigo;
             //$rescodigo = str_replace("%20", " ", $codigo);
             $data['detalle_serv'] = $this->Detalle_serv_model->buscar_detalle_serv_codigo($codigo);
@@ -1882,7 +1894,6 @@ class Detalle_serv extends CI_Controller{
     function nuevodetallek()
     {
         if($this->acceso(69)){
-                
             $this->load->model('Servicio_model');
             $this->load->library('form_validation');
 	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');

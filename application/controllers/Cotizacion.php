@@ -33,6 +33,7 @@ class Cotizacion extends CI_Controller{
     function index()
     {
         if($this->acceso(36)){
+            $data['page_title'] = "Cotización";
             $data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
 
             $data['_view'] = 'cotizacion/index';
@@ -54,6 +55,7 @@ class Cotizacion extends CI_Controller{
     function add($cotizacion_id)
     {
         if($this->acceso(36)){
+            $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
             $data['cotizacion_id'] = $cotizacion_id; 
             $this->load->model('Detalle_cotizacion_model');
@@ -70,6 +72,7 @@ class Cotizacion extends CI_Controller{
     function cotizarecibo($cotizacion_id)
     {
         if($this->acceso(36)){
+            $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
             $data['cotizacion_id'] = $cotizacion_id;
             $this->load->model('Empresa_model');
@@ -153,9 +156,7 @@ class Cotizacion extends CI_Controller{
 
     function updateDetallecot()
     {
-      
-        
-         if ($this->input->is_ajax_request()) {
+        if ($this->input->is_ajax_request()) {
         $detallecot_id = $this->input->post('detallecot_id');
         
         $caracteristica = $this->input->post('caracteristica');
@@ -214,6 +215,7 @@ class Cotizacion extends CI_Controller{
     function edit($cotizacion_id)
     {
         if($this->acceso(38)){
+            $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
             $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
 
@@ -254,6 +256,7 @@ class Cotizacion extends CI_Controller{
     function finalizar($cotizacion_id)
     {   
         if($this->acceso(36)){
+            $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
             // check if the cotizacion exists before trying to edit it
             $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);

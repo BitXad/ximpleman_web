@@ -32,6 +32,7 @@ class Dosificacion extends CI_Controller{
     function index()
     {
         if($this->acceso(149)){
+            $data['page_title'] = "Dosificación";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -56,6 +57,7 @@ class Dosificacion extends CI_Controller{
     function add()
     {
         if($this->acceso(150)){
+            $data['page_title'] = "Dosificación";
         if(isset($_POST) && count($_POST) > 0)     
         {   
             //estado activo al crear
@@ -98,6 +100,7 @@ class Dosificacion extends CI_Controller{
     function edit($dosificacion_id)
     {
         if($this->acceso(151)){
+            $data['page_title'] = "Dosificación";
         // check if the dosificacion exists before trying to edit it
         $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion($dosificacion_id);
         
