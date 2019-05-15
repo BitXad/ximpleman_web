@@ -75,12 +75,7 @@ class Venta extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
         
-//        $params['limit'] = RECORDS_PER_PAGE; 
-//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        //$data['cliente'] = $this->Venta_model->get_all_cliente();
-        //$data['inventario'] = $this->Inventario_model->get_inventario_bloque();
-        //$data['presentacion'] = $this->Inventario_model->get_presentacion();  
-        //$data['detalle_venta'] = $this->Venta_model->get_detalle_aux($usuario_id);
+
 
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
@@ -112,12 +107,6 @@ class Venta extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
         
-//        $params['limit'] = RECORDS_PER_PAGE; 
-//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        //$data['cliente'] = $this->Venta_model->get_all_cliente();
-        //$data['inventario'] = $this->Inventario_model->get_inventario_bloque();
-        //$data['presentacion'] = $this->Inventario_model->get_presentacion();  
-        //$data['detalle_venta'] = $this->Venta_model->get_detalle_aux($usuario_id);
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
@@ -223,7 +212,7 @@ class Venta extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         
         $porcentaje = 0;
-        $sql = $this->input->post('sql'); // recuperamos la consulta sql enviada mediante JS
+        $sql = $this->input->post('sql'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
         $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
         $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
         $cuota_inicial = $this->input->post('cuota_inicial'); // recuperamos la consulta sql enviada mediante JS
@@ -272,9 +261,9 @@ class Venta extends CI_Controller{
           detalleven_cantidad,
           detalleven_unidad,
           detalleven_costo,
-          detalleven_precio,
+          detalleven_precio - (detalleven_subtotal/(".$venta_total."+".$venta_descuento.")*".$venta_descuento."/detalleven_cantidad),
           detalleven_subtotal,
-          detalleven_subtotal * ".$porcentaje.",
+          (detalleven_subtotal/(".$venta_total."+".$venta_descuento.")*".$venta_descuento."),
           detalleven_total - (detalleven_subtotal * ".$porcentaje."),
           detalleven_caracteristicas,
           detalleven_preferencia,
@@ -427,13 +416,13 @@ class Venta extends CI_Controller{
                 $factura_fechaventa    = $fecha_venta;
                 $factura_fecha         = "date(now())";
                 $factura_hora          = "time(now())";
-                $factura_subtotal = $venta_total;
+                $factura_subtotal = $venta_total+$venta_descuento;
                 $factura_nit           = $nit;
                 $factura_razonsocial   = $razon;
                 $factura_ice           = 0;
                 $factura_exento        = 0;
-                $factura_descuento     = 0;
-                $factura_total         = $venta_total - $factura_descuento;
+                $factura_descuento     = $venta_descuento;
+                $factura_total         = $venta_total;
                 $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
                 $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
                 $factura_llave         = $dosificacion[0]['dosificacion_llave'];
@@ -479,19 +468,6 @@ class Venta extends CI_Controller{
  */
     function buscarcodigo()  
     {   
-//        
-//        if ($this->session->userdata('logged_in')) {
-//            $this->session_data = $this->session->userdata('logged_in');
-//            if($this->session_data['tipousuario_id']>=1 and $this->session_data['tipousuario_id']<=4) {
-//                $data = array(
-//                    'page_title' => 'Admin >> Mi Cuenta'
-//                );
-//        //**************** inicio contenido ***************        
-//        
-//        $usuario_id = $this->session_data['usuario_id'];
-        
-
-//        if ($this->input->is_ajax_request()) {       
 
             $cantidad = 1;        
             $codigo = $this->input->post('codigo');
@@ -505,64 +481,7 @@ class Venta extends CI_Controller{
                 $producto = $this->Inventario_model->get_inventario_codigo_factor($codigo);                
                 echo json_encode($producto);
                 
-            }
-            
-            
-            
-//        }  
-//        else {$arreglo =  '[{"existencia":"-1"}]'; echo  $arreglo; }//no existe el producto
-        
-            //
-//            if (sizeof($producto)>0){
-//                //echo $producto[0]['producto_nombre']." ".$producto[0]['existencia'];
-//                $producto_id = $producto[0]['producto_id'];
-//                $existencia = $producto[0]['existencia'];
-//                
-//                $sql =  "select if(sum(detalleven_cantidad)>0,sum(detalleven_cantidad),0) as cantidad from detalle_venta_aux "
-//                               . " where producto_id =".$producto_id;
-//
-//                $resultado = $this->Venta_model->consultar($sql);
-//                
-//                $cantidad = $resultado[0]['cantidad'] + 1;              
-//                
-//                $result = 0;
-//                
-//                if($cantidad<=$existencia){        
-//                
-//                    if (!$this->Venta_model->existe($producto_id,$usuario_id)){ //Si el producto no existe en el detalle
-//
-//                        $resultado =  $this->Venta_model->agregarxcodigo($usuario_id,$producto_id,$cantidad);
-//                        //redirect('venta/ventas');
-//                        $arreglo = '[{"resultado":"1"}]';
-//                        echo $arreglo;//el producto se ingreso correctamente
-//
-//                    }
-//                    else{
-//
-//                        $resultado = $this->Venta_model->incrementar($usuario_id,$producto_id,$cantidad);
-//                        //redirect('venta/ventas');
-//                        echo $arreglo; //el producto se ingreso correctamente
-//
-//                    }
-//                
-//                }
-//                else {  $arreglo =  '[{"resultado":"0"}]'; echo $arreglo;}//la cantidad exece el invetario
-//                
-//                
-//            }
-//            else {$arreglo =  '[{"resultado":"-1"}]'; echo  $arreglo; }//no existe el producto
-//            
-//        }
-//        else
-//        {  $arreglo =  '[{"resultado":"-1"}]';               
-//           echo $arreglo; //no existe el producto
-//        }  
-                       
-        		
-        //**************** fin contenido ***************
-//            }
-//            else{ redirect('alerta'); }
-//        } else { redirect('', 'refresh'); }
+            }            
 
     }
 
@@ -1908,7 +1827,7 @@ function anular_venta($venta_id){
 
 
                //**************** fin contenido ***************
-                                       }
+        }
                                                    
         
     }    
