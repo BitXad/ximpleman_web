@@ -263,8 +263,8 @@ class Compra_model extends CI_Model
         $compra_total = 0;
         $compra_glosa = "''";
         
-        $sql = "insert into compra(usuario_id,estado_id,forma_id,tipotrans_id,proveedor_id,moneda_id,compra_fecha,compra_hora,compra_subtotal,compra_descuento,compra_total,compra_glosa,compra_placamovil) ".
-                "value(".$usuario_id.",".$estado_id.",".$forma_id.",".$tipotrans_id.",".$proveedor_id.",".$moneda_id.",".$compra_fecha.",".$compra_hora.",".$compra_subtotal.",".$compra_descuento.",".$compra_total.",".$compra_glosa.",".$movil.")";
+        $sql = "insert into compra(usuario_id,estado_id,forma_id,tipotrans_id,proveedor_id,moneda_id,compra_fecha,compra_hora,compra_subtotal,compra_descuento,compra_total,compra_glosa,compra_placamovil,documento_respaldo_id) ".
+                "value(".$usuario_id.",".$estado_id.",".$forma_id.",".$tipotrans_id.",".$proveedor_id.",".$moneda_id.",".$compra_fecha.",".$compra_hora.",".$compra_subtotal.",".$compra_descuento.",".$compra_total.",".$compra_glosa.",".$movil.",".$proveedor_id.")";
         $compra = $this->db->query($sql);
         $compra_id = $this->db->insert_id();
         return $compra_id;        
@@ -330,7 +330,7 @@ class Compra_model extends CI_Model
 
     function get_compra($compra_id)
     {
-        $sql = "select p.*, 'NO DEFINIDO' as proveedor_nombre,'NO DEFINIDO' as proveedor_codigo, e.estado_descripcion from compra p, estado e ".
+        $sql = "select p.*, 'NO DEFINIDO' as proveedor_nombre,'NO DEFINIDO' as proveedor_codigo, '0' as proveedor_autorizacion, '0' as proveedor_nit, '0' as proveedor_razon, e.estado_descripcion from compra p, estado e ".
                "where compra_id = ".$compra_id." and p.estado_id = e.estado_id";
         $result = $this->db->query($sql)->result_array();
         return $result;        
@@ -338,7 +338,7 @@ class Compra_model extends CI_Model
 
     function get_compra_sin_nombre($usuario_id)
     {
-         $sql = "SELECT p.*, 'NO DEFINIDO' as proveedor_nombre,'NO DEFINIDO' as proveedor_codigo, e.estado_descripcion from compra p, estado e  where p.usuario_id = ".$usuario_id." and p.estado_id = e.estado_id and p.proveedor_id=0";
+         $sql = "SELECT p.*, 'NO DEFINIDO' as proveedor_nombre,'NO DEFINIDO' as proveedor_codigo, '0' as proveedor_autorizacion, '0' as proveedor_nit, '0' as proveedor_razon, e.estado_descripcion from compra p, estado e  where p.usuario_id = ".$usuario_id." and p.estado_id = e.estado_id and p.proveedor_id=0";
         $result = $this->db->query($sql)->result_array();
         return $result;          
     }
