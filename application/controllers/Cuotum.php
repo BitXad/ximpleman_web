@@ -390,7 +390,7 @@ class Cuotum extends CI_Controller{
         if($cuota_capital==0){
          $params = array(
                     
-                   // 'usuario_id' => $this->input->post('usuario_id'),
+                    'usuario_id' => $usuario_id,
                     'estado_id' => $this->input->post('estado_id'),
                    // 'cuota_numcuota' => $this->input->post('cuota_numcuota'),
                     //'cuota_capital' => $this->input->post('cuota_capital'),
@@ -415,7 +415,7 @@ class Cuotum extends CI_Controller{
              else{
                  $params = array(
                     
-                   // 'usuario_id' => $this->input->post('usuario_id'),
+                   'usuario_id' => $usuario_id,
                     'estado_id' => $this->input->post('estado_id'),
                    // 'cuota_numcuota' => $this->input->post('cuota_numcuota'),
                     //'cuota_capital' => $this->input->post('cuota_capital'),

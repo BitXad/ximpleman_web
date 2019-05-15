@@ -438,7 +438,7 @@ private function acceso($id_rol){
                     $data1['user'] = $this->user_model->get_usuario( $usuario_id );
 
 
-                    $data = array(
+                   /*$data = array(
                         'usuario_login' => $session_data['usuario_login'],
                         'usuario_id' => $session_data['usuario_id'],
                         'usuario_nombre' => $session_data['usuario_nombre'],
@@ -448,8 +448,7 @@ private function acceso($id_rol){
                         'usuario_email' => $session_data['usuario_email'],
                         'page_title' => 'Admin >> Nuevo Usuario',
                         'thumb' => $session_data['thumb']
-                    );
-
+                    );*/
                     $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
 
                     $this->load->model('Estado_model');
