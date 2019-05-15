@@ -72,8 +72,17 @@ class Credito extends CI_Controller{
     function repoDeudas()
     {
         if($this->acceso(41)){
-            $params['limit'] = 300; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+           
+            $estado_id = $this->input->post('esti');
+            $usu = $this->input->post('usu');
+            $feini = $this->input->post('feini');
+            $fefin = $this->input->post('fefin');
+
+            if ($feini =='' && $fefin ==''){
+                $filtro = "p.proveedor_nombre like '%".$usu."%' and c.estado_id = ".$estado_id." ";   
+            } else {
+                $filtro = " p.proveedor_nombre like '%".$usu."%' and c.estado_id = ".$estado_id." and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."' ";
+            }
 
             $config = $this->config->item('pagination');
             $config['base_url'] = site_url('credito/repoDeudas?');
@@ -82,7 +91,7 @@ class Credito extends CI_Controller{
 
             $data['page_title'] = "Comprobante"; 
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $data['credito'] = $this->Credito_model->get_all_deuda($params);
+            $data['credito'] = $this->Credito_model->filtrodeudas($filtro);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/repoDeudas';
             $this->load->view('layouts/main',$data);
@@ -111,9 +120,16 @@ class Credito extends CI_Controller{
     function repoCuentas()
     {
         if($this->acceso(47)){
-            $params['limit'] = 300; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
+          
+            $estado_id = $this->input->post('esti');
+            $usu = $this->input->post('usu');
+            $feini = $this->input->post('feini');
+            $fefin = $this->input->post('fefin');
+            if ($feini =='' && $fefin ==''){
+                $filtro = " (p.cliente_nombre like '%".$usu."%' or r.cliente_nombre  like '%".$usu."%') and c.estado_id = ".$estado_id." ";   
+            } else {
+                $filtro = " (p.cliente_nombre like '%".$usu."%' or r.cliente_nombre  like '%".$usu."%') and c.estado_id = ".$estado_id." and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."' ";
+            }
             $config = $this->config->item('pagination');
             $config['base_url'] = site_url('credito/repoCuentas?');
             $config['total_rows'] = $this->Credito_model->get_all_credito_count();
@@ -121,7 +137,7 @@ class Credito extends CI_Controller{
 
             $data['page_title'] = "Reporte"; 
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $data['credito'] = $this->Credito_model->get_all_cuentas($params);
+            $data['credito'] = $this->Credito_model->filtrocuentas($filtro);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/repoCuentas';
             $this->load->view('layouts/main',$data);

@@ -21,7 +21,15 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
                 <h3 class="box-title">Deudas por Pagar</h3>
-             <a href="<?php echo site_url('credito/repoDeudas'); ?>" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</a> 
+            <form action="<?php echo site_url('credito/repoDeudas'); ?>"  target="_blank" method="POST">
+                <input type="hidden" name="usu" id="usu">
+                <input type="hidden" name="feini" id="feini">
+                <input type="hidden" name="fefin" id="fefin">
+                <input type="hidden" name="esti" id="esti">
+
+              <button class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</button>   
+            </form>
+             
                  <div class="panel panel-primary col-md-12"  >
                     <br>
                  <div class="col-md-4"  >
