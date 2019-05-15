@@ -1165,14 +1165,14 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                            <input type="date" name="factura_fecha" value="<?php echo date("Y-m-d"); ?>" class="form-control" id="factura_fecha" />
                         </div>
                     </div>
-                    <div class="col-md-4" >
+                    <div class="col-md-4" hidden>
                         <label for="factura_nit" class="control-label">nit</label>
                         <div class="form-group">
                            <input type="text" name="factura_nit" value="<?php echo  $compra[0]['proveedor_nit']; ?>" class="form-control" id="factura_nit" />
                         </div>
                     </div>
                     
-                    <div class="col-md-4" >
+                    <div class="col-md-4" hidden>
                         <label for="factura_hora" class="control-label">hora</label>
                         <div class="form-group">
                            <input type="text" name="factura_hora" value="<?php echo date("H:i:s"); ?>" class="form-control" id="factura_hora" />
