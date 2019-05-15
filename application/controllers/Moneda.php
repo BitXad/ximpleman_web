@@ -9,6 +9,20 @@ class Moneda extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Moneda_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
     } 
 
     /*
@@ -16,6 +30,7 @@ class Moneda extends CI_Controller{
      */
     function index()
     {
+        if($this->acceso(124)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -25,16 +40,18 @@ class Moneda extends CI_Controller{
         $this->pagination->initialize($config);
 
         $data['moneda'] = $this->Moneda_model->get_all_moneda($params);
-        
+        $data['page_title'] = "Moneda";
         $data['_view'] = 'moneda/index';
         $this->load->view('layouts/main',$data);
     }
+}
 
     /*
      * Adding a new moneda
      */
     function add()
     {   
+        if($this->acceso(124)){
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('moneda_descripcion','Moneda Descripcion','required');
@@ -54,17 +71,19 @@ class Moneda extends CI_Controller{
         {
 			$this->load->model('Estado_model');
 			$data['all_estado'] = $this->Estado_model->get_all_estado();
-            
+            $data['page_title'] = "Moneda";
             $data['_view'] = 'moneda/add';
             $this->load->view('layouts/main',$data);
         }
     }  
+}
 
     /*
      * Editing a moneda
      */
     function edit($moneda_id)
-    {   
+    {  
+    if($this->acceso(124)){ 
         // check if the moneda exists before trying to edit it
         $data['moneda'] = $this->Moneda_model->get_moneda($moneda_id);
         
@@ -89,7 +108,7 @@ class Moneda extends CI_Controller{
             {
 				$this->load->model('Estado_model');
 				$data['all_estado'] = $this->Estado_model->get_all_estado();
-
+                $data['page_title'] = "Moneda";
                 $data['_view'] = 'moneda/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -97,12 +116,14 @@ class Moneda extends CI_Controller{
         else
             show_error('The moneda you are trying to edit does not exist.');
     } 
+}
 
     /*
      * Deleting moneda
      */
     function remove($moneda_id)
     {
+        if($this->acceso(124)){
         $moneda = $this->Moneda_model->get_moneda($moneda_id);
 
         // check if the moneda exists before trying to delete it
@@ -114,5 +135,6 @@ class Moneda extends CI_Controller{
         else
             show_error('The moneda you are trying to delete does not exist.');
     }
+}
     
 }

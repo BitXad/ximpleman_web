@@ -31,7 +31,7 @@ private function acceso($id_rol){
     {
         if($this->acceso(126)) {
         $data['procedencia'] = $this->Procedencia_model->get_all_procedencia();
-        
+        $data['page_title'] = "Procedencia";
         $data['_view'] = 'procedencia/index';
         $this->load->view('layouts/main',$data);
         }
@@ -58,6 +58,7 @@ private function acceso($id_rol){
         }
         else
         {
+            $data['page_title'] = "Procedencia";
             $data['_view'] = 'procedencia/add';
             $this->load->view('layouts/main',$data);
         }
@@ -90,6 +91,7 @@ private function acceso($id_rol){
             {
                 $this->load->model('Estado_model');
 	        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+            $data['page_title'] = "Procedencia";
                 $data['_view'] = 'procedencia/edit';
                 $this->load->view('layouts/main',$data);
             }

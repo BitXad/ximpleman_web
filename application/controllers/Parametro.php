@@ -9,17 +9,34 @@ class Parametro extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Parametro_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
     } 
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    } 
+
 
     /*
      * Listing of parametros
      */
     function index()
     {
+        if($this->acceso(125)) {
         $data['parametros'] = $this->Parametro_model->get_all_parametro();
-        
+        $data['page_title'] = "Parametro";
         $data['_view'] = 'parametro/index';
         $this->load->view('layouts/main',$data);
+    }
     }
 
     /*
@@ -27,6 +44,7 @@ class Parametro extends CI_Controller{
      */
     function add()
     {   
+        if($this->acceso(125)) {
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -47,17 +65,20 @@ class Parametro extends CI_Controller{
             redirect('parametro/index');
         }
         else
-        {            
+        {    
+            $data['page_title'] = "Parametro";        
             $data['_view'] = 'parametro/add';
             $this->load->view('layouts/main',$data);
         }
-    }  
+    } 
+    } 
 
     /*
      * Editing a parametro
      */
     function edit($parametro_id)
     {   
+        if($this->acceso(125)) {
         // check if the parametro exists before trying to edit it
         $data['parametro'] = $this->Parametro_model->get_parametro($parametro_id);
         
@@ -86,6 +107,7 @@ class Parametro extends CI_Controller{
             }
             else
             {
+                $data['page_title'] = "Parametro";
                 $data['_view'] = 'parametro/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -93,7 +115,7 @@ class Parametro extends CI_Controller{
         else
             show_error('The parametro you are trying to edit does not exist.');
     } 
-
+}
     /*
      * Deleting parametro
      */

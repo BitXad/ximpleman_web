@@ -41,7 +41,7 @@ class Mapa extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['mapa'] = $this->Mapa_model->get_all_mapa($params);
-
+            $data['page_title'] = "Mapa";
             $data['_view'] = 'mapa/index';
             $this->load->view('layouts/main',$data);
         }
@@ -79,7 +79,7 @@ class Mapa extends CI_Controller{
 
                             $this->load->model('Estado_pagina_model');
                             $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
+                $data['page_title'] = "Mapa";
                 $data['_view'] = 'mapa/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -123,7 +123,7 @@ class Mapa extends CI_Controller{
 
                                     $this->load->model('Estado_pagina_model');
                                     $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
+                    $data['page_title'] = "Mapa";
                     $data['_view'] = 'mapa/edit';
                     $this->load->view('layouts/main',$data);
                 }

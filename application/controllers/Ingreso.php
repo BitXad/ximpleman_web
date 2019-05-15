@@ -42,6 +42,7 @@ class Ingreso extends CI_Controller{
                 $usuario_id = $this->session_data['usuario_id'];
         $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
         $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+        $data['page_title'] = "Ingreso";
         $data['_view'] = 'ingreso/index';
         $this->load->view('layouts/main',$data);
             }
@@ -117,6 +118,7 @@ class Ingreso extends CI_Controller{
            $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
            $this->load->model('Parametro_model');
            $data['parametro'] = $this->Parametro_model->get_all_parametro();
+           $data['page_title'] = "Ingreso";
             $data['_view'] = 'ingreso/add';
             $this->load->view('layouts/main',$data);
         }
@@ -158,6 +160,7 @@ class Ingreso extends CI_Controller{
             {
 				      $this->load->model('Categoria_ingreso_model');
                $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+               $data['page_title'] = "Ingreso";
                 $data['_view'] = 'ingreso/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -172,7 +175,8 @@ class Ingreso extends CI_Controller{
 public function pdf($ingreso_id){
     if($this->acceso(58)){
       $data['ingresos'] = $this->Ingreso_model->get_ingresos($ingreso_id);
-       $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+       $data['empresa'] = $this->Empresa_model->get_empresa(1);
+       $data['page_title'] = "Ingreso"; 
              $data['_view'] = 'ingreso/recibo';
             $this->load->view('layouts/main',$data);
        
@@ -184,7 +188,8 @@ public function boucher($ingreso_id){
     if($this->acceso(58)){
 
       $data['ingreso'] = $this->Ingreso_model->get_ingresos($ingreso_id);
-       $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+       $data['empresa'] = $this->Empresa_model->get_empresa(1);
+       $data['page_title'] = "Ingreso"; 
              $data['_view'] = 'ingreso/reciboboucher';
             $this->load->view('layouts/main',$data);
             }

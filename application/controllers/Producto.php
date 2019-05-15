@@ -50,7 +50,7 @@ class Producto extends CI_Controller{
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         
         
-        
+        $data['page_title'] = "Producto";
         $data['_view'] = 'producto/index';
         $this->load->view('layouts/main',$data);
         }
@@ -82,6 +82,7 @@ class Producto extends CI_Controller{
                     $data['unidades'] = $this->Producto_model->get_all_unidad();
                     
                     $data['resultado'] = 1;
+                    $data['page_title'] = "Producto";
                     $data['_view'] = 'producto/add';
                     $this->load->view('layouts/main',$data);
                 }else{
@@ -183,6 +184,7 @@ class Producto extends CI_Controller{
             $data['unidades'] = $this->Producto_model->get_all_unidad();
             
             $data['resultado'] = 0;
+            $data['page_title'] = "Producto";
             $data['_view'] = 'producto/add';
             $this->load->view('layouts/main',$data);
         }
@@ -320,7 +322,7 @@ class Producto extends CI_Controller{
 				
                                 $this->load->model('Moneda_model');
 				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
+                $data['page_title'] = "Producto";
                 $data['_view'] = 'producto/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -451,7 +453,7 @@ class Producto extends CI_Controller{
 
 				$this->load->model('Moneda_model');
 				$data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-
+                $data['page_title'] = "Producto";
                 $data['_view'] = 'producto/edit2';
                 $this->load->view('layouts/main',$data);
             }
@@ -609,7 +611,7 @@ class Producto extends CI_Controller{
 
             $this->load->model('Moneda_model');
             $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-            
+            $data['page_title'] = "Producto";
             $data['_view'] = 'producto/add';
             $this->load->view('layouts/main',$data);
         }
@@ -763,7 +765,7 @@ class Producto extends CI_Controller{
         
         $this->load->model('Empresa_model');
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        
+        $data['page_title'] = "Producto";
         $data['_view'] = 'producto/existenciaminima';
         $this->load->view('layouts/main',$data);
     }

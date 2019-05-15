@@ -31,10 +31,10 @@ class Rol extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(20)){
+        if($this->acceso(145)){
             $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
             $data['all_rolhijo'] = $this->Rol_model->get_allrol_hijo();
-
+            $data['page_title'] = "Rol";
             $data['_view'] = 'rol/index';
             $this->load->view('layouts/main',$data);
         }
@@ -45,7 +45,7 @@ class Rol extends CI_Controller{
      */
     function add()
     {
-        if($this->acceso(20)){
+        if($this->acceso(145)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('rol_nombre','Rol Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())     
@@ -64,7 +64,7 @@ class Rol extends CI_Controller{
             else
             {
                 $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
-
+                $data['page_title'] = "Rol";
                 $data['_view'] = 'rol/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -76,7 +76,7 @@ class Rol extends CI_Controller{
      */
     function edit($rol_id)
     {
-        if($this->acceso(20)){
+        if($this->acceso(145)){
             // check if the rol exists before trying to edit it
             $data['rol'] = $this->Rol_model->get_rol($rol_id);
 
@@ -102,7 +102,7 @@ class Rol extends CI_Controller{
                     $estado_tipo = 1;
                     $this->load->model('Estado_model');
                     $data['all_estado'] = $this->Estado_model->get_estado_tipo($estado_tipo);
-
+                    $data['page_title'] = "Rol";
                     $data['_view'] = 'rol/edit';
                     $this->load->view('layouts/main',$data);
                 }
@@ -117,7 +117,7 @@ class Rol extends CI_Controller{
      */
     function remove($rol_id)
     {
-        if($this->acceso(20)){
+        if($this->acceso(145)){
             $rol = $this->Rol_model->get_rol($rol_id);
 
             // check if the rol exists before trying to delete it

@@ -40,7 +40,7 @@ class Tipo_cliente extends CI_Controller{
         $this->pagination->initialize($config);
 
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente($params);
-        
+        $data['page_title'] = "Tipo Cliente";
         $data['_view'] = 'tipo_cliente/index';
         $this->load->view('layouts/main',$data);
     }
@@ -68,7 +68,8 @@ class Tipo_cliente extends CI_Controller{
             redirect('tipo_cliente/index');
         }
         else
-        {            
+        {    
+            $data['page_title'] = "Tipo Cliente";        
             $data['_view'] = 'tipo_cliente/add';
             $this->load->view('layouts/main',$data);
         }
@@ -103,6 +104,7 @@ class Tipo_cliente extends CI_Controller{
             }
             else
             {
+                $data['page_title'] = "Tipo Cliente";
                 $data['_view'] = 'tipo_cliente/edit';
                 $this->load->view('layouts/main',$data);
             }

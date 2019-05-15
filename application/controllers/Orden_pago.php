@@ -36,7 +36,7 @@ class Orden_pago extends CI_Controller{
         $data['orden_pago'] = $this->Orden_pago_model->get_pago_pendiente();
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
         
-        
+        $data['page_title'] = "Orden Pago"; 
         $data['_view'] = 'orden_pago/index';
         $this->load->view('layouts/main',$data);
     }
@@ -47,7 +47,7 @@ class Orden_pago extends CI_Controller{
         if($this->acceso(89)) {
         $data['orden_pago'] = $this->Orden_pago_model->get_pagadas_hoy();
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
-        
+        $data['page_title'] = "Orden Pago";
         $data['_view'] = 'orden_pago/index';
         $this->load->view('layouts/main',$data);
     }
@@ -58,7 +58,7 @@ class Orden_pago extends CI_Controller{
         if($this->acceso(89)) {
         $data['orden_pago'] = $this->Orden_pago_model->get_pagadas_antes();
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
-        
+        $data['page_title'] = "Orden Pago";
         $data['_view'] = 'orden_pago/index';
         $this->load->view('layouts/main',$data);
     }
@@ -108,7 +108,7 @@ class Orden_pago extends CI_Controller{
 
 			$this->load->model('Compra_model');
 			$data['all_compra'] = $this->Compra_model->get_all_compra();
-            
+            $data['page_title'] = "Orden Pago";
             $data['_view'] = 'orden_pago/add';
             $this->load->view('layouts/main',$data);
         }
@@ -157,7 +157,7 @@ class Orden_pago extends CI_Controller{
 
 //			$this->load->model('Compra_model');
 //			$data['all_compra'] = $this->Compra_model->get_all_compra();
-            
+                $data['page_title'] = "Orden Pago";
                 $data['_view'] = 'orden_pago/orden';
                 $this->load->view('layouts/main',$data);
             
@@ -210,7 +210,7 @@ class Orden_pago extends CI_Controller{
 
 //			$this->load->model('Compra_model');
 //			$data['all_compra'] = $this->Compra_model->get_all_compra();
-            
+                $data['page_title'] = "Orden Pago";
                 $data['_view'] = 'orden_pago/orden';
                 $this->load->view('layouts/main',$data);
             
@@ -310,7 +310,7 @@ class Orden_pago extends CI_Controller{
 
 				$this->load->model('Compra_model');
 				$data['all_compra'] = $this->Compra_model->get_all_compra();
-
+                $data['page_title'] = "Orden Pago";
                 $data['_view'] = 'orden_pago/edit';
                 $this->load->view('layouts/main',$data);
             }

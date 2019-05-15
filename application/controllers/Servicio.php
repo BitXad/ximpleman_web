@@ -56,7 +56,7 @@ class Servicio extends CI_Controller{
         
         $this->load->model('Parametro_model');
 	$data['all_parametro'] = $this->Parametro_model->get_all_parametro();
-        
+        $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/index';
         $this->load->view('layouts/main',$data);
         }
@@ -126,7 +126,7 @@ class Servicio extends CI_Controller{
         {
                         $this->load->model('Tipo_servicio_model');
 			$data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
-                        
+            $data['page_title'] = "Servicio";            
             $data['_view'] = 'servicio/nuevo_servicio_cliente';
             $this->load->view('layouts/main',$data);
         }
@@ -210,7 +210,7 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Parametro_model');
 	    $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
-            
+            $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/serviciocreado';
             $this->load->view('layouts/main',$data);
         } else {
@@ -293,6 +293,7 @@ class Servicio extends CI_Controller{
 
                 //$this->Servicio_model->update_servicio($servicio_id,$params);
                 //redirect('servicio/buscardetalleservicio/'.$servicio_id);
+                $data['page_title'] = "Servicio";
                 $data['_view'] = 'servicio/buscardetalleservicio/'.$servicio_id;
                 $this->load->view('layouts/main',$data);
             }
@@ -368,7 +369,7 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Parametro_model');
 	    $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
-            
+        $data['page_title'] = "Servicio";    
         $data['_view'] = 'servicio/serview';
         $this->load->view('layouts/main',$data);
     }
@@ -540,7 +541,7 @@ class Servicio extends CI_Controller{
 
             $this->load->model('Dosificacion_model');
 	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
-            
+            $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/boletarecepcion_boucher';
             $this->load->view('layouts/main',$data);
     }
@@ -570,7 +571,7 @@ class Servicio extends CI_Controller{
 
             $this->load->model('Dosificacion_model');
 	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
-            
+            $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/boletarecepcion';
             $this->load->view('layouts/main',$data);
     }
@@ -623,7 +624,7 @@ class Servicio extends CI_Controller{
             $this->load->model('Estado_model');
 			$data['all_estado'] = $this->Estado_model->get_all_estado();
 
-            
+        $data['page_title'] = "Servicio";    
         $data['_view'] = 'servicio/verservdet';
         $this->load->view('layouts/main',$data);
     }
@@ -732,7 +733,7 @@ class Servicio extends CI_Controller{
         $this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
         
-        
+        $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/repserviciofechas';
         $this->load->view('layouts/main',$data);
     }
@@ -767,7 +768,7 @@ class Servicio extends CI_Controller{
         
         $this->load->model('Estado_model');
         $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
-        
+        $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/repinftecservicio';
         $this->load->view('layouts/main',$data);
     }
@@ -796,7 +797,7 @@ class Servicio extends CI_Controller{
             $empresa_id = 1;
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-            
+            $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/boletainftecservicio';
             $this->load->view('layouts/main',$data);
     }
@@ -831,7 +832,7 @@ class Servicio extends CI_Controller{
         $this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
         
-        
+        $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/repinftecdetalleserv';
         $this->load->view('layouts/main',$data);
     }
@@ -862,7 +863,7 @@ class Servicio extends CI_Controller{
             $empresa_id = 1;
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-            
+            $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/boletainftecdetalleserv';
             $this->load->view('layouts/main',$data);
     }
@@ -899,7 +900,7 @@ class Servicio extends CI_Controller{
             $empresa_id = 1;
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-            
+            $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/boletacomprobanteserv';
             $this->load->view('layouts/main',$data);
     }
@@ -947,7 +948,7 @@ class Servicio extends CI_Controller{
         $this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
         
-        
+        $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/repserviciodiario';
         $this->load->view('layouts/main',$data);
     }

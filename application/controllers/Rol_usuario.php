@@ -33,7 +33,7 @@ class Rol_usuario extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(22)){
+        if($this->acceso(146)){
             $this->load->model('Rol_model');
             $rol['all_rol'] = $this->Rol_model->get_all_rol();    
             $this->load->library('form_validation');
@@ -66,7 +66,8 @@ class Rol_usuario extends CI_Controller{
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
                 $this->load->model('Rol_model');
                 $data['all_rol'] = $this->Rol_model->get_all_rol();     
-                $data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario();    
+                $data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario(); 
+                $data['page_title'] = "Rol Usuario";   
                 $data['_view'] = 'rol_usuario/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -79,7 +80,7 @@ class Rol_usuario extends CI_Controller{
      */
     function add()
     {
-        if($this->acceso(22)){
+        if($this->acceso(146)){
             $this->load->model('Rol_model');
             $rol['all_rol'] = $this->Rol_model->get_all_rol();    
             $this->load->library('form_validation');
@@ -112,7 +113,8 @@ class Rol_usuario extends CI_Controller{
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
                 $this->load->model('Rol_model');
                 $data['all_rol'] = $this->Rol_model->get_all_rol();     
-                $data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario();    
+                $data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario();
+                $data['page_title'] = "Rol Usuario";    
                 $data['_view'] = 'rol_usuario/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -141,7 +143,7 @@ class Rol_usuario extends CI_Controller{
      */
     function edit($id_rol_usuario)
     {
-        if($this->acceso(22)){
+        if($this->acceso(146)){
             // check if the rol_usuario exists before trying to edit it
             $data['rol_usuario'] = $this->Rol_usuario_model->get_rol_usuario($id_rol_usuario);
 
@@ -163,6 +165,7 @@ class Rol_usuario extends CI_Controller{
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
                 $this->load->model('Rol_model');
                 $data['all_rol'] = $this->Rol_model->get_all_rol();
+                $data['page_title'] = "Rol Usuario";
                     $data['_view'] = 'rol_usuario/edit';
                     $this->load->view('layouts/main',$data);
                 }

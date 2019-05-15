@@ -31,7 +31,7 @@ class Unidad extends CI_Controller{
     {
         if($this->acceso(136)){
         $data['unidad'] = $this->Unidad_model->get_all_unidad();
-        
+        $data['page_title'] = "Unidad";
         $data['_view'] = 'unidad/index';
         $this->load->view('layouts/main',$data);
         }
@@ -58,6 +58,7 @@ class Unidad extends CI_Controller{
         }
         else
         {
+            $data['page_title'] = "Unidad";
             $data['_view'] = 'unidad/add';
             $this->load->view('layouts/main',$data);
         }
@@ -89,6 +90,7 @@ class Unidad extends CI_Controller{
             }
             else
             {
+                $data['page_title'] = "Unidad";
                 $data['_view'] = 'unidad/edit';
                 $this->load->view('layouts/main',$data);
             }
