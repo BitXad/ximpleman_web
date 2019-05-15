@@ -45,6 +45,7 @@ class Proveedor extends CI_Controller{
         $data['a'] = "0";
         $data['proveedor'] = $this->Proveedor_model->get_all_proveedor($params);
         $data['total'] = $this->Proveedor_model->get_all_proveedor_count();
+        $data['page_title'] = "Proveedor";
         $data['_view'] = 'proveedor/index';
         $this->load->view('layouts/main',$data);
             }
@@ -141,7 +142,7 @@ class Proveedor extends CI_Controller{
         {
             $this->load->model('Estado_model');
             $data['all_estado'] = $this->Estado_model->get_all_estado();
-            
+            $data['page_title'] = "Proveedor";
             $data['_view'] = 'proveedor/add';
             $this->load->view('layouts/main',$data);
         }
@@ -340,7 +341,7 @@ class Proveedor extends CI_Controller{
             {
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado();
-
+                $data['page_title'] = "Proveedor";
                 $data['_view'] = 'proveedor/edit';
                 $this->load->view('layouts/main',$data);
             }
@@ -375,6 +376,7 @@ class Proveedor extends CI_Controller{
                 
                 $data['proveedor'] = $this->Proveedor_model->get_busqueda_proveedor($filtro);
                 $data['a'] = "1";
+                $data['page_title'] = "Proveedor";
                 $data['_view'] = 'proveedor/index';
                 $this->load->view('layouts/main',$data);
             }

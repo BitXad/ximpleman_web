@@ -41,7 +41,7 @@ class Slide extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['slide'] = $this->Slide_model->get_all_slide($params);
-
+            $data['page_title'] = "Slide";
             $data['_view'] = 'slide/index';
             $this->load->view('layouts/main',$data);
         }
@@ -79,7 +79,7 @@ class Slide extends CI_Controller{
 
                             $this->load->model('Pagina_web_model');
                             $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
-
+                $data['page_title'] = "Slide";
                 $data['_view'] = 'slide/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -123,7 +123,7 @@ class Slide extends CI_Controller{
 
                                     $this->load->model('Pagina_web_model');
                                     $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
-
+                    $data['page_title'] = "Slide";
                     $data['_view'] = 'slide/edit';
                     $this->load->view('layouts/main',$data);
                 }

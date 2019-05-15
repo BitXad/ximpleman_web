@@ -56,7 +56,7 @@ private function acceso($id_rol){
                 $config['base_url'] = site_url('usuario/index?');
                 $config['total_rows'] = $this->Usuario_model->get_all_usuario_count();
                 $this->pagination->initialize($config);
-
+                $data['page_title'] = "Usuario";
                 $data['usuario'] = $this->Usuario_model->get_all_usuario($params);
                 //$data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario($params);
                 //$data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario($params);
@@ -170,7 +170,7 @@ private function acceso($id_rol){
                    
                     $this->load->model('Tipo_usuario_model');
                     $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
-
+                    $data['page_title'] = "Usuarios";
                     $data['_view'] = 'usuario/add';
                     $this->load->view('layouts/main', $data);
                 }
@@ -203,7 +203,7 @@ private function acceso($id_rol){
 
                 $this->load->model('Tipo_usuario_model');
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
-
+                $data['page_title'] = "Usuario";
                 $data['_view'] = 'usuario/edit';
                 $this->load->view('layouts/main', $data);
 
@@ -319,7 +319,7 @@ private function acceso($id_rol){
 
                 $this->load->model('Tipo_usuario_model');
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
-
+                $data['page_title'] = "Usuario";
                 $data['_view'] = 'usuario/edit';
                 $this->load->view('layouts/main', $data);
             }
@@ -378,6 +378,7 @@ private function acceso($id_rol){
 
                 echo validation_errors();
                 $data['mensaje'] = '';
+                $data['page_title'] = "Usuario";
                 $data['_view'] = 'usuario/password';
                 $this->load->view('layouts/main', $data);
             }
@@ -456,7 +457,7 @@ private function acceso($id_rol){
 
                     $this->load->model('Tipo_usuario_model');
                     $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
-
+                    $data['page_title'] = "Usuario";
                     $data['_view'] = 'usuario/edit';
                     $this->load->view('layouts/main', $data);
 

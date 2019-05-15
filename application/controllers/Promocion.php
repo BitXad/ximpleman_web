@@ -41,7 +41,7 @@ class Promocion extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['promocion'] = $this->Promocion_model->get_all_promocion($params);
-
+            $data['page_title'] = "Promocion";
             $data['_view'] = 'promocion/index';
             $this->load->view('layouts/main',$data);
         }
@@ -80,7 +80,7 @@ class Promocion extends CI_Controller{
 
                             $this->load->model('Estado_model');
                             $data['all_estado'] = $this->Estado_model->get_all_estado();
-
+                $data['page_title'] = "Promocion";
                 $data['_view'] = 'promocion/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -125,7 +125,7 @@ class Promocion extends CI_Controller{
 
                                     $this->load->model('Estado_model');
                                     $data['all_estado'] = $this->Estado_model->get_all_estado();
-
+                    $data['page_title'] = "Promocion";
                     $data['_view'] = 'promocion/edit';
                     $this->load->view('layouts/main',$data);
                 }

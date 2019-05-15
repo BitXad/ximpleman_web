@@ -32,7 +32,7 @@ private function acceso($id_rol){
         if($this->acceso(135)){
         
         $data['tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso();
-        
+        $data['page_title'] = "Tiempo Uso";
         $data['_view'] = 'tiempo_uso/index';
         $this->load->view('layouts/main',$data);
         }
@@ -63,6 +63,7 @@ private function acceso($id_rol){
         }
         else
         {
+            $data['page_title'] = "Tiempo Uso";
             $data['_view'] = 'tiempo_uso/add';
             $this->load->view('layouts/main',$data);
         }
@@ -98,6 +99,7 @@ private function acceso($id_rol){
             {
                 $this->load->model('Estado_model');
 	        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $data['page_title'] = "Tiempo Uso";
                 $data['_view'] = 'tiempo_uso/edit';
                 $this->load->view('layouts/main',$data);
             }

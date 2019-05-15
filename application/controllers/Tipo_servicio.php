@@ -31,7 +31,7 @@ class Tipo_servicio extends CI_Controller{
     {
         if($this->acceso(134)){
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
-        
+        $data['page_title'] = "Tipo Servicio";
         $data['_view'] = 'tipo_servicio/index';
         $this->load->view('layouts/main',$data);
         
@@ -62,6 +62,7 @@ class Tipo_servicio extends CI_Controller{
         }
         else
         {
+            $data['page_title'] = "Tipo Servicio";
             $data['_view'] = 'tipo_servicio/add';
             $this->load->view('layouts/main',$data);
         }
@@ -97,6 +98,7 @@ class Tipo_servicio extends CI_Controller{
             {
                 $this->load->model('Estado_model');
 	        $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $data['page_title'] = "Tipo Servicio";
                 $data['_view'] = 'tipo_servicio/edit';
                 $this->load->view('layouts/main',$data);
             }

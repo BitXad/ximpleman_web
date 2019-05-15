@@ -475,7 +475,7 @@ class Pedido extends CI_Controller{
 
 			$this->load->model('Cliente_model');
 			$data['all_cliente'] = $this->Cliente_model->get_all_cliente();
-            
+            $data['page_title'] = "Pedido";
             $data['_view'] = 'pedido/add';
             $this->load->view('layouts/main',$data);
         }
@@ -521,7 +521,7 @@ class Pedido extends CI_Controller{
 
 				$this->load->model('Cliente_model');
 				$data['all_cliente'] = $this->Cliente_model->get_all_cliente();
-
+                $data['page_title'] = "Pedido";
                 $data['_view'] = 'pedido/edit';
                 $this->load->view('layouts/main',$data);
             }

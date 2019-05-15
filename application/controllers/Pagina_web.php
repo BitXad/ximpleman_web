@@ -41,7 +41,7 @@ class Pagina_web extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['pagina_web'] = $this->Pagina_web_model->get_all_pagina_web($params);
-
+            $data['page_title'] = "Pagina Web"; 
             $data['_view'] = 'pagina_web/index';
             $this->load->view('layouts/main',$data);
         }
@@ -58,7 +58,7 @@ class Pagina_web extends CI_Controller{
         $this->pagination->initialize($config);
 
         $data['pagina_web'] = $this->Pagina_web_model->get_all_pagina_web($params);
-        
+        $data['page_title'] = "Pagina Web"; 
         $data['_view'] = 'pagina_web/index';
         $this->load->view('layouts/login',$data);
     }
@@ -99,7 +99,7 @@ class Pagina_web extends CI_Controller{
 
                             $this->load->model('Empresa_model');
                             $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-
+                            $data['page_title'] = "Pagina Web"; 
                 $data['_view'] = 'pagina_web/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -147,7 +147,7 @@ class Pagina_web extends CI_Controller{
 
                                     $this->load->model('Empresa_model');
                                     $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
-
+                                    $data['page_title'] = "Pagina Web"; 
                     $data['_view'] = 'pagina_web/edit';
                     $this->load->view('layouts/main',$data);
                 }

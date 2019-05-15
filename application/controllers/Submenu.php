@@ -41,7 +41,7 @@ class Submenu extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['submenu'] = $this->Submenu_model->get_all_submenu($params);
-
+            $data['page_title'] = "Submenu";
             $data['_view'] = 'submenu/index';
             $this->load->view('layouts/main',$data);
         }
@@ -78,7 +78,7 @@ class Submenu extends CI_Controller{
 
                             $this->load->model('Menu_model');
                             $data['all_menu'] = $this->Menu_model->get_all_menu();
-
+                 $data['page_title'] = "Submenu";           
                 $data['_view'] = 'submenu/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -121,7 +121,7 @@ class Submenu extends CI_Controller{
 
                                     $this->load->model('Menu_model');
                                     $data['all_menu'] = $this->Menu_model->get_all_menu();
-
+                    $data['page_title'] = "Submenu";
                     $data['_view'] = 'submenu/edit';
                     $this->load->view('layouts/main',$data);
                 }

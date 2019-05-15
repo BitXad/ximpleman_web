@@ -41,7 +41,7 @@ class Menu extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['menu'] = $this->Menu_model->get_all_menu($params);
-
+            $data['page_title'] = "Menu";
             $data['_view'] = 'menu/index';
             $this->load->view('layouts/main',$data);
         }
@@ -79,7 +79,7 @@ class Menu extends CI_Controller{
 
                             $this->load->model('Menu_principal_model');
                             $data['all_menu_principal'] = $this->Menu_principal_model->get_all_menu_principal();
-
+                $data['page_title'] = "Menu";
                 $data['_view'] = 'menu/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -123,7 +123,7 @@ class Menu extends CI_Controller{
 
                                     $this->load->model('Menu_principal_model');
                                     $data['all_menu_principal'] = $this->Menu_principal_model->get_all_menu_principal();
-
+                    $data['page_title'] = "Menu";
                     $data['_view'] = 'menu/edit';
                     $this->load->view('layouts/main',$data);
                 }
