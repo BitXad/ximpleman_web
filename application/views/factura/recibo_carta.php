@@ -155,8 +155,8 @@ border-bottom : 1px solid #aaa;
                         ?>
                     <!--<textarea onload="autosize()"></textarea>-->
                 </td>
-                <td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
+                <td align="right"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php } ?>
        </table>
