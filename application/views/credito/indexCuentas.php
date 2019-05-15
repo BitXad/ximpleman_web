@@ -22,7 +22,14 @@
 <div class="box-header">
                 <h3 class="box-title">Cuentas por Cobrar</h3>
        
-                    <a href="<?php echo site_url('credito/repoCuentas'); ?>" target="_blank" class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</a> 
+                 <form action="<?php echo site_url('credito/repoCuentas'); ?>"  target="_blank" method="POST">
+                <input type="text" name="usu" id="usu">
+                <input type="text" name="feini" id="feini">
+                <input type="text" name="fefin" id="fefin">
+                <input type="text" name="esti" id="esti">
+
+              <button class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</button>   
+            </form>
                 
                  <div class="panel panel-primary col-md-12"  >
                     <br>

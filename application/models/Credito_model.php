@@ -213,11 +213,9 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
 
         return $credito;
     }
-         function get_all_deuda($params = array())
+         function get_all_deuda()
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
         
         $credito = $this->db->query("
             SELECT
@@ -235,17 +233,40 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
 
             ORDER BY `credito_id` DESC
 
-            " . $limit_condition . "
+            
         ")->result_array();
 
         return $credito;
     }
-    
-     function get_all_cuentas($params = array())
+    function filtrodeudas($filtro)
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
+        
+        $credito = $this->db->query("
+            SELECT
+                c.*, p.*, co.*, e.*
+
+            FROM
+                credito c
+                LEFT JOIN compra co on c.compra_id=co.compra_id
+                LEFT JOIN proveedor p on co.proveedor_id=p.proveedor_id
+                LEFT JOIN estado e on c.estado_id=e.estado_id
+
+            WHERE
+                
+                ".$filtro."
+
+
+
+            ORDER BY `credito_id` DESC
+
+            
+        ")->result_array();
+
+        return $credito;
+    }
+     function get_all_cuentas()
+    {
         
         $credito = $this->db->query("
               SELECT
@@ -264,7 +285,33 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
                  c.estado_id = 8
                  and c.compra_id = 0
             ORDER BY `credito_id` DESC
-            " . $limit_condition . "
+           
+        ")->result_array();
+
+        return $credito;
+    }
+
+    function filtrocuentas($filtro)
+    {
+        
+        $credito = $this->db->query("
+              SELECT
+                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro
+
+            FROM
+                credito c
+
+LEFT JOIN venta ve on c.venta_id = ve.venta_id
+LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
+LEFT JOIN estado e on c.estado_id = e.estado_id
+LEFT JOIN servicio s on c.servicio_id = s.servicio_id
+LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
+
+            WHERE
+                ".$filtro."
+                 
+            ORDER BY `credito_id` DESC
+           
         ")->result_array();
 
         return $credito;
