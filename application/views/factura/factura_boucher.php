@@ -234,8 +234,8 @@ border-bottom : 1px solid #aaa;
            <tr>
                 <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
                 <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre']; ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_precio'],2,'.',','); ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>
+                <td align="right"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php }} ?>
        </table>
@@ -246,12 +246,12 @@ border-bottom : 1px solid #aaa;
         <td align="right">
             
             <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
+                <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
             </font>
             
 
             <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($total_descuento,2,'.',','); ?><br>
+                <?php echo "TOTAL DESCUENTO Bs ".number_format($factura[0]['factura_descuento'],2,'.',','); ?><br>
             </font>
             <font size="2">
             <b>
@@ -259,7 +259,7 @@ border-bottom : 1px solid #aaa;
             </b>
             </font>
             <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
+                <?php echo "SON: ".num_to_letras($factura[0]['factura_total'],' Bolivianos'); ?><br>            
             </font>
             <font size="1">
                 <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>

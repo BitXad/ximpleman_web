@@ -182,10 +182,10 @@ border-bottom : 1px solid #aaa;
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];
                         
-                        if ($preferencia !=null && $preferencia!='-')
+                        if ($preferencia !='null' && $preferencia!='-')
                             echo  " /".$preferencia;
                         
-                        if ($caracteristicas!=null && $caracteristicas!='-')
+                        if ($caracteristicas!='null' && $caracteristicas!='-')
                             echo  "<br>".$caracteristicas;
                         
                         ?>
