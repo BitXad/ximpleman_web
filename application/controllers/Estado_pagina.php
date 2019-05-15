@@ -32,6 +32,7 @@ class Estado_pagina extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Estado Pagina";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Estado_pagina extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Estado Pagina";
             $this->load->library('form_validation');
 
                     $this->form_validation->set_rules('estadopag_descripcion','Estadopag Descripcion','required');
@@ -80,6 +82,7 @@ class Estado_pagina extends CI_Controller{
     function edit($estadopag_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Estado Pagina";
             // check if the estado_pagina exists before trying to edit it
             $data['estado_pagina'] = $this->Estado_pagina_model->get_estado_pagina($estadopag_id);
 

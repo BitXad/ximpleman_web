@@ -32,7 +32,7 @@ class Estado extends CI_Controller{
     function index()
     {
         if($this->acceso(122)){
-        
+        $data['page_title'] = "Estado";
         $data['estado'] = $this->Estado_model->get_all_estado();
         
         $data['_view'] = 'estado/index';
@@ -46,6 +46,7 @@ class Estado extends CI_Controller{
     function add()
     {
         if($this->acceso(122)){
+            $data['page_title'] = "Estado";
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('estado_descripcion','Estado Descripcion','required');
@@ -75,6 +76,7 @@ class Estado extends CI_Controller{
     function edit($estado_id)
     {
         if($this->acceso(122)){
+            $data['page_title'] = "Estado";
         // check if the estado exists before trying to edit it
         $data['estado'] = $this->Estado_model->get_estado($estado_id);
         

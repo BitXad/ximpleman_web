@@ -32,6 +32,7 @@ class Empresa extends CI_Controller{
     function index()
     {
         if($this->acceso(121)){
+            $data['page_title'] = "Empresa";
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -53,6 +54,7 @@ class Empresa extends CI_Controller{
     function add()
     {
         if($this->acceso(121)){
+            $data['page_title'] = "Empresa";
         $this->load->library('form_validation');
 
         $this->form_validation->set_rules('empresa_nombre','Empresa Nombre','required');
@@ -141,6 +143,7 @@ class Empresa extends CI_Controller{
     function edit($empresa_id)
     {
         if($this->acceso(121)){
+            $data['page_title'] = "Empresa";
         // check if the empresa exists before trying to edit it
         $data['empresas'] = $this->Empresa_model->get_this_empresa($empresa_id);
         

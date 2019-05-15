@@ -34,6 +34,7 @@ class Credito extends CI_Controller{
     function index()
     {
         if($this->acceso(41)){
+            $data['page_title'] = "Creditos";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -42,7 +43,6 @@ class Credito extends CI_Controller{
             $config['total_rows'] = $this->Credito_model->get_all_credito_count();
             $this->pagination->initialize($config);
 
-            $data['page_title'] = "Creditos"; 
             $data['credito'] = $this->Credito_model->get_all_deuda($params);
 
             $data['_view'] = 'credito/index';
@@ -54,6 +54,7 @@ class Credito extends CI_Controller{
     function indexDeuda()
     {
         if($this->acceso(41)){
+            $data['page_title'] = "Deudas x Pagar";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -62,7 +63,6 @@ class Credito extends CI_Controller{
             $config['total_rows'] = $this->Credito_model->get_all_credito_count();
             $this->pagination->initialize($config);
 
-            $data['page_title'] = "Creditos"; 
             $data['credito'] = $this->Credito_model->get_all_deuda($params);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexDeuda';
@@ -72,7 +72,7 @@ class Credito extends CI_Controller{
     function repoDeudas()
     {
         if($this->acceso(41)){
-           
+            $data['page_title'] = "Deudas x Pagar";
             $estado_id = $this->input->post('esti');
             $usu = $this->input->post('usu');
             $feini = $this->input->post('feini');
@@ -101,6 +101,7 @@ class Credito extends CI_Controller{
      function indexCuenta()
     {
          if($this->acceso(47)){
+             $data['page_title'] = "Cuentas x Cobrar";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -108,8 +109,7 @@ class Credito extends CI_Controller{
             $config['base_url'] = site_url('credito/indexCuenta?');
             $config['total_rows'] = $this->Credito_model->get_all_credito_count1();
             $this->pagination->initialize($config);
-
-            $data['page_title'] = "Cuentas x Cobrar"; 
+            
             $data['credito'] = $this->Credito_model->get_all_cuentas($params);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexCuentas';
@@ -120,7 +120,7 @@ class Credito extends CI_Controller{
     function repoCuentas()
     {
         if($this->acceso(47)){
-          
+            $data['page_title'] = "Cuentas x Cobrar";
             $estado_id = $this->input->post('esti');
             $usu = $this->input->post('usu');
             $feini = $this->input->post('feini');
