@@ -313,7 +313,7 @@
                             <td><?php echo $cont ?></td>
                             <td><?php echo $psn['compra_id']; ?></td>
                             <td>NO DEFINIDO</td>
-                            <td><?php echo date('d/m/Y',strtotime($psn['compra_fecha'])) ;  ?></td>
+                            <td><?php echo date('d/m/Y',strtotime($psn['compra_fecha'])) ;  ?> <?php echo $psn['compra_hora']; ?></td>
                             <td><?php echo $psn['compra_subtotal']; ?></td>
                             <td><?php echo $psn['compra_descuento']; ?></td>  
                             <td><?php echo $psn['compra_total']; ?></td>
