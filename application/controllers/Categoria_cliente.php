@@ -32,6 +32,7 @@ class Categoria_cliente extends CI_Controller{
     function index()
     {
         if($this->acceso(114)){
+            $data['page_title'] = "Categoria Negocio Cliente";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Categoria_cliente extends CI_Controller{
     function add()
     {   
         if($this->acceso(114)){
+            $data['page_title'] = "Categoria Negocio Cliente";
             $this->load->library('form_validation');
 
             //$this->form_validation->set_rules('categoriaclie_descripcion','Descripcion es requerida','trim|required|alpha', array('required' => 'Este Campo no debe ser vacio', 'alpha' => 'Solo valores alfanumericos'));
@@ -85,6 +87,7 @@ class Categoria_cliente extends CI_Controller{
     function edit($categoriaclie_id)
     {   
         if($this->acceso(114)){
+            $data['page_title'] = "Categoria Negocio Cliente";
             // check if the categoria_cliente exists before trying to edit it
             $data['categoria_cliente'] = $this->Categoria_cliente_model->get_categoria_cliente($categoriaclie_id);
 

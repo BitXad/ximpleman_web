@@ -33,6 +33,7 @@ class Articulo extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Articulo";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -54,6 +55,7 @@ class Articulo extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Articulo";
             $this->load->library('form_validation');
 
                     $this->form_validation->set_rules('articulo_titulo','Articulo Titulo','required');
@@ -95,6 +97,7 @@ class Articulo extends CI_Controller{
     function edit($articulo_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Articulo";
             // check if the articulo exists before trying to edit it
             $data['articulo'] = $this->Articulo_model->get_articulo($articulo_id);
 

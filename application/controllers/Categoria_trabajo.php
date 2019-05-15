@@ -32,6 +32,7 @@ class Categoria_trabajo extends CI_Controller{
     function index()
     {
         if($this->acceso(120)){
+            $data['page_title'] = "Categoria Trabajo";
             $data['categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();
 
             $data['_view'] = 'categoria_trabajo/index';
@@ -45,6 +46,7 @@ class Categoria_trabajo extends CI_Controller{
     function add()
     {
         if($this->acceso(120)){
+            $data['page_title'] = "Categoria Trabajo";
             $this->load->library('form_validation');
             $this->form_validation->set_rules('cattrab_descripcion','Categoria Trabajo Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 
@@ -75,6 +77,7 @@ class Categoria_trabajo extends CI_Controller{
     function edit($cattrab_id)
     {
         if($this->acceso(120)){
+            $data['page_title'] = "Categoria Trabajo";
             // check if the tipo_servicio exists before trying to edit it
             $data['categoria_trabajo'] = $this->Categoria_trabajo_model->get_categoria_trabajo($cattrab_id);
 

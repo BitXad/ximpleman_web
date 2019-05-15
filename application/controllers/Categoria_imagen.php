@@ -32,6 +32,7 @@ class Categoria_imagen extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Categoria Imagen";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Categoria_imagen extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Categoria Imagen";
             $this->load->library('form_validation');
 
                     $this->form_validation->set_rules('catimg_nombre','Catimg Nombre','required');
@@ -89,6 +91,7 @@ class Categoria_imagen extends CI_Controller{
     function edit($catimg_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Categoria Imagen";
             // check if the categoria_imagen exists before trying to edit it
             $data['categoria_imagen'] = $this->Categoria_imagen_model->get_categoria_imagen($catimg_id);
 
@@ -125,7 +128,7 @@ class Categoria_imagen extends CI_Controller{
             else
                 show_error('The categoria_imagen you are trying to edit does not exist.');
         }
-    } 
+    }
 
     /*
      * Deleting categoria_imagen

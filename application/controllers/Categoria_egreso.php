@@ -32,6 +32,7 @@ class Categoria_egreso extends CI_Controller{
     function index()
     {
         if($this->acceso(116)){
+            $data['page_title'] = "Categoria Egreso";
             $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
 
             $data['_view'] = 'categoria_egreso/index';
@@ -45,6 +46,7 @@ class Categoria_egreso extends CI_Controller{
     function add()
     {
         if($this->acceso(116)){
+            $data['page_title'] = "Categoria Egreso";
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
@@ -69,6 +71,7 @@ class Categoria_egreso extends CI_Controller{
     function edit($id_categr)
     {
         if($this->acceso(116)){
+            $data['page_title'] = "Categoria Egreso";
             // check if the categoria_egreso exists before trying to edit it
             $data['categoria_egreso'] = $this->Categoria_egreso_model->get_categoria_egreso($id_categr);
 

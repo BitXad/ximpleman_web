@@ -32,6 +32,7 @@ class Cliente extends CI_Controller{
     function index($a = null)
     {
         if($this->acceso(94)){
+            $data['page_title'] = "Cliente";
             $data['a'] = $a;
             $data['err'] ="";
 
@@ -64,6 +65,7 @@ class Cliente extends CI_Controller{
     function add()
     {
         if($this->acceso(95)){
+            $data['page_title'] = "Cliente";
             $this->load->library('form_validation');
 
             //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
@@ -229,6 +231,7 @@ class Cliente extends CI_Controller{
     function edit($cliente_id)
     {
         if($this->acceso(98)){
+            $data['page_title'] = "Cliente";
         // check if the cliente exists before trying to edit it
         $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
         
@@ -574,6 +577,7 @@ class Cliente extends CI_Controller{
     function clientenuevo($pedido_id)
     {
         if($this->acceso(94)){
+            $data['page_title'] = "Cliente";
             $this->load->library('form_validation');
 
             //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
