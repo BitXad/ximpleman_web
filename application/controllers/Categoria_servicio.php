@@ -32,6 +32,7 @@ class Categoria_servicio extends CI_Controller{
     function index()
     {
         if($this->acceso(119)){
+            $data['page_title'] = "Categoria Servicio";
             $data['categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio();
 
             $data['_view'] = 'categoria_servicio/index';
@@ -45,6 +46,7 @@ class Categoria_servicio extends CI_Controller{
     function add()
     {   
         if($this->acceso(119)){
+            $data['page_title'] = "Categoria Servicio";
             $this->load->library('form_validation');
             $this->form_validation->set_rules('catserv_descripcion','Categoria Servicio Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             if($this->form_validation->run())     
@@ -73,6 +75,7 @@ class Categoria_servicio extends CI_Controller{
     function edit($catserv_id)
     {
         if($this->acceso(119)){
+            $data['page_title'] = "Categoria Servicio";
             // check if the categoria_servicio exists before trying to edit it
             $data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
 
@@ -128,6 +131,7 @@ class Categoria_servicio extends CI_Controller{
     function catserv_detalle($catserv_id)
     {
         if($this->acceso(119)){
+            $data['page_title'] = "Categoria Servicio";
             $nombre = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
             $data['nombre'] = $nombre['catserv_descripcion'];
             $this->load->model('Subcategoria_servicio_model');

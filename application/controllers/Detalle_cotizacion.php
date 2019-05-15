@@ -14,18 +14,18 @@ class Detalle_cotizacion extends CI_Controller{
     /*
      * Listing of detalle_cotizacion
      */
-    function index()
+    /*function index()
     {
         $data['detalle_cotizacion'] = $this->Detalle_cotizacion_model->get_all_detalle_cotizacion();
         
         $data['_view'] = 'detalle_cotizacion/index';
         $this->load->view('layouts/main',$data);
-    }
+    }*/
 
     /*
      * Adding a new detalle_cotizacion
      */
-    function add()
+    /*function add()
     {   
         if(isset($_POST) && count($_POST) > 0)     
         {   
@@ -49,12 +49,12 @@ class Detalle_cotizacion extends CI_Controller{
             $data['_view'] = 'detalle_cotizacion/add';
             $this->load->view('layouts/main',$data);
         }
-    }  
+    }  */
 
     /*
      * Editing a detalle_cotizacion
      */
-    function edit($detallecot_id)
+    /*function edit($detallecot_id)
     {   
         // check if the detalle_cotizacion exists before trying to edit it
         $data['detalle_cotizacion'] = $this->Detalle_cotizacion_model->get_detalle_cotizacion($detallecot_id);
@@ -86,12 +86,12 @@ class Detalle_cotizacion extends CI_Controller{
         }
         else
             show_error('The detalle_cotizacion you are trying to edit does not exist.');
-    } 
+    } */
 
     /*
      * Deleting detalle_cotizacion
      */
-    function remove($detallecot_id)
+    /*function remove($detallecot_id)
     {
         $detalle_cotizacion = $this->Detalle_cotizacion_model->get_detalle_cotizacion($detallecot_id);
 
@@ -103,6 +103,6 @@ class Detalle_cotizacion extends CI_Controller{
         }
         else
             show_error('The detalle_cotizacion you are trying to delete does not exist.');
-    }
+    }*/
     
 }

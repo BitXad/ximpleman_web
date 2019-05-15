@@ -40,7 +40,7 @@ class Tipo_transaccion extends CI_Controller{
         $this->pagination->initialize($config);
 
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion($params);
-        
+        $data['page_title'] = "Tipo Transaccion";
         $data['_view'] = 'tipo_transaccion/index';
         $this->load->view('layouts/main',$data);
     }
@@ -66,7 +66,8 @@ class Tipo_transaccion extends CI_Controller{
             redirect('tipo_transaccion/index');
         }
         else
-        {            
+        {
+            $data['page_title'] = "Tipo Transaccion";            
             $data['_view'] = 'tipo_transaccion/add';
             $this->load->view('layouts/main',$data);
         }
@@ -99,6 +100,7 @@ class Tipo_transaccion extends CI_Controller{
             }
             else
             {
+                $data['page_title'] = "Tipo Transaccion";
                 $data['_view'] = 'tipo_transaccion/edit';
                 $this->load->view('layouts/main',$data);
             }

@@ -7,7 +7,7 @@
     ?>
     
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Ximpleman - <?php echo $page_title?> </title>
+    <title>Ximpleman<?php if(isset($page_title)){ echo " - ".$page_title; }?> </title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.6 -->
@@ -618,108 +618,7 @@
                 </li>
                 <?php
                 }
-                if($session_data['tipousuario_id']==2){ ?>
-                <li>
-                    <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-cubes"></i>Compras</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('ingreso');?>"><i class="fa fa-arrow-right"></i> <span>Ingresos</span></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i> <span>Egresos</span></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-chain"></i>Cambios/Devoluciones</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-list-ul"></i>Cotizaciones</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('servicio');?>"><i class="fa fa-wrench"></i> Servicios</a>
-                        </li>
-                    </ul>
-                </li>
-                <?php } 
-                if($session_data['tipousuario_id']==3){ ?>
-                <li>
-                    <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-cubes"></i>Compras</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-cube"></i>Cambios/Devoluciones</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('cliente');?>"><i class="fa fa-users"></i>Clientes</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('ingreso');?>"><i class="fa fa-arrow-right"></i> <span>Ingresos</span></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i> <span>Egresos</span></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Movimiento Diario</a>
-                        </li>
-                    </ul>
-                </li>
-                <?php }
-                if($session_data['tipousuario_id']==4){ ?>
-                <li>
-                    <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-cube"></i>Pedidos</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('cliente');?>"><i class="fa fa-users"></i>Clientes</a>
-                        </li>
-                    </ul>
-                </li>
-                <?php }
-                if($session_data['tipousuario_id']==5){ ?>
-                <li>
-                    <a href="#"><i class="fa fa-industry"></i> <span>Operaciones</span></a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="<?php echo site_url('servicio');?>"><i class="fa fa-cart-plus"></i>Servicios</a>
-                        </li>
-                    </ul>
-                </li>
-                <?php }
-                if($session_data['tipousuario_id']==6){ ?>
-                <li>
-                    <a href="#"><i class="fa fa-braille"></i> <span>Contabilidad</span></a>
-                    <ul class="treeview-menu">
-                        <li>
-                            <a href="<?php echo site_url('dosificacion');?>"><i class="fa fa-list-alt"></i>Dosificación</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Ventas</span></a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('factura/verificador');?>"><i class="fa fa-paperclip"></i>Verificador de facturas</a>
-                        </li>
-                    </ul>
-                   
-                </li>
-                <?php } ?>
+                ?>
             </ul>
         </section>
         <!-- /.sidebar -->

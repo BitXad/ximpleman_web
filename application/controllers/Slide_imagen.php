@@ -22,6 +22,7 @@ class Slide_imagen extends CI_Controller{
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
+            $data['page_title'] = "Slide Imagen";
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
@@ -41,7 +42,7 @@ class Slide_imagen extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['slide_imagen'] = $this->Slide_imagen_model->get_all_slide_imagen($params);
-
+            $data['page_title'] = "Slide Imagen";
             $data['_view'] = 'slide_imagen/index';
             $this->load->view('layouts/main',$data);
         }
@@ -70,7 +71,7 @@ class Slide_imagen extends CI_Controller{
 
                             $this->load->model('Imagen_model');
                             $data['all_imagen'] = $this->Imagen_model->get_all_imagen();
-
+                $data['page_title'] = "Slide Imagen";            
                 $data['_view'] = 'slide_imagen/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -105,7 +106,7 @@ class Slide_imagen extends CI_Controller{
 
                                     $this->load->model('Imagen_model');
                                     $data['all_imagen'] = $this->Imagen_model->get_all_imagen();
-
+                    $data['page_title'] = "Slide Imagen";
                     $data['_view'] = 'slide_imagen/edit';
                     $this->load->view('layouts/main',$data);
                 }

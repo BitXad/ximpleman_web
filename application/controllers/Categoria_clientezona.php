@@ -32,6 +32,7 @@ class Categoria_clientezona extends CI_Controller{
     function index()
     {
         if($this->acceso(115)){
+            $data['page_title'] = "Categoria Cliente Zona";
             $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
 
             $data['_view'] = 'categoria_clientezona/index';
@@ -45,6 +46,7 @@ class Categoria_clientezona extends CI_Controller{
     function add()
     {   
         if($this->acceso(115)){
+            $data['page_title'] = "Categoria Cliente Zona";
             $this->load->library('form_validation');
             $this->form_validation->set_rules('zona_nombre','Nombre es requerida','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 
@@ -73,6 +75,7 @@ class Categoria_clientezona extends CI_Controller{
     function edit($categoriacliezona_id)
     {
         if($this->acceso(115)){
+            $data['page_title'] = "Categoria Cliente Zona";
             // check if the tipo_servicio exists before trying to edit it
             $data['categoria_clientezona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($categoriacliezona_id);
 

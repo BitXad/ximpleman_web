@@ -38,6 +38,7 @@ class Egreso extends CI_Controller{
     function index()
     {
         if($this->acceso(59)){
+            $data['page_title'] = "Egreso";
             $data['egreso'] = $this->Egreso_model->get_all_egreso();
             $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);    
@@ -73,6 +74,7 @@ class Egreso extends CI_Controller{
     function add()
     {   
         if($this->acceso(59)){
+            $data['page_title'] = "Dosificación";
                 $usuario_id = $this->session_data['usuario_id'];
                 
       $this->load->library('form_validation');
@@ -124,6 +126,7 @@ class Egreso extends CI_Controller{
     function edit($egreso_id)
     {   
         if($this->acceso(59)){
+            $data['page_title'] = "Dosificación";
             $usuario_id = $this->session_data['usuario_id'];
         // check if the egreso exists before tryegr to edit it
         $data['egreso'] = $this->Egreso_model->get_egreso($egreso_id);
@@ -167,7 +170,7 @@ class Egreso extends CI_Controller{
 
 public function pdf($egreso_id){
     if($this->acceso(59)){
-
+        $data['page_title'] = "Dosificación";
       $data['egresos'] = $this->Egreso_model->get_egresos($egreso_id);
       $data['empresa'] = $this->Empresa_model->get_empresa(1);    
              $data['_view'] = 'egreso/recibo';
@@ -179,6 +182,7 @@ public function pdf($egreso_id){
 
     public function boucher($egreso_id){
         if($this->acceso(59)){
+            $data['page_title'] = "Dosificación";
       $data['egreso'] = $this->Egreso_model->get_egresos($egreso_id);
       $data['empresa'] = $this->Empresa_model->get_empresa(1);    
              $data['_view'] = 'egreso/reciboboucher';

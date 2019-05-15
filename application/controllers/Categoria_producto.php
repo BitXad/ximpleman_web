@@ -32,6 +32,7 @@ class Categoria_producto extends CI_Controller{
     function index()
     {
         if($this->acceso(118)){
+            $data['page_title'] = "Categoria Producto";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Categoria_producto extends CI_Controller{
     function add()
     {
         if($this->acceso(118)){
+            $data['page_title'] = "Categoria Producto";
             $this->load->library('form_validation');
             $this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
             
@@ -79,6 +81,7 @@ class Categoria_producto extends CI_Controller{
     function edit($categoria_id)
     {
         if($this->acceso(118)){
+            $data['page_title'] = "Categoria Producto";
             // check if the categoria_producto exists before trying to edit it
             $data['categoria_producto'] = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
             if(isset($data['categoria_producto']['categoria_id']))

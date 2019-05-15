@@ -32,7 +32,7 @@ class Subcategoria_servicio extends CI_Controller{
     {
         if($this->acceso(127)){
         $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio();
-        
+        $data['page_title'] = "Subcategoria Servicio";
         $data['_view'] = 'subcategoria_servicio/index';
         $this->load->view('layouts/main',$data);
         }
@@ -67,7 +67,7 @@ class Subcategoria_servicio extends CI_Controller{
 			
             $this->load->model('Estado_model');
 	    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-            
+        $data['page_title'] = "Subcategoria Servicio";    
 	    $data['_view'] = 'subcategoria_servicio/add';
             $this->load->view('layouts/main',$data);
         }
@@ -104,7 +104,7 @@ class Subcategoria_servicio extends CI_Controller{
 
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-                
+                $data['page_title'] = "Subcategoria Servicio";
                 $data['_view'] = 'subcategoria_servicio/edit';
                 $this->load->view('layouts/main',$data);
             }

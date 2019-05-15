@@ -14,7 +14,7 @@ class Detalle_compra extends CI_Controller{
     /*
      * Listing of detalle_compra
      */
-    function index()
+    /*function index()
     {
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -48,12 +48,12 @@ class Detalle_compra extends CI_Controller{
         
         $data['_view'] = 'detalle_compra/index';
         $this->load->view('layouts/main',$data);
-    }
+    }*/
 
     /*
      * Adding a new detalle_compra
      */
-    function add()
+    /*function add()
     {   
         if(isset($_POST) && count($_POST) > 0)     
         {   
@@ -92,12 +92,12 @@ class Detalle_compra extends CI_Controller{
             $data['_view'] = 'compra/index';
             $this->load->view('layouts/main',$data);
         }
-    }  
+    }  */
 
     /*
      * Editing a detalle_compra
      */
-    function edit($detallecomp_id)
+    /*function edit($detallecomp_id)
     {   
         // check if the detalle_compra exists before trying to edit it
         $data['detalle_compra'] = $this->Detalle_compra_model->get_detalle_compra($detallecomp_id);
@@ -143,7 +143,7 @@ class Detalle_compra extends CI_Controller{
         }
         else
             show_error('The detalle_compra you are trying to edit does not exist.');
-    } 
+    } */
 
     /*
      * Deleting detalle_compra

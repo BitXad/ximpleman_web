@@ -41,7 +41,7 @@ class Seccion extends CI_Controller{
             $this->pagination->initialize($config);
 
             $data['seccion'] = $this->Seccion_model->get_all_seccion($params);
-
+            $data['page_title'] = "Seccion";
             $data['_view'] = 'seccion/index';
             $this->load->view('layouts/main',$data);
         }
@@ -78,7 +78,7 @@ class Seccion extends CI_Controller{
 
                             $this->load->model('Estado_pagina_model');
                             $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
+                $data['page_title'] = "Seccion";
                 $data['_view'] = 'seccion/add';
                 $this->load->view('layouts/main',$data);
             }
@@ -121,7 +121,7 @@ class Seccion extends CI_Controller{
 
                                     $this->load->model('Estado_pagina_model');
                                     $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
+                    $data['page_title'] = "Seccion";
                     $data['_view'] = 'seccion/edit';
                     $this->load->view('layouts/main',$data);
                 }

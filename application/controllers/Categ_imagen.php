@@ -32,6 +32,7 @@ class Categ_imagen extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Categ. Imagen";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Categ_imagen extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Categ. Imagen";
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
@@ -83,6 +85,7 @@ class Categ_imagen extends CI_Controller{
     function edit($categimg_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Categ. Imagen";
             // check if the categ_imagen exists before trying to edit it
             $data['categ_imagen'] = $this->Categ_imagen_model->get_categ_imagen($categimg_id);
 

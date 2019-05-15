@@ -35,8 +35,8 @@ class Cuotum extends CI_Controller{
     function index()
     {
         if($this->acceso(41)){
-            $usuario_id = $this->session_data['usuario_id'];
             $data['page_title'] = "Cuota";
+            $usuario_id = $this->session_data['usuario_id'];
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
 
             $data['_view'] = 'cuotum/index';
@@ -80,6 +80,7 @@ class Cuotum extends CI_Controller{
     function cuenta_serv($credito_id)
     {
         if($this->acceso(47)){
+            $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
             $data['_view'] = 'cuotum/cuentas';
@@ -89,6 +90,7 @@ class Cuotum extends CI_Controller{
     function planCuenta($credito_id)
     {
         if($this->acceso(47)){
+            $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
@@ -99,6 +101,7 @@ class Cuotum extends CI_Controller{
     function planCuentaServ($credito_id)
     {
         if($this->acceso(47)){
+            $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
@@ -109,6 +112,7 @@ class Cuotum extends CI_Controller{
     function recibodeudas($cuota_id)
     {
         if($this->acceso(41)){
+            $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $data['_view'] = 'cuotum/reciboDeuda';
@@ -129,6 +133,7 @@ class Cuotum extends CI_Controller{
    function recibocuentaserv($cuota_id)
     {
        if($this->acceso(47)){
+           $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $data['_view'] = 'cuotum/reciboCuenta';
@@ -138,6 +143,7 @@ class Cuotum extends CI_Controller{
     function comprobantedeudas($cuota_id,$credito_id)
     {
         if($this->acceso(41)){
+            $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_deuda($credito_id);
@@ -148,6 +154,7 @@ class Cuotum extends CI_Controller{
     function comprobantecuentas($cuota_id,$credito_id)
     {
         if($this->acceso(47)){
+            $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
@@ -159,6 +166,7 @@ class Cuotum extends CI_Controller{
     function notacobro($cuota_id,$credito_id)
     {
         if($this->acceso(41) or $this->acceso(47)){
+            $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
@@ -170,6 +178,7 @@ class Cuotum extends CI_Controller{
     function comprobantecuentaserv($cuota_id,$credito_id)
     {
         if($this->acceso(47)){
+            $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);
@@ -180,17 +189,18 @@ class Cuotum extends CI_Controller{
     function pagar($cuota_id)
     {
         if($this->acceso(41)){
+            $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
-        $data['cuota'] = $this->Cuotum_model->get_cuotum($cuota_id);
-       //  $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
-        $estado_id = 8;
-        $cuota_id = $this->input->post('cuota_id');
-         $num = $this->Cuotum_model->numero();
-          $maximo = $num[0]['parametro_montomax'];
-          $interes = $num[0]['parametro_interes'];
-        $credito_id = $this->input->post('credito_id');
-        $credito_tipointeres = $this->input->post('credito_tipointeres');
-        $cuota_capital = $this->input->post('cuota_capital');
+            $data['cuota'] = $this->Cuotum_model->get_cuotum($cuota_id);
+           //  $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
+            $estado_id = 8;
+            $cuota_id = $this->input->post('cuota_id');
+            $num = $this->Cuotum_model->numero();
+            $maximo = $num[0]['parametro_montomax'];
+            $interes = $num[0]['parametro_interes'];
+            $credito_id = $this->input->post('credito_id');
+            $credito_tipointeres = $this->input->post('credito_tipointeres');
+            $cuota_capital = $this->input->post('cuota_capital');
 
   $si_orden=$this->input->post('cuota_ordenpago');     
    if ($si_orden==1 ) {
@@ -390,7 +400,7 @@ class Cuotum extends CI_Controller{
         if($cuota_capital==0){
          $params = array(
                     
-                   // 'usuario_id' => $this->input->post('usuario_id'),
+                    'usuario_id' => $usuario_id,
                     'estado_id' => $this->input->post('estado_id'),
                    // 'cuota_numcuota' => $this->input->post('cuota_numcuota'),
                     //'cuota_capital' => $this->input->post('cuota_capital'),
@@ -415,7 +425,7 @@ class Cuotum extends CI_Controller{
              else{
                  $params = array(
                     
-                   // 'usuario_id' => $this->input->post('usuario_id'),
+                   'usuario_id' => $usuario_id,
                     'estado_id' => $this->input->post('estado_id'),
                    // 'cuota_numcuota' => $this->input->post('cuota_numcuota'),
                     //'cuota_capital' => $this->input->post('cuota_capital'),
@@ -608,6 +618,7 @@ class Cuotum extends CI_Controller{
     function add()
     {
         if($this->acceso(41) or $this->acceso(47)){
+            $data['page_title'] = "Cuota";
         if(isset($_POST) && count($_POST) > 0)     
         {   
             $params = array(
@@ -660,6 +671,7 @@ class Cuotum extends CI_Controller{
     function edit($cuota_id)
     {
         if($this->acceso(41)){
+            $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
         // check if the cuotum exists before trying to edit it
         $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
@@ -714,7 +726,8 @@ class Cuotum extends CI_Controller{
     
      function editar($cuota_id)
     {
-         if($this->acceso(47)){
+        if($this->acceso(47)){
+             $data['page_title'] = "Cuota";
             $usuario_id = $this->session_data['usuario_id'];
      
         // check if the cuotum exists before trying to edit it

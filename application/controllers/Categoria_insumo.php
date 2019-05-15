@@ -32,6 +32,7 @@ class Categoria_insumo extends CI_Controller{
     function index()
     {
         if($this->acceso(81)){
+            $data['page_title'] = "Categoria Insumo";
             $data['categoria_insumo'] = $this->Categoria_insumo_model->get_all_categoria_insumo();
 
             $data['_view'] = 'categoria_insumo/index';
@@ -44,6 +45,7 @@ class Categoria_insumo extends CI_Controller{
     function add()
     {
         if($this->acceso(81)){
+            $data['page_title'] = "Categoria Insumo";
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
@@ -71,6 +73,7 @@ class Categoria_insumo extends CI_Controller{
     function edit($catinsumo_id)
     {
         if($this->acceso(81)){
+            $data['page_title'] = "Categoria Insumo";
             // check if the categoria_insumo exists before trying to edit it
             $data['categoria_insumo'] = $this->Categoria_insumo_model->get_categoria_insumo($catinsumo_id);
 
@@ -122,6 +125,7 @@ class Categoria_insumo extends CI_Controller{
     function insumo($subcatserv_id)
     {
         if($this->acceso(81)){
+            $data['page_title'] = "Categoria Insumo";
             $data['subcatserv_id'] = $subcatserv_id;
             $this->load->model('Subcategoria_servicio_model');
             $nombre = $this->Subcategoria_servicio_model->get_nombre_subcategoria_servicio($subcatserv_id);
@@ -232,6 +236,7 @@ class Categoria_insumo extends CI_Controller{
     function verinsumosasignar($servicio_id, $detalleserv_id)
     {
         if($this->acceso(81)){
+            $data['page_title'] = "Categoria Insumo";
             $this->load->model('Detalle_serv_model');
             $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             $data['detalleserv_codigo'] = $detalle_serv['detalleserv_codigo'];

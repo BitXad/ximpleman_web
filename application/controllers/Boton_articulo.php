@@ -32,6 +32,7 @@ class Boton_articulo extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton Articulo";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Boton_articulo extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton Articulo";
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
@@ -83,6 +85,7 @@ class Boton_articulo extends CI_Controller{
     function edit($botonartic_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton Articulo";
             // check if the boton_articulo exists before trying to edit it
             $data['boton_articulo'] = $this->Boton_articulo_model->get_boton_articulo($botonartic_id);
 

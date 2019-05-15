@@ -12,7 +12,10 @@ function buscar_fecha_deuda()
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
    var estado = document.getElementById('estado_id').value;
-   
+   $("#feini").val(fecha_desde);
+   $("#fefin").val(fecha_hasta);
+   $("#usu").val(proveedor);
+   $("#esti").val(estado);
     if (fecha_desde =='' && fecha_hasta ==''){
            var  filtro = " and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
           }
@@ -101,6 +104,10 @@ function buscar_fecha_cuenta()
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
     var estado = document.getElementById('estado_id').value;
+    $("#feini").val(fecha_desde);
+   $("#fefin").val(fecha_hasta);
+   $("#usu").val(cliente);
+   $("#esti").val(estado);
     if (fecha_desde =='' && fecha_hasta ==''){
            var  filtro = " and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' ";
           }
