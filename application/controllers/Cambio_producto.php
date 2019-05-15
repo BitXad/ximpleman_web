@@ -34,6 +34,7 @@ class Cambio_producto extends CI_Controller{
     function index()
     {   
         if($this->acceso(65)){
+            $data['page_title'] = "Cambios/Devoluciones";
             $this->load->model('Detalle_venta_model');
             $data['detalle_venta'] = $this->Detalle_venta_model->get_all_detalle_ventas();
             $this->load->model('Detalle_compra_model');
@@ -152,6 +153,7 @@ class Cambio_producto extends CI_Controller{
     function addee()
     {
         if($this->acceso(65)){
+            $data['page_title'] = "Cambios/Devoluciones";
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
@@ -176,6 +178,7 @@ class Cambio_producto extends CI_Controller{
     function add($cambio_producto_id)
     {
         if($this->acceso(65)){
+            $data['page_title'] = "Cambios/Devoluciones";
             $data['cambio_producto'] = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
             $this->load->model('Detalle_compra_model');
             $data['cambio_producto_id'] = $cambio_producto_id;
@@ -194,6 +197,7 @@ class Cambio_producto extends CI_Controller{
     function anular($cambio_producto_id)
     {
        if($this->acceso(65)){
+           $data['page_title'] = "Cambios/Devoluciones";
             $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
             $this->load->model('Detalle_compra_model');
             $data['cambio_producto_id'] = $cambio_producto_id;
@@ -313,6 +317,7 @@ class Cambio_producto extends CI_Controller{
     function edit($cambio_producto_id)
     {
         if($this->acceso(67)){
+            $data['page_title'] = "Cambios/Devoluciones";
             // check if the cambio_producto exists before trying to edit it
             $data['cambio_producto'] = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
 

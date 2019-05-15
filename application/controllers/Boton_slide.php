@@ -32,6 +32,7 @@ class Boton_slide extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton Slide";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -53,6 +54,7 @@ class Boton_slide extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton Slide";
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
@@ -83,6 +85,7 @@ class Boton_slide extends CI_Controller{
     function edit($botonslide_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton Slide";
             // check if the boton_slide exists before trying to edit it
             $data['boton_slide'] = $this->Boton_slide_model->get_boton_slide($botonslide_id);
 

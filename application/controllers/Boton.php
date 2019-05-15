@@ -33,6 +33,7 @@ class Boton extends CI_Controller{
     function index()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
@@ -54,6 +55,7 @@ class Boton extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton";
             $this->load->library('form_validation');
 
                     $this->form_validation->set_rules('boton_titulo','Boton Titulo','required');
@@ -87,6 +89,7 @@ class Boton extends CI_Controller{
     function edit($boton_id)
     {
         if($this->acceso(155)){
+            $data['page_title'] = "Boton";
             // check if the boton exists before trying to edit it
             $data['boton'] = $this->Boton_model->get_boton($boton_id);
 
