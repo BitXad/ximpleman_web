@@ -165,3 +165,51 @@ function ventacombi(filtro)
     });   
 
 } 
+
+function asignar()
+{
+   
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario_usuario/asignar";
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var usuario_id = document.getElementById('usuario_id');
+    var usuario = document.getElementById('inv_usu').value;
+    var fecha = document.getElementById('fecha').value;
+    var hora = document.getElementById('hora').value;
+ document.getElementById('asigloader').style.display = 'block';
+ document.getElementById('botoness').style.display = 'none';
+   // alert(usuario_id[0]['value']);
+   // alert(usuario_id[1]['value']);
+   // alert(usuario_id[2]['value']);
+    for (var i=0; i<usuario_id.length; i++)
+    {
+      if (i==0)
+      {
+        filtro = " and date(venta_fecha) >= '"+fecha_desde+"'  and  date(venta_fecha) <='"+fecha_hasta+
+            "' and (v.usuario_id = "+usuario_id[i]['value'];
+      }
+      else
+      {
+        filtro += "  or v.usuario_id = "+usuario_id[i]['value'];
+      }
+    }
+    filtro +=")";
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{filtro:filtro,usuario:usuario,fecha:fecha,hora:hora},
+           success:function(respuesta){ 
+            $('#myModal').modal('hide');
+            document.getElementById('asigloader').style.display = 'none';
+            document.getElementById('botoness').style.display = 'block';
+             
+             },
+          
+        
+    });   
+ 
+
+    
+    
+}

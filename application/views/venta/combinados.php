@@ -78,7 +78,7 @@
     </div>
 
                
-        <div class="col-md-6" style="padding-top:0px; font-size: 11px;">
+        <div class="col-md-5" style="padding-top:0px; font-size: 11px;">
             
             <span id="usus" style="font-size: 11px;"><b>Vendedor(es): </b></span>   
         <div class="row" style="font-size: 11px; padding-left: 14px;">
@@ -103,8 +103,53 @@
                         </center>
                     </div> 
         </div>
-        <div class="col-md-3 no-print" style="padding-top:0;">
+        <div class="col-md-2 no-print" style="padding-top:0;">
             <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
+       </div>
+       <div class="col-md-2 no-print" style="padding-top:0;">
+            <a  class="btn btn-warning btn-sm no-print" data-toggle="modal" data-target="#myModal"><i class="fa fa-truck"> Asignar Productos</i></a>
+
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                      <div class="modal-dialog" role="document">
+                                            <br><br>
+                                        <div class="modal-content">
+                                          <div class="modal-header"><b style="font-size: 14px;">Asignar Productos</b>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                           <!------------------------------------------------------------------->
+                                          Si este usuario ya tiene productos asignados en esta fecha, los productos seran reasignados.<div class="col-md-8 no-print"> 
+                            <label for="cliente_foto" class="control-label">Asignar a:</label>
+                            <select name="inv_usu" id="inv_usu"  class="form-control">
+                                
+                                <?php 
+                                foreach($all_usuario as $usuario)
+                                {
+                                    $selected = ($usuario['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+                                    echo '<option value="'.$usuario['usuario_id'].'" '.$selected.'>'.$usuario['usuario_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div><div style='display:none;'>
+                            <input type="date" name="fecha" id="fecha" value="<?php echo date("Y-m-d") ?>">
+                            <input type="time" name="hora" id="hora" value="<?php echo date("H:i:s") ?>">
+                        </div>
+                        <div class="row no-print" id='asigloader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
+                        </center>
+                    </div> 
+                                           <!------------------------------------------------------------------->
+                                          </div>
+                                          <div class="modal-footer aligncenter" id="botoness">
+                                                      <a onclick="asignar()" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+            
        </div>
       
 </div>
