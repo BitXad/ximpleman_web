@@ -1437,4 +1437,12 @@ $detalle = "INSERT into detalle_compra(
     }
 }
 
+    function historial_compras(){
+        
+        $producto_id = $this->input->post('producto_id');
+        $resultado = $this->Compra_model->mostrar_historial($producto_id);
+        echo json_encode($resultado);  
+        
+    }
+
 }
