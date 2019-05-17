@@ -818,9 +818,9 @@ function mostrar_ocultar(){
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
                                                         
-                                                    <button class="btn btn-facebook" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
+                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
                                                     
-                                                    <button class="btn btn-danger" data-dismiss="modal">
+                                                    <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
                                                         
                                                         <span class="fa fa-close"></span>   Cancelar  
                                                         

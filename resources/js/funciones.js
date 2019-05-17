@@ -2462,7 +2462,7 @@ function asignar_inventario(){
                 data:{usuario_id:usuario_id},
                 success:function(respuesta){
                     quitartodo();
-
+                    $('#cerrar_modalasignar').click();
                 },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 
             });
