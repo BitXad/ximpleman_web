@@ -352,7 +352,7 @@ function mostrar_ocultar(){
                Finalizar Venta <br>
             </a>
 
-            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
+            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>
@@ -772,3 +772,78 @@ function mostrar_ocultar(){
     <option value="2" label="lincer">como</option>
     <option value="3" label="gato">estas</option>
 </datalist>-->
+
+
+<!----------------- modal inventario ---------------------------------------------->
+
+<div class="modal fade" id="modalinventario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>Asignar Inventario</b></h4>
+                                <b>ADVERTENCIA: El inventario actual, remplazara algun invenario asignado previamente.</b>                                
+                            </center>
+
+                                
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+
+                    
+                        
+                        <div class="box-body table-responsive">
+                                        <div class="col-md-6">
+						<label for="usuario_idx" class="control-label">Prevendedor</label>
+						<div class="form-group">
+							<select name="usuario_idx" id="usuario_idx" class="form-control">
+								<option value="0">- ASIGNAR PREVENDEDOR -</option>
+								<?php 
+								foreach($usuario as $usuario_prev)
+								{
+									$selected = ($usuario_prev['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
+                                                    
+                                                    <button class="btn btn-danger" data-dismiss="modal">
+                                                        
+                                                        <span class="fa fa-close"></span>   Cancelar  
+                                                        
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display:none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal inventario ---------------------------------------------->
