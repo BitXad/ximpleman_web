@@ -352,6 +352,11 @@ function mostrar_ocultar(){
                Finalizar Venta <br>
             </a>
 
+            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-truck fa-4x"></i><br><br>
+               Asignar <br>
+            </a>
+
             <?php if ($tipousuario_id == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
