@@ -10,6 +10,7 @@ class Inventario_usuario extends CI_Controller{
         parent::__construct();
         $this->load->model('Inventario_usuario_model');
         $this->load->model('Venta_model');
+        $this->load->model('Usuario_model');
     } 
 
     /*
@@ -18,9 +19,21 @@ class Inventario_usuario extends CI_Controller{
     function index()
     {
         $data['inventario_usuario'] = $this->Inventario_usuario_model->get_all_inventario_usuario();
-        
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
         $data['_view'] = 'inventario_usuario/index';
         $this->load->view('layouts/main',$data);
+    }
+
+    function buscar()
+    {
+        if ($this->input->is_ajax_request()) {
+        $filtro = $this->input->post('filtro');
+        $datos = $this->Inventario_usuario_model->buscar_inventario_usuario($filtro);
+        echo json_encode($datos);
+        } else
+        {                 
+                    show_404();
+        }          
     }
 
     /*
@@ -70,6 +83,7 @@ class Inventario_usuario extends CI_Controller{
                 'inventario_fecha' => $fecha,
                 'inventario_hora' => $hora,
                 'inventario_cantidad' => $dat['cantidades'],
+                'inventario_costo' => ($dat['producto_costo']*$dat['cantidades']),
                 'inventario_ventas' => 0,
                 'inventario_pedidos' => 0,
                 'inventario_devoluciones' => 0,
@@ -114,6 +128,8 @@ class Inventario_usuario extends CI_Controller{
             }
             else
             {
+                $data['producto'] = $this->Inventario_usuario_model->get_producto($inventario_id);
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
                 $data['_view'] = 'inventario_usuario/edit';
                 $this->load->view('layouts/main',$data);
             }

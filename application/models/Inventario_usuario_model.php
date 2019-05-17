@@ -24,8 +24,63 @@ class Inventario_usuario_model extends CI_Model
      */
     function get_all_inventario_usuario()
     {
-        $this->db->order_by('inventario_id', 'desc');
-        return $this->db->get('inventario_usuario')->result_array();
+       $invusuario = $this->db->query("
+            SELECT
+                iu.*, p.*, u.usuario_nombre
+
+            FROM
+                inventario_usuario iu
+            LEFT JOIN producto p on p.producto_id=iu.producto_id
+            LEFT JOIN usuario u on u.usuario_id=iu.usuario_id
+               
+            WHERE iu.inventario_fecha = CURDATE() 
+            ORDER BY `inventario_id` DESC
+
+            
+        ")->result_array();
+
+        return $invusuario;
+    }
+
+    function buscar_inventario_usuario($filtro)
+    {
+       $invusuario = $this->db->query("
+            SELECT
+                iu.*, p.*, u.usuario_nombre
+
+            FROM
+                inventario_usuario iu
+            LEFT JOIN producto p on p.producto_id=iu.producto_id
+            LEFT JOIN usuario u on u.usuario_id=iu.usuario_id
+            
+            WHERE 1=1
+            ".$filtro."   
+
+            ORDER BY `inventario_id` DESC
+
+            
+        ")->result_array();
+
+        return $invusuario;
+    }
+
+    function get_producto($inventario_id)
+    {
+       $producto = $this->db->query("
+            SELECT
+                p.*, iu.producto_id
+
+            FROM
+               producto p, inventario_usuario iu
+            where
+                iu.inventario_id=".$inventario_id."
+                and p.producto_id=iu.producto_id
+               
+
+            
+        ")->row_array();
+
+        return $producto;
     }
         
     /*

@@ -2,71 +2,88 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Inventario Usuario Edit</h3>
+              	<h3 class="box-title">Editar Inventario Usuario </h3>
             </div>
+           
+            <span class="text-danger"><h4><?php echo $producto['producto_nombre']; ?>"</h4></span>
+
 			<?php echo form_open('inventario_usuario/edit/'.$inventario_usuario['inventario_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
-					<div class="col-md-6">
-						<label for="producto_id" class="control-label">Producto Id</label>
+					<div class="col-md-6" hidden>
+						<label for="producto_id" class="control-label">Producto</label>
 						<div class="form-group">
-							<input type="text" name="producto_id" value="<?php echo ($this->input->post('producto_id') ? $this->input->post('producto_id') : $inventario_usuario['producto_id']); ?>" class="form-control" id="producto_id" />
+							<input type="text" name="producto_id" value="<?php echo ($this->input->post('producto_id') ? $this->input->post('producto_id') : $inventario_usuario['producto_id']); ?>" class="form-control" id="producto_id" readonly />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="inventario_fecha" class="control-label">Inventario Fecha</label>
+						<label for="inventario_fecha" class="control-label">Fecha</label>
 						<div class="form-group">
-							<input type="text" name="inventario_fecha" value="<?php echo ($this->input->post('inventario_fecha') ? $this->input->post('inventario_fecha') : $inventario_usuario['inventario_fecha']); ?>" class="has-datepicker form-control" id="inventario_fecha" />
+							<input type="date" name="inventario_fecha" value="<?php echo ($this->input->post('inventario_fecha') ? $this->input->post('inventario_fecha') : $inventario_usuario['inventario_fecha']); ?>" class="form-control" id="inventario_fecha" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="inventario_hora" class="control-label">Inventario Hora</label>
+						<label for="inventario_hora" class="control-label">Hora</label>
 						<div class="form-group">
-							<input type="text" name="inventario_hora" value="<?php echo ($this->input->post('inventario_hora') ? $this->input->post('inventario_hora') : $inventario_usuario['inventario_hora']); ?>" class="form-control" id="inventario_hora" />
+							<input type="time" name="inventario_hora" value="<?php echo ($this->input->post('inventario_hora') ? $this->input->post('inventario_hora') : $inventario_usuario['inventario_hora']); ?>" class="form-control" id="inventario_hora" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="inventario_cantidad" class="control-label">Inventario Cantidad</label>
+						<label for="inventario_cantidad" class="control-label">Cantidad</label>
 						<div class="form-group">
 							<input type="text" name="inventario_cantidad" value="<?php echo ($this->input->post('inventario_cantidad') ? $this->input->post('inventario_cantidad') : $inventario_usuario['inventario_cantidad']); ?>" class="form-control" id="inventario_cantidad" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="inventario_ventas" class="control-label">Inventario Ventas</label>
+						<label for="inventario_ventas" class="control-label">Ventas</label>
 						<div class="form-group">
 							<input type="text" name="inventario_ventas" value="<?php echo ($this->input->post('inventario_ventas') ? $this->input->post('inventario_ventas') : $inventario_usuario['inventario_ventas']); ?>" class="form-control" id="inventario_ventas" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="inventario_pedidos" class="control-label">Inventario Pedidos</label>
+						<label for="inventario_pedidos" class="control-label">Pedidos</label>
 						<div class="form-group">
 							<input type="text" name="inventario_pedidos" value="<?php echo ($this->input->post('inventario_pedidos') ? $this->input->post('inventario_pedidos') : $inventario_usuario['inventario_pedidos']); ?>" class="form-control" id="inventario_pedidos" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="inventario_devoluciones" class="control-label">Inventario Devoluciones</label>
+						<label for="inventario_devoluciones" class="control-label">Devoluciones</label>
 						<div class="form-group">
 							<input type="text" name="inventario_devoluciones" value="<?php echo ($this->input->post('inventario_devoluciones') ? $this->input->post('inventario_devoluciones') : $inventario_usuario['inventario_devoluciones']); ?>" class="form-control" id="inventario_devoluciones" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="inventario_saldo" class="control-label">Inventario Saldo</label>
+						<label for="inventario_saldo" class="control-label">Saldo</label>
 						<div class="form-group">
 							<input type="text" name="inventario_saldo" value="<?php echo ($this->input->post('inventario_saldo') ? $this->input->post('inventario_saldo') : $inventario_usuario['inventario_saldo']); ?>" class="form-control" id="inventario_saldo" />
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="usuario_id" class="control-label">Usuario Id</label>
+						<label for="usuario_id" class="control-label">Usuario</label>
+
 						<div class="form-group">
-							<input type="text" name="usuario_id" value="<?php echo ($this->input->post('usuario_id') ? $this->input->post('usuario_id') : $inventario_usuario['usuario_id']); ?>" class="form-control" id="usuario_id" />
+						
+							<select name="usuario_id" id="usuario_id"  class="form-control">
+                                
+                                <?php 
+                                foreach($all_usuario as $usuario)
+                                {
+                                    $selected = ($usuario['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+                                    echo '<option value="'.$usuario['usuario_id'].'" '.$selected.'>'.$usuario['usuario_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="box-footer">
             	<button type="submit" class="btn btn-success">
-					<i class="fa fa-check"></i> Save
+					<i class="fa fa-check"></i> Guardar
 				</button>
+				<a href="<?php echo site_url('inventario_usuario/index'); ?>" class="btn btn-danger">
+                                <i class="fa fa-times"></i> Cancelar</a>
 	        </div>				
 			<?php echo form_close(); ?>
 		</div>
