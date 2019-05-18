@@ -2444,3 +2444,38 @@ function ocultar_busqueda(){
     
     $("#tablaresultados").html("");
 }
+
+function asignar_inventario(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'/venta/asignar_inventario';
+    var usuario_id = document.getElementById('usuario_idx').value;
+    var venta_totalfinal = document.getElementById('venta_totalfinal').value;
+
+    document.getElementById('botones').style.display = 'none'; //ocultar botones
+    document.getElementById('loaderinventario').style.display = 'block'; //mostrar el bloque del loader 
+
+    if (usuario_id>0){
+        if (venta_totalfinal>0){
+            $.ajax({
+                url:controlador,
+                type:"POST",
+                data:{usuario_id:usuario_id},
+                success:function(respuesta){
+                    quitartodo();
+                    $('#cerrar_modalasignar').click();
+                },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+            });
+        }
+        else {  alert("ERROR: Debe tener productos en el detalle..!");  }
+    }
+    else
+    {
+        alert("Debe seleccionar un usuario.!");      
+    }
+    
+
+    document.getElementById('botones').style.display = 'block'; //ocultar botones
+    document.getElementById('loaderinventario').style.display = 'none'; //mostrar el bloque del loader 
+    
+}

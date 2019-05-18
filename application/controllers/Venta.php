@@ -86,6 +86,7 @@ class Venta extends CI_Controller{
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         
@@ -1845,8 +1846,35 @@ function anular_venta($venta_id){
 
                //**************** fin contenido ***************
                                        }
-                                           
         
     }    
+    
+  
+        
+    function asignar_inventario(){
+        //if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+
+            $usuario_vendedor = $this->session_data['usuario_id'];
+            $usuario_id = $this->input->post('usuario_id');
+
+
+            $sql =  "delete from inventario_usuario where inventario_fecha = date(now()) and usuario_id = ".$usuario_id;
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql =  "insert into inventario_usuario
+                    (producto_id,inventario_fecha,inventario_hora,inventario_cantidad,inventario_ventas, inventario_pedidos,inventario_devoluciones,inventario_saldo,usuario_id)
+                    (select producto_id, date(now()),time(now()), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id." 
+                    from detalle_venta_aux where usuario_id=".$usuario_vendedor.")";
+            $this->Venta_model->ejecutar($sql);
+            
+            echo json_encode(TRUE);
+
+
+        //**************** fin contenido ***************
+        //}
+                                                   
+        
+    }   
     
 }
