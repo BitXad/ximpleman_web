@@ -40,7 +40,7 @@ class Categoria_cliente extends CI_Controller{
             $config['base_url'] = site_url('categoria_cliente/index?');
             $config['total_rows'] = $this->Categoria_cliente_model->get_all_categoria_cliente_count();
             $this->pagination->initialize($config);
-
+            
             $data['categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente($params);
 
             $data['_view'] = 'categoria_cliente/index';
