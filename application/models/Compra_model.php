@@ -416,6 +416,27 @@ class Compra_model extends CI_Model
         $compra_total = $cant * $producto_costo;
         $detallecomp = "INSERT INTO detalle_compra (compra_id, producto_id, detallecomp_cantidad, detallecomp_costo, detallecomp_total) VALUES ('$compra_id', '$producto', '$cant', '$producto_costo' '$compra_total')";
                         
-    }       
+    } 
+    
+    function mostrar_historial($producto_id){
+        
+        $sql = "SELECT 
+                    p.proveedor_nombre,
+                    c.compra_fecha,
+                    d.detallecomp_costo
+                  FROM
+                    proveedor p,
+                    compra c,
+                    detalle_compra d
+                  WHERE
+                    d.producto_id = ".$producto_id." AND 
+                    d.compra_id = c.compra_id AND 
+                    c.proveedor_id = p.proveedor_id
+                  ORDER BY
+                    c.compra_fecha DESC";
+        return $this->db->query($sql)->result_array();
+        
+    }
+    
 }
 

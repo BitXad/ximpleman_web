@@ -139,10 +139,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     <div class="col-md-4">
     <div class="box-tools">
         <center>            
-            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Prov</small></a>
-            <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prov</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Proveedor</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar</small></a>
             <!--<a href="#" data-toggle="modal" data-target="#modalbuscarprod" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->
-            <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod.</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->  
        
         </center>  
@@ -219,7 +219,10 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <!--------------------- FIN CABERECA -------------------------->
  <div class="box-tools" >
 
-         <span class="btn btn-info" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>  
+         <!--<span class="btn btn-info" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>-->  
+         
+        <span style="margin-right: 50%">Buscar Productos</span>  
+         <label class="btn btn-info btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar detalle</label>  
                 <?php if($bandera==1) { ?>
                     
                 <a href="#" data-toggle="modal" data-target="#anularmodal" class="btn btn-xs btn-warning" >
@@ -290,6 +293,8 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <?php $provi = $compra[0]['proveedor_id']; 
  
     if($provi==0) { ?>
+        
+        
         <label id="provedorboton"><a  onclick="myFunction()" href="#" class="btn btn-xs btn-success" ><i class="fa fa-money "></i>
                Finalizar compra 
             </a></label>
@@ -345,7 +350,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         
         <div class="col-md-4" style="padding-left:0px;">
                         
-      <div class="input-group"> <span class="input-group-addon">Buscar</span>
+      <div class="input-group"> <span class="input-group-addon" onclick="ocultar_busqueda();">Buscar</span>
         <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event,4)">
       </div>
       <!-------------------- CATEGORIAS------------------------------------->
@@ -355,7 +360,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <!--------------------- indicador de resultados --------------------->
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
-                <span class="badge btn-primary">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
+                <span class="badge btn-primary">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
 
 </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
@@ -1375,3 +1380,43 @@ $("#texto2").change(function(){
     </div>
 </div>
 </div>
+
+
+<!--------------------------------------- MODAL HISTORIAL DE COSTOS -------------------------------------->
+
+<div class="modal fade" id="modalhistorial" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>HISTORIAL DE COSTOS</b></h4>
+                            </center>
+
+                                
+                    </div>
+					
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive" id="tabla_historial">
+                            
+                        
+                        </div>
+                        <center>
+                            
+                            <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
+
+                                <span class="fa fa-close"></span>   Cerrar  
+
+                            </button>
+                        </center>
+                    </div>
+		</div>
+	</div>
+</div>
+
+<!--------------------------------------- MODAL HISTORIAL DE COSTOS -------------------------------------->
