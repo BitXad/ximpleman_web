@@ -561,14 +561,16 @@ class Cuotum extends CI_Controller{
             }
     }
 
-    function pendiente($cuota_id,$credito_id)
+    function pendiente($cuota_id,$credito_id,$numcuota)
     {
         if($this->acceso(41)){
             $usuario_id = $this->session_data['usuario_id'];
             
             $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
-             $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
+            $ptq="DELETE FROM cuota WHERE cuota.cuota_numcuota = ".$numcuota." and cuota_id > ".$cuota_id." and cuota.credito_id=".$credito_id." and cuota.estado_id=8 ";
+            $this->db->query($ptq);
+            $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
             $credingo = $this->db->query($credis)->result_array();
             $cuotis = "SELECT COUNT(cuota_id) as 'cuotanga' FROM cuota  WHERE cuota.estado_id = 9 and cuota.credito_id = ".$credito_id;
             $cuotinga = $this->db->query($cuotis)->result_array();
@@ -585,13 +587,15 @@ class Cuotum extends CI_Controller{
         }
     }
 
-    function pendiente1($cuota_id,$credito_id)
+    function pendiente1($cuota_id,$credito_id,$numcuota)
     {
         if($this->acceso(47)){
             $usuario_id = $this->session_data['usuario_id'];
             
             $sql = "UPDATE cuota SET estado_id=8,cuota_cancelado=0,cuota_fecha='0000-00-00' WHERE cuota.cuota_id=".$cuota_id." ";
             $this->db->query($sql);
+            $ptq="DELETE FROM cuota WHERE cuota.cuota_numcuota = ".$numcuota." and cuota_id > ".$cuota_id." and cuota.credito_id=".$credito_id." and cuota.estado_id=8 ";
+            $this->db->query($ptq);
              $credis = "SELECT COUNT(cuota_id) as 'creditango' FROM cuota  WHERE cuota.credito_id = ".$credito_id;
             $credingo = $this->db->query($credis)->result_array();
             $cuotis = "SELECT COUNT(cuota_id) as 'cuotanga' FROM cuota  WHERE cuota.estado_id = 9 and cuota.credito_id = ".$credito_id;
