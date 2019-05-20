@@ -248,7 +248,10 @@ class Producto extends CI_Controller{
                     }
                     /* ********************F I N  para resize***************************** */
                     //$directorio = base_url().'resources/imagenes/';
-                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
+                    //$base_url = explode('/', base_url());
+                    $directorio = FCPATH.'resources\images\productos\\';
+                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/productos/';
+                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
                           unlink($directorio.$foto1);
