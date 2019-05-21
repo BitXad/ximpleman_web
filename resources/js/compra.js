@@ -50,7 +50,7 @@ function borrartodo(){
 
 function tabladetallecompra(){
      var controlador = "";
-     var limite = 1000;
+     //var limite = 1000;
      var base_url = document.getElementById('base_url').value;
      var compra_id = document.getElementById('compra_idie').value;
      var bandera = document.getElementById('bandera').value;
@@ -73,10 +73,10 @@ function tabladetallecompra(){
                     var subtotal = Number(0);
                     var descuento = Number(0);
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                   /*if (n <= limite) x = n; 
+                   else x = limite;*/
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         
                         var suma = Number(registros[i]["detallecomp_total"]);
                         descuento += Number(registros[i]["detallecomp_descuento"]);

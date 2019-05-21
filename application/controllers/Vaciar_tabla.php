@@ -50,9 +50,12 @@ class Vaciar_tabla extends CI_Controller{
                 $extension = $img_data['file_ext'];
 
                 $arch = $new_name.$extension;
-                $query = file_get_contents($config['upload_path'].$arch);
+                //$query = file_get_contents($config['upload_path'].$arch);
                 $res = false;
-                $directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/';
+                
+                //$base_url = explode('/', base_url());
+                $directorio = FCPATH.'resources\images\\';
+                //$directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/';
                 $res = $this->Vaciar_tabla_model->insertar_datos($directorio.$arch);
                 if(isset($arch) && !empty($arch)){
                     if(file_exists($directorio.$arch)){

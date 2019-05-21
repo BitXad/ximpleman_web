@@ -287,10 +287,10 @@ function toggle(source) {
 						</div>
 					</div>
                                         <div class="col-md-5">
-						<label for="usuario_id" class="control-label">Prevendedor</label>
+						<label for="usuario_id" class="control-label">Cliente Asignado a:</label>
 						<div class="form-group">
 							<select name="usuario_id" class="form-control">
-								<option value="">- ASIGNAR PREVENDEDOR -</option>
+								<option value="">- USUARIO -</option>
 								<?php 
 								foreach($all_usuario_prev as $usuario_prev)
 								{
