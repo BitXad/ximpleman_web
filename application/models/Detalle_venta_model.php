@@ -49,8 +49,9 @@ function ventas_dia($estado)
             LEFT JOIN tipo_servicio ts on v.tiposerv_id=ts.tiposerv_id
 
             WHERE
-                v.entrega_id=".$estado." 
-                and v.venta_fecha = date(now())
+            v.venta_fecha = date(now())
+            and v.entrega_id=".$estado." 
+                
             
         ")->result_array();
 
@@ -58,8 +59,11 @@ function ventas_dia($estado)
   }
   function get_dventadia()
     {
-        $sql = "SELECT d.*, p.producto_nombre, v.venta_fecha FROM detalle_venta d, producto p, venta v
-               where d.producto_id=p.producto_id and d.venta_id=v.venta_id and v.venta_fecha = date(now()) ";
+        $sql = "SELECT d.*, p.producto_nombre, v.venta_fecha
+        FROM detalle_venta d
+        LEFT JOIN producto p ON d.producto_id=p.producto_id
+        LEFT JOIN venta v ON d.venta_id=v.venta_id
+        WHERE v.venta_fecha = date(now()) ";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     } 

@@ -12,7 +12,8 @@
                 })
             }(jQuery));
         });
-</script>   
+</script> 
+  
 
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 

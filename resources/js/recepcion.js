@@ -59,7 +59,8 @@ function recepcion(estado)
                         
                         html += "</td>";
                         html += "<td align='center'><b>"+ventas[i]["venta_id"]+"</b>"; 
-                        html += "<br>"+ventas[i]["tiposerv_descripcion"]+"</td>"; 
+                        html += "<br>"+ventas[i]["tiposerv_descripcion"]+"</td>";
+                        if (ventas[i]["entrega_id"]==1) { 
                         html += "<td align='center'><a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR'>"+ventas[i]["entrega_nombre"]+"</a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
@@ -85,7 +86,33 @@ function recepcion(estado)
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar eliminacin ------------------->";
                         html += "</td>";
-                        
+                        }else{
+                        html += "<td align='center'><a class='btn btn-success btn-xs' data-toggle='modal' data-target='#myreModal"+i+"' title='RESTABLECER'>"+ventas[i]["entrega_nombre"]+"</a>";
+                        html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
+                        html += "<div class='modal fade' id='myreModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<h3><b> <span class='fa fa-cutlery'></span></b>";
+                        html += "    Reestablecer el Pedido <b># "+ventas[i]["venta_id"]+"?</b>";
+                        html += "</h3>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<a href='"+base_url+"detalle_venta/restablecer/"+ventas[i]["venta_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar eliminacin ------------------->";
+                        html += "</td>";	
+                        }
                         html += "</tr>";
                      	
                     

@@ -78,6 +78,12 @@ class Detalle_venta extends CI_Controller{
             $this->db->query($sql);
             redirect('detalle_venta/recepcion');
     }
+    function restablecer($venta_id)
+    {
+            $sql="UPDATE venta SET entrega_id=1 WHERE venta_id=".$venta_id." ";
+            $this->db->query($sql);
+            redirect('detalle_venta/recepcion');
+    }
 
     function detalle()
     {
