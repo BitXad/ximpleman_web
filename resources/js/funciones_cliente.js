@@ -93,7 +93,7 @@ function tablaresultadoscliente(limite)
         }else{
            categoriaestado += " and c.usuario_id = u.usuario_id and c.usuario_id = "+prevendedor+" ";
            prevendedortext = $('select[name="prevendedor_id"] option:selected').text();
-           prevendedortext = "Prevendedor: "+prevendedortext;
+           prevendedortext = "Clientes asignados a: "+prevendedortext;
         }
         if(estado == 0){
            categoriaestado += "";

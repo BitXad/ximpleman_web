@@ -162,26 +162,19 @@ class Usuario_model extends CI_Model
         return $usuario;
     }*/
     
-    /******** Función que muestra a todos los usuarios Prevendedores Activos ************/
+    /******** Función que muestra a todos los usuarios Activos (ERA PARA PREVENDEDORES AHORA ESPARA USUARIOS ACTIVOS) ************/
     function get_all_usuario_prev_activo()
     {
         $usuario = $this->db->query("
             SELECT
                 *
-
             FROM
-                usuario u, estado e, tipo_usuario t
-
+                usuario u, estado e
             WHERE
                 u.estado_id = e.estado_id
                 and e.estado_id = 1
-                and u.tipousuario_id = t.tipousuario_id
-                and u.`tipousuario_id` = 4
-
             ORDER BY `usuario_id` DESC 
-
         ")->result_array();
-
         return $usuario;
     }
     
@@ -243,7 +236,6 @@ class Usuario_model extends CI_Model
             WHERE
                 u.estado_id = e.estado_id
                 and u.tipousuario_id = t.tipousuario_id
-                and u.`tipousuario_id` = 4
 
             ORDER BY `usuario_id` DESC 
 
