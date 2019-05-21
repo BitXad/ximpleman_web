@@ -221,7 +221,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
          <!--<span class="btn btn-info" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>-->  
          
-        <span style="margin-right: 50%">Buscar Productos</span>  
+        <span style="margin-right: 40%">Buscar Productos</span>  
          <label class="btn btn-info btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar detalle</label>  
                 <?php if($bandera==1) { ?>
                     
@@ -403,6 +403,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <th>Desc. U.</th>
                             <th>D.Glo</th>
                             <th>Total</th>
+                            <th colspan="2"><a  onclick="borrartodo()" class="btn btn-xs btn-danger" ><i class="fa fa-trash "></i><br>Todo</a></th>
                     </tr>
                     <tbody class="buscar" id="detallecompringa">
                   
@@ -588,13 +589,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">
                         <label for="producto_costo" class="control-label">Costo</label>
                         <div class="form-group">
-                            <input type="text" name="producto_costo" value="<?php echo $this->input->post('producto_costo'); ?>" class="form-control" id="texto1" required/>
+                            <input type="number" name="producto_costo" value="<?php echo $this->input->post('producto_costo'); ?>" class="form-control" id="texto1" required/>
                         </div>  
                     </div>
                     <div class="col-md-4">
                         <label for="producto_precio" class="control-label">Precio de Venta</label>
                         <div class="form-group">
-                            <input type="text" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
+                            <input type="number" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -657,7 +658,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">
                         <label for="producto_preciofactor" class="control-label">Precio Factor</label>
                         <div class="form-group">
-                            <input type="text" name="producto_preciofactor"  class="form-control" id="producto_preciofactor" />
+                            <input type="number" name="producto_preciofactor"  class="form-control" id="producto_preciofactor" />
                         </div> 
                     </div>
                     <div class="col-md-4">

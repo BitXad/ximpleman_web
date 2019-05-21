@@ -10,6 +10,7 @@ class Detalle_venta extends CI_Controller{
         parent::__construct();
         $this->load->model('Detalle_venta_model');
         $this->load->model('Empresa_model');
+        $this->load->model('Venta_model');
     } 
 
     /*
@@ -43,6 +44,58 @@ class Detalle_venta extends CI_Controller{
         
         $data['_view'] = 'detalle_venta/index';
         $this->load->view('layouts/main',$data);
+    }
+
+    function recepcion()
+    {
+        
+        
+        $data['page_title'] = "Recepcion de pedidos";        
+        $data['_view'] = 'venta/recepcion';
+        $data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+        $this->load->view('layouts/main',$data);
+    }
+    function recepcionhoy()
+    {
+        if ($this->input->is_ajax_request()) {
+        $estado = $this->input->post('estado');
+        $data['datos'] = $this->Detalle_venta_model->ventas_dia($estado);
+        
+        $data['detalle'] = $this->Detalle_venta_model->get_dventadia();
+       
+        
+         echo json_encode($data);
+         //echo json_encode($data);
+            
+        }
+        else{
+        }        
+    }
+
+    function despachar($venta_id)
+    {
+            $sql="UPDATE venta SET entrega_id=2 WHERE venta_id=".$venta_id." ";
+            $this->db->query($sql);
+            redirect('detalle_venta/recepcion');
+    }
+    function restablecer($venta_id)
+    {
+            $sql="UPDATE venta SET entrega_id=1 WHERE venta_id=".$venta_id." ";
+            $this->db->query($sql);
+            redirect('detalle_venta/recepcion');
+    }
+
+    function detalle()
+    {
+        if ($this->input->is_ajax_request()) {
+        $venta_id = $this->input->post('venta_id');
+        $datos = $this->Detalle_venta_model->get_detalle_venta($venta_id);
+        //$data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);
+         echo json_encode($datos);
+            
+        }
+        else{
+        }        
     }
 
     /*

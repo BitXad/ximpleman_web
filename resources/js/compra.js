@@ -33,9 +33,24 @@ function formatofecha_hora_ampm(string){
     return info;
 }
 
+function borrartodo(){
+    var base_url = document.getElementById('base_url').value;
+    var compra_id = document.getElementById('compra_idie').value;
+    var controlador = base_url+'compra/borrartodo/';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{compra_id:compra_id},
+           success:function(respuesta){  
+                tabladetallecompra(); 
+                },
+        
+    });
+}  
+
+
 function tabladetallecompra(){
      var controlador = "";
-     var limite = 500;
+     //var limite = 1000;
      var base_url = document.getElementById('base_url').value;
      var compra_id = document.getElementById('compra_idie').value;
      var bandera = document.getElementById('bandera').value;
@@ -58,10 +73,10 @@ function tabladetallecompra(){
                     var subtotal = Number(0);
                     var descuento = Number(0);
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                   /*if (n <= limite) x = n; 
+                   else x = limite;*/
                     
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         
                         var suma = Number(registros[i]["detallecomp_total"]);
                         descuento += Number(registros[i]["detallecomp_descuento"]);
@@ -1016,7 +1031,7 @@ function tablaresultados(opcion)
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
                             html += "Prec.Venta Bs: <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                            html += "Desc.Unit. Bs: <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+                            html += "Desc.Unit. Bs: <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 100px; background-color: lightgrey' autocomplete='off'  name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
                             html += "<div class='col-md-2'style='padding-left: 0px;'  >";
                             html += "Cantidad: <input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"' style='width: 100px;' name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
                             html += "<div class='col-md-2' style='padding-left: 0px;' >";
@@ -1027,33 +1042,33 @@ function tablaresultados(opcion)
                         else{
                             
                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "Prec.Venta: <input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'  style='width: 80px; background-color: lightgrey' autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                        html += "<label  class='control-label'>Prec.Vent.: </label><input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
                         html += "<div class='col-md-2' style='padding-left: 0px;'>";
-                        html += "Costo: <input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'  style='width: 80px; background-color: lightgrey' autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
+                        html += "<label  class='control-label'>Costo: </label><input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "Desc.Unit.: <input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"'  style='width: 60px; background-color: lightgrey' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+                        html += "<label  class='control-label'>Desc.Unit.: </label><input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
                         html += "<div class='col-md-2'style='padding-left: 0px;'  >";
-                        html += "Cant.: <input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"' style='width: 60px;' name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
+                        html += "<label  class='control-label'>Cant.: </label><input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "Fec.Venc.:<input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"' style='width: 110px;padding-left: 0px;' name='detallecomp_fechavencimiento'  class='form-control' ></div>";
+                        html += "<label  class='control-label'>Fec.Venc.: </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div>";
                        
                        }
                         
-                       html += "<div class='col-md-2'style='padding-right: 0px;' >";
+                       
                        
                        if (esMobil()){
-                           
+                            html += "<div class='col-md-2' style='padding-right: 0px;' >";
                             html += "<button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success btn-block'><i class='fa fa-cart-arrow-down'></i> Añadir</button>";
                       
                             
                        }
                        else{
-                            html += "Añadir";                        
-                            html += "<button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button>";
+                            html += "<div class='col-md-2' style='padding-left: 35px;' >";                      
+                            html += "<label  class='control-label'>Añadir</label><button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button></div>";
                         }
                        //html += "<a href=''  onclick='submit()' class='btn btn-danger'><span class='fa fa-cart-arrow-down'></span></a>";
                         
-                        html += "</div>";
+                       // html += "</div>";
                         html += "</div>";
                         html += "</div>";
                        // html += "</form>";

@@ -108,6 +108,7 @@
                     $total = 0;
                       $cancelados = 0;
                     $cont = 0;
+                    $bandera=0;
                           foreach($cuota as $c){;
                                  $cont = $cont+1;
                                  $subtotal = $c['cuota_total'];
@@ -193,7 +194,9 @@ $(document).ready(function(){
                       
                             <a href="<?php echo site_url('cuotum/editar/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <?php if ($bandera==0) { ?>
                             <a href="#" data-toggle="modal" data-target="#pagar<?php echo $i; ?>" class="btn btn-success btn-xs"><span class="fa fa-dollar"></span></a>
+                            <?php $bandera = 1;} ?>
                             <a href="<?php echo site_url("cuotum/notacobro/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
@@ -219,7 +222,7 @@ $(document).ready(function(){
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                           <?php }else { ?>
-                            <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
+                            <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
                             <?php if ($cuota[0]['venta_id']>0) { ?>
                              <a href="<?php echo site_url('cuotum/recibocuentas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
                              <a href="<?php echo site_url("cuotum/comprobantecuentas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>

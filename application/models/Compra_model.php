@@ -68,6 +68,24 @@ class Compra_model extends CI_Model
 
         return $compra;
     }
+
+    function borrartodo($compra_id)
+    {
+        $compra = $this->db->query("
+            DELETE
+                
+            FROM
+                detalle_compra_aux 
+
+            WHERE
+            
+             compra_id = ".$compra_id."
+
+            
+        ");
+
+        return $compra;
+    }
     
     function buscarprovedo($parametro)
     {

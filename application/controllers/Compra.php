@@ -164,6 +164,25 @@ class Compra extends CI_Controller{
         }
     }
 
+     function borrartodo()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $compra = $this->input->post('compra_id');   
+            
+            if ($compra!=""){
+                $datos = $this->Compra_model->borrartodo($compra);            
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+                echo json_encode($datos);
+            }
+            else echo json_encode(null);
+        }
+        else
+        {                 
+            show_404();
+        }              
+    }
+
 
     function buscarprove()
     {
@@ -902,7 +921,7 @@ $cantiviejas = 0;
                 $cuota_numcuota = $i;
                 $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
                 $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-                $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+                $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
                 $this->db->query($cuota);
                 $siguiente = $siguiente+$periodo;
                 $saldo_deudor = $cuota_total - $cuota_capital;
@@ -927,7 +946,7 @@ $cantiviejas = 0;
             $total = $cuota_subtotal - $descuento;
             $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
             $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
             $this->db->query($cuota);
             $siguiente = $siguiente+$periodo;
             $saldo_deudor = $cuota_total - $cuota_capital;
@@ -955,7 +974,7 @@ $cantiviejas = 0;
             $cuota_numcuota = $i;
             $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
             $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
             $this->db->query($cuota);
             $siguiente = $siguiente+$periodo;
             $saldo_deudor = $cuota_total - $cuota_capital;
@@ -978,7 +997,7 @@ $cantiviejas = 0;
         $cuota_numcuota = $i;
         $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
         $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
         $this->db->query($cuota);
         $siguiente = $siguiente+$periodo;
         $saldo_deudor = $cuota_total - $cuota_capital;
@@ -1016,7 +1035,7 @@ $this->db->query($chaucre);
             $cuota_numcuota = $i;
             $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
             $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
             $this->db->query($cuota);
             $siguiente = $siguiente+$periodo;
             $saldo_deudor = $cuota_total - $cuota_capital;
@@ -1038,7 +1057,7 @@ $this->db->query($chaucre);
         $cuota_numcuota = $i;
         $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
         $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_fecha,cuota_saldo,cuota_hora) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$credito_fecha.",".$saldo_deudor.",".$credito_hora.")";
+        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.",)";
         $this->db->query($cuota);
         $siguiente = $siguiente+$periodo;
         $saldo_deudor = $cuota_total - $cuota_capital;
