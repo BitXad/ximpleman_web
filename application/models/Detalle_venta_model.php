@@ -29,6 +29,41 @@ class Detalle_venta_model extends CI_Model
 //
 //        return $detalle_venta;
 //    }
+function get_all_entrega()
+    {
+        $sql = "SELECT e.* FROM entrega e WHERE 1=1 ORDER BY `entrega_id` ASC";
+        $entrega = $this->db->query($sql)->result_array();
+        
+        return $entrega;
+    }
+function ventas_dia($estado)
+  {
+        $detalle_venta = $this->db->query("
+            SELECT
+                v.*, e.entrega_nombre, c.cliente_nombre, ts.tiposerv_descripcion
+            FROM
+                venta v 
+            /*LEFT JOIN detalle_venta dv on v.venta_id=dv.venta_id*/
+            LEFT JOIN entrega e on v.entrega_id=e.entrega_id
+            LEFT JOIN cliente c on v.cliente_id=c.cliente_id
+            LEFT JOIN tipo_servicio ts on v.tiposerv_id=ts.tiposerv_id
+
+            WHERE
+                v.entrega_id=".$estado." 
+                and v.venta_fecha = date(now())
+            
+        ")->result_array();
+
+        return $detalle_venta;
+  }
+  function get_dventadia()
+    {
+        $sql = "SELECT d.*, p.producto_nombre, v.venta_fecha FROM detalle_venta d, producto p, venta v
+               where d.producto_id=p.producto_id and d.venta_id=v.venta_id and v.venta_fecha = date(now()) ";
+        $result = $this->db->query($sql)->result_array();
+        return $result;        
+    } 
+
 
     function get_venta($venta_id)
     {
