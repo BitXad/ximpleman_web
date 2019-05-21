@@ -67,6 +67,10 @@ function mostrar_ocultar(){
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio"  hidden>
 <input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
+<input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
+<input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
+<input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
+<input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
 
 <!-------------------- inicio collapse ---------------------->
 
@@ -458,6 +462,18 @@ function mostrar_ocultar(){
                                             <?php
                                                 foreach($tipo_transaccion as $tipo){ ?>
                                                     <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+                                            <?php } ?>
+ 
+                                         </select>
+                                    </div>
+                                    
+                                    <div class="col-md-1">
+                                        <h4 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h4>                                        
+                                        <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default">
+                                                
+                                            <?php
+                                                foreach($tipo_servicio as $ts){ ?>
+                                                    <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
                                             <?php } ?>
  
                                          </select>

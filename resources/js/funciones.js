@@ -971,12 +971,14 @@ function tablaresultados(opcion)
     var precio_factor = 0;
     var precio_factorcant = 0;
     var existencia = 0;
-    var base_url = document.getElementById('base_url').value;
-    
+    var base_url = document.getElementById('base_url').value;    
     var cantidad = 0;
     var usuario_id = document.getElementById('usuario_id').value;
+    var modo_visualizacion = document.getElementById('parametro_modoventas').value; // modo de visualizacion 1 = modo texto , 2 = modo grafico
+    var ancho_boton = document.getElementById('parametro_anchoboton').value; //base 115
+    var alto_boton = document.getElementById('parametro_altoboton').value;
+    var color_boton = document.getElementById('parametro_colorboton').value;
     
-    var modo_visualizacion = 1; // modo de visualizacion 1 = modo texto , 2 = modo grafico
 
     if(esMobil()) { tamanio = 1; }
     else{ tamanio = 3; }
@@ -1069,8 +1071,7 @@ function tablaresultados(opcion)
                        if(! esMobil()){
                         html += "</td>";
                         
-                        
-                        html += "<td style='space-white:nowarp'>";
+                        html += "<td>"; // style='space-white:nowarp'
                         }
                         
                         html += "<center> ";                        
@@ -1173,7 +1174,7 @@ function tablaresultados(opcion)
                         html += "  <div class='modal-header'>";
                         html += "       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
                         html += "  </div>";                        
-                        html += "  <div class='modal-body'>";
+                        html += "  <div class='modal-body' >";
                         
                         html += "  <!----------------------------------------------------------------->";
 //                        html += "       <div class='col-md-3'>";
@@ -1181,7 +1182,7 @@ function tablaresultados(opcion)
 //                        html += "       </div>";
 //                        html += "       <div class='col-md-9'>";
                     
-                        html += "       <table style='space-white: nowrap;'>";
+                        html += "       <table>"; // style='space-white: nowrap;'
                         html += "           <tr>";
                        
                       
@@ -1254,7 +1255,7 @@ function tablaresultados(opcion)
                     
                     for (var i = 0; i < x ; i++){
                         
-                        var imagen_boton = "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='70' height='70' />";
+                        imagen_boton = "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='"+(ancho_boton-45)+"' height='"+(alto_boton-45)+"' />";
                  
                         existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | Bs "+registros[i]["producto_precio"];
                         
@@ -1273,7 +1274,7 @@ function tablaresultados(opcion)
                         nombre_producto = registros[i]['producto_nombre'];
                         prod = nombre_producto.substr(0,20);
                         
-                        html += "<button type='button' class='btn btn-sq-lg btn-danger' style='width: 115px !important; height: 115px !important;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' >"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
+                        html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' >"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
 
                         html += "<!---------------------- modal cantidad producto ------------------->";
                         
@@ -1531,7 +1532,9 @@ function registrarventa(cliente_id)
     var cuota_inicial = document.getElementById('cuota_inicial').value;
     var credito_interes = document.getElementById('credito_interes').value;
     var facturado = document.getElementById('facturado').checked;
+    var tiposerv_id = document.getElementById('tiposerv_id').value;
     var venta_tipodoc = 0;
+    var entrega_id = 1;
 
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
@@ -1542,13 +1545,13 @@ function registrarventa(cliente_id)
     
     var sql =  "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,"+
                 "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,"+
-                "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc) value("+
+                "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc, tiposerv_id, entrega_id) value("+
                 forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
-                +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+")";
+                +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id+","+entrega_id+")";
         
-      
+     //alert(sql); 
     if (tipo_transaccion==2){
         var cuotas = document.getElementById('cuotas').value;
         var modalidad = document.getElementById('modalidad').value;

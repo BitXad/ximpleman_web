@@ -318,3 +318,11 @@ border-bottom : 1px solid #aaa;
     
         
 <?php } ?>
+
+        
+          
+        
+<?php if($parametro[0]['parametro_imprimircomanda']==1){  ?>
+
+        aqui va la comanda
+<?php } ?>
