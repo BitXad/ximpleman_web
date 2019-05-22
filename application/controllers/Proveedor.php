@@ -34,16 +34,12 @@ class Proveedor extends CI_Controller{
     {
         if($this->acceso(110)) {
                 $usuario_id = $this->session_data['usuario_id'];
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+       
         $this->load->model('Empresa_model');
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('proveedor/index?');
-        $config['total_rows'] = $this->Proveedor_model->get_all_proveedor_count();
-        $this->pagination->initialize($config);
+        
         $data['a'] = "0";
-        $data['proveedor'] = $this->Proveedor_model->get_all_proveedor($params);
+        $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
         $data['total'] = $this->Proveedor_model->get_all_proveedor_count();
         $data['page_title'] = "Proveedor";
         $data['_view'] = 'proveedor/index';

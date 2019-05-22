@@ -1156,7 +1156,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4" >
                         <label for="compra_codcontrol" class="control-label">Codigo Control</label>
                         <div class="form-group">
-                           <input type="text" name="compra_codcontrol" value="<?php echo  $compra[0]['compra_codcontrol']; ?>" class="form-control" id="compra_codcontrol" />
+                           <input type="text" name="compra_codcontrol" value="<?php echo  $compra[0]['compra_codcontrol']; ?>" class="form-control" id="compra_codcontrol" onKeyUp="this.value = this.value.toUpperCase();"/>
                         </div>
                     </div>    
                     <div class="col-md-4" >
