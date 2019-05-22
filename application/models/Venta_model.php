@@ -436,5 +436,12 @@ function get_busqueda($condicion)
 
         return $detalle_venta;
     }
+    /* obtiene detalle venta aux con imagen de producto*/
+    function get_detalle_auxfoto($usuario_id)
+    {
+        $sql = "select d.*, p.producto_foto from detalle_venta_aux d, producto p where d.producto_id = p.producto_id and d.usuario_id = ".$usuario_id." order by d.detalleven_id desc";
+        $detalle = $this->db->query($sql)->result_array();
+        return $detalle;
+    }
    
 }
