@@ -13,10 +13,8 @@
             }(jQuery));
         });
 </script> 
-  
-
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-
+ 
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="text" value="" id="parametro" hidden>

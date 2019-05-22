@@ -48,12 +48,11 @@ class Detalle_venta extends CI_Controller{
 
     function recepcion()
     {
-        
-        
+                
         $data['page_title'] = "Recepcion de pedidos";        
         $data['_view'] = 'venta/recepcion';
         $data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
-        $this->load->view('layouts/main',$data);
+        $this->load->view('venta/main',$data);
     }
     function recepcionhoy()
     {
@@ -74,13 +73,15 @@ class Detalle_venta extends CI_Controller{
 
     function despachar($venta_id)
     {
-            $sql="UPDATE venta SET entrega_id=2 WHERE venta_id=".$venta_id." ";
+            $venta_fechaentrega=date('Y-m-d'); 
+            $venta_horaentrega=date('H:i:s');
+        $sql="UPDATE venta SET entrega_id=2, venta_fechaentrega='".$venta_fechaentrega."', venta_horaentrega='".$venta_horaentrega."' WHERE venta_id=".$venta_id." ";
             $this->db->query($sql);
             redirect('detalle_venta/recepcion');
     }
     function restablecer($venta_id)
     {
-            $sql="UPDATE venta SET entrega_id=1 WHERE venta_id=".$venta_id." ";
+            $sql="UPDATE venta SET entrega_id=1, venta_fechaentrega='0000-00-00', venta_horaentrega='00:00:00' WHERE venta_id=".$venta_id." ";
             $this->db->query($sql);
             redirect('detalle_venta/recepcion');
     }

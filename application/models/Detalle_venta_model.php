@@ -59,7 +59,7 @@ function ventas_dia($estado)
   }
   function get_dventadia()
     {
-        $sql = "SELECT d.*, p.producto_nombre, v.venta_fecha
+        $sql = "SELECT d.detalleven_cantidad, d.venta_id, d.producto_id, p.producto_nombre, v.venta_fecha
         FROM detalle_venta d
         LEFT JOIN producto p ON d.producto_id=p.producto_id
         LEFT JOIN venta v ON d.venta_id=v.venta_id
