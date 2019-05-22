@@ -28,6 +28,7 @@
 
 function mostrar_ocultar(){
     var x = document.getElementById('tipo_transaccion').value;
+    
     if (x=='2'){ //si la transaccion es a credito
         
         document.getElementById('creditooculto').style.display = 'block';
@@ -41,7 +42,7 @@ function mostrar_ocultar(){
 
         }
     else{
-        document.getElementById('oculto').style.display = 'none';}
+        document.getElementById('creditooculto').style.display = 'none';}
 }
         
 </script>   
@@ -71,7 +72,12 @@ function mostrar_ocultar(){
 <input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
 <input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
 <input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
+<input type="text" id="parametro_altoimagen" value="<?php echo $parametro[0]['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
+<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
+<input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
+<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
 
+<!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
 
 <div class="panel-group">
@@ -400,25 +406,6 @@ function mostrar_ocultar(){
     <!----------- fin tabla detalle cuenta ----------------------------------->
         
     </div>
-<!----------------------------------- BOTONES ---------------------------------->
-<!--<div class="col-md-6">
-        
-    <center>
-    <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-        <i class="fa fa-money fa-4x"></i><br><br>
-       Finalizar Venta <br>
-    </a>
-
-
-    <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
-        <i class="fa fa-sign-out fa-4x"></i><br><br>
-       Salir <br>
-    </a>    
-    </center>
-
-</div>    -->
-<!----------------------------------- fin Botones ---------------------------------->
-
 
 
 <!----------------------Modal Cobrar--------------------------------------------------->
@@ -436,9 +423,10 @@ function mostrar_ocultar(){
                             
                                 <center>
                                 <div class="row">
+                                    <div class="col-md-12">
                                         
                                     
-                                    <div class="col-md-2">
+                                    <div class="col-md-2" style="padding: 0;">
 <!--                                        <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
                                         <?php                                                     
                                             $fecha = date('Y-m-d'); 
@@ -446,8 +434,8 @@ function mostrar_ocultar(){
                                         ?>
                                         
                                         <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
-                                        <h4 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h4>                                        
-                                        <select id="forma_pago"  name="forma_pago" class="btn btn-default">
+                                        <h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>                                        
+                                        <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;">
                                             <?php
                                                 foreach($forma_pago as $forma){ ?>
                                                     <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
@@ -456,20 +444,25 @@ function mostrar_ocultar(){
                                          </select>
                                     </div>
                                     
-                                    <div class="col-md-2">
-                                        <h4 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h4>                                        
-                                        <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default"  onchange="mostrar_ocultar()">
+                                    <div class="col-md-2" style="padding: 0;">
+                                        <center>
+                                            
+                                        <h5 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h5>                                        
+                                        <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default btn-xs"  onchange="mostrar_ocultar()"  style="width: 120px;">
                                             <?php
                                                 foreach($tipo_transaccion as $tipo){ ?>
                                                     <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
                                             <?php } ?>
  
                                          </select>
+                                        </center>
                                     </div>
                                     
-                                    <div class="col-md-1">
-                                        <h4 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h4>                                        
-                                        <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default">
+                                    <?php if ($parametro[0]["parametro_modulorestaurante"]==1){    ?>
+                                        
+                                    <div class="col-md-2" style="padding: 0;">
+                                        <h5 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h5>                                        
+                                        <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default btn-xs"  style="width: 100px;">
                                                 
                                             <?php
                                                 foreach($tipo_servicio as $ts){ ?>
@@ -477,10 +470,22 @@ function mostrar_ocultar(){
                                             <?php } ?>
  
                                          </select>
+                                        <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
+                                                
+                                                    <option value="0">MESA</option>
+                                            <?php $mesas = 30;
+                                                for($x = 1; $x<=$mesas; $x++ ){ ?>
+                                                    <option value="<?php echo $x; ?>"><?php echo $x; ?></option>
+                                            <?php } ?>
+ 
+                                         </select>
+                                        
                                     </div>
+                                    <?php } ?>
                                     
                                 </div>                                    
-                                </center>                                                               
+                                                                                             
+			</div>
 			</div>
                             
 			<div class="modal-body">

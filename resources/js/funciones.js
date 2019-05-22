@@ -978,6 +978,9 @@ function tablaresultados(opcion)
     var ancho_boton = document.getElementById('parametro_anchoboton').value; //base 115
     var alto_boton = document.getElementById('parametro_altoboton').value;
     var color_boton = document.getElementById('parametro_colorboton').value;
+    var ancho_imagen = document.getElementById('parametro_anchoimagen').value;;//document.getElementById('parametro_anchoimagen').value;
+    var alto_imagen = document.getElementById('parametro_altoimagen').value;; //document.getElementById('parametro_altoimagen').value;
+    var forma_imagen = document.getElementById('parametro_formaimagen').value;; //document.getElementById('parametro_altoimagen').value;
     
 
     if(esMobil()) { tamanio = 1; }
@@ -1255,7 +1258,7 @@ function tablaresultados(opcion)
                     
                     for (var i = 0; i < x ; i++){
                         
-                        imagen_boton = "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='"+(ancho_boton-45)+"' height='"+(alto_boton-45)+"' />";
+                        imagen_boton = "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img "+forma_imagen+"' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
                  
                         existencia = parseFloat(registros[i]["existencia"])+" "+registros[i]["producto_unidad"]+" | Bs "+registros[i]["producto_precio"];
                         
@@ -1269,12 +1272,12 @@ function tablaresultados(opcion)
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
 
-                        precio_cantidad = "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='1'><b>"+existencia+"</b></font></center></div>";
+                        precio_cantidad = "<div class='padding:0;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='1'><b>"+existencia+"</b></font></center></div>";
                     
                         nombre_producto = registros[i]['producto_nombre'];
                         prod = nombre_producto.substr(0,20);
                         
-                        html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' >"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
+                        html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" '>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
 
                         html += "<!---------------------- modal cantidad producto ------------------->";
                         
@@ -1496,6 +1499,29 @@ function fecha_actual(){
         //return yyyy+'-'+mm+'-'+dd;
 }
 
+function numero_venta(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = document.getElementById('base_url').value+"venta/numero_ventas";
+    
+   $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           async: false, 
+           success:function(respuesta){
+               
+               var resultado = eval(respuesta);
+               
+                res = resultado[0]["cantidad"];
+           },
+           error:function(respuesta){
+               
+             res = 0;
+           }
+    });     
+    
+    return res;
+}
+
 function registrarventa(cliente_id)
 {
     var base_url = document.getElementById('base_url').value;
@@ -1533,8 +1559,18 @@ function registrarventa(cliente_id)
     var credito_interes = document.getElementById('credito_interes').value;
     var facturado = document.getElementById('facturado').checked;
     var tiposerv_id = document.getElementById('tiposerv_id').value;
+    var venta_numeromesa = document.getElementById('venta_numeromesa').value;
+    var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
+    
+    var venta_numeroventa = 0;
     var venta_tipodoc = 0;
     var entrega_id = 1;
+
+
+    if (parametro_modulorestaurante==1){
+        venta_numeroventa = numero_venta();
+    }
+    
 
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
@@ -1543,13 +1579,15 @@ function registrarventa(cliente_id)
     else{
         venta_tipodoc = 0;}
     
+    
     var sql =  "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,"+
                 "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,"+
-                "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc, tiposerv_id, entrega_id) value("+
+                "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa) value("+
                 forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
-                +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id+","+entrega_id+")";
+                +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+")";
         
      //alert(sql); 
     if (tipo_transaccion==2){

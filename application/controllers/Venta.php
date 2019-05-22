@@ -1850,8 +1850,6 @@ function anular_venta($venta_id){
                                        }
         
     }    
-    
-  
         
     function asignar_inventario(){
         //if($this->acceso(12)){
@@ -1871,6 +1869,25 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             
             echo json_encode(TRUE);
+
+
+        //**************** fin contenido ***************
+        //}
+    }   
+
+    function numero_ventas(){
+        //if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+
+            $usuario_vendedor = $this->session_data['usuario_id'];
+            $usuario_id = $this->input->post('usuario_id');
+
+
+            $sql =  "select count(*)+1 as cantidad from venta where venta_fecha = date(now())";
+            $res = $this->Venta_model->consultar($sql);
+            
+                        
+            echo json_encode($res);
 
 
         //**************** fin contenido ***************
