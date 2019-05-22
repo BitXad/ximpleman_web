@@ -589,19 +589,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">
                         <label for="producto_costo" class="control-label">Costo</label>
                         <div class="form-group">
-                            <input type="number" name="producto_costo" value="<?php echo $this->input->post('producto_costo'); ?>" class="form-control" id="texto1" required/>
+                            <input type="number" step="any" name="producto_costo" value="<?php echo $this->input->post('producto_costo'); ?>" class="form-control" id="texto1" required/>
                         </div>  
                     </div>
                     <div class="col-md-4">
                         <label for="producto_precio" class="control-label">Precio de Venta</label>
                         <div class="form-group">
-                            <input type="number" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
+                            <input type="number" step="any" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="cantidad" class="control-label">Cantidad Compra</label>
                         <div class="form-group">
-                            <input type="text" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
+                            <input type="numer" step="any" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
                             <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
@@ -1156,7 +1156,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4" >
                         <label for="compra_codcontrol" class="control-label">Codigo Control</label>
                         <div class="form-group">
-                           <input type="text" name="compra_codcontrol" value="<?php echo  $compra[0]['compra_codcontrol']; ?>" class="form-control" id="compra_codcontrol" />
+                           <input type="text" name="compra_codcontrol" value="<?php echo  $compra[0]['compra_codcontrol']; ?>" class="form-control" id="compra_codcontrol" onKeyUp="this.value = this.value.toUpperCase();"/>
                         </div>
                     </div>    
                     <div class="col-md-4" >
