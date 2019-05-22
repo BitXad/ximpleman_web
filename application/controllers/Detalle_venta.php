@@ -5,13 +5,29 @@
  */
  
 class Detalle_venta extends CI_Controller{
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
         $this->load->model('Detalle_venta_model');
         $this->load->model('Empresa_model');
         $this->load->model('Venta_model');
-    } 
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 
     /*
      * Listing of detalle_venta
@@ -210,6 +226,15 @@ class Detalle_venta extends CI_Controller{
         }
         else
             show_error('The detalle_venta you are trying to delete does not exist.');
+    }
+    function venta_proceso()
+    {
+        //**************** inicio contenido ***************
+        $usuario_id = $this->session_data['usuario_id'];
+        $data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
+        $data['_view'] = 'detalle_venta/venta_proceso';
+        $this->load->view('detalle_venta/venta_proceso',$data);
+        //**************** fin contenido ***************
     }
     
 }
