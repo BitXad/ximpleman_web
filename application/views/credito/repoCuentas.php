@@ -101,6 +101,7 @@
                         <th>PROVEEDOR</th>
                         <th>VENTA</th>
                         <th>CREDITO</th>                        
+                        <th>FECHA</th>                        
                         <th>TOTAL<br>CRED.</th>
                         <th>CANCELADO<br>a CTTA</th>
                         <th>SALDO<br>TOTAL</th>
@@ -122,8 +123,9 @@
                     <tr>
 						<td style="text-align: center;"><?php echo $cont ?></td>                                                
 						<td ><?php echo $c['cliente_nombre']; ?></td>
-                        <td style="text-align: center;"><?php echo $c['compra_id']; ?></td>
+                        <td style="text-align: center;"><?php echo $c['venta_id']; ?><?php echo $c['servicio_id']; ?></td>
                         <td style="text-align: center;"><?php echo $c['credito_id']; ?></td>				    
+                        <td style="text-align: center;"><?php echo date('d/m/Y',strtotime($c['credito_fecha'])) ; ?> <?php echo $c['credito_hora']; ?></td>                   
                         <td style="text-align: right;"><?php echo number_format($c['credito_monto'], 2, ".", ","); ?></td>
                         <td style="text-align: right;"><?php $cancelado=0; foreach($cuota as $k){ if($c['credito_id']==$k['credito_id']){ 
                         $cancelado+=$k['cuota_cancelado'];  }  } echo  number_format($cancelado, 2, ".", ",");  $totalCancelados+=$cancelado; ?></td>
@@ -133,6 +135,7 @@
                     </tr>
                     <?php } ?>
                     <tr>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
