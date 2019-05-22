@@ -52,7 +52,7 @@ class Detalle_venta extends CI_Controller{
         $data['page_title'] = "Recepcion de pedidos";        
         $data['_view'] = 'venta/recepcion';
         $data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
-        $this->load->view('layouts/main',$data);
+        $this->load->view('venta/main',$data);
     }
     function recepcionhoy()
     {

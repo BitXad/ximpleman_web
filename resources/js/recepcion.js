@@ -42,9 +42,9 @@ function recepcion(estado)
                     
                    
                     html = "";
-                    
+                    cont=0;
                	for (var i = 0; i < n ; i++){
-
+                        
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -53,14 +53,15 @@ function recepcion(estado)
                         html += "<b>Mesa:  "+ventas[i]["venta_numeromesa"]+"</b>";
                     	}
                         html += "</td><td>";
-                for (var e = 0; e < d; e++) {
+                for (var e = cont; e < d; e++) {
                 	if (ventas[i]["venta_id"]==detalle[e]["venta_id"]) {
                         html += "<b style='font-size: 14px;'>"+detalle[e]["detalleven_cantidad"]+"</b> ";	
                         html += " <b>"+detalle[e]["producto_nombre"]+"</b>";	
                         html += "  <b>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
-                        }        
+                        }
+                          var che=cont+1;  
                       }
-                        
+                      cont=che;  
                         html += "</td>";
                         html += "<td align='center' style='font-size: 14px;'><b>"+ventas[i]["venta_numeroventa"]+"</b>"; 
                         html += "<br>"+ventas[i]["tiposerv_descripcion"]+"</td>";
