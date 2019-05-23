@@ -72,19 +72,22 @@ class Detalle_venta extends CI_Controller{
     }
     function recepcionhoy()
     {
-        if ($this->input->is_ajax_request()) {
+        
         $estado = $this->input->post('estado');
         $data['datos'] = $this->Detalle_venta_model->ventas_dia($estado);
-        
-        $data['detalle'] = $this->Detalle_venta_model->get_dventadia();
+        $data['detalle'] = $this->Detalle_venta_model->get_dventadia($estado);
        
+        echo json_encode($data);
+              
+    }
+    function actualizar()
+    {
         
-         echo json_encode($data);
-         //echo json_encode($data);
-            
-        }
-        else{
-        }        
+        $estado = $this->input->post('estado');
+        $datos = $this->Detalle_venta_model->ventas_dia($estado);
+       
+        echo json_encode($datos);
+              
     }
 
     function despachar($venta_id)
