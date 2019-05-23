@@ -1,6 +1,7 @@
 <html>
     <head><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
 <link href="<?php echo base_url('resources/css/vistadetalleventa.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mifuente.css'); ?>" rel="stylesheet">
 <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -120,7 +121,7 @@
 <div class="row">
     <div class="col-md-12">
         <center>
-        <h4 style="color: white;"><font size="6"><b> <?php echo "Cliente: JUAN PEREZ MENDEZ"; ?></b></font></h4>
+        <h4 style="color: white;"><font size="6" face="eurostyle"><b> <?php echo "Cliente: JUAN PEREZ MENDEZ"; ?></b></font></h4>
         <h4 style="color: white;"><font size="6"><b> <?php echo "Razón: 141359034"; ?></b></font></h4>            
         </center>            
     </div>        
