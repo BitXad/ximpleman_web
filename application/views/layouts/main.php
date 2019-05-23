@@ -373,6 +373,9 @@
                         <?php
                         }
                         ?>
+                        <li>
+                            <a href="<?php echo site_url('detalle_venta/venta_proceso');?>"><i class="fa fa-money"></i>Ver Proceso de Venta</a>
+                        </li>
                     </ul>
                 </li>
                 

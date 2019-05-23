@@ -34,7 +34,7 @@ class Tipo_servicio_model extends CI_Model
             WHERE
                 ts.estado_id = e.estado_id
                 
-           ORDER BY ts.tiposerv_id DESC
+           ORDER BY ts.tiposerv_id ASC
 
         ")->result_array();
 

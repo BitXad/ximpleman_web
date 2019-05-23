@@ -24,6 +24,7 @@ class Venta extends CI_Controller{
         $this->load->model('Estado_model');
         $this->load->model('Usuario_model');
         $this->load->model('Cliente_model');
+        $this->load->model('Tipo_servicio_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -85,6 +86,7 @@ class Venta extends CI_Controller{
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['usuario_id'] = $usuario_id;
@@ -1848,8 +1850,6 @@ function anular_venta($venta_id){
                                        }
         
     }    
-    
-  
         
     function asignar_inventario(){
         //if($this->acceso(12)){
@@ -1869,6 +1869,25 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             
             echo json_encode(TRUE);
+
+
+        //**************** fin contenido ***************
+        //}
+    }   
+
+    function numero_ventas(){
+        //if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+
+            $usuario_vendedor = $this->session_data['usuario_id'];
+            $usuario_id = $this->input->post('usuario_id');
+
+
+            $sql =  "select count(*)+1 as cantidad from venta where venta_fecha = date(now())";
+            $res = $this->Venta_model->consultar($sql);
+            
+                        
+            echo json_encode($res);
 
 
         //**************** fin contenido ***************

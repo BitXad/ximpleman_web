@@ -130,12 +130,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</ul>
 			</div>
 			<div class="w3ls_logo_products_left">
-				<h1><a href="index.html"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
+				<h1><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
 			</div>
 <!------------------------ BUSCADOR --------------------------->                    
         <div class="w3l_search">
             <form action="#" method="post">
-                <input type="search" name="Search" placeholder="Search for a Product..." required="">
+                <input type="search" name="Search" placeholder="Buscar un producto..." required="">
                 <button type="submit" class="btn btn-default search" aria-label="Left Align">
                         <i class="fa fa-search" aria-hidden="true"> </i>
                 </button>
@@ -171,7 +171,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <ul class="nav navbar-nav">
                                         
                                         <?php foreach($menu_principal as $principal) { ?>                                                                                
-                                            <li class="active"><a href="index.html" class="act"><?php echo $principal['menu_nombre']; ?></a></li>
+                                        <li class="active"><a href="<?php echo base_url(); ?>" class="act"><?php echo $principal['menu_nombre']; ?></a></li>
                                         <?php } ?>                                        
                                         <!------- Bloque de codigo 1 ------------>                                                        
                                     </ul>
@@ -193,7 +193,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<!--Slider Description example-->
 				<div class="slide-desc">
 					<h3><?php echo $s['slide_leyenda1']; ?></h3> 
-					<h5><?php echo $s['slide_leyenda2']; ?></h5>
+                                        <h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>
 				</div>
 			</li>
                     <?php } ?>
