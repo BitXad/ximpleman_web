@@ -230,7 +230,9 @@ class Detalle_venta extends CI_Controller{
     function venta_proceso()
     {
         //**************** inicio contenido ***************
+        $this->load->model('Producto_model');
         $usuario_id = $this->session_data['usuario_id'];
+        $data['productos'] = $this->Producto_model->get_productos_imagen();
         $data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
         $data['_view'] = 'detalle_venta/venta_proceso';
         $this->load->view('detalle_venta/venta_proceso',$data);
