@@ -51,20 +51,23 @@ function ventas_dia($estado)
             WHERE
             v.venta_fecha = date(now())
             and v.entrega_id=".$estado." 
-                
+            ORDER BY v.venta_id  
             
         ")->result_array();
 
         return $detalle_venta;
   }
-  function get_dventadia()
+  function get_dventadia($estado)
     {
-        $sql = "SELECT d.detalleven_cantidad, d.venta_id, d.producto_id, p.producto_nombre, v.venta_fecha
+        $result = $this->db->query(
+        "SELECT d.detalleven_cantidad, d.venta_id, d.producto_id, p.producto_nombre, v.venta_fecha, v.entrega_id
         FROM detalle_venta d
         LEFT JOIN producto p ON d.producto_id=p.producto_id
         LEFT JOIN venta v ON d.venta_id=v.venta_id
-        WHERE v.venta_fecha = date(now()) ";
-        $result = $this->db->query($sql)->result_array();
+        WHERE v.venta_fecha = date(now()) 
+        and v.entrega_id=".$estado."
+        ORDER BY d.venta_id
+        ")->result_array();
         return $result;        
     } 
 

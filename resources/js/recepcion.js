@@ -3,9 +3,41 @@ function inicio_recepcion(){
     
       
        	recepcion(1); 
-document.getElementById('oculto').style.display = 'block';
+        
+setInterval('actualizar()',5000);
           //aca podemos mandar fecha 
 }
+function actualizar()
+{
+var estado = 1;
+var ventas = document.getElementById('ventas').value;
+ var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"detalle_venta/actualizar";
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{estado:estado},
+          
+           success:function(resul){                
+                
+               var registros =  JSON.parse(resul);
+              
+               var n = registros.length; //tamaÃ±o de
+            
+    if (n>ventas) {
+    
+    recepcion(1);
+    
+    }   
+
+      },
+        error:function(resul){
+        
+        }
+        
+    });   
+
+}
+
 function buscar_por_entrega()
 {
    
@@ -20,7 +52,7 @@ function recepcion(estado)
       
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"detalle_venta/recepcionhoy";
-    var limite = 1000;
+    
     document.getElementById('oculto').style.display = 'block';
     $.ajax({url: controlador,
            type:"POST",
@@ -42,7 +74,7 @@ function recepcion(estado)
                     
                    
                     html = "";
-                    cont=0;
+                    
                	for (var i = 0; i < n ; i++){
                         
                         html += "<tr>";
@@ -53,15 +85,15 @@ function recepcion(estado)
                         html += "<b>Mesa:  "+ventas[i]["venta_numeromesa"]+"</b>";
                     	}
                         html += "</td><td>";
-                for (var e = cont; e < d; e++) {
+                for (var e = 0; e < d; e++) {
                 	if (ventas[i]["venta_id"]==detalle[e]["venta_id"]) {
                         html += "<b style='font-size: 14px;'>"+detalle[e]["detalleven_cantidad"]+"</b> ";	
                         html += " <b>"+detalle[e]["producto_nombre"]+"</b>";	
                         html += "  <b>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
                         }
-                          var che=cont+1;  
+                         
                       }
-                      cont=che;  
+                     
                         html += "</td>";
                         html += "<td align='center' style='font-size: 14px;'><b>"+ventas[i]["venta_numeroventa"]+"</b>"; 
                         html += "<br>"+ventas[i]["tiposerv_descripcion"]+"</td>";
@@ -128,7 +160,7 @@ function recepcion(estado)
                        
                    document.getElementById('oculto').style.display = 'none';
                    $("#tabla_recepcion").html(html);
-                   
+                   $("#ventas").val(n);
             }
                 
         },
