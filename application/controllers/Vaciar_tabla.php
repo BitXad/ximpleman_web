@@ -15,7 +15,7 @@ class Vaciar_tabla extends CI_Controller{
     function index()
     {
         $data['mensaje'] = 5;
-        //$data['vaciar_tabla'] = $this->Vaciar_tabla_model->get_all_vaciar_tabla();
+        //$data['obtener_alltablas'] = $this->Vaciar_tabla_model->get_alltablas();
         
         $data['_view'] = 'vaciar_tabla/index';
         $this->load->view('layouts/main',$data);

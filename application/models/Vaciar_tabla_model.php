@@ -51,4 +51,16 @@ class Vaciar_tabla_model extends CI_Model
 
         return $vaciar_tabla;
     }
+    
+    /* ***** obtiene todas las tablas de la BD... ***** */
+    function get_alltablas()
+    {
+        $vaciar_tabla = $this->db->query("
+            SHOW FULL TABLES FROM ximpleman_web
+            where table_type = 'base table'
+
+        ")->result_array();
+
+        return $vaciar_tabla;
+    }
 }
