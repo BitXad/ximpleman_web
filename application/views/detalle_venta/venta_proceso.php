@@ -106,8 +106,8 @@
                                                     ?>
                                                     <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187" style="display: flex">
                                                     <div class="carousel-inner" style="padding: 0">
-                                                        <h3 style="color: #FF6501;"><font size="7"><b><?php echo "Bs. ".number_format($producto['producto_precio'],2,".",","); ?></b></font></h3>
-                                                        <p  style="color: #FF6501;"><font size="7"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
+                                                        <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],2,".",","); ?></b></font></h3>
+                                                        <p  style="color: #FF6501;"><font size="6"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
                                                     </div>
                                                 </div>
                                         <?php
@@ -124,8 +124,8 @@
                                                     ?>
                                                     <img src="<?php echo base_url("resources/images/productos/".$producto_imagen); ?>" width="250" height="187">
                                                     <div class="carousel-inner">
-                                                        <h3 style="color: #FF6501;"><font size="7"><b><?php echo "Bs. ".number_format($producto['producto_precio'],2,".",","); ?></b></font></h3>
-                                                        <p  style="color: #FF6501;"><font size="7"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
+                                                        <h3 style="color: #FF6501;"><font size="6"><b><?php echo "Bs. ".number_format($producto['producto_precio'],2,".",","); ?></b></font></h3>
+                                                        <p  style="color: #FF6501;"><font size="6"><b><?php echo $producto['producto_nombre']; ?></b></font></p>
                                                     </div>
                                                     <!--</div>-->
                                                 </div>
