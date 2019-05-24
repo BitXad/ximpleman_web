@@ -3,52 +3,47 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Parametros</h3>
+                <h3 class="box-title">Parametros</h3>   <a href="<?php echo site_url('parametro/edit/1'); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a> 
             	
             </div>
             <div class="box-body" >
-                <div class="col-md-3">
-                </div>
-                <div class="col-md-6">
-                <table class="table table-striped table-condensed" id="mitabla" style="text-align: center; font-size: 11px;">
+                
+              
+                <table class="table table-striped table-condensed" id="mitabla" style="text-align: center; font-size: 11px;color:black;">
                     <?php foreach($parametros as $p){ ?>
-                    <tr>
-                        <th style="font-size: 11px;"></th>
-                        <td>
-                            <a href="<?php echo site_url('parametro/edit/'.$p['parametro_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a> 
+                    
+                          
                             
-                        </td>
+                    
+                    <tr>
+                        <th style="font-size: 12px;color:black;background: rgba(0, 0, 255, 0.3);" rowspan="2" ><u>CONFIGURACION</u></th>
+						<th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. EGRESO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. INGRESO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No.COPIAS FACTURAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE IMPRESORA</th>
                     </tr>
                     <tr>
-						<th style="font-size: 11px;">No. EGRESO</th>
                         <td><?php echo $p['parametro_numrecegr']; ?></td>
-                    </tr>
-                    <tr>
-						<th style="font-size: 11px;">No. INGRESO</th>
                         <td><?php echo $p['parametro_numrecing']; ?></td>
-                    </tr>
-                    <tr>
-						<th style="font-size: 11px;">No.COPIAS FACTURAS</th>
                         <td><?php echo $p['parametro_copiasfact']; ?></td>
-                    </tr>
-                    <tr>
-						<th style="font-size: 11px;">TIPO DE IMPRESORA</th>
                         <td><?php echo $p['parametro_tipoimpresora']; ?></td>
+                        <!--<th style="font-size: 11px;color:black;">TITULO DOC.</th>
+                        <td><?php echo $p['parametro_tituldoc']; ?></td>-->
+                    </tr>
+                  
+                    <tr>
+                        <th style="font-size: 12px;color:black; background: rgba(0, 255, 0, 0.3);" rowspan="2" ><u>CREDITOS</u></th>
+                        <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">No. CUOTAS</th>
+                        <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">MONTO MAXIMO DE PAGO</th>
+                        <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">DIAS DE GRACIA</th>
+                        <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">DIA DE PAGO</th>
+                        <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">PERIODO DE PAGO</th>
+                        <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">INTERES</th>
                     </tr>
                     <tr>
-                        <th style="font-size: 11px;">No. CUOTAS</th>
                         <td><?php echo $p['parametro_numcuotas']; ?></td>
-                    </tr>
-                    <tr>
-                        <th style="font-size: 11px;">MONTO MAXIMO DE PAGO</th>
                         <td><?php echo $p['parametro_montomax']; ?> Bs.</td>
-                    </tr>
-                    <tr>
-                        <th style="font-size: 11px;">DIAS DE GRACIA</th>
                         <td><?php echo $p['parametro_diasgracia']; ?></td>
-                    </tr>
-                    <tr>
-                        <th style="font-size: 11px;">DIA DE PAGO</th>
                         <td>[<?php echo $p['parametro_diapago']; ?>]
                             <?php
 $var= $p['parametro_diapago'];
@@ -71,33 +66,51 @@ break;
 }
 ?>
                         </td>
-                    </tr>
-                    <tr>
-                        <th style="font-size: 11px;">PERIODO DE PAGO</th>
                         <td><?php echo $p['parametro_periododias']; ?></td>
-                    </tr>
-                    <tr>
-                        <th style="font-size: 11px;">INTERES</th>
                         <td><?php echo $p['parametro_interes']; ?></td>
                     </tr>
+                   
                     <tr>
-                        <th style="font-size: 11px;">TITULO DOC.</th>
-                        <td><?php echo $p['parametro_tituldoc']; ?></td>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 0, 0, 0.3);" rowspan="2" ><u>SERVICIOS</u></th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAGNOSTICO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SOLUCION</th>
                     </tr>
                     <tr>
-                        <th style="font-size: 11px;">DIAGNOSTICO</th>
                         <td><?php echo $p['parametro_diagnostico']; ?></td>
-                    </tr>
-                    <tr>
-                        <th style="font-size: 11px;">SOLUCION</th>
                         <td><?php echo $p['parametro_solucion']; ?></td>
+                    </tr>
+                        
+                    <tr>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="2" ><u>VENTAS</u></th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODO VENTAS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ANCHO BOTON</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ALTO BOTON</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">COLOR BOTON</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ANCHO IMAGEN</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ALTO IMAGEN</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FORMA IMAGEN</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODULO RESTAURANTE</th>
+                    </tr> 
+                    <tr>
+                        <td><?php echo $p['parametro_mostrarcategoria']; ?></td>
+                        <td><?php echo $p['parametro_modoventas']; ?></td>
+                        <td><?php echo $p['parametro_imprimircomanda']; ?></td>
+                        <td><?php echo $p['parametro_anchoboton']; ?></td>
+                        <td><?php echo $p['parametro_altoboton']; ?></td>
+                        <td><?php echo $p['parametro_colorboton']; ?></td>
+                        <td><?php echo $p['parametro_anchoimagen']; ?></td>
+                        <td><?php echo $p['parametro_altoimagen']; ?></td>
+                        <td><?php echo $p['parametro_formaimagen']; ?></td>
+                        <td><?php echo $p['parametro_modulorestaurante']; ?></td>
                     </tr>
                    
                     
                   
                     <?php } ?>
                 </table>
-              </div>                  
+                           
             </div>
         </div>
     </div>
