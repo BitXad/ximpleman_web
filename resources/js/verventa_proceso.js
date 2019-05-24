@@ -57,6 +57,38 @@ function tabladetalle_productos(){
                     var n = registros.length; //tamaño del arreglo de la consulta
                     var cant_total = 0;
                     var total_detalle = 0;
+                    var ancho = "65";
+                    var alto = "65";
+                    var letra = "6";
+                    var espacio = "2";
+                    if(n>6){
+                        if(n== 7){
+                            ancho = "55";
+                            alto = "55";
+                            letra = "5";
+                            espacio = "1";
+                        }else if(n== 8){
+                            ancho = "45";
+                            alto = "45";
+                            letra = "4";
+                            espacio = "1";
+                        }else if(n== 9){
+                            ancho = "35";
+                            alto = "35";
+                            letra = "3";
+                            espacio = "0";
+                        }else if(n== 10){
+                            ancho = "25";
+                            alto = "25";
+                            letra = "2";
+                            espacio = "0";
+                        }else if(n>= 11){
+                            ancho = "20";
+                            alto = "20";
+                            letra = "1";
+                            espacio = "0";
+                        }
+                    }
                     html = "";
                     html2 = "";
                     html += "<br>";
@@ -66,27 +98,27 @@ function tabladetalle_productos(){
                         html += "<tr>";
                         html += "<td style='padding: 0'>";
                         html += "<center>";
-                        html += "<font size='2'><br></font>";
-                        html += "<h4 style='color: white;'><font size='6'><b>"+registros[i]["detalleven_cantidad"]+"</b></font></h4>";
+                        html += "<font size='"+espacio+"'><br></font>";
+                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+registros[i]["detalleven_cantidad"]+"</b></font></h4>";
                         html += "</center>";
                         html += "</td>";
                         html += "<td style='padding: 0'>";
                         html += "<center>";
-                        html += "<h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='65' height='65' class='img img-circle' ></h4>";
+                        html += "<h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle' ></h4>";
                         html += "</center>";
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";
-                        html += "<font size='2'><br></font>";
-                        html += "<h4 style='color:white'><font size='6'><b>"+numberFormat(Number(registros[i]['detalleven_precio']).toFixed(2))+"</b></font></h4>";
+                        html += "<font size='"+espacio+"'><br></font>";
+                        html += "<h4 style='color:white'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]['detalleven_precio']).toFixed(2))+"</b></font></h4>";
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";
-                        html += "<font size='2'><br></font>";
-                        html += "<h4 style='color: white;'><font size='6'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+"</b></font></h4>";
+                        html += "<font size='"+espacio+"'><br></font>";
+                        html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+"</b></font></h4>";
                         html += "</td>";
 
                         html += "</tr>";
                         }
-                        html2 += "<h4 style='color: white; text-align: center'><font size='8'><b> Total Bs.&nbsp;&nbsp; "+numberFormat(Number(total_detalle).toFixed(2))+"</b></font></h4>          ";
+                        html2 += "<h4 style='color: white;'><font size='8'><b> Total Bs.&nbsp;&nbsp; "+numberFormat(Number(total_detalle).toFixed(2))+"</b></font></h4>          ";
                     $("#verventa_detalle").html(html);
                     $("#estotal").html(html2);
                     

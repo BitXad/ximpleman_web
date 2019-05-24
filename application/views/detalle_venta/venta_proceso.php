@@ -5,14 +5,14 @@
         <link href="<?php echo base_url('resources/css/mifuente.css'); ?>" rel="stylesheet">
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>"></script>
+        <link rel="stylesheet" href="<?php echo base_url('resources/css/bootstrap.min.css'); ?>">
+        <script src="<?php echo base_url('resources/js/bootstrap.min.js'); ?>"></script>
         <!--<link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>-->
         <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
         <script src="<?php echo base_url('resources/js/verventa_proceso.js'); ?>"></script>
     </head>
-<body>
+<body style="width: 98%">
     
 <div class="box-header">
     <center>
@@ -150,23 +150,26 @@
                                     <span class="sr-only">Next</span>
                                   </a>
                                 </div>
+                                </div>
                                 </center>
                             </td>
                         </tr>
                         <tr>
                             <td style="border-top: 0px; border-bottom: 0px">
+                   
                             </td>
                         </tr>
                     </table>
+                    
                 </div>
+            </div>
+            <div class="col-md-12" id="estotal" style="text-align: left">
             </div>
         </div>
     </div>
 </div>
-        <div class="row">
-            <div class="col-md-12" id="estotal">
-                    <!--<h4 style="color: white; text-align: center"><font size="8"><b> Total Bs.&nbsp;&nbsp; <?php //echo number_format($total_detalle,2,".",","); ?></b></font></h4>-->          
-            </div>        
-        </div>
     </body>
+    <footer style="color: white">
+        <marquee>Desarrollado por <b>PASSWORD SRL</b> Ingenieria Hardware & Software</marquee>
+    </footer>
 </html>
