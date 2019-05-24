@@ -1,20 +1,16 @@
 <html>
-<<<<<<< HEAD
-    <head><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
-<link href="<?php echo base_url('resources/css/vistadetalleventa.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/mifuente.css'); ?>" rel="stylesheet">
-<meta charset="utf-8"/>
-=======
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=gb18030">
         <link href="<?php echo base_url('resources/css/vistadetalleventa.css'); ?>" rel="stylesheet">
->>>>>>> master
+        <link href="<?php echo base_url('resources/css/mifuente.css'); ?>" rel="stylesheet">
+        <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <!--<link href='http://fonts.googleapis.com/css?family=Holtwood+One+SC' rel='stylesheet' type='text/css'>-->
         <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
+        <script src="<?php echo base_url('resources/js/verventa_proceso.js'); ?>"></script>
     </head>
 <body>
     
@@ -22,6 +18,7 @@
     <center>
         <!--<h3 class="box-title">PEDIDO</h3>-->        
         <img src="<?php echo base_url("resources/images/logomrwings.png"); ?>" width="260" height="130">
+        <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
     </center>
 </div>
     
@@ -31,8 +28,9 @@
             <div class="box">
                 <div class="box-body table-responsive">
                     <table class='table table-condensed '>
+                        <tbody class="buscar" id="verventa_detalle">
                         <?php
-                        $cant_total = 0;
+                       /* $cant_total = 0;
                         $total_detalle = 0;
                                 echo "<br>"; //sizeof($ventas);
                         foreach($ventas as $v){
@@ -52,7 +50,7 @@
                             </td>
                             <td style="padding: 0"> 
                                 <center>
-                                    <h4><img src="<?php echo base_url("resources/images/productos/".$v["producto_foto"]); ?>" width="50" height="70" class="img img-circle" ></h4>
+                                    <h4><img src="<?php echo base_url("resources/images/productos/".$v["producto_foto"]); ?>" width="65" height="65" class="img img-circle" ></h4>
                                 </center>                                
                             </td>
                             <td style="padding: 0" align="right"> 
@@ -65,14 +63,15 @@
                             </td>
 
                         </tr>
-                            <?php  } ?>
-                        <td style="padding: 0" colspan="3">                      
+                            <?php  }*/ ?>
+                       <!-- <td style="padding: 0" colspan="3">                      
                                 <h4 style="color: white;"><font size="8"><b> Total Bs</b></font></h4>
                             </td>
                             <td style="padding: 0" align="right">                    
-                                <h4 style="color: white;"><font size="8"><b> <?php echo number_format($total_detalle,2,".",","); ?></b></font></h4>
+                                <h4 style="color: white;"><font size="8"><b> <?php //echo number_format($total_detalle,2,".",","); ?></b></font></h4>
                             </td>
-
+                            -->
+                            </tbody>
                     </table>
 
                 </div>
@@ -153,36 +152,21 @@
                                 </div>
                                 </center>
                             </td>
-                            
-
                         </tr>
                         <tr>
                             <td style="border-top: 0px; border-bottom: 0px">
-                                
                             </td>
                         </tr>
-                            
                     </table>
-
                 </div>
             </div>
-            
         </div>
-        
-        
-        
     </div>
 </div>
-    
-    
-<div class="row">
-    <div class="col-md-12">
-        <center>
-        <h4 style="color: white;"><font size="6" face="eurostyle"><b> <?php echo "Cliente: JUAN PEREZ MENDEZ"; ?></b></font></h4>
-        <h4 style="color: white;"><font size="6"><b> <?php echo "Razón: 141359034"; ?></b></font></h4>            
-        </center>            
-    </div>        
-</div>
-    
-  </body>
+        <div class="row">
+            <div class="col-md-12" id="estotal">
+                    <!--<h4 style="color: white; text-align: center"><font size="8"><b> Total Bs.&nbsp;&nbsp; <?php //echo number_format($total_detalle,2,".",","); ?></b></font></h4>-->          
+            </div>        
+        </div>
+    </body>
 </html>

@@ -236,10 +236,21 @@ class Detalle_venta extends CI_Controller{
         $this->load->model('Producto_model');
         $usuario_id = $this->session_data['usuario_id'];
         $data['productos'] = $this->Producto_model->get_productos_imagen();
-        $data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
+        //$data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
         $data['_view'] = 'detalle_venta/venta_proceso';
         $this->load->view('detalle_venta/venta_proceso',$data);
         //**************** fin contenido ***************
+    }
+    function getdetalle_venta()
+    {
+        if ($this->input->is_ajax_request()){
+            $usuario_id = $this->session_data['usuario_id'];
+            $datos = $this->Venta_model->get_detalle_auxfoto($usuario_id);
+             echo json_encode($datos);
+        }
+        else{
+            echo json_encode("null");
+        }        
     }
     
 }
