@@ -4,7 +4,7 @@ function inicio_recepcion(){
       
        	recepcion(1); 
         
-setInterval('actualizar()',5000);
+setInterval('actualizar()',15000);
           //aca podemos mandar fecha 
 }
 function actualizar()
@@ -115,7 +115,7 @@ function recepcion(estado)
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"detalle_venta/despachar/"+ventas[i]["venta_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<button type='button' onclick='despachar("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -142,7 +142,7 @@ function recepcion(estado)
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"detalle_venta/restablecer/"+ventas[i]["venta_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<button type='button' onclick='restablecer("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -161,6 +161,7 @@ function recepcion(estado)
                    document.getElementById('oculto').style.display = 'none';
                    $("#tabla_recepcion").html(html);
                    $("#ventas").val(n);
+                   
             }
                 
         },
@@ -171,5 +172,45 @@ function recepcion(estado)
         }
         
     });   
+
+}
+
+function despachar(venta)
+{
+    
+
+ var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/despachar/'+venta;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+          
+           success:function(resul){                
+                
+    recepcion(1);
+      
+
+      }
+    });   
+
+
+}
+function restablecer(venta)
+{
+    
+ var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/restablecer/'+venta;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+          
+           success:function(resul){                
+                
+    recepcion(1);
+      $("#entrega_id").val('1');
+
+      }
+    });   
+
 
 }
