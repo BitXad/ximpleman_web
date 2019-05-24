@@ -324,4 +324,16 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+    /* obtener imagen, nombre y precio de productos activos */
+    function get_productos_imagen()
+    {
+        $sql = "
+            SELECT
+                  p.producto_nombre, p.producto_foto, p.producto_precio
+            FROM
+                inventario p
+                order by p.producto_id desc";
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
 }
