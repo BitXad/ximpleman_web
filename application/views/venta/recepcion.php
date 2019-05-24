@@ -17,7 +17,7 @@
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
-<input id="ventas" name="ventas" >
+<input id="ventas" name="ventas" hidden>
 <input type="text" value="" id="parametro" hidden>
 <h3 class="box-title"> Recepcion de pedidos</h3>
 <div class="col-md-12">
