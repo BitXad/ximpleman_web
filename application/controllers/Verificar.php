@@ -26,7 +26,7 @@ class Verificar extends CI_Controller
         //var_dump($result);
 
         if ($result) {
-            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 4 or $result->tipousuario_id == 5 or $result->tipousuario_id == 6) {
+            if ($result->tipousuario_id == 1 or $result->tipousuario_id == 2 or $result->tipousuario_id == 3 or $result->tipousuario_id == 4 or $result->tipousuario_id == 5 or $result->tipousuario_id == 6 or $result->tipousuario_id == 7) {
                 $this->load->model('Rol_usuario_model');
                 $this->load->model('Tipo_usuario_model');
                 $thumb = "default_thumb.jpg";
@@ -91,6 +91,11 @@ class Verificar extends CI_Controller
                        redirect('alerta/dosificacion');
                     }
                     redirect('factura');
+                }
+
+                 if($session_data['tipousuario_id'] == 7){
+                    
+                    redirect('detalle_venta/recepcion');
                 }
 
 

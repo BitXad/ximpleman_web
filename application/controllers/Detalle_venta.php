@@ -96,13 +96,13 @@ class Detalle_venta extends CI_Controller{
             $venta_horaentrega=date('H:i:s');
         $sql="UPDATE venta SET entrega_id=2, venta_fechaentrega='".$venta_fechaentrega."', venta_horaentrega='".$venta_horaentrega."' WHERE venta_id=".$venta_id." ";
             $this->db->query($sql);
-            redirect('detalle_venta/recepcion');
+           return true;
     }
     function restablecer($venta_id)
     {
             $sql="UPDATE venta SET entrega_id=1, venta_fechaentrega='0000-00-00', venta_horaentrega='00:00:00' WHERE venta_id=".$venta_id." ";
             $this->db->query($sql);
-            redirect('detalle_venta/recepcion');
+            return true;
     }
 
     function detalle()
@@ -236,10 +236,21 @@ class Detalle_venta extends CI_Controller{
         $this->load->model('Producto_model');
         $usuario_id = $this->session_data['usuario_id'];
         $data['productos'] = $this->Producto_model->get_productos_imagen();
-        $data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
+        //$data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
         $data['_view'] = 'detalle_venta/venta_proceso';
         $this->load->view('detalle_venta/venta_proceso',$data);
         //**************** fin contenido ***************
+    }
+    function getdetalle_venta()
+    {
+        if ($this->input->is_ajax_request()){
+            $usuario_id = $this->session_data['usuario_id'];
+            $datos = $this->Venta_model->get_detalle_auxfoto($usuario_id);
+             echo json_encode($datos);
+        }
+        else{
+            echo json_encode("null");
+        }        
     }
     
 }
