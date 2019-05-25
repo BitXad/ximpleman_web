@@ -1297,6 +1297,31 @@ function ultimaventa(){
             
 }
 
+function ultimacomanda(){
+    
+       if($this->acceso(12)){
+        //**************** inicio contenido ***************    
+    
+                
+    $venta = $this->Venta_model->ultima_venta();
+    $venta_tipodoc = $venta[0]['venta_tipodoc'];
+    $venta_id = $venta[0]['venta_id'];
+    
+        redirect('factura/comanda_boucher/'.$venta_id);
+//    if ($venta_tipodoc==1){ 
+//        redirect('factura/imprimir_factura/'.$venta_id);
+//        
+//    }
+//    else{
+//        redirect('factura/imprimir_recibo/'.$venta_id);
+//        //redirect('factura/recibo_boucher/'.$venta_id);        
+//    }
+        
+       //**************** fin contenido ***************
+        }
+            
+}
+
 function eliminar_venta($venta_id){
 
         if($this->acceso(12)){
