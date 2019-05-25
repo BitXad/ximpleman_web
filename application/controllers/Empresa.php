@@ -192,8 +192,10 @@ class Empresa extends CI_Controller{
                         }
                     }
                     /* ********************F I N  para resize***************************** */
+                    $base_url = explode('/', base_url());
                     //$directorio = base_url().'resources/imagenes/';
-                    $directorio = FCPATH.'resources\images\empresas\\';
+                    //$directorio = FCPATH.'resources\images\empresas\\';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/empresas/';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/empresas/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
