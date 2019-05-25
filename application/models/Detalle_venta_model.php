@@ -80,6 +80,15 @@ function ventas_dia($estado)
         return $venta;
     }
     
+    function get_venta_comanda($venta_id)
+    {
+        $sql = "select *  from venta v, cliente c, usuario u, tipo_transaccion t, tipo_servicio s where v.cliente_id = c.cliente_id  and "
+                . " v.usuario_id = u.usuario_id and v.tipotrans_id = t.tipotrans_id and v.venta_id = ".$venta_id.
+                " and v.tiposerv_id = s.tiposerv_id";
+        $venta = $this->db->query($sql)->result_array();        
+        return $venta;
+    }
+    
     function get_detalle_venta($venta_id)
     {
         $sql = "select * from detalle_venta d, producto p where d.producto_id = p.producto_id and venta_id = ".$venta_id;

@@ -134,7 +134,13 @@ border-bottom : 1px solid #aaa;
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font><br>-->
 
 
-                <font size="3" face="arial"><b>ORDEN Nº 00<?php echo $venta[0]['venta_id']; ?></b></font>
+                <font size="3" face="arial"><b>PEDIDO Nº 00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                
+                <?php if($venta[0]['tiposerv_id']>0){ ?>
+                <br>
+                <font size="1" face="arial"><b><?php echo $venta[0]["tiposerv_descripcion"]; ?></b></font>
+                <br>
+                <?php } ?>
                 _______________________________________________                
                    
                 <br> 
@@ -143,8 +149,7 @@ border-bottom : 1px solid #aaa;
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
-                <br>_______________________________________________
-
+               
             </center>                      
         </td>
     </tr>
@@ -189,60 +194,11 @@ border-bottom : 1px solid #aaa;
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php } ?>
-<!--       </table>
-<table class="table" style="max-width: 7cm;">-->
-<!--    <tr>
-        
-        <td align="right">
-            
-            <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
-            </font>
-            
 
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($total_descuento,2,'.',','); ?><br>
-            </font>
-            <font size="2">
-            <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
-            </b>
-            </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
-            </font>
-            <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
-            </font>
-            
-        </td>          
-    </tr>-->
-<!--    <tr>
-        <td nowrap>
-            <font size="2">
-            
-                COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
-                 <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
-                        $fecha_limite = $fecha_lim->format('d/m/Y');
-                  ?>    
-                LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
-            </font>
-        </td>           
-    </tr>-->
-<!--    <tr>
-        <td>
-        <center>
-            <img src="<?php echo $codigoqr; ?>" width="100" height="100">
-        </center>
-
-        </td>
-       
-
-    </tr>    -->
     <tr style="border-top-style: solid">
           <td  colspan="4">
                CAJERO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
+               / TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
             <center>
             <font size="2">
                    

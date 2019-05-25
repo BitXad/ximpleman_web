@@ -18,7 +18,15 @@ class Tipo_servicio_model extends CI_Model
     {
         return $this->db->get_where('tipo_servicio',array('tiposerv_id'=>$tiposerv_id))->row_array();
     }
-        
+       
+
+    function get_tipo_servicios()
+    {
+        $sql = "select * from tipo_servicio";
+        $servicio = $this->db->query($sql)->row_array();
+        return $servicio;
+    }    
+    
     /*
      * Get all tipo_servicio
      */
