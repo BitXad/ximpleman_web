@@ -3,6 +3,8 @@ function inicio_recepcion(){
     
       
        	recepcion(1); 
+
+
         
 setInterval('actualizar()',15000);
           //aca podemos mandar fecha 
@@ -24,9 +26,9 @@ var ventas = document.getElementById('ventas').value;
                var n = registros.length; //tamaÃ±o de
             
     if (n>ventas) {
-    
+    document.getElementById('timbre').play();
     recepcion(1);
-    
+
     }   
 
       },
