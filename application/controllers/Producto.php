@@ -248,9 +248,9 @@ class Producto extends CI_Controller{
                     }
                     /* ********************F I N  para resize***************************** */
                     //$directorio = base_url().'resources/imagenes/';
-                    //$base_url = explode('/', base_url());
-                    $directorio = FCPATH.'resources\images\productos\\';
-                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/productos/';
+                    $base_url = explode('/', base_url());
+                    //$directorio = FCPATH.'resources\images\productos\\';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/productos/';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
@@ -392,12 +392,15 @@ class Producto extends CI_Controller{
                         }
                     }
                     /* ********************F I N  para resize***************************** */
+                    $base_url = explode('/', base_url());
                     //$directorio = base_url().'resources/imagenes/';
-                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/productos/';
+                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
                           unlink($directorio.$foto1);
-                          $mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
+                          $mimagenthumb = "thumb_".$foto1;
                           unlink($directorio.$mimagenthumb);
                       }
                   }
@@ -499,10 +502,13 @@ class Producto extends CI_Controller{
                         $config['max_width'] = 5900;
                         $config['max_height'] = 5900;
                         
-                        $dia = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+                        /*$dia = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $new_name = $this->input->post('producto_nombre');
                         $config['file_name'] = $new_name.$dia; //.$extencion;
-                        $config['file_ext_tolower'] = TRUE;
+                        $config['file_ext_tolower'] = TRUE*/
 
                         $this->load->library('upload', $config);
                         $this->upload->do_upload('chivo');
@@ -526,8 +532,8 @@ class Producto extends CI_Controller{
                         }
                         /* ********************F I N  para resize***************************** */
                         $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/productos/'.$new_name.$dia.$extension;
-                        $confi['new_image'] = './resources/images/productos/'."thumb_".$new_name.$dia.$extension;
+                        $confi['source_image'] = './resources/images/productos/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/productos/'."thumb_".$new_name.$extension;
                         $confi['create_thumb'] = FALSE;
                         $confi['maintain_ratio'] = TRUE;
                         $confi['width'] = 50;
@@ -537,7 +543,7 @@ class Producto extends CI_Controller{
                         $this->image_lib->initialize($confi);
                         $this->image_lib->resize();
 
-                        $foto = $new_name.$dia.$extension;
+                        $foto = $new_name.$extension;
                     }
             /* *********************FIN imagen***************************** */
             $params = array(

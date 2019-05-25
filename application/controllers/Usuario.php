@@ -245,9 +245,9 @@ private function acceso($id_rol){
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/usuarios/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -274,8 +274,10 @@ private function acceso($id_rol){
                         }
                     }
                     /* ********************F I N  para resize***************************** */
+                    $base_url = explode('/', base_url());
                     //$directorio = base_url().'resources/imagenes/';
-                    $directorio = FCPATH.'resources\images\usuarios\\';
+                    //$directorio = FCPATH.'resources\images\usuarios\\';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/usuarios/';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/usuarios/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
@@ -474,9 +476,9 @@ private function acceso($id_rol){
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/usuarios/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                    $config['max_size'] = 200000;
-                    $config['max_width'] = 2900;
-                    $config['max_height'] = 2900;
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;
@@ -504,7 +506,9 @@ private function acceso($id_rol){
                     }
                     /* ********************F I N  para resize***************************** */
                     //$directorio = base_url().'resources/imagenes/';
-                    $directorio = FCPATH.'resources\images\usuarios\\';
+                    $base_url = explode('/', base_url());
+                    //$directorio = FCPATH.'resources\images\usuarios\\';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/usuarios/';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/usuarios/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
