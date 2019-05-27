@@ -241,6 +241,7 @@ class Detalle_venta extends CI_Controller{
         $this->load->view('detalle_venta/venta_proceso',$data);
         //**************** fin contenido ***************
     }
+    
     function getdetalle_venta()
     {
         if ($this->input->is_ajax_request()){

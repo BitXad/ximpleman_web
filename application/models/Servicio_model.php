@@ -29,6 +29,7 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
+
         
     /*
      * Get all servicio

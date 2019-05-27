@@ -311,7 +311,14 @@ function mostrar_ocultar(){
             
     
             <!--------------- botones ---------------------->
-            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>            
+                    <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <?php } ?>            
+                    
+            <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
+                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Comanda</b></a> 
+            <?php } ?>            
+           
             <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> 
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
             <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span><b> - 0 -</b></button> 
