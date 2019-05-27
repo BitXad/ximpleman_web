@@ -112,7 +112,7 @@ function recepcion(estado)
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
                         html += "<h3><b> <span class='fa fa-cutlery'></span></b>";
-                        html += "    Despachar el Pedido <b># "+ventas[i]["venta_numeroventa"]+"?</b>";
+                        html += "   Despachar el Pedido <b># "+ventas[i]["venta_numeroventa"]+"</b><br> De : <b>"+ventas[i]["cliente_nombre"]+" </b>";
                         html += "</h3>";
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
@@ -139,7 +139,7 @@ function recepcion(estado)
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
                         html += "<h3><b> <span class='fa fa-cutlery'></span></b>";
-                        html += "    Reestablecer el Pedido <b># "+ventas[i]["venta_numeroventa"]+"?</b>";
+                        html += "    Reestablecer el Pedido <b># "+ventas[i]["venta_numeroventa"]+"</b><br> De : <b>"+ventas[i]["cliente_nombre"]+" </b>";
                         html += "</h3>";
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
