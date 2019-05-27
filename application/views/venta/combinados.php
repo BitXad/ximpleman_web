@@ -17,9 +17,10 @@
 <table>
     <tr>
         <td width="300">
-                     <center>                        
-                        <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                        <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>
+
+                     <center>  
+                        <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>
+                        <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                         <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                         <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     </center>           
