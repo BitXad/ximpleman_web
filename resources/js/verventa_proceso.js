@@ -2,7 +2,7 @@ $(document).on("ready",inicio);
 function inicio(){
     tabladetalle_productos();
 }
-$(document).ready(function() {	
+$(document).ready(function() {
     function volveraleer() {
        tabladetalle_productos();
     }
@@ -59,34 +59,41 @@ function tabladetalle_productos(){
                     var total_detalle = 0;
                     var ancho = "65";
                     var alto = "65";
+                    //var altoletra = "63px;";
                     var letra = "6";
                     var espacio = "2";
+                    //var preferencia = "12px";
                     if(n>6){
                         if(n== 7){
                             ancho = "55";
                             alto = "55";
                             letra = "5";
                             espacio = "1";
+                          //  altoletra = "53px;";
                         }else if(n== 8){
                             ancho = "45";
                             alto = "45";
                             letra = "4";
                             espacio = "1";
+                          //  altoletra = "43px;";
                         }else if(n== 9){
                             ancho = "35";
                             alto = "35";
                             letra = "3";
                             espacio = "0";
+                          //  altoletra = "33px;";
                         }else if(n== 10){
                             ancho = "25";
                             alto = "25";
                             letra = "2";
                             espacio = "0";
+                           // altoletra = "23px;";
                         }else if(n>= 11){
                             ancho = "20";
                             alto = "20";
                             letra = "1";
                             espacio = "0";
+                          //  altoletra = "18px;";
                         }
                     }
                     html = "";
@@ -102,9 +109,10 @@ function tabladetalle_productos(){
                         html += "<h4 style='color: white;'><font size='"+letra+"'><b>"+registros[i]["detalleven_cantidad"]+"</b></font></h4>";
                         html += "</center>";
                         html += "</td>";
-                        html += "<td style='padding: 0'>";
+                        html += "<td style='padding: 0;'>";
                         html += "<center>";
-                        html += "<h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle' ></h4>";
+                        //html += "<div style='color: white; display: flex; padding-right: 3px;'><h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'></h4><div style='font-size: "+preferencia+";  padding-top: "+altoletra+" padding-left: 5px'>"+registros[i]['detalleven_preferencia']+"</div></div>";
+                        html += "<h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'></h4>";
                         html += "</center>";
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";
