@@ -186,7 +186,7 @@ function mostrarAlert(){
                                         <div class="col-md-4">
                                             <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                                 <div class="form-group" id="new_select">
-                                                    <!--<input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="<?php echo $detalle_serv['subcatserv_descripcion'] ?>" onkeydown="validar2(event,2)"  onchange="seleccionar_subcategoria()" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                                    <!--<input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="<?php echo $detalle_serv['subcatserv_descripcion'] ?>" onkeydown="validar2(event,2)"  onchange="seleccionar_subcategoria()" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
                                                     <datalist id="listasubcatserv">
                                                     </datalist> -->
                                                         <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
@@ -205,25 +205,25 @@ function mostrarAlert(){
 					<div class="col-md-4">
 						<label for="detalleserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-                                                    <input type="text" name="detalleserv_descripcion" value="<?php echo $detalle_serv['detalleserv_descripcion']; ?>" class="form-control" id="detalleserv_descripcion" required onKeyUp="this.value = this.value.toUpperCase();" />
+                                                    <input type="text" name="detalleserv_descripcion" value="<?php echo $detalle_serv['detalleserv_descripcion']; ?>" class="form-control" id="detalleserv_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="detalleserv_falla" class="control-label"><span class="text-danger">*</span>Problema/Falla Según Cliente</label>
 						<div class="form-group">
-                                                    <input type="text" name="detalleserv_falla" value="<?php echo $detalle_serv['detalleserv_falla']; ?>" class="form-control" id="detalleserv_falla" required onKeyUp="this.value = this.value.toUpperCase();" />
+                                                    <input type="text" name="detalleserv_falla" value="<?php echo $detalle_serv['detalleserv_falla']; ?>" class="form-control" id="detalleserv_falla" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
 						<div class="form-group">
-                                                    <input type="text" name="detalleserv_diagnostico" value="<?php if($detalle_serv['detalleserv_diagnostico'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_diagnostico']; } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" />
+                                                    <input type="text" name="detalleserv_diagnostico" value="<?php if($detalle_serv['detalleserv_diagnostico'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_diagnostico']; } ?>" class="form-control" id="detalleserv_diagnostico" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-5">
 						<label for="detalleserv_solucion" class="control-label">Solución</label>
 						<div class="form-group">
-							<input type="text" name="detalleserv_solucion" value="<?php if($detalle_serv['detalleserv_solucion'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_solucion']; } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="detalleserv_solucion" value="<?php if($detalle_serv['detalleserv_solucion'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_solucion']; } ?>" class="form-control" id="detalleserv_solucion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
                                         <div class="col-md-2">
@@ -235,7 +235,7 @@ function mostrarAlert(){
 					<div class="col-md-5">
 						<label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
 						<div class="form-group">
-							<input type="text" name="detalleserv_glosa" value="<?php echo $detalle_serv['detalleserv_glosa']; ?>" class="form-control" id="detalleserv_glosa" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="detalleserv_glosa" value="<?php echo $detalle_serv['detalleserv_glosa']; ?>" class="form-control" id="detalleserv_glosa" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-4">

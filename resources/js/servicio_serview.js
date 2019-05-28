@@ -255,13 +255,13 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<div class='col-md-6'>";
                         html += "<label for='detalleserv_diagnóstico"+registros[i]["detalleserv_id"]+"' class='control-label'><span class='text-danger'>*</span>Diagnóstico</label>";
                         html += "<div class='form-group'>";
-                        html += "<input type='text' name='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_diagnostico"]+"' class='form-control' id='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' required onKeyUp='this.value = this.value.toUpperCase();' onclick='this.select();' />";
+                        html += "<input type='text' name='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_diagnostico"]+"' class='form-control' id='detalleserv_diagnostico"+registros[i]["detalleserv_id"]+"' required onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='col-md-6'>";
                         html += "<label for='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' class='control-label'><span class='text-danger'>*</span>Solución</label>";
                         html += "<div class='form-group'>";
-                        html += "<input type='text' name='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_solucion"]+"' class='form-control ' id='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' required onKeyUp='this.value = this.value.toUpperCase();' onclick='this.select();' />";
+                        html += "<input type='text' name='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' value='"+registros[i]["detalleserv_solucion"]+"' class='form-control ' id='detalleserv_solucion"+registros[i]["detalleserv_id"]+"' required onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='col-md-6'>";
@@ -279,7 +279,7 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<div class='col-md-6'>";
                         html += "<label for='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='control-label'>Datos Adicionales</label>";
                         html += "<div class='form-group'>";
-                        html += "<textarea rows='5' maxlength='350' name='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='form-control ' id='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' onKeyUp='this.value = this.value.toUpperCase();' onclick='this.select();' >";
+                        html += "<textarea rows='5' maxlength='350' name='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' class='form-control ' id='detalleserv_glosa"+registros[i]["detalleserv_id"]+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' >";
                         if(registros[i]["detalleserv_glosa"] == null || registros[i]["detalleserv_glosa"] == ""){ html += "# de hojas impresas:"; }
                         else{ html += registros[i]["detalleserv_glosa"]; }
                         html += "</textarea>";

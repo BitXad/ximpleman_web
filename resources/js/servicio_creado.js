@@ -1822,7 +1822,7 @@ function resetearcamposdeinput(){
             $('#tiempouso_id').find('option:first').attr('selected', 'selected').parent('select');
             $('#catserv_id').find('option:first').attr('selected', 'selected').parent('select');
             //$('#subcatserv_id').val('');  // lo buelve en blanco solo el primero
-            subcat = "<input type='search' name='subcatserv_id' list='listasubcatserv' class='form-control' id='subcatserv_id' value='- MARCA/MODELO -' onkeypress='validar2(event,2)'  onchange='seleccionar_subcategoria()' onKeyUp='this.value = this.value.toUpperCase();' onclick='this.select();' />";
+            subcat = "<input type='search' name='subcatserv_id' list='listasubcatserv' class='form-control' id='subcatserv_id' value='- MARCA/MODELO -' onkeypress='validar2(event,2)'  onchange='seleccionar_subcategoria()' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
             datal = "<datalist id='listasubcatserv'></datalist>";
             
             /*subcat = "<select name='subcatserv_id' class='form-control' id='subcatserv_id' onchange='ponerdescripcion(this.value)'>"+
