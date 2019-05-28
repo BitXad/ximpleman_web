@@ -7,17 +7,27 @@
 <input type="hidden" name="servicio_id" id="servicio_id" value="<?php echo $servicio_id; ?>" />
 
 <script type="text/javascript">
-        $(document).ready(function (){
-            (function ($) {
-                $('#filtrar3').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar3 tr').hide();
-                    $('.buscar3 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
+    $(document).ready(function (){
+        (function ($) {
+            $('#filtrar3').keyup(function () {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.buscar3 tr').hide();
+                $('.buscar3 tr').filter(function () {
+                    return rex.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
+    function asignadosfocus(){
+        $('#modalelegirinsumo').on('shown.bs.modal', function() {
+        $('#filtrar2').focus();
+    });
+    }
+    function noasignadosfocus(){
+        $('#modalotroinsumo').on('shown.bs.modal', function() {
+        $('#filtrar').focus();
+    });
+    }
 </script>
 <style type="text/css">
     .cantidad input {
@@ -31,15 +41,15 @@
 <div class="box-header">
     <h3 class="box-title">Insumos Usados en el Detalle de Servicio (Codigo: <?php echo ''.$detalleserv_codigo.')';  ?></h3>
     <div class="box-tools">
-        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalelegirinsumo" >+ Usar Insumos</a>
-        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalotroinsumo" >+ Usar Insumo(N A)</a>
+        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalelegirinsumo" onclick="asignadosfocus()" >+ Usar Insumos</a>
+        <a class="btn btn-success btn-sm" data-toggle="modal" data-target="#modalotroinsumo" onclick="noasignadosfocus()" >+ Usar Insumo(N A)</a>
     </div>
 </div>
 <div class="row">    
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
         <div class="input-group"> <span class="input-group-addon">Buscar</span>
-            <input id="filtrar3" type="text" class="form-control" placeholder="Ingrese descripción, código">
+            <input id="filtrar3" type="text" class="form-control" placeholder="Ingrese descripción, código" autofocus>
         </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
@@ -155,7 +165,7 @@
 				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
                                 
                               <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                                <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, codigo del Prod...">
+                                  <input id="filtrar2" type="text" class="form-control" placeholder="Ingresa el nombre, codigo del Prod...">
                               </div>
 			</div>
                     <div class="modal-body" style="width: 100%">

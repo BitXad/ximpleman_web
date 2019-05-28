@@ -23,6 +23,16 @@
         $('#buscarcliente').focus();
     });
     }
+    function codigoservfocus(){
+        $('#modalbuscar').on('shown.bs.modal', function() {
+        $('#servicio_id').focus();
+    });
+    }
+    function kardexdetallefocus(){
+        $('#modalbuscardetalle').on('shown.bs.modal', function() {
+        $('#codigo').focus();
+    });
+    }
 </script>
 <style type="text/css">
     #alinear{ text-align: right; }
@@ -32,15 +42,8 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitabladetalleimpresion.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-
-
-<!-------------------------------------------------------->
-
 <div class="row">
-    
     <div class="col-md-6 no-print">
-
-
         <!--este es INICIO del BREADCRUMB buscador-->
         <div class="row">
             <ol class="breadcrumb">
@@ -55,78 +58,39 @@
         <!--este es INICIO de input buscador-->
         <div class="input-group">
             <span class="input-group-addon">Buscar</span>
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)">
-            <!--<input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >-->
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)" autofocus autocomplete="off">
         </div>
-        
-        <!--este es FIN de input buscador-->
-        
-        <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
-         <div class="row" id='loader'  style='display:none; text-align: center'>
-            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-        </div>
-        <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
-        
         </div>
         <div class="col-md-4">
             <div  class="box-tools" >
-        <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
-            <!--<option value="">- ELEGIR -</option>-->
-            <option value="6">Servicios Pendientes</option>
-            <option value="1">Servicios de Hoy</option>
-            <option value="2">Servicios de Ayer</option>
-            <option value="3">Servicios de la semana</option>
-            <!--<option value="4">Todos los Servicios</option>-->
-            <option value="5">Servicios por fecha</option>
-        </select>
-  </div>
+                <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
+                    <!--<option value="">- ELEGIR -</option>-->
+                    <option value="6">Servicios Pendientes</option>
+                    <option value="1">Servicios de Hoy</option>
+                    <option value="2">Servicios de Ayer</option>
+                    <option value="3">Servicios de la semana</option>
+                    <!--<option value="4">Todos los Servicios</option>-->
+                    <option value="5">Servicios por fecha</option>
+                </select>
+            </div>
         </div>
-        
     </div>
-    
     <!---------------- BOTONES --------->
     <div class="col-md-6 no-print">
-        
         <div class="box-tools text-center">
             <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
             <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Ver Todos</small></a>
-            <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
-            <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Busqueda de detalles de Servicio"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Kardex Detalle</small></a>
+            <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" onclick="codigoservfocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
+            <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Busqueda de detalles de Servicio" onclick="kardexdetallefocus()"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Kardex Detalle</small></a>
             <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Kardex Cliente</small></a>
             <a href="<?php echo base_url('servicio/repserviciodiario'); ?>" class="btn btn-danger btn-foursquarexs" target="_blank" title="Movimiento economico diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Reporte Diario</small></a>           
         </div>
     </div>
     <!---------------- FIN BOTONES --------->
-    
 </div>
 <!-- *******************************INICIO Buscador por fechas************************************ -->
 <div class="no-print">
-<!--<div class="col-md-6">
-    <div class="input-group"> <span class="input-group-addon">Buscar</span>
-        <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)">
-    </div>
-</div> -->
-<!--<div class="container" id="categoria">
-                <span class="badge btn-primary">Servicios encontrados: <span class="badge btn-primary"><input style="border-width: 0;" id="encontrados" type="text" value="0" readonly="true"> </span></span>
-</div>-->
-      <!-------------------- CATEGORIAS------------------------------------->
-<!--<div class="col-md-6">
-    <div  class="box-tools" >
-        <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
-            <!--<option value="">- ELEGIR -</option>-->
-    <!--        <option value="6">Servicios Pendientes</option>
-            <option value="1">Servicios de Hoy</option>
-            <option value="2">Servicios de Ayer</option>
-            <option value="3">Servicios de la semana</option>
-            <option value="4">Todos los Servicios</option>
-            <option value="5">Servicios por fecha</option>
-        </select>
-  </div>
-</div> -->
-      <!--<div class="container">-->
-<!--<form method="post" onclick="buscar_por_fecha()">-->
     <div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none; text-align: center; padding-top: 10px;'>
-        
         <center>            
             <div class="col-md-2">
                 Desde: <input type="date" class="btn btn-primary btn-sm form-control" value="<?php echo date('Y-m-d')?>" id="fecha_desde" name="fecha_desde" required="true">
@@ -134,7 +98,6 @@
             <div class="col-md-2">
                 Hasta: <input type="date" class="btn btn-primary btn-sm form-control" value="<?php echo date('Y-m-d')?>" id="fecha_hasta" name="fecha_hasta" required="true">
             </div>
-
             <div class="col-md-2">
                 Estado:             
                 <select  class="btn btn-primary btn-sm form-control" id="buscarestado_id" required>
@@ -146,12 +109,8 @@
             </div>
             <br>
             <div class="col-md-3">
-
-    <!--            <a href="<?php //echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
                 <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
-                    <!--<h4>-->
                     <span class="fa fa-search"></span>Buscar Servicios
-                    <!--</h4>-->
               </button>
                 <br>
             </div>
@@ -159,38 +118,30 @@
         </center>    
         <br>    
     </div>
-<!--</form>-->
-<!--</div>-->
-<!--<div class="container" id="categoria">
-    
-                <span class="badge btn-primary">Servicios encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontradosfecha" type="text" value="0" readonly="true"> </span></span>
-
-</div>-->
 </div>
+<div id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
 <!-- *******************************F I N  Buscador por fechas************************************ -->
 <div class="row no-print">
     <div class="col-md-12">
-       
-        
-        
         <div class="box">
-            
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-                                                <th>Cliente</th>
-                                                <th>Código</th>
-                                                <th>Fechas</th>
-						<th>Estado</th>
-						<th>Tipo Serv.</th>
-						
-						<th>Reg. por </th>
-						
-						<th>Tot.</th>
-						<th>A. C.</th>
-						<th>Saldo</th>
-						<th></th>
+                        <th>#</th>
+                        <th>Cliente</th>
+                        <th>Código</th>
+                        <th>Fechas</th>
+                        <th>Estado</th>
+                        <th>Tipo Serv.</th>
+
+                        <th>Reg. por </th>
+
+                        <th>Tot.</th>
+                        <th>A. C.</th>
+                        <th>Saldo</th>
+                        <th></th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
                     <?php 
@@ -322,7 +273,7 @@ if(isset($a) && $a == 1){ ?>
                                            <div class="col-md-6">
 						<label for="servicio_id" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" name="servicio_id" class="form-control" id="cliente_nombre" required />
+                                                    <input type="number" min="0" name="servicio_id" class="form-control" id="servicio_id" required />
 						</div>
 					  </div>
                                            <!------------------------------------------------------------------->
@@ -398,7 +349,7 @@ if(isset($a) && $a == 1){ ?>
 
            <div class="col-md-6">
                 <div class="form-group">
-                    <input type="text" name="codigo" class="form-control" id="codigo" required placeholder="Codigo del Producto" autocomplete="off" onKeyUp="this.value = this.value.toUpperCase();" />
+                    <input type="text" name="codigo" class="form-control" id="codigo" required placeholder="Codigo del Producto" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                 </div>
           </div>
           <div class="col-md-6">

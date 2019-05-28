@@ -1,8 +1,15 @@
+<script>
+    function focusmodalvaciar(){
+        $('#modalvaciar').on('shown.bs.modal', function() {
+        $('#codigo').focus();
+    });
+    }
+</script>
 <div class="box-header">
     <div class="col-md-2">
         <label for="vaciartabla_modal" class="control-label">&nbsp;</label>
         <div class="form-group">
-            <a class="btn btn-danger" data-toggle="modal" data-target="#modalvaciar" title="Vaciar Informacion de las Tablas seleccionadas">
+            <a class="btn btn-danger" data-toggle="modal" data-target="#modalvaciar" onclick="focusmodalvaciar()" title="Vaciar Informacion de las Tablas seleccionadas">
             <i class="fa fa-eraser"></i> Vaciar Tablas</a>
             </div>
     </div>
@@ -30,7 +37,7 @@
                    ¿Esta seguro de borrar toda la información de las tablas seleccionadas?
                 </h3>
                 La información borrada no podra ser recuperada!.
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="input-group">
                         <span class="input-group-addon"><b>Código</b></span>           
                         <input id="codigo" name="codigo" type="text" class="form-control" autocomplete="off" >

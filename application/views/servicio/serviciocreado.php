@@ -2,47 +2,30 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="concliente" id="concliente" value="<?php echo $servicio['cliente_id']; ?>" />
 <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
 
+    });
 
-        });
-        
-        function fetch_select(id_cat){
+    function fetch_select(id_cat){
+        $('#detalleserv_descripcion').val($('#catserv_id option:selected').text());
 
-                /*var parametros = {
-                    catserv_id:id_cat
-                }; */
-              /*  $.ajax({
-                    data:  parametros,
-                    url:   '<?php //echo base_url('servicio/fetch_data')?>',
-                    type:  'post',
-                    
-                    success:  function (response) {
-                       
-                    var results = JSON.parse(response);
-                var subcat = "";
-                $.each(results, function(index, value) {
-                    
-                     subcat = subcat+'<option value="'+value.subcatserv_id+'">'+
-                            value.subcatserv_descripcion+
-                            '</option>';
-
-                }); *7
-                /*
-                    subcat = "<select name='subcatserv_id' class='form-control' id='subcatserv_id' onchange='ponerdescripcion(this.value)'>"+
-                            "<option value='0'>- MARCA/MODELO -</option>"+
-                            subcat+"</select>"
-                    $('#subcatserv_id' ).replaceWith(''+subcat); */
-            /*    }
-                    
-                }); */
-                
-                $('#detalleserv_descripcion').val($('#catserv_id option:selected').text());
-                //$('#detalleserv_descripcion').focus();
-                
-                }
-                
-    </script>
+        }
+    function clientefocus(){
+        $('#modalbuscar').on('shown.bs.modal', function() {
+        $('#filtrar').focus();
+    });
+    }
+    function ponerfocus(){
+        $('#myModal').on('shown.bs.modal', function() {
+        $('#cliente_nombre').focus();
+    });
+    }
+    function buscardetallefocus(){
+        $('#modalbuscardetalle').on('shown.bs.modal', function() {
+        $('#codigo').focus();
+    });
+    }
+</script>
     
 <style type="text/css">
 /*    #tamtex{ font-size: 0.1em; }*/
@@ -163,12 +146,7 @@ $(document).ready(function(){
 	         });
 	    });
 </script>
-<script type="text/javascript">
-        function ponerfocus(){
-            document.getElementById("cliente_nombre").focus();
-            //$("#cliente_nombre").focus();
-        }
-</script>
+
 <div class="box-header with-border">
     <input type="hidden" value="<?php echo $servicio['servicio_id']; ?>" id="esteservicio_id">
     <input type="hidden" value="<?php echo $parametro['parametro_diagnostico']; ?>" id="parametro_diagnostico">
@@ -196,9 +174,9 @@ $(document).ready(function(){
         <div class="box-tools">
             <center>
                 <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Servicio</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" ><font size="5"><span class="fa fa-user"></span></font><br><small>Cliente</small></a>
+                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" onclick="clientefocus()" ><font size="5"><span class="fa fa-user"></span></font><br><small>Cliente</small></a>
                 <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#myModal" onclick="ponerfocus();"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo</small></a>
-                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar</small></a>
+                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" onclick="buscardetallefocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar</small></a>
                 <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv.</small></a>
             </center>
         </div>
@@ -359,7 +337,7 @@ $(document).ready(function(){
                                            <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
+                                                    <input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					  </div>
@@ -384,7 +362,7 @@ $(document).ready(function(){
                                           <div class="col-md-6">
 						<label for="cliente_telefono" class="control-label"><span class="text-danger">*</span>Teléfono</label>
 						<div class="form-group">
-							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" required onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                                         <span class="text-danger"><?php echo form_error('cliente_telefono');?></span>
 						</div>
 					</div>
@@ -491,7 +469,7 @@ $(document).ready(function(){
                         Buscar 
                 </div>           
                 <div class="col-md-7">
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del Clie..." onkeypress="validar(event,3,<?php echo $servicio['servicio_id']; ?>)" onKeyUp="this.value = this.value.toUpperCase();" />
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del Clie..." onkeypress="validar(event,3,<?php echo $servicio['servicio_id']; ?>)" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                 </div>
                 <!--este es FIN de input buscador-->
                 <div class="container col-md-4" id="categoria">    
@@ -609,7 +587,7 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                 <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                     <div class="form-group" id="new_select">
-                                        <input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="- MARCA/MODELO -" onkeypress="validar2(event,2)"  onchange="seleccionar_subcategoria()" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                        <input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="- MARCA/MODELO -" onkeypress="validar2(event,2)"  onchange="seleccionar_subcategoria()" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
                                         <datalist id="listasubcatserv">
                                         </datalist>
                                             <!-- <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">
@@ -621,25 +599,25 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control" id="detalleserv_descripcion" required onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control" id="detalleserv_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="detalleserv_falla" class="control-label"><span class="text-danger">*</span>Problema/Falla Segun Cliente</label>
                                     <div class="form-group">
-                                        <input type="text" name="detalleserv_falla" value="<?php echo $this->input->post('detalleserv_falla'); ?>" class="form-control" id="detalleserv_falla" required onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <input type="text" name="detalleserv_falla" value="<?php echo $this->input->post('detalleserv_falla'); ?>" class="form-control" id="detalleserv_falla" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     </div>
                             </div>
                             <div class="col-md-6">
                                 <label for="detalleserv_diagnostico" class="control-label">Diagnóstico</label>
                                 <div class="form-group">
-                                    <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo $parametro['parametro_diagnostico'];}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                    <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo $parametro['parametro_diagnostico'];}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <label for="detalleserv_solucion" class="control-label">Solución</label>
                                 <div class="form-group">
-                                    <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo $parametro['parametro_solucion'];}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                    <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo $parametro['parametro_solucion'];}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
                                 </div>
                             </div>
                             <div class="col-md-4">
@@ -651,7 +629,7 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_glosa" class="control-label">Datos Adicionales</label>
                                     <div class="form-group">
-                                            <input type="text" name="detalleserv_glosa" value="<?php echo $this->input->post('detalleserv_glosa'); ?>" class="form-control" id="detalleserv_glosa" onKeyUp="this.value = this.value.toUpperCase();" onclick="this.select();" />
+                                            <input type="text" name="detalleserv_glosa" value="<?php echo $this->input->post('detalleserv_glosa'); ?>" class="form-control" id="detalleserv_glosa" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
                                     </div>
                             </div>
                             <div class="col-md-4">
@@ -776,7 +754,7 @@ $(document).ready(function(){
             <div class="col-md-6" id="midirec" style="<?php echo $mos; ?>">
                 <label for="direccion" class="control-label">Dirección</label>
                     <div class="form-group">
-                        <input type="text" class="form-control" name="direccion" id="direccion" value="<?php echo $servicio['servicio_direccion']; ?>" onKeyUp="this.value = this.value.toUpperCase();" />
+                        <input type="text" class="form-control" name="direccion" id="direccion" value="<?php echo $servicio['servicio_direccion']; ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                     </div>
             </div>
            <!-- --------------------------------------------------------------- -->
@@ -811,7 +789,7 @@ $(document).ready(function(){
                                            
                                            <div class="col-md-6">
 						<div class="form-group">
-                                                    <input type="text" name="codigo" class="form-control" id="codigo" required placeholder="Codigo del Producto" autocomplete="off" onKeyUp="this.value = this.value.toUpperCase();" />
+                                                    <input type="text" name="codigo" class="form-control" id="codigo" required placeholder="Codigo del Producto" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					  </div>
                                           <div class="col-md-6">

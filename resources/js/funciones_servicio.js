@@ -834,8 +834,7 @@ function fechadeservicio(elfiltro, busquedade){
         filtro = elfiltro;
     }
     
-    
-    //var limite = 1000;
+    document.getElementById('loader').style.display = 'block';
      
     $.ajax({url: controlador,
            type:"POST",
@@ -1025,7 +1024,6 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<!------------------------ FIN modal para imprimir reporte Técnico ------------------->";
                         
                         
-                        
                         /*
                         html += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         html += "<button class='btn btn-primary btn-xs' type='submit' title='Imprimir Informe Técnico' ><span class='fa fa-print'></span></button>";
@@ -1033,22 +1031,21 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</form>";
                         */
                         html += "</td>";
-
-                       
                        
                         html += "</tr>";
-                       
                    }
-                        
                    $("#tablaresultados").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
             }
-                
+            document.getElementById('loader').style.display = 'none';
         },
         error:function(resul){
           // alert("Algo salio mal...!!!");
            html = "";
            $("#tablaresultados").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none';
         }
         
     });   
