@@ -174,10 +174,6 @@ class Pedido extends CI_Controller{
         $data['page_title'] = "Pedidos";
         $usuario_id = $this->session_data['usuario_id'];
         
-//        $usuarioped_id = $pedido[0]['usuario_id'];
-        
-//        if ($usuario_id == $usuarioped_id){
-            
         $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
         
         if(sizeof($pedido)>0)        
@@ -198,13 +194,7 @@ class Pedido extends CI_Controller{
 
             $data['_view'] = 'pedido/pedidoabierto';
             $this->load->view('layouts/main',$data);            
-                    
-//        }
-//        else{
-//        
-//            
-//        }
-//                          		
+                                        		
         //**************** fin contenido ***************
         			}
         			     

@@ -108,7 +108,7 @@ class Pedido_model extends CI_Model
      */
     function get_pedido_cliente($pedido_id,$usuario_id)
     {
-        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,c.cliente_direccion,e.estado_descripcion,e.estado_color from pedido p, estado e, cliente c ".
+        $sql = "select p.*,c.*,e.estado_descripcion,e.estado_color from pedido p, estado e, cliente c ".
                "where pedido_id = ".$pedido_id." and p.usuario_id = ".$usuario_id." and p.estado_id = e.estado_id".
                 " and p.cliente_id = c.cliente_id";
         $result = $this->db->query($sql)->result_array();
