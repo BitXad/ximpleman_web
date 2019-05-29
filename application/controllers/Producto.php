@@ -786,19 +786,32 @@ class Producto extends CI_Controller{
     function buscarproductosexistmin()
     {
         if($this->acceso(105)) {
-        if ($this->input->is_ajax_request()) {
-            $parametro       = $this->input->post('parametro');   
-            $categoriaestado = $this->input->post('categoriaestado'); 
-            $datos = $this->Producto_model->get_busqueda_producto_existmin($parametro, $categoriaestado);
+            if ($this->input->is_ajax_request()) {
+                $parametro       = $this->input->post('parametro');
+                $categoriaestado = $this->input->post('categoriaestado'); 
+                $datos = $this->Producto_model->get_busqueda_producto_existmin($parametro, $categoriaestado);
+                echo json_encode($datos);
+            }
+            else
+            {                 
+                show_404();
+            }
+        }
+    }
+    /* * buscar productos en web SIN ACCESO!! */
+    function webbuscar_productos()
+    {
+        if($this->input->is_ajax_request()){
+            $parametro = $this->input->post('parametro');
+            $datos = $this->Producto_model->get_busqueda_productos($parametro);
             echo json_encode($datos);
         }
         else
         {                 
             show_404();
         }
+           
     }
-}
-    
     
     
 }
