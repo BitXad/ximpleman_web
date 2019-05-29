@@ -186,6 +186,27 @@ function mostrar_ocultar(){
             </div>
             
             </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_direccion" class="control-label">DIRECCIÓN</label>
+            <div class="form-group">
+                <input type="text" name="cliente_direccion" class="form-control" id="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_departamento" class="control-label">DEPARTAMENTO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_departamento" class="form-control" id="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+                    
+            <div class="col-md-3">
+            <label for="cliente_celular" class="control-label">CELULAR</label>
+            <div class="form-group">
+                <input type="text" name="cliente_celular" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
         
         </div>
 <!--        <li class="list-group-item">Two</li>

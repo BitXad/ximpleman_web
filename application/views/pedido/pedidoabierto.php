@@ -84,8 +84,19 @@ $(document).ready(localize());
         <h5><b>Cliente: </b><?php echo $pedido[0]['cliente_nombre']; ?> <br>
             <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo'];?> <br>
             <b>Dirección: </b><?php echo $pedido[0]['cliente_direccion']; ?><br>
-<!--        <b>Fecha/Hora: </b><?php echo $pedido[0]['pedido_fecha']; ?></h5>   -->
-        
+            <b>Teléfono(s): </b><?php echo $pedido[0]['cliente_telefono']." ".$pedido[0]['cliente_celular']; ?><br>
+            <b>Zona: </b><?php echo $pedido[0]['zona_id']; ?><br>
+            
+            
+<!--            <select >
+                <?php
+                    foreach($zona as $z){ ?>
+                        <option value="<?php echo $z['zona_id']; ?>"><?php echo $z['zona_id']; ?></option>                        
+                <?php } ?>
+                
+            </select>-->
+            <br>
+
         <?php //$descuento =  "<script>descuento</script>"; ?>
         <?php //$totalfinal =  "<script>descuento</script>"; ?>
         

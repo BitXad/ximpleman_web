@@ -1400,11 +1400,22 @@ function registrarcliente()
 {
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'venta/registrarcliente';
+    var cliente_id = document.getElementById('cliente_id').value;
+    
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
-    var telefono = document.getElementById('telefono').value;
-    var cliente_nombre = document.getElementById('cliente_nombre').value; 
-    var cliente_id = document.getElementById('cliente_id').value; 
+    var telefono = document.getElementById('telefono').value;    
+    var tipocliente_id = document.getElementById('tipocliente_id').value;
+    
+    var cliente_nombre = document.getElementById('cliente_nombre').value;
+    var cliente_ci = document.getElementById('cliente_ci').value;
+    var cliente_nombrenegocio = document.getElementById('cliente_nombrenegocio').value;    
+    var cliente_codigo = document.getElementById('cliente_codigo').value;
+    
+    var cliente_direccion = document.getElementById('cliente_direccion').value;
+    var cliente_departamento = document.getElementById('cliente_departamento').value;
+    var cliente_celular = document.getElementById('cliente_celular').value;
+    
    
    //alert(cliente_id);
    
@@ -1412,9 +1423,13 @@ function registrarcliente()
         
         // alert(cliente_id+" * "+nit);
         var controlador = base_url+'venta/modificarcliente';
+        
         $.ajax({url: controlador,
                     type:"POST",
-                    data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre},
+                    data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                        cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
+                    
                     success:function(respuesta){ 
                         var datos = JSON.parse(respuesta)
                         cliente_id = datos[0]["cliente_id"];
@@ -1439,7 +1454,9 @@ function registrarcliente()
     
     $.ajax({url: controlador,
             type:"POST",
-            data:{nit:nit,razon:razon,telefono:telefono},
+            data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                        cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
             success:function(respuesta){  
             
                 var registro = JSON.parse(respuesta);
@@ -1540,9 +1557,7 @@ function registrarventa(cliente_id)
     var venta_fecha = fecha();//retorna la fecha actual  //"date(now())";
     var hora = new Date();
     
-    
     var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
-
     
     var venta_subtotal = document.getElementById('venta_subtotal').value;     
     var venta_descuento = document.getElementById('venta_descuento').value; 
@@ -1643,27 +1658,6 @@ function finalizarventa()
        document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
        document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
     
-//        $.ajax({url: controlador,
-//        type:"POST",
-//        data:{},
-//        success:function(respuesta){
-//            
-//            var todo_bien = JSON.parse(respuesta);
-//            
-//            if(todo_bien[0]["resultado"]==1)
-//            {    
-//                    registrarcliente();
-//
-//            }
-//            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
-//
-//        },
-//        error: function(respuesta){
-//            alert("Revise los datos de la venta por favor...!");   
-//        }
-//        }); 
-        
-        
         registrarcliente();
     }
     else
@@ -2049,8 +2043,22 @@ function borrar_datos_cliente()
     $("#cliente_ci").val("0");
     $("#cliente_nombrenegocio").val("-");
     $("#cliente_codigo").val("0");
+    
+    $("#cliente_direccion").val("-");
+    $("#cliente_departamento").val("-");
+    $("#cliente_celular").val("-");
+    $("#tipocliente_id").val("1");
+    $("#cliente_telefono").val("-");
+    
+    
+    
+    
+    
     $("#venta_efectivo").val("0");
     $("#venta_cambio").val("0");
+    
+
+    
     
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
