@@ -43,9 +43,7 @@
 
 <div class="box-header">
                 <h3 class="box-title">Empresa</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('empresa/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                </div>
+            	
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -115,7 +113,7 @@
                         <td><?php echo $e['empresa_departamento']; ?></td>
                         <td>
                             <a href="<?php echo site_url('empresa/edit/'.$e['empresa_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
                             <!------------------------INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                                       <div class="modal-dialog" role="document">

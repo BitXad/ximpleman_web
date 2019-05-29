@@ -47,7 +47,7 @@
                     <tr>
 						<td><?php echo $cont ?></td>
 						<!--<td><?php //echo $t['tipotrans_id']; ?></td>-->
-						<td><?php echo $t['tipotrans_nombre']; ?></td>
+						<td><?php echo $t['tipotrans_nombre']; ?> (LE PERMITE HACER SUS TRANSACCIONES A <?php if($t['tipotrans_id']==1){ echo 'CONTADO'; } if($t['tipotrans_id']==2) { echo 'CREDITO'; } if($t['tipotrans_id']==3) { echo 'CONSIGNACION'; } if($t['tipotrans_id']==4) { echo 'TRASPASO'; }  ?>)</td>
 						<td>
                             <a href="<?php echo site_url('tipo_transaccion/edit/'.$t['tipotrans_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <!--<a href="<?php //echo site_url('tipo_transaccion/remove/'.$t['tipotrans_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->

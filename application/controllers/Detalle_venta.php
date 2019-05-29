@@ -12,6 +12,7 @@ class Detalle_venta extends CI_Controller{
         $this->load->model('Detalle_venta_model');
         $this->load->model('Empresa_model');
         $this->load->model('Venta_model');
+        $this->load->model('Tipo_transaccion_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -80,6 +81,41 @@ class Detalle_venta extends CI_Controller{
         echo json_encode($data);
               
     }
+    function reportes()
+    {
+        if($this->acceso(156)){
+        $data['page_title'] = "Reporte Ventas";        
+        $data['_view'] = 'venta/reportes';
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+        $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+        //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+        $this->load->view('layouts/main',$data);
+        }
+    }
+
+    function buscarrepo()
+    {
+        
+        $filtro = $this->input->post('filtro');
+        $datos = $this->Detalle_venta_model->reporte_ventas($filtro);
+       
+        echo json_encode($datos);
+              
+    }
+    function nomcliente($cliente)
+    {
+            $sql="SELECT cliente_nombre FROM cliente WHERE cliente_id=".$cliente." ";
+            $nombre=$this->db->query($sql)->row_array();
+            echo json_encode($nombre);
+    }
+    function nomproducto($producto)
+    {
+            $sql="SELECT producto_nombre FROM producto WHERE producto_id=".$producto." ";
+            $nombre=$this->db->query($sql)->row_array();
+            echo json_encode($nombre);
+    }
+
+
     function actualizar()
     {
         
@@ -116,6 +152,27 @@ class Detalle_venta extends CI_Controller{
         }
         else{
         }        
+    }
+
+     function buscarcliente()
+    {
+        
+            if ($this->input->is_ajax_request()) {
+
+                $parametro = $this->input->post('parametro');   
+
+                if ($parametro!=""){
+                    $datos = $this->Detalle_venta_model->get_cliente($parametro);            
+                   
+                    echo json_encode($datos);
+                }
+                else echo json_encode(null);
+            }
+            else
+            {                 
+                show_404();
+            }     
+         
     }
 
     /*

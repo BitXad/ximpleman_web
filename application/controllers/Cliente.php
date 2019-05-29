@@ -390,6 +390,173 @@ class Cliente extends CI_Controller{
                 show_error('The cliente you are trying to edit does not exist.');
         }
     }
+    function modificar_cliente($cliente_id,$pedido_id)
+    {
+        if($this->acceso(98)){
+            $data['page_title'] = "Cliente";
+        // check if the cliente exists before trying to edit it
+        $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
+        
+        if(isset($data['cliente']['cliente_id']))
+        {
+            $this->load->library('form_validation');
+
+			//$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
+			$this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
+                        //$this->form_validation->set_rules('cliente_nombrenegocio','Cliente Nombre Negocio','required');
+		
+	    if($this->form_validation->run())     
+            {
+                $usuario_id = $this->session_data['usuario_id'];
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                $foto1= $this->input->post('cliente_foto1');
+                if (!empty($_FILES['cliente_foto']['name']))
+                {
+                    $config['upload_path'] = './resources/images/clientes/';
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 5900;
+                    $config['max_height'] = 5900;
+
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
+                    
+                    $this->load->library('image_lib');
+                    $this->image_lib->initialize($config);
+                    
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('cliente_foto');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/clientes/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 600;
+                        
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                        $this->image_lib->clear();
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    //$directorio = base_url().'resources/imagenes/';
+                    $base_url = explode('/', base_url());
+                    //$directorio = FCPATH.'resources\images\clientes\\';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/clientes/';
+                    //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
+                    if(isset($foto1) && !empty($foto1)){
+                      if(file_exists($directorio.$foto1)){
+                          unlink($directorio.$foto1);
+                          $mimagenthumb = "thumb_".$foto1;
+                          unlink($directorio.$mimagenthumb);
+                      }
+                  }
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/clientes/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/clientes/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 50;
+                    $confi['height'] = 50;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
+                }else{
+                    $foto = $foto1;
+                }
+            /* *********************FIN imagen***************************** */
+                            //$this->input->post('cliente_foto'),
+                           //$mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                            //$mifecha = normalize_date($this->input->post('cliente_aniversario'));
+                    $lun = $this->input->post('lun');
+                    if($lun != 1){ $lun = 0; }
+                    $mar = $this->input->post('mar');
+                    if($mar != 1){ $mar = 0; }
+                    $mie = $this->input->post('mie');
+                    if($mie != 1){ $mie = 0; }
+                    $jue = $this->input->post('jue');
+                    if($jue != 1){ $jue = 0; }
+                    $vie = $this->input->post('vie');
+                    if($vie != 1){ $vie = 0; }
+                    $sab = $this->input->post('sab');
+                    if($sab != 1){ $sab = 0; }
+                    $dom = $this->input->post('dom');
+                    if($dom != 1){ $dom = 0; }
+                    $params = array(
+                        'estado_id' => $this->input->post('estado_id'),
+                        'tipocliente_id' => $this->input->post('tipocliente_id'),
+                        'categoriaclie_id' => $this->input->post('categoriaclie_id'),
+                        'cliente_codigo' => $this->input->post('cliente_codigo'),
+                        'zona_id' => $this->input->post('zona_id'),
+                        'cliente_nombre' => $this->input->post('cliente_nombre'),
+                        'cliente_ci' => $this->input->post('cliente_ci'),
+                        'cliente_direccion' => $this->input->post('cliente_direccion'),
+                        'cliente_telefono' => $this->input->post('cliente_telefono'),
+                        'cliente_celular' => $this->input->post('cliente_celular'),
+                        'cliente_foto' => $foto,
+                        'cliente_email' => $this->input->post('cliente_email'),
+                        'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                        'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+                        'cliente_latitud' => $this->input->post('cliente_latitud'),
+                        'cliente_longitud' => $this->input->post('cliente_longitud'),
+                        'cliente_nit' => $this->input->post('cliente_nit'),
+                        'cliente_razon' => $this->input->post('cliente_razon'),
+                        'usuario_id' => $this->input->post('usuario_id'),
+                        'lun' => $lun,
+                        'mar' => $mar,
+                        'mie' => $mie,
+                        'jue' => $jue,
+                        'vie' => $vie,
+                        'sab' => $sab,
+                        'dom' => $dom,
+
+                    );
+
+                    $this->Cliente_model->update_cliente($cliente_id,$params);
+                    
+                    $this->load->model('Pedido_model');
+                    $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);
+                    redirect('pedido/pedidoabierto/'.$pedido_id);
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+                    $this->load->model('Categoria_clientezona_model');
+                    $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+                    /***Añadido por Mario Escobar parqa asignarle a un usuario prevendedor***/
+                    $this->load->model('Usuario_model');
+                    $data['all_usuario_prev'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+                    $this->load->model('Tipo_cliente_model');
+                    $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+
+                    $this->load->model('Categoria_cliente_model');
+                    $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+
+                    
+                    $data['pedido_id'] = $pedido_id;
+                    $data['_view'] = 'cliente/modificar_cliente';
+                    $this->load->view('layouts/main',$data);
+                }
+            }
+            else
+                show_error('The cliente you are trying to edit does not exist.');
+        }
+    }
 
     /*
      * Deleting cliente

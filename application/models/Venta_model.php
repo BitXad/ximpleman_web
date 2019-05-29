@@ -123,8 +123,9 @@ class Venta_model extends CI_Model
      */
     function get_cliente_inicial()
     {
-        $sql = "select 0 as cliente_id, 0 as cliente_nit, 'SIN NOMBRE' as cliente_razon,'-' as cliente_telefono,
-                 'SIN NOMBRE' as cliente_nombre, 0 as cliente_ci, '-' as cliente_nombrenegocio, 0 as tipocliente_id,'-' as cliente_codigo ";
+        $sql = "select 0 as cliente_id, 0 as cliente_nit, 'SIN NOMBRE' as cliente_razon,'-' as cliente_telefono
+                ,'SIN NOMBRE' as cliente_nombre, 0 as cliente_ci, '-' as cliente_nombrenegocio, 0 as tipocliente_id,'-' as cliente_codigo 
+                ,'' as cliente_direccion,  '' as cliente_celular, '' as cliente_departamento";
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
     }

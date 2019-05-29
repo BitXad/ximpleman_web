@@ -1,4 +1,7 @@
 <?php if($diasdo['dias'] < 0){ ?>
+<div class="box-body table-responsive">
+  <table class="table table-striped table-condensed" >
+    <td>
 <div class="info-box bg-red">
                 <span class="info-box-icon"><i class="ion-alert-circled"></i></span>
 
@@ -14,8 +17,13 @@
                     No podra emitir facturas
                   </span>
                 </div><!-- /.info-box-content -->
-              </div>
+              </div></td>
+              </table> 
+            </div>
 <?php } else {  ?>
+<div class="box-body table-responsive">
+  <table class="table table-striped table-condensed" >
+    <td>
 <div class="info-box bg-red">
                 <span class="info-box-icon"><i class="ion-alert-circled"></i></span>
 
@@ -31,5 +39,7 @@
                     No podra emitir facturas
                   </span>
                 </div><!-- /.info-box-content -->
-              </div>  
+              </div> </td>
+              </table> 
+            </div>
 <?php } ?>

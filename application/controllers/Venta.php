@@ -1171,11 +1171,28 @@ function registrarcliente()
             $cliente_nit = $this->input->post('nit');
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
+            $tipocliente_id = $this->input->post('tipocliente_id');
+            
+            $cliente_nombre =  "'".$this->input->post('cliente_nombre')."'";
+            $cliente_ci =  "'".$this->input->post('cliente_ci')."'";
+            $cliente_nombrenegocio =  "'".$this->input->post('cliente_nombrenegocio')."'";
+            $cliente_codigo =  "'".$this->input->post('cliente_codigo')."'";
+
+            $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
+            $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
+            $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
+            
             $cliente_ci = $cliente_nit;
             $cliente_nombre = $cliente_razon;
-            $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id) value(1,1,".
-                   $cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".$cliente_razon.",".$cliente_telefono.",1,0)";
-            
+            $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
+                    cliente_razon,cliente_telefono,estado_id,usuario_id,
+                    cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
+                    cliente_celular
+                    ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
+                    $cliente_razon.",".$cliente_telefono.",1,0,".
+                   $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
+                   $cliente_celular.")";
+//            echo $sql;
             $datos = $this->Venta_model->registrarcliente($sql);
             echo json_encode($datos);
             
@@ -1206,8 +1223,20 @@ function modificarcliente()
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
             $cliente_id = $this->input->post('cliente_id');
-//            $cliente_ci =  "'".$this->input->post('cliente_ci')."'";
             $cliente_nombre =  "'".$this->input->post('cliente_nombre')."'";
+            
+            $tipocliente_id = $this->input->post('tipocliente_id');
+            
+            $cliente_nombre =  "'".$this->input->post('cliente_nombre')."'";
+            $cliente_ci =  "'".$this->input->post('cliente_ci')."'";
+            $cliente_nombrenegocio =  "'".$this->input->post('cliente_nombrenegocio')."'";
+            $cliente_codigo =  "'".$this->input->post('cliente_codigo')."'";
+
+            $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
+            $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
+            $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
+            
+            
             
             if ($cliente_id>0){
                 $sql = "update cliente set ".
@@ -1216,6 +1245,17 @@ function modificarcliente()
                         ",cliente_nit = ".$cliente_nit.
                         ",cliente_razon = ".$cliente_razon.
                         ",cliente_telefono = ".$cliente_telefono.
+                        ",tipocliente_id = ".$tipocliente_id.
+                        
+                        ",cliente_nombre= ".$cliente_nombre.
+                        ",cliente_ci = ".$cliente_ci.
+                        ",cliente_nombrenegocio = ".$cliente_nombrenegocio.
+                        ",cliente_codigo = ".$cliente_codigo.
+                        
+                        ",cliente_direccion= ".$cliente_direccion.
+                        ",cliente_departamento = ".$cliente_departamento.
+                        ",cliente_celular = ".$cliente_celular.
+                        
                         " where cliente_id = ".$cliente_id;
 
                 $datos = $this->Venta_model->modificarcliente($sql);            

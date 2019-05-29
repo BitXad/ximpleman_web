@@ -846,6 +846,8 @@ function buscar_clientes()
                 html += "        <td>"+(i+1)+"</td>";
                 html += "        <td>";
                 html += "        <img src='"+base_url+"resources/images/clientes/thumb_"+c[i]["cliente_foto"]+"' class='img-circle' width='50' height='50'>";
+                html += "        <br><a href='"+base_url+"cliente/modificar_cliente/"+c[i]['cliente_id']+"/"+pedido_id+"' class='btn btn-primary btn-xs'><fa class='fa fa-pencil'> </fa> modificar </a>";
+                
                 html += "        </td>";
 
                 html += "        <td>";

@@ -76,9 +76,9 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 
 
-<table class="table" style="width: 18cm;" >
+<table class="table" style="width: 18cm; padding: 0;" >
     <tr>
-        <td style="width: 6cm;" >
+        <td style="width: 6cm; padding: 0" >
                 
             <center>
                                
@@ -95,7 +95,7 @@ border-bottom : 1px solid #aaa;
             </center>                      
         </td>
                    
-        <td style="width: 6cm;" > 
+        <td style="width: 6cm; padding: 0" > 
             <center>
             
                     <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
@@ -105,7 +105,7 @@ border-bottom : 1px solid #aaa;
                 <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
             </center>
         </td>
-        <td style="width: 6cm;" >
+        <td style="width: 6cm; padding: 0" >
                 _______________________________________________                
                    
                 <br> 
@@ -114,7 +114,8 @@ border-bottom : 1px solid #aaa;
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                     <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
-                    <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
+                    <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?><br>
+                    <b>DIRECCIÓN: </b><?php echo $venta[0]['cliente_direccion'].""; ?>
                 <br>_______________________________________________
         </td>
     </tr>
@@ -123,10 +124,10 @@ border-bottom : 1px solid #aaa;
 
        <table class="table table-striped table-condensed"  style="width: 18cm;" >
            <tr  style="border-top-style: solid; border-bottom-style: solid">
-               <td align="center"><b>CN</b></td>
-                <td align="center"><b>DESCRIPCIÓN</b></td>
-                <td align="center"><b>P.UNIT</b></td>
-                <td align="center"><b>TOTAL</b></td>               
+                <td align="center" style="padding: 0"><b>CN</b></td>
+                <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
+                <td align="center" style="padding: 0"><b>P.UNIT</b></td>
+                <td align="center" style="padding: 0"><b>TOTAL</b></td>               
            </tr>
            <?php $cont = 0;
                  $cantidad = 0;
@@ -140,8 +141,8 @@ border-bottom : 1px solid #aaa;
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
-                <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre'];?>
+                <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
+                <td style="padding: 0"><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre'];?>
                         <?php
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];
@@ -155,8 +156,8 @@ border-bottom : 1px solid #aaa;
                         ?>
                     <!--<textarea onload="autosize()"></textarea>-->
                 </td>
-                <td align="right"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php } ?>
        </table>
@@ -180,7 +181,7 @@ border-bottom : 1px solid #aaa;
                     <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
             </center>
         </td>
-        <td align="right">
+        <td align="right"  style="padding: 0">
             
             <font size="1">
                 <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
