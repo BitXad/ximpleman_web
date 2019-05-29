@@ -1,3 +1,11 @@
+$(document).on("ready",inicio);
+function inicio(){
+        
+        
+        mostrar_grafica(); 
+        
+        
+}
 
 function cambiar_fecha_grafica(){
 
@@ -16,10 +24,12 @@ function mostrar_grafica(){
         
     var anio_sel = hoy.getFullYear();
     var mes_sel = hoy.getMonth()+1;
+    $("#anio_sel").val(anio_sel);
+    $("#mes_sel").val(mes_sel);
     //alert(anio_sel+" - "+mes_sel);
     cargar_grafica_barras(anio_sel,mes_sel);
-    //cargar_grafica_lineas(anio_sel,mes_sel);
-    //cargar_grafica_pie(anio_sel,mes_sel);
+    cargar_grafica_lineas(anio_sel,mes_sel);
+    cargar_grafica_pie(anio_sel,mes_sel);
 }
 
 function cargar_grafica_barras(anio,mes){
@@ -152,8 +162,14 @@ var options={
             borderWidth: 0
         },
         series: [{
-            name: 'registros',
+            color: 'red',
+            name: 'Compras',
             data: []
+
+        },{
+           color: 'blue',
+            name: 'Ventas',
+            data: [] 
         }]
 }
 
@@ -167,10 +183,13 @@ $.ajax({url: controlador,
 var datos= JSON.parse(respuesta);
 var totaldias=datos.totaldias;
 var registrosdia=datos.registrosdia;
+var registrosven=datos.registrosven;
 var i=0;
     for(i=1;i<=totaldias;i++){
     
-    options.series[0].data.push( registrosdia[i] );
+    options.series[0].data.push( Math.round(registrosdia[i]*100)/100 );
+    
+    options.series[1].data.push( Math.round(registrosven[i]*100)/100 );
     options.xAxis.categories.push(i);
 
 
