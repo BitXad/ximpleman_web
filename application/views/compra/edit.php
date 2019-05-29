@@ -1229,7 +1229,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
          
                <h1><b> <em class="fa fa-minus-circle">Desea Anular esta Compra?</em> 
-              </b></h1>
+              </b></h1> Esta compra puede tener una orden de Pago, tomar en cuenta.
           </div>
               <div class="modal-footer" align="right">
 
