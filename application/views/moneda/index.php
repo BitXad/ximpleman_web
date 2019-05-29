@@ -54,7 +54,7 @@
 						<td><?php echo $m['estado_descripcion']; ?></td>
 						<td>
                             <a href="<?php echo site_url('moneda/edit/'.$m['moneda_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('moneda/remove/'.$m['moneda_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <!--<a href="<?php echo site_url('moneda/remove/'.$m['moneda_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php } ?>

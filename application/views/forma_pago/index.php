@@ -50,7 +50,7 @@
 						<td><?php echo $f['forma_nombre']; ?></td>
 						<td>
                             <a href="<?php echo site_url('forma_pago/edit/'.$f['forma_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('forma_pago/remove/'.$f['forma_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
+                            <!--<a href="<?php echo site_url('forma_pago/remove/'.$f['forma_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php } ?>

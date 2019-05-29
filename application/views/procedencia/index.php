@@ -76,7 +76,7 @@
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                             <a href="<?php echo site_url('procedencia/edit/'.$p['procedencia_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php $i++; } } ?>
