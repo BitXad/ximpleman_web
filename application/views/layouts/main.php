@@ -439,13 +439,13 @@
                         </li>
                         <?php
                         }
-                      /*  if($rolusuario[X-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/ventareportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                            <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
                         </li>
                         <?php
-                        }*/
+                        }
                         if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
