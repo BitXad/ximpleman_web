@@ -170,6 +170,6 @@
 </div>
     </body>
     <footer style="color: white">
-        <marquee>Desarrollado por <b>PASSWORD SRL</b> Ingenieria Hardware & Software</marquee>
+        <marquee>Desarrollado por <b>PASSWORD SRL</b> Ingenieria Hardware & Software. Contactos: <b>4511518</b> - <b>77417605</b></marquee>
     </footer>
 </html>

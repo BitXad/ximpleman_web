@@ -60,7 +60,7 @@ function ventas_dia($estado)
   function get_dventadia($estado)
     {
         $result = $this->db->query(
-        "SELECT d.detalleven_cantidad, d.venta_id, d.producto_id, p.producto_nombre, v.venta_fecha, v.entrega_id
+        "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, v.venta_fecha, v.entrega_id
         FROM detalle_venta d
         LEFT JOIN producto p ON d.producto_id=p.producto_id
         LEFT JOIN venta v ON d.venta_id=v.venta_id
@@ -70,6 +70,24 @@ function ventas_dia($estado)
         ")->result_array();
         return $result;        
     } 
+
+    function reporte_ventas($filtro)
+    {
+        
+        $reporte = $this->db->query(
+        "SELECT vs.*, fa.factura_id, cr.credito_cuotainicial FROM ventas vs LEFT JOIN factura fa on vs.venta_id = fa.venta_id LEFT JOIN credito cr on vs.venta_id = cr.venta_id WHERE  ".$filtro."
+        ")->result_array();
+        return $reporte;
+    }
+
+    function get_cliente($filtro)
+    {
+        
+        $cliente = $this->db->query(
+        "SELECT * FROM cliente WHERE cliente_nombre like '%".$filtro."%' or cliente_nit like '%".$filtro."%' or cliente_razon like '%".$filtro."%'
+        ")->result_array();
+        return $cliente;
+    }
 
 
     function get_venta($venta_id)
