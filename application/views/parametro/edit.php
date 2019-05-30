@@ -88,6 +88,18 @@
 						<div class="form-group">
 							<input type="number" step="any" name="parametro_interes" value="<?php echo ($this->input->post('parametro_interes') ? $this->input->post('parametro_interes') : $parametro['parametro_interes']); ?>" class="form-control" id="parametro_interes" />
 						</div>
+					</div>
+				<div class="col-md-4">
+						<label for="parametro_permisocredito" class="control-label">PERMISO COBRO</label>
+						<div class="form-group">
+							<div class="form-group">
+							<SELECT  name="parametro_permisocredito" value="<?php echo ($this->input->post('parametro_permisocredito') ? $this->input->post('parametro_permisocredito') : $parametro['parametro_permisocredito']); ?>" class="form-control" id="parametro_permisocredito" >
+											 <option value="1">TODOS</option>
+
+								            <option value="2" <?php if($parametro['parametro_permisocredito']=='2'){ ?> selected <?php } ?> >INDIVIDUAL</option>
+								</SELECT>
+						</div>
+						</div>
 					</div></div><hr>
 					<div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 0, 0, 0.3);"><u><b>SERVICIOS</b></u><br>
 				

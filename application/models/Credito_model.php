@@ -65,7 +65,7 @@ class Credito_model extends CI_Model
         return $credito['count'];
     }
 
-    function get_deudas($filtro)
+    function get_deudas($filtro,$condicion)
     {
         $deuda = $this->db->query("
             SELECT
@@ -78,7 +78,8 @@ class Credito_model extends CI_Model
                 c.compra_id = co.compra_id
                 and p.proveedor_id = co.proveedor_id
                 and c.estado_id = e.estado_id
-                ".$filtro." 
+                ".$filtro."
+                ".$condicion." 
 
             ORDER BY c.credito_fecha DESC
 
@@ -110,12 +111,12 @@ class Credito_model extends CI_Model
         return $deuda;
     }
         
-    function get_cuentas($filtro)
+    function get_cuentas($filtro,$condicion)
     {
         $deuda = $this->db->query("
 
            SELECT
-                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id
 
             FROM
                 credito c
@@ -131,6 +132,7 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
             WHERE
                 c.compra_id = 0
                  ".$filtro." 
+                 ".$condicion."
 
             ORDER BY c.credito_fecha DESC
 
@@ -213,7 +215,7 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
 
         return $credito;
     }
-         function get_all_deuda()
+         function get_all_deuda($condicion)
     {
         
         
@@ -229,9 +231,10 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
                 and p.proveedor_id = co.proveedor_id
                 and c.estado_id = e.estado_id
                 and c.estado_id = 8
+                ".$condicion."
 
 
-            ORDER BY `credito_id` DESC
+            ORDER BY `credito_id` DESC  limit 150;
 
             
         ")->result_array();
@@ -265,12 +268,12 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
 
         return $credito;
     }
-     function get_all_cuentas()
+     function get_all_cuentas($condicion)
     {
         
         $credito = $this->db->query("
               SELECT
-                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro
+                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id as ususer
 
             FROM
                 credito c
@@ -284,7 +287,8 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
             WHERE
                  c.estado_id = 8
                  and c.compra_id = 0
-            ORDER BY `credito_id` DESC
+                ".$condicion."
+            ORDER BY `credito_id` DESC  limit 150;
            
         ")->result_array();
 

@@ -39,6 +39,7 @@
                         <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">DIA DE PAGO</th>
                         <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">PERIODO DE PAGO</th>
                         <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">INTERES</th>
+                        <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">PERMISO COBRO</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_numcuotas']; ?></td>
@@ -68,6 +69,7 @@ break;
                         </td>
                         <td><?php echo $p['parametro_periododias']; ?></td>
                         <td><?php echo $p['parametro_interes']; ?></td>
+                        <td><?php  if ($p['parametro_permisocredito']==1){ echo 'TODOS'; }else{ echo'INDIVIDUAL'; } ?></td>
                     </tr>
                    
                     <tr>

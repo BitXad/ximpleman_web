@@ -12,6 +12,7 @@ class Credito extends CI_Controller{
         $this->load->model('Credito_model');
         $this->load->model('Empresa_model');
         $this->load->model('Cuotum_model');
+        $this->load->model('Compra_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -53,17 +54,23 @@ class Credito extends CI_Controller{
     
     function indexDeuda()
     {
-        if($this->acceso(41)){
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+
+        if($this->acceso(41) && $tipo_usuario>1 && $permiso==2){
+            $condicion = " and co.usuario_id=".$usuario_id."";
             $data['page_title'] = "Deudas x Pagar";
-            $params['limit'] = RECORDS_PER_PAGE; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('credito/indexDeuda?');
-            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-            $this->pagination->initialize($config);
-
-            $data['credito'] = $this->Credito_model->get_all_deuda($params);
+            $data['credito'] = $this->Credito_model->get_all_deuda($condicion);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['_view'] = 'credito/indexDeuda';
+            $this->load->view('layouts/main',$data);
+        }
+        else{
+            $condicion = "";
+            $data['page_title'] = "Deudas x Pagar";
+            $data['credito'] = $this->Credito_model->get_all_deuda($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexDeuda';
             $this->load->view('layouts/main',$data);
@@ -100,20 +107,26 @@ class Credito extends CI_Controller{
     
      function indexCuenta()
     {
-         if($this->acceso(47)){
-             $data['page_title'] = "Cuentas x Cobrar";
-            $params['limit'] = RECORDS_PER_PAGE; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('credito/indexCuenta?');
-            $config['total_rows'] = $this->Credito_model->get_all_credito_count1();
-            $this->pagination->initialize($config);
-            
-            $data['credito'] = $this->Credito_model->get_all_cuentas($params);
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+         if($this->acceso(47) && $tipo_usuario>1 && $permiso==2){
+            $condicion = " and ve.usuario_id=".$usuario_id." or s.usuario_id=".$usuario_id." ";
+            $data['page_title'] = "Cuentas x Cobrar";
+            $data['credito'] = $this->Credito_model->get_all_cuentas($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexCuentas';
             $this->load->view('layouts/main',$data);
+        }
+        else{
+           $condicion = "";
+           
+            $data['page_title'] = "Cuentas x Cobrar";
+            $data['credito'] = $this->Credito_model->get_all_cuentas($condicion);
+            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['_view'] = 'credito/indexCuentas';
+            $this->load->view('layouts/main',$data); 
         }
     }
 
@@ -146,34 +159,45 @@ class Credito extends CI_Controller{
 
     function buscarDeuda()
     {
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+        if ($tipo_usuario>1 && $permiso==2) {
+           $condicion = " and co.usuario_id=".$usuario_id."";
+        }else{
+           $condicion = "";
+        }
+        
          if ($this->input->is_ajax_request()) {  
-        $filtro = $this->input->post('filtro'); 
-        $datos = $this->Credito_model->get_deudas($filtro);
-     if(isset($datos)){
-                        echo json_encode($datos);
-                    }else echo json_encode(null);
-    }
-        else
-        {                 
-                    show_404();
-        }          
+        $filtro = $this->input->post('filtro');
+         
+        $datos = $this->Credito_model->get_deudas($filtro,$condicion);
+        echo json_encode($datos);
+        }     
+         
     }
 
      function buscarCuenta()
     {
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+        if ($tipo_usuario>1 && $permiso==2) {
+           $condicion = " and ve.usuario_id=".$usuario_id." or s.usuario_id=".$usuario_id." ";
+        }else{
+           $condicion = "";
+        }
          if ($this->input->is_ajax_request()) {  
         $filtro = $this->input->post('filtro'); 
-        $datos = $this->Credito_model->get_cuentas($filtro);
-     if(isset($datos)){
-                        echo json_encode($datos);
-                    }else echo json_encode(null);
+        $datos = $this->Credito_model->get_cuentas($filtro,$condicion);
+     
+        echo json_encode($datos);
+                   
+        }
+        
     }
-        else
-        {                 
-                    show_404();
-        }          
-    }
-
     /*
      * Adding a new credito
      */
