@@ -9,6 +9,7 @@ class Website extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Pagina_web_model');
+        $this->load->model('Producto_model');
     }            
 
     function index($idioma_id)
@@ -43,5 +44,18 @@ class Website extends CI_Controller{
     {                
         $this->index(2);
         //site_url('website/index/2');
-    }    
+    }
+    /* * buscar productos en web SIN ACCESO!! */
+    function webbuscar_productos()
+    {
+        if($this->input->is_ajax_request()){
+            $parametro = $this->input->post('parametro');
+            $datos = $this->Producto_model->get_busqueda_productos($parametro);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
 }

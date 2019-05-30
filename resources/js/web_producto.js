@@ -1,57 +1,84 @@
-$(document).on("ready",inicio);
-function inicio(){
-    buscar_producto();
-}
-
 //Tabla resultados de la busqueda en el web de producto
 function buscar_producto()
 {
     var base_url = document.getElementById('base_url').value;
-    controlador = base_url+'producto/webbuscar_productos';
+    controlador = base_url+'website/webbuscar_productos/';
     parametro = document.getElementById('parabuscar').value;
     if(parametro != ""){
         document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
         $.ajax({url: controlador,
             type:"POST",
             data:{parametro:parametro},
-            success:function(respuesta){            
-                $("#encontrados").val("- 0 -");
+            success:function(respuesta){
+                //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
                 if(registros != null){
                     var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
+                    //$("#encontrados").val("- "+n+" -");
                     html = "";
                     for (var i = 0; i < n ; i++){
-                        html += "<tr>";
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td>";
-                        html += "<div id='horizontal'>";
-                        html += "<div id='contieneimg'>";
                         var mimagen = "";
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='50' height='50' />";
                             mimagen += "</a>";
-                            //mimagen = nomfoto.split(".").join("_thumb.");77
                         }else{
-                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='50' height='50' />";
+                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='50' height='50' />";
+                            mimagen += "</a>";
                         }
-                        html += mimagen;
-                        html += "</div>";
-                        html += "<div style='padding-left: 4px'>";
-                        html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
-                        html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</td>";
-                        var codbarras = "";
-                        if(!(registros[i]["producto_codigobarra"] == null)){
-                            codbarras = registros[i]["producto_codigobarra"];
+                        var cadena = registros[i]["producto_nombre"];
+                        var nombre = "";
+                        if(cadena.length>22){
+                            nombre = cadena.substr(0, 20)+"...";
+                        }else{
+                            nombre = registros[i]["producto_nombre"];
                         }
-                        html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-                        html += "<b>Venta: </b>"+registros[i]["producto_precio"]+"<br>";
-                        html += "</td>";
-                        html += "</tr>";
+                            
+                        html += "<div class='col-md-3 top_brand_left-1'>";
+                        html += "<div class='hover14 column'>";
+                        html += "<div class='agile_top_brand_left_grid'>";
+                        /*html += "<div class='agile_top_brand_left_grid_pos'>";
+                        html += "<img src='"+base_url+"images/offer.png"+"' alt=' ' class='img-responsive'>";
+                        html += "</div>";*/
+                        html += "<div class='agile_top_brand_left_grid1'>";
+                        html += "<figure>";
+                        html += "<div class='snipcart-item block'>";
+                        html += "<div class='snipcart-thumb'>";
+                        html += "<a href='#'>"+mimagen+"</a>";
+                        html += "<p><b><div class='text-center' title='"+cadena+"'>"+nombre+"</div></b></p>";
+                        /*html += "<div class='stars'>";
+                        html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                        html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                        html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                        html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                        html += "<i class='fa fa-star gray-star' aria-hidden='true'></i>";
+                        html += "</div>";*/
+                        html += "<h4> Bs. "+Number(registros[i]["producto_precio"]).toFixed(2)+"</h4>";
+                        html += "</div>";
+                        html += "<div class='snipcart-details top_brand_home_details'>";
+                        html += "<form action='#' method='post'>";
+                        html += "<fieldset>";
+                        html += "<input type='hidden' name='cmd' value='_cart'>";
+                        html += "<input type='hidden' name='add' value='1'>";
+                        html += "<input type='hidden' name='business' value=' '>";
+                        html += "<input type='hidden' name='item_name' value='basmati rise'>";
+                        html += "<input type='hidden' name='amount' value='"+registros[i]["producto_precio"]+"'>";
+                        html += "<input type='hidden' name='discount_amount' value='1.00'>";
+                        html += "<input type='hidden' name='currency_code' value='USD'>";
+                        html += "<input type='hidden' name='return' value=' '>";
+                        html += "<input type='hidden' name='cancel_return' value=' '>";
+                        html += "<input type='submit' name='submit' value='add to cart' class='button'>";
+                        html += "</fieldset>";
+                        html += "</form>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</figure>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        
                    }
                    
                    
