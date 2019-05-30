@@ -4,7 +4,7 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Añadir Slide</h3>
             </div>
-            <?php echo form_open('slide/add'); ?>
+            <?php echo form_open_multipart('slide/add'); ?>
           	<div class="box-body">
                     <div class="row clearfix">
                         <div class="col-md-6">
@@ -27,6 +27,12 @@
                                     } 
                                     ?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="slide_imagen" class="control-label"><span class="text-danger">*</span>Imagen (Ideal 1280 X 500 px)</label>
+                            <div class="form-group">
+                                <input type="file" name="slide_imagen" class="btn btn-success btn-sm form-control" id="slide_imagen" accept="image/png, image/jpeg, jpg, image/gif" required />
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -54,17 +60,11 @@
                                 </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="pagina_id" class="control-label"><span class="text-danger">*</span>Página</label>
+                            <label for="slide_tipo" class="control-label"><span class="text-danger">*</span>Tipo</label>
                             <div class="form-group">
-                                <select name="pagina_id" class="form-control" required>
-                                    <!--<option value="">- PAGINA WEB -</option>-->
-                                    <?php 
-                                    foreach($all_pagina_web as $pagina_web)
-                                    {
-                                        $selected = ($pagina_web['pagina_id'] == $this->input->post('pagina_id')) ? ' selected="selected"' : "";
-                                        echo '<option value="'.$pagina_web['pagina_id'].'" '.$selected.'>'.$pagina_web['pagina_nombre'].'</option>';
-                                    } 
-                                    ?>
+                                <select name="slide_tipo" id="slide_tipo" class="form-control" required>
+                                    <option value="1">Tipo 1</option>
+                                    <option value="2">Tipo 2</option>
                                 </select>
                             </div>
                         </div>
@@ -72,8 +72,10 @@
                 </div>
           	<div class="box-footer">
             	<button type="submit" class="btn btn-success">
-            		<i class="fa fa-check"></i> Guardar
+                    <i class="fa fa-check"></i> Guardar
             	</button>
+                <a href="<?php echo site_url('slide'); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
           	</div>
             <?php echo form_close(); ?>
       	</div>

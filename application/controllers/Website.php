@@ -16,6 +16,7 @@ class Website extends CI_Controller{
     {
         
         //$idioma_id = 1; //1 - español
+        $data['idioma_id'] = $idioma_id;
         $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
         $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
         $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);

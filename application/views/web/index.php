@@ -136,7 +136,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!------------------------ BUSCADOR --------------------------->                    
         <div class="w3l_search">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-            <input type="hidden" name="idioma" id="idioma" value="<?php echo $idioma; ?>" />
+            <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
             <!--<form action="#" method="post">-->
             <input type="search" name="parabuscar" id="parabuscar" placeholder="Buscar un producto..." required autocomplete="off">
             <button type="submit" class="btn btn-default search" onclick="buscar_producto()" aria-label="Left Align">
@@ -196,7 +196,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     foreach($slider as $s){
                     ?>
 			<li>
-                            <img src="<?php echo $raiz.'images/'.$s['slide_imagen'];?>" alt="" />
+                            <img src="<?php echo $raiz.'images/sliders/'.$s['slide_imagen'];?>" alt="" />
                             <!--Slider Description example-->
                             <div class="slide-desc">
                                 <h3><?php echo $s['slide_leyenda1']; ?></h3> 

@@ -2,6 +2,7 @@
 function buscar_producto()
 {
     var base_url = document.getElementById('base_url').value;
+    var idioma_id = document.getElementById('idioma_id').value;
     controlador = base_url+'website/webbuscar_productos/';
     parametro = document.getElementById('parabuscar').value;
     if(parametro != ""){
@@ -19,11 +20,11 @@ function buscar_producto()
                     for (var i = 0; i < n ; i++){
                         var mimagen = "";
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
-                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                            mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='50' height='50' />";
                             mimagen += "</a>";
                         }else{
-                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
+                            mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='50' height='50' />";
                             mimagen += "</a>";
                         }
@@ -45,8 +46,8 @@ function buscar_producto()
                         html += "<figure>";
                         html += "<div class='snipcart-item block'>";
                         html += "<div class='snipcart-thumb'>";
-                        html += "<a href='#'>"+mimagen+"</a>";
-                        html += "<p><b><div class='text-center' title='"+cadena+"'>"+nombre+"</div></b></p>";
+                        html += mimagen;
+                        html += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'><p><b><div class='text-center' title='"+cadena+"'>"+nombre+"</div></b></p></a>";
                         /*html += "<div class='stars'>";
                         html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
                         html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
