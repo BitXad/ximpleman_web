@@ -54,19 +54,18 @@ class Slide extends CI_Controller{
     {
         if($this->acceso(155)){
             $this->load->library('form_validation');
-
-                    $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
-
-                    if($this->form_validation->run())     
-            {   
+            $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
+            if($this->form_validation->run())
+            {
+                $estadopag_id = 1;
                 $params = array(
-                                    'estadopag_id' => $this->input->post('estadopag_id'),
-                                    'pagina_id' => $this->input->post('pagina_id'),
-                                    'slide_titulo' => $this->input->post('slide_titulo'),
-                                    'slide_leyenda1' => $this->input->post('slide_leyenda1'),
-                                    'slide_leyenda2' => $this->input->post('slide_leyenda2'),
-                                    'slide_leyenda3' => $this->input->post('slide_leyenda3'),
-                                    'slide_enlace' => $this->input->post('slide_enlace'),
+                    'estadopag_id' => $estadopag_id,
+                    'pagina_id' => $this->input->post('pagina_id'),
+                    'slide_titulo' => $this->input->post('slide_titulo'),
+                    'slide_leyenda1' => $this->input->post('slide_leyenda1'),
+                    'slide_leyenda2' => $this->input->post('slide_leyenda2'),
+                    'slide_leyenda3' => $this->input->post('slide_leyenda3'),
+                    'slide_enlace' => $this->input->post('slide_enlace'),
                 );
 
                 $slide_id = $this->Slide_model->add_slide($params);
