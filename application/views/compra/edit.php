@@ -658,7 +658,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">
                         <label for="producto_preciofactor" class="control-label">Precio Factor</label>
                         <div class="form-group">
-                            <input type="number" name="producto_preciofactor"  class="form-control" id="producto_preciofactor" />
+                            <input type="number" name="producto_preciofactor" step="any" class="form-control" id="producto_preciofactor" />
                         </div> 
                     </div>
                     <div class="col-md-4">
