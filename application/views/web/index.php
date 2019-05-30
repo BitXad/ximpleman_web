@@ -134,17 +134,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 <!------------------------ BUSCADOR --------------------------->                    
         <div class="w3l_search">
-            <form action="#" method="post">
-                <input type="search" name="Search" placeholder="Buscar un producto..." required="">
-                <button type="submit" class="btn btn-default search" aria-label="Left Align">
-                        <i class="fa fa-search" aria-hidden="true"> </i>
-                </button>
+            <script src="<?php echo base_url('resources/js/web_producto.js'); ?>" type="text/javascript"></script>
+            <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+            <!--<form action="#" method="post">-->
+            <input type="search" name="parabuscar" id="parabuscar" placeholder="Buscar un producto..." required="">
+            <button type="submit" class="btn btn-default search" onclick="buscar_producto()" aria-label="Left Align">
+                <i class="fa fa-search" aria-hidden="true"> </i>
+            </button>
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
                 <div class="clearfix"></div>
-            </form>
+            <!--</form>-->
         </div>
 <!------------------------ BUSCADOR --------------------------->                    
 			
 			<div class="clearfix"> </div>
+			<div id="tablaresultados"></div>
 		</div>
 	</div>
 
