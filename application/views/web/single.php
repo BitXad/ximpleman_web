@@ -185,7 +185,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <div class="agileinfo_single">
                 
                 <div class="col-md-4 agileinfo_single_left">
+                    <?php if ($producto[0]['producto_foto']==''){ ?>
+                        <img id="example" src="<?php echo base_url('resources/images/productos/producto.jpg')?>" alt=" " class="img-responsive">
+                    <?php } else { ?>
                     <img id="example" src="<?php echo base_url('resources/images/productos/'.$producto[0]['producto_foto'].'')?>" alt=" " class="img-responsive">
+                <?php } ?>
                 </div>
                 <div class="col-md-8 agileinfo_single_right">
                 <h2><?php echo $producto[0]['producto_nombre']; ?></h2>
