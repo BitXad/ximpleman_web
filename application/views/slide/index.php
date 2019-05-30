@@ -53,12 +53,13 @@
 						<th>#</th>
 						<th>Título</th>
 						<th>Página</th>
+						<th>Tipo</th>
 						<th>Leyenda1</th>
 						<th>Leyenda2</th>
 						<th>Leyenda3</th>
 						<th>Enlace</th>
 						<th>Estado</th>
-						<th>Operaciones</th>
+						<th></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $cont = 0;
@@ -90,6 +91,7 @@
                           </div>
                         </td>
                         <td><?php echo $s['pagina_nombre']; ?></td>
+                        <td><?php echo $s['slide_tipo']; ?></td>
                         <td><?php echo $s['slide_leyenda1']; ?></td>
                         <td><?php echo $s['slide_leyenda2']; ?></td>
                         <td><?php echo $s['slide_leyenda3']; ?></td>
