@@ -896,3 +896,83 @@ function mostrar_ocultar(){
 
 
 <!----------------- fin modal inventario ---------------------------------------------->
+
+
+<!--
+            <a href="#" data-toggle="modal" data-target="#modalpreferencia" class="btn btn-xs btn-success" style="">
+                <i class="fa fa-tasks"></i>
+            </a>-->
+
+
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalpreferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>PREFRENCIAS</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+
+                                
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+
+                        
+                        
+                        <div class="box-body table-responsive">
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Preferencia de producto</label>
+                                            <div class="form-group">
+							
+                                                <?php 
+                                                foreach($preferencia as $p)
+                                                {?>
+                                                    <!--<input class="btn btn-xs btn-facebook" id="preferencia<?php echo $p["preferencia_descripcion"]; ?>"  value="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead">-->
+                                                    <button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>
+                                                    <br>
+                                                <?php } 
+                                                ?>
+                                            </div>
+                                        <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="asignar_preferencias()"> <span class="fa fa-floppy-o"></span> Guadar</button>
+                                                    
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                                        
+                                                        <span class="fa fa-close"></span>   Cancelar  
+                                                        
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display:none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->

@@ -25,6 +25,7 @@ class Venta extends CI_Controller{
         $this->load->model('Usuario_model');
         $this->load->model('Cliente_model');
         $this->load->model('Tipo_servicio_model');
+        $this->load->model('Preferencia_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -74,9 +75,7 @@ class Venta extends CI_Controller{
         //**************** inicio contenido ***************        
         
         $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        
-
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
 
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
@@ -89,6 +88,7 @@ class Venta extends CI_Controller{
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         
@@ -1955,10 +1955,25 @@ function anular_venta($venta_id){
             echo json_encode($res);
 
 
-        //**************** fin contenido ***************
-        //}
-                                                   
-        
+        //**************** fin contenido ***************        
+    }   
+    
+
+    function ejecutar_consulta_js(){
+        //if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+
+//            $usuario_vendedor = $this->session_data['usuario_id'];
+//            $usuario_id = $this->input->post('usuario_id');
+
+            $sql = $this->input->post('sql');
+            $this->Venta_model->ejecutar($sql);
+            
+                        
+            echo json_encode($res);
+
+
+        //**************** fin contenido ***************        
     }   
     
 }

@@ -232,7 +232,9 @@ function tablaproductos()
 
 //************************ INICIO CARACTERISTICAS ***************************
 
-html += "  <button class='btn btn-primary btn-xs' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
+html += "  <button class='btn btn-primary btn-xs' title='Registrar/modificar preferencias y características' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
+
+html += "  <a href='#' data-toggle='modal' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
 
 
 html += "<div class='row'>";
@@ -244,7 +246,7 @@ html += "        <div class='row clearfix'> ";
 html += "           <div class='col-md-12'>";
 html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Preferencias/Características</label>";
 html += "               <div class='form-group'>"
-html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='form-control text-uppercase' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
+html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='form-control btn-xs' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
 html += "               </div>";
 html += "           </div>";
 html += "           <div class='col-md-12'>";
@@ -2527,4 +2529,47 @@ function asignar_inventario(){
     document.getElementById('botones').style.display = 'block'; //ocultar botones
     document.getElementById('loaderinventario').style.display = 'none'; //mostrar el bloque del loader 
     
+}
+
+function agregar_preferencia(preferencia_id)
+{
+    
+    var preferencia = document.getElementById('pref'+preferencia_id).name;
+    var input = document.getElementById('inputcaract').value;
+    var cadena = input+preferencia+"|";
+    
+    $("#inputcaract").val(cadena);
+    //alert(preferencia);
+    
+}
+
+function cancelar_preferencia()
+{    
+    $("#inputcaract").val("");
+}
+
+function guardar_preferencia(detalleven_id)
+{    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'/venta/ejecutar_consulta_js';
+
+    document.getElementById('botones').style.display = 'none'; //ocultar botones
+    document.getElementById('loaderinventario').style.display = 'block'; //mostrar el bloque del loader 
+    
+    
+    var preferencia = document.getElementById('inputcaract').value;
+    var sql = "update detalle_venta set detalleven_preferencia = '"+preferencia+"'"+
+              " where detalleven_id = "+detalleven_id;
+
+    $.ajax({
+        url:controlador,
+        type:"POST",
+        data:{sql:sql},
+        success:function(respuesta){
+            tablaproductos();
+        },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+    });
+    
+    $("#inputcaract").val("");   
 }
