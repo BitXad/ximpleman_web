@@ -77,7 +77,7 @@ class Cliente_model extends CI_Model
     /*
      * Funcion que busca clientes
      */
-    function get_all_cliente_limit()
+    function get_all_cliente_limit($condicion)
     {
         $sql = "SELECT
                 c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
@@ -89,6 +89,9 @@ class Cliente_model extends CI_Model
             LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
             LEFT JOIN usuario u on c.usuario_id = u.usuario_id
             LEFT JOIN zona z on c.zona_id = z.zona_id
+            WHERE
+            1=1
+            ".$condicion."
             GROUP BY
                 c.cliente_id
             ORDER By c.cliente_id DESC LIMIT 50";
@@ -261,7 +264,7 @@ class Cliente_model extends CI_Model
     /*
      * Funcion que busca clientes
      */
-    function get_busqueda_cliente_parametro($parametro, $categoria)
+    function get_busqueda_cliente_parametro($parametro, $categoria, $condicion)
     {
         $sql = "SELECT
                 c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
@@ -281,6 +284,7 @@ class Cliente_model extends CI_Model
                    or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%'
                    or c.cliente_nombrenegocio like '%".$parametro."%')
                 ".$categoria."
+                ".$condicion."
                 
             GROUP BY
                 c.cliente_id
@@ -397,7 +401,7 @@ class Cliente_model extends CI_Model
     }
     
     /* Funcion que busca a TODOS los clientes */
-    function get_all_cliente()
+    function get_all_cliente($condicion)
     {
         $sql = "SELECT
                 c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
@@ -409,6 +413,9 @@ class Cliente_model extends CI_Model
             LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
             LEFT JOIN usuario u on c.usuario_id = u.usuario_id
             LEFT JOIN zona z on c.zona_id = z.zona_id
+            WHERE
+            1=1
+            ".$condicion."
             GROUP BY
                 c.cliente_id
             ORDER By c.cliente_id DESC";
