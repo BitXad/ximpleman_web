@@ -165,8 +165,8 @@
                         
         </div>
         <center>
-             <?php echo "---------------------------------"; ?><br>
-                    RESPONSABLE<BR>FIRMA - SELLO
+            <ul style="margin-bottom: -5px;margin-top: 35px;" >--------------------------------</ul>
+                     <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</ul>
         </center>
     </div>
 </div>

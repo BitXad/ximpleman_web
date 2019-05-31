@@ -75,7 +75,7 @@ function ventas_dia($estado)
     {
         
         $reporte = $this->db->query(
-        "SELECT vs.*, fa.factura_id, cr.credito_cuotainicial FROM ventas vs LEFT JOIN factura fa on vs.venta_id = fa.venta_id LEFT JOIN credito cr on vs.venta_id = cr.venta_id WHERE  ".$filtro."
+        "SELECT vs.*, fa.factura_id, cr.credito_cuotainicial FROM ventas vs LEFT JOIN factura fa on vs.venta_id = fa.venta_id LEFT JOIN credito cr on vs.venta_id = cr.venta_id WHERE  ".$filtro." ORDER BY venta_fecha DESC, venta_hora DESC
         ")->result_array();
         return $reporte;
     }
