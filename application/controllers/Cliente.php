@@ -10,6 +10,7 @@ class Cliente extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Cliente_model');
+        $this->load->model('Compra_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -662,6 +663,15 @@ class Cliente extends CI_Controller{
     */
     function buscarclientes()
     {
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+        if ($tipo_usuario>1 && $permiso==2) {
+           $condicion = " and c.usuario_id=".$usuario_id."";
+        }else{
+           $condicion = "";
+        }
         if($this->acceso(94)){
             if ($this->input->is_ajax_request()) {
 
@@ -670,7 +680,7 @@ class Cliente extends CI_Controller{
                 //$limite = $this->input->post('limite');   
 
                 //if ($parametro!=""){
-                $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro, $categoria);
+                $datos = $this->Cliente_model->get_busqueda_cliente_parametro($parametro, $categoria, $condicion);
                 echo json_encode($datos);
                 /*}
                 else echo json_encode(null);*/
@@ -955,6 +965,15 @@ class Cliente extends CI_Controller{
     */
     function buscarclienteslimit()
     {
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+        if ($tipo_usuario>1 && $permiso==2) {
+           $condicion = " and c.usuario_id=".$usuario_id."";
+        }else{
+           $condicion = "";
+        }
         if($this->acceso(94)){
             if ($this->input->is_ajax_request()) {
 
@@ -962,7 +981,7 @@ class Cliente extends CI_Controller{
                 //$limite = $this->input->post('limite');   
 
                 /*if ($parametro!=""){*/
-                $datos = $this->Cliente_model->get_all_cliente_limit();
+                $datos = $this->Cliente_model->get_all_cliente_limit($condicion);
                 echo json_encode($datos);
                 /*}
                 else echo json_encode(null);*/
@@ -976,10 +995,19 @@ class Cliente extends CI_Controller{
     /* buscar Todos los clientes */
     function buscarclientesall()
     {
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+        if ($tipo_usuario>1 && $permiso==2) {
+           $condicion = " and c.usuario_id=".$usuario_id."";
+        }else{
+           $condicion = "";
+        }
         if($this->acceso(94)){
             if ($this->input->is_ajax_request())
             {
-                $datos = $this->Cliente_model->get_all_cliente();
+                $datos = $this->Cliente_model->get_all_cliente($condicion);
                 echo json_encode($datos);
             }
             else
