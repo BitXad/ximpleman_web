@@ -54,19 +54,76 @@ class Slide extends CI_Controller{
     {
         if($this->acceso(155)){
             $this->load->library('form_validation');
+            $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
+            $this->form_validation->set_rules('pagina_id','pagina','required');
+            $this->form_validation->set_rules('slide_tipo','Tipo','required');
+            if($this->form_validation->run())
+            {
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                if (!empty($_FILES['slide_imagen']['name'])){
+		
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/web/images/sliders/';
+                        $img_full_path = $config['upload_path'];
 
-                    $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
+                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['image_library'] = 'gd2';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 9900;
+                        $config['max_height'] = 9900;
+                        
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
 
-                    if($this->form_validation->run())     
-            {   
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('slide_imagen');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/web/images/sliders/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 1280;
+                            $conf['height'] = 500;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/web/images/sliders/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/web/images/sliders/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 80;
+                        $confi['height'] = 31;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+
+                        $foto = $new_name.$extension;
+                }
+                /* *********************FIN imagen***************************** */
+                $estadopag_id = 1;
                 $params = array(
-                                    'estadopag_id' => $this->input->post('estadopag_id'),
-                                    'pagina_id' => $this->input->post('pagina_id'),
-                                    'slide_titulo' => $this->input->post('slide_titulo'),
-                                    'slide_leyenda1' => $this->input->post('slide_leyenda1'),
-                                    'slide_leyenda2' => $this->input->post('slide_leyenda2'),
-                                    'slide_leyenda3' => $this->input->post('slide_leyenda3'),
-                                    'slide_enlace' => $this->input->post('slide_enlace'),
+                    'estadopag_id' => $estadopag_id,
+                    'pagina_id' => $this->input->post('pagina_id'),
+                    'slide_tipo' => $this->input->post('slide_tipo'),
+                    'slide_titulo' => $this->input->post('slide_titulo'),
+                    'slide_leyenda1' => $this->input->post('slide_leyenda1'),
+                    'slide_leyenda2' => $this->input->post('slide_leyenda2'),
+                    'slide_leyenda3' => $this->input->post('slide_leyenda3'),
+                    'slide_enlace' => $this->input->post('slide_enlace'),
+                    'slide_imagen' => $foto,
                 );
 
                 $slide_id = $this->Slide_model->add_slide($params);
@@ -74,11 +131,8 @@ class Slide extends CI_Controller{
             }
             else
             {
-                            $this->load->model('Estado_pagina_model');
-                            $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
-
-                            $this->load->model('Pagina_web_model');
-                            $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+                $this->load->model('Pagina_web_model');
+                $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
                 $data['page_title'] = "Slide";
                 $data['_view'] = 'slide/add';
                 $this->load->view('layouts/main',$data);
@@ -98,19 +152,85 @@ class Slide extends CI_Controller{
             if(isset($data['slide']['slide_id']))
             {
                 $this->load->library('form_validation');
+                $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
+                $this->form_validation->set_rules('pagina_id','Pagina','required');
+                $this->form_validation->set_rules('slide_tipo','Tipo','required');
+                if($this->form_validation->run())     
+                {
+                    /* *********************INICIO imagen***************************** */
+                $foto="";
+                    $foto1= $this->input->post('slide_imagen1');
+                if (!empty($_FILES['slide_imagen']['name']))
+                {
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/web/images/sliders/';
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 9900;
+                    $config['max_height'] = 9900;
 
-                            $this->form_validation->set_rules('slide_titulo','Slide Titulo','required');
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
 
-                            if($this->form_validation->run())     
-                {   
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('slide_imagen');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/web/images/sliders/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 1280;
+                        $conf['height'] = 500;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    $base_url = explode('/', base_url());
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/web/images/sliders/';
+                    if(isset($foto1) && !empty($foto1)){
+                      if(file_exists($directorio.$foto1)){
+                          unlink($directorio.$foto1);
+                          $mimagenthumb = "thumb_".$foto1;
+                          unlink($directorio.$mimagenthumb);
+                      }
+                  }
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/web/images/sliders/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/web/images/sliders/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 80;
+                    $confi['height'] = 31;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
+                }else{
+                    $foto = $foto1;
+                }
+            /* *********************FIN imagen***************************** */
                     $params = array(
-                                            'estadopag_id' => $this->input->post('estadopag_id'),
-                                            'pagina_id' => $this->input->post('pagina_id'),
-                                            'slide_titulo' => $this->input->post('slide_titulo'),
-                                            'slide_leyenda1' => $this->input->post('slide_leyenda1'),
-                                            'slide_leyenda2' => $this->input->post('slide_leyenda2'),
-                                            'slide_leyenda3' => $this->input->post('slide_leyenda3'),
-                                            'slide_enlace' => $this->input->post('slide_enlace'),
+                        'estadopag_id' => $this->input->post('estadopag_id'),
+                        'pagina_id' => $this->input->post('pagina_id'),
+                        'slide_tipo' => $this->input->post('slide_tipo'),
+                        'slide_titulo' => $this->input->post('slide_titulo'),
+                        'slide_leyenda1' => $this->input->post('slide_leyenda1'),
+                        'slide_leyenda2' => $this->input->post('slide_leyenda2'),
+                        'slide_leyenda3' => $this->input->post('slide_leyenda3'),
+                        'slide_enlace' => $this->input->post('slide_enlace'),
+                        'slide_imagen' => $foto,
+                        
                     );
 
                     $this->Slide_model->update_slide($slide_id,$params);            
@@ -118,11 +238,11 @@ class Slide extends CI_Controller{
                 }
                 else
                 {
-                                    $this->load->model('Estado_pagina_model');
-                                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
+                    $this->load->model('Estado_pagina_model');
+                    $data['all_estado_pagina'] = $this->Estado_pagina_model->get_all_estado_pagina();
 
-                                    $this->load->model('Pagina_web_model');
-                                    $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
+                    $this->load->model('Pagina_web_model');
+                    $data['all_pagina_web'] = $this->Pagina_web_model->get_all_pagina_web();
                     $data['page_title'] = "Slide";
                     $data['_view'] = 'slide/edit';
                     $this->load->view('layouts/main',$data);

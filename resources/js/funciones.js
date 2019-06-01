@@ -19,15 +19,19 @@ function calculardesc(){
    
 }
 
-function calcularcambio(){
+function calcularcambio(e){
    
+   tecla = (document.all) ? e.keyCode : e.which; 
    var venta_efectivo = document.getElementById('venta_efectivo').value;
    var venta_totalfinal = document.getElementById('venta_totalfinal').value;
    
    var venta_cambio = Number(venta_efectivo) - Number(venta_totalfinal);
    //alert(venta_cambio);
    $("#venta_cambio").val(venta_cambio);
-    
+   
+   if (tecla==13){ 
+        $("#boton_finalizar").click();
+   }
 }
 
 //esta funcion verifica 2 parametros: la tecla presionada y otro parametro que le indica que hacer
@@ -186,7 +190,7 @@ function tablaproductos()
                         html += "<table class='table table-striped table-condensed' id='mitablaventas'>";
                         html += "                    <tr>";
                         html += "                            <th>#</th>";
-                        html += "                            <th>Descripción</th>";                            
+                        html += "                            <th>Descripción</th>";
 //                        html += "                            <th>Código</th>";
                         html += "                            <th>Cant.</th>";
                         html += "                            <th>Precio</th>";
@@ -234,7 +238,7 @@ function tablaproductos()
 
 html += "  <button class='btn btn-primary btn-xs' title='Registrar/modificar preferencias y características' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
 
-html += "  <a href='#' data-toggle='modal' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
+html += "  <a href='#' data-toggle='modal' onclick='iniciar_preferencia("+registros[i]["detalleven_id"]+")' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
 
 
 html += "<div class='row'>";
@@ -339,6 +343,8 @@ function tabladetalle(subtotal,descuento,totalfinal)
     $("#venta_total").val(subtotal.toFixed(2));
     $("#venta_descuento").val(descuento.toFixed(2));
     $("#venta_subtotal").val(subtotal.toFixed(2));
+    $("#venta_efectivo").val(subtotal.toFixed(2));
+    
     var venta_totalfinal = parseFloat(totalfinal - descuento);
     $("#venta_totalfinal").val(venta_totalfinal.toFixed(2));
     
@@ -822,32 +828,37 @@ function ingresorapidojs(cantidad,producto)
     var usuario_id = document.getElementById('usuario_id').value;
     var existencia =  producto.existencia;    
     var producto_id =  producto.producto_id;    
-    var sql1 = ""
-    var sql2 = ""
+    var datos1 = "";
+    var sql2 = "";
     var descuento = 0;
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
-
+    var check_agrupar = document.getElementById('check_agrupar').checked;
+    
+    if (check_agrupar){
+        agrupado = 1;
+    }
+    else{
+        agrupado = 0;
+    }
+        
 
     if (cantidad_total <= producto.existencia){
 
-        sql1  = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ";
-        sql1 += "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,";
-        sql1 += "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra ) ";
-        sql1 += "value(0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
-        sql1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
-        sql1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        sql1 += producto.categoria_id+",'"+producto.producto_codigobarra+"')";
-        //alert(sql1);
+        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
+        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"'";
 
-        sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + "+cantidad+
-                ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
-                ", detalleven_descuento = "+descuento+
-                ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
-                "  where producto_id = "+producto_id+" and usuario_id = "+usuario_id;
+
+//        sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + "+cantidad+
+//                ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
+//                ", detalleven_descuento = "+descuento+
+//                ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
+//                "  where producto_id = "+producto_id+" and usuario_id = "+usuario_id;
 
         $.ajax({url: controlador,
             type:"POST",
-            data:{sql1:sql1,sql2:sql2, existencia:existencia,producto_id:producto_id,cantidad:cantidad},
+            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado},
             success:function(respuesta){
                 tablaproductos();
 
@@ -1673,58 +1684,11 @@ function finalizarventa()
             document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
             document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
 
-//            $.ajax({url: controlador,
-//        type:"POST",
-//        data:{},
-//        success:function(respuesta){
-//            
-//            var todo_bien = JSON.parse(respuesta);
-//            
-//            if(todo_bien[0]["resultado"]==1)
-//            {    
-//                    registrarcliente();
-//
-//            }
-//            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
-//
-//        },
-//        error: function(respuesta){
-//            alert("Revise los datos de la venta por favor...!");   
-//        }
-//        }); 
-//        
-        registrarcliente();
-    } 
-               
-        //document.getElementById("demo").innerHTML = txt;
-    }
-    
-    
-//
-//    $.ajax({url: controlador,
-//        type:"POST",
-//        data:{},
-//        success:function(respuesta){
-//            
-//            var todo_bien = JSON.parse(respuesta);
-//            
-//            if(todo_bien[0]["resultado"]==1)
-//            {    
-//                    
-//
-//            }
-//            else alert ("El detalle y el monto total, no coinciden..!. REVISE LA VENTA POR FAVOR")
-//
-//        },
-//        error: function(respuesta){
-//            alert("Revise los datos de la venta por favor...!");   
-//        }
-//    });  
-//    
-    
-    
-    
+            registrarcliente();
+        } 
 
+    }    
+    
 }
 
 function mostrar_ocultar_buscador(parametro){
@@ -2531,6 +2495,14 @@ function asignar_inventario(){
     
 }
 
+
+function iniciar_preferencia(detalleven_id)
+{
+    //var detalleven_id = document.getElementById("detalleven_id").value;
+    $("#detalleven_id").val(detalleven_id);
+}
+
+
 function agregar_preferencia(preferencia_id)
 {
     
@@ -2548,23 +2520,18 @@ function cancelar_preferencia()
     $("#inputcaract").val("");
 }
 
-function guardar_preferencia(detalleven_id)
+function guardar_preferencia()
 {    
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'/venta/ejecutar_consulta_js';
+    var controlador = base_url+'/venta/guardar_preferencia';
 
-    document.getElementById('botones').style.display = 'none'; //ocultar botones
-    document.getElementById('loaderinventario').style.display = 'block'; //mostrar el bloque del loader 
-    
-    
     var preferencia = document.getElementById('inputcaract').value;
-    var sql = "update detalle_venta set detalleven_preferencia = '"+preferencia+"'"+
-              " where detalleven_id = "+detalleven_id;
-
+    var detalleven_id = document.getElementById('detalleven_id').value;
+    
     $.ajax({
         url:controlador,
         type:"POST",
-        data:{sql:sql},
+        data:{preferencia:preferencia,detalleven_id:detalleven_id},
         success:function(respuesta){
             tablaproductos();
         },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
@@ -2572,4 +2539,20 @@ function guardar_preferencia(detalleven_id)
     });
     
     $("#inputcaract").val("");   
+    
+}
+
+//function focus_efectivo(){    
+// //   alert("holaaaaaaaaa");
+//    //document.getElementById('venta_efectivo').focus();     
+//    
+//    document.getElementById('venta_efectivo').focus();
+//    document.getElementById('venta_efectivo').select();
+//}
+
+function focus_efectivo(){
+        $('#modalfinalizar').on('shown.bs.modal', function() {
+        $('#venta_efectivo').focus();
+        $('#venta_efectivo').select();
+    });
 }

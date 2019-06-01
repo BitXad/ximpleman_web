@@ -23,4 +23,46 @@ class Tablapermiso_model extends CI_Model
 
         return $estado;
     }
+    /* * function to update tabla */
+    function update_tabla($tabla_id,$params)
+    {
+        $this->db->where('tabla_id',$tabla_id);
+        return $this->db->update('tabla',$params);
+    }
+    /* * obtiene todas las tablas de TABLA*/
+    function get_all_tablas()
+    {
+        $tabla = $this->db->query("
+              select * from tabla")->result_array();
+        return $tabla;
+    }
+    /* * listar tablas ed la BD */
+    function get_listartablasbd($nombrebd)
+    {
+        $tabla = $this->db->query("
+              SHOW FULL TABLES FROM $nombrebd
+            where table_type = 'base table' ")->result_array();
+        return $tabla;
+    }
+    function get_es_estadb($nombrebd)
+    {
+        $this->load->dbutil();
+        $resultado = false;
+        if ($this->dbutil->database_exists($nombrebd))
+        {
+           $resultado = true;
+        }
+        return $resultado;
+    }
+    function truncar_db($nombretabla)
+    {
+        $this->db->truncate($nombretabla);
+        return true;
+    }
+    function add_tablapermiso($params)
+    {
+        $this->db->insert('tabla',$params);
+        return $this->db->insert_id();
+    }
+    
 }

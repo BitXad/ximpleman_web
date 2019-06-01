@@ -26,6 +26,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- //font-awesome icons -->
 <!-- js -->
 <script src="<?php echo $raiz;?>js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url('resources/js/web_producto.js'); ?>"></script>
 <!-- //js -->
 <link href='//fonts.googleapis.com/css?family=Raleway:400,100,100italic,200,200italic,300,400italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic' rel='stylesheet' type='text/css'>
 <link href='//fonts.googleapis.com/css?family=Open+Sans:400,300,300italic,400italic,600,600italic,700,700italic,800,800italic' rel='stylesheet' type='text/css'>
@@ -134,17 +135,23 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			</div>
 <!------------------------ BUSCADOR --------------------------->                    
         <div class="w3l_search">
-            <form action="#" method="post">
-                <input type="search" name="Search" placeholder="Buscar un producto..." required="">
-                <button type="submit" class="btn btn-default search" aria-label="Left Align">
-                        <i class="fa fa-search" aria-hidden="true"> </i>
-                </button>
+            <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+            <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
+            <!--<form action="#" method="post">-->
+            <input type="search" name="parabuscar" id="parabuscar" placeholder="Buscar un producto..." required autocomplete="off">
+            <button type="submit" class="btn btn-default search" onclick="buscar_producto()" aria-label="Left Align">
+                <i class="fa fa-search" aria-hidden="true"> </i>
+            </button>
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
                 <div class="clearfix"></div>
-            </form>
+            <!--</form>-->
         </div>
 <!------------------------ BUSCADOR --------------------------->                    
 			
 			<div class="clearfix"> </div>
+			<div id="tablaresultados"></div>
 		</div>
 	</div>
 
@@ -186,15 +193,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<ul id="demo1">
                     <?php 
                         
-                        foreach($slider as $s){                            
+                    foreach($slider as $s){
                     ?>
 			<li>
-				<img src="<?php echo $raiz.'images/'.$s['slide_imagen'];?>" alt="" />
-				<!--Slider Description example-->
-				<div class="slide-desc">
-					<h3><?php echo $s['slide_leyenda1']; ?></h3> 
-                                        <h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>
-				</div>
+                            <img src="<?php echo $raiz.'images/sliders/'.$s['slide_imagen'];?>" alt="" />
+                            <!--Slider Description example-->
+                            <div class="slide-desc">
+                                <h3><?php echo $s['slide_leyenda1']; ?></h3> 
+                                <h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>
+                            </div>
 			</li>
                     <?php } ?>
 

@@ -336,4 +336,24 @@ class Producto_model extends CI_Model
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }
+    /* *busqueda de productos activos en el sistema..* */
+    function get_busqueda_productos($parametro)
+    {
+        $sql = "SELECT
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
+              FROM
+              producto p
+              LEFT JOIN estado e on p.estado_id = e.estado_id
+              WHERE 
+                   p.estado_id = 1
+                   and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
+                   or p.producto_codigo like '%".$parametro."%' or p.producto_marca like '%".$parametro."%'
+                   or p.producto_industria like '%".$parametro."%' or p.producto_caracteristicas like '%".$parametro."%')
+              GROUP By p.producto_id
+              ORDER By p.producto_nombre";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
 }

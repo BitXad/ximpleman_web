@@ -658,7 +658,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">
                         <label for="producto_preciofactor" class="control-label">Precio Factor</label>
                         <div class="form-group">
-                            <input type="number" name="producto_preciofactor"  class="form-control" id="producto_preciofactor" />
+                            <input type="number" name="producto_preciofactor" step="any" class="form-control" id="producto_preciofactor" />
                         </div> 
                     </div>
                     <div class="col-md-4">
@@ -1229,7 +1229,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
          
                <h1><b> <em class="fa fa-minus-circle">Desea Anular esta Compra?</em> 
-              </b></h1>
+              </b></h1> Esta compra puede tener una orden de Pago, tomar en cuenta.
           </div>
               <div class="modal-footer" align="right">
 

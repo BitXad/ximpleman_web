@@ -9,12 +9,14 @@ class Website extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Pagina_web_model');
+        $this->load->model('Producto_model');
     }            
 
     function index($idioma_id)
     {
         
         //$idioma_id = 1; //1 - español
+        $data['idioma_id'] = $idioma_id;
         $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
         $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
         $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
@@ -43,5 +45,43 @@ class Website extends CI_Controller{
     {                
         $this->index(2);
         //site_url('website/index/2');
-    }    
+    }
+    /* * buscar productos en web SIN ACCESO!! */
+    function webbuscar_productos()
+    {
+        if($this->input->is_ajax_request()){
+            $parametro = $this->input->post('parametro');
+            $datos = $this->Producto_model->get_busqueda_productos($parametro);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
+    function single($idioma_id,$producto_id)
+    {
+        
+        //$idioma_id = 1; //1 - español
+        $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+        $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+        $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+        $data['menu_item'] = $this->Pagina_web_model->get_menu_item($idioma_id);
+        $data['slider'] = $this->Pagina_web_model->get_slider(1,$idioma_id); //tipo 1
+        $data['seccion1'] = $this->Pagina_web_model->get_seccion(1,$idioma_id); //seccion 1
+        $data['seccion2'] = $this->Pagina_web_model->get_seccion(2,$idioma_id); //seccion 2
+        $data['seccion3'] = $this->Pagina_web_model->get_seccion(3,$idioma_id); //seccion 3        
+        $data['ofertasemanal'] = $this->Pagina_web_model->get_oferta_semanal(); //seccion 3
+        $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
+        $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
+
+        $data['producto'] = $this->Pagina_web_model->get_producto($producto_id);
+        
+//        $data['_view'] = 'pagina_web/index';
+//        $this->load->view('layouts/main',$data);        
+        
+        $data['_view'] = 'website';
+//        $this->load->view('layouts/login',$data);
+        $this->load->view('web/single',$data);
+    }
 }
