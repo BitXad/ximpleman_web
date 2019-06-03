@@ -265,11 +265,11 @@ if (tipo==0) {
                         
                         html += "<tr>";
                       
-                        html += "<td align='center'>"+(i+1)+"</td>";
+                        html += "<td align='center' style='width:5px;'>"+(i+1)+"</td>";
                         
                         
                         html += "<td> "+registros[i]["producto_nombre"]+" </td>";                                            
-                        html += "<td align='center'> "+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" </td>";
+                        html += "<td align='center' style='width:110px;'> "+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"]+" </td>";
                         html += "<td align='center'> "+registros[i]["venta_id"]+" </td>";  
                         html += "<td align='center'> "+Number(registros[i]["factura_id"])+" </td>";  // NUMERO FACTURA
                         html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";  

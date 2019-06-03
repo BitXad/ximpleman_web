@@ -1,3 +1,13 @@
+<script type="text/javascript">
+    function tamanioimage(){
+        var tipo = document.getElementById('slide_tipo').value;
+        if(tipo == 1){
+            $("#label_imagen").html("<span class='text-danger'>*</span>Imagen (Ideal 1280 X 500 px)");
+        }else{
+            $("#label_imagen").html("<span class='text-danger'>*</span>Imagen (Ideal 1600 X 450 px)");
+        }
+    }
+</script> 
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
@@ -30,7 +40,16 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <label for="slide_imagen" class="control-label"><span class="text-danger">*</span>Imagen (Ideal 1280 X 500 px)</label>
+                            <label for="slide_tipo" class="control-label"><span class="text-danger">*</span>Tipo</label>
+                            <div class="form-group">
+                                <select name="slide_tipo" id="slide_tipo" class="form-control" onchange="tamanioimage()" required>
+                                    <option value="1">Slider Principal</option>
+                                    <option value="2">Slider Secundario</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label id="label_imagen" for="slide_imagen" class="control-label"><span class="text-danger">*</span>Imagen (Ideal 1280 X 500 px)</label>
                             <div class="form-group">
                                 <input type="file" name="slide_imagen" class="btn btn-success btn-sm form-control" id="slide_imagen" accept="image/png, image/jpeg, jpg, image/gif" required />
                             </div>
@@ -58,15 +77,6 @@
                                 <div class="form-group">
                                         <input type="text" name="slide_enlace" value="<?php echo $this->input->post('slide_enlace'); ?>" class="form-control" id="slide_enlace" />
                                 </div>
-                        </div>
-                        <div class="col-md-6">
-                            <label for="slide_tipo" class="control-label"><span class="text-danger">*</span>Tipo</label>
-                            <div class="form-group">
-                                <select name="slide_tipo" id="slide_tipo" class="form-control" required>
-                                    <option value="1">Tipo 1</option>
-                                    <option value="2">Tipo 2</option>
-                                </select>
-                            </div>
                         </div>
                     </div>
                 </div>
