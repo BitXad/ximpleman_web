@@ -332,7 +332,7 @@ class Producto_model extends CI_Model
                   p.producto_nombre, p.producto_foto, p.producto_precio
             FROM
                 inventario p
-                order by p.producto_id desc";
+                order by p.producto_id asc";
         $producto = $this->db->query($sql)->result_array();
         return $producto;
     }
