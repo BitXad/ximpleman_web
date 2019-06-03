@@ -111,7 +111,11 @@ class Inventario_usuario_model extends CI_Model
 
     function actualizar_inventario($usuario_id, $fecha)
     {
-        $sql = "update inventario_usuario set inventario_ventas = 0, inventario_saldo = 0";
+        $sql = "update inventario_usuario set inventario_ventas = 0, inventario_saldo = 0 
+                where 
+                usuario_id = ".$usuario_id." and
+                inventario_fecha = '".$fecha."'";
+                    
         $this->db->query($sql);
         
         $sql ="update inventario_usuario i
@@ -127,11 +131,21 @@ class Inventario_usuario_model extends CI_Model
                 group by d.producto_id
                 )
                 ,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,0)
-                
-
                 where 
                 i.usuario_id = ".$usuario_id." and
                 i.inventario_fecha = '".$fecha."'";
+        $this->db->query($sql);
+        
+        return true;
+    }
+
+    function eliminar_inventario($usuario_id, $fecha)
+    {
+        $sql = "delete from inventario_usuario
+                where 
+                usuario_id = ".$usuario_id." and
+                inventario_fecha = '".$fecha."'";
+                    
         $this->db->query($sql);
         
         return true;

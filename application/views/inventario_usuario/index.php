@@ -11,12 +11,14 @@
     <div class="col-md-6">
         
         <!--<button class="btn btn-info btn-xs" onclick="actualizar_invusuario()"> Actualizar</button>-->
-
-        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#exampleModal">
+        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#modalinventario">
           Actualizar
         </button>        
-        <button class="btn btn-facebook btn-xs"> Reporte</button>
-        <button class="btn btn-danger btn-xs"> Eliminar</button>
+        <button type="button" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modaleliminar">
+          Eliminar
+        </button>        
+
+        
     </div>
 </div>
     
@@ -75,54 +77,9 @@
 						
                     </tr>
                     <tbody class="ha" id="inv_usu"> 
-                    <?php  $cont = 0;
-                     foreach($inventario_usuario as $i){ 
-                        $cont = $cont+1; ?>
-                         
-                    <tr>
-						<td><?php echo $cont ?></td>
-						<td><font size="2"><b><?php echo $i['producto_nombre']; ?></b></font> [<?php echo $i['producto_id']; ?>]<br>
-                            Cod: <?php echo $i['producto_codigo']; ?></td>
-						<td><?php echo $i['inventario_fecha']; ?>   <?php echo $i['inventario_hora']; ?></td>
-						<td><?php echo $i['inventario_costo']; ?></td>
-						<td><?php echo $i['inventario_cantidad']; ?></td>
+                    
                         
-                        <td><b><?php echo $i['inventario_costo']; ?></b></td>
-						<td><?php echo $i['inventario_ventas']; ?></td>
-						<td><?php echo $i['inventario_pedidos']; ?></td>
-						<td><?php echo $i['inventario_devoluciones']; ?></td>
-						<td><?php echo $i['inventario_saldo']; ?></td>
-						<td><?php echo $i['usuario_nombre']; ?></td>
-						<td>
-                            <a href="<?php echo site_url('inventario_usuario/edit/'.$i['inventario_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
-                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
-                            <div class="modal fade" id="myModal<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $cont; ?>">
-                              <div class="modal-dialog" role="document">
-                                    <br><br>
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                  </div>
-                                  <div class="modal-body">
-                                   <!------------------------------------------------------------------->
-                                   <h3><b> <span class="fa fa-trash"></span></b>
-                                       ¿Desea eliminar el producto <b> <?php echo $i['producto_nombre']; ?></b>?
-                                   </h3>
-                                   <!------------------------------------------------------------------->
-                                  </div>
-                                  <div class="modal-footer aligncenter">
-                                              <a href="<?php echo site_url('inventario_usuario/remove/'.$i['inventario_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
-                                              <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                        <!------------------------ FIN modal para confirmar eliminación ------------------->
-                        </td>
-                    </tr>
-                    <?php } ?>
-                </tbody>
+                    </tbody>
                 </table>
                                 
             </div>
@@ -132,11 +89,11 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalinventario" tabindex="-1" role="dialog" aria-labelledby="modalinventario" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="exampleModalLabel" ><b>Modificar Inventario</b></h4>
+          <h4 class="modal-title" id="modalinventario" ><b>Modificar Inventario</b></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -151,6 +108,31 @@
       <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <button type="button" onclick="actualizar_invusuario()" class="btn btn-primary" data-dismiss="modal">Modificar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modaleliminar" tabindex="-1" role="dialog" aria-labelledby="modaleliminar" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="modaleliminar" ><b>Eliminar Inventario</b></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <center><b>
+                Esta a punto de eliminar el inventario<br>
+                ¿Desea continuar?              
+              </b>
+          </center>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" onclick="eliminar_invusuario()" class="btn btn-primary" data-dismiss="modal">Eliminar</button>
       </div>
     </div>
   </div>

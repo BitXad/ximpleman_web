@@ -124,6 +124,31 @@ function actualizar_invusuario(){
           
            success:function(resul){
                tablaresul();
+               alert("Actualización completada con éxito..!");
+           },
+       });
+   }
+   else{
+       alert('ADVERTENCIA: Debe seleccionar un usuario/fecha..!');
+   }
+             
+}
+
+function eliminar_invusuario(){
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario_usuario/eliminar_inventario";
+    var usuario_id    = document.getElementById('usuario_id').value;
+    var fecha    = document.getElementById('inventario_fecha').value;
+
+    if (usuario_id>=1){
+
+        $.ajax({url: controlador,
+           type:"POST",
+           data:{usuario_id:usuario_id, fecha:fecha},
+          
+           success:function(resul){
+               tablaresul();
+               alert("Se eliminaron los datos correctamente..!");
            },
        });
    }
