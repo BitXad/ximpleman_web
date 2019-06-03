@@ -96,18 +96,24 @@ break;
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ALTO IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FORMA IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODULO RESTAURANTE</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR ITEMS</th>
                     </tr> 
                     <tr>
-                        <td><?php echo $p['parametro_mostrarcategoria']; ?></td>
-                        <td><?php echo $p['parametro_modoventas']; ?></td>
-                        <td><?php echo $p['parametro_imprimircomanda']; ?></td>
+                        <td><?php foreach($all_categoria_producto as $categoria_producto)
+                                {
+                                if($categoria_producto['categoria_id']==$p['parametro_mostrarcategoria']){
+                                    echo $categoria_producto['categoria_nombre'];
+                                } } ?></td>
+                        <td><?php  if ($p['parametro_modoventas']==1){ echo 'LISTA'; }else{ echo'BOTONES'; } ?></td>
+                        <td><?php  if ($p['parametro_imprimircomanda']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php echo $p['parametro_anchoboton']; ?></td>
                         <td><?php echo $p['parametro_altoboton']; ?></td>
                         <td><?php echo $p['parametro_colorboton']; ?></td>
                         <td><?php echo $p['parametro_anchoimagen']; ?></td>
                         <td><?php echo $p['parametro_altoimagen']; ?></td>
-                        <td><?php echo $p['parametro_formaimagen']; ?></td>
-                        <td><?php echo $p['parametro_modulorestaurante']; ?></td>
+                        <td><?php  if ($p['parametro_formaimagen']==''){ echo 'RECTANGULAR'; }else{ echo'CIRCULAR'; } ?></td>
+                        <td><?php  if ($p['parametro_modulorestaurante']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_agruparitems']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                     </tr>
                    
                     
