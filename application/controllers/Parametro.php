@@ -32,6 +32,8 @@ class Parametro extends CI_Controller{
     function index()
     {
         if($this->acceso(125)) {
+        $this->load->model('Categoria_producto_model');
+        $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
         $data['parametros'] = $this->Parametro_model->get_all_parametro();
         $data['page_title'] = "Parametro";
         $data['_view'] = 'parametro/index';
@@ -95,6 +97,8 @@ class Parametro extends CI_Controller{
         if($this->acceso(125)) {
         // check if the parametro exists before trying to edit it
         $data['parametro'] = $this->Parametro_model->get_parametro($parametro_id);
+        $this->load->model('Categoria_producto_model');
+        $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
         
         if(isset($data['parametro']['parametro_id']))
         {
@@ -126,6 +130,7 @@ class Parametro extends CI_Controller{
                     'parametro_formaimagen' => $this->input->post('parametro_formaimagen'),
                     'parametro_modulorestaurante' => $this->input->post('parametro_modulorestaurante'),
                     'parametro_permisocredito' => $this->input->post('parametro_permisocredito'),
+                    'parametro_agruparitems' => $this->input->post('parametro_agruparitems'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
@@ -133,6 +138,7 @@ class Parametro extends CI_Controller{
             }
             else
             {
+
                 $data['page_title'] = "Parametro";
                 $data['_view'] = 'parametro/edit';
                 $this->load->view('layouts/main',$data);

@@ -123,61 +123,101 @@
                                       <div class="col-md-3">
                                         <label for="parametro_mostrarcategoria" class="control-label">MOSTRAR CATEGORIA</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_mostrarcategoria" value="<?php echo ($this->input->post('parametro_mostrarcategoria') ? $this->input->post('parametro_mostrarcategoria') : $parametro['parametro_mostrarcategoria']); ?>" class="form-control" id="parametro_mostrarcategoria" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <select name="parametro_mostrarcategoria" class="form-control" required id="parametro_mostrarcategoria">
+								<option value="0">- CATEGORIA -</option>
+								<?php 
+								foreach($all_categoria_producto as $categoria_producto)
+								{
+									$selected = ($categoria_producto['categoria_id'] == $parametro['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$categoria_producto['categoria_id'].'" '.$selected.'>'.$categoria_producto['categoria_nombre'].'</option>';
+								} 
+								?>
+							</select>
                                         </div>
                                     </div>
-                                     <div class="col-md-3">
+                                     <div class="col-md-2">
                                         <label for="parametro_modoventas" class="control-label">MODO VENTAS</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_modoventas" value="<?php echo ($this->input->post('parametro_modoventas') ? $this->input->post('parametro_modoventas') : $parametro['parametro_modoventas']); ?>" class="form-control" id="parametro_modoventas" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <select  name="parametro_modoventas" class="form-control" id="parametro_modoventas"  />
+                                        <option value="1" <?php if($parametro['parametro_modoventas']==1) echo 'selected'; ?> >LISTA</option>
+								        <option value="2" <?php if($parametro['parametro_modoventas']==2) echo 'selected'; ?> >BOTONES</option> </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label for="parametro_imprimircomanda" class="control-label">IMPRIMIR COMANDA</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_imprimircomanda" value="<?php echo ($this->input->post('parametro_imprimircomanda') ? $this->input->post('parametro_imprimircomanda') : $parametro['parametro_imprimircomanda']); ?>" class="form-control" id="parametro_imprimircomanda" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <select  name="parametro_imprimircomanda" class="form-control" id="parametro_imprimircomanda"  />
+                                        <option value="0" <?php if($parametro['parametro_imprimircomanda']==0) echo 'selected'; ?> >NO</option>
+								        <option value="1" <?php if($parametro['parametro_imprimircomanda']==1) echo 'selected'; ?> >SI</option> </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3">
+                                    <div class="col-md-2">
                                         <label for="parametro_modulorestaurante" class="control-label">MODULO RESTAURANTE</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_modulorestaurante" value="<?php echo ($this->input->post('parametro_modulorestaurante') ? $this->input->post('parametro_modulorestaurante') : $parametro['parametro_modulorestaurante']); ?>" class="form-control" id="parametro_modulorestaurante" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <select  name="parametro_modulorestaurante" class="form-control" id="parametro_modulorestaurante"  />
+                                        <option value="0" <?php if($parametro['parametro_modulorestaurante']==0) echo 'selected'; ?> >NO</option>
+								        <option value="1" <?php if($parametro['parametro_modulorestaurante']==1) echo 'selected'; ?> >SI</option> </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <label for="parametro_agruparitems" class="control-label">AGRUPAR ITEMS</label>
+                                        <div class="form-group">
+                                        <select  name="parametro_agruparitems" class="form-control" id="parametro_agruparitems"  />
+                                        <option value="0" <?php if($parametro['parametro_agruparitems']==0) echo 'selected'; ?> >NO</option>
+								        <option value="1" <?php if($parametro['parametro_agruparitems']==1) echo 'selected'; ?> >SI</option> </select>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="parametro_anchoboton" class="control-label">ANCHO BOTON</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_anchoboton" value="<?php echo ($this->input->post('parametro_anchoboton') ? $this->input->post('parametro_anchoboton') : $parametro['parametro_anchoboton']); ?>" class="form-control" id="parametro_anchoboton" onKeyUp="this.value = this.value.toUpperCase();" />
+                                            <input type="number" name="parametro_anchoboton" value="<?php echo ($this->input->post('parametro_anchoboton') ? $this->input->post('parametro_anchoboton') : $parametro['parametro_anchoboton']); ?>" class="form-control" id="parametro_anchoboton" />
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="parametro_altoboton" class="control-label">ALTO BOTON</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_altoboton" value="<?php echo ($this->input->post('parametro_altoboton') ? $this->input->post('parametro_altoboton') : $parametro['parametro_altoboton']); ?>" class="form-control" id="parametro_altoboton" onKeyUp="this.value = this.value.toUpperCase();" />
+                                            <input type="number" name="parametro_altoboton" value="<?php echo ($this->input->post('parametro_altoboton') ? $this->input->post('parametro_altoboton') : $parametro['parametro_altoboton']); ?>" class="form-control" id="parametro_altoboton"  />
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="parametro_colorboton" class="control-label">COLOR BOTON</label>
-                                        <div class="form-group">
-                                            <input type="text" name="parametro_colorboton" value="<?php echo ($this->input->post('parametro_colorboton') ? $this->input->post('parametro_colorboton') : $parametro['parametro_colorboton']); ?>" class="form-control" id="parametro_colorboton" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <div class="select-style" >
+                                            <select name="parametro_colorboton" class="form-control" id="parametro_colorboton"  />
+                                             <option value="info" class="btn-info" <?php if($parametro['parametro_colorboton']=='info') echo 'selected'; ?> >INFO</option>
+
+								            <option value="success" class="btn-success" <?php if($parametro['parametro_colorboton']=='success') echo 'selected'; ?>  >SUCCES</option>
+
+								            <option value="warning" class="btn-warning" <?php if($parametro['parametro_colorboton']=='warning') echo 'selected'; ?>  >WARNING</option>
+
+								            <option value="facebook" class="btn-facebook" <?php if($parametro['parametro_colorboton']=='facebook') echo 'selected'; ?>  >FACEBOOK</option>
+
+								            <option value="danger" class="btn-danger" <?php if($parametro['parametro_colorboton']=='danger') echo 'selected'; ?>  >DANGER</option>
+
+								            <option value="default" class="btn-default" <?php if($parametro['parametro_colorboton']=='default') echo 'selected'; ?>  >DEFAULT</option>
+
+								            
+								        </select>
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="parametro_anchoimagen" class="control-label">ANCHO IMAGEN</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_anchoimagen" value="<?php echo ($this->input->post('parametro_anchoimagen') ? $this->input->post('parametro_anchoimagen') : $parametro['parametro_anchoimagen']); ?>" class="form-control" id="parametro_anchoimagen" onKeyUp="this.value = this.value.toUpperCase();" />
+                                            <input type="number" name="parametro_anchoimagen" value="<?php echo ($this->input->post('parametro_anchoimagen') ? $this->input->post('parametro_anchoimagen') : $parametro['parametro_anchoimagen']); ?>" class="form-control" id="parametro_anchoimagen"  />
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="parametro_altoimagen" class="control-label">ALTO IMAGEN</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_altoimagen" value="<?php echo ($this->input->post('parametro_altoimagen') ? $this->input->post('parametro_altoimagen') : $parametro['parametro_altoimagen']); ?>" class="form-control" id="parametro_altoimagen" onKeyUp="this.value = this.value.toUpperCase();" />
+                                            <input type="number" name="parametro_altoimagen" value="<?php echo ($this->input->post('parametro_altoimagen') ? $this->input->post('parametro_altoimagen') : $parametro['parametro_altoimagen']); ?>" class="form-control" id="parametro_altoimagen"  />
                                         </div>
                                     </div>
                                     <div class="col-md-2">
                                         <label for="parametro_formaimagen" class="control-label">FORMA IMAGEN</label>
                                         <div class="form-group">
-                                            <input type="text" name="parametro_formaimagen" value="<?php echo ($this->input->post('parametro_formaimagen') ? $this->input->post('parametro_formaimagen') : $parametro['parametro_formaimagen']); ?>" class="form-control" id="parametro_formaimagen" onKeyUp="this.value = this.value.toUpperCase();" />
+                                        <select  name="parametro_formaimagen" class="form-control" id="parametro_formaimagen"  />
+                                        <option value="" <?php if($parametro['parametro_formaimagen']=='') echo 'selected'; ?> >RECTANGULAR</option>
+								        <option value="circle" <?php if($parametro['parametro_formaimagen']=='circle') echo 'selected'; ?> >CIRCULAR</option> </select>
                                         </div>
                                     </div>
                                     </div></div>
