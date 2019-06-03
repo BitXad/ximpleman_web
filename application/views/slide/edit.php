@@ -1,3 +1,13 @@
+<script type="text/javascript">
+    function tamanioimage(){
+        var tipo = document.getElementById('slide_tipo').value;
+        if(tipo == 1){
+            $("#label_imagen").html("Imagen (Ideal 1280 X 500 px)");
+        }else{
+            $("#label_imagen").html("Imagen (Ideal 1600 X 450 px)");
+        }
+    }
+</script> 
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
@@ -30,7 +40,28 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="slide_imagen" class="control-label">Imagen (Ideal 1280 X 500 px)</label>
+                        <label for="slide_tipo" class="control-label"><span class="text-danger">*</span>Tipo</label>
+                        <div class="form-group">
+                            <select name="slide_tipo" id="slide_tipo" class="form-control" onchange="tamanioimage()" required>
+                                <?php
+                                      $selected1 = "";
+                                      $selected2 = "";
+                                      if($slide['slide_tipo'] == 1){ $selected1 = "selected";}
+                                      if($slide['slide_tipo'] == 2){ $selected2 = "selected";} ?>
+                                <option <?php echo $selected1; ?> value="1">Slider Principal</option>
+                                <option <?php echo $selected2; ?> value="2">Slider Secundario</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <?php
+                        if($slide['slide_tipo'] == 1){
+                            $sugerencia = "Imagen (Ideal 1280 X 500 px)";
+                        }else{
+                            $sugerencia = "Imagen (Ideal 1600 X 450 px)";
+                        }
+                        ?>
+                        <label id="label_imagen" for="slide_imagen" class="control-label"><?php echo $sugerencia; ?></label>
                         <div class="form-group">
                             <input type="file" name="slide_imagen" value="<?php echo ($this->input->post('slide_imagen') ? $this->input->post('slide_imagen') : $slide['slide_imagen']); ?>" class="btn btn-success btn-sm form-control" id="slide_imagen" accept="image/png, image/jpeg, jpg, image/gif" />
                             <input type="hidden" name="slide_imagen1" value="<?php echo ($this->input->post('slide_imagen') ? $this->input->post('slide_imagen') : $slide['slide_imagen']); ?>" class="form-control" id="slide_imagen1" />
@@ -58,20 +89,6 @@
                         <label for="slide_enlace" class="control-label">Enlace</label>
                         <div class="form-group">
                             <input type="text" name="slide_enlace" value="<?php echo ($this->input->post('slide_enlace') ? $this->input->post('slide_enlace') : $slide['slide_enlace']); ?>" class="form-control" id="slide_enlace" />
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="slide_tipo" class="control-label"><span class="text-danger">*</span>Tipo</label>
-                        <div class="form-group">
-                            <select name="slide_tipo" id="slide_tipo" class="form-control" required>
-                                <?php
-                                      $selected1 = "";
-                                      $selected2 = "";
-                                      if($slide['slidetipo'] == 1){ $selected1 = "selected";}
-                                      if($slide['slide_tipo'] == 2){ $selected2 = "selected";} ?>
-                                <option <?php echo $selected1; ?> value="1">Tipo 1</option>
-                                <option <?php echo $selected2; ?> value="2">Tipo 2</option>
-                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">

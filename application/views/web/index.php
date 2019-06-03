@@ -353,28 +353,39 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  <!-- Carousel
     ================================================== -->
     <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <?php
+            $i = 0;
+            $band = true;
+            foreach($slider2 as $s2){
+                if($band == true){ ?>
+                    <li data-target="#myCarousel" data-slide-to="<?php echo $i; ?>" class="active"></li>
+            <?php $band = false;
+                }else{ ?>
+                    <li data-target="#myCarousel" data-slide-to="<?php echo $i; ?>"></li>
+            <?php }
+            $i++;
+            } ?>
+        </ol>
           <center>
-      <div class="carousel-inner" role="listbox">
-        
-         <?php foreach($slider2 as $s2){ ?> 
-        <div class="<?php echo $s2['slide_leyenda1'];?>">
-        <a href="beverages.html"> <img class="<?php echo $s2['slide_titulo'];?>" src="<?php echo $raiz."/images/".$s2['slide_imagen'];?>" alt="<?php echo $s2['slide_titulo'];?>"></a>       
-        </div>
-         <?php } ?>
-<!--        <div class="item">
-         <a href="personalcare.html"> <img class="second-slide" src="<?php echo $raiz;?>images/b3.jpg" alt="Second slide"></a>
-         
-        </div>
-        <div class="item">
-          <a href="household.html"><img class="third-slide" src="<?php echo $raiz;?>images/b1.jpg" alt="Third slide"></a>
-          
-        </div>-->
+        <div class="carousel-inner" role="listbox">
+            <?php
+            $i = 0;
+            $band1 = true;
+            foreach($slider2 as $s2){
+                if($band1 == true){ ?>
+                    <div class="item active">
+                        <a href="#"> <img class="<?php echo $s2['slide_titulo'].$i; ?>" src="<?php echo $raiz."images/sliders/".$s2['slide_imagen']; ?>" alt="<?php echo $s2['slide_titulo'];?>"></a>
+                    </div>
+            <?php $band1 = false;
+                }else{ ?>
+                    <div class="item">
+                        <a href="#"> <img class="<?php echo $s2['slide_titulo'].$i; ?>" src="<?php echo $raiz."images/sliders/".$s2['slide_imagen']; ?>" alt="<?php echo $s2['slide_titulo'];?>"></a>
+                    </div>
+            <?php }
+            $i++;
+            } ?>
       </div>
           </center>
     

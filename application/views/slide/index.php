@@ -15,8 +15,6 @@
 </script>
 <style type="text/css">
     #contieneimg{
-        width: 80px;
-        height: 31px;
         text-align: center;
     }
     #horizontal{
@@ -71,12 +69,19 @@
                             <div id="horizontal">
                                 <div id="contieneimg">
                            <?php
+                           if($s['slide_tipo'] == 1){
+                               $ancho = "80px";
+                               $alto  = "31px";
+                           }else{
+                               $ancho = "80px";
+                               $alto  = "22px";
+                           }
                             $mimagen = "thumb_".$s['slide_imagen'];
                             if($s['slide_imagen']){
-                            ?>
+                                ?> <img width="" height="" />
                             <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $s['slide_id']; ?>" style="padding: 0px;">
                                 <?php
-                                echo '<img src="'.site_url('/resources/web/images/sliders/'.$mimagen).'" />';
+                                echo '<img src="'.site_url('/resources/web/images/sliders/'.$mimagen).'" width="'.$ancho.'" height="'.$alto.'" />';
                                 ?>
                             </a>
                             <?php }
@@ -91,7 +96,13 @@
                           </div>
                         </td>
                         <td><?php echo $s['pagina_nombre']; ?></td>
-                        <td><?php echo $s['slide_tipo']; ?></td>
+                        <td><?php
+                             if($s['slide_tipo'] == 1){
+                                 echo "Slider Principal";
+                             }else{
+                                 echo "Slider Secundario";
+                             } ?>
+                        </td>
                         <td><?php echo $s['slide_leyenda1']; ?></td>
                         <td><?php echo $s['slide_leyenda2']; ?></td>
                         <td><?php echo $s['slide_leyenda3']; ?></td>

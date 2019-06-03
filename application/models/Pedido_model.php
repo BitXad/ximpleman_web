@@ -62,8 +62,10 @@ class Pedido_model extends CI_Model
      */
     function get_pedido($pedido_id,$usuario_id)
     {
-        $sql = "select p.*, 'NO DEFINIDO' as cliente_nombre,'NO DEFINIDO' as cliente_codigo,'-' as cliente_nombrenegocio,'-' as cliente_direccion, e.estado_descripcion from pedido p, estado e ".
-               "where pedido_id = ".$pedido_id." and p.usuario_id = ".$usuario_id." and p.estado_id = e.estado_id";
+        $sql = "select p.*, 'NO DEFINIDO' as cliente_nombre,'NO DEFINIDO' as cliente_codigo,'-' as cliente_nombrenegocio,'-' as cliente_direccion, e.estado_descripcion, ".
+                "'-' as cliente_telefono, '-' as cliente_celular, 'NO DEFINIDA' as zona_id ".
+                " from pedido p, estado e ".
+                "where pedido_id = ".$pedido_id." and p.usuario_id = ".$usuario_id." and p.estado_id = e.estado_id";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }

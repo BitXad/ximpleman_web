@@ -59,6 +59,17 @@ class Slide extends CI_Controller{
             $this->form_validation->set_rules('slide_tipo','Tipo','required');
             if($this->form_validation->run())
             {
+                if($this->input->post('slide_tipo') == 1){
+                    $ancho  = 1280;
+                    $alto   = 500;
+                    $ancho1 = 80;
+                    $alto1  = 31;
+                }else{
+                    $ancho  = 1600;
+                    $alto   = 450;
+                    $ancho1 = 80;
+                    $alto2  = 22;
+                }
                 /* *********************INICIO imagen***************************** */
                 $foto="";
                 if (!empty($_FILES['slide_imagen']['name'])){
@@ -89,8 +100,8 @@ class Slide extends CI_Controller{
                             $conf['new_image'] = './resources/web/images/sliders/';
                             $conf['maintain_ratio'] = TRUE;
                             $conf['create_thumb'] = FALSE;
-                            $conf['width'] = 1280;
-                            $conf['height'] = 500;
+                            $conf['width'] = $ancho;
+                            $conf['height'] = $alto;
                             $this->image_lib->clear();
                             $this->image_lib->initialize($conf);
                             if(!$this->image_lib->resize()){
@@ -103,8 +114,8 @@ class Slide extends CI_Controller{
                         $confi['new_image'] = './resources/web/images/sliders/'."thumb_".$new_name.$extension;
                         $confi['create_thumb'] = FALSE;
                         $confi['maintain_ratio'] = TRUE;
-                        $confi['width'] = 80;
-                        $confi['height'] = 31;
+                        $confi['width'] = $ancho1;
+                        $confi['height'] = $alto1;
 
                         $this->image_lib->clear();
                         $this->image_lib->initialize($confi);
@@ -162,6 +173,17 @@ class Slide extends CI_Controller{
                     $foto1= $this->input->post('slide_imagen1');
                 if (!empty($_FILES['slide_imagen']['name']))
                 {
+                    if($this->input->post('slide_tipo') == 1){
+                        $ancho  = 1280;
+                        $alto   = 500;
+                        $ancho1 = 80;
+                        $alto1  = 31;
+                    }else{
+                        $ancho  = 1600;
+                        $alto   = 450;
+                        $ancho1 = 80;
+                        $alto2  = 22;
+                    }
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/web/images/sliders/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
@@ -185,8 +207,8 @@ class Slide extends CI_Controller{
                         $conf['new_image'] = './resources/web/images/sliders/';
                         $conf['maintain_ratio'] = TRUE;
                         $conf['create_thumb'] = FALSE;
-                        $conf['width'] = 1280;
-                        $conf['height'] = 500;
+                        $conf['width'] = $ancho;
+                        $conf['height'] = $alto;
                         $this->image_lib->clear();
                         $this->image_lib->initialize($conf);
                         if(!$this->image_lib->resize()){
@@ -208,8 +230,8 @@ class Slide extends CI_Controller{
                     $confi['new_image'] = './resources/web/images/sliders/'."thumb_".$new_name.$extension;
                     $confi['create_thumb'] = FALSE;
                     $confi['maintain_ratio'] = TRUE;
-                    $confi['width'] = 80;
-                    $confi['height'] = 31;
+                    $confi['width'] = $ancho1;
+                    $confi['height'] = $alto1;
 
                     $this->image_lib->clear();
                     $this->image_lib->initialize($confi);
