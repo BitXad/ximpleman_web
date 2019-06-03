@@ -108,4 +108,32 @@ class Inventario_usuario_model extends CI_Model
     {
         return $this->db->delete('inventario_usuario',array('inventario_id'=>$inventario_id));
     }
+
+    function actualizar_inventario($usuario_id, $fecha)
+    {
+        $sql = "update inventario_usuario set inventario_ventas = 0, inventario_saldo = 0";
+        $this->db->query($sql);
+        
+        $sql ="update inventario_usuario i
+                set i.inventario_ventas = 
+                (
+                select if(sum(d.detalleven_cantidad)>0,sum(d.detalleven_cantidad),0) as cantidad
+                from venta v, detalle_venta d
+                where 
+                d.producto_id = i.producto_id and
+                v.venta_fecha = '".$fecha."' and
+                v.venta_id = d.venta_id and
+                v.usuario_id = ".$usuario_id."
+                group by d.producto_id
+                )
+                ,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,0)
+                
+
+                where 
+                i.usuario_id = ".$usuario_id." and
+                i.inventario_fecha = '".$fecha."'";
+        $this->db->query($sql);
+        
+        return true;
+    }
 }

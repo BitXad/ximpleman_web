@@ -1952,8 +1952,8 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             
             $sql =  "insert into inventario_usuario
-                    (producto_id,inventario_fecha,inventario_hora,inventario_cantidad,inventario_ventas, inventario_pedidos,inventario_devoluciones,inventario_saldo,usuario_id)
-                    (select producto_id, date(now()),time(now()), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id." 
+                    (producto_id,inventario_costo, inventario_fecha,inventario_hora,inventario_cantidad,inventario_ventas, inventario_pedidos,inventario_devoluciones,inventario_saldo,usuario_id)
+                    (select producto_id,detalleven_costo, date(now()),time(now()), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id." 
                     from detalle_venta_aux where usuario_id=".$usuario_vendedor.")";
             $this->Venta_model->ejecutar($sql);
             

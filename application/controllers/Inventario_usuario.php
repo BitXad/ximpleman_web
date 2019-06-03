@@ -155,4 +155,14 @@ class Inventario_usuario extends CI_Controller{
             show_error('The inventario_usuario you are trying to delete does not exist.');
     }
     
+    function actualizar_inventario()
+    {    
+        $usuario_id = $this->input->post('usuario_id');
+        $fecha = $this->input->post('fecha');
+        
+        $this->Inventario_usuario_model->actualizar_inventario($usuario_id, $fecha);
+        
+        echo true;      
+    }
+    
 }

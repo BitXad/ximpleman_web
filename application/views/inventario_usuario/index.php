@@ -1,6 +1,25 @@
 <script src="<?php echo base_url('resources/js/inv_usuario.js'); ?>" type="text/javascript"></script>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
+
+<div class="row">
+    
+    <div class="col-md-6">
+        <font face="Arial" size="3"><b>INVENTARIO POR USUARIO</b></font>
+        
+    </div>
+    <div class="col-md-6">
+        
+        <!--<button class="btn btn-info btn-xs" onclick="actualizar_invusuario()"> Actualizar</button>-->
+
+        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#exampleModal">
+          Actualizar
+        </button>        
+        <button class="btn btn-facebook btn-xs"> Reporte</button>
+        <button class="btn btn-danger btn-xs"> Eliminar</button>
+    </div>
+</div>
+    
 <div class="row">
 
     <div class="col-md-6">
@@ -65,7 +84,7 @@
 						<td><font size="2"><b><?php echo $i['producto_nombre']; ?></b></font> [<?php echo $i['producto_id']; ?>]<br>
                             Cod: <?php echo $i['producto_codigo']; ?></td>
 						<td><?php echo $i['inventario_fecha']; ?>   <?php echo $i['inventario_hora']; ?></td>
-						<td><?php echo $i['inventario_costo']/$i['inventario_cantidad']; ?></td>
+						<td><?php echo $i['inventario_costo']; ?></td>
 						<td><?php echo $i['inventario_cantidad']; ?></td>
                         
                         <td><b><?php echo $i['inventario_costo']; ?></b></td>
@@ -109,4 +128,30 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title" id="exampleModalLabel" ><b>Modificar Inventario</b></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <center><b>
+                Esta a punto de modificar el inventario<br>
+                ¿Desea continuar?              
+              </b>
+          </center>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" onclick="actualizar_invusuario()" class="btn btn-primary" data-dismiss="modal">Modificar</button>
+      </div>
+    </div>
+  </div>
 </div>
