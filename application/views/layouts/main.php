@@ -376,6 +376,9 @@
                         <li>
                             <a href="<?php echo site_url('detalle_venta/venta_proceso');?>"><i class="fa fa-money"></i>Ver Proceso de Venta</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i>Cocina</a>
+                        </li>
                     </ul>
                 </li>
                 
@@ -474,7 +477,15 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
                         ?>
+                        <li>
+                            <a href="<?php echo site_url('inventario_usuario');?>"><i class="fa fa-cubes"></i>Inventario Individual</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+
                     </ul>
                 </li>
                 <li>
