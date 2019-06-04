@@ -122,8 +122,8 @@ function tablaresultadoscliente(limite)
                 
                if (registros != null){
                    
-                   /*var tipocli = JSON.parse(document.getElementById('eltipo_cliente').value);
-                   var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
+                   var formaimagen = document.getElementById('formaimagen').value;
+                   /*var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
                    var categoriacliezona = JSON.parse(document.getElementById('lacategoria_clientezona').value);
                    var usuariocli = JSON.parse(document.getElementById('elusuario').value);*/
                    
@@ -137,14 +137,15 @@ function tablaresultadoscliente(limite)
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><div id='horizontal'>";
                         html += "<div id='contieneimg'>";
+                        
                         var mimagen = "";
                         if(registros[i]["cliente_foto"] != null && registros[i]["cliente_foto"] !=""){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' class='img img-circle' width='50' height='50' />";
+                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
                             mimagen += "</a>";
                             //mimagen = nomfoto.split(".").join("_thumb.");
                         }else{
-                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' class='img img-circle' width='50' height='50' />";
+                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' class='img img-"+formaimagen+"' width='50' height='50' />";
                         }
                         var neg = "";
                         var dir = "";
