@@ -39,8 +39,8 @@
 <link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<!-- <input type="hidden" name="lacategoria" id="lacategoria" value='<?php /* echo json_encode($all_categoria); ?>' />
-<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php echo json_encode($all_presentacion); ?>' />
+<input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
+<!--<input type="hidden" name="lapresentacion" id="lapresentacion" value='<?php /*echo json_encode($all_presentacion); ?>' />
 <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($all_moneda); */ ?>' /> -->
 
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">

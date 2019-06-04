@@ -94,7 +94,7 @@ function tablaresultadosproducto(limite)
                var registros =  JSON.parse(respuesta);
                 
                if (registros != null){
-                   
+                   var formaimagen = document.getElementById('formaimagen').value;
                    
                     /*var cont = 0;
                     var cant_total = 0;
@@ -112,11 +112,11 @@ function tablaresultadosproducto(limite)
                         var mimagen = "";
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='50' height='50' />";
+                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
                             mimagen += "</a>";
                             //mimagen = nomfoto.split(".").join("_thumb.");77
                         }else{
-                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='50' height='50' />";
+                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-"+formaimagen+"' width='50' height='50' />";
                         }
                         html += mimagen;
                         html += "</div>";

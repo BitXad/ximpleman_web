@@ -49,6 +49,8 @@ class Producto extends CI_Controller{
         $this->load->model('Empresa_model');
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametro(1);
         
         $data['page_title'] = "Producto";
         $data['_view'] = 'producto/index';
