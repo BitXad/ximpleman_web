@@ -47,8 +47,17 @@ function validar(e,opcion) {
               document.getElementById('tipocliente_id').focus();
         }
         
-        if (opcion==1){   //si la pulsacion proviene del nit          
-            buscarcliente();            
+        if (opcion==1){   //si la pulsacion proviene del nit  
+            nit = document.getElementById('nit').value;            
+            if (nit==''){
+                var cod = generar_codigo();
+                $("#nit").val(cod);
+                $("#razon_social").focus();
+                $("#razon_social").select();
+                
+            }else{                
+             buscarcliente();
+            }               
         }
 
         if (opcion==2){
@@ -1504,6 +1513,24 @@ function fecha(){
  
        // return dd+'/'+mm+'/'+yyyy;
         return yyyy+'-'+mm+'-'+dd;
+}
+
+function generar_codigo(){
+    var hoy = new Date();
+    
+    
+        var dd = hoy.getDate();
+        var mm = hoy.getMonth()+1;
+        var yyyy = hoy.getYear();
+        var hh = hoy.getHours();
+        var nn = hoy.getMinutes();
+        var ss = hoy.getSeconds();
+        
+        dd = addZero(dd);
+        mm = addZero(mm);
+ 
+       // return dd+'/'+mm+'/'+yyyy;
+        return yyyy+mm+dd+hh+nn+ss;
 }
 
 function fecha_actual(){

@@ -93,21 +93,21 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-          <h4 class="modal-title" id="modalinventario" ><b>Modificar Inventario</b></h4>
+          <h4 class="modal-title" id="modalinventario" ><b>Actualizar Inventario</b></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
             <center><b>
-                Esta a punto de modificar el inventario<br>
+                Esta a punto de actualizar el inventario<br>
                 ¿Desea continuar?              
               </b>
           </center>
       </div>
       <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" onclick="actualizar_invusuario()" class="btn btn-primary" data-dismiss="modal">Modificar</button>
+        <button type="button" onclick="actualizar_invusuario()" class="btn btn-primary" data-dismiss="modal">Actualizar</button>
       </div>
     </div>
   </div>
