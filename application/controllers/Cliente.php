@@ -54,6 +54,9 @@ class Cliente extends CI_Controller{
 
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
 
             $data['_view'] = 'cliente/index';
             $this->load->view('layouts/main',$data);
