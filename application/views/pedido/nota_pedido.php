@@ -55,14 +55,14 @@ line-height: 70%;   esta es la propiedad para el interlineado
 }*/
 
 table {
-  //border: 1px solid #000;
+  /*border: 1px solid #000;*/
   border-collapse: collapse;
   padding: 0;
   margin: 0;
 }
 td {
-  //border: 1px solid #000;
-  //text-align: center;
+  /*border: 1px solid #000;
+  text-align: center;*/
   padding: 0px;
   /* Alto de las celdas */
   height: 10px;
@@ -76,8 +76,8 @@ padding: 0;
 
 }
 tr {
-  //border: 1px solid #000;
-  //text-align: center;
+  /*border: 1px solid #000;
+  text-align: center;*/
   padding: 0px;
   /* Alto de las celdas */
   height: 10px;
@@ -89,8 +89,8 @@ margin-top: 0;
 }
 
 td {
-  //border: 1px solid #000;
-  //text-align: center;
+  /*border: 1px solid #000;
+  text-align: center;*/
   padding: 0px;
   /* Alto de las celdas */
   height: 10px;

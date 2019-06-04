@@ -196,8 +196,7 @@ class Pedido extends CI_Controller{
             $this->load->view('layouts/main',$data);            
                                         		
         //**************** fin contenido ***************
-        			}
-        			     
+        			}		     
     }
 
     /*

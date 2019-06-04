@@ -24,6 +24,7 @@ function tablaresul()
                    
                     var costos = Number(0);
                     var cantidades = Number(0);
+                    var saldo = Number(0);
                     var n = registros.length; //tama単o del arreglo de la consulta
                     html = "";
                    
@@ -33,19 +34,20 @@ function tablaresul()
                       	var sumacan = Number(registros[i]["inventario_cantidad"]);
                         costos = Number(suma+costos);
                         cantidades = Number(sumacan+cantidades);
+                        saldo += Number(registros[i]["inventario_saldo"]);
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><font size='2'><b>"+registros[i]["producto_nombre"]+"</b></font>["+registros[i]["producto_id"]+"]<br>"+registros[i]["producto_codigo"]+"</td>";
                         html += "<td align='center'>"+registros[i]["inventario_fecha"]+" "+registros[i]["inventario_hora"]+"</td>"; 
                     
-                        html += "<td>"+Number(registros[i]["inventario_costo"]/registros[i]["inventario_cantidad"]).toFixed(2)+"</td>"; 
-                        html += "<td>"+registros[i]["inventario_cantidad"]+"</td>"; 
+                        html += "<td>"+Number(registros[i]["inventario_costo"]).toFixed(2)+"</td>"; 
+                        html += "<td style='background-color: orange'> <font size='2'><center><b>"+Number(registros[i]["inventario_cantidad"]).toFixed(2)+"</b></center></font></td>"; 
                         html += "<td><b>"+Number(registros[i]["inventario_costo"]).toFixed(2)+"</b></td>";
-                        html += "<td>"+registros[i]["inventario_ventas"]+"</td>"; 
-                        html += "<td>"+registros[i]["inventario_pedidos"]+"</td>"; 
-                        html += "<td>"+registros[i]["inventario_devoluciones"]+"</td>"; 
-                        html += "<td>"+registros[i]["inventario_saldo"]+"</td>"; 
+                        html += "<td align='center' style='background-color: yellow'><font size='1' face='Arial'><b>"+Number(registros[i]["inventario_ventas"]).toFixed(2)+"</b></font></td>"; 
+                        html += "<td style='background-color: yellow'>"+registros[i]["inventario_pedidos"]+"</td>"; 
+                        html += "<td style='background-color: yellow'>"+registros[i]["inventario_devoluciones"]+"</td>"; 
+                        html += "<td style='background-color: orange'><center><font size='2'><b>"+Number(registros[i]["inventario_saldo"]).toFixed(2)+"</b></font></center></td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td><a href='"+base_url+"inventario_usuario/edit/"+registros[i]["inventario_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
                         html += " <a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
@@ -87,7 +89,8 @@ function tablaresul()
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<td></td>";
+                                                
+                        html += "<td align='right'><font size='4'><b>"+Number(saldo).toFixed(2)+"</b></font></td>";
                         html += "<td></td>";
                         html += "</tr>";
                    
@@ -105,5 +108,53 @@ function tablaresul()
         
     });   
 
-} 
+}
+
+function actualizar_invusuario(){
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario_usuario/actualizar_inventario";
+    var usuario_id    = document.getElementById('usuario_id').value;
+    var fecha    = document.getElementById('inventario_fecha').value;
+
+    if (usuario_id>=1){
+
+        $.ajax({url: controlador,
+           type:"POST",
+           data:{usuario_id:usuario_id, fecha:fecha},
+          
+           success:function(resul){
+               tablaresul();
+               alert("Actualización completada con éxito..!");
+           },
+       });
+   }
+   else{
+       alert('ADVERTENCIA: Debe seleccionar un usuario/fecha..!');
+   }
+             
+}
+
+function eliminar_invusuario(){
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario_usuario/eliminar_inventario";
+    var usuario_id    = document.getElementById('usuario_id').value;
+    var fecha    = document.getElementById('inventario_fecha').value;
+
+    if (usuario_id>=1){
+
+        $.ajax({url: controlador,
+           type:"POST",
+           data:{usuario_id:usuario_id, fecha:fecha},
+          
+           success:function(resul){
+               tablaresul();
+               alert("Se eliminaron los datos correctamente..!");
+           },
+       });
+   }
+   else{
+       alert('ADVERTENCIA: Debe seleccionar un usuario/fecha..!');
+   }
+             
+}
     

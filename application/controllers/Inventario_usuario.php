@@ -18,7 +18,7 @@ class Inventario_usuario extends CI_Controller{
      */
     function index()
     {
-        $data['inventario_usuario'] = $this->Inventario_usuario_model->get_all_inventario_usuario();
+        //$data['inventario_usuario'] = $this->Inventario_usuario_model->get_all_inventario_usuario();
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
         $data['_view'] = 'inventario_usuario/index';
         $this->load->view('layouts/main',$data);
@@ -83,7 +83,7 @@ class Inventario_usuario extends CI_Controller{
                 'inventario_fecha' => $fecha,
                 'inventario_hora' => $hora,
                 'inventario_cantidad' => $dat['cantidades'],
-                'inventario_costo' => ($dat['producto_costo']*$dat['cantidades']),
+                'inventario_costo' => $dat['producto_costo'],
                 'inventario_ventas' => 0,
                 'inventario_pedidos' => 0,
                 'inventario_devoluciones' => 0,
@@ -153,6 +153,26 @@ class Inventario_usuario extends CI_Controller{
         }
         else
             show_error('The inventario_usuario you are trying to delete does not exist.');
+    }
+    
+    function actualizar_inventario()
+    {    
+        $usuario_id = $this->input->post('usuario_id');
+        $fecha = $this->input->post('fecha');
+        
+        $this->Inventario_usuario_model->actualizar_inventario($usuario_id, $fecha);
+        
+        echo true;      
+    }
+    
+    function eliminar_inventario()
+    {    
+        $usuario_id = $this->input->post('usuario_id');
+        $fecha = $this->input->post('fecha');
+        
+        $this->Inventario_usuario_model->eliminar_inventario($usuario_id, $fecha);
+        
+        echo true;      
     }
     
 }

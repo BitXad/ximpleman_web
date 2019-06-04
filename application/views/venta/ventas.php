@@ -146,6 +146,7 @@ function mostrar_ocultar(){
           <font color="red" size="2"> Dosificación no activada</font>
         <?php } ?>
         <a data-toggle="collapse" href="#collapse1">Más</a>
+                        
       </h4>
 
     </div>
@@ -277,8 +278,16 @@ function mostrar_ocultar(){
         <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span>
     </span>
         <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span>Inventario</button>
-    
-                <!--------------------- indicador de resultados --------------------->
+       <?php 
+            if ($parametro[0]["parametro_agruparitems"] == 1 )
+                    { $agrupar = "checked='true'";}
+              else {$agrupar = " ";}
+        ?>
+        
+    <span class="badge btn-primary">
+        <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> Agrupar detalle
+    </span>
+        <!--------------------- indicador de resultados --------------------->
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
                 <!--<span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
@@ -385,7 +394,7 @@ function mostrar_ocultar(){
 
             <center>
 
-            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br><br>
                Finalizar Venta <br>
             </a>
@@ -486,9 +495,13 @@ function mostrar_ocultar(){
                                         </center>
                                     </div>
                                     
-                                    <?php if ($parametro[0]["parametro_modulorestaurante"]==1){    ?>
-                                        
-                                    <div class="col-md-2" style="padding: 0;">
+                                    <?php 
+                                            $ocultar = "none";
+                                        if ($parametro[0]["parametro_modulorestaurante"]==1){    
+                                            $ocultar = "block";
+                                            
+                                    } ?>   
+                                    <div class="col-md-2" style="padding: 0; display: <?php echo $ocultar; ?>">
                                         <h5 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h5>                                        
                                         <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default btn-xs"  style="width: 100px;">
                                                 
@@ -509,7 +522,7 @@ function mostrar_ocultar(){
                                          </select>
                                         
                                     </div>
-                                    <?php } ?>
+                                    
                                     
                                 </div>                                    
                                                                                              
@@ -551,59 +564,58 @@ function mostrar_ocultar(){
             <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
                 <tr>
-                        <td>Total Bs</td>
+                        <td  style="padding: 0" >Total Bs</td>
                         <td align="right">
-                            <input class="btn btn-foursquarexs" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                            <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
                     
                     
                 </tr>                
-                <tr>
-                        <td>Descuento Bs</td>
-                        <td align="right">
-                            <input class="btn btn-foursquarexs" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                <tr style="padding: 0">
+                        <td style="padding: 0">Descuento Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
                     
                 </tr>
 
                         
-                <tr>
-                        <td align="right"><b>Sub Total Bs</b></td>
-                        <td align="right">                
+                <tr style="padding: 0">
+                        <td align="right" style="padding: 0"><b>Sub Total Bs</b></td>
+                        <td align="right" style="padding: 0">                
                             
-                            <input class="btn btn-foursquarexs" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
+                            <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
                         </td>
 
                 </tr>
 
-                <tr>                      
-                        <td>Descuento Bs</td>
-                        <td align="right">
-                            <input class="btn btn-info" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
+                <tr style="padding: 0">                      
+                        <td style="padding: 0">Descuento Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
                         </td>
                 </tr>
 
-                <tr>                      
-                        <td><b>Total Final Bs</b></td>
-                        <td align="right">
+                <tr style="padding: 0">                      
+                        <td style="padding: 0"><b>Total Final Bs</b></td>
+                        <td align="right" style="padding: 0">
 
-                              <input class="btn btn-foursquarexs" style="font-size: 20" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">                                
+                              <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">                                
 
                         </td>
                 </tr>
 
-                <tr>                      
-                        <td>Efectivo Bs</td>
-                        <td align="right">
-                            <input class="btn btn-info" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio()"  onclick="seleccionar(5)">
+                <tr style="padding: 0">                      
+                        <td style="padding: 0">Efectivo Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
+                        </td>
+                </tr>
                 
-                        </td>
-                </tr>
-                
-                <tr>                      
-                    <td><b>Cambio Bs</b></td>
-                        <td align="right">
-                            <input class="btn btn-foursquarexs" id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
+                <tr style="padding: 0">                      
+                    <td style="padding: 0"><b>Cambio Bs</b></td>
+                        <td align="right" style="padding: 0;">
+                            <input class="btn btn-danger  btn-foursquarexs; " style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
                 </tr>
                 
@@ -616,7 +628,7 @@ function mostrar_ocultar(){
 
           
             <div class="col-md-12">
-                NOTA: <input type="text" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
             </div>
            
         </div>
@@ -896,3 +908,84 @@ function mostrar_ocultar(){
 
 
 <!----------------- fin modal inventario ---------------------------------------------->
+
+
+<!--
+            <a href="#" data-toggle="modal" data-target="#modalpreferencia" class="btn btn-xs btn-success" style="">
+                <i class="fa fa-tasks"></i>
+            </a>-->
+
+
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalpreferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>PREFRENCIAS</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+
+                            <input id="detalleven_id" value="0" hidden>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+
+                        
+                        
+                        <div class="box-body table-responsive">
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Preferencia de producto</label>
+                                            <div class="form-group">
+							
+                                                <?php 
+                                                foreach($preferencia as $p)
+                                                {?>
+                                                    <!--<input class="btn btn-xs btn-facebook" id="preferencia<?php echo $p["preferencia_descripcion"]; ?>"  value="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead">-->
+                                                    <button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>
+                                                    <br>
+                                                <?php } 
+                                                ?>
+                                            </div>
+                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Guadar
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display:none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->

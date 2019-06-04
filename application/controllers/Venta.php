@@ -25,6 +25,7 @@ class Venta extends CI_Controller{
         $this->load->model('Usuario_model');
         $this->load->model('Cliente_model');
         $this->load->model('Tipo_servicio_model');
+        $this->load->model('Preferencia_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -74,9 +75,7 @@ class Venta extends CI_Controller{
         //**************** inicio contenido ***************        
         
         $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
-        
-
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
 
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
@@ -89,6 +88,7 @@ class Venta extends CI_Controller{
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         
@@ -142,8 +142,23 @@ class Venta extends CI_Controller{
         $producto_id = $this->input->post('producto_id');
         $cantidad = $this->input->post('cantidad');
         $existencia = $this->input->post('existencia');
-        $sql1 = $this->input->post('sql1');
-        $sql2 = $this->input->post('sql2');
+        $datos1 = $this->input->post('datos1');
+        $agrupado = $this->input->post('agrupado');
+        
+        $descuento = $this->input->post('descuento');
+        
+        $sql1 = "";
+        $sql1 = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ".
+                "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,".
+                "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra ) ".
+                " value(".$datos1.")";       
+        
+        $sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
+                ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                ", detalleven_descuento = ".$descuento.
+                ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
+        
         $descuento = 0;
         
         $sql = "select if(sum(detalleven_cantidad)+".$cantidad.">".$existencia.",1,0) as resultado from detalle_venta_aux where producto_id = ".$producto_id;
@@ -151,15 +166,22 @@ class Venta extends CI_Controller{
         $resultado = $this->Venta_model->consultar($sql);
         
         
-        if ($resultado[0]['res<ultado']==0){ //si la cantidad aun es menor al inventario                   
-            if ($this->Venta_model->existe($producto_id,$usuario_id)){
-                $sql = $sql2;             
+        if ($resultado[0]['res<ultado']==0){ //si la cantidad aun es menor al inventario
+            
+            if($agrupado==1){
+                
+                if ($this->Venta_model->existe($producto_id,$usuario_id)){
+                    $sql = $sql2;             
+                }
+                else{
+                    $sql = $sql1;
+                }                
             }
-            else{
+            else
+            {
                 $sql = $sql1;
             }
-
-           
+          
             $this->Venta_model->ejecutar($sql);
             
             $result = 1;
@@ -1900,19 +1922,21 @@ function anular_venta($venta_id){
         
     }    
         
-    function ejecutar_consulta(){
-       if($this->acceso(12)){
+    function guardar_preferencia(){
+       //if($this->acceso(12)){
                //**************** inicio contenido ***************       
-
-               $sql = $this->input->post('sql');
+            $preferencia = $this->input->post('preferencia');
+            $detalleven_id = $this->input->post('detalleven_id');
                
-               
-               $resultado = $this->Venta_model->ejecutar($sql);
-               echo true;
-
+            $sql = "update detalle_venta_aux set detalleven_preferencia = '".$preferencia."'".
+              " where detalleven_id = ".$detalleven_id;           
+           //echo $sql;                  
+            
+           $resultado = $this->Venta_model->ejecutar($sql);
+            echo true;
 
                //**************** fin contenido ***************
-                                       }
+         //                              }
         
     }    
         
@@ -1928,8 +1952,8 @@ function anular_venta($venta_id){
             $this->Venta_model->ejecutar($sql);
             
             $sql =  "insert into inventario_usuario
-                    (producto_id,inventario_fecha,inventario_hora,inventario_cantidad,inventario_ventas, inventario_pedidos,inventario_devoluciones,inventario_saldo,usuario_id)
-                    (select producto_id, date(now()),time(now()), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id." 
+                    (producto_id,inventario_costo, inventario_fecha,inventario_hora,inventario_cantidad,inventario_ventas, inventario_pedidos,inventario_devoluciones,inventario_saldo,usuario_id)
+                    (select producto_id,detalleven_costo, date(now()),time(now()), detalleven_cantidad , 0, 0, 0, detalleven_cantidad, ".$usuario_id." 
                     from detalle_venta_aux where usuario_id=".$usuario_vendedor.")";
             $this->Venta_model->ejecutar($sql);
             
@@ -1955,10 +1979,25 @@ function anular_venta($venta_id){
             echo json_encode($res);
 
 
-        //**************** fin contenido ***************
-        //}
-                                                   
-        
+        //**************** fin contenido ***************        
     }   
+    
+
+//    function ejecutar_consulta_js(){
+//        //if($this->acceso(12)){
+//        //**************** inicio contenido ***************       
+//
+////            $usuario_vendedor = $this->session_data['usuario_id'];
+////            $usuario_id = $this->input->post('usuario_id');
+//
+//            $sql = $this->input->post('sql');
+//            $this->Venta_model->ejecutar($sql);
+//            
+//                        
+//            echo json_encode($res);
+//
+//
+//        //**************** fin contenido ***************        
+//    }   
     
 }
