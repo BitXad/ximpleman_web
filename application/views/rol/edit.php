@@ -31,7 +31,7 @@
                     <div class="col-md-6">
                         <label for="rol_descripcion" class="control-label">Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="rol_descripcion"  class="form-control" id="rol_descripcion" value="<?php echo $rol['rol_descripcion']; ?>" onKeyUp="this.value = this.value.toUpperCase();" />
+                            <input type="text" name="rol_descripcion"  class="form-control" id="rol_descripcion" value="<?php echo $rol['rol_descripcion']; ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-6">

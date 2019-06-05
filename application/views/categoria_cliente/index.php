@@ -19,7 +19,7 @@
 <!-------------------------------------------------------->
 
 <div class="box-header">
-                <h3 class="box-title">Categoria Cliente</h3>
+                <h3 class="box-title">Categoria Negocio</h3>
             	<div class="box-tools">
                     <a href="<?php echo site_url('categoria_cliente/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>

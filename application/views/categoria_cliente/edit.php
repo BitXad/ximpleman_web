@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Editar Categoria Cliente</h3>
+              	<h3 class="box-title">Editar Categoria Negocio</h3>
             </div>
 			<?php echo form_open('categoria_cliente/edit/'.$categoria_cliente['categoriaclie_id']); ?>
 			<div class="box-body">
@@ -10,7 +10,7 @@
 					<div class="col-md-6">
 						<label for="categoriaclie_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-							<input type="text" name="categoriaclie_descripcion" value="<?php echo ($this->input->post('categoriaclie_descripcion') ? $this->input->post('categoriaclie_descripcion') : $categoria_cliente['categoriaclie_descripcion']); ?>" class="form-control" id="categoriaclie_descripcion" onKeyUp="this.value = this.value.toUpperCase();" required />
+							<input type="text" name="categoriaclie_descripcion" value="<?php echo ($this->input->post('categoriaclie_descripcion') ? $this->input->post('categoriaclie_descripcion') : $categoria_cliente['categoriaclie_descripcion']); ?>" class="form-control" id="categoriaclie_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('categoriaclie_descripcion');?></span>
 						</div>
 					</div>
