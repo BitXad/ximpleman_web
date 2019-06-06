@@ -98,19 +98,19 @@ class Promocion extends CI_Controller{
             {
                 $this->load->library('form_validation');
 
-                            $this->form_validation->set_rules('promocion_titulo','Promocion Titulo','required');
-                            $this->form_validation->set_rules('promocion_cantidad','Promocion Cantidad','required');
-                            $this->form_validation->set_rules('promocion_preciototal','Promocion Preciototal','required');
+                $this->form_validation->set_rules('promocion_titulo','Promocion Titulo','required');
+                $this->form_validation->set_rules('promocion_cantidad','Promocion Cantidad','required');
+                $this->form_validation->set_rules('promocion_preciototal','Promocion Preciototal','required');
 
-                            if($this->form_validation->run())     
+                if($this->form_validation->run())     
                 {   
                     $params = array(
-                                            'producto_id' => $this->input->post('producto_id'),
-                                            'estado_id' => $this->input->post('estado_id'),
-                                            'promocion_titulo' => $this->input->post('promocion_titulo'),
-                                            'promocion_cantidad' => $this->input->post('promocion_cantidad'),
-                                            'promocion_preciototal' => $this->input->post('promocion_preciototal'),
-                                            'promocion_descripcion' => $this->input->post('promocion_descripcion'),
+                        'producto_id' => $this->input->post('producto_id'),
+                        'estado_id' => $this->input->post('estado_id'),
+                        'promocion_titulo' => $this->input->post('promocion_titulo'),
+                        'promocion_cantidad' => $this->input->post('promocion_cantidad'),
+                        'promocion_preciototal' => $this->input->post('promocion_preciototal'),
+                        'promocion_descripcion' => $this->input->post('promocion_descripcion'),
                     );
 
                     $this->Promocion_model->update_promocion($promocion_id,$params);            
@@ -118,11 +118,11 @@ class Promocion extends CI_Controller{
                 }
                 else
                 {
-                                    $this->load->model('Producto_model');
-                                    $data['all_producto'] = $this->Producto_model->get_all_producto();
+                    $this->load->model('Producto_model');
+                    $data['all_producto'] = $this->Producto_model->get_busqueda_productos_all();
 
-                                    $this->load->model('Estado_model');
-                                    $data['all_estado'] = $this->Estado_model->get_all_estado();
+                    $this->load->model('Estado_model');
+                    $data['all_estado'] = $this->Estado_model->get_estado_tipo(1);
                     $data['page_title'] = "Promocion";
                     $data['_view'] = 'promocion/edit';
                     $this->load->view('layouts/main',$data);

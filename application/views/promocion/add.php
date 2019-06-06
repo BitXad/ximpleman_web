@@ -25,7 +25,7 @@
                     <div class="col-md-6">
                         <label for="promocion_titulo" class="control-label"><span class="text-danger">*</span>Título</label>
                         <div class="form-group">
-                            <input type="text" name="promocion_titulo" value="<?php echo $this->input->post('promocion_titulo'); ?>" class="form-control" id="promocion_titulo" required />
+                            <input type="text" name="promocion_titulo" value="<?php echo $this->input->post('promocion_titulo'); ?>" class="form-control" id="promocion_titulo" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             <span class="text-danger"><?php echo form_error('promocion_titulo');?></span>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
                     <div class="col-md-6">
                         <label for="promocion_descripcion" class="control-label">Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="promocion_descripcion" value="<?php echo $this->input->post('promocion_descripcion'); ?>" class="form-control" id="promocion_descripcion" />
+                            <input type="text" name="promocion_descripcion" value="<?php echo $this->input->post('promocion_descripcion'); ?>" class="form-control" id="promocion_descripcion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                 </div>

@@ -150,6 +150,7 @@ function tablaresultadosproducto(limite)
                         if(registros[i]["producto_caracteristicas"] != null){
                             caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
                         }
+                        html+= caracteristica+"</td>";
                         html += "<td>";
                         var sinconenvase = "";
                         var nombreenvase = "";
@@ -170,9 +171,6 @@ function tablaresultadosproducto(limite)
                         html += costoenvase;
                         html += precioenvase;
                         html += "</td>";
-                        
-                        
-                        html+= caracteristica+"</td>";
                         var codbarras = "";
                         if(!(registros[i]["producto_codigobarra"] == null)){
                             codbarras = registros[i]["producto_codigobarra"];
