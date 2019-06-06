@@ -1,3 +1,5 @@
+<script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script type="text/javascript">
     function cambiarcodproducto(){
         var estetime = new Date();
@@ -79,19 +81,15 @@
 					</div>
 					
                                         <div class="col-md-2">
-						<label for="producto_unidad" class="control-label">Unidad</label>
-						<div class="form-group">
-							<select name="producto_unidad" class="form-control">
-								<!--<option value="">- PRESENTACION -</option>-->
-								<?php 
-								foreach($unidades as $u){ ?>
-                                                                    
-                                                                    <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
-                                                                   
-									
-                                                                <?php } ?>
-							</select>
-						</div>
+                                            <label for="producto_unidad" class="control-label">Unidad</label>
+                                            <div class="form-group">
+                                                <select name="producto_unidad" class="form-control">
+                                                    <?php 
+                                                    foreach($unidades as $u){ ?>
+                                                        <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
                                         </div>
 					<div class="col-md-2">
 						<label for="producto_marca" class="control-label">Marca</label>
@@ -265,9 +263,44 @@
 						<div class="form-group">
                               <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas"> </textarea>
 						</div>
-					</div>
-				</div>
-			</div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="producto_envase" class="control-label">Envase Retornable</label>
+                                <div class="form-group">
+                                    <select name="producto_envase" id="producto_envase" class="form-control">
+                                        <option value="0">Sin Envase Retornable</option>
+                                        <option value="1">Con Envase Retornable</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <label for="producto_nombreenvase" class="control-label">Nombre de Envase</label>
+                                <div class="form-group" style="display: flex">
+                                    <select name="producto_nombreenvase" id="producto_nombreenvase" class="form-control">
+                                        <option value="">- SELECCIONE ENVASE -</option>
+                                        <?php 
+                                        foreach($unidades as $u){ ?>
+                                            <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
+                                        <?php } ?>
+                                    </select>
+                                    <a data-toggle="modal" data-target="#modalunidad" class="btn btn-warning" title="Registrar Nuevo Envase">
+                                        <i class="fa fa-list"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="producto_costoenvase" class="control-label">Costo de Envase</label>
+                                <div class="form-group">
+                                    <input type="number" step="any" min="0" name="producto_costoenvase" value="<?php echo ($this->input->post('producto_costoenvase')) ? $this->input->post('producto_costoenvase') : "0.00"; ?>" class="form-control" id="producto_costoenvase"  onclick="this.select();"/>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="producto_precioenvase" class="control-label">Precio de Envase</label>
+                                <div class="form-group">
+                                    <input type="number" step="any" min="0" name="producto_precioenvase" value="<?php echo ($this->input->post('producto_precioenvase')) ? $this->input->post('producto_precioenvase') : "0.00"; ?>" class="form-control" id="producto_precioenvase"  onclick="this.select();"/>
+                                </div>
+                            </div>
+                        </div>
+                </div>
           	<div class="box-footer">
             	<button type="submit" class="btn btn-success" onclick="loader()">
             		<i class="fa fa-check"></i> Guardar
@@ -280,3 +313,29 @@
     </div>
 </div>
 
+<!------------------------ INICIO modal para confirmar eliminación ------------------->
+<div class="modal fade" id="modalunidad" tabindex="-1" role="dialog" aria-labelledby="modalunidad">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_unidad" class="control-label">Registrar Nueva Unidad</label>
+                    <div class="form-group">
+                        <input type="text" name="nueva_unidad"  class="form-control" id="nueva_unidad" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevaunidad()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para confirmar eliminación ------------------->

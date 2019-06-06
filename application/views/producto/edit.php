@@ -58,12 +58,12 @@
 		</button>
             </div>
             <div class="row" id='loader'  style='display:none; text-align: center'>
-            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-        	</div>
-                        <?php echo form_open_multipart('producto/edit/'.$producto['producto_id']); ?>
-			<div class="box-body">
-				<div class="row clearfix">
-					<div class="col-md-6">
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
+            <?php echo form_open_multipart('producto/edit/'.$producto['producto_id']); ?>
+            <div class="box-body">
+                <div class="row clearfix">
+                    <div class="col-md-6">
 						<label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Producto</label>
 						<div class="form-group">
 							<input type="text" name="producto_nombre" value="<?php echo ($this->input->post('producto_nombre') ? $this->input->post('producto_nombre') : $producto['producto_nombre']); ?>" class="form-control" id="producto_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
@@ -207,14 +207,14 @@
 						</div>
 					</div>
 
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<label for="producto_cantidadminima" class="control-label">Cant. Minima</label>
 						<div class="form-group">
 							<input type="text" step="any" min="0" name="producto_cantidadminima" value="<?php echo ($this->input->post('producto_cantidadminima') ? $this->input->post('producto_cantidadminima') : $producto['producto_cantidadminima']); ?>" class="form-control" id="producto_cantidadminima"  onclick="this.select();"/>
 						</div>
 					</div>
 
-					<div class="col-md-3">
+					<div class="col-md-2">
 						<label for="producto_ultimocosto" class="control-label">Ultimo Costo</label>
 						<div class="form-group">
                                                     <input type="number" step="any" min="0" name="producto_ultimocosto" value="<?php echo ($this->input->post('producto_ultimocosto') ? $this->input->post('producto_ultimocosto') : $producto['producto_ultimocosto']); ?>" class="form-control" id="producto_ultimocosto"  onclick="this.select();"/>
@@ -236,54 +236,82 @@
 						</div>
 					</div>-->
 
-					
-					<div class="col-md-3">
-						<label for="estado_id" class="control-label">Estado</label>
-						<div class="form-group">
-                                                    <!--<select class="selectpicker" data-show-subtext="true" data-live-search="true">-->
-							<!--<select name="estado_id" class=" form-control selectpicker" data-show-subtext="true" data-live-search="true">-->
-                                                    <select name="estado_id" class=" form-control" id="estado_id">
-								<option value="">-- ESTADO --</option>
-								<?php 
-								foreach($all_estado as $estado)
-								{
-									$selected = ($estado['estado_id'] == $producto['estado_id']) ? ' selected="selected"' : "";
+                    <div class="col-md-5">
+                        <label for="producto_caracteristicas" class="control-label">Características</label>
+                        <div class="form-group">
+                            <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas" onKeyUp="this.value = this.value.toUpperCase();" ><?php echo ($this->input->post('producto_caracteristicas') ? $this->input->post('producto_caracteristicas') : $producto['producto_caracteristicas']); ?></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="producto_envase" class="control-label">Envase Retornable</label>
+                        <div class="form-group">
+                            <select name="producto_envase" id="producto_envase" class="form-control">
+                                <?php
+                                $select1 = "";
+                                $select2 = "";
+                                if($producto['producto_envase'] == 0){ $select1 = "selected"; }
+                                if($producto['producto_envase'] == 1){ $select2 = "selected"; }
+                                ?>
+                                <option value="0" <?php echo $select1; ?> >Sin Envase Retornable</option>
+                                <option value="1" <?php echo $select2; ?> >Con Envase Retornable</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="producto_nombreenvase" class="control-label">Nombre de Envase</label>
+                        <div class="form-group">
+                            <select name="producto_nombreenvase" class="form-control" id="producto_nombreenvase" >
+                                <option value="">- SELECCIONE ENVASE -</option>
+                                <?php 
+                                foreach($unidades as $unidad)
+                                {
+                                    $selected = ($unidad['unidad_nombre'] == $producto['producto_nombreenvase']) ? ' selected="selected"' : "";
 
-									echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-								} 
-								?>
-                                                                
-								<!--<option value="">-- ESTADO --</option>-->
-                                                                <!-- <option data-subtext="0"> --><?php /* echo "lista"; ?></option>
-								<?php 
-								foreach($all_estado as $estado)
-								{?>
-                                                                <option data-subtext="<?php echo $estado['estado_id']?>"> <?php echo $estado['estado_descripcion']; ?></option>
-									
-								<?php                                                                
-                                                                } */
-								?>
-                                                                
-							</select>
-						</div>
-					</div> 
-					<div class="col-md-6">
-						<label for="producto_caracteristicas" class="control-label">Características</label>
-						<div class="form-group">
-                              <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas" onKeyUp="this.value = this.value.toUpperCase();" ><?php echo ($this->input->post('producto_caracteristicas') ? $this->input->post('producto_caracteristicas') : $producto['producto_caracteristicas']); ?></textarea>
-						</div>
-					</div>                                   
-                                    
-				</div>
-			</div>
-			<div class="box-footer">
-            	<button type="submit" class="btn btn-success" onclick="loader()">
-					<i class="fa fa-check"></i> Guardar
-				</button>
-                            <a href="<?php echo site_url('producto/index'); ?>" class="btn btn-danger">
-                                <i class="fa fa-times"></i> Cancelar</a>
-	        </div>				
-			<?php echo form_close(); ?>
-		</div>
+                                    echo '<option value="'.$unidad['unidad_nombre'].'" '.$selected.'>'.$unidad['unidad_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="producto_costoenvase" class="control-label">Costo de Envase</label>
+                        <div class="form-group">
+                            <input type="number" step="any" min="0" name="producto_costoenvase" value="<?php echo ($this->input->post('producto_costoenvase')) ? $this->input->post('producto_costoenvase') : $producto['producto_costoenvase']; ?>" class="form-control" id="producto_costoenvase"  onclick="this.select();"/>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="producto_precioenvase" class="control-label">Precio de Envase</label>
+                        <div class="form-group">
+                            <input type="number" step="any" min="0" name="producto_precioenvase" value="<?php echo ($this->input->post('producto_precioenvase')) ? $this->input->post('producto_precioenvase') : $producto['producto_precioenvase']; ?>" class="form-control" id="producto_precioenvase"  onclick="this.select();"/>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="estado_id" class="control-label">Estado</label>
+                        <div class="form-group">
+                            <!--<select class="selectpicker" data-show-subtext="true" data-live-search="true">-->
+                                <!--<select name="estado_id" class=" form-control selectpicker" data-show-subtext="true" data-live-search="true">-->
+                            <select name="estado_id" class=" form-control" id="estado_id">
+                                <option value="">-- ESTADO --</option>
+                                <?php 
+                                foreach($all_estado as $estado)
+                                {
+                                    $selected = ($estado['estado_id'] == $producto['estado_id']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" class="btn btn-success" onclick="loader()">
+                    <i class="fa fa-check"></i> Guardar
+                </button>
+                <a href="<?php echo site_url('producto/index'); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
+            </div>
+                <?php echo form_close(); ?>
+        </div>
     </div>
 </div>

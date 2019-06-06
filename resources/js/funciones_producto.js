@@ -150,6 +150,28 @@ function tablaresultadosproducto(limite)
                         if(registros[i]["producto_caracteristicas"] != null){
                             caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
                         }
+                        html += "<td>";
+                        var sinconenvase = "";
+                        var nombreenvase = "";
+                        var costoenvase  = "";
+                        var precioenvase = "";
+                        if(registros[i]["producto_envase"] == 1){
+                            sinconenvase = "Con Envase Retornable"+"<br>";
+                            if(registros[i]["producto_nombreenvase"] != "" || registros[i]["producto_nombreenvase"] != null){
+                                nombreenvase = registros[i]["producto_nombreenvase"]+"<br>";
+                                costoenvase  = "Costo:  "+Number(registros[i]["producto_costoenvase"]).toFixed(2)+"<br>";
+                                precioenvase = "Precio: "+Number(registros[i]["producto_precioenvase"]).toFixed(2);
+                            }
+                        }else{
+                            sinconenvase = "Sin Envase Retornable";
+                        }
+                        html += sinconenvase;
+                        html += nombreenvase;
+                        html += costoenvase;
+                        html += precioenvase;
+                        html += "</td>";
+                        
+                        
                         html+= caracteristica+"</td>";
                         var codbarras = "";
                         if(!(registros[i]["producto_codigobarra"] == null)){
