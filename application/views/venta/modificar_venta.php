@@ -66,11 +66,21 @@ function mostrar_ocultar(){
 <input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 
+<input type="text" id="parametro_modoventas" value="<?php echo 1; ?>" name="parametro_modoventas"  hidden>
+<input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
+<input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
+<input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
+<input type="text" id="parametro_altoimagen" value="<?php echo $parametro[0]['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
+<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
+<input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
+<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+
+
 <!-------------------- inicio collapse ---------------------->
 
-<div class="panel-group">
-  <div class="panel panel-default">
-    <div class="panel-heading">
+<div class="panel-group"  style="padding:0;">
+  <div class="panel panel-default"  style="padding:0;">
+    <div class="panel-heading"  style="padding:0;">
         
         
 <!--------------------- cliente_id --------------------->
@@ -247,10 +257,20 @@ function mostrar_ocultar(){
     
     </span>
     
+       <?php 
+            if ($parametro[0]["parametro_agruparitems"] == 1 )
+                    { $agrupar = "checked='true'";}
+              else {$agrupar = " ";}
+        ?>
+        
+    <span class="badge btn-primary">
+        <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> Agrupar detalle
+    </span>    
+    
                 <!--------------------- indicador de resultados --------------------->
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
-                <span class="badge btn-danger">Productos encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                <span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
                 <span class="badge btn-default">
 
                     <!--------------------- inicio loader ------------------------->

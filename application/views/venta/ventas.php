@@ -80,9 +80,9 @@ function mostrar_ocultar(){
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
 
-<div class="panel-group">
-  <div class="panel panel-default">
-    <div class="panel-heading">
+<div class="panel-group"  style="padding:0;">
+  <div class="panel panel-default" style="padding:0;">
+    <div class="panel-heading" style="padding:0;">
         
         
 <!--------------------- cliente_id --------------------->
@@ -92,7 +92,7 @@ function mostrar_ocultar(){
 
 <!--------------------- fin cliente_id --------------------->
         
-        <div class="col-md-3">
+        <div class="col-md-3" >
             <label for="nit" class="control-label">NIT</label>
             <div class="form-group">
                 <input type="number" name="nit" class="form-control" id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
@@ -284,9 +284,14 @@ function mostrar_ocultar(){
               else {$agrupar = " ";}
         ?>
         
-    <span class="badge btn-primary">
-        <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> Agrupar detalle
-    </span>
+    <!--<span class="badge btn-primary">-->
+        
+        
+        
+        <button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>
+        
+        
+    <!--</span>-->
         <!--------------------- indicador de resultados --------------------->
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 

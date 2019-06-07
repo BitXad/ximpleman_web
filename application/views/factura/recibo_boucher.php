@@ -41,11 +41,6 @@ function autosize(){
     $(document).ready(function()
     {
         window.onload = window.print();
-                                            /*function imprimir()
-                                            {
-                                                /*$('#paraboucher').css('max-width','7cm !important');*/
-                                                /* window.print(); 
-                                            }*/
     });
 </script>
 <!----------------------------- script buscador --------------------------------------->
@@ -121,7 +116,7 @@ border-bottom : 1px solid #aaa;
 
 <table class="table" style="width: 7cm;" >
     <tr>
-        <td>
+        <td style="padding:0;">
                 
             <center>
                                

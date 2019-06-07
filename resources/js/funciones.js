@@ -93,9 +93,29 @@ function validar(e,opcion) {
         }
         
         if (opcion==9){   //si la tecla proviene del buscador de pedido abierto
-           buscar_clientes();      
+            
+           var nit = document.getElementById('nit').value;
+           if (nit=='0'){
+                buscar_clientes();      
+           }
+           else{
+            
+                var codigo = document.getElementById('razon_social').value;
+
+                codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
+
+                $("#cliente_nombre").val(document.getElementById('razon_social').value);
+                $("#telefono").val(''); //si la tecla proviene del input razon social
+
+                $("#cliente_codigo").val(codigo);
+                document.getElementById('telefono').focus();               
+           }
+        }  
+        if (opcion==10){   //si la tecla proviene del buscador del reporte de  ventas
+           ventas_por_parametro();
            
-        }        
+        }  
+        
     } 
  
 }
@@ -272,6 +292,35 @@ else
 
 html += "               </textarea>";
 
+if (registros[i]["detalleven_envase"] == 1){
+    
+    html += "<br>";
+    html += "<table id='mitabla'>";
+    html += "<tr  style='padding: 0;'>";
+    
+        html += "<th style='padding: 0;' colspan='2'> Prestar</th>";    
+//        html += "<th style='padding: 0;'></th>";
+        html += "<th style='padding: 0;'> Prestados </th>";
+//        html += "<th style='padding: 0;'> Prestados </th>";
+        html += "<th style='padding: 0;'> Garantia </th>";
+    html += "</tr>";
+
+    html += "<tr style='padding: 0;'>";
+        if(registros[i]["detalleven_prestamoenvase"]==1){ valorcheck = "checked"} else{ valorcheck = "";}
+
+        html += "<td style='padding: 0;' bgcolor='gray'><b>"+registros[i]["detalleven_nombreenvase"]+": "+registros[i]["detalleven_precioenvase"]+" Bs</b></td>";
+        html += "<td style='padding: 0;'><center><input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='1' "+valorcheck+" ></center></td>";
+        html += "<td style='padding: 0;'><center><input type='text' style='width:30px' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidadenvase"]+"' ></center></td>";
+//        html += "<td style='padding: 0;'><center><input type='text' style='width:40px' value='"+registros[i]["detalleven_precioenvase"]+"' ></center></td>";
+        html += "<td style='padding: 0;'><center><input type='text' style='width:30px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_garantiaenvase"]+"' ></center></td>";
+    html += "</tr>";
+
+    html += "</table>";
+   
+    
+}
+    
+    
 html += "               <button class='btn btn-primary btn-xs' onclick='actualizar_caracteristicas("+registros[i]["detalleven_id"]+")' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-save'></i> Guardar</button>";
 
 html += "               </div>";
@@ -297,8 +346,8 @@ html += "  </div>";
                         html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
                         //html += "                              		<span class='btn btn-default  btn-xs'> "+registros[i]["detalleven_cantidad"]+"</span>";
                         
-                        html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' on ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'  onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
-                        
+                        html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
+                        //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                         html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
                         html += "                    </div>";
@@ -818,9 +867,7 @@ function ingresorapido(producto_id,cantidad)
 }
 
 function ingresorapidojs(cantidad,producto)
-{   
-    //alert(producto.existencia);
-    
+{       
     var factor = document.getElementById("select_factor"+producto.producto_id).value;
     cantidad = cantidad * factor;
     var precio = 0;
@@ -829,8 +876,7 @@ function ingresorapidojs(cantidad,producto)
         precio = producto.producto_preciofactor;
     else 
         precio = producto.producto_precio;
-    
-    //alert(precio);
+
     
     var base_url = document.getElementById('base_url').value;   
     var controlador = base_url+"venta/ingresar_detalle";
@@ -838,7 +884,6 @@ function ingresorapidojs(cantidad,producto)
     var existencia =  producto.existencia;    
     var producto_id =  producto.producto_id;    
     var datos1 = "";
-    var sql2 = "";
     var descuento = 0;
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
@@ -856,14 +901,11 @@ function ingresorapidojs(cantidad,producto)
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
         datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"'";
-
-
-//        sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + "+cantidad+
-//                ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
-//                ", detalleven_descuento = "+descuento+
-//                ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
-//                "  where producto_id = "+producto_id+" and usuario_id = "+usuario_id;
+        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";
+        
+        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+        datos1 += cantidad+",0,"+cantidad+",0,0";        
+        //alert(datos1);
 
         $.ajax({url: controlador,
             type:"POST",
@@ -872,12 +914,11 @@ function ingresorapidojs(cantidad,producto)
                 tablaproductos();
 
             }
-        });      
+        });
     
     }
     else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
     
-   // alert('echo..!!');
 }
 
 function cambiarcantidadjs(e,producto)
@@ -996,6 +1037,7 @@ function tablaresultados(opcion)
     var base_url = document.getElementById('base_url').value;    
     var cantidad = 0;
     var usuario_id = document.getElementById('usuario_id').value;
+
     var modo_visualizacion = document.getElementById('parametro_modoventas').value; // modo de visualizacion 1 = modo texto , 2 = modo grafico
     var ancho_boton = document.getElementById('parametro_anchoboton').value; //base 115
     var alto_boton = document.getElementById('parametro_altoboton').value;
@@ -1635,14 +1677,11 @@ function registrarventa(cliente_id)
         venta_tipodoc = 0;}
     
     
-    var sql =  "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,"+
-                "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,"+
-                "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa) value("+
-                forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
+    var cad =   forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+")";
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa;
         
      //alert(sql); 
     if (tipo_transaccion==2){
@@ -1653,7 +1692,7 @@ function registrarventa(cliente_id)
         
         $.ajax({url: controlador,
             type:"POST",
-            data:{sql:sql, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
+            data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
@@ -1672,7 +1711,7 @@ function registrarventa(cliente_id)
     {
         $.ajax({url: controlador,
             type:"POST",
-            data:{sql:sql, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
+            data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit, venta_descuento:venta_descuento},
             success:function(respuesta){ 
@@ -1810,6 +1849,29 @@ function ventas_por_fecha()
    // alert(filtro)
     tabla_ventas(filtro);
 
+}
+
+function ventas_por_parametro()
+{
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/mostrar_ventas_parametro";
+    var parametro = document.getElementById('filtrar').value;
+//    var estado_id = document.getElementById('estado_id').value;
+//    var usuario_id = document.getElementById('usuario_id').value;
+//    
+    if (parametro!=''){
+        
+        if (Number(parametro)>0)        
+            filtro = " and v.venta_id = "+parametro;
+        else
+            filtro = " and cliente_razon like '%"+parametro+"%' ";
+        
+        tabla_ventas(filtro);
+    }
+    else{
+        alert('ADVERTENCIA: Debe ingresar el número de transacción de una venta...!');
+    }
+        
 }
 
 function tabla_ventas(filtro)
@@ -1967,8 +2029,8 @@ function tabla_ventas(filtro)
             $("#tabla_ventas").html(html);
             document.getElementById('oculto').style.display = 'none'; //mostrar el bloque del loader
         }        
-    });
-    
+    });    
+            document.getElementById('oculto').style.display = 'none'; //mostrar el bloque del loader
 }
 
 function montrar_ocultar_fila(parametro)
@@ -2298,11 +2360,28 @@ function actualizar_caracteristicas(detalleven_id)
     //alert(preferencia);
     var caracteristicas = document.getElementById('detalleven_caracteristicas'+detalleven_id).value;
     
+    var micheck = document.getElementById('check'+detalleven_id).checked;
+    var cantidadenvase = document.getElementById('cantidadenvase'+detalleven_id).value;
+    var garantia = document.getElementById('garantia'+detalleven_id).value;
+    var check = 0;
+    //alert(micheck+" "+garantia+" "+cantidadenvase);
+    
+    if (micheck){
+        check = 1;
+    }
+    else{
+        check = 0;        
+        cantidadenvase = 0;
+        garantia = 0
+    }
+    
+    
     //alert(preferencia+" "+caracteristicas);
     
     $.ajax({url: controlador,
         type:"POST",
-        data:{detalleven_id:detalleven_id, preferencia:preferencia, caracteristicas:caracteristicas},
+        data:{detalleven_id:detalleven_id, preferencia:preferencia, caracteristicas:caracteristicas, check:check,
+            cantidadenvase:cantidadenvase, garantia:garantia},
         success:function(result){
             tablaproductos();
         }

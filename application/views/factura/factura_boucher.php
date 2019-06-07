@@ -42,17 +42,12 @@
   </div>-->
 
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
-                                            /*function imprimir()
-                                            {
-                                                /*$('#paraboucher').css('max-width','7cm !important');*/
-                                                /* window.print(); 
-                                            }*/
     });
-</script>
+</script>-->
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
@@ -101,6 +96,7 @@ font-size: 7pt;
 
 td {
 border:hidden;
+
 }
 }
 
@@ -113,15 +109,15 @@ background : #ddd;
 font-size : 7px;
 margin : 0 0 0 0;
 padding : 0 5px 0 5px;
-border-left : 1px solid #aaa;
+/*border-left : 1px solid #aaa;
 border-right : 1px solid #aaa;
-border-bottom : 1px solid #aaa;
+border-bottom : 1px solid #aaa;*/
 }
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-
+<?php $ancho = "7cm"; ?>
 <!---------------------- Modal ---------------------------->
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
           <div class="modal-dialog">
@@ -150,9 +146,9 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 
 
-<table class="table" style="width: 7cm;" >
+<table class="table" style="width: <?php echo $ancho?>" >
     <tr>
-        <td>
+        <td style="padding: 0;" colspan="4">
                 
             <center>
                                
@@ -171,53 +167,53 @@ border-bottom : 1px solid #aaa;
 
                 <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>
-                _______________________________________________                
+                
                    
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
-                <table style="width: 6cm;">
-                    <tr>
-                        <td style="font-family: arial; font-size: 8pt;">
+                <table style="width:<?php echo $ancho?>" >
+                    <tr  style="border-top-style: solid; border-top-width: 3px; border-bottom-style: solid; border-bottom-width: 3px;" >
+                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
 
                             <b>NIT:      </b><br>
                             <b>FACTURA No.:  </b><br>
                             <b>AUTORIZACION: </b>
 
                         </td>
-                        <td style="font-family: arial; font-size: 8pt;">
+                        <td style="font-family: arial; font-size: 8pt; padding: 0;">
                             <?php echo $factura[0]['factura_nitemisor']; ?> <br>
                             <?php echo $factura[0]['factura_numero']; ?> <br>
                             <?php echo $factura[0]['factura_autorizacion'] ?>           
                         </td>
                     </tr>
                 </table>
-<!--                </div>-->
-
-            <!--<center>-->                        
-                <!--<div class="panel" style="width: 7cm; ">-->
                 <br>    
                 <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
-                <br>_______________________________________________
-                <br> 
+            </center>
+        </td>
+    </tr>            
+<!--                <br>_______________________________________________
+                <br> -->
+    <tr  style="border-top-style: solid; border-top-width: 3px; border-bottom-style: solid; border-bottom-width: 3px;" >
+        <td colspan="4">
+            
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
-                <br>_______________________________________________
-
-            </center>                      
+            
         </td>
     </tr>
      
-</table>
+<!--</table>
 
-       <table class="table table-striped table-condensed"  style="width: 7cm;" >
-           <tr>
-               <td align="center"><b>CN</b></td>
-                <td align="center"><b>DESCRIPCIÓN</b></td>
-                <td align="center"><b>P.UNIT</b></td>
-                <td align="center"><b>TOTAL</b></td>               
+       <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
+           <tr  style="border-top-style: solid; border-top-width: 3px; border-bottom-style: solid; border-bottom-width: 3px;" >
+               <td align="center" style="padding: 0;"><b>CN</b></td>
+                <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
+                <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
+                <td align="center" style="padding: 0;"><b>TOTAL</b></td>               
            </tr>
            <?php $cont = 0;
                  $cantidad = 0;
@@ -232,18 +228,21 @@ border-bottom : 1px solid #aaa;
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
-                <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre']; ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td align="center" style="padding: 0;"><?php echo $d['detalleven_cantidad']; ?></td>
+                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['producto_nombre']; ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php }} ?>
-       </table>
+<!--       </table>
         _____________________________________
-<table class="table" style="max-width: 7cm;">
-    <tr>
+<table class="table" style="max-width: 7cm;">-->
+    
         
-        <td align="right">
+    <tr style="border-top-style: solid; border-top-width: 3px;">
+        
+            
+        <td align="right" style="padding: 0;" colspan="4">
             
             <font size="1">
                 <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
@@ -269,7 +268,7 @@ border-bottom : 1px solid #aaa;
         </td>          
     </tr>
     <tr>
-        <td nowrap>
+        <td nowrap style="padding: 0;" colspan="4">
             <font size="2">
             
                 COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
@@ -281,7 +280,7 @@ border-bottom : 1px solid #aaa;
         </td>           
     </tr>
     <tr>
-        <td>
+        <td style="padding: 0;" colspan="4">
         <center>
             <img src="<?php echo $codigoqr; ?>" width="100" height="100">
         </center>
@@ -291,8 +290,8 @@ border-bottom : 1px solid #aaa;
 
     </tr>    
     <tr >
-          <td>
-               USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
+        <td style="padding: 0;" colspan="4">
+               USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b> / TRANS: <b><?php echo "00".$venta[0]['venta_id']; ?></b>
             <center>
                     <?php echo $factura[0]['factura_leyenda1'];?> <br>
             <font size="2">
@@ -309,7 +308,7 @@ border-bottom : 1px solid #aaa;
 <?php if ($tipousuario_id == 1){ ?>
         
             
-    <div class="col-md-12 no-print" style="max-width: 7cm;">
+    <div class="col-md-12 no-print" style="max-width:<?php echo $ancho?>">
 
         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
@@ -322,7 +321,7 @@ border-bottom : 1px solid #aaa;
         
           
         
-<?php if($parametro[0]['parametro_imprimircomanda']==1){  ?>
+<?php //if($parametro[0]['parametro_imprimircomanda']==1){  ?>
 
-        aqui va la comanda
-<?php } ?>
+<!--        //aqui va la comanda-->
+<?php //} ?>
