@@ -39,7 +39,7 @@
               var venta = $("#producto_precio").val();
               var costo = $("#producto_costo").val();
               if(costo >= venta){
-                  alert("El Precio de Compra es mayor o igual a Precio de Compra");
+                  alert("El Precio de Compra es mayor o igual a Precio de Venta");
               }
       };
       function loader() {
@@ -66,7 +66,7 @@
                     <div class="col-md-6">
 						<label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Producto</label>
 						<div class="form-group">
-							<input type="text" name="producto_nombre" value="<?php echo ($this->input->post('producto_nombre') ? $this->input->post('producto_nombre') : $producto['producto_nombre']); ?>" class="form-control" id="producto_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="producto_nombre" value="<?php echo ($this->input->post('producto_nombre') ? $this->input->post('producto_nombre') : $producto['producto_nombre']); ?>" class="form-control" id="producto_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('producto_nombre');?></span>
 						</div>
 					</div>
@@ -90,26 +90,26 @@
 					<div class="col-md-2">
 						<label for="producto_marca" class="control-label">Marca</label>
 						<div class="form-group">
-							<input type="text" name="producto_marca" value="<?php echo ($this->input->post('producto_marca') ? $this->input->post('producto_marca') : $producto['producto_marca']); ?>" class="form-control" id="producto_marca" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="producto_marca" value="<?php echo ($this->input->post('producto_marca') ? $this->input->post('producto_marca') : $producto['producto_marca']); ?>" class="form-control" id="producto_marca" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-2">
 						<label for="producto_industria" class="control-label">Industria</label>
 						<div class="form-group">
-							<input type="text" name="producto_industria" value="<?php echo ($this->input->post('producto_industria') ? $this->input->post('producto_industria') : $producto['producto_industria']); ?>" class="form-control" id="producto_industria" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="producto_industria" value="<?php echo ($this->input->post('producto_industria') ? $this->input->post('producto_industria') : $producto['producto_industria']); ?>" class="form-control" id="producto_industria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
                                     
                                         <div class="col-md-4">
 						<label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
 						<div class="form-group">
-                                                    <input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" onKeyUp="this.value = this.value.toUpperCase();" required />
+                                                    <input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required />
 						</div>
 					</div>                                    
 					<div class="col-md-4">
 						<label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código Producto</label>
 						<div class="form-group">
-							<input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('producto_codigo');?></span>
 						</div>
 					</div>
@@ -196,7 +196,7 @@
 					<div class="col-md-3">
 						<label for="producto_codigofactor" class="control-label">Codigo Factor</label>
 						<div class="form-group">
-							<input type="text" step="any" min="0" name="producto_codigofactor" value="<?php echo ($this->input->post('producto_codigofactor') ? $this->input->post('producto_codigofactor') : $producto['producto_codigofactor']); ?>" class="form-control" id="producto_codigofactor"  onclick="this.select();" onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" step="any" min="0" name="producto_codigofactor" value="<?php echo ($this->input->post('producto_codigofactor') ? $this->input->post('producto_codigofactor') : $producto['producto_codigofactor']); ?>" class="form-control" id="producto_codigofactor"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 
@@ -239,7 +239,7 @@
                     <div class="col-md-5">
                         <label for="producto_caracteristicas" class="control-label">Características</label>
                         <div class="form-group">
-                            <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas" onKeyUp="this.value = this.value.toUpperCase();" ><?php echo ($this->input->post('producto_caracteristicas') ? $this->input->post('producto_caracteristicas') : $producto['producto_caracteristicas']); ?></textarea>
+                            <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" ><?php echo ($this->input->post('producto_caracteristicas') ? $this->input->post('producto_caracteristicas') : $producto['producto_caracteristicas']); ?></textarea>
                         </div>
                     </div>
                     <div class="col-md-2">

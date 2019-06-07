@@ -374,7 +374,7 @@
                         }
                         ?>
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/venta_proceso');?>"><i class="fa fa-money"></i>Ver Proceso de Venta</a>
+                            <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-money"></i>Ver Proceso de Venta</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i>Cocina</a>
