@@ -34,7 +34,7 @@
 					<div class="col-md-6">
 						<label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-                                                    <input type="text" name="proveedor_nombre" value="<?php echo ($this->input->post('proveedor_nombre') ? $this->input->post('proveedor_nombre') : $proveedor['proveedor_nombre']); ?>" class="form-control" id="proveedor_nombre" required />
+                                                    <input type="text" name="proveedor_nombre" value="<?php echo ($this->input->post('proveedor_nombre') ? $this->input->post('proveedor_nombre') : $proveedor['proveedor_nombre']); ?>" class="form-control" id="proveedor_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('proveedor_nombre');?></span>
 						</div>
 					</div>
@@ -59,25 +59,25 @@
 					<div class="col-md-6">
 						<label for="proveedor_contacto" class="control-label">Contacto</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_contacto" value="<?php echo ($this->input->post('proveedor_contacto') ? $this->input->post('proveedor_contacto') : $proveedor['proveedor_contacto']); ?>" class="form-control" id="proveedor_contacto" />
+							<input type="text" name="proveedor_contacto" value="<?php echo ($this->input->post('proveedor_contacto') ? $this->input->post('proveedor_contacto') : $proveedor['proveedor_contacto']); ?>" class="form-control" id="proveedor_contacto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="proveedor_direccion" class="control-label">Dirección</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_direccion" value="<?php echo ($this->input->post('proveedor_direccion') ? $this->input->post('proveedor_direccion') : $proveedor['proveedor_direccion']); ?>" class="form-control" id="proveedor_direccion" />
+							<input type="text" name="proveedor_direccion" value="<?php echo ($this->input->post('proveedor_direccion') ? $this->input->post('proveedor_direccion') : $proveedor['proveedor_direccion']); ?>" class="form-control" id="proveedor_direccion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="proveedor_telefono" class="control-label">Teléfono</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_telefono" value="<?php echo ($this->input->post('proveedor_telefono') ? $this->input->post('proveedor_telefono') : $proveedor['proveedor_telefono']); ?>" class="form-control" id="proveedor_telefono" />
+							<input type="text" name="proveedor_telefono" value="<?php echo ($this->input->post('proveedor_telefono') ? $this->input->post('proveedor_telefono') : $proveedor['proveedor_telefono']); ?>" class="form-control" id="proveedor_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="proveedor_telefono2" class="control-label">Teléfono 2</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_telefono2" value="<?php echo ($this->input->post('proveedor_telefono2') ? $this->input->post('proveedor_telefono2') : $proveedor['proveedor_telefono2']); ?>" class="form-control" id="proveedor_telefono2" />
+							<input type="text" name="proveedor_telefono2" value="<?php echo ($this->input->post('proveedor_telefono2') ? $this->input->post('proveedor_telefono2') : $proveedor['proveedor_telefono2']); ?>" class="form-control" id="proveedor_telefono2" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -95,7 +95,7 @@
 					<div class="col-md-6">
 						<label for="proveedor_razon" class="control-label">Razon</label>
 						<div class="form-group">
-							<input type="text" name="proveedor_razon" value="<?php echo ($this->input->post('proveedor_razon') ? $this->input->post('proveedor_razon') : $proveedor['proveedor_razon']); ?>" class="form-control" id="proveedor_razon" />
+							<input type="text" name="proveedor_razon" value="<?php echo ($this->input->post('proveedor_razon') ? $this->input->post('proveedor_razon') : $proveedor['proveedor_razon']); ?>" class="form-control" id="proveedor_razon" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">

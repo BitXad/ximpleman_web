@@ -10,13 +10,13 @@
 					<div class="col-md-6">
 						<label for="categoria_cating" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-							<input type="text" name="categoria_cating" value="<?php echo ($this->input->post('categoria_cating') ? $this->input->post('categoria_cating') : $categoria_ingreso['categoria_cating']); ?>" class="form-control" id="categoria_cating" required />
+							<input type="text" name="categoria_cating" value="<?php echo ($this->input->post('categoria_cating') ? $this->input->post('categoria_cating') : $categoria_ingreso['categoria_cating']); ?>" class="form-control" id="categoria_cating" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-6">
 						<label for="descrip_cating" class="control-label">Descripción</label>
 						<div class="form-group">
-							<input type="text" name="descrip_cating" value="<?php echo ($this->input->post('descrip_cating') ? $this->input->post('descrip_cating') : $categoria_ingreso['descrip_cating']); ?>" class="form-control" id="descrip_cating" />
+							<input type="text" name="descrip_cating" value="<?php echo ($this->input->post('descrip_cating') ? $this->input->post('descrip_cating') : $categoria_ingreso['descrip_cating']); ?>" class="form-control" id="descrip_cating" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 				</div>

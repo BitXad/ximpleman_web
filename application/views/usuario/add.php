@@ -14,26 +14,12 @@
             echo form_open_multipart("usuario/add", $attributes);?>
           	<div class="box-body">
           		<div class="row clearfix">
-
-						<div class="form-group" hidden="hidden">
-							<select name="estado_id" class="form-control" >
-								<option value="1">ACTIVO</option>
-								<?php 
-								foreach($all_estado as $estado)
-								{
-									$selected = ($estado['estado_id'] == $this->input->post('estado_id')) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-						<div class="col-md-6">
-						<label for="usuario_nombre" class="control-label">Nombre</label>
-						<div class="form-group">
-							<input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required/>
-							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
-						</div>
+                                        <div class="col-md-6">
+                                        <label for="usuario_nombre" class="control-label">Nombre</label>
+                                        <div class="form-group">
+                                                <input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                                <span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
+                                        </div>
 					</div>
 					<div class="col-md-6">
 						<label for="tipousuario_id" class="control-label">Tipo</label>

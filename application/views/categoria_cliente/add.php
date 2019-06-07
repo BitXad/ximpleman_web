@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Añadir Categoria Cliente</h3>
+              	<h3 class="box-title">Añadir Categoria Negocio</h3>
             </div>
             <?php echo form_open('categoria_cliente/add'); ?>
           	<div class="box-body">
@@ -10,7 +10,7 @@
 					<div class="col-md-6">
 						<label for="categoriaclie_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
 						<div class="form-group">
-							<input type="text" name="categoriaclie_descripcion" value="<?php echo $this->input->post('categoriaclie_descripcion'); ?>" class="form-control" onKeyUp="this.value = this.value.toUpperCase();" id="categoriaclie_descripcion" required />
+							<input type="text" name="categoriaclie_descripcion" value="<?php echo $this->input->post('categoriaclie_descripcion'); ?>" class="form-control" id="categoriaclie_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('categoriaclie_descripcion');?></span>
 						</div>
 					</div>

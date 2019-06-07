@@ -50,33 +50,31 @@ class Moneda extends CI_Controller{
      * Adding a new moneda
      */
     function add()
-    {   
+    {
         if($this->acceso(124)){
-        $this->load->library('form_validation');
+            $this->load->library('form_validation');
 
-		$this->form_validation->set_rules('moneda_descripcion','Moneda Descripcion','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'estado_id' => $this->input->post('estado_id'),
-				'moneda_descripcion' => $this->input->post('moneda_descripcion'),
-				'moneda_tc' => $this->input->post('moneda_tc'),
-            );
-            
-            $moneda_id = $this->Moneda_model->add_moneda($params);
-            redirect('moneda/index');
-        }
-        else
-        {
-			$this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
-            $data['page_title'] = "Moneda";
-            $data['_view'] = 'moneda/add';
-            $this->load->view('layouts/main',$data);
-        }
-    }  
-}
+            $this->form_validation->set_rules('moneda_descripcion','Moneda Descripcion','required');
+            if($this->form_validation->run())     
+            {
+                $estado = 1;
+                $params = array(
+                    'estado_id' => $estado,
+                    'moneda_descripcion' => $this->input->post('moneda_descripcion'),
+                    'moneda_tc' => $this->input->post('moneda_tc'),
+                );
+
+                $moneda_id = $this->Moneda_model->add_moneda($params);
+                redirect('moneda/index');
+            }
+            else
+            {
+                $data['page_title'] = "Moneda";
+                $data['_view'] = 'moneda/add';
+                $this->load->view('layouts/main',$data);
+            }
+        }  
+    }
 
     /*
      * Editing a moneda
@@ -96,9 +94,9 @@ class Moneda extends CI_Controller{
 			if($this->form_validation->run())     
             {   
                 $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'moneda_descripcion' => $this->input->post('moneda_descripcion'),
-					'moneda_tc' => $this->input->post('moneda_tc'),
+                        'estado_id' => $this->input->post('estado_id'),
+                        'moneda_descripcion' => $this->input->post('moneda_descripcion'),
+                        'moneda_tc' => $this->input->post('moneda_tc'),
                 );
 
                 $this->Moneda_model->update_moneda($moneda_id,$params);            
@@ -106,8 +104,8 @@ class Moneda extends CI_Controller{
             }
             else
             {
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado();
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_tipo_estado(1);
                 $data['page_title'] = "Moneda";
                 $data['_view'] = 'moneda/edit';
                 $this->load->view('layouts/main',$data);

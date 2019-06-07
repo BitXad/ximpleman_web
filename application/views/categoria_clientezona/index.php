@@ -17,7 +17,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-                <h3 class="box-title">Categoria Cliente Zona</h3>
+                <h3 class="box-title">Zonas</h3>
             	<div class="box-tools">
                     <a href="<?php echo site_url('categoria_clientezona/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>

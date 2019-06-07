@@ -20,7 +20,7 @@
 						<div class="col-md-6">
 						<label for="usuario_nombre" class="control-label">Nombre</label>
 						<div class="form-group">
-							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onKeyUp="this.value = this.value.toUpperCase();" />
+							<input type="text" name="usuario_nombre" value="<?php echo $usuario['usuario_nombre'] ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 							<span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
 						</div>
 					</div>

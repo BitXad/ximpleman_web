@@ -35,30 +35,30 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>Num.</th>
-						<!--<th>Id</th>-->
-						<th>Título</th>
-						<th>Cantidad</th>
-						<th>Precio<br>Total</th>
-						<th>Descripción</th>
-						<th>Producto</th>
-						<th>Estado</th>
-						<th>Operaciones</th>
+                        <th>#</th>
+                        <th>Título</th>
+                        <th>Cantidad</th>
+                        <th>Precio<br>Total</th>
+                        <th>Descripción</th>
+                        <th>Producto</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $cont = 0;
                           foreach($promocion as $p){;
                                  $cont = $cont+1; ?>
                     <tr>
-						<td><?php echo $cont ?></td>
-						<!--<td><?php //echo $p['promocion_id']; ?></td>-->
-						<td><?php echo $p['promocion_titulo']; ?></td>
-						<td><?php echo $p['promocion_cantidad']; ?></td>
-						<td><?php echo $p['promocion_preciototal']; ?></td>
-						<td><?php echo $p['promocion_descripcion']; ?></td>
-						<td><?php echo $p['producto_nombre']; ?></td>
-						<td><?php echo $p['estado_descripcion']; ?></td>
-						<td>
+                        <td><?php echo $cont ?></td>
+                        <td><?php echo $p['promocion_titulo']; ?></td>
+                        <td><?php echo $p['promocion_cantidad']; ?></td>
+                        <td><?php echo $p['promocion_preciototal']; ?></td>
+                        <td><?php echo $p['promocion_descripcion']; ?></td>
+                        <td><?php echo $p['producto_nombre']; ?></td>
+                        <td><?php echo date("d-m-Y", strtotime($p['promocion_fecha'])); ?></td>
+                        <td><?php echo $p['estado_descripcion']; ?></td>
+                        <td>
                             <a href="<?php echo site_url('promocion/edit/'.$p['promocion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a href="<?php echo site_url('promocion/remove/'.$p['promocion_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
                         </td>
