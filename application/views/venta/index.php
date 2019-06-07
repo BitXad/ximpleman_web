@@ -40,6 +40,14 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->    
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
+<input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
+<input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
+<input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
+<input type="text" id="parametro_altoimagen" value="<?php echo $parametro[0]['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
+<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
+<input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
+<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
 
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
@@ -119,7 +127,7 @@
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese usuario, cliente, fecha">
+                      <input id="filtrar" type="text" onkeypress="validar(event,10)" class="form-control" placeholder="Ingrese usuario, cliente, fecha">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
             
@@ -158,3 +166,77 @@
     </div>
 </div>
 
+
+<!----------------- modal Detalle ---------------------------------------------->
+
+<div class="modal fade" id="modalDetalle" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>Asignar Detalle</b></h4>
+                                <b>ADVERTENCIA: El Detalle actual, remplazara algun invenario asignado previamente.</b>                                
+                            </center>
+
+                                
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+
+                    
+                        
+                        <div class="box-body table-responsive">
+                                        <div class="col-md-6">
+						<label for="usuario_idx" class="control-label">Prevendedor</label>
+						<div class="form-group">
+							<select name="usuario_idx" id="usuario_idx" class="form-control">
+								<option value="0">- ASIGNAR PREVENDEDOR -</option>
+								<?php 
+								foreach($usuario as $usuario_prev)
+								{
+									$selected = ($usuario_prev['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="asignar_Detalle()"> <span class="fa fa-truck"></span> Asignar</button>
+                                                    
+                                                    <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
+                                                        
+                                                        <span class="fa fa-close"></span>   Cancelar  
+                                                        
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderDetalle'  style='display:none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal Detalle ---------------------------------------------->
