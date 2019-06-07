@@ -46,6 +46,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 <link href="<?php echo $raiz;?>css/flag-icon.min.css" rel="stylesheet"> 
 <link href="<?php echo $raiz;?>css/bootstrap-select.min.css" rel="stylesheet"> 
+<link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
 <!-- start-smoth-scrolling -->
 </head>
 	

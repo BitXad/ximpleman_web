@@ -30,6 +30,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
          folder instead of downloading all of them to reduce the load. -->
    <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
 </head>  
 <body>
 
