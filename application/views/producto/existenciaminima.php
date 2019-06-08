@@ -39,6 +39,7 @@
 <link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
 
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
     <div id="cabizquierda">
