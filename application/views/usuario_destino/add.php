@@ -2,7 +2,7 @@
     <div class="col-md-12">
       	<div class="box box-info">
             <div class="box-header with-border">
-              	<h3 class="box-title">Usuario Destino Add</h3>
+                <h3 class="box-title"><b>Asingar Destino</b></h3>
             </div>
             <?php echo form_open('usuario_destino/add'); ?>
           	<div class="box-body">
@@ -10,8 +10,8 @@
 					<div class="col-md-6">
 						<label for="usuario_id" class="control-label">Usuario</label>
 						<div class="form-group">
-							<select name="usuario_id" class="form-control">
-								<option value="">select usuario</option>
+							<select name="usuario_id" class="form-control" required>
+								<option value="">- USUARIO -</option>
 								<?php 
 								foreach($all_usuario as $usuario)
 								{
@@ -24,10 +24,10 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="destino_id" class="control-label">Destino Producto</label>
+						<label for="destino_id" class="control-label">Destino</label>
 						<div class="form-group">
-							<select name="destino_id" class="form-control">
-								<option value="">select destino_producto</option>
+							<select name="destino_id" class="form-control" required>
+								<option value="">- DESTINO -</option>
 								<?php 
 								foreach($all_destino_producto as $destino_producto)
 								{
@@ -41,11 +41,13 @@
 					</div>
 				</div>
 			</div>
-          	<div class="box-footer">
-            	<button type="submit" class="btn btn-success">
-            		<i class="fa fa-check"></i> Save
-            	</button>
-          	</div>
+			<div class="box-footer">
+                        <button type="submit" class="btn btn-success">
+					<i class="fa fa-floppy-o"></i> Guardar
+                        </button>
+                        <a href="<?php echo base_url("usuario_destino"); ?>" type="submit" class="btn btn-danger">
+					<i class="fa fa-times"></i> Cancelar
+                        </a>
             <?php echo form_close(); ?>
       	</div>
     </div>
