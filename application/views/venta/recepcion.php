@@ -20,9 +20,12 @@
 <input id="ventas" name="ventas" hidden>
 <audio id="timbre" src="<?php echo base_url('resources/sonidos/timbre.wav'); ?>" preload="audio"></audio>
 <input type="text" value="" id="parametro" hidden>
-<h3 class="box-title"> Recepcion de pedidos</h3>
+
 <div class="col-md-12">
-    <div class="col-md-8">
+    <div class="col-md-2">
+    <font size="4"><b>Recepcion de pedidos</b></font>
+</div>
+    <div class="col-md-6">
             <!--------------------- parametro de buscador --------------------->
                   <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente">

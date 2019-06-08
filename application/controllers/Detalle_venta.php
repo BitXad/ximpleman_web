@@ -13,6 +13,7 @@ class Detalle_venta extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Venta_model');
         $this->load->model('Tipo_transaccion_model');
+        $this->load->model('Destino_producto_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -69,15 +70,16 @@ class Detalle_venta extends CI_Controller{
         $data['page_title'] = "Recepcion de pedidos";        
         $data['_view'] = 'venta/recepcion';
         $data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
-        $data['all_destino'] = $this->Destino_venta_model->get_all_destino();
+        $data['all_destino'] = $this->Destino_producto_model->get_all_destino_producto();
         $this->load->view('layouts/main',$data);
     }
     function recepcionhoy()
     {
         $usuario_id = $this->session_data['usuario_id'];
         $estado = $this->input->post('estado');
+        $destino = $this->input->post('destino');
         $data['datos'] = $this->Detalle_venta_model->ventas_dia($estado);
-        $data['detalle'] = $this->Detalle_venta_model->get_dventadia($estado,$usuario_id);
+        $data['detalle'] = $this->Detalle_venta_model->get_dventadia($estado,$destino,$usuario_id);
        
         echo json_encode($data);
               

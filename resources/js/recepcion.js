@@ -26,7 +26,7 @@ var ventas = document.getElementById('ventas').value;
                var n = registros.length; //tamaÃ±o de
             
     if (n>ventas) {
-    document.getElementById('timbre').play();
+    
     recepcion(1);
 
     }   
@@ -53,12 +53,13 @@ function recepcion(estado)
 {   
       
    var base_url    = document.getElementById('base_url').value;
+   var destino    = document.getElementById('destino_id').value;
     var controlador = base_url+"detalle_venta/recepcionhoy";
     
     document.getElementById('oculto').style.display = 'block';
     $.ajax({url: controlador,
            type:"POST",
-           data:{estado:estado},
+           data:{estado:estado,destino:destino},
           
            success:function(resul){     
               
@@ -67,13 +68,12 @@ function recepcion(estado)
                var registros =  JSON.parse(resul);
                var ventas = registros.datos;
                var detalle = registros.detalle;
-           
-               if (ventas != null){
-                   
-
-                    var n = ventas.length; //tamaÃ±o del arreglo de la consulta
+                var n = ventas.length; //tamaÃ±o del arreglo de la consulta
                     var d = detalle.length; //tamaÃ±o del arreglo de la consulta
-                    
+           if(d>0){ 
+            document.getElementById('timbre').play();
+               if (ventas != null){
+
                    
                     html = "";
                     
@@ -160,12 +160,12 @@ function recepcion(estado)
                        // detalle_venta(ventas[i]["venta_id"]);
                     } 
                        
-                   document.getElementById('oculto').style.display = 'none';
+                   
                    $("#tabla_recepcion").html(html);
                    $("#ventas").val(n);
                    
             }
-                
+          } document.getElementById('oculto').style.display = 'none';      
         },
         error:function(resul){
           // alert("Algo salio mal...!!!");
