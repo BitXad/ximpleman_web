@@ -306,13 +306,14 @@ class Producto_model extends CI_Model
     {
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             cp.categoria_nombre, m.moneda_descripcion
+             cp.categoria_nombre, m.moneda_descripcion, dp.destino_nombre
 
               FROM
               inventario p
               LEFT JOIN estado e on p.estado_id = e.estado_id
               LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
               LEFT JOIN moneda m on p.moneda_id = m.moneda_id
+              LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
               WHERE 
                    p.estado_id = e.estado_id
                    and p.existencia <= p.producto_cantidadminima

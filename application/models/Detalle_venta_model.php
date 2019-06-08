@@ -57,15 +57,19 @@ function ventas_dia($estado)
 
         return $detalle_venta;
   }
-  function get_dventadia($estado)
+  function get_dventadia($estado,$destino,$usuario)
     {
         $result = $this->db->query(
-        "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, v.venta_fecha, v.entrega_id
+        "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id
         FROM detalle_venta d
         LEFT JOIN producto p ON d.producto_id=p.producto_id
         LEFT JOIN venta v ON d.venta_id=v.venta_id
+        LEFT JOIN usuario_destino ud ON p.destino_id=ud.destino_id
+        LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
         WHERE v.venta_fecha = date(now()) 
         and v.entrega_id=".$estado."
+        and p.destino_id=".$destino."
+        and u.usuario_id=".$usuario."
         ORDER BY d.venta_id
         ")->result_array();
         return $result;        

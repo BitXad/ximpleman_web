@@ -91,6 +91,7 @@ function tablaresultadosproducto(limite)
                var registros =  JSON.parse(respuesta);
                 
                if (registros != null){
+                   var formaimagen = document.getElementById('formaimagen').value;
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
@@ -104,17 +105,20 @@ function tablaresultadosproducto(limite)
                         var mimagen = "";
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='50' height='50' />";
+                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
                             mimagen += "</a>";
                             //mimagen = nomfoto.split(".").join("_thumb.");77
                         }else{
-                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='50' height='50' />";
+                            mimagen = "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-"+formaimagen+"' width='50' height='50' />";
                         }
                         html += mimagen;
                         html += "</div>";
                         html += "<div style='padding-left: 4px'>";
                         html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
                         html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
+                        if(registros[i]["destino_id"] > 0){
+                            html +="<br>Destino: "+registros[i]['destino_nombre'];
+                        }
                         html += "</div>";
                         html += "</div>";
                         html += "</td>";
