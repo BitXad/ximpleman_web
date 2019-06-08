@@ -53,12 +53,13 @@ function recepcion(estado)
 {   
       
    var base_url    = document.getElementById('base_url').value;
+   var destino    = document.getElementById('destino_id').value;
     var controlador = base_url+"detalle_venta/recepcionhoy";
     
     document.getElementById('oculto').style.display = 'block';
     $.ajax({url: controlador,
            type:"POST",
-           data:{estado:estado},
+           data:{estado:estado,destino:destino},
           
            success:function(resul){     
               
