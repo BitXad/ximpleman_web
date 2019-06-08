@@ -41,7 +41,20 @@
                         ?>
                     </select>
                 </div>
-            </div>                
+            </div>
+            <div class="col-md-2">
+                <div class="box-tools">
+                    <select name="destino_id" class="btn-primary btn-sm btn-block" id="destino_id" onchange="buscar_por_entrega()">
+                      
+                        <?php 
+                        foreach($all_destino as $destino)
+                        {
+                            echo '<option value="'.$destino['destino_id'].'">'.$destino['destino_nombre'].'</option>';
+                        } 
+                        ?>
+                    </select>
+                </div>
+            </div>                     
 </div>                
 
 <div class="row">

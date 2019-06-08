@@ -69,14 +69,15 @@ class Detalle_venta extends CI_Controller{
         $data['page_title'] = "Recepcion de pedidos";        
         $data['_view'] = 'venta/recepcion';
         $data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+        $data['all_destino'] = $this->Destino_venta_model->get_all_destino();
         $this->load->view('layouts/main',$data);
     }
     function recepcionhoy()
     {
-        
+        $usuario_id = $this->session_data['usuario_id'];
         $estado = $this->input->post('estado');
         $data['datos'] = $this->Detalle_venta_model->ventas_dia($estado);
-        $data['detalle'] = $this->Detalle_venta_model->get_dventadia($estado);
+        $data['detalle'] = $this->Detalle_venta_model->get_dventadia($estado,$usuario_id);
        
         echo json_encode($data);
               
