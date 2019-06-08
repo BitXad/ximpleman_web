@@ -24,7 +24,7 @@ class Destino_producto_model extends CI_Model
      */
     function get_all_destino_producto()
     {
-        $this->db->order_by('destino_id', 'desc');
+        $this->db->order_by('destino_nombre', 'asc');
         return $this->db->get('destino_producto')->result_array();
     }
         

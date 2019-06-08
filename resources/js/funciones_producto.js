@@ -123,6 +123,10 @@ function tablaresultadosproducto(limite)
                         html += "<div style='padding-left: 4px'>";
                         html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
                         html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
+                        if(registros[i]["destino_id"] > 0){
+                            html +="<br>Destino: ";
+                        }
+                        html += "";
                         html += "</div>";
                         html += "</div>";
                         html += "</td>";
