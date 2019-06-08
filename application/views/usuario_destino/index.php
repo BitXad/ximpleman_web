@@ -10,10 +10,10 @@
             <div class="box-body">
                 <table class="table table-striped">
                     <tr>
-						<th>Usuariodestino Id</th>
-						<th>Usuario Id</th>
-						<th>Destino Id</th>
-						<th>Actions</th>
+						<th>Id</th>
+						<th>Usuario</th>
+						<th>Destino</th>
+						<th></th>
                     </tr>
                     <?php foreach($usuario_destino as $u){ ?>
                     <tr>
