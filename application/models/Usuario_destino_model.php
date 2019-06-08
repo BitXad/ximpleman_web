@@ -53,4 +53,11 @@ class Usuario_destino_model extends CI_Model
     {
         return $this->db->delete('usuario_destino',array('usuariodestino_id'=>$usuariodestino_id));
     }
+
+    function get_destinos()
+    {
+        $sql = "select * from usuario_destino t, usuario u, destino_producto d 
+                where u.usuario_id = t.usuario_id and d.destino_id = t.destino_id";
+        return $this->db->query($sql)->result_array();
+    }
 }

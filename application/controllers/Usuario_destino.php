@@ -16,7 +16,7 @@ class Usuario_destino extends CI_Controller{
      */
     function index()
     {
-        $data['usuario_destino'] = $this->Usuario_destino_model->get_all_usuario_destino();
+        $data['usuario_destino'] = $this->Usuario_destino_model->get_destinos();
         
         $data['_view'] = 'usuario_destino/index';
         $this->load->view('layouts/main',$data);
