@@ -124,7 +124,7 @@ function tablaresultadosproducto(limite)
                         html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
                         html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
                         if(registros[i]["destino_id"] > 0){
-                            html +="<br>Destino: ";
+                            html +="<br>Destino: "+registros[i]['destino_nombre'];
                         }
                         html += "";
                         html += "</div>";

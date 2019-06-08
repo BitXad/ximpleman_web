@@ -21,6 +21,7 @@
                 </button>
                 <a href="<?php echo site_url('destino_producto'); ?>" class="btn btn-danger">
                     <i class="fa fa-times"></i> Cancelar</a>
+                    
             </div>				
             <?php echo form_close(); ?>
         </div>
