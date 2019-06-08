@@ -198,7 +198,7 @@ border-bottom : 1px solid #aaa;
     <tr style="border-top-style: solid">
           <td  colspan="4">
                CAJERO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
-               / TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
+<!--               / TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>-->
             <center>
             <font size="2">
                    

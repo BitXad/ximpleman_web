@@ -1878,6 +1878,7 @@ function tabla_ventas(filtro)
 {   
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"venta/mostrar_ventas";
+    var parametro_modulorestaurante = document.getElementById("parametro_modulorestaurante").value;
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     
@@ -1954,6 +1955,10 @@ function tabla_ventas(filtro)
                     html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> ";
+                    
+                    if (parametro_modulorestaurante==1){
+                    html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
+                }
                     if (v[i]['venta_tipodoc']==1)
                         html += "                                   <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                     html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
@@ -2091,6 +2096,8 @@ function eliminar_producto_vendido(detalleven_id)
 
 function borrar_datos_cliente()
 {
+    
+    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
     $("#nit").val(0);
     $("#razon_social").val("SIN NOMBRE");
     $("#cliente_id").val("0");
@@ -2105,6 +2112,9 @@ function borrar_datos_cliente()
     $("#tipocliente_id").val("1");
     $("#cliente_telefono").val("-");
     
+    $("#tiposerv_id").val("1");
+    $("#venta_numeromesa").val("0");
+    $("#venta_glosa").val("");
     
     
     
@@ -2127,8 +2137,16 @@ function borrar_datos_cliente()
     var facturado = document.getElementById('facturado').checked;      
 
     //Imprimir la factura
+    
+    
     if (facturado == 1){
         var boton = document.getElementById("imprimir");
+        boton.click();                    
+    }
+    
+    //Si esta actuvo el modulo para restaurante
+    if (modulo_restaurante == 1){
+        boton = document.getElementById("imprimir_comanda");
         boton.click();                    
     } 
     
