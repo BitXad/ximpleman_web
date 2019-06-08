@@ -100,13 +100,13 @@
 						</div>
 					</div>
                                     
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
 						<label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
 						<div class="form-group">
                                                     <input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required />
 						</div>
 					</div>                                    
-					<div class="col-md-4">
+					<div class="col-md-3">
 						<label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código Producto</label>
 						<div class="form-group">
 							<input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -114,7 +114,7 @@
 						</div>
 					</div>
                                     
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
 						<label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
 						<div class="form-group">
                                                     <select name="categoria_id" class="form-control" required id="categoria_id">
@@ -130,7 +130,21 @@
 							</select>
 						</div>
 					</div>
-
+                                        <div class="col-md-3">  
+                                            <label for="destino_id" class="control-label">Destino</label>
+                                            <div class="form-group">
+                                                <select name="destino_id" class="form-control" id="destino_id">
+                                                    <option value="">- DESTINO DEL PRODUCTO -</option>
+                                                    <?php 
+                                                    foreach($all_destino_producto as $destino_producto)
+                                                    {
+                                                        $selected = ($destino_producto['destino_id'] == $producto['destino_id']) ? ' selected="selected"' : "";
+                                                        echo '<option value="'.$destino_producto['destino_id'].'" '.$selected.'>'.$destino_producto['destino_nombre'].'</option>';
+                                                    } 
+                                                    ?>
+                                                </select>
+                                            </div>
+					</div>
                                         <div class="col-md-3">
 						<label for="moneda_id" class="control-label"><span class="text-danger">*</span>Moneda</label>
 						<div class="form-group">
