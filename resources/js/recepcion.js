@@ -89,9 +89,8 @@ function recepcion(estado)
                         html += "</td><td>";
                 for (var e = 0; e < d; e++) {
                 	if (ventas[i]["venta_id"]==detalle[e]["venta_id"]) {
-                        html += "<b style='font-size: 14px;'>"+detalle[e]["detalleven_cantidad"]+"</b> ";	
-                        html += " <b>"+detalle[e]["producto_nombre"]+"</b>";	
-                        html += "  <b>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
+                        html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b>";	
+                        html += " <br> <b>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
                         }
                          
                       }
@@ -99,8 +98,9 @@ function recepcion(estado)
                         html += "</td>";
                         html += "<td align='center' style='font-size: 14px;'><b>"+ventas[i]["venta_numeroventa"]+"</b>"; 
                         html += "<br>"+ventas[i]["tiposerv_descripcion"]+"</td>";
-                        if (ventas[i]["entrega_id"]==1) { 
-                        html += "<td align='center'><a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR'>"+ventas[i]["entrega_nombre"]+"</a>";
+                        if (ventas[i]["entrega_id"]==1) {
+                            //ventas[i]["entrega_nombre"]
+                        html += "<td align='center'> <a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -111,9 +111,13 @@ function recepcion(estado)
                         html += "</div>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
+                        
+                        html += "<center>";                        
                         html += "<h3><b> <span class='fa fa-cutlery'></span></b>";
                         html += "   Despachar el Pedido <b># "+ventas[i]["venta_numeroventa"]+"</b><br> De : <b>"+ventas[i]["cliente_nombre"]+" </b>";
                         html += "</h3>";
+                        html += "</center>";
+                        
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
@@ -123,7 +127,7 @@ function recepcion(estado)
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar eliminacin ------------------->";
+                        html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
                         html += "</td>";
                         }else{
                         html += "<td align='center'><a class='btn btn-success btn-xs' data-toggle='modal' data-target='#myreModal"+i+"' title='RESTABLECER'>"+ventas[i]["entrega_nombre"]+"</a>";
