@@ -601,7 +601,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="cantidad" class="control-label">Cantidad Compra</label>
                         <div class="form-group">
-                            <input type="numer" step="any" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
+                            <input type="number" step="any" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
                             <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
