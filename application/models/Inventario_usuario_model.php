@@ -111,7 +111,7 @@ class Inventario_usuario_model extends CI_Model
 
     function actualizar_inventario($usuario_id, $fecha)
     {
-        $sql = "update inventario_usuario set inventario_ventas = 0, inventario_saldo = 0 
+        $sql = "update inventario_usuario set inventario_ventas = 0, inventario_saldo = inventario_cantidad 
                 where 
                 usuario_id = ".$usuario_id." and
                 inventario_fecha = '".$fecha."'";
@@ -130,7 +130,7 @@ class Inventario_usuario_model extends CI_Model
                 v.usuario_id = ".$usuario_id."
                 group by d.producto_id
                 )
-                ,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,0)
+                ,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,i.inventario_saldo)
                 where 
                 i.usuario_id = ".$usuario_id." and
                 i.inventario_fecha = '".$fecha."'";
