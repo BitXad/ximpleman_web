@@ -49,7 +49,7 @@ class Venta extends CI_Controller{
     function index()
     {
 
-        if($this->acceso(12)){
+        if($this->acceso(18)){
         //**************** inicio contenido ***************
 
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
@@ -1062,7 +1062,7 @@ function edit($venta_id)
     function detalleventa()
     {
 
-        if($this->acceso(12)){
+        //if($this->acceso(12)){
         //**************** inicio contenido ***************
         
         
@@ -1083,7 +1083,7 @@ function edit($venta_id)
         }  
         		
         //**************** fin contenido ***************
-        }
+        //}
         			
                
     }
@@ -1131,7 +1131,6 @@ function edit($venta_id)
 */
 function buscarproductos()
 {
-        if($this->acceso(12)){
         //**************** inicio contenido ***************    
     
         $usuario_id = $this->session_data['usuario_id'];
@@ -1153,7 +1152,6 @@ function buscarproductos()
         }   
         		
         //**************** fin contenido ***************
-        }
         			     
         
 }
@@ -1163,7 +1161,6 @@ function buscarproductos()
 */
 function buscarcategorias()
 {
-        if($this->acceso(12)){
         //**************** inicio contenido ***************   
    
         $usuario_id = $this->session_data['usuario_id'];
@@ -1185,7 +1182,6 @@ function buscarcategorias()
         }      
         		
         //**************** fin contenido ***************
-        			}
               
 }
 
@@ -1498,8 +1494,6 @@ function anular_venta($venta_id){
      */
     function mostrar_ventas()
     {
-
-        if($this->acceso(12)){
         //**************** inicio contenido ***************   
 
         $usuario_id = $this->session_data['usuario_id'];
@@ -1524,7 +1518,6 @@ function anular_venta($venta_id){
                     show_404();
         }    
        //**************** fin contenido ***************
-        			}
         			     
     }
     
@@ -1706,8 +1699,6 @@ function anular_venta($venta_id){
      */
     function verificar_ventas()
     {
-
-        if($this->acceso(12)){
         //**************** inicio contenido ***************   
 
         $usuario_id = $this->session_data['usuario_id'];
@@ -1732,7 +1723,6 @@ function anular_venta($venta_id){
                     show_404();
         }    
        //**************** fin contenido ***************
-        			}
         			       
     }       
 

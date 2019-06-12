@@ -37,7 +37,7 @@ class Factura extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(154)){
+        if($this->acceso(152)){
         //**************** inicio contenido ***************            
         
         $params['limit'] = RECORDS_PER_PAGE; 
@@ -75,7 +75,7 @@ class Factura extends CI_Controller{
 
     function factura_compra()
     {
-        if($this->acceso(154)){
+        if($this->acceso(153)){
         //**************** inicio contenido ***************            
         
         $params['limit'] = RECORDS_PER_PAGE; 
@@ -635,9 +635,7 @@ class Factura extends CI_Controller{
   
     function mostrar_facturas()
     {
-        if($this->acceso(154)){
-                
-                $usuario_id = $this->session_data['usuario_id'];
+        $usuario_id = $this->session_data['usuario_id'];
 
         if ($this->input->is_ajax_request()) {
             
@@ -654,12 +652,10 @@ class Factura extends CI_Controller{
             
             echo json_encode($datos);
             
-                    
         }
         else
         {                 
             show_404();
-        }
         }
     } 
     
