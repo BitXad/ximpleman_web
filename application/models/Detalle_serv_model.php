@@ -680,21 +680,20 @@ class Detalle_serv_model extends CI_Model
     {
         $detalle_serv = $this->db->query("
             SELECT
-                ds.*, c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
-                e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
-                r.responsable_nombres, r.responsable_apellidos
-                
+                    ds.*, c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion,
+                    s.servicio_horarecepcion, e.estado_color, e.estado_descripcion,
+                    ts.tiposerv_descripcion, r.usuario_nombre as responsable_nombre
             FROM
-                detalle_serv ds, servicio s, estado e, responsable r, cliente c, usuario u, tipo_servicio ts
-
+                    detalle_serv ds, servicio s, estado e,
+                    usuario r, cliente c, usuario u, tipo_servicio ts
             WHERE
-                ds.servicio_id = s.servicio_id
-                and ds.estado_id = e.estado_id
-                and ds.responsable_id = r.responsable_id
-                and ds.usuario_id = u.usuario_id
-                and s.cliente_id = c.cliente_id
-                and s.tiposerv_id = ts.tiposerv_id 
-                and ds.detalleserv_id = ?
+                    ds.servicio_id = s.servicio_id
+                    and ds.estado_id = e.estado_id
+                    and ds.responsable_id = r.usuario_id
+                    and ds.usuario_id = u.usuario_id
+                    and s.cliente_id = c.cliente_id
+                    and s.tiposerv_id = ts.tiposerv_id
+                    and ds.detalleserv_id = ?
         ",array($detalleserv_id))->row_array();
 
         return $detalle_serv;

@@ -91,9 +91,12 @@ function tablaresultadoservicios(){
                     
                     for (var i = 0; i < n ; i++){
                         html += "<tr>";
-                        
+                        var cliente = "NO DEFINIDO";
+                        if(registros[i]['cliente_nombre'] != "" || registros[i]['cliente_nombre'] != null){
+                            cliente = registros[i]['cliente_nombre'];
+                        }
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
+                        html += "<td>"+cliente+"</td>";
                         html += "<td>"+registros[i]["servicio_id"]+"</td>";
                         html += "<td>";
                         var fechamos = "";
