@@ -449,7 +449,7 @@
                         </li>
                         <?php
                         }
-                        if($rolusuario[156-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[18-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('venta');?>"><i class="fa fa-list-alt"></i>Ventas del Dia</a>

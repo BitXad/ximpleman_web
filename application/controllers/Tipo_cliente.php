@@ -30,7 +30,7 @@ class Tipo_cliente extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(148)){
+        if($this->acceso(132)){
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -51,7 +51,7 @@ class Tipo_cliente extends CI_Controller{
      */
     function add()
     {   
-        if($this->acceso(148)){
+        if($this->acceso(132)){
         $this->load->library('form_validation');
 
 		$this->form_validation->set_rules('tipocliente_descripcion','Tipocliente Descripcion','required');
@@ -81,7 +81,7 @@ class Tipo_cliente extends CI_Controller{
      */
     function edit($tipocliente_id)
     {   
-        if($this->acceso(148)){
+        if($this->acceso(132)){
         // check if the tipo_cliente exists before trying to edit it
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
         
@@ -119,7 +119,7 @@ class Tipo_cliente extends CI_Controller{
      */
     function remove($tipocliente_id)
     {
-        if($this->acceso(148)){
+        if($this->acceso(132)){
         $tipo_cliente = $this->Tipo_cliente_model->get_tipo_cliente($tipocliente_id);
 
         // check if the tipo_cliente exists before trying to delete it

@@ -865,10 +865,10 @@ function mostrar_ocultar(){
                         
                         <div class="box-body table-responsive">
                                         <div class="col-md-6">
-						<label for="usuario_idx" class="control-label">Prevendedor</label>
+						<label for="usuario_idx" class="control-label">Usuario</label>
 						<div class="form-group">
 							<select name="usuario_idx" id="usuario_idx" class="form-control">
-								<option value="0">- ASIGNAR PREVENDEDOR -</option>
+								<option value="0">- ASIGNAR USUARIO -</option>
 								<?php 
 								foreach($usuario as $usuario_prev)
 								{
