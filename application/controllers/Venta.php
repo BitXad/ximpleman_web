@@ -1540,7 +1540,7 @@ function anular_venta($venta_id){
         $filtro = $this->input->post('filtro');
         
         if ($filtro == null){
-           $data['venta'] = $this->Venta_model->get_all_ventas($params);
+           //$data['venta'] = $this->Venta_model->get_all_ventas($params);
         }
         else{
              $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
@@ -1563,11 +1563,11 @@ function anular_venta($venta_id){
         //**************** inicio contenido ***************           
         
         $this->load->model('Usuario_model');
-        $this->load->model('Detalle_venta_model');
+        //$this->load->model('Detalle_venta_model');
         $filtro = $this->input->post('filtro');
         
         if ($filtro == null){
-           $data['venta'] = $this->Venta_model->get_all_venta(1);
+           //$data['venta'] = $this->Venta_model->get_all_venta(1);
         }
         else{
              $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
