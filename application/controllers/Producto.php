@@ -32,7 +32,7 @@ class Producto extends CI_Controller{
     function index($a = null)
     {
         if($this->acceso(102)) {
-                
+            $data['rol'] = $this->session_data['rol'];
         $data['a'] = $a;
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
@@ -680,7 +680,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductos()
     {
-       if($this->acceso(25)) {
+       if($this->acceso(102)) {
                 
                 $usuario_id = $this->session_data['usuario_id'];
 
@@ -710,7 +710,7 @@ class Producto extends CI_Controller{
     */
     function buscarproductoslimit()
     {
-        if($this->acceso(110)) {
+        if($this->acceso(102)) {
                 
                 $usuario_id = $this->session_data['usuario_id'];
 

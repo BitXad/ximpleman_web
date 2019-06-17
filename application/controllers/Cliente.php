@@ -33,6 +33,7 @@ class Cliente extends CI_Controller{
     function index($a = null)
     {
         if($this->acceso(94)){
+            $data['rol'] = $this->session_data['rol'];
             $data['page_title'] = "Cliente";
             $data['a'] = $a;
             $data['err'] ="";
@@ -1007,7 +1008,7 @@ class Cliente extends CI_Controller{
         }else{
            $condicion = "";
         }
-        if($this->acceso(94)){
+        if($this->acceso(96)){
             if ($this->input->is_ajax_request())
             {
                 $datos = $this->Cliente_model->get_all_cliente($condicion);
