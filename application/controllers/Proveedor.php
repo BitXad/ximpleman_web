@@ -34,6 +34,7 @@ class Proveedor extends CI_Controller{
     {
         if($this->acceso(110)) {
                 $usuario_id = $this->session_data['usuario_id'];
+                $data['rol'] = $this->session_data['rol'];
        
         $this->load->model('Empresa_model');
         $data['empresa'] = $this->Empresa_model->get_all_empresa();

@@ -44,7 +44,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function add()
     {
-        if($this->acceso(127)){
+        if($this->acceso(128)){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('subcatserv_descripcion','Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         if($this->form_validation->run())     
@@ -80,7 +80,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function edit($subcatserv_id)
     {
-        if($this->acceso(127)){
+        if($this->acceso(130)){
         // check if the subcategoria_servicio exists before trying to edit it
         $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
         
@@ -120,7 +120,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function remove($subcatserv_id)
     {
-        if($this->acceso(127)){
+        if($this->acceso(131)){
                $subcategoria_servicio = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
 
             // check if the subcategoria_servicio exists before trying to delete it
@@ -192,27 +192,19 @@ class Subcategoria_servicio extends CI_Controller{
     /* funcion que busca y devuelve las subcategorias de una categoria */
     function buscar_subcategoriaparam()
     {
-        if($this->acceso(127)){
-	    
-            $parametro = $this->input->post('parametro');
-            $catserv_id = $this->input->post('catserv_id');
-	    $res = $this->Subcategoria_servicio_model->get_searchall_subcategoria_servicio_id1($parametro, $catserv_id);
- 
-            echo json_encode($res);
-            }
-            
+        $parametro = $this->input->post('parametro');
+        $catserv_id = $this->input->post('catserv_id');
+        $res = $this->Subcategoria_servicio_model->get_searchall_subcategoria_servicio_id1($parametro, $catserv_id);
+        
+        echo json_encode($res);
     }
     /* funcion que busca y devuelve una subcategoria de una categoria */
     function seleccionar_subcategoria()
     {
-       if($this->acceso(127)){
-	    
-            $subcatserv_id = $this->input->post('subcatserv_id');
-	    $res = $this->Subcategoria_servicio_model->get_this_subcatserv($subcatserv_id);
- 
-            echo json_encode($res);
-            }
-            
+        $subcatserv_id = $this->input->post('subcatserv_id');
+        $res = $this->Subcategoria_servicio_model->get_this_subcatserv($subcatserv_id);
+
+        echo json_encode($res);
     }
     
 }

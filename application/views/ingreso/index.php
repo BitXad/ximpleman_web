@@ -65,12 +65,13 @@
         
         <div class="col-md-3">
             
-
+            <?php if($rol[57-1]['rolusuario_asignado'] == 1){ ?>
             <button class="btn btn-sm btn-primary btn-sm btn-block"  onclick="buscar_por_fechas()">
                 <h4>
                 <span class="fa fa-search"></span>   Buscar ingresos  
                 </h4>
-          </button>
+            </button>
+            <?php } ?>
             <br>
         </div>
         

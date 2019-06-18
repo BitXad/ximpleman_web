@@ -9,10 +9,14 @@
                         <option value="3">TODOS</option>
                     </select>-->
                     <a href="<?php echo site_url('orden_pago/nueva_orden'); ?>" class="btn btn-facebook btn-sm">Generar Orden</a> 
-                    <a href="<?php echo site_url('orden_pago/index'); ?>" class="btn btn-warning btn-sm">Pendientes</a> 
+                    <?php
+                    if($rol[91-1]['rolusuario_asignado'] == 1){ ?>
+                    <a href="<?php echo site_url('orden_pago/index'); ?>" class="btn btn-warning btn-sm">Pendientes</a>
+                    <?php }
+                    if($rol[92-1]['rolusuario_asignado'] == 1){ ?>
                     <a href="<?php echo site_url('orden_pago/pagadas_hoy'); ?>" class="btn btn-success btn-sm">Pagadas</a> 
                     <a href="<?php echo site_url('orden_pago/pagadas_antes'); ?>" class="btn btn-danger btn-sm">Pag. Antes</a> 
-                    
+                    <?php } ?>
                 </div>
             </div>
 <div class="row">
@@ -93,9 +97,12 @@
                             <!-- inicio modal -->
                             <?php if ($o['estado_id']==8){?>
                                 <span class="btn btn-danger btn-xs"><?php echo $o['estado_descripcion']; ?></span><br>
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalpagar<?php echo "00".$o['orden_id']; ?>">
-                                <span class="fa fa-money"></span> Pagar
-                                </button>
+                                    <?php
+                                    if($rol[93-1]['rolusuario_asignado'] == 1){ ?>
+                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalpagar<?php echo "00".$o['orden_id']; ?>">
+                                    <span class="fa fa-money"></span> Pagar
+                                    </button>
+                                    <?php } ?>
                             <?php }else{ echo $o['orden_cobradapor']."<br>".$o['orden_ci']; ?>
                                         <br><span class="btn btn-facebook btn-xs"><?php echo $o['estado_descripcion']; ?></span>
                             <?php } ?>

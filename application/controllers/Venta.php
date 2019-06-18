@@ -159,7 +159,6 @@ class Venta extends CI_Controller{
                 ", detalleven_descuento = ".$descuento.
                 ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                 ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
-                ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
                 "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
         
         $descuento = 0;
@@ -723,7 +722,8 @@ function edit($venta_id)
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;              
+        $data['tipousuario_id'] = $tipousuario_id;  
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
                 
         //**************** inicio contenido ***************     
                 

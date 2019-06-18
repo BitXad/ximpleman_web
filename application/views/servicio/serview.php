@@ -1,5 +1,11 @@
 <script src="<?php echo base_url('resources/js/servicio_serview.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<input type="hidden" name="reginftecnico" id="reginftecnico" value="<?php echo $reginftecnico; ?>" />
+<input type="hidden" name="asignarinsumos" id="asignarinsumos" value="<?php echo $asignarinsumos; ?>" />
+<input type="hidden" name="anulardetalle" id="anulardetalle" value="<?php echo $anulardetalle; ?>" />
+<input type="hidden" name="eliminardetalle" id="eliminardetalle" value="<?php echo $eliminardetalle; ?>" />
+<input type="hidden" name="cobrardetalle" id="cobrardetalle" value="<?php echo $cobrardetalle; ?>" />
+<input type="hidden" name="pasaracreditodeta" id="pasaracreditodeta" value="<?php echo $pasaracreditodeta; ?>" />
 <style type="text/css">
 /*    #tamtex{ font-size: 0.1em; }*/
     #recepcion{ background-color: #FFFF33; font-size: small; }
@@ -417,9 +423,15 @@
     </div>
     <div style="float: right">
     <center>
+        <?php if($cobrarservicio == 1){ ?>
         <a class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalpagar" onclick="refrescarhora()" ><span class="fa fa-money fa-4x"></span><br>Cobrar Serv..</a>
+        <?php }
+        if($pasaracredito == 1){ ?>
         <a class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalcredito" ><span class="fa fa-credit-card fa-4x"></span><br>Pasar a Credito</a>
+        <?php }
+        if($anularservicio == 1){ ?>
         <a class="btn btn-sq-lg btn-warning" style="width: 120px !important; height: 120px !important; " data-toggle="modal" data-target="#modalanular" ><span class="fa fa-minus-circle fa-4x"></span><br>Anular Serv..</a>
+        <?php } ?>
         <a href="<?php echo site_url('servicio/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
     </center>
 </div>
