@@ -192,27 +192,19 @@ class Subcategoria_servicio extends CI_Controller{
     /* funcion que busca y devuelve las subcategorias de una categoria */
     function buscar_subcategoriaparam()
     {
-        if($this->acceso(127)){
-	    
-            $parametro = $this->input->post('parametro');
-            $catserv_id = $this->input->post('catserv_id');
-	    $res = $this->Subcategoria_servicio_model->get_searchall_subcategoria_servicio_id1($parametro, $catserv_id);
- 
-            echo json_encode($res);
-            }
-            
+        $parametro = $this->input->post('parametro');
+        $catserv_id = $this->input->post('catserv_id');
+        $res = $this->Subcategoria_servicio_model->get_searchall_subcategoria_servicio_id1($parametro, $catserv_id);
+        
+        echo json_encode($res);
     }
     /* funcion que busca y devuelve una subcategoria de una categoria */
     function seleccionar_subcategoria()
     {
-       if($this->acceso(127)){
-	    
-            $subcatserv_id = $this->input->post('subcatserv_id');
-	    $res = $this->Subcategoria_servicio_model->get_this_subcatserv($subcatserv_id);
- 
-            echo json_encode($res);
-            }
-            
+        $subcatserv_id = $this->input->post('subcatserv_id');
+        $res = $this->Subcategoria_servicio_model->get_this_subcatserv($subcatserv_id);
+
+        echo json_encode($res);
     }
     
 }

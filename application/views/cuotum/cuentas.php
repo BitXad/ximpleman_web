@@ -193,12 +193,19 @@ $(document).ready(function(){
                         <td <?php echo $color; ?>><?php echo $c['estado_descripcion']; ?></td>
                         <td <?php echo $color; ?>><?php echo $c['usuario_nombre']; ?></td>
                         <td <?php echo $color; ?>> <?php if ($c['estado_id']==8) { ?>
-                      
-                            <a href="<?php echo site_url('cuotum/editar/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                        <?php
+                            if($rol[51-1]['rolusuario_asignado'] == 1){ ?>
+                                <a href="<?php echo site_url('cuotum/editar/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                            <?php }
+                            if($rol[52-1]['rolusuario_asignado'] == 1){ ?>
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
-                            <?php if ($bandera==0) { ?>
+                            <?php }
+                            if ($bandera==0) {
+                                  if($rol[49-1]['rolusuario_asignado'] == 1){
+                                ?>
                             <a href="#" data-toggle="modal" data-target="#pagar<?php echo $i; ?>" class="btn btn-success btn-xs"><span class="fa fa-dollar"></span></a>
-                            <?php $bandera = 1;} ?>
+                            <?php }
+                                  $bandera = 1;} ?>
                             <a href="<?php echo site_url("cuotum/notacobro/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">

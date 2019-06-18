@@ -34,10 +34,12 @@ class Servicio extends CI_Controller{
     function index($es = null)
     {
         if($this->acceso(69)){
-        $usuario_id = $this->session_data['usuario_id'];
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
+            $usuario_id  = $this->session_data['usuario_id'];
+            
+            $data = array(
+                'page_title' => 'Admin >> Mi Cuenta'
+            );
+            $data['rol'] = $this->session_data['rol'];
         //$data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
         $data['a']=$es;
         
@@ -352,6 +354,18 @@ class Servicio extends CI_Controller{
             'page_title' => 'Admin >> Mi Cuenta'
         );
         $data['a'] = $a;
+        
+        $thisrolusuario = $this->session_data['rol'];
+        $data['reginftecnico']     = $thisrolusuario[80-1]['rolusuario_asignado'];
+        $data['asignarinsumos']    = $thisrolusuario[81-1]['rolusuario_asignado'];
+        $data['anulardetalle']     = $thisrolusuario[82-1]['rolusuario_asignado'];
+        $data['eliminardetalle']   = $thisrolusuario[83-1]['rolusuario_asignado'];
+        $data['cobrardetalle']     = $thisrolusuario[87-1]['rolusuario_asignado'];
+        $data['pasaracreditodeta'] = $thisrolusuario[88-1]['rolusuario_asignado'];
+        $data['cobrarservicio'] = $thisrolusuario[84-1]['rolusuario_asignado'];
+        $data['pasaracredito']  = $thisrolusuario[85-1]['rolusuario_asignado'];
+        $data['anularservicio'] = $thisrolusuario[77-1]['rolusuario_asignado'];
+        
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
             
             $this->load->model('Cliente_model');
@@ -497,8 +511,6 @@ class Servicio extends CI_Controller{
     */
     function buscarservicios()
     {
-        if($this->acceso(69)){  
-
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('filtro');   
@@ -516,7 +528,6 @@ class Servicio extends CI_Controller{
         {                 
             show_404();
         }
-    }
 }
     
     function boletarecepcion_boucher($servicio_id)
@@ -635,7 +646,6 @@ class Servicio extends CI_Controller{
     */
     function buscarserviciosfecha()
     {
-        if($this->acceso(142)){
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');   
@@ -651,7 +661,6 @@ class Servicio extends CI_Controller{
         {                 
             show_404();
         }
-    }
 }
     
     /*
@@ -942,11 +951,13 @@ class Servicio extends CI_Controller{
         $this->load->model('Usuario_model');
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
         
+        //$data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+        /*
         $this->load->model('Responsable_model');
         $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-        
+        */
         $this->load->model('Cliente_model');
-        $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
+        $data['all_cliente'] = $this->Cliente_model->get_all_cliente("");
         
         $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/repserviciodiario';

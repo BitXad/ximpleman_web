@@ -39,6 +39,7 @@ class Egreso extends CI_Controller{
     {
         if($this->acceso(59)){
             $data['page_title'] = "Egreso";
+            $data['rol'] = $this->session_data['rol'];
             $data['egreso'] = $this->Egreso_model->get_all_egreso();
             $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);    
@@ -73,7 +74,7 @@ class Egreso extends CI_Controller{
     
     function add()
     {   
-        if($this->acceso(59)){
+        if($this->acceso(60)){
             $data['page_title'] = "Dosificación";
                 $usuario_id = $this->session_data['usuario_id'];
                 
@@ -125,7 +126,7 @@ class Egreso extends CI_Controller{
      */
     function edit($egreso_id)
     {   
-        if($this->acceso(59)){
+        if($this->acceso(61)){
             $data['page_title'] = "Dosificación";
             $usuario_id = $this->session_data['usuario_id'];
         // check if the egreso exists before tryegr to edit it
@@ -169,7 +170,7 @@ class Egreso extends CI_Controller{
      */
 
 public function pdf($egreso_id){
-    if($this->acceso(59)){
+    if($this->acceso(64)){
         $data['page_title'] = "Dosificación";
       $data['egresos'] = $this->Egreso_model->get_egresos($egreso_id);
       $data['empresa'] = $this->Empresa_model->get_empresa(1);    
@@ -181,7 +182,7 @@ public function pdf($egreso_id){
 
 
     public function boucher($egreso_id){
-        if($this->acceso(59)){
+        if($this->acceso(64)){
             $data['page_title'] = "Dosificación";
       $data['egreso'] = $this->Egreso_model->get_egresos($egreso_id);
       $data['empresa'] = $this->Empresa_model->get_empresa(1);    
@@ -192,7 +193,7 @@ public function pdf($egreso_id){
 
     function remove($egreso_id)
     {
-        if($this->acceso(59)){
+        if($this->acceso(62)){
             $egreso = $this->Egreso_model->get_egreso($egreso_id);
 
             // check if the egreso exists before tryegr to delete it

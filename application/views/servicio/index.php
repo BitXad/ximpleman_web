@@ -79,7 +79,10 @@
     <div class="col-md-6 no-print">
         <div class="box-tools text-center">
             <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
+            <?php
+            if($rol[72-1]['rolusuario_asignado'] == 1){ ?>
             <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Ver Todos</small></a>
+            <?php } ?>
             <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" onclick="codigoservfocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
             <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Busqueda de detalles de Servicio" onclick="kardexdetallefocus()"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Kardex Detalle</small></a>
             <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Kardex Cliente</small></a>

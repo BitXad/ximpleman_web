@@ -40,6 +40,9 @@ class Cambio_producto extends CI_Controller{
             $this->load->model('Detalle_compra_model');
             $data['detalle_compra'] = $this->Detalle_compra_model->get_all_detalle_compras();
             $data['cambio_producto'] = $this->Cambio_producto_model->get_all_cambio_producto();
+            
+            $data['rol'] = $this->session_data['rol'];
+            
             $data['_view'] = 'cambio_producto/index';
             $this->load->view('layouts/main',$data);
         }
@@ -106,7 +109,7 @@ class Cambio_producto extends CI_Controller{
     }
     function crearcambio()
     {
-        if($this->acceso(65)){
+        if($this->acceso(66)){
             $usuario_id = $this->session_data['usuario_id'];
             $cambio_producto_id = $this->Cambio_producto_model->crear_cambio($usuario_id);        
             redirect('cambio_producto/add/'.$cambio_producto_id);
@@ -177,7 +180,7 @@ class Cambio_producto extends CI_Controller{
 
     function add($cambio_producto_id)
     {
-        if($this->acceso(65)){
+        if($this->acceso(66)){
             $data['page_title'] = "Cambios/Devoluciones";
             $data['cambio_producto'] = $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
             $this->load->model('Detalle_compra_model');
@@ -196,7 +199,7 @@ class Cambio_producto extends CI_Controller{
     
     function anular($cambio_producto_id)
     {
-       if($this->acceso(65)){
+       if($this->acceso(68)){
            $data['page_title'] = "Cambios/Devoluciones";
             $this->Cambio_producto_model->get_cambio_producto($cambio_producto_id);
             $this->load->model('Detalle_compra_model');
@@ -218,7 +221,7 @@ class Cambio_producto extends CI_Controller{
 
      function anulacion($cambio_producto_id)
     {
-        if($this->acceso(65)){
+        if($this->acceso(68)){
            //  $cambio_producto_id = $this->input->post('cambio_producto_id');
             $comp = "UPDATE detalle_compra
                     SET
