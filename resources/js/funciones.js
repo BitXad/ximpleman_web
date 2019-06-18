@@ -1495,7 +1495,7 @@ function registrarcliente()
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
                     
                     success:function(respuesta){ 
-                        var datos = JSON.parse(respuesta)
+                        var datos = JSON.parse(respuesta);
                         cliente_id = datos[0]["cliente_id"];
                         
                         //console.log(datos);

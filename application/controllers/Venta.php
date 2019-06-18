@@ -723,7 +723,8 @@ function edit($venta_id)
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;              
+        $data['tipousuario_id'] = $tipousuario_id;  
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
                 
         //**************** inicio contenido ***************     
                 
