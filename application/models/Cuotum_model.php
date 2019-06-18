@@ -59,16 +59,17 @@ class Cuotum_model extends CI_Model
         
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, co.*, k.*, e.*
+                c.*, p.*, co.*, k.*, e.*, u.usuario_nombre
 
             FROM
-                credito c, proveedor p, compra co, cuota k, estado e
+                credito c, proveedor p, compra co, cuota k, estado e, usuario u
 
             WHERE
                 k.credito_id = c.credito_id 
                 and c.compra_id = co.compra_id
                 and p.proveedor_id = co.proveedor_id
                 and k.estado_id = e.estado_id
+                and k.usuario_id = u.usuario_id
                 and ".$credito_id." = k.credito_id
 
             ORDER BY `cuota_numcuota` ASC
@@ -87,16 +88,18 @@ class Cuotum_model extends CI_Model
         
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre
 
             FROM
-                credito c, cliente p, venta ve, cuota k, estado e
+                credito c, cliente p, venta ve, cuota k, estado e, usuario u
 
             WHERE
                 k.credito_id = c.credito_id 
                 and c.venta_id = ve.venta_id
                 and p.cliente_id = ve.cliente_id
                 and k.estado_id = e.estado_id
+                and k.estado_id = e.estado_id
+                and k.usuario_id = u.usuario_id
                 and ".$credito_id." = k.credito_id
 
             ORDER BY `cuota_numcuota` ASC

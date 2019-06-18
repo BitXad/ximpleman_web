@@ -635,7 +635,7 @@ class Servicio extends CI_Controller{
     */
     function buscarserviciosfecha()
     {
-        if($this->acceso(69)){
+        if($this->acceso(142)){
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');   
@@ -708,7 +708,7 @@ class Servicio extends CI_Controller{
      */
     function repserviciofechas($es = null)
     {
-        if($this->acceso(69)){  
+        if($this->acceso(142)){  
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -730,9 +730,9 @@ class Servicio extends CI_Controller{
         $this->load->model('Usuario_model');
         $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
         
-        $this->load->model('Cliente_model');
+        /*$this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
-        
+        */
         $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/repserviciofechas';
         $this->load->view('layouts/main',$data);
@@ -743,7 +743,7 @@ class Servicio extends CI_Controller{
      */
     function buscarrepservicioall()
     {
-        if($this->acceso(69)){
+        if($this->acceso(142)){
                 if ($this->input->is_ajax_request()){
                     $filtro = $this->input->post('filtro');
                     $datos = $this->Servicio_model->get_all_busquedarepservicios($filtro);
@@ -760,7 +760,7 @@ class Servicio extends CI_Controller{
      */
     function repinftecservicio()
     {
-        if($this->acceso(69)){
+        if($this->acceso(142)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -778,7 +778,7 @@ class Servicio extends CI_Controller{
      */
     function boletainftecservicio($servicio_id)
     {
-        if($this->acceso(79)){
+        if($this->acceso(142)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -808,7 +808,7 @@ class Servicio extends CI_Controller{
 
     function repinftecdetalleserv($es = null)
     {
-        if($this->acceso(69)){
+        if($this->acceso(142)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -829,9 +829,9 @@ class Servicio extends CI_Controller{
         $this->load->model('Responsable_model');
         $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
         */
-        $this->load->model('Cliente_model');
+        /*$this->load->model('Cliente_model');
         $data['all_cliente'] = $this->Cliente_model->get_all_cliente();
-        
+        */
         $data['page_title'] = "Servicio";
         $data['_view'] = 'servicio/repinftecdetalleserv';
         $this->load->view('layouts/main',$data);
@@ -842,7 +842,7 @@ class Servicio extends CI_Controller{
      */
     function boletainftecdetalleserv($detalleserv_id)
     {
-        if($this->acceso(69)){
+        if($this->acceso(142)){
         $data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );
@@ -983,7 +983,7 @@ class Servicio extends CI_Controller{
     /* buscar servicios para repinforme */
     function buscarservicios_infrep()
     {
-        if($this->acceso(69)){
+        if($this->acceso(142)){
         if ($this->input->is_ajax_request()) {
             
             $parametro = $this->input->post('parametro');   

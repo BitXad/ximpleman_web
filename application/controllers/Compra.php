@@ -80,7 +80,7 @@ class Compra extends CI_Controller{
     
     function reportes()
     {
-        if($this->acceso(1)){
+        if($this->acceso(137)){
             $data['page_title'] = "Compra";
             $params['limit'] = RECORDS_PER_PAGE; 
             $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
@@ -107,7 +107,7 @@ class Compra extends CI_Controller{
     }
     function repoProveedor()
     {
-        if($this->acceso(1)){
+        if($this->acceso(137)){
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -136,7 +136,7 @@ class Compra extends CI_Controller{
     }
     function repoProducto()
     {
-        if($this->acceso(1)){
+        if($this->acceso(137)){
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
             $params['limit'] = RECORDS_PER_PAGE; 
@@ -302,7 +302,7 @@ class Compra extends CI_Controller{
 
     function buscarcompra()
     {
-        if($this->acceso(1)){
+        if($this->acceso(137)){
             if ($this->input->is_ajax_request()) {
 
                 $parametro = $this->input->post('parametro');   

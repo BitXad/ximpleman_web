@@ -124,7 +124,7 @@ class Categoria_insumo extends CI_Controller{
     
     function insumo($subcatserv_id)
     {
-        if($this->acceso(81)){
+        if($this->acceso(129)){
             $data['page_title'] = "Categoria Insumo";
             $data['subcatserv_id'] = $subcatserv_id;
             $this->load->model('Subcategoria_servicio_model');
@@ -140,7 +140,7 @@ class Categoria_insumo extends CI_Controller{
     
     function asignarinsumo($subcatserv_id)
     {
-        if($this->acceso(81)){
+        //if($this->acceso(81)){
             if ($this->input->is_ajax_request()){
                 $subcatserv_id = $this->input->post('subcatserv_id');
                 $producto_id = $this->input->post('producto_id');
@@ -167,12 +167,11 @@ class Categoria_insumo extends CI_Controller{
                 show_404();
             }
                 
-        }
+        //}
     }
     
     function activar($subcatserv_id, $catinsumo_id)
     {
-        if($this->acceso(81)){
                 if ($this->input->is_ajax_request()){
                     $params = array(
                         'estado_id' => 1,
@@ -182,12 +181,10 @@ class Categoria_insumo extends CI_Controller{
                 }else{                 
                     show_404();
                 }
-            }
     }
     
     function desactivar($subcatserv_id, $catinsumo_id)
     {
-        if($this->acceso(81)){
                 if ($this->input->is_ajax_request()){
                     $params = array(
                     'estado_id' => 2,
@@ -199,13 +196,10 @@ class Categoria_insumo extends CI_Controller{
                 {                 
                     show_404();
                 }
-
-        }
     }
     
     function eliminar($subcatserv_id, $catinsumo_id)
     {
-        if($this->acceso(81)){
                 if ($this->input->is_ajax_request()){
                     
                     $this->Categoria_insumo_model->delete_categoria_insumo($catinsumo_id);
@@ -215,8 +209,6 @@ class Categoria_insumo extends CI_Controller{
                 {                 
                     show_404();
                 }
-                
-        }
     }
     
     function eliminardetalleventa($servicio_id, $detalleserv_id, $detalleven_id)
@@ -437,14 +429,14 @@ class Categoria_insumo extends CI_Controller{
     
     function insumosasignados()
     {
-        if($this->acceso(81)){
+        //if($this->acceso(81)){
             $subcatserv_id = $this->input->post('subcatserv_id');
             //$this->load->model('Categoria_insumo_model');
             $res = $this->Categoria_insumo_model->get_all_insumo_from_subcatserv($subcatserv_id);
             
            // $res = $this->Subcategoria_servicio_model->get_all_subcategoria_de_categoria($catserv_id);
             echo json_encode($res);
-        }
+        //}
     }
     
     /*

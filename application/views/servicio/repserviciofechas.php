@@ -96,7 +96,7 @@
 <div class="row col-md-12 no-print">
     <div class="col-md-2">
         <br>
-        <a class="btn btn-sq-lg btn-primary btn-block" onclick="reportedetservicio();" ><span class="fa fa-search"></span>&nbsp;buscar</a>
+        <a class="btn btn-sq-lg btn-warning btn-block" onclick="reportedetservicio();" ><span class="fa fa-search"></span>&nbsp;buscar</a>
     </div>
     <div class="col-md-2">
         <br>

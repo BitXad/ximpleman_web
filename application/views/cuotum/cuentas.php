@@ -101,6 +101,7 @@
                         <th>Saldo</th>
                         <th>Glosa</th>
                         <th>Estado</th>
+                        <th>Usuario</th>
                         <th></th>
                     </tr>
                     <tbody class="buscar">
@@ -190,6 +191,7 @@ $(document).ready(function(){
                         <td <?php echo $color; ?>><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
                         <td <?php echo $color; ?>><?php echo $c['cuota_glosa']; ?></td>
                         <td <?php echo $color; ?>><?php echo $c['estado_descripcion']; ?></td>
+                        <td <?php echo $color; ?>><?php echo $c['usuario_nombre']; ?></td>
                         <td <?php echo $color; ?>> <?php if ($c['estado_id']==8) { ?>
                       
                             <a href="<?php echo site_url('cuotum/editar/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 

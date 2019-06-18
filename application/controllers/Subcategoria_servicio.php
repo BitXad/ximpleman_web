@@ -44,7 +44,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function add()
     {
-        if($this->acceso(127)){
+        if($this->acceso(128)){
         $this->load->library('form_validation');
         $this->form_validation->set_rules('subcatserv_descripcion','Descripcion','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         if($this->form_validation->run())     
@@ -80,7 +80,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function edit($subcatserv_id)
     {
-        if($this->acceso(127)){
+        if($this->acceso(130)){
         // check if the subcategoria_servicio exists before trying to edit it
         $data['subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
         
@@ -120,7 +120,7 @@ class Subcategoria_servicio extends CI_Controller{
      */
     function remove($subcatserv_id)
     {
-        if($this->acceso(127)){
+        if($this->acceso(131)){
                $subcategoria_servicio = $this->Subcategoria_servicio_model->get_subcategoria_servicio($subcatserv_id);
 
             // check if the subcategoria_servicio exists before trying to delete it

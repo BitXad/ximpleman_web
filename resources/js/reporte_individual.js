@@ -86,7 +86,7 @@ function numberFormat(numero){
 function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
 
     var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"reportes/buscarlosreportes";
+    var controlador = base_url+"reportes/buscarlosreportespersonal";
      /*var limite = 1000; */
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
