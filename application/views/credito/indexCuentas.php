@@ -26,7 +26,7 @@
                 <input type="hidden" name="usu" id="usu">
                 <input type="hidden" name="feini" id="feini">
                 <input type="hidden" name="fefin" id="fefin">
-                <input type="hidden" name="esti" id="esti">
+                <input type="hidden" name="esti" id="esti" value="8">
               <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
               <button class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</button>
               <?php } ?>
