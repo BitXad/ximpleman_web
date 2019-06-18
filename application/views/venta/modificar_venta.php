@@ -79,8 +79,8 @@ function mostrar_ocultar(){
 <!-------------------- inicio collapse ---------------------->
 
 <div class="panel-group"  style="padding:0;">
-  <div class="panel panel-default"  style="padding:0;">
-    <div class="panel-heading"  style="padding:0;">
+  <div class="panel panel-default" style="padding:0;">
+    <div class="panel-heading" style="padding:0;">
         
         
 <!--------------------- cliente_id --------------------->
@@ -90,7 +90,7 @@ function mostrar_ocultar(){
 
 <!--------------------- fin cliente_id --------------------->
         
-        <div class="col-md-3">
+        <div class="col-md-3" >
             <label for="nit" class="control-label">NIT</label>
             <div class="form-group">
                 <input type="number" name="nit" class="form-control" id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
@@ -112,13 +112,6 @@ function mostrar_ocultar(){
 
         
         <div class="col-md-2">
-            <label for="telefono" class="control-label">FECHA VENTA</label>
-            <div class="form-group">
-                <input type="date" name="venta_fecha" class="form-control" id="venta_fecha"  value="<?php echo $venta[0]['venta_fecha']; ?>"/>
-            </div>
-        </div>
-
-        <div class="col-md-2" hidden>
             <label for="telefono" class="control-label">TELEFONO</label>
             <div class="form-group">
                 <input type="telefono" name="telefono" class="form-control" id="telefono"  onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
@@ -144,9 +137,16 @@ function mostrar_ocultar(){
         </div>        
         
       <h4 class="panel-title">
-        <input type="checkbox" id="facturado" value="1" name="facturado">
+        <?php if(sizeof($dosificacion)>0){ ?>
+          <input type="checkbox" id="facturado" value="1" name="facturado">
+        <?php } else{ ?>
+          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+          <font color="red" size="2"> Dosificación no activada</font>
+        <?php } ?>
         <a data-toggle="collapse" href="#collapse1">Más</a>
+                        
       </h4>
+
     </div>
     <div id="collapse1" class="panel-collapse collapse">
 <!--      <ul class="list-group">-->
@@ -185,6 +185,27 @@ function mostrar_ocultar(){
             </div>
             
             </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_direccion" class="control-label">DIRECCIÓN</label>
+            <div class="form-group">
+                <input type="text" name="cliente_direccion" class="form-control" id="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_departamento" class="control-label">DEPARTAMENTO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_departamento" class="form-control" id="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+                    
+            <div class="col-md-3">
+            <label for="cliente_celular" class="control-label">CELULAR</label>
+            <div class="form-group">
+                <input type="text" name="cliente_celular" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
         
         </div>
 <!--        <li class="list-group-item">Two</li>
@@ -195,6 +216,7 @@ function mostrar_ocultar(){
   </div>
 </div>  
 <!-------------------- fin inicio collapse ---------------------->
+
 
 <!--------------------- FIN CABERECA -------------------------->
 

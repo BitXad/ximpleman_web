@@ -218,16 +218,17 @@ function tablaproductos()
                         html = "";
                         html += "<table class='table table-striped table-condensed' id='mitablaventas'>";
                         html += "                    <tr>";
-                        html += "                            <th>#</th>";
-                        html += "                            <th>Descripción</th>";
-//                        html += "                            <th>Código</th>";
-                        html += "                            <th>Cant.</th>";
-                        html += "                            <th>Precio</th>";
-//                        html += "                            <th>Sub <br> Total</th>";
-//                        html += "                            <th>Moneda</th>";
-//                        html += "                            <th>Foto</th>";
-                        html += "                            <th>Precio<br>Total</th>";
-                        html += "                            <th> </th>";
+                        html += "                            <th style='padding:0'>#</th>";
+                        html += "                            <th style='padding:0'>Descripción</th>";
+                        
+                        if(esMobil()){
+                            html += "                            <th style='padding:0'>Precio<br>Cant.</th>";                            
+                        }else{
+                            html += "                            <th style='padding:0'>Cant.</th>";                    
+                            html += "                            <th style='padding:0'>Precio</th>";
+                            html += "                            <th style='padding:0'>Precio<br>Total</th>";
+                        } 
+                        html += "                            <th style='padding:0'><button onclick='quitartodo()' class='btn btn-danger btn-xs' title='Vaciar el detalle de la venta'><span class='fa fa-trash'></span><b></b></button></th>";
                         html += "                    </tr>";                
                         html += "                    <tbody class='buscar2'>";
 
@@ -242,21 +243,12 @@ function tablaproductos()
                         //alert(registros[i]["categoria_id"]-1);
                         categoria = "";
                         
-//                        if ( Number(registros[i]["categoria_id"])>0){
-//                        
-//                            if ((registros[i]["categoria_id"] - 1)<=categ.length){                               
-//                                categoria = categ[registros[i]["categoria_id"]-1]["categoria_nombre"]; 
-//                            }
-//                       }
-
-                        //alert(categoria);
-
                            cont = cont+1;
                            cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
                            total_detalle+= parseFloat(registros[i]["detalleven_total"]);
                            
-                            if (i == 0) color = "style='background-color: GoldenRod'"
-                            else color = '';
+                            if (i == 0) color = "style='background-color: GoldenRod; padding:0;'"
+                            else color = "style='padding:0'";
                             
                         html += "                    <tr>";
                         html += "			<td "+color+">"+cont+"</td>";
@@ -296,7 +288,8 @@ if (registros[i]["detalleven_envase"] == 1){
     
     html += "<br>";
     html += "<table id='mitabla'>";
-    html += "<tr  style='padding: 0;'>";
+    
+    html += "<tr >";
     
         html += "<th style='padding: 0;' colspan='2'> Prestar</th>";    
 //        html += "<th style='padding: 0;'></th>";
@@ -334,13 +327,31 @@ html += "  </div>";
 //************************ FIN INICIO CARACTERISTICAS ***************************
                        
                        html += "                       </td>";
+
+                    if (esMobil()){    
                         
-//                        html += "                       <td align='center' "+color+">";
-//                        html += "                           <b><font size=1>"+registros[i]["producto_codigo"]+"</font></b><br>";
-//                        html += "                           <small> "+registros[i]["producto_codigobarra"]+"</small>";
-//                        html += "                       </td>";
+                        html += " <td align='center'"+color+"> ";
+                     
+                        html += "                    <div class='btn-group'>      ";                           
+                        html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
+                        //html += "                              		<span class='btn btn-default  btn-xs'> "+registros[i]["detalleven_cantidad"]+"</span>";
                         
-                        html += "			<td align='center' width='120' "+color+"> ";
+                        html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
+                        //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
+                        html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
+                        html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
+                        html += "                    </div>";
+
+                        html += "<input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+                        html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font>";
+                        html += "</td>";
+                        html += "			<td "+color+">";
+                        html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
+                        html += "                        </td>";                        
+                    }
+                    else{
+                        
+                        html += " <td align='center' width='120' "+color+"> ";
                      
                         html += "                    <div class='btn-group'>      ";                           
                         html += "			<button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";                       
@@ -354,31 +365,37 @@ html += "  </div>";
 
                     
 
-                        html += "                       </td>";
-                        html += "			<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "</td>";
+                        html += "<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font></td>";
-//                        html += "			<td>"+registros[i]["producto_foto"]+"</td>";
-//                        html += "			<td>"+registros[i]["detalleven_comision"]+"</td>";
-//                        html += "			<td>"+registros[i]["detalleven_tipocambio"]+"</td>";
+
                         html += "			<td "+color+">";
-//                        html += "                            <a href='"+base_url+"producto/edit"+registros[i]["producto_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a> ";
-//                        html += "                            <a href='"+base_url+"venta/eliminaritem/"+registros[i]["detalleven_id"]+"' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a>";
-//                        html += "                            <a href='"+base_url+"producto/edit"+registros[i]["producto_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a> ";
                         html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
                         html += "                        </td>";
                         html += "                    </tr>";  
+                        
+                    }                                              
 
                    }
                  
                    html += "                    </tbody>";
                    html += "                    <tr>";
-                   html += "                            <th></th>";
-                   html += "                            <th></th>";
-                   //html += "                            <th></th>";
-                   html += "                            <th><font size='3'>"+cant_total.toFixed(2)+"</font></th>";
-                   html += "                            <th></th>"; 
-                   html += "                            <th><font size='3'>"+total_detalle.toFixed(2)+"</font></th>";
-                   html += "                            <th></th> ";                                       
+                   
+                   if (esMobil()){                       
+                        html += "                            <th style='padding:0'></th>";
+                        //html += "                            <th style='padding:0'></th>";
+                        html += "                            <th colspan=2 style='padding:0' align='right'><font size='1'> Producto(s): "+cant_total.toFixed(2)+"</font><br><font size='3'>Total Bs.: "+total_detalle.toFixed(2)+"</font></th>";
+                        html += "                            <th style='padding:0'></th> ";                                       
+                   }
+                   else{                       
+                        html += "                            <th style='padding:0'></th>";
+                        html += "                            <th style='padding:0'></th>";
+                        html += "                            <th style='padding:0'><font size='3'>"+cant_total.toFixed(2)+"</font></th>";
+                        html += "                            <th style='padding:0'></th>"; 
+                        html += "                            <th style='padding:0'><font size='3'>"+total_detalle.toFixed(2)+"</font></th>";
+                        html += "                            <th style='padding:0'></th> ";                                                          
+                   }
                    html += "                    </tr>   ";                 
                    html += "                </table>";
 
@@ -1495,7 +1512,7 @@ function registrarcliente()
                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
                     
                     success:function(respuesta){ 
-                        var datos = JSON.parse(respuesta)
+                        var datos = JSON.parse(respuesta);
                         cliente_id = datos[0]["cliente_id"];
                         
                         //console.log(datos);
