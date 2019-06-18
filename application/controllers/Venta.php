@@ -159,7 +159,6 @@ class Venta extends CI_Controller{
                 ", detalleven_descuento = ".$descuento.
                 ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
                 ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
-                ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
                 "  where producto_id = ".$producto_id." and usuario_id = ".$usuario_id;
         
         $descuento = 0;

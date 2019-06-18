@@ -257,13 +257,13 @@ function mostrar_ocultar(){
             
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria">
+<div class="container" id="categoria" style="padding:0;">
     
-    <span class="badge btn-danger">
+    <span class="badge btn-danger" style="width: 170px;">
     
     
     
-    <select class="bange btn-danger" style="border-width: 0;" onchange="tablaresultados(2)" id="categoria_prod">
+        <select class="bange btn-danger" style="border-width: 0; width:100px;"  onchange="tablaresultados(2)" id="categoria_prod">
                 <option value="0" >Todas las Categorias</option>
         <?php 
             foreach($categoria_producto as $categ){ 
@@ -277,7 +277,7 @@ function mostrar_ocultar(){
     </select>
         <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span>
     </span>
-        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span>Inventario</button>
+        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
        <?php 
             if ($parametro[0]["parametro_agruparitems"] == 1 )
                     { $agrupar = "checked='true'";}
@@ -338,13 +338,15 @@ function mostrar_ocultar(){
     <div class="col-md-6" id="divventas0" style="display:block;">
         <div class="row">
             
-            <div class="col-md-8">
+            <div class="col-md-8" style="padding:0;">
             <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código">
                   </div>
             
-    
+            <center>
+                
+                
             <!--------------- botones ---------------------->
             <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>            
                     <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
@@ -354,12 +356,13 @@ function mostrar_ocultar(){
                     <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
             <?php } ?>            
            
-            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> 
+<!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
             <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span><b> - 0 -</b></button> 
             <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money'></span><b> costo</b></button> 
             <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
             
+            </center>
             <!--------------- fin botones ---------------------->
             
             <!--------------------- fin parametro de buscador ---------------------> 
@@ -395,22 +398,26 @@ function mostrar_ocultar(){
         </div>
         
         <!----------------------------------- BOTONES ---------------------------------->
-        <div class="col-md-12">
+        <?php 
+        $ancho_boton = 100; 
+        $alto_boton = 120; 
+        
+        ?>
+        <div class="col-md-12" style="padding:0;">
 
             <center>
 
-            <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-                <i class="fa fa-money fa-4x"></i><br><br>
-               Finalizar Venta <br>
+            <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
             </a>
 
-            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;">
+            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>
 
             <?php if ($tipousuario_id == 1){ ?>
-            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+            <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir <br>
             </a>    
@@ -864,7 +871,7 @@ function mostrar_ocultar(){
                     
                         
                         <div class="box-body table-responsive">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
 						<label for="usuario_idx" class="control-label">Usuario</label>
 						<div class="form-group">
 							<select name="usuario_idx" id="usuario_idx" class="form-control">
@@ -880,17 +887,29 @@ function mostrar_ocultar(){
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-6" id='botones'  style='display:block;'>
+                                        
+                                        <div class="col-md-4">
+						<label for="asignacion_fecha" class="control-label">Fecha</label>
+						<div class="form-group">
+                                                    
+                                                    <input type="date" name="asignacion_fecha" id="asignacion_fecha" value="<?php echo date('Y-m-d'); ?>" class="form-control">
+								
+						</div>
+					</div>
+                                        
+                                        <div class="col-md-4" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
+                                                    <center>
                                                         
-                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
-                                                    
-                                                    <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
-                                                        
-                                                        <span class="fa fa-close"></span>   Cancelar  
-                                                        
-                                                    </button>
+                                                        <button class="btn btn-facebook" id="boton_asignar" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
+
+                                                        <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
+
+                                                            <span class="fa fa-close"></span>   Cancelar  
+
+                                                        </button>
+                                                    </center>
 						</div>
 					</div>
                             
