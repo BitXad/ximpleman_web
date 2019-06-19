@@ -84,7 +84,6 @@ class Categoria_clientezona_model extends CI_Model
                 and cc.estado_id = 1
                 
         ")->result_array();
-
         return $categoriacliezona;
     }
     /*
@@ -95,7 +94,6 @@ class Categoria_clientezona_model extends CI_Model
         $clientezona = $this->db->query("
             SELECT
                 *
-
             FROM
                 zona cc, estado e
 
@@ -107,5 +105,13 @@ class Categoria_clientezona_model extends CI_Model
         ")->result_array();
 
         return $clientezona;
+    }
+
+    function get_cliente_zona($cliente_id)
+    {
+        $sql = "select z.* from zona z,cliente c where c.cliente_id = ".$cliente_id." and c.zona_id = z.zona_id";
+        $zona = $this->db->query($sql)->result_array();
+        return $zona;
+        
     }
 }

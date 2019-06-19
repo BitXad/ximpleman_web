@@ -85,16 +85,7 @@ $(document).ready(localize());
             <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo'];?> <br>
             <b>Dirección: </b><?php echo $pedido[0]['cliente_direccion']; ?><br>
             <b>Teléfono(s): </b><?php echo $pedido[0]['cliente_telefono']." ".$pedido[0]['cliente_celular']; ?><br>
-            <b>Zona: </b><?php echo $pedido[0]['zona_id']; ?><br>
-            
-            
-<!--            <select >
-                <?php
-                    foreach($zona as $z){ ?>
-                        <option value="<?php echo $z['zona_id']; ?>"><?php echo $z['zona_id']; ?></option>                        
-                <?php } ?>
-                
-            </select>-->
+            <b>Zona: </b><?php  if(sizeof($zona)>0){ echo $zona[0]["zona_nombre"]; }else{ echo "NO DEFINIDO"; } ?><br>
             <br>
 
         <?php //$descuento =  "<script>descuento</script>"; ?>

@@ -17,6 +17,7 @@ class Pedido extends CI_Controller{
         $this->load->model('Tipo_transaccion_model');
         $this->load->model('Venta_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Categoria_clientezona_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -183,13 +184,20 @@ class Pedido extends CI_Controller{
         
         
             if ($cliente_id == 0) //si el pedido aun no fue registrado a un cliente
-            {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); }
+            {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); 
+                // $data['zona'] =  array(0 => array("zona_nombre" =>"NO DEFINIDO"));
+            
+            }
             else
-            {    $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); }
+            {    $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); 
+                 $data['zona'] = $this->Categoria_clientezona_model->get_cliente_zona($pedido[0]['cliente_id']);
+            }
 
             $data['pedido_id'] = $pedido_id;
-           // $data['detalle_pedido'] = $this->Pedido_model->get_detalle_pedido($pedido_id);
-            $data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
+            
+            
+           
+            //$data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
             $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
 
             $data['_view'] = 'pedido/pedidoabierto';
