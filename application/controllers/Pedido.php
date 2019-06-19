@@ -185,7 +185,6 @@ class Pedido extends CI_Controller{
         
             if ($cliente_id == 0) //si el pedido aun no fue registrado a un cliente
             {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); 
-                // $data['zona'] =  array(0 => array("zona_nombre" =>"NO DEFINIDO"));
             
             }
             else

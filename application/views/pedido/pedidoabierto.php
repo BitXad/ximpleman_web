@@ -85,7 +85,7 @@ $(document).ready(localize());
             <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo'];?> <br>
             <b>Dirección: </b><?php echo $pedido[0]['cliente_direccion']; ?><br>
             <b>Teléfono(s): </b><?php echo $pedido[0]['cliente_telefono']." ".$pedido[0]['cliente_celular']; ?><br>
-            <b>Zona: </b><?php  if(sizeof($zona)>0){ echo $zona[0]["zona_nombre"]; }else{ echo "NO DEFINIDO"; } ?><br>
+            <b>Zona: </b><?php  if(isset($zona)){ echo $zona[0]["zona_nombre"]; }else{ echo "NO DEFINIDO"; } ?><br>
             <br>
 
         <?php //$descuento =  "<script>descuento</script>"; ?>
