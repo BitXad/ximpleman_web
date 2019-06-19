@@ -52,17 +52,23 @@
                     <tr>
 						<td><?php echo $cont; ?></td>
                         <td><?php echo $c['cotizacion_cliente']; ?></td>
-						<td><?php echo $c['cotizacion_fecha']; ?></td>
-						<td><?php echo $c['cotizacion_validez']; ?></td>
-						<td><?php echo $c['cotizacion_formapago']; ?></td>
-						<td><?php echo $c['cotizacion_tiempoentrega']; ?></td>
-						<td><?php echo $c['cotizacion_fechahora']; ?></td>
-						<td><?php echo $c['cotizacion_total']; ?></td>
+                        <td><?php echo $c['cotizacion_fecha']; ?></td>
+                        <td><?php echo $c['cotizacion_validez']; ?></td>
+                        <td><?php echo $c['cotizacion_formapago']; ?></td>
+                        <td><?php echo $c['cotizacion_tiempoentrega']; ?></td>
+                        <td><?php echo $c['cotizacion_fechahora']; ?></td>
+                        <td><?php echo $c['cotizacion_total']; ?></td>
                         <td><?php echo $c['usuario_nombre']; ?></td>
-						<td>
+                        <td>
+                            <?php if($rol[38-1]['rolusuario_asignado'] == 1){ ?>
                             <a href="<?php echo site_url('cotizacion/add/'.$c['cotizacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                            <?php }
+                            if($rol[39-1]['rolusuario_asignado'] == 1){ ?>
                             <a href="<?php echo site_url('cotizacion/cotizarecibo/'.$c['cotizacion_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a> 
+                            <?php }
+                            if($rol[40-1]['rolusuario_asignado'] == 1){ ?>
                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <?php }?>
                              <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                                       <div class="modal-dialog" role="document">

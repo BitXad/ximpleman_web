@@ -39,7 +39,8 @@ class Ingreso extends CI_Controller{
     function index()
     {
          if($this->acceso(53)){
-                $usuario_id = $this->session_data['usuario_id'];
+            $usuario_id = $this->session_data['usuario_id'];
+            $data['rol'] = $this->session_data['rol'];
         $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
         $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
         $data['page_title'] = "Ingreso";
@@ -200,6 +201,7 @@ public function boucher($ingreso_id){
      */
     function remove($ingreso_id)
     {
+        if($this->acceso(56)){
         $ingreso = $this->Ingreso_model->get_ingreso($ingreso_id);
 
         // check if the ingreso exists before trying to delete it
@@ -210,6 +212,7 @@ public function boucher($ingreso_id){
         }
         else
             show_error('The ingreso you are trying to delete does not exist.');
+        }
     }
     
     public function convertir()

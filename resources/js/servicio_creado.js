@@ -2002,8 +2002,8 @@ function seleccionar_subcategoria(){
                 if (tam>=1){
                     $("#subcatserv_id").val(resultado[0]["subcatserv_descripcion"]);
                     $("#estesubcatserv_id").val(resultado[0]["subcatserv_id"]);
-                   var res = $("#detalleserv_descripcion").val();
-                   $('#detalleserv_total').val(resultado[0]['subcatserv_precio']);
+                    var res = $("#detalleserv_descripcion").val();
+                    $('#detalleserv_total').val(resultado[0]['subcatserv_precio']);
                     $('#detalleserv_saldo').val(resultado[0]['subcatserv_precio']);
                     $("#detalleserv_descripcion").val(res+" "+resultado[0]["subcatserv_descripcion"]);
                     $('#detalleserv_descripcion').focus();

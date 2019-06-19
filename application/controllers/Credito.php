@@ -62,6 +62,7 @@ class Credito extends CI_Controller{
         if($this->acceso(41) && $tipo_usuario>1 && $permiso==2){
             $condicion = " and co.usuario_id=".$usuario_id."";
             $data['page_title'] = "Deudas x Pagar";
+            $data['rol'] = $this->session_data['rol'];
             $data['credito'] = $this->Credito_model->get_all_deuda($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexDeuda';
@@ -70,6 +71,7 @@ class Credito extends CI_Controller{
         else{
             $condicion = "";
             $data['page_title'] = "Deudas x Pagar";
+            $data['rol'] = $this->session_data['rol'];
             $data['credito'] = $this->Credito_model->get_all_deuda($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexDeuda';
@@ -114,6 +116,7 @@ class Credito extends CI_Controller{
          if($this->acceso(47) && $tipo_usuario>1 && $permiso==2){
             $condicion = " and ve.usuario_id=".$usuario_id." or s.usuario_id=".$usuario_id." ";
             $data['page_title'] = "Cuentas x Cobrar";
+            $data['rol'] = $this->session_data['rol'];
             $data['credito'] = $this->Credito_model->get_all_cuentas($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexCuentas';
@@ -123,6 +126,7 @@ class Credito extends CI_Controller{
            $condicion = "";
            
             $data['page_title'] = "Cuentas x Cobrar";
+            $data['rol'] = $this->session_data['rol'];
             $data['credito'] = $this->Credito_model->get_all_cuentas($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexCuentas';

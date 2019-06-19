@@ -46,8 +46,9 @@ class Cuotum extends CI_Controller{
 
     function deudas($credito_id)
     {
-        if($this->acceso(41)){
+        if($this->acceso(42)){
             $data['page_title'] = "Cuota";
+            $data['rol'] = $this->session_data['rol'];
             $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
             $data['credito'] = $this->Credito_model->dato_deudas($credito_id);
             $data['_view'] = 'cuotum/deudas';
@@ -57,7 +58,7 @@ class Cuotum extends CI_Controller{
 
     function planDeuda($credito_id)
     {
-        if($this->acceso(41)){
+        if($this->acceso(42)){
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['cuota'] = $this->Cuotum_model->get_all_deuda($credito_id);
@@ -69,8 +70,9 @@ class Cuotum extends CI_Controller{
     
     function cuentas($credito_id)
     {
-        if($this->acceso(47)){
+        if($this->acceso(48)){
             $data['page_title'] = "Plan de pagos";
+            $data['rol'] = $this->session_data['rol'];
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
             $data['_view'] = 'cuotum/cuentas';
@@ -89,7 +91,7 @@ class Cuotum extends CI_Controller{
     }
     function planCuenta($credito_id)
     {
-        if($this->acceso(47)){
+        if($this->acceso(48)){
             $data['page_title'] = "Cuota";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);

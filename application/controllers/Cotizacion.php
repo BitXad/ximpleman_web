@@ -34,6 +34,7 @@ class Cotizacion extends CI_Controller{
     {
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
+            $data['rol'] = $this->session_data['rol'];
             $data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
 
             $data['_view'] = 'cotizacion/index';
@@ -43,7 +44,7 @@ class Cotizacion extends CI_Controller{
 
     function creacotizacion()
     {
-        if($this->acceso(36)){
+        if($this->acceso(37)){
             $usuario_id = $this->session_data['usuario_id'];
             $cotizacion_id = $this->Cotizacion_model->crear_cotizacion($usuario_id);        
             redirect('cotizacion/add/'.$cotizacion_id);
@@ -54,7 +55,7 @@ class Cotizacion extends CI_Controller{
      */
     function add($cotizacion_id)
     {
-        if($this->acceso(36)){
+        if($this->acceso(37)){
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
             $data['cotizacion_id'] = $cotizacion_id; 
