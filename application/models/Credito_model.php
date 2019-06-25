@@ -69,15 +69,16 @@ class Credito_model extends CI_Model
     {
         $deuda = $this->db->query("
             SELECT
-                c.*, p.*, co.*, e.*
+                c.*, p.*, co.*, e.*, u.*
 
             FROM
-                credito c, proveedor p, compra co, estado e
+                credito c, proveedor p, compra co, estado e, usuario u
 
             WHERE
                 c.compra_id = co.compra_id
                 and p.proveedor_id = co.proveedor_id
                 and c.estado_id = e.estado_id
+                and co.usuario_id = u.usuario_id
                 ".$filtro."
                 ".$condicion." 
 
@@ -116,7 +117,7 @@ class Credito_model extends CI_Model
         $deuda = $this->db->query("
 
            SELECT
-                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre
 
             FROM
                 credito c
@@ -126,6 +127,7 @@ LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
 LEFT JOIN estado e on c.estado_id = e.estado_id
 LEFT JOIN servicio s on c.servicio_id = s.servicio_id
 LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
+LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
 
 
 
@@ -221,16 +223,17 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
         
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, co.*, e.*
+                c.*, p.*, co.*, e.*, u.*
 
             FROM
-                credito c, proveedor p, compra co, estado e
+                credito c, proveedor p, compra co, estado e, usuario u
 
             WHERE
                 c.compra_id = co.compra_id
                 and p.proveedor_id = co.proveedor_id
                 and c.estado_id = e.estado_id
                 and c.estado_id = 8
+                and co.usuario_id = u.usuario_id
                 ".$condicion."
 
 
@@ -247,13 +250,14 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
         
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, co.*, e.*
+                c.*, p.*, co.*, e.*, u.*
 
             FROM
                 credito c
                 LEFT JOIN compra co on c.compra_id=co.compra_id
                 LEFT JOIN proveedor p on co.proveedor_id=p.proveedor_id
                 LEFT JOIN estado e on c.estado_id=e.estado_id
+                LEFT JOIN usuario u on co.usuario_id=u.usuario_id
 
             WHERE
                 
@@ -273,7 +277,8 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
         
         $credito = $this->db->query("
               SELECT
-                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id as ususer
+                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id as ususer, ve.usuario_id, u.usuario_nombre
+
 
             FROM
                 credito c
@@ -283,6 +288,7 @@ LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
 LEFT JOIN estado e on c.estado_id = e.estado_id
 LEFT JOIN servicio s on c.servicio_id = s.servicio_id
 LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
+LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
 
             WHERE
                  c.estado_id = 8
@@ -300,7 +306,7 @@ LEFT JOIN cliente r on s.cliente_id = r.cliente_id
         
         $credito = $this->db->query("
               SELECT
-                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro
+                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro, u.usuario_nombre
 
             FROM
                 credito c
@@ -310,6 +316,7 @@ LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
 LEFT JOIN estado e on c.estado_id = e.estado_id
 LEFT JOIN servicio s on c.servicio_id = s.servicio_id
 LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
+LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
 
             WHERE
                 ".$filtro."

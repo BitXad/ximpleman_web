@@ -63,7 +63,7 @@ function tabladeudas(filtro)
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                         total += Number(registros[i]["credito_monto"]);
                         //total_detalle = Number(subtotal-descuento); 
-                        html += "<tr>";
+                        html += "<tr>"; 
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>"+registros[i]['proveedor_nombre']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['compra_id']+"</td>";
@@ -74,7 +74,7 @@ function tabladeudas(filtro)
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_tipo']+"</td>";
+                        html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
                         html += "<td><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planDeuda/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
 }
@@ -171,7 +171,7 @@ function tablacuentas(filtro)
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_tipo']+"</td>";
+                        html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
                         if (registros[i]['venta_id']>0) {
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";

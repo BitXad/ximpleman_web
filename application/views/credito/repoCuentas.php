@@ -106,6 +106,7 @@
                         <th>CANCELADO<br>a CTTA</th>
                         <th>SALDO<br>TOTAL</th>
                         <th>TELEFONO(s)</th>
+                        <th>USUARIO</th>
 						
                     </tr>
                     <tbody class="buscar" id="tabladeudas">
@@ -131,6 +132,7 @@
                         $cancelado+=$k['cuota_cancelado'];  }  } echo  number_format($cancelado, 2, ".", ",");  $totalCancelados+=$cancelado; ?></td>
                         <td style="text-align: right;"><?php $saldo=$c['credito_monto']-$cancelado; echo number_format($saldo, 2, ".", ","); $totalSaldos+=$saldo; ?></td>
 						<td style="text-align: center;"><?php echo $c['cliente_telefono']; ?><?php if($c['cliente_celular']!=NULL && $c['cliente_telefono']!=NULL){ ?> - <?php echo $c['cliente_celular'];} else { echo $c['cliente_celular']; } ?></td>
+                        <td ><?php echo $c['usuario_nombre']; ?></td>
 						
                     </tr>
                     <?php } ?>
