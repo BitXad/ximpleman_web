@@ -17,7 +17,9 @@ function mostrar_ocultar_buscador(parametro){
 
 function tabla_pedidos(filtro)
 {   
-    var base_url    = document.getElementById('base_url').value;
+    var base_url        = document.getElementById('base_url').value;
+    var esrol           = document.getElementById('esrol').value;
+    var esrolconsolidar = document.getElementById('esrolconsolidar').value;
     var controlador = base_url+"pedido/mostrar_pedidos";
     //var forma_pago =  document.getElementById('forma_pago').value;
 
@@ -109,10 +111,10 @@ function tabla_pedidos(filtro)
                             html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
                         }
                         else{
-                            
                         html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
-                        html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
-
+                        if(esrol == 1){
+                            html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
+                        }
                  // ****************************** anular pedido ***************************************
                         html += "       <button type='button' class='btn btn-danger btn-sm'  title='Anular pedido' data-toggle='modal' data-target='#modalanular"+p[i]["pedido_id"]+"'> ";
                         html += "           <span class='fa fa-trash'></span> ";
@@ -153,10 +155,11 @@ function tabla_pedidos(filtro)
                         
                 // ****************************** fin anular pedido ***************************************
                  // ****************************** consolidar pedido a ventas ***************************************
+                        if(esrolconsolidar == 1){
                         html += "   <button type='button' class='btn btn-facebook btn-sm' data-toggle='modal'  title='Consolida Pedido' data-target='#modalconsolidar"+p[i]["pedido_id"]+"'> ";
                         html += "           <span class='fa fa-cart-plus'></span>  ";
                         html += "      </button>  ";
-  
+                        }
                 
                       //  htmt += "<!----------------------------------------  Modal -------------------------------------------------> ";
                 

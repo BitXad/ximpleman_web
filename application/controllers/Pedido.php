@@ -55,7 +55,9 @@ class Pedido extends CI_Controller{
 //        $config['base_url'] = site_url('pedido/index?');
 //        $config['total_rows'] = $this->Pedido_model->get_all_pedido_count();
 //        $this->pagination->initialize($config);
-        
+        $rolusuario = $this->session_data['rol'];
+        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
         
         $data['page_title'] = "Pedidos";
         $data['usuario'] = $this->Usuario_model->get_todos_usuario();
@@ -169,7 +171,7 @@ class Pedido extends CI_Controller{
      */
     function pedidoabierto($pedido_id)
     {
-        if($this->acceso(30)) {
+        if($this->acceso(31)) {
         //**************** inicio contenido ***************            
         
         $data['page_title'] = "Pedidos";

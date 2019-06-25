@@ -395,9 +395,10 @@ class Cliente extends CI_Controller{
                 show_error('The cliente you are trying to edit does not exist.');
         }
     }
+    //modificar clientes en pedidos
     function modificar_cliente($cliente_id,$pedido_id)
     {
-        if($this->acceso(98)){
+        if($this->acceso(31)){
             $data['page_title'] = "Cliente";
         // check if the cliente exists before trying to edit it
         $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
@@ -1023,11 +1024,11 @@ class Cliente extends CI_Controller{
     
    
     /*
-    * buscar clientes
+    * buscar clientes para pedido //://-->para pedidos
     */
     function buscarclientes_pedido()
     {
-        if($this->acceso(94)){
+        //if($this->acceso(31)){
             if ($this->input->is_ajax_request()) {
                 $parametro = $this->input->post('parametro');
 
@@ -1041,7 +1042,7 @@ class Cliente extends CI_Controller{
             {                 
                 show_404();
             }
-        }
+        //}
     }
         
 }
