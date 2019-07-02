@@ -122,7 +122,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 </div>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="compra_idie" id="compra_idie" value="<?php echo $compra_id; ?>">
-<input type="hidden" name="bandera" id="bandera" value="<?php echo $bandera; ?>"> 
+<input type="hidden" name="bandera" id="bandera" value="<?php echo $bandera; ?>">
+<input type="hidden" name="modificar_detalle" id="modificar_detalle" value="<?php echo $rolusuario[6-1]['rolusuario_asignado']; ?>">
+<input type="hidden" name="eliminar_detalle" id="eliminar_detalle" value="<?php echo $rolusuario[7-1]['rolusuario_asignado']; ?>">
 
 <div class="container">
    
@@ -224,15 +226,18 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <span style="margin-right: 40%">Buscar Productos</span>  
          <label class="btn btn-info btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar detalle</label>  
                 <?php if($bandera==1) { ?>
-                    
+                <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1){ ?> 
                 <a href="#" data-toggle="modal" data-target="#anularmodal" class="btn btn-xs btn-warning" >
                 <i class="fa fa-minus-circle "></i>
                Anular Compra 
             </a>
+            <?php } ?>
+            <?php if($rolusuario[9-1]['rolusuario_asignado'] == 1){ ?> 
             <a href="#" data-toggle="modal" data-target="#cambiarfecha" class="btn btn-xs btn-facebook" >
                 <i class="fa fa-calendar "></i>
                Reestablecer Fecha 
             </a>
+            <?php } ?>
              <!---------------------------------MODAL DE CAMBIAR FECHA------------------------->
 
   <div class="modal fade" id="cambiarfecha" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -289,7 +294,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         
  <?php  } ?>
 <?php if($bandera!=1) { ?>
-
+<?php if($rolusuario[5-1]['rolusuario_asignado'] == 1){ ?>
 <?php $provi = $compra[0]['proveedor_id']; 
  
     if($provi==0) { ?>
@@ -305,6 +310,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                Finalizar compra 
             </a></label>
  <?php  }  } ?>
+ <?php  } ?>
              
 
              <a href="#" data-toggle="modal" data-target="#aviso" class="btn btn-xs btn-danger" >
@@ -383,7 +389,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
          <div class="col-md-8" style="padding-left:0px; padding-right:0px;">
     <!--------------------- parametro de buscador --------------------->
               <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el compra, producto, costo"> 
+                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la compra, producto, costo"> 
               </div>
                 
         <!--------------------- fin parametro de buscador --------------------->
@@ -403,7 +409,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <th>Desc. U.</th>
                             <th>D.Glo</th>
                             <th>Total</th>
+                            <?php if($rolusuario[7-1]['rolusuario_asignado'] == 1){ ?>
                             <th colspan="2"><a  onclick="borrartodo()" class="btn btn-xs btn-danger" ><i class="fa fa-trash "></i><br>Todo</a></th>
+                            <?php }else{ echo "<th colspan='2'></th>"; } ?>
                     </tr>
                     <tbody class="buscar" id="detallecompringa">
                   

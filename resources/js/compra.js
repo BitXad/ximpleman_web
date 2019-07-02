@@ -54,6 +54,8 @@ function tabladetallecompra(){
      var base_url = document.getElementById('base_url').value;
      var compra_id = document.getElementById('compra_idie').value;
      var bandera = document.getElementById('bandera').value;
+     var modificar_detalle = document.getElementById('modificar_detalle').value;
+     var eliminar_detalle = document.getElementById('eliminar_detalle').value;
      controlador = base_url+'compra/detallecompra/';
 
      $.ajax({url: controlador,
@@ -114,14 +116,21 @@ function tabladetallecompra(){
                         html += "<font size='2'> <b>"+Number(registros[i]["detallecomp_total"]).toFixed(2)+"</b></font> <br>";
                         html += "</span></center></td>";
                         ////////////////////////////formu////////////////
-                        html += "<td style='padding-left:4px; padding-right:4px;'><button type='button' onclick='editadetalle("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='btn btn-success btn-sm'><span class='fa fa-save'></span></button>";
-
+                        html += "<td style='padding-left:4px; padding-right:4px;'>";
+                        if(modificar_detalle == 1){
+                            html += "<button type='button' onclick='editadetalle("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='btn btn-success btn-sm'><span class='fa fa-save'></span></button>";
+                        }
+                        html += "</td>";
                         ////////////////////////////////fin fotmu//////////////////////
                         //html += "<td><form action='"+base_url+"detalle_compra/quitar/"+registros[i]["detallecomp_id"]+"/"+compra_id+"'  method='POST' class='form'>";
                         //html += "<input id='bandera' class='form-control' name='bandera' type='hidden' value='"+bandera+"' />";
                         //html += "<button type='submit' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button>";
-                        html += "<td style='padding-left:4px; padding-right:4px;'><button type='button' onclick='quitardetalle("+registros[i]["detallecomp_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button>";
-                        html += "</form></td>";
+                        html += "<td style='padding-left:4px; padding-right:4px;'>";
+                        if(eliminar_detalle == 1){
+                            html += "<button type='button' onclick='quitardetalle("+registros[i]["detallecomp_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button>";
+                        }
+                        //html += "</form></td>";
+                        html += "</td>";
                     }
                    $("#detallecompringa").html(html);
                    tablatotales(total_detalle,descuento,subtotal);
