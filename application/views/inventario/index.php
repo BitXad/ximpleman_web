@@ -45,8 +45,11 @@
             <div class="box-tools no-print">
             
                 <button class="btn btn-success btn-sm" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Actualizar</button>
+                <?php if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-primary btn-sm" onclick="tabla_inventario()"><span class="fa fa-list"></span> Mostrar todo</button>
+                <?php } if($rolusuario[28-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-facebook btn-sm" onclick="mostrar_duplicados()"><span class="fa fa-copy"></span> Prod. Duplicados</button>
+                <?php } ?>
 
             </div>
 </div>
