@@ -109,7 +109,7 @@ class Venta extends CI_Controller{
         
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
-        
+        $data['rolusuario'] = $this->session_data['rol'];
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
@@ -170,7 +170,7 @@ class Venta extends CI_Controller{
         $resultado = $this->Venta_model->consultar($sql);
         
         
-        if ($resultado[0]['res<ultado']==0){ //si la cantidad aun es menor al inventario
+        if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
             
             if($agrupado==1){
                 
