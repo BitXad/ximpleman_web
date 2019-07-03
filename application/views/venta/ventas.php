@@ -348,20 +348,29 @@ function mostrar_ocultar(){
                 
                 
             <!--------------- botones ---------------------->
-            <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>            
+            <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>
+                <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
                     <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
-            <?php } ?>            
+                <?php }
+                } ?>
                     
             <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
                     <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
             <?php } ?>            
            
 <!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
+            <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
+            <?php }
+            if($rolusuario[15-1]['rolusuario_asignado'] == 1){ ?>
             <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span><b> - 0 -</b></button> 
+            <?php }
+            if($rolusuario[16-1]['rolusuario_asignado'] == 1){ ?>
             <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money'></span><b> costo</b></button> 
+            <?php }
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
             <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
-            
+            <?php } ?>
             </center>
             <!--------------- fin botones ---------------------->
             
@@ -406,17 +415,18 @@ function mostrar_ocultar(){
         <div class="col-md-12" style="padding:0;">
 
             <center>
-
+            <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Venta <br>
             </a>
+            <?php } ?>
 
             <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>
 
-            <?php if ($tipousuario_id == 1){ ?>
+            <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
                Salir <br>
@@ -627,7 +637,7 @@ function mostrar_ocultar(){
                 <tr style="padding: 0">                      
                     <td style="padding: 0"><b>Cambio Bs</b></td>
                         <td align="right" style="padding: 0;">
-                            <input class="btn btn-danger  btn-foursquarexs; " style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
+                            <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
                 </tr>
                 

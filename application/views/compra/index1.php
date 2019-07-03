@@ -94,12 +94,14 @@
                 <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor" onkeypress="validacompra(event,4)" >
             </div></div>
             <div class="col-md-4 no-print">
+                <?php if($rolusuario[11-1]['rolusuario_asignado'] == 1){ ?>
                 <select  class="btn btn-primary btn-sm"  id="select_compra" onchange="buscar_compras()">
-                <option value="1">Compras de Hoy</option>
-                <option value="2">Compras de Ayer</option>
-                <option value="3">Compras de la semana</option>
-                <option value="5">Compras por fecha</option>
-            </select>  
+                    <option value="1">Compras de Hoy</option>
+                    <option value="2">Compras de Ayer</option>
+                    <option value="3">Compras de la semana</option>
+                    <option value="5">Compras por fecha</option>
+                </select>
+                <?php }?>
             </div>
             
         <!--este es FIN de input buscador-->
@@ -120,7 +122,9 @@
         <center>            
             <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
             <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            <?php if($rolusuario[10-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <?php } ?>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
         </center>            
     </div>

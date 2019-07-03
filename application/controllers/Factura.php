@@ -98,7 +98,7 @@ class Factura extends CI_Controller{
     function factura_carta($venta_id)
     {
         
-        if($this->acceso(154)){
+        if($this->acceso(17)){
         //**************** inicio contenido ***************   
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -158,7 +158,7 @@ class Factura extends CI_Controller{
     
     function factura_boucher($venta_id)
     {
-        if($this->acceso(154)){
+        if($this->acceso(17)){
         //**************** inicio contenido ***************           
     
         $usuario_id = $this->session_data['usuario_id'];
@@ -221,7 +221,7 @@ class Factura extends CI_Controller{
 
     function recibo_boucher($venta_id)
     {
-        if($this->acceso(154)){
+        if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
         $usuario_id = $this->session_data['usuario_id'];
@@ -274,7 +274,7 @@ class Factura extends CI_Controller{
     
     function recibo_carta($venta_id)
     {
-        if($this->acceso(154)){
+        if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
         $usuario_id = $this->session_data['usuario_id'];
@@ -665,6 +665,7 @@ class Factura extends CI_Controller{
      */
     function verificador()
     {
+        if($this->acceso(154)){
 //        if ($this->session->userdata('logged_in')) {
 //            $this->session_data = $this->session->userdata('logged_in');
 //            if($this->session_data['tipousuario_id']==1 or $this->session_data['tipousuario_id']==4) {
@@ -678,6 +679,7 @@ class Factura extends CI_Controller{
             $data['page_title'] = "Verificador";
             $data['_view'] = 'factura/verificador';
             $this->load->view('layouts/main',$data);
+        }
     }
 
     
@@ -762,7 +764,7 @@ class Factura extends CI_Controller{
      */
     function mensaje($factura_id, $venta_id)
     {
-        if($this->acceso(154)){
+        if($this->acceso(17)){
         //**************** inicio contenido ***************            
         
 
@@ -785,7 +787,7 @@ class Factura extends CI_Controller{
      */
     function imprimir_factura($venta_id)
     {
-        if($this->acceso(154)){
+        if($this->acceso(17)){
         //**************** inicio contenido ***************            
                 
             $parametros = $this->Parametro_model->get_parametros();
@@ -805,7 +807,7 @@ class Factura extends CI_Controller{
 
     function imprimir_recibo($venta_id)
     {
-        if($this->acceso(154)){
+        if($this->acceso(21)){
         //**************** inicio contenido ***************            
                 
             $parametros = $this->Parametro_model->get_parametros();
