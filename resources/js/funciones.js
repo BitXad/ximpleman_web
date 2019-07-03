@@ -2492,6 +2492,7 @@ function registrarcliente_modificado()
     var telefono = document.getElementById('telefono').value;
     var cliente_nombre = document.getElementById('cliente_nombre').value; 
     var cliente_id = document.getElementById('cliente_id').value;
+    var tipocliente_id = document.getElementById('tipocliente_id').value;
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
         //alert("nit:"+nit+",razon:"+razon+",telefono:"+telefono+",cliente_id:"+cliente_id+", cliente_nombre:"+cliente_nombre)
@@ -2500,7 +2501,7 @@ function registrarcliente_modificado()
         
         $.ajax({url: controlador,
                 type:"POST",
-                data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre},
+                data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id},
                 success:function(respuesta){ 
                     var datos = JSON.parse(respuesta)
                     cliente_id = datos[0]["cliente_id"];
@@ -2553,14 +2554,14 @@ function finalizarcambios()
         registrarcliente_modificado();
     }
     else
-    {        
+    {
         var txt;
         var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
         if (r == true) {
           registrarcliente_modificado();
         } 
         //document.getElementById("demo").innerHTML = txt;
-      }                
+    }
 }
 
 function cerrar(){

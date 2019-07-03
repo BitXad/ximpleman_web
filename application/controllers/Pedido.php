@@ -127,7 +127,7 @@ class Pedido extends CI_Controller{
                 $result = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(now()) and p.usuario_id=".$usuario_id);
             }
             else{
-                $result = $this->Pedido_model->get_pedidos($filtro);            
+                $result = $this->Pedido_model->get_pedidos($filtro);
             }
 
            echo json_encode($result);

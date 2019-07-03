@@ -42,12 +42,15 @@
     <?php if($tipousuario_id == 1){ ?>
     <div class="col-md-3">
         <div class="form-group">
-        <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
-                    <option value="<?php echo $usuario_id; ?>"><?php echo $usuario_nombre; ?></option>
+
+            <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
+                    <option value="0"><?php echo "TODOS"; ?></option>
+                    <!--<option value="<?php echo $usuario_id; ?>"><?php echo $usuario_nombre; ?></option>-->
             <?php foreach($usuario as $u){ ?>
                     <option value="<?php echo $u['usuario_id']?>"><?php echo $u['usuario_nombre']?></option>
             <?php } ?>
-        </select>                            
+            </select>
+            
         </div>
     </div>
     <?php } ?>
@@ -63,7 +66,7 @@
             <option value="6">Entregas de Hoy</option>
             <option value="7">Entregas de Ayer</option>
             <option value="8">Entregas de la semana</option>
-            <option value="9">Todos las Entregas</option>
+            <option value="9">Todas las Entregas</option>
             <option value="10">Entregas por fecha</option>
         </select>
     </div>

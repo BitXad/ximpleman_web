@@ -121,6 +121,8 @@ class Venta extends CI_Controller{
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
@@ -710,10 +712,10 @@ function edit($venta_id)
         $venta = $this->Venta_model->get_venta($venta_id);
         
         $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
-        $cliente_id = $venta["cliente_id"];
-       
+        $cliente_id = $venta["cliente_id"];       
         
         $data['page_title'] = "Modificar Venta";
+        
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
@@ -724,6 +726,7 @@ function edit($venta_id)
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;  
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+                
                 
         //**************** inicio contenido ***************     
                 
@@ -1285,7 +1288,6 @@ function modificarcliente()
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
             
             
-            
             if ($cliente_id>0){
                 $sql = "update cliente set ".
                         " cliente_nombre = ".$cliente_nombre.
@@ -1342,17 +1344,13 @@ function modificarcliente()
                 }
                 
             }
-            
-            
 //echo json_encode(true);
             
         }
         else
         {                 
             show_404();
-        }   
-        
-        		
+        }   		
         //**************** fin contenido ***************
         			}
         			
