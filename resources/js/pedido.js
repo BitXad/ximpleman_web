@@ -547,14 +547,17 @@ function buscar_pedidos()
     var controlador = base_url+"pedido";
     var opcion      = document.getElementById('select_pedidos').value;
     var usuario_id  = document.getElementById('usuario_id').value;
-    var por_usuario   = " and p.usuario_id = "+usuario_id+" ";
- 
     
-    if (opcion == 1)
+    var por_usuario = "";
+    
+    if (usuario_id>0){        
+        por_usuario = " and p.usuario_id = "+usuario_id+" ";
+    }
+       
+    if (opcion == 1) //pedidos de hoy
     {
         filtro = " and date(pedido_fecha) = date(now())"+por_usuario;
-        mostrar_ocultar_buscador("ocultar");
-        
+        mostrar_ocultar_buscador("ocultar");        
         
     }//pedidos de hoy
     
@@ -571,7 +574,14 @@ function buscar_pedidos()
     }
     
     if (opcion == 4) 
-    {   filtro = " usuario_id = "+usuario_id+" ";//todos los pedidos
+    {
+        if (usuario_id>0){
+            filtro = " and u.usuario_id = "+usuario_id+" ";//todos los pedidos            
+        }
+        else {
+            filtro = "";
+        }
+        
         mostrar_ocultar_buscador("ocultar");
     }
     
@@ -599,8 +609,8 @@ function buscar_pedidos()
         mostrar_ocultar_buscador("ocultar");
     }
     
-    if (opcion == 9) 
-    {   filtro = " usuario_id = "+usuario_id+" ";//todos los pedidos
+    if (opcion == 9) //todos los pedidos
+    {   filtro = " and u.usuario_id = "+usuario_id+" ";//todos los pedidos
         mostrar_ocultar_buscador("ocultar");
     }
     
@@ -609,7 +619,6 @@ function buscar_pedidos()
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
     }
-
 
     tabla_pedidos(filtro);
 }
@@ -921,5 +930,5 @@ function buscar_por_fecha()
 function cambiar_usuario(){
     var usuario_id = document.getElementById('select_usuarios').value;
     $('#usuario_id').val(usuario_id);
-    
+    buscar_pedidos();
 }

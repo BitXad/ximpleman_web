@@ -85,7 +85,7 @@ $(document).ready(localize());
             <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo'];?> <br>
             <b>Dirección: </b><?php echo $pedido[0]['cliente_direccion']; ?><br>
             <b>Teléfono(s): </b><?php echo $pedido[0]['cliente_telefono']." ".$pedido[0]['cliente_celular']; ?><br>
-            <b>Zona: </b><?php  if(isset($zona)){ echo $zona[0]["zona_nombre"]; }else{ echo "NO DEFINIDO"; } ?><br>
+            <b>Zona: </b><?php  if(isset($zona)){ if (sizeof($zona)>0) echo $zona[0]["zona_nombre"]; else echo "NO DEFINIDO"; }else{ echo "NO DEFINIDO"; } ?><br>
             <br>
 
         <?php //$descuento =  "<script>descuento</script>"; ?>
@@ -159,9 +159,7 @@ $(document).ready(localize());
 <div class="col-md-6">  
 <!----------- tabla detalle cuenta ----------------------------------->
 
-
         <div class="row" id="detalle_cuenta_pedido">
-
             
         </div>        
 <!----------- fin tabla detalle cuenta ----------------------------------->
@@ -300,7 +298,7 @@ $(document).ready(localize());
                                         <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default"  onchange="mostrar_ocultar()">
                                             <?php
                                                 foreach($tipo_transaccion as $tipo){ ?>
-                                                    <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+z                                                    <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
                                             <?php } ?>
  
                                          </select>

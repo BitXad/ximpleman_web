@@ -353,25 +353,6 @@ class Venta_model extends CI_Model
 
     function get_ventas($condicion)
     {    
-//        $ventas = $this->db->query("
-//                    SELECT
-//                        v.*, e.*,c.cliente_id, c.tipocliente_id, c.categoriaclie_id, 
-//                        c.cliente_codigo, c.cliente_nombre, c.cliente_ci, c.cliente_direccion, 
-//                        c.cliente_telefono, c.cliente_celular, c.cliente_foto, c.cliente_email, 
-//                        c.cliente_nombrenegocio, c.cliente_aniversario, c.cliente_latitud, 
-//                        c.cliente_longitud, c.cliente_nit, c.cliente_razon
-//                    FROM
-//                        venta v, estado e, cliente c, usuario u
-//                        
-//                    WHERE 
-//                        
-//                        v.estado_id = e.estado_id
-//                        and v.cliente_id = c.cliente_id 
-//                        and v.usuario_id = u.usuario_id
-//                        ".$condicion."
-//
-//                    ORDER BY venta_id DESC
-//        ")->result_array();
 
         $sql = "select * from venta v, forma_pago f, tipo_transaccion t, usuario u, cliente c, estado e, moneda m
                 where v.cliente_id = c.cliente_id and v.usuario_id = u.usuario_id and v.moneda_id = m.moneda_id and
