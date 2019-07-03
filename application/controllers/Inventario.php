@@ -37,7 +37,7 @@ class Inventario extends CI_Controller{
 
         if($this->acceso(24)){
         //**************** inicio contenido ***************
-		        
+            $data['rolusuario'] = $this->session_data['rol'];
         $empresa_id = 1;
         $data['page_title'] = "Inventario";
         $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
@@ -55,7 +55,7 @@ class Inventario extends CI_Controller{
     function kardex($producto_id)
     {
 
-        if($this->acceso(24)){
+        if($this->acceso(29)){
         //**************** inicio contenido ***************
 		  
                 
@@ -130,7 +130,7 @@ class Inventario extends CI_Controller{
     {      
        
 
-        if($this->acceso(27)){
+        if($this->acceso(25)){
         //**************** inicio contenido ***************
 		
             $parametro = $this->input->post("parametro");

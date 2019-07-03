@@ -51,7 +51,7 @@ class Venta extends CI_Controller{
 
         if($this->acceso(18)){
         //**************** inicio contenido ***************
-
+        $data['rolusuario'] = $this->session_data['rol'];
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
         $data['page_title'] = "Ventas del dia";
         $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -73,7 +73,7 @@ class Venta extends CI_Controller{
         
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
-        
+        $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];        
 
@@ -608,7 +608,7 @@ class Venta extends CI_Controller{
      */
 function edit($venta_id)
     {   
-        if($this->acceso(12)){
+        if($this->acceso(19)){
         //**************** inicio contenido ***************      
       
         // check if the venta exists before trying to edit it
@@ -703,7 +703,7 @@ function edit($venta_id)
     {
         
         
-        if($this->acceso(12)){
+        if($this->acceso(20)){
         //**************** inicio contenido ***************      
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];

@@ -59,6 +59,7 @@
 <div class="box-header no-print">
 <h3 class="box-title">Ventas</h3>
             	<div class="box-tools">                    
+                    <?php if($rolusuario[23-1]['rolusuario_asignado'] == 1){ ?>
                     <select  class="btn btn-facebook btn-sm" id="select_ventas" onclick="buscar_ventas()">
 <!--                        <option value="1">-- SELECCIONE UNA OPCION --</option>-->
                         <option value="1">Ventas de Hoy</option>
@@ -67,6 +68,7 @@
                         <option value="4">Todos las ventas</option>
                         <option value="5">Ventas por fecha</option>
                     </select>
+                    <?php } ?>
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
                 </div>

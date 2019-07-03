@@ -28,6 +28,7 @@ class Website extends CI_Controller{
         $data['ofertasemanal'] = $this->Pagina_web_model->get_oferta_semanal(); //seccion 3
         $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
         $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
+        //$data['mapa'] = $this->Mapa_model->get_mapa(1); //mapa
         
 //        $data['_view'] = 'pagina_web/index';
 //        $this->load->view('layouts/main',$data);        
@@ -35,6 +36,19 @@ class Website extends CI_Controller{
         $data['_view'] = 'website';
 //        $this->load->view('layouts/login',$data);
         $this->load->view('web/index',$data);
+    }
+
+    function email(){
+
+            $to = $this->input->post('empresa_email');
+            $from = $this->input->post('froemail');
+            $subject = $this->input->post('nomemail');
+            $message = $this->input->post('mensaje12');
+            $headers = "From: ".$from."";
+             
+            mail($to, $subject, $message, $headers);
+                
+            redirect('website/index/1');
     }
 
     function esp()

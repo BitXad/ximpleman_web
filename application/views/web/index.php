@@ -13,6 +13,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="Super Market Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<meta property="og:image" content="<?php echo site_url('resources/images/icono.png');?>" >
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
 		function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- //for-mobile-apps -->
@@ -134,25 +135,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="w3ls_logo_products_left">
 				<h1><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
 			</div>
-<!------------------------ BUSCADOR --------------------------->                    
-        <div class="w3l_search">
-            <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-            <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
-            <!--<form action="#" method="post">-->
-            <input type="search" name="parabuscar" id="parabuscar" placeholder="Buscar un producto..." required autocomplete="off">
-            <button type="submit" class="btn btn-default search" onclick="buscar_producto()" aria-label="Left Align">
-                <i class="fa fa-search" aria-hidden="true"> </i>
-            </button>
-            <div class="row" id='loader'  style='display:none; text-align: center'>
-                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-            </div>
-                <div class="clearfix"></div>
-            <!--</form>-->
-        </div>
-<!------------------------ BUSCADOR --------------------------->                    
-			
-			<div class="clearfix"> </div>
-			<div id="tablaresultados"></div>
+
 		</div>
 	</div>
 
@@ -210,7 +193,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- //main-slider -->
 	<!-- //top-header and slider -->
 	<!-- top-brands -->
+    
 	<div class="top-brands">
+        <!------------------------ BUSCADOR --------------------------->     
+    <div class="container">               
+        <div class="w3l_search">
+            <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+            <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
+            <!--<form action="#" method="post">-->
+            <input type="search" name="parabuscar" id="parabuscar" class="text" placeholder="Buscar un producto..." required autocomplete="off" >
+            <button type="submit" class="btn btn-default search" onclick="buscar_producto()" aria-label="Left Align">
+                <i class="fa fa-search" aria-hidden="true"> </i>
+            </button>
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
+                <div class="clearfix"></div>
+            <!--</form>-->
+        </div>
+<!------------------------ BUSCADOR --------------------------->                    
+            
+            <div class="clearfix"> </div>
+            <div id="tablaresultados"></div>
+    </div>
 		<div class="container">
 		<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
 		
@@ -258,7 +263,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                                                                         <i class="fa fa-star blue-star" aria-hidden="true"></i>
                                                                                                         <i class="fa fa-star gray-star" aria-hidden="true"></i>
                                                                                                 </div>
-                                                                                                <h4><?php echo number_format($os['producto_precio'], 2, '.',',');?><span><?php echo number_format($os['producto_precio']*1.20, 2, '.', ','); ?></span></h4>
+                                                                                                <h4><?php echo number_format($os['promocion_preciototal'], 2, '.',',');?><span><?php echo number_format($os['producto_precio'], 2, '.', ','); ?></span></h4>
                                                                                         </div>
                                                                                         <div class="snipcart-details top_brand_home_details">
                                                                                             <form action="#" method="post">
@@ -732,10 +737,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<div class="agileits_w3layouts_map_pos">
 					<div class="agileits_w3layouts_map_pos1">
 						<h3>Contact Info</h3>
-						<p>1234k Avenue, 4th block, New York City.</p>
+						<p><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</p>
 						<ul class="wthree_contact_info_address">
-							<li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:info@example.com">info@example.com</a></li>
-							<li><i class="fa fa-phone" aria-hidden="true"></i>+(0123) 232 232</li>
+							<li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
+							<li><i class="fa fa-phone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
 						</ul>
 						<div class="w3_agile_social_icons w3_agile_social_icons_contact">
 							<ul>
@@ -750,22 +755,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="col-md-6 w3_agileits_contact_grid_right">
 				<h2 class="w3_agile_header">Leave a<span> Message</span></h2>
 
-				<form action="#" method="post">
+				<?php echo form_open('website/email'); ?>
 					<span class="input input--ichiro">
-						<input class="input__field input__field--ichiro" type="text" id="input-25" name="Name" placeholder=" " required="" />
+						<input class="input__field input__field--ichiro" type="text" id="input-25" name="nomemail" placeholder=" " required="" />
 						<label class="input__label input__label--ichiro" for="input-25">
 							<span class="input__label-content input__label-content--ichiro">Your Name</span>
 						</label>
 					</span>
 					<span class="input input--ichiro">
-						<input class="input__field input__field--ichiro" type="email" id="input-26" name="Email" placeholder=" " required="" />
+						<input class="input__field input__field--ichiro" type="email" id="input-26" name="froemail" placeholder=" " required="" />
+
 						<label class="input__label input__label--ichiro" for="input-26">
 							<span class="input__label-content input__label-content--ichiro">Your Email</span>
 						</label>
 					</span>
-					<textarea name="Message" placeholder="Your message here..." required=""></textarea>
+                    <input class="form-control" type="hidden" id="empresa_email" name="empresa_email" value="<?php echo $pagina_web[0]['empresa_email']; ?>" />
+					<textarea placeholder="Your message here..." required="" id="mensaje12" name="mensaje12"></textarea>
 					<input type="submit" value="Submit">
-				</form>
+				<?php echo form_close(); ?>
 			</div>
 			<div class="clearfix"> </div>
 		</div>
@@ -780,9 +787,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<h3>Contact</h3>
 					
 					<ul class="address">
-						<li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i>1234k Avenue, 4th block, <span>New York City.</span></li>
-						<li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:info@example.com">info@example.com</a></li>
-						<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i>+1234 567 567</li>
+						<li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</li>
+						<li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
+						<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
 					</ul>
 				</div>
 				<div class="col-md-3 w3_footer_grid">

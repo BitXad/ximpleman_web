@@ -93,7 +93,7 @@
 						<th># Pagos</th>
 						<th>Fecha</th>
 						<th>Hora</th>
-						<th>Tipo</th>
+						<th>Usuario</th>
 						<th></th>
                     </tr>
                     <tbody class="buscar" id="tablacuentas">
@@ -123,7 +123,7 @@
                         <td style="text-align: center"><?php echo $c['credito_numpagos']; ?></td>
                         <td style="text-align: center"><?php echo date('d/m/Y', strtotime($c['credito_fecha'])); ?></td>
                         <td style="text-align: center"><?php echo $c['credito_hora']; ?></td>
-                        <td style="text-align: center"><?php echo $c['credito_tipo']; ?></td>
+                        <td style="text-align: center"><?php echo $c['usuario_nombre']; ?></td>
 						<td>
                             <!--<a href="<?php echo site_url('credito/edit/'.$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <a href="<?php echo site_url('credito/remove/'.$c['credito_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->

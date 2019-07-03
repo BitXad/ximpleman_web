@@ -67,6 +67,7 @@ class Compra extends CI_Controller{
             else{
                 $data['compra'] = $this->Compra_model->fechacompras($filtro);            
             }
+            $data['rolusuario'] = $this->session_data['rol'];
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $data['parametro'] = $this->Parametro_model->get_parametro(1);
@@ -291,7 +292,7 @@ class Compra extends CI_Controller{
 
     function crearcompra()
     {
-        if($this->acceso(1)){
+        if($this->acceso(2)){
             $usuario_id = $this->session_data['usuario_id'];
             $bandera = 0;
                     //Registrar Compra
@@ -302,7 +303,8 @@ class Compra extends CI_Controller{
 
     function buscarcompra()
     {
-        if($this->acceso(137)){
+        //if($this->acceso(137)){
+        if($this->acceso(1)){
             if ($this->input->is_ajax_request()) {
 
                 $parametro = $this->input->post('parametro');   
@@ -474,7 +476,7 @@ class Compra extends CI_Controller{
               $this->Compra_model->volvermal($compra_id);
              }
 
-
+             $data['rolusuario'] = $this->session_data['rol'];
              if($proveedor_id==0)     
              {   
                $data['compra'] = $this->Compra_model->get_compra_proveedor($compra_id); 
@@ -1224,7 +1226,7 @@ function updateDetalle()
 
 function quitar($detallecomp_id)
 {
-    if($this->acceso(1)){
+    if($this->acceso(7)){
         //**************** inicio contenido ***************        
  
  $sql = "delete from detalle_compra_aux where detallecomp_id = ".$detallecomp_id;
