@@ -146,8 +146,9 @@
             <div class="col-md-2">
                 <div class="box-tools">
                     <select name="prevendedor_id" class="btn-primary btn-sm btn-block" id="prevendedor_id" onchange="tablaresultadoscliente(2)">
-                        <option value="" disabled selected >-- VENDEDORES --</option>
-                        <option value="0"> Todos los Vendedores </option>
+                        <option value="" disabled selected >-- USUARIOS --</option>
+                        <option value="0"> Todos los Usuarios </option>
+                        <option value="-1"> Sin Usuario Asignado </option>
                         <?php 
                         foreach($all_prevendedor as $prevendedor)
                         {

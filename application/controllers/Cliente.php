@@ -48,7 +48,7 @@ class Cliente extends CI_Controller{
             $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
 
             $this->load->model('Usuario_model');
-            $data['all_prevendedor'] = $this->Usuario_model->get_all_usuario_prev();
+            $data['all_prevendedor'] = $this->Usuario_model->get_all_usuario_prev_activo();
 
             $this->load->model('Estado_model');
             $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
