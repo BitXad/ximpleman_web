@@ -90,6 +90,9 @@ function tablaresultadoscliente(limite)
         }
         if(prevendedor == 0){
            categoriaestado += "";
+        }else if(prevendedor == -1){
+           categoriaestado += " and c.usuario_id = 0 or c.usuario_id = null"; 
+           prevendedortext = "Clientes asignados a: Sin Usuarios";
         }else{
            categoriaestado += " and c.usuario_id = u.usuario_id and c.usuario_id = "+prevendedor+" ";
            prevendedortext = $('select[name="prevendedor_id"] option:selected').text();
@@ -259,7 +262,7 @@ function tablaresultadoscliente(limite)
                         
                         html += "<a href='"+base_url+"cliente/realizar_pedido/"+registros[i]["cliente_id"]+"' class='btn btn-facebook btn-xs' title='Generar pedido/Pre-Venta'><span class='fa fa-clipboard'></span></a>";
                         
-                        html += "<a href='"+base_url+"cliente/edit/"+registros[i]["cliente_id"]+"' class='btn btn-info btn-xs' title='Modificar datos de Cliente'><span class='fa fa-pencil'></span></a>";
+                        html += "<a href='"+base_url+"cliente/edit/"+registros[i]["cliente_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar datos de Cliente'><span class='fa fa-pencil'></span></a>";
                         
                         if (registros[i]["cliente_celular"] > 1000){
                             html += "<a href='https://wa.me/591"+registros[i]["cliente_celular"]+"' target='_BLANK' class='btn btn-success btn-xs' title='Enviar mensaje por whatsapp'><span class='fa fa-whatsapp'></span></a>";

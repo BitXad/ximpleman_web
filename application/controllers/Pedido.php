@@ -179,8 +179,11 @@ class Pedido extends CI_Controller{
         
         $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
         
-        if(sizeof($pedido)>0)        
+        if(sizeof($pedido)>0){
             $cliente_id = $pedido[0]['cliente_id'];
+            $usuario_id = $pedido[0]['usuario_id'];
+            
+        }        
         else
             $cliente_id = 0;
         
@@ -190,11 +193,14 @@ class Pedido extends CI_Controller{
             
             }
             else
-            {    $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); 
-                 $data['zona'] = $this->Categoria_clientezona_model->get_cliente_zona($pedido[0]['cliente_id']);
+            {    
+                $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); 
+                $data['zona'] = $this->Categoria_clientezona_model->get_cliente_zona($pedido[0]['cliente_id']);
             }
 
             $data['pedido_id'] = $pedido_id;
+            $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['usuario_activo'] = $usuario_id;
             
             
            
@@ -332,7 +338,9 @@ class Pedido extends CI_Controller{
         
        if($this->acceso(30)) {
         //**************** inicio contenido ***************    
-        $usuario_id = $this->session_data['usuario_id'];     
+        $regusuario_id = $this->session_data['usuario_id'];     
+        $usuario_id = $this->input->post('usuario_id');
+        
         $estado_id = 3;
 
         $tipotrans_id = $this->input->post('tipo_transaccion');
@@ -366,6 +374,7 @@ class Pedido extends CI_Controller{
                 .",pedido_horaentrega = '".$hora."'"
                 .",pedido_latitud = '".$pedido_latitud."'"
                 .",pedido_longitud = '".$pedido_longitud."'"
+                .",regusuario_id = ".$regusuario_id
                 ."  where pedido_id=".$pedido_id;        
 
         $this->Pedido_model->ejecutar($sql);
@@ -435,9 +444,7 @@ class Pedido extends CI_Controller{
         redirect('pedido/pedidoabierto/'.$pedido_id);
         		
         //**************** fin contenido ***************
-        			}
-        			          
-        
+        }
     }
 
     /*
@@ -675,12 +682,9 @@ class Pedido extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         $sql = "delete from detalle_pedido where pedido_id = ".$pedido_id;
         $this->Pedido_model->ejecutar($sql);
-        return true;
-            		
-        		
+        return true;	
         //**************** fin contenido ***************
         			}
-        			
         
     }
     /*
@@ -786,11 +790,7 @@ class Pedido extends CI_Controller{
             $this->load->view('layouts/main',$data);
             
         //**************** fin contenido ***************
-        			}
-        		
-                    
-//        }
-//        else{ redirect('login'); }
+        }
         
     }
     

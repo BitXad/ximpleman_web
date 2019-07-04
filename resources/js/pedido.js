@@ -1,9 +1,8 @@
 $(document).on("ready",inicio);
 function inicio(){
-       
-        tabla_pedidos(); 
+       //alert('holaaaa');
         tabla_pedido_abierto();
-       
+        tabla_pedidos(); 
 }
 
 function mostrar_ocultar_buscador(parametro){
@@ -235,7 +234,7 @@ function tabla_pedidos(filtro)
 
 
 function tabla_pedido_abierto()
-{    
+{   // alert("entraaa..!!");
     var pedido_id = document.getElementById('pedido_id').value;
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"pedido/detalle_pedido";
@@ -279,13 +278,12 @@ function tabla_pedido_abierto()
                 var totalfinal = 0;
                 var imagen = "";
                 for (var i = 0; i < d.length; i++){
-                    
-
+                                       
                     cont = cont + 1;
                     subtotal   += parseFloat(d[i]['detalleped_subtotal']);
                     descuento  += parseFloat(d[i]['detalleped_descuento']);
                     totalfinal += parseFloat(d[i]['detalleped_total']);
-                    
+                    //alert("probando "+cont);
                     html += "               	<tr>";
                     html += "               		";
                     html += "                              <td>"+cont+"</td>  ";
@@ -415,6 +413,30 @@ function consolidar_pedido(pedido_id)
 
 }
 
+function actualizar_inventario()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/actualizar_inventario/";
+    
+//    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){     
+            alert('El pedido fue anulado correctamente...! ');
+            //redirect('inventario/index');
+//            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+            //tabla_inventario();
+        },
+        complete: function (jqXHR, textStatus) {
+//            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+    });   
+    
+}
+
 function anular_pedido(pedido_id)
 {
     var base_url    = document.getElementById('base_url').value;
@@ -426,6 +448,7 @@ function anular_pedido(pedido_id)
         data:{pedido_id:pedido_id},
         success: function(response){
             tabla_pedidos(null);
+            actualizar_inventario();
             //alert("llega hasta aqui...!");
             //console.log(response);
         }
@@ -880,7 +903,7 @@ function buscar_clientes()
 //                html += "            <button type='submit' class='btn btn-success btn-xs btn-block'>";
 //                html += "                <i class='fa fa-check'></i> Seleccionar Cliente";
 //                html += "            </button>";
-                html += "            <a href='"+base_url+"cliente/cambiarcliente/"+c[i]["cliente_id"]+"/"+pedido_id+"/"+c[i]["cliente_nit"]+"/"+c[i]["cliente_razon"]+"' class='btn btn-success btn-xs btn-block'> Seleccionar Cliente</a>";
+                html += "            <a href='"+base_url+"cliente/cambiarcliente/"+c[i]["cliente_id"]+"/"+pedido_id+"' class='btn btn-success btn-xs btn-block'> Seleccionar Cliente</a>";
                 
                 html += "            ";
                 html += "        </td>";

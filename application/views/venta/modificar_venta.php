@@ -506,6 +506,7 @@ function mostrar_ocultar(){
                                     </div>
                                     
                                     <div class="col-md-2">
+                                        
                                         <h4 class="modal-title" id="myModalLabel"><b>FECHA VENTA</b></h4>                                        
                                         <input type="date" value="<?php echo $venta[0]["venta_fecha"]; ?>" id="venta_fecha">
                                         

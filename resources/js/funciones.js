@@ -1,6 +1,7 @@
 $(document).on("ready",inicio);
 function inicio(){
         
+//        alert("holaxxx");
         tablaresultados(1);
         tablaproductos(); 
 
@@ -2376,11 +2377,20 @@ function datoscliente(cliente_id)
         data:{cliente_id:cliente_id},
         success:function(result){          
             var datos = JSON.parse(result);            
-            //console.log(datos);            
+            //console.log(datos);
             $("#cliente_id").val(datos[0]["cliente_id"]);
             $("#nit").val(datos[0]["cliente_nit"]);
             $("#razon_social").val(datos[0]["cliente_razon"]);
             $("#telefono").val(datos[0]["cliente_telefono"]);
+            $("#tipocliente_id").val(datos[0]["tipocliente_id"]);  
+            $("#cliente_nombre").val(datos[0]["cliente_nombre"]);
+            $("#cliente_ci").val(datos[0]["cliente_ci"]);     
+            $("#cliente_nombrenegocio").val(datos[0]["cliente_nombrenegocio"]);
+            $("#cliente_codigo").val(datos[0]["cliente_codigo"]);  
+            $("#cliente_direccion").val(datos[0]["cliente_direccion"]);  
+            $("#cliente_departamento").val(datos[0]["cliente_departamento"]);  
+            $("#cliente_celular").val(datos[0]["cliente_celular"]);  
+            $("#codigo").select();
         }
         
     });

@@ -398,6 +398,20 @@ z                                                    <option value="<?php echo $
                         </td>
                 </tr>
                 
+                <tr>                      
+                    <td><b>Usuario</b></td>
+                        <td align="right">
+                         <select class="form-control" id="usuario_id" name="usuario_id" >
+                            <?php foreach($usuarios as $u){ 
+                            
+                             $selected = ($u['usuario_id'] == $usuario_activo) ? ' selected="selected"' : ""; ?>
+                            <option value="<?php  echo $u["usuario_id"]; ?>" <?php echo $selected; ?>><?php  echo $u["usuario_nombre"]; ?></option>
+                            <?php     
+                            } ?>
+                        </select> 
+                        </td>
+                </tr>
+                
 
             </table>
             
@@ -427,9 +441,13 @@ z                                                    <option value="<?php echo $
                                     
                                 </div>
            <!************************************* fin datos credito ************************************************>
+               
+          
            
         </div>
                                       
+        
+                
         </div>
             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
             
