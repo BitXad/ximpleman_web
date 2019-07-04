@@ -191,6 +191,7 @@
                 <?php
                 if($rol[97-1]['rolusuario_asignado'] == 1){ ?>
                 <a onclick="imprimir_cliente()" class="btn btn-info btn-foursquarexs" title="Imprimir lista de Clientes"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+                <a href="<?php echo base_url('cliente/mapa_cliente'); ?>" class="btn btn-facebook btn-foursquarexs" title="Mostrar mapa de clientes"><font size="5"><span class="fa fa-map"></span></font><br><small>Mapa</small></a>
                 <?php } ?>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
     </div>
@@ -201,45 +202,9 @@
     
 <!-------------------------------------------------------------------------------->
 
-<!--<div class="box-header" >
-    
-            <h3 class="box-title">
------------------------------------ inicio breadcrumb --------------------------------------------------
-                <ol class="breadcrumb">
-                    <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                    <li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>
-                    <li class="active"><b>Clientes</b></li>
-                    <div class="box-tools">
-                        
-                    </div>
-                    
-                    
-                </ol>                
------------------------------------ fin inicio breadcrumb --------------------------------------------------
-            </h3>
-
-            <div class="box-tools">
-                <a href="<?php echo site_url('cliente/add'); ?>" class="btn btn-success btn-sm"><i class="fa fa-user"></i> Nuevo</a> 
-            </div>
-</div>-->
-
 <div class="row">
     <div class="col-md-12">
         
-        <!--este es INICIO de input buscador-->
-<!--            <div class="input-group">
-                      <span class="input-group-addon"> 
-                        Buscar 
-                      </span>           
-                <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >
-            </div>
-        <!--este es FIN de input buscador-->
-        
-        <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
-<!--        <div class="container" id="categoria">
-            <span class="badge btn-danger">Clientes encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
-            &nbsp;&nbsp;&nbsp;&nbsp;<a onclick="mostrar_all_clientes()" class="btn btn-success btn-sm">Ver Todos los Clientes</a>
-        </div>-->
          <div class="row" id='loader'  style='display:none; text-align: center'>
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
         </div>
