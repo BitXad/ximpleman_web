@@ -245,47 +245,47 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                             <?php foreach($ofertasemanal as $os) { ?>
                                                             
 								<div class="col-md-4 top_brand_left">
-                                                                    <div class="hover14 column">
-                                                                        <div class="agile_top_brand_left_grid">
-                                                                            <div class="agile_top_brand_left_grid_pos">
-                                                                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive" />
-                                                                            </div>
-                                                                            <div class="agile_top_brand_left_grid1">
-                                                                                <figure>
-                                                                                    <div class="snipcart-item block" >
-                                                                                        <div class="snipcart-thumb">
-                                                                                                <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$os['producto_foto'];?>" /></a>		
-                                                                                                <p><?php echo $os['producto_nombre'];?></p>
-                                                                                                <div class="stars">
-                                                                                                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                                                                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                                                                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                                                                        <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                                                                        <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                                                                                                </div>
-                                                                                                <h4><?php echo number_format($os['promocion_preciototal'], 2, '.',',');?><span><?php echo number_format($os['producto_precio'], 2, '.', ','); ?></span></h4>
-                                                                                        </div>
-                                                                                        <div class="snipcart-details top_brand_home_details">
-                                                                                            <form action="#" method="post">
-                                                                                                <fieldset>
-                                                                                                    <input type="hidden" name="cmd" value="_cart" />
-                                                                                                    <input type="hidden" name="add" value="1" />
-                                                                                                    <input type="hidden" name="business" value=" " />
-                                                                                                    <input type="hidden" name="item_name" value="<?php echo $os['producto_nombre'];?>" />
-                                                                                                    <input type="hidden" name="amount" value="<?php echo $os['producto_precio'];?>" />
-                                                                                                    <input type="hidden" name="discount_amount" value="1.00" />
-                                                                                                    <input type="hidden" name="currency_code" value="USD" />
-                                                                                                    <input type="hidden" name="return" value=" " />
-                                                                                                    <input type="hidden" name="cancel_return" value=" " />
-                                                                                                    <input type="submit" name="submit" value="Añadir al pedido" class="button" />
-                                                                                                </fieldset>
-                                                                                            </form>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </figure>
-                                                                            </div>
-                                                                        </div>
+                                        <div class="hover14 column">
+                                            <div class="agile_top_brand_left_grid">
+                                                <div class="agile_top_brand_left_grid_pos">
+                                                        <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive" />
+                                                </div>
+                                                <div class="agile_top_brand_left_grid1">
+                                                    <figure>
+                                                        <div class="snipcart-item block" >
+                                                            <div class="snipcart-thumb">
+                                                                    <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$os['producto_foto'];?>" /></a>		
+                                                                    <p><?php echo $os['producto_nombre'];?></p>
+                                                                    <div class="stars">
+                                                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                            <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                            <i class="fa fa-star gray-star" aria-hidden="true"></i>
                                                                     </div>
+                                                                    <h4><?php echo number_format($os['promocion_preciototal'], 2, '.',',');?><span><?php echo number_format($os['producto_precio'], 2, '.', ','); ?></span></h4>
+                                                            </div>
+                                                            <div class="snipcart-details top_brand_home_details">
+                                                                <form action="#" method="post">
+                                                                    <fieldset>
+                                                                        <input type="hidden" name="cmd" value="_cart" />
+                                                                        <input type="hidden" name="add" value="1" />
+                                                                        <input type="hidden" name="business" value=" " />
+                                                                        <input type="hidden" name="item_name" value="<?php echo $os['producto_nombre'];?>" />
+                                                                        <input type="hidden" name="amount" value="<?php echo $os['producto_precio'];?>" />
+                                                                        <input type="hidden" name="discount_amount" value="1.00" />
+                                                                        <input type="hidden" name="currency_code" value="USD" />
+                                                                        <input type="hidden" name="return" value=" " />
+                                                                        <input type="hidden" name="cancel_return" value=" " />
+                                                                        <input type="submit" name="submit" value="Añadir al pedido" class="button" />
+                                                                    </fieldset>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </figure>
+                                                </div>
+                                            </div>
+                                        </div>
 								</div>
                                                             
                                                             <?php } ?>
@@ -435,114 +435,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!--brands-->
 	<div class="brands">
 		<div class="container">
-		<h3>Brand Store</h3>
+		<h3>CATEGORIA PRODUCTOS</h3>
 			<div class="brands-agile">
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
+                <?php foreach ($categorias as $cat) { ?>
+                  <div class="col-md-2 w3layouts-brand">
+                    <div class="brands-w3l">
+                        <p><a type="button" onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p>
+                    </div>
+                </div> 
+                <?php } ?>
 				
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="clearfix"></div>
-			</div>
-			<div class="brands-agile-1">
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
 				
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="clearfix"></div>
 			</div>
-			<div class="brands-agile-2">
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
-				<div class="col-md-2 w3layouts-brand">
-					<div class="brands-w3l">
-						<p><a href="#">Lorem</a></p>
-					</div>
-				</div>
+             <div class="row" id='loader1'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
+			<center><a><h2 id="la_categoria"></h2></a></center>
 				<div class="clearfix"></div>
-			</div>
+			<div id="tablacategorias"></div>
 		</div>
 	</div>	
 <!--//brands-->
 <!-- new -->
-	<div class="newproducts-w3agile">
+<!--	<div class="newproducts-w3agile">
 		<div class="container">
 			<h3>New offers</h3>
 				<div class="agile_top_brands_grids">
@@ -724,7 +639,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<div class="clearfix"> </div>
 				</div>
 		</div>
-	</div>
+	</div> -->
 <!-- //new -->
 
 <!-- contact -->

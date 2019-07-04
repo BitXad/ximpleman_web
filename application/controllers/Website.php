@@ -10,6 +10,7 @@ class Website extends CI_Controller{
         parent::__construct();
         $this->load->model('Pagina_web_model');
         $this->load->model('Producto_model');
+        $this->load->model('Categoria_producto_model');
     }            
 
     function index($idioma_id)
@@ -28,6 +29,7 @@ class Website extends CI_Controller{
         $data['ofertasemanal'] = $this->Pagina_web_model->get_oferta_semanal(); //seccion 3
         $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
         $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
+        $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto(); //tipo 2
         //$data['mapa'] = $this->Mapa_model->get_mapa(1); //mapa
         
 //        $data['_view'] = 'pagina_web/index';
@@ -66,6 +68,19 @@ class Website extends CI_Controller{
         if($this->input->is_ajax_request()){
             $parametro = $this->input->post('parametro');
             $datos = $this->Producto_model->get_busqueda_productos($parametro);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
+
+    function webbuscar_categoria($categoria_id)
+    {
+        if($this->input->is_ajax_request()){
+            
+            $datos = $this->Producto_model->get_busqueda_categoria($categoria_id);
             echo json_encode($datos);
         }
         else

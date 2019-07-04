@@ -28,7 +28,7 @@ class Promocion extends CI_Controller{
     }
     /*
      * Listing of promocion
-     */
+     */  
     function index()
     {
         if($this->acceso(155)){
@@ -47,6 +47,13 @@ class Promocion extends CI_Controller{
         }
     }
 
+    function nomproducto($producto)
+    {
+            $sql="SELECT producto_nombre FROM producto WHERE producto_id=".$producto." ";
+            $nombre=$this->db->query($sql)->row_array();
+            echo json_encode($nombre);
+    }
+    
     /*
      * Adding a new promocion
      */
