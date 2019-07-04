@@ -18,13 +18,15 @@ class Promocion_model extends CI_Model
     {
         $promocion = $this->db->query("
             SELECT
-                *
+                p.*, t.producto_nombre
 
             FROM
-                `promocion`
+                promocion p , producto t
 
             WHERE
-                `promocion_id` = ?
+
+                promocion_id = ".$promocion_id."
+                and  p.producto_id=t.producto_id
         ",array($promocion_id))->row_array();
 
         return $promocion;
