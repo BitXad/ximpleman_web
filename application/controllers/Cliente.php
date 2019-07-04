@@ -936,13 +936,14 @@ class Cliente extends CI_Controller{
     /*
      * Adding a new cliente
      */
-    function cambiarcliente($cliente_id,$pedido_id,$cliente_nit,$cliente_razon)
+//    function cambiarcliente($cliente_id,$pedido_id,$cliente_nit,$cliente_razon)
+    function cambiarcliente($cliente_id,$pedido_id)
     {
         $this->load->model('Pedido_model');
-        $sql = "update cliente set cliente_nit = '".$cliente_nit."',".
-                "cliente_razon = '".$cliente_razon."' ".
-                "where cliente_id = ".$cliente_id;        
-        $this->Pedido_model->ejecutar($sql);       
+//        $sql = "update cliente set cliente_nit = '".$cliente_nit."',".
+//                "cliente_razon = '".$cliente_razon."' ".
+//                "where cliente_id = ".$cliente_id;        
+//        $this->Pedido_model->ejecutar($sql);       
         $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);
         redirect('pedido/pedidoabierto/'.$pedido_id);
         
@@ -1044,5 +1045,29 @@ class Cliente extends CI_Controller{
             }
         //}
     }
+    
+
+    function mapa_clientes()
+    {
+
+        //control de sesion
+//        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
+            
+       if($this->acceso(30)) {
+        //**************** inicio contenido ***************  
+        
+            $data['page_title'] = "Mapa de Clientes";
+            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+            
+            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+            $data['_view'] = 'pedido/mapaentregas';
+            
+            $this->load->view('layouts/main',$data);
+            
+        //**************** fin contenido ***************
+        }
+        
+    }    
         
 }

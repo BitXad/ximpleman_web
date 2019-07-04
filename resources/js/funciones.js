@@ -1,6 +1,7 @@
 $(document).on("ready",inicio);
 function inicio(){
         
+//        alert("holaxxx");
         tablaresultados(1);
         tablaproductos(); 
 
