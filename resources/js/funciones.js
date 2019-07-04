@@ -165,11 +165,15 @@ function buscarcliente(){
                     
                     $("#razon_social").val(registros[0]["cliente_razon"]);
                     document.getElementById('telefono').focus();
-                    $("#cliente_id").val(registros[0]["cliente_id"]);
+                    $("#telefono").val(registros[0]["cliente_telefono"]);
                     $("#cliente_nombre").val(registros[0]["cliente_nombre"]);
                     $("#cliente_ci").val(registros[0]["cliente_ci"]);
                     $("#cliente_nombrenegocio").val(registros[0]["cliente_nombrenegocio"]);
-                    $("#cliente_codigo").val(registros[0]["cliente_nit"]);
+                    $("#cliente_id").val(registros[0]["cliente_id"]);
+                    $("#cliente_codigo").val(registros[0]["cliente_codigo"]);
+                    $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
+                    $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
+                    $("#cliente_celular").val(registros[0]["cliente_celular"]);
                     
                 }
                 else 
@@ -2326,14 +2330,16 @@ function seleccionar_cliente(){
                     $("#cliente_id").val(resultado[0]["cliente_id"]);
                     $("#nit").val(resultado[0]["cliente_nit"]);
                     $("#razon_social").val(resultado[0]["cliente_razon"]);
-                    $("#cliente_nombrenegocio").val(resultado[0]["cliente_nombrenegocio"]);
-                    $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#telefono").val(resultado[0]["cliente_telefono"]);
+                    $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#cliente_ci").val(resultado[0]["cliente_ci"]);     
+                    $("#cliente_nombrenegocio").val(resultado[0]["cliente_nombrenegocio"]);
                     $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
                     $("#tipocliente_id").val(resultado[0]["tipocliente_id"]);  
+                    $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
+                    $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
+                    $("#cliente_celular").val(resultado[0]["cliente_celular"]);
                     $("#codigo").select();
-                    
                 }
        
 
