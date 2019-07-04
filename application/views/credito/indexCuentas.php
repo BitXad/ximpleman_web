@@ -27,6 +27,7 @@
                 <input type="hidden" name="feini" id="feini">
                 <input type="hidden" name="fefin" id="fefin">
                 <input type="hidden" name="esti" id="esti" value="8">
+                 <input type="hidden" name="vendedor" id="vendedor" value="">
               <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
               <button class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</button>
               <?php } ?>
@@ -45,7 +46,7 @@
         
           
        </div> 
-        <div class="col-md-4   ">
+        <div class="col-md-3   ">
         <!--------------------- parametro de buscador --------------------->
                 
                <input id="cliente_id" type="text" style="width: 90%;"  class="form-control" placeholder="Ingrese el Cliente">
@@ -61,7 +62,25 @@
                     </select>
         <!--------------------- fin parametro de buscador --------------------->
     </div>
-        <div class="col-md-2" style="padding-bottom: 20px;">
+    <div class="col-md-2" style="padding-left: 0px;">
+                        
+
+                <div class="row">             
+                            Usuario: <select  name="usuario_id" id="usuario_id"  class="btn btn-primary btn-sm "  >
+                                <option value="">-TODOS-</option>
+                                <?php 
+                                foreach($all_usuario as $usuario)
+                                {
+                                    $selected = ($usuario['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+                                    echo '<option  value="'.$usuario['usuario_id'].'" '.$selected.'>'.$usuario['usuario_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                      </div>
+  
+    </div>
+        <div class="col-md-1" style="padding-bottom: 20px;">
       
      <button class="btn btn-primary no-print" onclick="buscar_fecha_cuenta()">
            

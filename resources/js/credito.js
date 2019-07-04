@@ -8,6 +8,7 @@ function buscar_fecha_deuda()
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var proveedor = document.getElementById('proveedor_id').value;
+    var usuario = document.getElementById('usuario_id').value;
    // alert(usuario_id[0]['value']);
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
@@ -16,12 +17,25 @@ function buscar_fecha_deuda()
    $("#fefin").val(fecha_hasta);
    $("#usu").val(proveedor);
    $("#esti").val(estado);
-    if (fecha_desde =='' && fecha_hasta ==''){
-           var  filtro = " and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+   $("#vendedor").val(usuario);
+    if (fecha_desde =='' && fecha_hasta =='' ){
+      if (usuario=='') {
+        var  filtro = " and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+      }else{
+        var  filtro = " and co.usuario_id='"+usuario+"' and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+      }
+           
           }
     else {
-    var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"'  and  date(credito_fecha) <='"+fecha_hasta+
+
+       if (usuario=='') {
+        var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"'  and  date(credito_fecha) <='"+fecha_hasta+
             "' and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+      }else{
+        var  filtro = " and co.usuario_id='"+usuario+"' and date(credito_fecha) >= '"+fecha_desde+"'  and  date(credito_fecha) <='"+fecha_hasta+
+            "' and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+      }
+    
     }  
     
     tabladeudas(filtro);
@@ -100,6 +114,7 @@ function buscar_fecha_cuenta()
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var cliente = document.getElementById('cliente_id').value;
+    var usuario = document.getElementById('usuario_id').value;
    // alert(usuario_id[0]['value']);
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
@@ -108,12 +123,18 @@ function buscar_fecha_cuenta()
    $("#fefin").val(fecha_hasta);
    $("#usu").val(cliente);
    $("#esti").val(estado);
+   $("#vendedor").val(usuario);
+   if (usuario=='') {
+    var cadusuario = "";
+   }else{
+    var cadusuario = "and ve.usuario_id="+usuario+" ";
+   }
     if (fecha_desde =='' && fecha_hasta ==''){
-           var  filtro = " and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' ";
+           var  filtro = " and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' "+cadusuario+" ";
           }
     else {
     var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"' and  date(credito_fecha) <='"+fecha_hasta+
-            "' and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' ";
+            "' and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' "+cadusuario+" ";
     }  
     
     tablacuentas(filtro);
