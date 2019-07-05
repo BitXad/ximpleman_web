@@ -165,11 +165,15 @@ function buscarcliente(){
                     
                     $("#razon_social").val(registros[0]["cliente_razon"]);
                     document.getElementById('telefono').focus();
-                    $("#cliente_id").val(registros[0]["cliente_id"]);
+                    $("#telefono").val(registros[0]["cliente_telefono"]);
                     $("#cliente_nombre").val(registros[0]["cliente_nombre"]);
                     $("#cliente_ci").val(registros[0]["cliente_ci"]);
                     $("#cliente_nombrenegocio").val(registros[0]["cliente_nombrenegocio"]);
-                    $("#cliente_codigo").val(registros[0]["cliente_nit"]);
+                    $("#cliente_id").val(registros[0]["cliente_id"]);
+                    $("#cliente_codigo").val(registros[0]["cliente_codigo"]);
+                    $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
+                    $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
+                    $("#cliente_celular").val(registros[0]["cliente_celular"]);
                     
                 }
                 else 
@@ -1172,6 +1176,42 @@ function tablaresultados(opcion)
 
                             html += "       <option value='"+registros[i]["producto_factor"]+"'>";
                             html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+
+                        if(registros[i]["producto_factor1"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor1"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor1"]) * parseFloat(registros[i]["producto_factor1"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor1"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor1"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+
+                        if(registros[i]["producto_factor2"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor2"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor2"]) * parseFloat(registros[i]["producto_factor2"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor2"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor2"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+
+                        if(registros[i]["producto_factor3"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor3"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor3"]) * parseFloat(registros[i]["producto_factor3"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor3"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor3"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+
+                        if(registros[i]["producto_factor4"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor4"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor4"]) * parseFloat(registros[i]["producto_factor4"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor4"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor4"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
                         
@@ -2326,14 +2366,16 @@ function seleccionar_cliente(){
                     $("#cliente_id").val(resultado[0]["cliente_id"]);
                     $("#nit").val(resultado[0]["cliente_nit"]);
                     $("#razon_social").val(resultado[0]["cliente_razon"]);
-                    $("#cliente_nombrenegocio").val(resultado[0]["cliente_nombrenegocio"]);
-                    $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#telefono").val(resultado[0]["cliente_telefono"]);
+                    $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#cliente_ci").val(resultado[0]["cliente_ci"]);     
+                    $("#cliente_nombrenegocio").val(resultado[0]["cliente_nombrenegocio"]);
                     $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
                     $("#tipocliente_id").val(resultado[0]["tipocliente_id"]);  
+                    $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
+                    $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
+                    $("#cliente_celular").val(resultado[0]["cliente_celular"]);
                     $("#codigo").select();
-                    
                 }
        
 
