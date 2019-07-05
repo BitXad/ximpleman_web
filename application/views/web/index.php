@@ -396,7 +396,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           </center>
     
     </div><!-- /.carousel -->	
-<!--banner-bottom-->
+<!--banner-bottom--><!--
 				<div class="ban-bottom-w3l">
 					<div class="container">
 					<div class="col-md-6 ban-bottom3">
@@ -430,7 +430,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						
 						<div class="clearfix"></div>
 					</div>
-				</div>
+				</div>-->
 <!--banner-bottom-->
 <!--brands-->
 	<div class="brands">
@@ -440,7 +440,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <?php foreach ($categorias as $cat) { ?>
                   <div class="col-md-2 w3layouts-brand">
                     <div class="brands-w3l">
-                        <p><a type="button" onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p>
+                        <button><p><a type="button"  onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p></button>
                     </div>
                 </div> 
                 <?php } ?>
