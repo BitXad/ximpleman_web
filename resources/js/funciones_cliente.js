@@ -316,13 +316,10 @@ function tablaresultadoscliente(limite)
                         html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
                         html += "</td>";
                         
-                        
-                        
                         html += "</tr>";
 
                    }
-                   
-                   
+
                    $("#tablaresultados").html(html);
                    document.getElementById('loader').style.display = 'none';
             }
