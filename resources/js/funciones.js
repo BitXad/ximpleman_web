@@ -543,9 +543,10 @@ function buscarporcodigojs()
 
                     if (res.length>0){
                         
-                         if (res[0].existencia > 0){   
+                         if (res[0].existencia > 0){
                              
                             if (res[0].producto_codigobarra == codigo) factor = 1;
+                            
                             if (res[0].producto_codigofactor == codigo) factor = res[0].producto_factor;
                             
                             if (res[0].producto_codigofactor1 == codigo) factor = res[0].producto_factor1;
@@ -901,7 +902,7 @@ function ingresorapidojs(cantidad,producto)
     
     //alert("factor:"+factor);
     
-    if (Number(factor)>0){
+    if (Number(factor)>1){
     
         if (factor == producto.producto_factor)
             precio = producto.producto_preciofactor;    
