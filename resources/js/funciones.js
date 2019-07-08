@@ -897,12 +897,12 @@ function ingresorapido(producto_id,cantidad)
 function ingresorapidojs(cantidad,producto)
 {       
     var factor = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+    var indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
     cantidad = cantidad * factor;
     var precio = 0;  
     
-    //alert("factor:"+factor);
-    
-    if (Number(factor)>1){
+    //if (Number(factor)>1){
+    if (indice>0){
     
         if (factor == producto.producto_factor)
             precio = producto.producto_preciofactor;    
