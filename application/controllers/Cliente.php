@@ -897,9 +897,10 @@ class Cliente extends CI_Controller{
     //            redirect('cliente/index');
     //            
                     $cliente_id = $this->Cliente_model->add_cliente($params);
-                    $this->load->model('Pedido_model');
-                    $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
-                    redirect('pedido/pedidoabierto/'.$pedido_id);            
+                    //$this->load->model('Pedido_model');
+                    //$this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);            
+                    //redirect('pedido/pedidoabierto/'.$pedido_id);            
+                    redirect('pedido/pedidoabierto/'.$cliente_id);            
 
                 }
             }
