@@ -158,8 +158,7 @@ class Pedido extends CI_Controller{
         //Registrar Pedido
         $pedido_id = $this->Pedido_model->crear_pedido($usuario_id);        
         redirect('pedido/pedidoabierto/'.$pedido_id);
-        
-        		
+    		
         //**************** fin contenido ***************
         			}
         			        
@@ -169,49 +168,98 @@ class Pedido extends CI_Controller{
     /*
      * Registrar pedido
      */
-    function pedidoabierto($pedido_id)
-    {
-        if($this->acceso(31)) {
-        //**************** inicio contenido ***************            
+//    function pedidoabierto($pedido_id)
+//    {
+//        if($this->acceso(31)) {
+//        //**************** inicio contenido ***************            
+//        
+//        $data['page_title'] = "Pedidos";
+//        $usuario_id = $this->session_data['usuario_id'];
+//        
+//        $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
+//        
+//        if(sizeof($pedido)>0){
+//            $cliente_id = $pedido[0]['cliente_id'];
+//            $usuario_id = $pedido[0]['usuario_id'];
+//            
+//        }        
+//        else
+//            $cliente_id = 0;
+//        
+//        
+//            if ($cliente_id == 0) //si el pedido aun no fue registrado a un cliente
+//            {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); 
+//            
+//            }
+//            else
+//            {    
+//                $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); 
+//                $data['zona'] = $this->Categoria_clientezona_model->get_cliente_zona($pedido[0]['cliente_id']);
+//            }
+//
+//            $data['pedido_id'] = $pedido_id;
+//            $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
+//            $data['usuario_activo'] = $usuario_id;
+//            
+//            
+//           
+//            //$data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
+//            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+//
+//            $data['_view'] = 'pedido/pedidoabierto';
+//            $this->load->view('layouts/main',$data);            
+//                                        		
+//        //**************** fin contenido ***************
+//        			}		     
+//    }
+    
+    function pedidoabierto($cliente_id)
+    {    
         
-        $data['page_title'] = "Pedidos";
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************        
+        $this->load->model('Cliente_model');
+        $this->load->model('Tipo_cliente_model');
+        $this->load->model('Dosificacion_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Tipo_servicio_model');
+        $this->load->model('Preferencia_model');
+        
         $usuario_id = $this->session_data['usuario_id'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];
+        $data['rolusuario'] = $this->session_data['rol'];
+        $data['page_title'] = "Pedidos";
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         
-        $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
-        
-        if(sizeof($pedido)>0){
-            $cliente_id = $pedido[0]['cliente_id'];
-            $usuario_id = $pedido[0]['usuario_id'];
-            
+        if ($cliente_id>0){
+            $cliente = $this->Cliente_model->get_cliente_by_id($cliente_id);
+            if (sizeof($cliente)>0)
+                $data['cliente'] = $cliente;
+            else
+                $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         }        
         else
-            $cliente_id = 0;
+        {    $data['cliente'] = $this->Venta_model->get_cliente_inicial();}
         
+        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['usuario_id'] = $usuario_id;
+        $data['tipousuario_id'] = $tipousuario_id;
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         
-            if ($cliente_id == 0) //si el pedido aun no fue registrado a un cliente
-            {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); 
-            
-            }
-            else
-            {    
-                $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); 
-                $data['zona'] = $this->Categoria_clientezona_model->get_cliente_zona($pedido[0]['cliente_id']);
-            }
-
-            $data['pedido_id'] = $pedido_id;
-            $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
-            $data['usuario_activo'] = $usuario_id;
-            
-            
-           
-            //$data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
-            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-
-            $data['_view'] = 'pedido/pedidoabierto';
-            $this->load->view('layouts/main',$data);            
-                                        		
+        //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
+        
+        $data['_view'] = 'pedido/pedidoabierto';
+        $this->load->view('layouts/main',$data);
+        		
         //**************** fin contenido ***************
-        			}		     
+        }       
+        
     }
 
     /*

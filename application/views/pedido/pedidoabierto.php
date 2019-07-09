@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/pedido.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -13,8 +13,7 @@
                     }).show();
                 })
             }(jQuery));
-        });
-        
+        });         
         $(document).ready(function () {
             (function ($) {
                 $('#filtrar2').keyup(function () {
@@ -25,248 +24,454 @@
                     }).show();
                 })
             }(jQuery));
-        });
-
-    $(document).ready(function () {
-            (function ($) {
-                $('#filtrar3').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar3 tr').hide();
-                    $('.buscar3 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-        
-        
-function mostrar(){
-document.getElementById('oculto').style.display = 'block';}
-
-function ocultar(){
-document.getElementById('oculto').style.display = 'none';}
+        });    
 
 function mostrar_ocultar(){
-    var x = document.getElementById('tipo_pago').value;
-    if (x=='CREDITO'){
-        document.getElementById('oculto').style.display = 'block';}
+    var x = document.getElementById('tipo_transaccion').value;
+    
+    if (x=='2'){ //si la transaccion es a credito
+        
+        document.getElementById('creditooculto').style.display = 'block';
+//        var hoy = new Date();
+//        var dd = hoy.getDate();
+//        var mm = hoy.getMonth()+1;
+//        var yyyy = hoy.getFullYear();
+//        
+//        dd = addZero(dd);
+//        mm = addZero(mm);
+
+        }
     else{
-        document.getElementById('oculto').style.display = 'none';}
+        document.getElementById('creditooculto').style.display = 'none';}
 }
-
-$(document).ready(localize());
-
+        
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
+ <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
-<!--------------------- CABCERA -------------------------->
+<div id="selector" hidden="">
+    <!--  Aqui inserta in input temporal que sirve para almacenar el factor de conversion del producto -->
+    
+</div>
 
- 
+<!--------------------- CABECERA -------------------------->
+
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
-<input type="text" value="<?php echo $pedido_id; ?>" id="pedido_id" hidden>
-<input type="text" value='[{}]' id="lista_pedido" hidden>
-<!--<input type="text" value="4775.74" id="numero_prueba">-->
+<input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
+<input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
+<input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
+<input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
+<input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
+<input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio"  hidden>
+<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>
+<input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
+<input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
+<input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
+<input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
+<input type="text" id="parametro_colorboton" value="<?php echo $parametro[0]['parametro_colorboton']; ?>" name="parametro_colorboton"  hidden>
+<input type="text" id="parametro_altoimagen" value="<?php echo $parametro[0]['parametro_altoimagen']; ?>" name="parametro_altoimagen"  hidden>
+<input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
+<input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
+<input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
 
+<!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
+<!-------------------- inicio collapse ---------------------->
 
-<div class="box-header">
-    <h1 class="box-title"><b>DETALLE PEDIDO Nº: <?php echo "000".$pedido_id; ?></b></h1>
-    <!--<a href="<?php echo base_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-success">Actualizar </a>-->
-</div>
-
-
-
-
-<div class="container">
-    <div class="panel panel-primary col-md-8">
-        <h5><b>Cliente: </b><?php echo $pedido[0]['cliente_nombre']; ?> <br>
-            <b>Código Cliente: </b><?php echo $pedido[0]['cliente_codigo'];?> <br>
-            <b>Dirección: </b><?php echo $pedido[0]['cliente_direccion']; ?><br>
-            <b>Teléfono(s): </b><?php echo $pedido[0]['cliente_telefono']." ".$pedido[0]['cliente_celular']; ?><br>
-            <b>Zona: </b><?php  if(isset($zona)){ if (sizeof($zona)>0) echo $zona[0]["zona_nombre"]; else echo "NO DEFINIDO"; }else{ echo "NO DEFINIDO"; } ?><br>
-            <br>
-
-        <?php //$descuento =  "<script>descuento</script>"; ?>
-        <?php //$totalfinal =  "<script>descuento</script>"; ?>
+<div class="panel-group"  style="padding:0;">
+  <div class="panel panel-warning" style="padding:0;">
+    <div class="panel-heading" style="padding:0;">
         
-    </div>
-      
-    <div class="box-tools">
-        <center>            
-            <a href="<?php echo base_url('cliente/clientenuevo/'.$pedido[0]['pedido_id']); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Clie</small></a>
-            <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Clie</small></a>
-            <a href="<?php echo base_url('pedido'); ?>" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Pedidos</small></a>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
-        </center>            
-    </div>
-    <br>  
-
-    
+        
+<!--------------------- cliente_id --------------------->
+<div class="container" hidden>
+    <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
+<!--------------------- fin cliente_id --------------------->
+        
+        <div class="col-md-3" >
+            <label for="nit" class="control-label">NIT</label>
+            <div class="form-group">
+                <input type="number" name="nit" class="form-control" id="nit" value="<?php echo $cliente[0]['cliente_nit']; ?>"  onkeypress="validar(event,1)" onclick="seleccionar(1)" />
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <label for="razon social" class="control-label">RAZON SOCIAL</label>
+            <div class="form-group">
+                
+                <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
+                <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
+                <datalist id="listaclientes">
 
-<!------------------------  inicio buscandor de producto --------------------------------------->
+                </datalist>
+                
+            </div>
+        </div>
 
+        
+        <div class="col-md-2">
+            <label for="telefono" class="control-label">TELEFONO</label>
+            <div class="form-group">
+                <input type="telefono" name="telefono" class="form-control" id="telefono"  onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_telefono']; ?>"/>
+            </div>
+        </div>
+        
+        <div class="col-md-3">
+            <label for="tipo" class="control-label">TIPO CLIENTE</label>           
+            <div class="form-group">
+                
+                <select  class="form-control" id="tipocliente_id" name="tipocliente_id" onkeypress="validar(event,7)">
+                    <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
+                    <?php $contador = 0;
+                            foreach($tipo_cliente as $tc){                          
+                                if ($contador>0){?>                    
+                                     <option value="<?php echo $tc['tipocliente_id'];?>"><?php echo $tc['tipocliente_descripcion'];?></option>
+                    <?php       }
+                                $contador++;
+                            }?>
+                </select>
+              
+            </div>
+        </div>        
+        
+      <h4 class="panel-title">
+        <?php if(sizeof($dosificacion)>0){ ?>
+          <!--<input type="checkbox" id="facturado" value="1" name="facturado">-->
+        <?php } else{ ?>
+<!--          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+          <font color="red" size="2"> Dosificación no activada</font>-->
+        <?php } ?>
+        <a data-toggle="collapse" href="#collapse1">Más</a> /
+        
+        <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>"><span class="fa fa-user" ></span> Registrar Cliente</a>
+                        
+      </h4>
 
+    </div>
+    <div id="collapse1" class="panel-collapse collapse">
+<!--      <ul class="list-group">-->
+        <div class="container">
+            
+            <div class="col-md-3">
+            <label for="nombre" class="control-label">CLIENTE</label>
+            <div class="form-group">
+                <input type="text" name="cliente_nombre" class="form-control" id="cliente_nombre" value="<?php echo $cliente[0]['cliente_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
 
-    
+            <div class="col-md-3">
+            <label for="cliente_ci" class="control-label">C.I.</label>
+            <div class="form-group">
+                <input type="text" name="cliente_ci" class="form-control" id="cliente_ci" value="<?php echo $cliente[0]['cliente_ci']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
+        
 
+            <div class="col-md-3">
+            <label for="cliente_nombrenegocio" class="control-label">NEGOCIO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_nombrenegocio" class="form-control" id="cliente_nombrenegocio" value="<?php echo $cliente[0]['cliente_nombrenegocio']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
+        
+
+            <div class="col-md-3">
+            <label for="cliente_codigo" class="control-label">CÓDIGO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_codigo" class="form-control" id="cliente_codigo" value="<?php echo $cliente[0]['cliente_codigo']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            
+            </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_direccion" class="control-label">DIRECCIÓN</label>
+            <div class="form-group">
+                <input type="text" name="cliente_direccion" class="form-control" id="cliente_direccion" value="<?php echo $cliente[0]['cliente_direccion']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+            
+            <div class="col-md-3">
+            <label for="cliente_departamento" class="control-label">DEPARTAMENTO</label>
+            <div class="form-group">
+                <input type="text" name="cliente_departamento" class="form-control" id="cliente_departamento" value="<?php echo $cliente[0]['cliente_departamento']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+                    
+            <div class="col-md-3">
+            <label for="cliente_celular" class="control-label">CELULAR</label>
+            <div class="form-group">
+                <input type="text" name="cliente_celular" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
+        
+        </div>
+<!--        <li class="list-group-item">Two</li>
+        <li class="list-group-item">Three</li>-->
+      <!--</ul>-->
+<!--      <div class="panel-footer">Footer</div>-->
+    </div>
+  </div>
+</div>  
+<!-------------------- fin inicio collapse ---------------------->
+
+<!--------------------- FIN CABERECA -------------------------->
 
 
 <div class="row">
-    <div class="col-md-12">
-        <div class="box">
+    <div class="col-md-6" >
+        
+        <div class="row">
             
-    <!--------------------- parametro de buscador --------------------->
+            <!--------------------- parametro de buscador por codigo --------------------->
+
+            <div class="col-md-4">
                   <div class="input-group">
                       <span class="input-group-addon"> 
+                        <i class="fa fa-barcode"></i>
+                      </span>           
+                      <input type="text" name="codigo" id="codigo" class="form-control" placeholder="código" onkeyup="validar(event,3)">
+                  </div>
+            </div>      
+           <!--------------------- fin buscador por codigo --------------------->
+           
+
+            <div class="col-md-8">
+                
+<!--            ------------------- parametro de buscador --------------------->
+                       
+                  <div class="input-group">
+                      <span class="input-group-addon" onclick="ocultar_busqueda();"> 
                         Buscar 
                       </span>           
-                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código del producto" onkeypress="validar(event,6)">
+                      <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código" onkeypress="validar(event,4)">
                   </div>
-        <!--------------------- fin parametro de buscador --------------------->
-        <div class="box box-body table-responsive" >
             
+<!--            ------------------- fin parametro de buscador ------------------- -->
             
-                <table class="table table-striped" id="mitabla">
-                            <tr>
-                                    <th>#</th>
-                                    <th>Saldos</th>
-                                    <th>Detalle</th>
-                            </tr>
-                            <tbody class="buscar3"  id="tablaresultadospedido">
-
-                            </tbody>
-                </table>
             </div>
+            
+        </div>
+<!-------------------- CATEGORIAS------------------------------------->
+<div class="container" id="categoria" style="padding:0;">
+    
+    <span class="badge btn-danger" style="width: 170px;">
+    
+    
+    
+        <select class="bange btn-danger" style="border-width: 0; width:100px;"  onchange="tablaresultados(2)" id="categoria_prod">
+                <option value="0" >Todas las Categorias</option>
+        <?php 
+            foreach($categoria_producto as $categ){ 
+                $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
+                ?>
+                
+                <option value="<?php echo $categ['categoria_id']; ?>" <?php echo $selected; ?>><?php echo $categ['categoria_nombre']; ?></option>
+        <?php
+            }
+        ?>
+    </select>
+        <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span>
+    </span>
+        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+       <?php 
+            if ($parametro[0]["parametro_agruparitems"] == 1 )
+                    { $agrupar = "checked='true'";}
+              else {$agrupar = " ";}
+        ?>
+        
+    <!--<span class="badge btn-primary">-->
+        
+        
+        
+        <button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>
+        
+        
+    <!--</span>-->
+        <!--------------------- indicador de resultados --------------------->
+    <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
+
+                <!--<span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
+                <span class="badge btn-default">
+
+                    <!--------------------- inicio loader ------------------------->
+                    <div class="row" id='oculto'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+                        </center>
+                    </div> 
+                    
+                    <div class="row" id='loader'  style='display:none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
+                        </center>
+                    </div> 
+                    <!--------------------- fin inicio loader ------------------------->
+                    
+                </span>
+
+                
+                
+</div>
+<!-------------------- FIN CATEGORIAS--------------------------------->
+        
+        <div class="box">
+            <div class="box-body  table-responsive" id="tablaresultados">
+
+                <!------------------ aqui van los resultados de la busqueda --------------->
+                
+            </div>
+               
         </div>
     </div>
-</div>
-
-
-<div class="row" id="filtrar">
-        <div class="box" id="tabla_pedidoabierto">
-            
-            
-                 
-        </div>
-</div>
-
-
-
-<div class="col-md-6">  
-<!----------- tabla detalle cuenta ----------------------------------->
-
-        <div class="row" id="detalle_cuenta_pedido">
-            
-        </div>        
-<!----------- fin tabla detalle cuenta ----------------------------------->
+    
+    <div class="col-md-6" id="divventas1" style="display:none;">
+        <center>            
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>">
+        </center>
+    </div>
         
+    <div class="col-md-6" id="divventas0" style="display:block;">
+        <div class="row">
+            
+            <div class="col-md-8" style="padding:0;">
+            <!--------------------- parametro de buscador --------------------->
+                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                    <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código">
+                  </div>
+            
+            <center>
+                
+                
+            <!--------------- botones ---------------------->
+            <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>
+                <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
+                    <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+                <?php }
+                } ?>
+                    
+            <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
+                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
+            <?php } ?>            
+           
+<!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
+            <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
+            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
+            <?php }
+            if($rolusuario[15-1]['rolusuario_asignado'] == 1){ ?>
+            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span><b> - 0 -</b></button> 
+            <?php }
+            if($rolusuario[16-1]['rolusuario_asignado'] == 1){ ?>
+            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money'></span><b> costo</b></button> 
+            <?php }
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
+            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
+            <?php } ?>
+            </center>
+            <!--------------- fin botones ---------------------->
+            
+            <!--------------------- fin parametro de buscador ---------------------> 
+        
+            </div>
+            <div class="col-md-4" style="background-color: black;">
+                <center>
+                    
+                <font size="4" style="color:white">
+                    
+                
+                <b>Total Final</b>
+                <b>Bs <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 150px; border-color: black; border-width: 0; background-color: black; text-align: center" readonly> </b>
+                </font>
+    
+                </center>
+
+                
+            </div>
+        </div>
+        
+        <div class="box">
+           
+            
+            <div class="box-body table-condensed table-responsive">
+                <div id="tablaproductos">
+                    
+                    <!--------------- RESULTADO TABLA DE PRODUCTOS---------------------------->
+                    
+                </div>
+            </div>
+                
+        </div>
+        
+        <!----------------------------------- BOTONES ---------------------------------->
+        <?php 
+        $ancho_boton = 120; 
+        $alto_boton = 120; 
+        
+        ?>
+        <div class="col-md-12" style="padding:0;">
+
+            <center>
+            <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
+            <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-money fa-4x"></i><br><br>Finalizar Pedido<br>
+            </a>
+            <?php } ?>
+
+<!--            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-truck fa-4x"></i><br><br>
+               Asignar <br>
+            </a>-->
+
+            <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
+            <a  href="<?php echo site_url('pedido'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-sign-out fa-4x"></i><br><br>
+               Salir <br>
+            </a>    
+            <?php } ?>    
+            </center>
+            <br>
+        </div>    
+        <!----------------------------------- fin Botones ---------------------------------->
+
+    </div>
+    
 </div>
-<!----------------------------------- BOTONES ---------------------------------->
+
 <div class="col-md-6">
         
-    <center>
-    <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
-        <i class="fa fa-money fa-4x"></i><br><br>
-       Finalizar pedido <br>
-    </a>
+        
+<!----------- tabla detalle cuenta ----------------------------------->
+<!--        <div class="box-header">
+            <h3 class="box-title">CUENTA: PEDIDO</h3>
+        </div>        -->
+        
+<?php 
+    $total_detalle = 0;
+    $subtotal = $total_detalle;
+    $descuento = 0;
+    $totalfinal = $total_detalle;
+?>
+        
+        <div class="row">
+            <div class="col-md-12" id="detallecuenta">
+
+        </div>
+        </div>
+        
+    <!----------- fin tabla detalle cuenta ----------------------------------->
+        
+    </div>
 
 
-    <a  href="<?php echo site_url('pedido'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
-        <i class="fa fa-sign-out fa-4x"></i><br><br>
-       Salir <br>
-    </a>    
-    </center>
-
-</div>    
-<!----------------------------------- fin BOTONES ---------------------------------->
-
-
-
-<!--------------------------------- INICIO MODAL CLIENTES ------------------------------------>
-<div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-                            
-                                <div class="row">
-
-                                           <!--------------------- parametro de buscador por codigo --------------------->
-
-                                           <div class="col-md-8">
-                                                 <div class="input-group">
-                                                     <span class="input-group-addon"> 
-                                                       <i class="fa fa-binoculars"></i>
-                                                     </span>           
-                                                     <input type="text" name="filtrar2" id="filtrar2" class="form-control" placeholder="Ingrese el nombre, CI, codigo del cliente " onkeyup="validar(event,8)">
-                                                 </div>
-                                           </div>      
-                                          <!--------------------- fin buscador por codigo --------------------->
-
-
-                                           <div class="col-md-4">
-
-                               <!--            ------------------- parametro de buscador --------------------->
-
-                                                 <div class="input-group">
-                                                     <span class="input-group-addon"> 
-                                                      <i class="fa fa-user"></i>
-                                                     </span>           
-                                                     <select id="tipo" class="form-control">
-                                                         <option value="1">Mis clientes</option>
-                                                         <option value="2">Todos</option>
-                                                     </select>
-                                                 
-                                                 </div>
-
-                               <!--            ------------------- fin parametro de buscador ------------------- -->
-
-                                           </div>
-
-                                       </div>
-
-                                
-			</div>
-			<div class="modal-body">
-                        <!--------------------- TABLA---------------------------------------------------->
-                        <div class="box-body table-responsive">
-                        <table class="table table-striped" id="mitabla">
-                            <tr>
-                                                        <th>#</th>
-                                                        <th>imagen</th>
-                                                        <th>Nombres</th>
-                            </tr>
-                            
-                            <tbody class="buscar2" id="clientes_pedido">
-                 
-
-                            </tbody>
-                        </table>
-                    </div>
-
-                        <!----------------------FIN TABLA--------------------------------------------------->
-			</div>
-		</div>
-	</div>
-</div>
-<!--------------------------------- FIN MODAL CLIENTES ------------------------------------>
-
-
-<!----------------- modal productos---------------------------------------------->
-
-
-
-
-<!---------------------- fin modal productos --------------------------------------------------->
-
-
-                          
 <!----------------------Modal Cobrar--------------------------------------------------->
-<form action="<?php echo base_url('pedido/finalizarpedido'); ?>"  method="POST" class="form" name="descuento">    
-<div class="modal fade" id="modalcobrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--<form action="<?php echo base_url('venta/finalizarventa'); ?>"  method="POST" class="form" name="finalizarventa">-->
+<div class="modal fade" id="modalfinalizar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -279,50 +484,98 @@ $(document).ready(localize());
                             
                                 <center>
                                 <div class="row">
-    
+                                    <div class="col-md-12">
+                                        
                                     
-                                    <div class="col-md-2">
-                                        <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
+                                    <div class="col-md-2" style="padding: 0;">
+<!--                                        <h4 class="modal-title" id="myModalLabel"><b>FECHA DE ENTREGA</b></h4>
                                         <?php                                                     
                                             $fecha = date('Y-m-d'); 
                                             $hora = date('H:i:s');                                                                                         
                                         ?>
                                         
-                                        <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>
+                                        <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
+                                        <!--<h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>-->
+                                        <div hidden>                                            
+                                            <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;" >
+                                                <?php
+                                                    foreach($forma_pago as $forma){ ?>
+                                                        <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
+                                                <?php } ?>
+
+                                             </select>
+                                        </div>
+                                        
+                                        <h5 class="modal-title" id="myModalLabel"><b>FECHA ENTREGA</b></h5>
+                                        <input type="datetime" id="fecha_entrega"  name="fecha_entrega" value="<?php echo date("Y-m-d"); ?>" class="btn btn-default btn-xs" style="width: 120px;">
                                     </div>
                                     
-
-                                    
-                                    <div class="col-md-3">
-                                        <h4 class="modal-title" id="myModalLabel"><b>TIPO TRANSACCIÓN</b></h4>                                        
-                                        <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default"  onchange="mostrar_ocultar()">
+                                    <div class="col-md-2" style="padding: 0;">
+                                        <center>
+                                            
+                                        <h5 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h5>                                        
+                                        <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default btn-xs"  onchange="mostrar_ocultar()"  style="width: 120px;">
                                             <?php
                                                 foreach($tipo_transaccion as $tipo){ ?>
-z                                                    <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+                                                    <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
                                             <?php } ?>
  
                                          </select>
+                                        </center>
                                     </div>
-
+                                    
+                                    <?php 
+                                            $ocultar = "none";
+                                        if ($parametro[0]["parametro_modulorestaurante"]==1){    
+                                            $ocultar = "block";
+                                            
+                                    } ?>   
+                                    <div class="col-md-2" style="padding: 0; display: <?php echo $ocultar; ?>">
+                                        <h5 class="modal-title" id="myModalLabel"><b>SERVICIO</b></h5>                                        
+                                        <select id="tiposerv_id" name="tiposerv_id" class="btn btn-default btn-xs"  style="width: 100px;">
+                                                
+                                            <?php
+                                                foreach($tipo_servicio as $ts){ ?>
+                                                    <option value="<?php echo $ts['tiposerv_id']; ?>"><?php echo $ts['tiposerv_descripcion']; ?></option>
+                                            <?php } ?>
+ 
+                                         </select>
+                                        <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
+                                                
+                                                    <option value="0">MESA</option>
+                                            <?php $mesas = 30;
+                                                for($x = 1; $x<=$mesas; $x++ ){ ?>
+                                                    <option value="<?php echo $x; ?>"><?php echo $x; ?></option>
+                                            <?php } ?>
+ 
+                                         </select>
+                                        
+                                    </div>
+                                    
+                                    
                                 </div>                                    
-                                </center>     
-                                
-                                                           
-                                </center>                                                               
+                                                                                             
+			</div>
 			</div>
                             
 			<div class="modal-body">
-
                             
 <!----------- tabla detalle cuenta ----------------------------------->
 
                 
+<?php 
+    $total_descuento = 0;
+    
+    $subtotal = $total_detalle - $total_descuento; 
+    $efectivo = $subtotal;
+    $cambio = 0.00;
+    $ancho_boton = 10;
+    ?>
 
-<!--             <form action="<?php echo base_url('pedido/finalizarpedido/'.$pedido_id); ?>"  method="POST" class="form" name="descuento">    -->
             <div hidden="true">        
-<!--                <input id="pedido_totalestadia" name="pedido_totalestadia" value="<?php echo $total_pedido; ?>">
-                <input id="pedido_totalconsumo" name="pedido_totalconsumo" value="<?php echo $total_descuento; ?>">-->
-                <input id="pedido_id"  name="pedido_id" type="text" class="form-control" value="<?php echo $pedido_id; ?>">
+                            <input id="total_detalle" name="total_detalle" value="<?php echo $total_detalle; ?>">
+                            <input id="total_descuento" name="total_descuento" value="<?php echo $total_descuento; ?>">
+                            
             </div>
                  
         <div class="row">
@@ -337,126 +590,156 @@ z                                                    <option value="<?php echo $
             
             
             
-            <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" >
+            <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
                 <tr>
-                        <td>Total Pedido Bs</td>
-                        
-                        <!--<td align="right"><?php echo number_format($total_pedido,2,'.',''); ?></td>-->
-                        <td align="right"><input type="text"  size="8"  id="total_pedido" val="0.00"></td>
+                        <td  style="padding: 0" >Total Bs</td>
+                        <td align="right">
+                            <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                        </td>
                     
-                        <input type="text" name="latitud" id="latitud" value="0" hidden>
-                        <input type="text" name="longitud" id="longitud" value="0" hidden>
+                    
                 </tr>                
-                <tr>
-                        <td>Descuento Bs</td>
-                        <!--<td align="right"><?php echo number_format($total_descuento,2,'.',''); ?></td>-->
-                        <td align="right"><input type="text"   size="8" id="total_descuento" val="0.00"></td>
+                <tr style="padding: 0">
+                        <td style="padding: 0">Descuento Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                        </td>
                     
                 </tr>
-               
-                <tr>
-                        <td align="right"><b>Sub Total Bs</b></td>
-                        <td align="right">                
+
+                        
+                <tr style="padding: 0">
+                        <td align="right" style="padding: 0"><b>Sub Total Bs</b></td>
+                        <td align="right" style="padding: 0">                
                             
-                            <!--<input class="btn btn-foursquarexs" id="pedido_subtotal" size="2"  name="pedido_subtotal" value="<?php echo number_format($subtotal,2,'.',''); ?>" readonly="true">-->
-                            <input class="btn btn-sm" id="pedido_subtotal" size="4"  name="pedido_subtotal" value="0.00" readonly="true">
+                            <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
                         </td>
 
                 </tr>
 
-                <tr>                      
-                        <td>Descuento Bs</td>
-                        <td align="right">
-                         <!--<input class="btn btn-info" id="pedido_descuento" name="pedido_descuento" size="2" value="<?php echo $descuento; ?>" onKeyUp="calcularDesc('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">-->
-                         <input class="btn btn-sm" id="pedido_descuento" name="pedido_descuento" size="4" value="0.00" onKeyUp="calcularDesc('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">
+                <tr style="padding: 0">                      
+                        <td style="padding: 0">Descuento Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
                         </td>
                 </tr>
 
-                <tr>                      
-                        <td><b>Total Final Bs</b></td>
-                        <td align="right">
-                              <!--<input class="btn btn-foursquarexs" id="pedido_totalfinal" size="2" name="pedido_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">-->
-                              <input class="btn btn-sm" id="pedido_totalfinal" size="4" name="pedido_totalfinal" value="0.00" readonly="true">
+                <tr style="padding: 0">                      
+                        <td style="padding: 0"><b>Total Final Bs</b></td>
+                        <td align="right" style="padding: 0">
+
+                              <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">                                
+
                         </td>
                 </tr>
 
-                <tr>                      
-                        <td>Efectivo Bs</td>
-                        <td align="right">
-                            <!--<input class="btn btn-info" id="pedido_efectivo" size="2" name="pedido_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularCambio('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">-->
-                            <input class="btn btn-sm" id="pedido_efectivo" size="4" name="pedido_efectivo" value="0.00"  onKeyUp="calcularCambio('pedido_subtotal', 'pedido_descuento', 'pedido_totalfinal','pedido_efectivo','pedido_cambio')">
-                
+                <tr style="padding: 0">                      
+                        <td style="padding: 0">Efectivo Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
                         </td>
                 </tr>
                 
-                <tr>                      
-                    <td><b>Cambio Bs</b></td>
-                        <td align="right">
-                            <!--<input type="number" class="btn btn-foursquarexs" id="pedido_cambio" size="2" name="pedido_cambio" value="<?php echo $cambio; ?>" readonly="true" required min="0">-->
-                            <input class="btn btn-sm" id="pedido_cambio" size="8" name="pedido_cambio" value="0.00" readonly="true" required min="0">
+                <tr style="padding: 0">                      
+                    <td style="padding: 0"><b>Cambio Bs</b></td>
+                        <td align="right" style="padding: 0;">
+                            <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
                 </tr>
                 
-                <tr>                      
-                    <td><b>Usuario</b></td>
-                        <td align="right">
-                         <select class="form-control" id="usuario_id" name="usuario_id" >
-                            <?php foreach($usuarios as $u){ 
-                            
-                             $selected = ($u['usuario_id'] == $usuario_activo) ? ' selected="selected"' : ""; ?>
-                            <option value="<?php  echo $u["usuario_id"]; ?>" <?php echo $selected; ?>><?php  echo $u["usuario_nombre"]; ?></option>
-                            <?php     
-                            } ?>
-                        </select> 
-                        </td>
-                </tr>
                 
-
+                
+                
             </table>
             
-           <!************************************* datos credito ************************************************>
-           
-                                <div class="row" id='oculto' style='display:none;'>
-                                    
-                                    <div class="col-md-3">
-                                        <h5 class="modal-title" id="myModalLabel"><b>Nº CUOTAS</b></h5>
+            
 
-                                        <select name="cuotas" id="cuotas" onchange="calcularcredito('pedidototal_final','cuota_inicial','cuotas','monto_cuota')">
-                                            <?php for($i=1;$i<=36;$i++){ ?>
-                                                <option value="<?php echo $i; ?>"><?php echo $i; ?> CUOTA (S)</option>
-                                            <?php } ?>
-                                        </select>                                      
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. Bs</b></h5>
-                                        <input type="text" value="0.00" name="cuota_inicial" id="cuota_inicial" onKeyUp="calcularcredito('pedidototal_final','cuota_inicial','cuotas','monto_cuota')" width="20">
-                                    </div>
-                                    
-                                    <div class="col-md-4">
-                                        <h5 class="modal-title" id="myModalLabel"><b>CUOTA Bs</b></h5>
-                                        <input type="text" value="0.00" name="monto_cuota" id="monto_cuota"  width="20" onKeyUp="calcularcredito('pedidototal_final','cuota_inicial','cuotas','monto_cuota')" readonly>            
-                                    </div>
-                                    
-                                </div>
-           <!************************************* fin datos credito ************************************************>
-               
           
+            <div class="col-md-12">
+                NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+            </div>
            
         </div>
-                                      
-        
-                
+           
         </div>
+                
+                
+                           
+           <!-- ************************************* datos credito ************************************************-->
+                
+            <div class="row" id='creditooculto'  style='display:none;'>
+                                    
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>Nº CUOTAS</b></h5>
+
+                    <select name="cuotas"  class="form-control input-sm" id="cuotas">
+                        <?php for($i=1;$i<=36;$i++){ ?>
+                            <option value="<?php echo $i; ?>"><?php echo $i; ?> CUOTA (S)</option>
+                        <?php } ?>
+                    </select>                                      
+                </div>
+
+                
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>MODALIDAD</b></h5>
+                    <select class="form-control input-sm" id="modalidad" name="modalidad">                       
+                        <option value="MENSUAL">MENSUAL</option>
+                        <option value="SEMANAL">SEMANAL</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>DIA PAGO</b></h5>
+                    <select class="form-control input-sm" id="dia_pago" name="dia_pago">
+                        
+                    <?php for($dia=1; $dia<=31; $dia++){?>
+                            <option value="<?php echo $dia; ?>"><?php echo $dia; ?></option>
+                            <?php } ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>INTERES</b></h5>
+                    <input type="text"  class="form-control  input-sm" value="<?php echo 0.00; ?>" name="credito_interes" id="credito_interes">
+                </div>
+
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. Bs</b></h5>
+                    <input type="text" class="form-control  input-sm"  value="0.00"name="cuota_inicial" id="cuota_inicial" >
+                </div>
+
+<!--                <div class="col-md-3">
+                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA Bs</b></h5>
+                    <input type="text" class="form-control"  value="0.00" style="background-color: gray" name="monto_cuota" id="monto_cuota"  width="20" onKeyUp="calcularcredito('pedidototal_final','cuota_inicial','cuotas','monto_cuota')" readonly>
+                </div>
+                -->
+                <?php  $fecha = date('Y-m-d'); ?>
+                <div class="col-md-4">
+                    
+                    <h5 class="modal-title" id="myModalLabel"><b>FECHA INICIAL</b></h5>
+                    <input type="date" class="form-control  input-sm"  value="<?php echo $fecha; ?>" name="fecha_inicio" id="fecha_inicio">
+                    
+                </div>
+                
+           </div>
+           
+           <!--************************************* fin datos credito ************************************************>           
+                 
+                
             <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
             
-            <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit">
+<!--            <button class="btn btn-lg btn-facebook btn-sm btn-block" onclick="finalizarventa()">
                 <h4>
-                <span class="fa fa-money"></span>   Finalizar Pedido  
+                <span class="fa fa-money"></span>   Finalizar Venta  
                 </h4>
             </button>
-            
+            -->
+            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">
+                <h4>
+                <span class="fa fa-save"></span>   Finalizar Venta  
+                </h4>
+            </button>
+
             <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal">
                 <h4>
                 <span class="fa fa-close"></span>   Cancelar  
@@ -466,65 +749,6 @@ z                                                    <option value="<?php echo $
         </div>
         </div>
 <!-- </form>-->
-
-<script>
-
-function calcularcredito(pedidototal_final,cuota_inicial,cuotas,monto_cuota){
-
-    caja = document.forms["descuento"].elements;
-    
-    var pedidototal_finalx = Number(caja[pedidototal_final].value);
-    
-//    var cuota_inicialx = Number(caja[cuota_inicial].value);
-//    var cuotasx = Number(caja[cuotas].value);    
-//    var monto_cuotax = Number(caja[monto_cuota].value);    
-
-
-}
-
-
-function calcularDesc(pedido_subtotalx,pedido_descuentox,pedido_totalfinalx,pedido_efectivox,pedido_cambiox){
-    caja = document.forms["descuento"].elements;
-    var pedido_subtotal = Number(caja[pedido_subtotalx].value);
-    var pedido_descuento = Number(caja[pedido_descuentox].value);
-    var pedido_efectivo = Number(caja[pedido_efectivox].value);
-    var pedido_cambio = Number(caja[pedido_cambiox].value);
-    
-    pedido_totalfinal = pedido_subtotal - pedido_descuento;
-    pedido_efectivo = pedido_subtotal - pedido_descuento;
-    
-    if(!isNaN(pedido_totalfinal)){
-            caja[pedido_totalfinalx].value = pedido_subtotal - pedido_descuento; 
-            caja[pedido_efectivox].value = pedido_totalfinal;
-            caja[pedido_cambiox].value = pedido_efectivo - pedido_totalfinal;
-            
-    if(caja1!="pedido_totalfinal1"){calcularDesc('pedido_subtotal1','pedido_descuento2','pedido_totalfinal2');}	
-    }
-
-}
-function calcularCambio(pedido_subtotalx,pedido_descuentox,pedido_totalfinalx,pedido_efectivox,pedido_cambiox){
-    caja=document.forms["descuento"].elements;
-    var pedido_subtotal = Number(caja[pedido_subtotalx].value);
-    var pedido_descuento = Number(caja[pedido_descuentox].value);
-    var pedido_efectivo = Number(caja[pedido_efectivox].value);
-    var pedido_cambio = Number(caja[pedido_cambiox].value);
-    var pedido_totalfinal = Number(caja[pedido_totalfinalx].value);
-    
-    //pedido_totalfinal = pedido_subtotal - pedido_descuento;
-    pedido_cambio = pedido_efectivo - pedido_totalfinal;
-    
-    if(!isNaN(pedido_cambio)){
-            //caja[pedido_totalfinalx].value = pedido_subtotal - pedido_descuento; 
-            //caja[pedido_efectivox].value = pedido_totalfinal;
-            caja[pedido_cambiox].value = pedido_efectivo - pedido_totalfinal;
-            
-    if(caja1!="pedido_totalfinal1"){calcularDesc('pedido_subtotal1','pedido_descuento2','pedido_totalfinal2');}	
-    }
-
-}
-
-
-</script>
 
         
 <!----------- fin tabla detalle cuenta ----------------------------------->                           
@@ -536,89 +760,273 @@ function calcularCambio(pedido_subtotalx,pedido_descuentox,pedido_totalfinalx,pe
 </div>
 
 </div>
-</form>
+<!--</form>-->
+
+<!----------------------Fin Modal Cobrar--------------------------------------------------->
 
 
+<!----------------- modal pedidos---------------------------------------------->
 
-<!--<button onclick="mostrarx(1)"> localizacion</button>-->
 
-<!--Permitir ubicacion de pedido-->
-<script type="text/javascript">
-function mostrarx(a) {
-    obj = document.getElementById('oculto'+a);
-    obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
-    //objm = document.getElementById('map');
-    if(obj.style.visibility == 'hidden'){
-        $('#map').css({ 'width':'0px', 'height':'0px' });
-        $('#mosmapa').text("Obtener Ubicación del negocio");
-    }else{
-        $('#map').css({ 'width':'500px', 'height':'400px' });
-        $('#mosmapa').text("Cerrar mapa");
-    }
+<div class="modal fade" id="modalpedidos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
+                                
+      <div class="input-group"> <span class="input-group-addon">Buscar</span>
+        <input id="filtrar3" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción">
+      </div>
+                                
+			</div>
+			<div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        <div class="box-body table-responsive">
+                <table class="table table-striped table-condensed" id="mitabla">
+                    <tr>
+                        <th>#</th>
+                        <th>Cliente</th>
+<!--                        <th>Sub <br>Total</th>-->
+                        <th align="center">COD</th>
+                        <th>Total</th>
+                        <!--<th>Fecha<br>entrega</th>-->
+                        <!--<th>Estado</th>-->
+                           <!--<th> </th>-->
+                    </tr>
+                    <tbody class="buscar">
+                    <?php $cont = 0;
+                          foreach($pedidos as $p){;
+                                 $cont = $cont+1; ?>
+                    <tr>
+                        <td><?php echo $cont ?></td>
+                        <!--<td><?php //echo $p['pedido_id']; ?></td>-->
+                        <td style="white-space: nowrap"><font size="3"><b><?php echo $p['cliente_nombre']; ?></b></font> <br>
+                        <?php echo $p['cliente_nombrenegocio']; ?><br>
+                        <?php echo $p['pedido_fecha']; ?><br>
+                        
+                        </td>
+                        <td align="center" bgcolor="<?php echo $p['estado_color']; ?>">
+                            <a href="<?php echo base_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>">
+                            <font size="3"><b><?php echo "00".$p['pedido_id']; ?></b></font> <br>
+                            <font size="1"><?php echo $p['estado_descripcion']; ?></font>
+                            </a>
+                            <?php echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?>
+                        </td>
+                         
+                        
+                        <td align="right" style="white-space: nowrap" ><?php echo "Sub Total: ".number_format($p['pedido_subtotal'],'2','.',','); ?><br>
+                                          <?php echo "Desc.: ".number_format($p['pedido_descuento'],'2','.',','); ?><br>  
+                                          <font size="3"><b><?php echo number_format($p['pedido_total'],'2','.',','); ?></b></font></td>
+                        
+<!--                        <td>
+                            <?php echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?></td>-->
 
-}
-</script>
+                        <td>
+                            <a href="<?php echo site_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>" class="btn btn-success btn-sm"><span class="fa fa-cubes" title="Ver detalle del pedido"></span></a>
+                            <!--<a href="<?php echo site_url('pedido/pasaraventas/'.$p['pedido_id']); ?>" class="btn btn-warning btn-sm"><span class="fa fa-arrow-down" title="Añadir pedido a ventas"></span></a>-->
+                            <button  class="btn btn-warning btn-sm" data-dismiss="modal" onclick="pasaraventas(<?php echo $p['pedido_id']; ?>,<?php echo $p['usuario_id']; ?>,<?php echo $p['cliente_id']; ?>)"><span class="fa fa-arrow-down" title="Cargar pedido a ventas"></span> </button>
+                        </td>
+                    </tr>
+                    <?php } ?>
+                </table>
+             
+                    </div>
 
-<div id="oculto1" >
-<div id="map"></div>
-                                            <script type="text/javascript">
-                                                var marker;          //variable del marcador
-                                                var coords_lat = {};    //coordenadas obtenidas con la geolocalización
-                                                var coords_lng = {};    //coordenadas obtenidas con la geolocalización
-                                                
+                        <!----------------------FIN TABLA--------------------------------------------------->
+			</div>
+		</div>
+	</div>
+</div>
+            
+    <?php if($parametro[0]['parametro_mostrarcategoria']>0){ ?>
+            <script type="text/javascript">   
+               tablaresultados(2);
+            </script>
+     <?php       }
+    ?>
+<!---------------------- fin modal pedidos --------------------------------------------------->
+<!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
-                                                //Funcion principal initMap no Map_pita
-                                                initMap_pita = function () 
-                                                {
-                                                    //usamos la API para geolocalizar el usuario
-                                                        navigator.geolocation.getCurrentPosition(
-                                                          function (position){
-                                                            coords_lat =  {
-                                                              lat: position.coords.latitude,
-                                                            };
-                                                            coords_lng =  {
-                                                              lng: position.coords.longitude,
-                                                            };
-                                                            setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
+<div id="modalespera">
+    
+</div>
 
-                                                          },function(error){console.log(error);});
-                                                }
-                                                
-                                                function setMapa (coords_lat, coords_lng)
-                                                {
-                                                        document.getElementById("latitud").value = coords_lat.lat;
-                                                        document.getElementById("longitud").value = coords_lng.lng;
-                                                      //Se crea una nueva instancia del objeto mapa
-                                                      var map = new google.maps.Map(document.getElementById('map'),
-                                                      {
-                                                        zoom: 13,
-                                                        center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+-->
+<!--<input type="search" name="xxx" list="listaclientes" id="xxx" value="" onchange="mensaje()"/>
+<datalist id="listaclientes">
+    <option value="1" label="jaguar">hola</option>
+    <option value="2" label="lincer">como</option>
+    <option value="3" label="gato">estas</option>
+</datalist>-->
 
-                                                      });
 
-                                                      //Creamos el marcador en el mapa con sus propiedades
-                                                      //para nuestro obetivo tenemos que poner el atributo draggable en true
-                                                      //position pondremos las mismas coordenas que obtuvimos en la geolocalización
-                                                      marker = new google.maps.Marker({
-                                                        map: map,
-                                                        draggable: true,
-                                                        animation: google.maps.Animation.DROP,
-                                                        position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+<!----------------- modal inventario ---------------------------------------------->
 
-                                                      });
-                                                      //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
-                                                      //cuando el usuario a soltado el marcador
-                                                      //marker.addListener('click', toggleBounce);
+<div class="modal fade" id="modalinventario" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>Asignar Inventario</b></h4>
+                                <b>ADVERTENCIA: El inventario actual, remplazara algun invenario asignado previamente.</b>                                
+                            </center>
 
-                                                      marker.addListener( 'dragend', function (event)
-                                                      {
-                                                        //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
-                                                        document.getElementById("cliente_latitud").value = this.getPosition().lat();
-                                                        document.getElementById("cliente_longitud").value = this.getPosition().lng();
-                                                      });
-                                                }
-                                                initMap();
-                                            </script>
-                                            <script async defer src="https://maps.google.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
-                                            <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>-->
-</div>                            
+                                
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+
+                    
+                        
+                        <div class="box-body table-responsive">
+                                        <div class="col-md-4">
+						<label for="usuario_idx" class="control-label">Usuario</label>
+						<div class="form-group">
+							<select name="usuario_idx" id="usuario_idx" class="form-control">
+								<option value="0">- ASIGNAR USUARIO -</option>
+								<?php 
+								foreach($usuario as $usuario_prev)
+								{
+									$selected = ($usuario_prev['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+
+									echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+                                        
+                                        <div class="col-md-4">
+						<label for="asignacion_fecha" class="control-label">Fecha</label>
+						<div class="form-group">
+                                                    
+                                                    <input type="date" name="asignacion_fecha" id="asignacion_fecha" value="<?php echo date('Y-m-d'); ?>" class="form-control">
+								
+						</div>
+					</div>
+                                        
+                                        <div class="col-md-4" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                    <center>
+                                                        
+                                                        <button class="btn btn-facebook" id="boton_asignar" onclick="asignar_inventario()"> <span class="fa fa-truck"></span> Asignar</button>
+
+                                                        <button class="btn btn-danger" id="cerrar_modalasignar" data-dismiss="modal">
+
+                                                            <span class="fa fa-close"></span>   Cancelar  
+
+                                                        </button>
+                                                    </center>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display:none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal inventario ---------------------------------------------->
+
+
+<!--
+            <a href="#" data-toggle="modal" data-target="#modalpreferencia" class="btn btn-xs btn-success" style="">
+                <i class="fa fa-tasks"></i>
+            </a>-->
+
+
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalpreferencia" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>PREFRENCIAS</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+
+                            <input id="detalleven_id" value="0" hidden>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+
+                        
+                        
+                        <div class="box-body table-responsive">
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Preferencia de producto</label>
+                                            <div class="form-group">
+							
+                                                <?php 
+                                                foreach($preferencia as $p)
+                                                {?>
+                                                    <!--<input class="btn btn-xs btn-facebook" id="preferencia<?php echo $p["preferencia_descripcion"]; ?>"  value="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead">-->
+                                                    <button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>
+                                                    <br>
+                                                <?php } 
+                                                ?>
+                                            </div>
+                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Guadar
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display:none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->

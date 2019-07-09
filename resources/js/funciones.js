@@ -1220,7 +1220,7 @@ function tablaresultados(opcion)
                             html += "           "+registros[i]["producto_unidadfactor2"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
-
+                        
                         if(registros[i]["producto_factor3"]>0){
                             precio_factor = parseFloat(registros[i]["producto_preciofactor3"]);
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor3"]) * parseFloat(registros[i]["producto_factor3"]);
@@ -1229,7 +1229,7 @@ function tablaresultados(opcion)
                             html += "           "+registros[i]["producto_unidadfactor3"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
-
+                        
                         if(registros[i]["producto_factor4"]>0){
                             precio_factor = parseFloat(registros[i]["producto_preciofactor4"]);
                             precio_factorcant = parseFloat(registros[i]["producto_preciofactor4"]) * parseFloat(registros[i]["producto_factor4"]);
@@ -1238,7 +1238,6 @@ function tablaresultados(opcion)
                             html += "           "+registros[i]["producto_unidadfactor4"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                             html += "       </option>";
                         }
-                        
                         
                         html += "   </select>";
                         
