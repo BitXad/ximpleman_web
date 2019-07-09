@@ -224,7 +224,7 @@
                         <!--<th>Aniversario</th>-->
 <!--                        <th>Tipo</th>-->
                         <th>Categoria</th>
-                        <th>Prev./Estado</th>
+                        <th>Asignado a/Estado</th>
                         <!--<th>Estado</th>-->
                         <th class="no-print"></th>
                     </tr>
