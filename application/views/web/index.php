@@ -105,7 +105,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <form action="#" method="post" class="last"> 
                         <input type="hidden" name="cmd" value="_cart">
                         <input type="hidden" name="display" value="1">
-                        <button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+                        <button class="w3view-cart" type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCart"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+                       
                         
                     </form>                                       
                 </div>
@@ -273,11 +274,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                                         <input type="hidden" name="business" value=" " />
                                                                         <input type="hidden" name="item_name" value="<?php echo $os['producto_nombre'];?>" />
                                                                         <input type="hidden" name="amount" value="<?php echo $os['producto_precio'];?>" />
-                                                                        <input type="hidden" name="discount_amount" value="1.00" />
+                                                                        <input type="hidden" name="discount_amount" value="<?php echo ($os['producto_precio']-$os['promocion_preciototal']); ?>" />
                                                                         <input type="hidden" name="currency_code" value="USD" />
                                                                         <input type="hidden" name="return" value=" " />
                                                                         <input type="hidden" name="cancel_return" value=" " />
-                                                                        <input type="submit" name="submit" value="Añadir al pedido" class="button" />
+                                                                        <input type="button" name="submit" data-toggle="modal" data-target="#modalCart" value="Añadir al pedido" class="button" />
+                                                                     
                                                                     </fieldset>
                                                                 </form>
                                                             </div>
@@ -331,7 +333,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 																	<input type="hidden" name="business" value=" " />
 																	<input type="hidden" name="item_name" value="<?php echo $od['producto_nombre'];?>" />
 																	<input type="hidden" name="amount" value="<?php echo $od['producto_precio'];?>" />
-																	<input type="hidden" name="discount_amount" value="1.00" />
+																	<input type="hidden" name="discount_amount" value="<?php echo ($os['producto_precio']-$os['promocion_preciototal']); ?>" />
 																	<input type="hidden" name="currency_code" value="USD" />
 																	<input type="hidden" name="return" value=" " />
 																	<input type="hidden" name="cancel_return" value=" " />
@@ -693,6 +695,95 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		</div>
 	</div>
 <!-- contact -->
+
+<!-- Modal: modalCart -->
+<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Tu Carrito<i class="fa fa-cart-arrow-down"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <div class="col-md-12">
+          <div class="col-md-5">
+            <div class="input-group">
+            <span class="input-group-addon success" name="nit" id="nit">NIT</span>
+            <input type="text" class="form-control" name="nit" id="nit">
+            </div>
+          </div> 
+          <div class="col-md-7">
+            <div class="input-group">
+            <span class="input-group-addon" name="razon" id="razon">CLIENTE</span>
+            <input type="text" class="form-control"  name="razon" id="razon" placeholder="RAZON SOCIAL">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12"></div>
+        <table class="table table-hover">
+          <thead>
+            <tr style="color: white; background: rgba(0, 0, 0, 0.7);">
+              <th>#</th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cant.</th>
+              <th>Subtotal</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="warning">
+              <th scope="row">1</th>
+              <td>Product 1</td>
+              <td>100$</td>
+              <td>10</td>
+              <td>1000$</td>
+              <td><a><i class="fa fa-times"></i></a></td>
+            </tr>
+            <tr class="warning">
+              <th scope="row">2</th>
+              <td>Product 2</td>
+              <td>100$</td>
+              <td>4</td>
+              <td>400$</td>
+              <td><a><i class="fa fa-times"></i></a></td>
+            </tr>
+            <tr class="warning">
+              <th scope="row">3</th>
+              <td>Product 3</td>
+              <td>100$</td>
+              <td>6</td>
+              <td>600$</td>
+              <td><a><i class="fa fa-times"></i></a></td>
+            </tr>
+            
+            <tr class="total" style="color: white; background: rgba(0, 0, 0, 0.7);">
+              <th scope="row">Total</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>2000$</th>
+              <th></th>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+      <!--Footer-->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Continuar Comprando</button>
+        <button class="btn btn-primary">Realizar la Compra</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal: modalCart -->
+
 
 <!-- //footer -->
 <div class="footer">
