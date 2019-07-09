@@ -92,7 +92,10 @@ class Inventario_usuario extends CI_Controller{
             );
             
             $inventario_usuario_id = $this->Inventario_usuario_model->add_inventario_usuario($params);
+
         }
+         $entrega="UPDATE venta v SET v.entrega_usuarioid=".$usuario." WHERE 1=1 ".$filtro."";
+         $this->db->query($entrega);
     }
 
     }  
