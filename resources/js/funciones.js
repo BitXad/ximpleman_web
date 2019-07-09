@@ -543,10 +543,16 @@ function buscarporcodigojs()
 
                     if (res.length>0){
                         
-                         if (res[0].existencia > 0){   
+                         if (res[0].existencia > 0){
                              
-                            if (res[0].producto_codigobarra == codigo ) factor = 1;
-                            if (res[0].producto_codigofactor == codigo ) factor = res[0].producto_factor;
+                            if (res[0].producto_codigobarra == codigo) factor = 1;
+                            
+                            if (res[0].producto_codigofactor == codigo) factor = res[0].producto_factor;
+                            
+                            if (res[0].producto_codigofactor1 == codigo) factor = res[0].producto_factor1;
+                            if (res[0].producto_codigofactor2 == codigo) factor = res[0].producto_factor2;
+                            if (res[0].producto_codigofactor3 == codigo) factor = res[0].producto_factor3;
+                            if (res[0].producto_codigofactor4 == codigo) factor = res[0].producto_factor4;
                             
                            
                             html = "<input type='text' value='"+factor+"' id='select_factor"+res[0].producto_id+"' title='select_factor"+res[0].producto_id+"'>"
@@ -890,14 +896,31 @@ function ingresorapido(producto_id,cantidad)
 
 function ingresorapidojs(cantidad,producto)
 {       
-    var factor = document.getElementById("select_factor"+producto.producto_id).value;
+    var factor = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+    var indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
     cantidad = cantidad * factor;
-    var precio = 0;
+    var precio = 0;  
     
-    if (factor>1)
-        precio = producto.producto_preciofactor;
+    //if (Number(factor)>1){
+    if (indice>0){
+    
+        if (factor == producto.producto_factor)
+            precio = producto.producto_preciofactor;    
+    
+        if (factor == producto.producto_factor1)
+            precio = producto.producto_preciofactor1;    
+    
+        if (factor == producto.producto_factor2)
+            precio = producto.producto_preciofactor2;    
+    
+        if (factor == producto.producto_factor3)
+            precio = producto.producto_preciofactor3;    
+    
+        if (factor == producto.producto_factor4)
+            precio = producto.producto_preciofactor4;    
+    }
     else 
-        precio = producto.producto_precio;
+    {    precio = producto.producto_precio;}
 
     
     var base_url = document.getElementById('base_url').value;   
@@ -998,7 +1021,8 @@ function mostrar_saldo(existencia, producto_id)
     var unidadfactor = document.getElementById('input_unidadfactor'+producto_id).value;
     var entero = 0;
     var saldo = 0;
-  
+
+    
     
     if (factor_seleccionado == 1)
     {

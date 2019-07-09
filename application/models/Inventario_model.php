@@ -81,7 +81,13 @@ class Inventario_model extends CI_Model
 
     function get_inventario_codigo_factor($codigo)
     {
-        $sql = "select p.* from inventario p where p.estado_id = 1 and p.producto_codigofactor='".$codigo."' 
+        $sql = "select p.* from inventario p where p.estado_id = 1 and ("
+                . "p.producto_codigofactor='".$codigo."'" 
+                . "or p.producto_codigofactor1='".$codigo."'" 
+                . "or p.producto_codigofactor2='".$codigo."'" 
+                . "or p.producto_codigofactor3='".$codigo."'" 
+                . "or p.producto_codigofactor4='".$codigo."'" 
+                . ")
               group by p.producto_id
               order by p.producto_nombre";
        

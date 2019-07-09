@@ -171,11 +171,11 @@ function tablaresultadoscliente(limite)
                         if(registros[i]["cliente_longitud"] != null){
                             long = registros[i]["cliente_longitud"];
                         }
-                        if(registros[i]["cliente_email"] != null){
-                            corr = registros[i]["cliente_email"];
+                        if(registros[i]["cliente_email"] != null && registros[i]["cliente_email"] != ""){
+                            corr = registros[i]["cliente_email"]+"<br>";
                         }
                         if(registros[i]["cliente_aniversario"] != "0000-00-00" && registros[i]["cliente_aniversario"] != null){
-                            aniv = moment(registros[i]["cliente_aniversario"]).format("DD/MM/YYYY");
+                            aniv = moment(registros[i]["cliente_aniversario"]).format("DD/MM/YYYY")+"<br>";
                         }
                         if(registros[i]["cliente_codigo"] != null && registros[i]["cliente_codigo"] != ""){
                             codigo = registros[i]["cliente_codigo"];
@@ -227,15 +227,15 @@ function tablaresultadoscliente(limite)
                         html += "</td>";
                         var estipo_cliente="";
                         if(registros[i]["tipocliente_id"] == null || registros[i]["tipocliente_id"] == 0 || registros[i]["tipocliente_id"]== ""){
-                            estipo_cliente = "No definido";
+                            estipo_cliente = "No definido"+"<br>";
                         }else{
-                            estipo_cliente = registros[i]["tipocliente_descripcion"];
+                            estipo_cliente = registros[i]["tipocliente_descripcion"]+"<br>";
                         }
                         var escategoria_cliente="";
                         if(registros[i]["categoriaclie_id"] == null || registros[i]["categoriaclie_id"] == 0 || registros[i]["categoriaclie_id"] == ""){
-                            escategoria_cliente = "No definido";
+                            escategoria_cliente = "No definido"+"<br>";
                         }else{
-                            escategoria_cliente = registros[i]["categoriaclie_descripcion"];
+                            escategoria_cliente = registros[i]["categoriaclie_descripcion"]+"<br>";
                         }
                         var esusuario="";
                         if(registros[i]["usuario_id"] == null || registros[i]["usuario_id"] == 0 || registros[i]["usuario_id"] == ""){ 
@@ -243,9 +243,9 @@ function tablaresultadoscliente(limite)
                         }else{
                             esusuario = registros[i]["usuario_nombre"];
                         }
-                        html += "<td>"+corr+"<br>"+aniv+"<br>";
-                        html += estipo_cliente+"<br>";
-                        html += escategoria_cliente+"<br>";
+                        html += "<td>"+corr+aniv;
+                        html += estipo_cliente;
+                        html += escategoria_cliente;
                         var visita = "Visitas: ";
                         if(registros[i]["lun"]== 1){ visita += "Lun. "; }
                         if(registros[i]["mar"]== 1){ visita += "Mar. "; }
@@ -254,7 +254,12 @@ function tablaresultadoscliente(limite)
                         if(registros[i]["vie"]== 1){ visita += "Vie. "; }
                         if(registros[i]["sab"]== 1){ visita += "Sab. "; }
                         if(registros[i]["dom"]== 1){ visita += "Dom."; }
-                        html += visita+"</td>";
+                        var dpto = "";
+                        if(registros[i]["cliente_departamento"] != null && registros[i]["cliente_departamento"] != "")
+                        { dpto += registros[i]["cliente_departamento"]; }
+                        html += visita;
+                        html += "<br>Dep.: "+dpto;
+                        html += "</td>";
                         //html += "<td>"+esusuario+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+";'>"+esusuario+"<br>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td class='no-print'>";
@@ -316,13 +321,10 @@ function tablaresultadoscliente(limite)
                         html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
                         html += "</td>";
                         
-                        
-                        
                         html += "</tr>";
 
                    }
-                   
-                   
+
                    $("#tablaresultados").html(html);
                    document.getElementById('loader').style.display = 'none';
             }
