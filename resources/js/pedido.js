@@ -112,7 +112,7 @@ function tabla_pedidos(filtro)
                         else{
                         html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
                         if(esrol == 1){
-                            html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
+                            html += "        <a href='"+base_url+'pedido/modificarpedido/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
                         }
                  // ****************************** anular pedido ***************************************
                         html += "       <button type='button' class='btn btn-danger btn-sm'  title='Anular pedido' data-toggle='modal' data-target='#modalanular"+p[i]["pedido_id"]+"'> ";

@@ -317,14 +317,23 @@ class Pedido_model extends CI_Model
     
 function get_pedido_id($pedido_id)
 {
-    $sql = "    select *
-                from pedido p, detalle_pedido d, cliente c, usuario u, producto t
-                where 
-                p.pedido_id = ".$pedido_id." and
-                d.pedido_id = ".$pedido_id." and
-                p.usuario_id = u.usuario_id and 
-                p.cliente_id = c.cliente_id and
-                d.producto_id = t.producto_id";
+//    $sql = "    select *
+//                from pedido p, detalle_pedido d, cliente c, usuario u, producto t
+//                where 
+//                p.pedido_id = ".$pedido_id." and
+//                d.pedido_id = ".$pedido_id." and
+//                p.usuario_id = u.usuario_id and 
+//                p.cliente_id = c.cliente_id and
+//                d.producto_id = t.producto_id";
+    $sql = "select *
+            from pedido p
+            left join detalle_pedido d on d.pedido_id = p.pedido_id
+            left join cliente c on c.cliente_id = p.cliente_id
+            left join usuario u on u.usuario_id = p.usuario_id
+            left join producto t on t.producto_id = d.producto_id
+            left join zona z on z.zona_id = c.zona_id
+
+            where p.pedido_id = ".$pedido_id;
     
     $pedido = $this->db->query($sql)->result_array();
 

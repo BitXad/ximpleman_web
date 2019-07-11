@@ -2,7 +2,7 @@
 
 p {
     font-family: Arial;
-    font-size: 7pt;
+    font-size: 8pt;
     line-height: 80%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 5px;
@@ -10,7 +10,7 @@ p {
 
 interlineado {
     font-family: Arial;
-    font-size: 7pt;
+    font-size: 8pt;
     line-height: 50%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 5px;
@@ -67,7 +67,7 @@ td {
   /* Alto de las celdas */
   height: 10px;
 font-family: Arial;
-font-size: 7pt;   
+font-size: 8pt;   
 margin: 0;
 margin-bottom: 0;
 margin-top: 0;
@@ -82,7 +82,7 @@ tr {
   /* Alto de las celdas */
   height: 10px;
 font-family: Arial;
-font-size: 7pt;   
+font-size: 8pt;   
 margin: 0;
 margin-bottom: 0;
 margin-top: 0;
@@ -182,7 +182,8 @@ border-bottom : 1px solid #aaa;
                             <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
                             <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
                             <br><b>DIRECCIÓN: </b><?php echo $pedido[0]['cliente_direccion']; ?>
-                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>                    
+                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>
+                            <br><b>ZONA: </b><?php echo $pedido[0]['zona_nombre']; ?>
                         </font>
 
               
@@ -192,12 +193,12 @@ border-bottom : 1px solid #aaa;
  
     <table class="table" style="width: 20cm; height: 1px; padding: 0;" >
     
-        <tr  style="border-bottom: solid; padding: 0;">
+        <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0;">
             <!--<th>#</th>-->
-            <th><center>CANT</center></th>
-            <th><center>DESCRIPCIÓN</center></th>
-            <th><center>PREC.UNIT</th>
-            <th><center>TOTAL</th>
+            <th style="padding: 0"><center>CANT</center></th>
+            <th style="padding: 0"><center>DESCRIPCIÓN</center></th>
+            <th style="padding: 0"><center>PREC.UNIT</th>
+            <th style="padding: 0"><center>TOTAL</th>
         </tr>
         
         <?php 

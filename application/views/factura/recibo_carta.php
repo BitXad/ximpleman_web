@@ -47,8 +47,8 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
-font-size: 7pt;  
+font-family: Arial;
+font-size: 8pt;  
 
 td {
 border:hidden;
@@ -61,7 +61,7 @@ border-spacing : 0;
 }
 div#content {
 background : #ddd;
-font-size : 7px;
+font-size : 8px;
 margin : 0 0 0 0;
 padding : 0 5px 0 5px;
 border-left : 1px solid #aaa;
@@ -102,7 +102,8 @@ border-bottom : 1px solid #aaa;
                          else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
-                <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
+                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
+                <font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>
             </center>
         </td>
         <td style="width: 6cm; padding: 0" >
@@ -113,9 +114,10 @@ border-bottom : 1px solid #aaa;
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
+                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." / NIT: ".$venta[0]['cliente_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?><br>
-                    <b>DIRECCIÓN: </b><?php echo $venta[0]['cliente_direccion'].""; ?>
+                    <b>DIRECCIÓN: </b><?php echo $venta[0]['cliente_direccion'].""; ?><br>
+                    <b>ZONA: </b><?php echo $venta[0]['zona_nombre'].""; ?>
                 <br>_______________________________________________
         </td>
     </tr>
@@ -124,7 +126,7 @@ border-bottom : 1px solid #aaa;
 
        <table class="table table-striped table-condensed"  style="width: 20cm;" >
            <tr  style="border-top-style: solid; border-bottom-style: solid">
-                <td align="center" style="padding: 0"><b>CN</b></td>
+                <td align="center" style="padding: 0"><b>CANT</b></td>
                 <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0"><b>P.UNIT</b></td>
                 <td align="center" style="padding: 0"><b>TOTAL</b></td>               

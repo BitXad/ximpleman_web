@@ -1,5 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/pedido.js'); ?>"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
