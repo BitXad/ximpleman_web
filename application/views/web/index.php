@@ -197,28 +197,33 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     
 	<div class="top-brands">
         <!------------------------ BUSCADOR --------------------------->     
-    <div class="container">               
+    <div class="container"> 
+    <div class="input-group input-group-lg">
+<input type="text" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
+<span class="input-group-btn">
+<button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
+</span> Buscar</button>
+</span>
+</div>              
         <div class="w3l_search">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
             <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
             <!--<form action="#" method="post">-->
-            <input type="search" name="parabuscar" id="parabuscar" class="text" placeholder="Buscar un producto..." required autocomplete="off" >
-            <button type="submit" class="btn btn-default search" onclick="buscar_producto()" aria-label="Left Align">
-                <i class="fa fa-search" aria-hidden="true"> </i>
-            </button>
+            
+            
             <div class="row" id='loader'  style='display:none; text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
             </div>
-                <div class="clearfix"></div>
+               
             <!--</form>-->
         </div>
 <!------------------------ BUSCADOR --------------------------->                    
             
-            <div class="clearfix"> </div>
+            <br><br>
             <div id="tablaresultados"></div>
     </div>
 		<div class="container">
-		<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
+		<!--<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
 		
                 <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
                     <h3><?php echo $seccion1[0]['seccion_descripcion']; ?></h3>
@@ -226,7 +231,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		
                     <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
 		<h5><?php echo $seccion1[0]['seccion_texto']; ?></h5>
-                <?php } ?>
+                <?php } ?>-->
                 
 <!------------------------------------- SEGUNDA SECCION -------------------------------------->
 
@@ -442,7 +447,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <?php foreach ($categorias as $cat) { ?>
                   <div class="col-md-2 w3layouts-brand">
                     <div class="brands-w3l">
-                        <button><p><a type="button"  onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p></button>
+                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p>
                     </div>
                 </div> 
                 <?php } ?>
