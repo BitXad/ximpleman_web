@@ -89,7 +89,7 @@ function toggle(source) {
 			<i class="fa fa-edit"></i>Codigo Cliente
 		</button>
             </div>
-            <?php echo form_open('cliente/clientenuevo/'.$pedido_id); ?>
+            <?php echo form_open('cliente/clientenuevo/0'); ?>
           	<div class="box-body">
           		<div class="row clearfix">
                                         <div class="col-md-5">
@@ -329,7 +329,7 @@ function toggle(source) {
             	<button type="submit" class="btn btn-success">
             		<i class="fa fa-check"></i> Guardar
             	</button>
-                <a href="<?php echo site_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-danger">
+                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-danger">
                     <i class="fa fa-times"></i> Cancelar</a>
           	</div>
           	</div>

@@ -11,25 +11,7 @@ class Pedido_model extends CI_Model
         parent::__construct();
     }
     
-    /*
-     * Get pedido by pedido_id
-     */
-//    function get_pedido($pedido_id)
-//    {
-//        $pedido = $this->db->query("
-//            SELECT
-//                *
-//
-//            FROM
-//                `pedido`
-//
-//            WHERE
-//                `pedido_id` = ?
-//        ",array($pedido_id))->row_array();
-//
-//        return $pedido;
-//    }
-    
+
     /*
      * Get all pedido count
      */
