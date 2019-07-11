@@ -213,20 +213,20 @@ border-bottom : 1px solid #aaa;
 <!--                <td>
                     <?php echo $i++; ?>
                 </td>-->
-                <td>
+                <td style="padding: 0">
                     <center>
                         <?php echo $p['detalleped_cantidad']; ?>
                     </center>
                 </td>
-                <td>
+                <td style="padding: 0">
                     <?php echo $p['producto_nombre']; ?>
                 </td>
-                <td align="right">
+                <td align="right"  style="padding: 0">
                     
                     <?php echo number_format($p['detalleped_precio'],2,".",","); ?>
                     
                 </td>
-                <td align="right">
+                <td align="right"  style="padding: 0">
                     <?php echo number_format($p['detalleped_total'],2,".",","); ?>
                 </td>
             </tr>
@@ -235,10 +235,10 @@ border-bottom : 1px solid #aaa;
         ?>
         <tr align="right" style="border-top: solid; border-bottom: solid;">
 <!--            <th></th>-->
-            <td colspan="3"><font size="3"><b>Total Bs</b></font></td>
+            <td colspan="3"  style="padding: 0"><font size="3"><b>Total Bs</b></font></td>
 <!--            <th></th>
             <th></th>-->
-            <td align="right"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
+            <td align="right"  style="padding: 0"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
         </tr>                        
 
     </table>    
@@ -247,15 +247,15 @@ border-bottom : 1px solid #aaa;
 <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?></font>
 <table class="table" style="width: 20cm;">
         <tr>
-            <td>
+            <td  style="padding: 0">
                 <center>
                     __________________________<br>
                             ENTREGE CONFORME
                 </center>  
             </td>
-            <td>
+            <td style="padding: 0">
             </td>
-            <td>
+            <td  style="padding: 0">
                 <center>
                     __________________________<br>
                             RECIBI CONFORME

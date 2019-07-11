@@ -76,20 +76,20 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 
 
-<table class="table" style="width: 18cm; padding: 0;" >
+<table class="table" style="width: 20cm; padding: 0;" >
     <tr>
         <td style="width: 6cm; padding: 0" >
                 
             <center>
                                
-                    <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
-                    <font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
                 
 
             </center>                      
@@ -122,7 +122,7 @@ border-bottom : 1px solid #aaa;
      
 </table>
 
-       <table class="table table-striped table-condensed"  style="width: 18cm;" >
+       <table class="table table-striped table-condensed"  style="width: 20cm;" >
            <tr  style="border-top-style: solid; border-bottom-style: solid">
                 <td align="center" style="padding: 0"><b>CN</b></td>
                 <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
@@ -162,7 +162,7 @@ border-bottom : 1px solid #aaa;
            <?php } ?>
        </table>
     
-<table class="table" style="max-width: 18cm;">
+<table class="table" style="max-width: 20cm;">
     <tr style="border-top-style: solid">
         
         <td align="left">
@@ -171,7 +171,7 @@ border-bottom : 1px solid #aaa;
                 TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
         </td>
         <td align="right">
-            <center>
+<!--            <center>
                 <br>
                 <br>
                 <br>
@@ -179,7 +179,7 @@ border-bottom : 1px solid #aaa;
                 <br>
                 <br>
                     <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
-            </center>
+            </center>-->
         </td>
         <td align="right"  style="padding: 0">
             
@@ -206,12 +206,31 @@ border-bottom : 1px solid #aaa;
             
         </td>          
     </tr>
-
+<!--
     <tr >
         <td colspan="3">
 
          </td>
-    </tr>    
+    </tr>    -->
     
 </table>
+
+<table class="table" style="width: 20cm;">
+        <tr>
+            <td  style="padding: 0">
+                <center>
+                    __________________________<br>
+                            ENTREGE CONFORME
+                </center>  
+            </td>
+            <td style="padding: 0">
+            </td>
+            <td  style="padding: 0">
+                <center>
+                    __________________________<br>
+                            RECIBI CONFORME
+                </center>  
+            </td>
+        </tr>
+    </table>
   

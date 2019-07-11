@@ -76,7 +76,7 @@
                 
     <div class="col-md-3">
         <div class="form-group">
-                    <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm form-control"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
+                    <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm form-control"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
                     <!--<a href="<?php echo site_url('pedido/mapa_pedido'); ?>" target="_blank" class="btn btn-facebook btn-sm"><span class="fa fa-map"></span> Mapa</a>-->
                     <!--<a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm form-control"><span class="fa fa-map"></span> Mapa</a>-->
                 <!--</div>-->
@@ -166,22 +166,18 @@
         </div>
     </div>
 </div>
-<!---------------- PEDIDOS SIN ASIGNAR ------------------------------->
 
+<!---------------- PEDIDOS SIN ASIGNAR ------------------------------->
+<!--
 <div class="row">
     <div class="col-md-12">
-        <!--------------------- parametro de buscador --------------------->
-<!--                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el cliente, fecha, total">
-                  </div>-->
-            <!--------------------- fin parametro de buscador --------------------->
+
         <div class="box">
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>Num.</th>
-                        <!--<th>Id</th>-->
                         <th>Cliente</th>
                         <th>COD</th>
                         <th>Fecha</th>
@@ -190,7 +186,6 @@
                         <th>Total</th>
                         <th>Fecha<br>Entrega</th>
                         <th>Hora<br>Entrega</th>
-<!--                        <th>Estado</th>-->
                         <th> </th>
                     </tr>
                     <tbody class="buscar">
@@ -199,7 +194,6 @@
                                  $cont = $cont+1; ?>
                     <tr>
                         <td><?php echo $cont ?></td>
-                        <!--<td><?php //echo $p['pedido_id']; ?></td>-->
                         <td><?php echo $psn['cliente_nombre']; ?></td>
                         <td align="center"><?php echo $psn['pedido_id']; ?></td>
                         <td><?php echo $psn['pedido_fecha']; ?></td>
@@ -208,10 +202,9 @@
                         <td><?php echo $psn['pedido_total']; ?></td>
                         <td><?php echo $psn['pedido_fechaentrega']; ?></td>
                         <td><?php echo $psn['pedido_horaentrega']; ?></td>
-<!--                        <td><?php echo $psn['estado_descripcion']; ?></td>-->
+
                         <td>
                             <a href="<?php echo site_url('pedido/pedidoabierto/'.$psn['pedido_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span></a>
-<!--                            <a href="<?php echo site_url('pedido/edit/'.$psn['pedido_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>-->
                             <a href="<?php echo site_url('pedido/remove/'.$psn['pedido_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
                         </td>
                     </tr>
@@ -220,12 +213,10 @@
                 </table>
                                 
             </div>
-<!--            <div class="pull-right">
-                    <?php //echo $this->pagination->create_links(); ?>                    
-            </div>-->
+
         </div>
     </div>
-</div>
+</div>-->
 
 
     
