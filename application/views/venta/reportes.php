@@ -148,6 +148,7 @@
                         <th>UTILID.</th>
                         <th>CLIENTE</th>
                         <th>CAJERO</th>
+                        <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar" id="reportefechadeventa">
                     

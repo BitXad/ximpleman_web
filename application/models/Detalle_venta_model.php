@@ -57,6 +57,28 @@ function ventas_dia($estado)
 
         return $detalle_venta;
   }
+
+  function ventas_dist($filtro)
+  {
+        $detalle_venta = $this->db->query("
+            SELECT
+                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, es.estado_descripcion
+            FROM
+                venta v 
+            /*LEFT JOIN detalle_venta dv on v.venta_id=dv.venta_id*/
+            LEFT JOIN entrega e on v.entrega_id=e.entrega_id
+            LEFT JOIN cliente c on v.cliente_id=c.cliente_id
+            LEFT JOIN estado es on v.estado_id=es.estado_id
+
+            WHERE
+            1=1
+            ".$filtro."
+            ORDER BY v.venta_id  
+            
+        ")->result_array();
+
+        return $detalle_venta;
+  }
   function get_dventadia($estado,$destino,$usuario)
     {
         $result = $this->db->query(

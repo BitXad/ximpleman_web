@@ -1,364 +1,178 @@
 $(document).on("ready",inicio);
 function inicio(){
-       tablaresultadosdistribuidor(1);
+       buscarventasdist();
 }
 
-//Tabla resultados de la busqueda de pendientes e npedidos o ventas??
-function tablaresultadosdistribuidor(limite)
-{
-    var controlador = "";
-    var parametro = "";
-    var limit = limite;
-    var base_url       = document.getElementById('base_url').value;
-    var tipousuario_id = document.getElementById('tipousuario_id').value;
-    var usuario_id = "";
-    if(tipousuario_id == 1){
-        usuario_id = document.getElementById('usuario_id').value;
-    }else{
-        usuario_id = document.getElementById('usuario_id2').value;
-    }
-    if(limit == 1){
-        controlador = base_url+'cliente/ventatodasdia/';
-    }else if(limit == 3){
-        controlador = base_url+'cliente/buscarclientesall/';
-    }else{
-        controlador = base_url+'cliente/buscarclientes/';
-        var categoria   = document.getElementById('categoriaclie_id').value;
-        var zona        = document.getElementById('zona_id').value;
-        var tipo        = document.getElementById('tipo_id').value;
-        var prevendedor = document.getElementById('prevendedor_id').value;
-        var estado      = document.getElementById('estado_id').value;
-        var categoriaestado = "";
-        var categoriatext   = "";
-        var zonatext   = "";
-        var tipotext   = "";
-        var prevendedortext   = "";
-        var estadotext   = "";
-        if(categoria == 0){
-           categoriaestado = "";
-        }else{
-           categoriaestado += " and c.categoriaclie_id = cc.categoriaclie_id and c.categoriaclie_id = "+categoria+" ";
-           categoriatext = $('select[name="categoriaclie_id"] option:selected').text();
-           categoriatext = "Categoria: "+categoriatext;
-        }
-        if(zona == 0){
-           categoriaestado += "";
-        }else{
-           categoriaestado += " and c.zona_id = z.zona_id and c.zona_id = "+zona+" ";
-           zonatext = $('select[name="zona_id"] option:selected').text();
-           zonatext = "Zona: "+zonatext;
-        }
-        if(tipo == 0){
-           categoriaestado += "";
-        }else{
-           categoriaestado += " and c.tipocliente_id = tc.tipocliente_id and c.tipocliente_id = "+tipo+" ";
-           tipotext = $('select[name="tipo_id"] option:selected').text();
-           tipotext = "Tipo: "+tipotext;
-        }
-        if(prevendedor == 0){
-           categoriaestado += "";
-        }else if(prevendedor == -1){
-           categoriaestado += " and c.usuario_id = 0 or c.usuario_id = null"; 
-           prevendedortext = "Clientes asignados a: Sin Usuarios";
-        }else{
-           categoriaestado += " and c.usuario_id = u.usuario_id and c.usuario_id = "+prevendedor+" ";
-           prevendedortext = $('select[name="prevendedor_id"] option:selected').text();
-           prevendedortext = "Clientes asignados a: "+prevendedortext;
-        }
-        if(estado == 0){
-           categoriaestado += "";
-        }else{
-           categoriaestado += " and c.estado_id = "+estado+" ";
-           estadotext = $('select[name="estado_id"] option:selected').text();
-           estadotext = "Estado: "+estadotext;
-        }
-        
-        $("#busquedacategoria").html(categoriatext+" "+zonatext+" "+tipotext+" "+prevendedortext+" "+estadotext);
-        
-        parametro = document.getElementById('filtrar').value;
-        
-    }        
-    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+//Tabla resultados de la busqueda de pendientes e npedidos o registros??
+function buscarventasdist(){
+ var base_url    = document.getElementById('base_url').value;
+ var usuario    = document.getElementById('usuario_id').value;
+ var fecha_desde = document.getElementById('fecha_desde').value;
+ var fecha_hasta = document.getElementById('fecha_hasta').value;
+   
     
+ var controlador = base_url+"detalle_venta/buscarventasdist";
+ if (usuario==0) {
+    var filtro = " and date(v.venta_fecha) >= '"+fecha_desde+"'  and  date(v.venta_fecha) <='"+fecha_hasta+"' ";
+ }else{
+    var filtro = " and date(v.venta_fecha) >= '"+fecha_desde+"'  and  date(v.venta_fecha) <='"+fecha_hasta+"' and v.entrega_usuarioid="+usuario+" ";
+ }
 
-    $.ajax({url: controlador,
+ $.ajax({url: controlador,
            type:"POST",
-           data:{parametro:parametro, usuario_id},
-           success:function(respuesta){
-               
-                                     
-                $("#encontrados").val("- 0 -");
-               var registros =  JSON.parse(respuesta);
-                
+           data:{filtro:filtro},
+          
+           success:function(resul){     
+              
+                            
+                $("#pillados").val("- 0 -");
+               var registros =  JSON.parse(resul);
+           
                if (registros != null){
                    
-                   var formaimagen = document.getElementById('formaimagen').value;
-                   /*var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
-                   var categoriacliezona = JSON.parse(document.getElementById('lacategoria_clientezona').value);
-                   var usuariocli = JSON.parse(document.getElementById('elusuario').value);*/
                    
-                    var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
-                    html = "";
+                    var cont = 0;
+                    var total = Number(0);
                     
+                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                   
+                   
+                    html = "";
+                   
+                   
                     for (var i = 0; i < n ; i++){
-                        html += "<tr>";
                         
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td><div id='horizontal'>";
-                        html += "<div id='contieneimg'>";
-                        
-                        var mimagen = "";
-                        if(registros[i]["cliente_foto"] != null && registros[i]["cliente_foto"] !=""){
-                            mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
-                            mimagen += "<img src='"+base_url+"resources/images/clientes/thumb_"+registros[i]["cliente_foto"]+"' class='img img-"+formaimagen+"' width='50' height='50' />";
-                            mimagen += "</a>";
-                            //mimagen = nomfoto.split(".").join("_thumb.");
+                        if (registros[i]["entrega_id"]==1) {
+                            var color="rgba(255, 143, 0, 0.6)";
                         }else{
-                            mimagen = "<img src='"+base_url+"resources/images/usuarios/thumb_default.jpg' class='img img-"+formaimagen+"' width='50' height='50' />";
+                            var color="rgba(0, 255, 0, 0.6)";
                         }
-                        var neg = "";
-                        var dir = "";
-                        var lati = "";
-                        var long = "";
-                        var corr = "";
-                        var aniv = "";
-                        var codigo = "";
-                        var telef = "";
-                        var celular = "";
-                        if(registros[i]["cliente_nombrenegocio"] != null){
-                            neg = registros[i]["cliente_nombrenegocio"];
-                        }
-                        if(registros[i]["cliente_direccion"] != null){
-                            dir = registros[i]["cliente_direccion"];
-                        }
-                        if(registros[i]["cliente_latitud"] != null){
-                            lati = registros[i]["cliente_latitud"];
-                        }
-                        if(registros[i]["cliente_longitud"] != null){
-                            long = registros[i]["cliente_longitud"];
-                        }
-                        if(registros[i]["cliente_email"] != null && registros[i]["cliente_email"] != ""){
-                            corr = registros[i]["cliente_email"]+"<br>";
-                        }
-                        if(registros[i]["cliente_aniversario"] != "0000-00-00" && registros[i]["cliente_aniversario"] != null){
-                            aniv = moment(registros[i]["cliente_aniversario"]).format("DD/MM/YYYY")+"<br>";
-                        }
-                        if(registros[i]["cliente_codigo"] != null && registros[i]["cliente_codigo"] != ""){
-                            codigo = registros[i]["cliente_codigo"];
-                        }
-                        if(registros[i]["cliente_telefono"] != null && registros[i]["cliente_telefono"] != ""){
-                            telef = registros[i]["cliente_telefono"];
-                        }
-                        if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
-                            celular = registros[i]["cliente_celular"];
-                        }
-                        var linea = "";
-                        if(telef>0 && celular>0){
-                            linea = "-";
-                        }
-                        //html += "<img src='"+base_url+"/resources/images/"+mimagen+"' />";
-                        html += mimagen;
-                        html += "</div>";
-                        html += "<div style='padding-left: 4px'>";
-                        html += "<b id='masg'>"+registros[i]["cliente_nombre"]+"</b><br>";
-                        html += "<b>Codigo: </b>"+codigo+"<br>";
-                        html += "<b>C.I.: </b>"+registros[i]["cliente_ci"]+"<br>";
-                        html += "<b>Tel.: </b>"+telef+linea+celular;
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</td>";
-                        html += "<td>";
-                        html += "<div style='white-space: nowrap;'><b>Neg.: </b>"+neg+"<br></div>";
-                        html += "<div>";
-                        html += "<b>Dir.: </b>"+dir+"<br>";
-                        html += "<b>Nit: </b>"+registros[i]["cliente_nit"]+"<br>";
-                        html += "<b>Razon: </b>"+registros[i]["cliente_razon"]+"<br>";
-                        var escategoria_clientezona="";
-                        if(registros[i]["zona_id"] == null || registros[i]["zona_id"] == 0 || registros[i]["zona_id"] == ""){
-                            escategoria_clientezona = "No definido";
-                        }else{
-                            escategoria_clientezona = registros[i]["zona_nombre"];
-                        }
-                        html += "<b>Zona: </b>"+escategoria_clientezona;
-                        html += "</div>";
-                        html += "</td>";
-                        html += "<td class='no-print' style='text-align: center'>";
-                        if ((registros[i]["cliente_latitud"]==0 && registros[i]["cliente_longitud"]==0) || (registros[i]["cliente_latitud"]==null && registros[i]["cliente_longitud"]==null) || (registros[i]["cliente_latitud"]== "" && registros[i]["cliente_longitud"]=="")){
-                            html += "<img src='"+base_url+"resources/images/noubicacion.png' width='30' height='30'>";
-                        }else{
-                            html += "<a href='https://www.google.com/maps/dir/"+registros[i]["cliente_latitud"]+","+registros[i]["cliente_longitud"]+"' target='_blank' title='lat:"+registros[i]["cliente_latitud"]+", long:"+registros[i]["cliente_longitud"]+"'>";                                                                
-                            html += "<img src='"+base_url+"resources/images/blue.png' width='30' height='30'>";
-                            html += "</a>";
-                        }
-                        html += "</td>";
-                        var estipo_cliente="";
-                        if(registros[i]["tipocliente_id"] == null || registros[i]["tipocliente_id"] == 0 || registros[i]["tipocliente_id"]== ""){
-                            estipo_cliente = "No definido"+"<br>";
-                        }else{
-                            estipo_cliente = registros[i]["tipocliente_descripcion"]+"<br>";
-                        }
-                        var escategoria_cliente="";
-                        if(registros[i]["categoriaclie_id"] == null || registros[i]["categoriaclie_id"] == 0 || registros[i]["categoriaclie_id"] == ""){
-                            escategoria_cliente = "No definido"+"<br>";
-                        }else{
-                            escategoria_cliente = registros[i]["categoriaclie_descripcion"]+"<br>";
-                        }
-                        var esusuario="";
-                        if(registros[i]["usuario_id"] == null || registros[i]["usuario_id"] == 0 || registros[i]["usuario_id"] == ""){ 
-                            esusuario = "No definido";
-                        }else{
-                            esusuario = registros[i]["usuario_nombre"];
-                        }
-                        html += "<td>"+corr+aniv;
-                        html += estipo_cliente;
-                        html += escategoria_cliente;
-                        var visita = "Visitas: ";
-                        if(registros[i]["lun"]== 1){ visita += "Lun. "; }
-                        if(registros[i]["mar"]== 1){ visita += "Mar. "; }
-                        if(registros[i]["mie"]== 1){ visita += "Mie. "; }
-                        if(registros[i]["jue"]== 1){ visita += "Jue. "; }
-                        if(registros[i]["vie"]== 1){ visita += "Vie. "; }
-                        if(registros[i]["sab"]== 1){ visita += "Sab. "; }
-                        if(registros[i]["dom"]== 1){ visita += "Dom."; }
-                        var dpto = "";
-                        if(registros[i]["cliente_departamento"] != null && registros[i]["cliente_departamento"] != "")
-                        { dpto += registros[i]["cliente_departamento"]; }
-                        html += visita;
-                        html += "<br>Dep.: "+dpto;
-                        html += "</td>";
-                        //html += "<td>"+esusuario+"</td>";
-                        html += "<td style='background-color: #"+registros[i]["estado_color"]+";'>"+esusuario+"<br>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td class='no-print'>";
-                        html += "<a href='"+base_url+"venta/ventas_cliente/"+registros[i]["cliente_id"]+"' class='btn btn-success btn-xs' title='Vender'><span class='fa fa-cart-plus'></span></a>";
-                        
-                        html += "<a href='"+base_url+"cliente/realizar_pedido/"+registros[i]["cliente_id"]+"' class='btn btn-facebook btn-xs' title='Generar pedido/Pre-Venta'><span class='fa fa-clipboard'></span></a>";
-                        
-                        html += "<a href='"+base_url+"cliente/edit/"+registros[i]["cliente_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar datos de Cliente'><span class='fa fa-pencil'></span></a>";
-                        
-                        if (registros[i]["cliente_celular"] > 1000){
-                            html += "<a href='https://wa.me/591"+registros[i]["cliente_celular"]+"' target='_BLANK' class='btn btn-success btn-xs' title='Enviar mensaje por whatsapp'><span class='fa fa-whatsapp'></span></a>";
-                        }
-                        
-                        
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
 
                         
-                        html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
+                        html += "<tr style='background-color: "+color+"'>";
+                      
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td><b>"+registros[i]["cliente_nombre"]+"</b></td>";
+                        html += "<td align='center'>"+registros[i]["venta_id"]+"</td>"; 
+                        html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["venta_hora"]+"</td>"; 
+                        html += "<td align='center'>"+registros[i]["entrega_nombre"]+"</br>"; 
+                        //html += "<b>"+registros[i]["estado_nombre"]+"</b></td>"; 
+                         
+                       // html += "<td><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
+                        //html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
+                        //html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-primary btn-xs'><span class='fa fa-pencil'></a>";
+                       if (registros[i]["entrega_id"]==1) {
+                            //registros[i]["estado_nombre"]
+                        html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title=''><span class='fa fa-exclamation-circle'></span> CONSOLIDAR</a>";
+                        html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
+                        html += "<br>";
                         html += "<div class='modal-content'>";
                         html += "<div class='modal-header'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
                         html += "</div>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
-                        html += "<h3><b> <span class='fa fa-trash'></span></b>";
-                        html += "¿Desea eliminar al Cliente <b>"+registros[i]['cliente_nombre']+"</b> ?";
-                        html += "</h3>";
+                        
+                        html += "<center>";                        
+                        html += "<h3>Consolidar la Venta: # "+registros[i]["venta_id"]+"<br> A : "+registros[i]["cliente_nombre"]+" </h3>";
+                        html += "</center>";
+                        
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"cliente/remove/"+registros[i]["cliente_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<button type='button' onclick='consolidar("+registros[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
-                        html += "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->";
-                        html += "<div class='modal fade' id='mostrarimagen"+i+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+i+"'>";
+                        html += "</td>";
+                        }else{
+                        html += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#myreModal"+i+"' title='RESTABLECER'><span class='fa fa-reply'></span> RESTABLECER</a>";
+                        
+                        html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
+                        html += "<div class='modal fade' id='myreModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
+                        html += "<br>";
                         html += "<div class='modal-content'>";
                         html += "<div class='modal-header'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "<font size='3'><b>"+registros[i]["cliente_nombre"]+"</b></font>";
                         html += "</div>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
-                        html += "<img style='max-height: 100%; max-width: 100%' src='"+base_url+"resources/images/clientes/"+registros[i]["cliente_foto"]+"' />";
+                        html += " <h3>Reestablecer la Venta:  # "+registros[i]["venta_id"]+"<br> A : "+registros[i]["cliente_nombre"]+" </h3>";
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
-
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<button type='button' onclick='restablecer("+registros[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
-                        html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
-                        html += "</td>";
-                        
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar eliminacin ------------------->";
+                        html += "</td>";    
+                        }
                         html += "</tr>";
-
-                   }
-
+                    } 
+                        
+                   
                    $("#tablaresultados").html(html);
-                   document.getElementById('loader').style.display = 'none';
+                   
             }
-         document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                
         },
-        error:function(respuesta){
-           // alert("Algo salio mal...!!!");
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
            html = "";
            $("#tablaresultados").html(html);
-        },
-        complete: function (jqXHR, textStatus) {
-            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
-            //tabla_inventario();
         }
         
     });   
 
 }
 
+function consolidar(venta)
+{
+    
+
+ var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/consolidar/'+venta;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+          
+           success:function(resul){                
+                
+   buscarventasdist();
+      
+
+      }
+    });   
 
 
-
-
-
-
-
-
-
-
-function imprimir_cliente(){
-    var estafh = new Date();
-    $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
-    $("#cabeceraprint").css("display", "");
-    window.print();
-    $("#cabeceraprint").css("display", "none");
 }
-/*aumenta un cero a un digito; es para las horas*/
-function aumentar_cero(num){
-    if (num < 10) {
-        num = "0" + num;
-    }
-    return num;
-}
-/* recibe Date y devuelve en formato dd/mm/YYYY hh:mm:ss ampm */
-function formatofecha_hora_ampm(string){
-    var mifh = new Date(string);
-    var info = "";
-    var am_pm = mifh.getHours() >= 12 ? "p.m." : "a.m.";
-    var hours = mifh.getHours() > 12 ? mifh.getHours() - 12 : mifh.getHours();
-    if(string != null){
-       info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
-   }
-    return info;
-}
-/*
- * Funcion que buscara productos en la tabla productos
- */
-function buscarcliente(e) {
-  tecla = (document.all) ? e.keyCode : e.which;
-    if (tecla==13){
-        tablaresultadoscliente(2);
-    }
-}
-/* Funcion que muestra a todos los clientes */
-function mostrar_all_clientes() {
-    tablaresultadoscliente(3);
-}
+function restablecer(venta)
+{
+    
+ var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+'detalle_venta/restableche/'+venta;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+          
+           success:function(resul){                
+                
+    buscarventasdist();
+
+      }
+    });   
 
 
-  
+}  
+
+
+

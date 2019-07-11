@@ -84,6 +84,16 @@ class Detalle_venta extends CI_Controller{
         echo json_encode($data);
               
     }
+    function buscarventasdist()
+    {
+        
+        $filtro = $this->input->post('filtro');
+        $data = $this->Detalle_venta_model->ventas_dist($filtro);
+        
+       
+        echo json_encode($data);
+              
+    }
     function reportes()
     {
         if($this->acceso(156)){
@@ -144,6 +154,21 @@ class Detalle_venta extends CI_Controller{
             return true;
     }
 
+    function consolidar($venta_id)
+    {
+            
+        $sql="UPDATE venta SET entrega_id=2 WHERE venta_id=".$venta_id." ";
+            $this->db->query($sql);
+           return true;
+    }
+    function restableche($venta_id)
+    {
+           
+        $sql="UPDATE venta SET entrega_id=1 WHERE venta_id=".$venta_id." ";
+            $this->db->query($sql);
+           return true;
+    }
+    
     function detalle()
     {
         if ($this->input->is_ajax_request()) {
