@@ -1071,6 +1071,44 @@ class Cliente extends CI_Controller{
         //**************** fin contenido ***************
         }
         
-    }    
-        
+    }
+    
+    /* * reporte de distribuidor * */
+    function reporte_distribuidor()
+    {
+        //if($this->acceso(94)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
+            $data['usuario_id'] = $this->session_data['usuario_id'];
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+
+            $data['_view'] = 'cliente/reporte_distribuidor';
+            $this->load->view('layouts/main',$data);
+        //}
+    }
+    
+    /* * buscar clientes para pedido //://-->para pedidos * */
+    function ventatodasdia()
+    {
+        //if($this->acceso(31)){
+            if ($this->input->is_ajax_request()){
+                $parametro = $this->input->post('parametro');
+
+                if ($parametro!=""){
+                    $this->load->model('Venta_model');
+                    $datos = $this->Venta_model->get_venta($parametro);
+                    echo json_encode($datos);
+                }
+                else echo json_encode(null);
+            }
+            else
+            {                 
+                show_404();
+            }
+        //}
+    }
 }
