@@ -21,8 +21,11 @@
 <div class="micontenedor">
     <?php
         //$mimagen = "thumb_".$empresa[0]['empresa_imagen'];
+    $mimagen = $empresa[0]['empresa_imagen'];
+    if($mimagen !="" && $mimagen != null){
         $mimagen = $empresa[0]['empresa_imagen'];
         echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
+    }
         ?>
     <br>
     <div id="titulo">
