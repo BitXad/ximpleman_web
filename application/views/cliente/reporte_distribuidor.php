@@ -38,7 +38,7 @@
     }
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" />
@@ -97,12 +97,12 @@
         <div class="col-md-3">
             Usuario:<br>
             <label class="btn btn-primary btn-block"><?php echo $usuario_nombre; ?></label>
-            <input type="hidden" name="usuario_id2" id="usuario_id2" value="<?php echo $usuario_id; ?>" />
+            <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>" />
         </div>
         <?php } ?>
         <div class="col-md-3">
             <br>
-            <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscar_por_fecha()" style="height: 34px;">
+            <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscarventasdist(2)" style="height: 34px;">
                 <span class="fa fa-search"></span>Buscar Pendientes
           </button>
             <br>
@@ -133,12 +133,12 @@
         <div class="box">
             
             <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitablaimpresion">
+                <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
                         <th>Cliente</th>
-                        <th>Código</th>
-                        <th>Fechas</th>
+                        <th>Venta</th>
+                        <th>Fecha</th>
                         <th>Estado</th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">

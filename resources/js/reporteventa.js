@@ -287,7 +287,7 @@ if (tipo==0) {
                         
                         html += "<td  align='center'>"+registros[i]["cliente_nombre"]+"</td>"; 
                         html += "<td  align='center'>"+registros[i]["usuario_nombre"]+"</td>"; 
-                       
+                        html += "<td class='no-print'><a href='"+base_url+"venta/modificar_venta/"+registros[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a> <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> </td>";
                        
                        
                         html += "</tr>";
