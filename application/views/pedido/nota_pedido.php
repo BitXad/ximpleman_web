@@ -2,7 +2,7 @@
 
 p {
     font-family: Arial;
-    font-size: 7pt;
+    font-size: 8pt;
     line-height: 80%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 5px;
@@ -10,7 +10,7 @@ p {
 
 interlineado {
     font-family: Arial;
-    font-size: 7pt;
+    font-size: 8pt;
     line-height: 50%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 5px;
@@ -67,7 +67,7 @@ td {
   /* Alto de las celdas */
   height: 10px;
 font-family: Arial;
-font-size: 7pt;   
+font-size: 8pt;   
 margin: 0;
 margin-bottom: 0;
 margin-top: 0;
@@ -82,7 +82,7 @@ tr {
   /* Alto de las celdas */
   height: 10px;
 font-family: Arial;
-font-size: 7pt;   
+font-size: 8pt;   
 margin: 0;
 margin-bottom: 0;
 margin-top: 0;
@@ -182,7 +182,8 @@ border-bottom : 1px solid #aaa;
                             <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
                             <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
                             <br><b>DIRECCIÓN: </b><?php echo $pedido[0]['cliente_direccion']; ?>
-                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>                    
+                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>
+                            <br><b>ZONA: </b><?php echo $pedido[0]['zona_nombre']; ?>
                         </font>
 
               
@@ -192,12 +193,12 @@ border-bottom : 1px solid #aaa;
  
     <table class="table" style="width: 20cm; height: 1px; padding: 0;" >
     
-        <tr  style="border-bottom: solid; padding: 0;">
+        <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0;">
             <!--<th>#</th>-->
-            <th><center>CANT</center></th>
-            <th><center>DESCRIPCIÓN</center></th>
-            <th><center>PREC.UNIT</th>
-            <th><center>TOTAL</th>
+            <th style="padding: 0"><center>CANT</center></th>
+            <th style="padding: 0"><center>DESCRIPCIÓN</center></th>
+            <th style="padding: 0"><center>PREC.UNIT</th>
+            <th style="padding: 0"><center>TOTAL</th>
         </tr>
         
         <?php 
@@ -213,20 +214,20 @@ border-bottom : 1px solid #aaa;
 <!--                <td>
                     <?php echo $i++; ?>
                 </td>-->
-                <td>
+                <td style="padding: 0">
                     <center>
                         <?php echo $p['detalleped_cantidad']; ?>
                     </center>
                 </td>
-                <td>
+                <td style="padding: 0">
                     <?php echo $p['producto_nombre']; ?>
                 </td>
-                <td align="right">
+                <td align="right"  style="padding: 0">
                     
                     <?php echo number_format($p['detalleped_precio'],2,".",","); ?>
                     
                 </td>
-                <td align="right">
+                <td align="right"  style="padding: 0">
                     <?php echo number_format($p['detalleped_total'],2,".",","); ?>
                 </td>
             </tr>
@@ -235,27 +236,27 @@ border-bottom : 1px solid #aaa;
         ?>
         <tr align="right" style="border-top: solid; border-bottom: solid;">
 <!--            <th></th>-->
-            <td colspan="3"><font size="3"><b>Total Bs</b></font></td>
+            <td colspan="3"  style="padding: 0"><font size="3"><b>Total Bs</b></font></td>
 <!--            <th></th>
             <th></th>-->
-            <td align="right"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
+            <td align="right"  style="padding: 0"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
         </tr>                        
 
     </table>    
 </font>
 
 <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?></font>
-<table class="table" style="width: 20cm;">
+    <table class="table" style="width: 20cm;">
         <tr>
-            <td>
+            <td  style="padding: 0">
                 <center>
                     __________________________<br>
                             ENTREGE CONFORME
                 </center>  
             </td>
-            <td>
+            <td style="padding: 0">
             </td>
-            <td>
+            <td  style="padding: 0">
                 <center>
                     __________________________<br>
                             RECIBI CONFORME

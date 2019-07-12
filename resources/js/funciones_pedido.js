@@ -722,7 +722,7 @@ function quitarproducto(producto_id)
 {
 
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/eliminaritem/"+producto_id;
+    var controlador = base_url+"pedido/eliminaritem/"+producto_id;
 
     $.ajax({url: controlador,
             type:"POST",
@@ -736,7 +736,7 @@ function quitarproducto(producto_id)
 function quitartodo()
 {
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/eliminartodo/";
+    var controlador = base_url+"pedido/eliminartodo/";
     $.ajax({url: controlador,
             type:"POST",
             data:{},
@@ -1527,7 +1527,7 @@ function tablaresultados(opcion)
 function eliminardetalleventa()
 {
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/eliminardetalle/";
+    var controlador = base_url+"pedido/eliminardetalle/";
     borrar_datos_cliente();
     
     $.ajax({url: controlador,
@@ -1582,10 +1582,10 @@ function registrarcliente()
                         //console.log(datos);
                         
                         if(cliente_id>0){
-                            registrarventa(cliente_id);                            
+                            registrarpedido(cliente_id);                            
                         }
                         else{
-                            registrarventa(respuesta);                            
+                            registrarpedido(respuesta);                            
                         }
                     },
                     error: function(respuesta){
@@ -1607,7 +1607,7 @@ function registrarcliente()
                 var registro = JSON.parse(respuesta);
                 
                 cliente_id = registro[0]["cliente_id"];
-                registrarventa(cliente_id);
+                registrarpedido(cliente_id);
                 
             },
             error: function(respuesta){
@@ -1702,48 +1702,62 @@ function numero_venta(){
     return res;
 }
 
-function registrarventa(cliente_id)
+function registrarpedido(cliente_id)
 {
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/registrarventa";    
+    var controlador = base_url+"pedido/registrarpedido";    
     
     var forma_id = document.getElementById('forma_pago').value; 
     var tipotrans_id = document.getElementById('tipo_transaccion').value; 
-    var usuario_id = document.getElementById('usuario_id').value; 
+    
+    var usuario_id = document.getElementById('usuario_id').value; //usuario a quien va dirigido el pedido
+    var estado_id = 11;// revisar el estado 
+    //ya esta el cliente id
+    var tipo_trans = document.getElementById('tipo_transaccion').value; //
+
+    var hora = new Date();    
+    var pedido_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
+    
+    var pedido_fecha = fecha();//retorna la fecha actual  //"date(now())";
+    var pedido_fecha2 = "'"+pedido_fecha+" "+pedido_hora+"'" ;//retorna la fecha actual  //"date(now())";
+    
+    var pedido_subtotal = document.getElementById('venta_subtotal').value; //     
+    var pedido_descuento = document.getElementById('venta_descuento').value; //
+    var pedido_total = document.getElementById('venta_totalfinal').value; // 
+    var pedido_glosa = "'"+document.getElementById('venta_glosa').value+"'"; //
+    var pedido_fechaentrega = "'"+document.getElementById('pedido_fechaentrega').value+"'"; //
+    var pedido_horaentrega = "'"+document.getElementById('pedido_horaentrega').value+"'"; //
+    var pedido_latitud = document.getElementById('pedido_latitud').value; //
+    var pedido_longitud = document.getElementById('pedido_longitud').value  ; //
+    var regusuario_id = document.getElementById('regusuario_id').value; //usuario quien genera el pedido
+
+    
     var pedido_id = document.getElementById('pedido_id').value; 
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
     
+    
+    
     var moneda_id = 1; 
-    var estado_id = 1; 
     
-    var venta_fecha = fecha();//retorna la fecha actual  //"date(now())";
-    var hora = new Date();
     
-    var venta_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();
-    
-    var venta_subtotal = document.getElementById('venta_subtotal').value;     
-    var venta_descuento = document.getElementById('venta_descuento').value; 
-    var venta_total = document.getElementById('venta_totalfinal').value; 
     var venta_efectivo = document.getElementById('venta_efectivo').value; 
     var venta_cambio = document.getElementById('venta_cambio').value; 
-    var venta_glosa = "'"+document.getElementById('venta_glosa').value+"'"; 
     var venta_comision = document.getElementById('venta_comision').value; 
     var venta_tipocambio = document.getElementById('venta_tipocambio').value; 
     var detalleserv_id = document.getElementById('detalleserv_id').value;
-    var tipo_transaccion = document.getElementById('tipo_transaccion').value;
     var cuotas = document.getElementById('cuotas').value;   
     var cuota_inicial = document.getElementById('cuota_inicial').value;
     var credito_interes = document.getElementById('credito_interes').value;
-    var facturado = document.getElementById('facturado').checked;
+    var facturado = 0;
     var tiposerv_id = document.getElementById('tiposerv_id').value;
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
     
+      
     var venta_numeroventa = 0;
     var venta_tipodoc = 0;
     var entrega_id = 1;
-
 
     if (parametro_modulorestaurante==1){
         venta_numeroventa = numero_venta();
@@ -1756,78 +1770,52 @@ function registrarventa(cliente_id)
         venta_tipodoc = 1;}
     else{
         venta_tipodoc = 0;}
+ 
+    var cad = usuario_id+","+estado_id+","+cliente_id+","+tipotrans_id+","+pedido_fecha2+","+
+            pedido_subtotal+","+pedido_descuento+","+pedido_total+","+pedido_glosa+","+
+            pedido_fechaentrega+","+pedido_horaentrega+","+pedido_latitud+","+
+            pedido_longitud+","+regusuario_id;
     
-    
-    var cad =   forma_id+","+tipotrans_id+","+usuario_id+","+cliente_id
-                +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
-                +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
-                +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa;
-        
-     //alert(sql); 
-    if (tipo_transaccion==2){
-        var cuotas = document.getElementById('cuotas').value;
-        var modalidad = document.getElementById('modalidad').value;
-        var dia_pago = document.getElementById('dia_pago').value;
-        var fecha_inicio = document.getElementById('fecha_inicio').value;
-        
-        $.ajax({url: controlador,
-            type:"POST",
-            data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
-                venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
-                cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
-                venta_descuento:venta_descuento },
-            success:function(respuesta){ 
-                eliminardetalleventa();
 
-            },
-            error: function(respuesta){
-                alert("Revise los datos de la venta por favor...!");   
-            }        
-        });   
-    
-    }
-    else
-    {
-        $.ajax({url: controlador,
+        $.ajax({
+            url: controlador,
             type:"POST",
-            data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
-                venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit, venta_descuento:venta_descuento},
+            data:{cad:cad, tipo_trans:tipo_trans, cuotas:cuotas, cuota_inicial:cuota_inicial, 
+                pedido_total:pedido_total, credito_interes:credito_interes, pedido_id:pedido_id,
+                facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento},
             success:function(respuesta){ 
                 eliminardetalleventa();
+                alert('Pedido registrado con éxito..!!');
 
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
             }
         });          
-    }
-        
+
+    
 }
 
-function finalizarventa()
-{    
+function finalizarpedido()
+{
     var monto = document.getElementById('venta_totalfinal').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'/verificardetalle/'+monto;
-
+    var cliente_id = document.getElementById('cliente_id').value;
     
+    //alert(cliente_id);
+    if (cliente_id > 0){
+
         if (monto>0)
         {
            document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
-           document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
-
-            registrarcliente();
+           document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
+           registrarcliente();
         }
         else
         {
-
-            //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
-
             var txt;
-            var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
+            var r = confirm("El pedido no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
             if (r == true) {
                 document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
                 document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
@@ -1835,9 +1823,14 @@ function finalizarventa()
                 registrarcliente();
             } 
 
-        }
+        }    
+    }
+    else{
+        alert("ERROR: Debe seleccionar un cliente..!!");
+    }
     
-    
+
+
 }
 
 function mostrar_ocultar_buscador(parametro){
@@ -2180,7 +2173,7 @@ function eliminar_producto_vendido(detalleven_id)
 function borrar_datos_cliente()
 {
     
-    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
+//    var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
     $("#nit").val(0);
     $("#razon_social").val("SIN NOMBRE");
     $("#cliente_id").val("0");
@@ -2208,30 +2201,30 @@ function borrar_datos_cliente()
 
     
     
-    document.getElementById("forma_pago").selectedIndex = 0
+//    document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
-    document.getElementById("tipo_transaccion").selectedIndex = 0
+   
     
     
     $("#filtrar").focus();
     
     
     
-    var facturado = document.getElementById('facturado').checked;      
+//    var facturado = document.getElementById('facturado').checked;      
 
     //Imprimir la factura
     
     
-    if (facturado == 1){
-        var boton = document.getElementById("imprimir");
-        boton.click();                    
-    }
+//    if (facturado == 1){
+//        var boton = document.getElementById("imprimir");
+//        boton.click();                    
+//    }
     
     //Si esta actuvo el modulo para restaurante
-    if (modulo_restaurante == 1){
-        boton = document.getElementById("imprimir_comanda");
-        boton.click();                    
-    } 
+//    if (modulo_restaurante == 1){
+//        boton = document.getElementById("imprimir_comanda");
+//        boton.click();                    
+//    } 
     
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
     tablaproductos();
@@ -2607,7 +2600,7 @@ function registrarcliente_modificado()
                 var registro = JSON.parse(respuesta);
                 
                 cliente_id = registro[0]["cliente_id"];
-                //registrarventa(cliente_id);
+                //registrarpedido(cliente_id);
                 modificar_venta(cliente_id);
                 
             },

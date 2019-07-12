@@ -18,6 +18,7 @@ class Pedido extends CI_Controller{
         $this->load->model('Venta_model');
         $this->load->model('Usuario_model');
         $this->load->model('Categoria_clientezona_model');
+        $this->load->model('Inventario_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -168,50 +169,50 @@ class Pedido extends CI_Controller{
     /*
      * Registrar pedido
      */
-//    function pedidoabierto($pedido_id)
-//    {
-//        if($this->acceso(31)) {
-//        //**************** inicio contenido ***************            
-//        
-//        $data['page_title'] = "Pedidos";
-//        $usuario_id = $this->session_data['usuario_id'];
-//        
-//        $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
-//        
-//        if(sizeof($pedido)>0){
-//            $cliente_id = $pedido[0]['cliente_id'];
-//            $usuario_id = $pedido[0]['usuario_id'];
-//            
-//        }        
-//        else
-//            $cliente_id = 0;
-//        
-//        
-//            if ($cliente_id == 0) //si el pedido aun no fue registrado a un cliente
-//            {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); 
-//            
-//            }
-//            else
-//            {    
-//                $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); 
-//                $data['zona'] = $this->Categoria_clientezona_model->get_cliente_zona($pedido[0]['cliente_id']);
-//            }
-//
-//            $data['pedido_id'] = $pedido_id;
-//            $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
-//            $data['usuario_activo'] = $usuario_id;
-//            
-//            
-//           
-//            //$data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
-//            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-//
-//            $data['_view'] = 'pedido/pedidoabierto';
-//            $this->load->view('layouts/main',$data);            
-//                                        		
-//        //**************** fin contenido ***************
-//        			}		     
-//    }
+    function modificarpedido($pedido_id)
+    {
+        if($this->acceso(31)) {
+        //**************** inicio contenido ***************            
+        
+        $data['page_title'] = "Modificar Pedido";
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $pedido = $this->Pedido_model->get_cliente_id($pedido_id);
+        
+        if(sizeof($pedido)>0){
+            $cliente_id = $pedido[0]['cliente_id'];
+            $usuario_id = $pedido[0]['usuario_id'];
+            
+        }        
+        else
+            $cliente_id = 0;
+        
+        
+            if ($cliente_id == 0) //si el pedido aun no fue registrado a un cliente
+            {    $data['pedido'] = $this->Pedido_model->get_pedido($pedido_id,$usuario_id); 
+            
+            }
+            else
+            {    
+                $data['pedido'] = $this->Pedido_model->get_pedido_cliente($pedido_id,$usuario_id); 
+                $data['zona'] = $this->Categoria_clientezona_model->get_cliente_zona($pedido[0]['cliente_id']);
+            }
+
+            $data['pedido_id'] = $pedido_id;
+            $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['usuario_activo'] = $usuario_id;
+            
+            
+           
+            //$data['cliente'] = $this->Pedido_model->get_all_cliente($usuario_id);
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+
+            $data['_view'] = 'pedido/modificarpedido';
+            $this->load->view('layouts/main',$data);            
+                                        		
+        //**************** fin contenido ***************
+        			}		     
+    }
     
     function pedidoabierto($cliente_id)
     {    
@@ -251,6 +252,7 @@ class Pedido extends CI_Controller{
         $data['tipousuario_id'] = $tipousuario_id;
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
+        $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
@@ -439,6 +441,90 @@ class Pedido extends CI_Controller{
         			         
     }
 
+    
+function registrarpedido()
+    {  
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************        
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $porcentaje = 0;
+        
+        $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+        
+        $sql = "insert into pedido(usuario_id, estado_id, cliente_id, tipotrans_id, pedido_fecha, 
+            pedido_subtotal, pedido_descuento, pedido_total, pedido_glosa, 
+            pedido_fechaentrega, pedido_horaentrega, pedido_latitud, 
+            pedido_longitud, regusuario_id) value(".$cad.")";
+        
+        $pedido_id = $this->Venta_model->ejecutar($sql);// ejecutamos la consulta para registrar la venta y recuperamos venta_id
+        
+        $venta_total = $this->input->post('pedido_total'); // recuperamos la consulta sql enviada mediante JS
+        $venta_descuento = $this->input->post('pedido_descuento'); // descuento de la venta
+                
+        if (($venta_total+$venta_descuento)>0)
+            $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
+        else
+            $porcentaje = 0;
+            
+        $sql =  "insert into detalle_pedido
+        (   
+            pedido_id,
+            producto_id,
+            detalleped_codigo,
+            detalleped_foto,
+            detalleped_nombre,
+            detalleped_unidad,
+            detalleped_costo,
+            detalleped_cantidad,
+            detalleped_precio,
+            detalleped_descuento,
+            detalleped_subtotal,
+            detalleped_total,
+            detalleped_preferencia,
+            detalleped_comision          
+        )
+        (SELECT           
+          ".$pedido_id." as pedido_id,
+          producto_id,
+          producto_codigobarra,
+          '-' as detalleped_foto,
+          producto_nombre,
+          detalleven_unidad,
+          detalleven_costo,
+          detalleven_cantidad,
+          detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+          (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+          detalleven_subtotal,
+          detalleven_total * (1 - ".$porcentaje."),
+          detalleven_preferencia,
+          detalleven_comision
+
+        FROM
+          detalle_venta_aux
+        WHERE 
+          usuario_id=".$usuario_id.")";
+        
+        //echo $sql;
+        $this->Pedido_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+        
+        
+        //************* reducir inventario
+        
+        $this->Inventario_model->reducir_inventario_aux($usuario_id);
+//        
+//        $result = 1;
+//        echo '[{"resultado":"'.$result.'"}]';
+            
+     
+        //**************** fin contenido ***************
+        }
+               
+        
+    }
+    
+    
     /*
      * Registrar pedido
      */
@@ -704,7 +790,7 @@ class Pedido extends CI_Controller{
     /*
      * Eliminar item de detalle
      */
-    function eliminaritem($detalleped_id)
+    function eliminaritemx($detalleped_id)
     {
         if($this->acceso(30)) {
         //**************** inicio contenido ***************                            
@@ -722,7 +808,7 @@ class Pedido extends CI_Controller{
     /*
      * Eliminar todos los items
      */
-    function eliminartodo($pedido_id)
+    function eliminartodox($pedido_id)
     {
         if($this->acceso(30)) {
         //**************** inicio contenido ***************            
@@ -841,5 +927,62 @@ class Pedido extends CI_Controller{
         }
         
     }
+    
+
+    function eliminardetalle()
+    {       
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+        
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $sql =  "delete from detalle_venta_aux where usuario_id=".$usuario_id;
+        $this->Venta_model->ejecutar($sql);
+        return true;
+    
+            		
+        //**************** fin contenido ***************
+        }
+        		   
+        
+    }    
+    
+
+    /*
+     * Eliminar item de detalle
+     */
+    function eliminaritem($detalleven_id)
+    {
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************        
+
+        $sql = "delete from detalle_venta_aux where detalleven_id = ".$detalleven_id;
+        $this->Venta_model->ejecutar($sql);
+        return true;
+            		
+        //**************** fin contenido ***************
+        }
+        			
+    }
+
+    /*
+     * Eliminar todos los items
+     */
+    function eliminartodo()
+    {
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************        
+        $usuario_id = $this->session_data['usuario_id'];
+        $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
+        $this->Venta_model->ejecutar($sql);
+        return true;
+            		
+        //**************** fin contenido ***************
+        }
+        			
+        
+    }
+    
+    
     
 }

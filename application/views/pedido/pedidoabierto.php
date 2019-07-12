@@ -1,6 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/funciones.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/funciones_pedido.js'); ?>"></script>
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -60,13 +60,13 @@ function mostrar_ocultar(){
 <!--------------------- CABECERA -------------------------->
 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
-<input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
+<input type="text" value="<?php echo $usuario_id; ?>" id="regusuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
 <input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio"  hidden>
-<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>
+<!--<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>-->
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 <input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
 <input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
@@ -76,6 +76,9 @@ function mostrar_ocultar(){
 <input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+
+<input type="text" value="<?php echo 0; ?>" id="pedido_latitud" hidden>
+<input type="text" value="<?php echo 0; ?>" id="pedido_longitud" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
@@ -507,7 +510,12 @@ function mostrar_ocultar(){
                                         </div>
                                         
                                         <h5 class="modal-title" id="myModalLabel"><b>FECHA ENTREGA</b></h5>
-                                        <input type="datetime" id="fecha_entrega"  name="fecha_entrega" value="<?php echo date("Y-m-d"); ?>" class="btn btn-default btn-xs" style="width: 120px;">
+                                        <input type="date" id="pedido_fechaentrega" name="pedido_fechaentrega" value="<?php echo date('Y-m-d'); ?>" class="btn btn-default btn-xs" style="width: 120px;">
+                                    </div>
+                                        
+                                    <div class="col-md-2" style="padding: 0;">                                      
+                                        <h5 class="modal-title" id="myModalLabel"><b>HORA ENTREGA</b></h5>
+                                        <input type="time" id="pedido_horaentrega" name="pedido_horaentrega"  value="<?php echo date('H:i:s'); ?>" class="btn btn-default btn-xs" style="width: 120px;">
                                     </div>
                                     
                                     <div class="col-md-2" style="padding: 0;">
@@ -659,6 +667,29 @@ function mostrar_ocultar(){
             <div class="col-md-12">
                 NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
             </div>
+
+            <?php if($tipousuario_id == 1) { ?> 
+            
+            <div class="col-md-12">
+                Vendedor:                 
+                <select name="usuario_id" id="usuario_id" class="btn btn-default btn-xs" style="width: 120px;" >
+                    <?php 
+                    foreach($usuarios as $us){ 
+                        
+                        $selected = ($us['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
+
+                        ?>
+                        
+                    
+                        <option value="<?php echo $us["usuario_id"]; ?>" <?php echo $selected; ?>><?php echo $us["usuario_nombre"]; ?></option>
+                    
+                    <?php
+                        }
+                    ?>
+                </select>
+            </div>
+            
+            <?php } ?> 
            
         </div>
            
@@ -734,9 +765,9 @@ function mostrar_ocultar(){
                 </h4>
             </button>
             -->
-            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">
+            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarpedido()" style="display: block;">
                 <h4>
-                <span class="fa fa-save"></span>   Finalizar Venta  
+                <span class="fa fa-save"></span>   Finalizar Pedido  
                 </h4>
             </button>
 

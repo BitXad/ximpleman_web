@@ -118,8 +118,16 @@ function ventas_dia($estado)
 
     function get_venta($venta_id)
     {
-        $sql = "select *  from venta v, cliente c, usuario u, tipo_transaccion t where v.cliente_id = c.cliente_id and "
-                . " v.usuario_id = u.usuario_id and v.tipotrans_id = t.tipotrans_id and v.venta_id = ".$venta_id;
+//        $sql = "select *  from venta v, cliente c, usuario u, tipo_transaccion t where v.cliente_id = c.cliente_id and "
+//                . " v.usuario_id = u.usuario_id and v.tipotrans_id = t.tipotrans_id and v.venta_id = ".$venta_id;
+        
+        $sql = "select * from venta v
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                left join zona z on z.zona_id = c.zona_id
+                where v.venta_id = ".$venta_id;
+        
         $venta = $this->db->query($sql)->result_array();        
         return $venta;
     }
