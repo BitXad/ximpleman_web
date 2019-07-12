@@ -103,7 +103,7 @@
         <div class="col-md-3">
             <br>
             <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscarventasdist(2)" style="height: 34px;">
-                <span class="fa fa-search"></span>Buscar Pendientes
+                <span class="fa fa-search"></span> Buscar
           </button>
             <br>
         </div>

@@ -351,6 +351,13 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[12-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('cliente/reporte_distribuidor');?>"><i class="fa fa-truck"></i> <span>Entregas</span></a>
+                        </li>
+                        <?php
+                        }
                         if($rolusuario[65-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
