@@ -1788,7 +1788,7 @@ function registrarpedido(cliente_id)
             type:"POST",
             data:{cad:cad, tipo_trans:tipo_trans, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 pedido_total:pedido_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento},
+                facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento, pedido_hora:pedido_hora},
             success:function(respuesta){ 
                 eliminardetalleventa();
                 alert('Pedido registrado con éxito..!!');
@@ -2399,7 +2399,7 @@ function buscar_clientes_pedido()
                 html += "        <td>"+(i+1)+"</td>";
                 html += "        <td>";
                 html += "        <img src='"+base_url+"resources/images/clientes/thumb_"+c[i]["cliente_foto"]+"' class='img-circle' width='50' height='50'>";
-                html += "        <br><a href='"+base_url+"cliente/modificar_cliente/"+c[i]['cliente_id']+"/"+pedido_id+"' class='btn btn-primary btn-xs'><fa class='fa fa-pencil'> </fa> modificar </a>";
+                html += "        <br><a href='"+base_url+"cliente/modificar_cliente/"+c[i]['cliente_id']+"/"+pedido_id+"' class='btn btn-primary btn-xs'><fa class='fa fa-pencil'> </fa> </a>";
                 
                 html += "        </td>";
 
@@ -2831,13 +2831,56 @@ function guardar_preferencia()
     
 }
 
-//function focus_efectivo(){    
-// //   alert("holaaaaaaaaa");
-//    //document.getElementById('venta_efectivo').focus();     
-//    
-//    document.getElementById('venta_efectivo').focus();
-//    document.getElementById('venta_efectivo').select();
-//}
+function registrar_recorrido()
+{    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'/pedido/registrar_recorrido';
+
+    var tiporespuesta_id = document.getElementById('tiporespuesta_id').value;
+    var pedido_id = 0;
+    var cliente_id = document.getElementById('cliente_id').value;
+    var usuario_id = document.getElementById('usuario_id').value;
+    
+    var hora = new Date();    
+    var recorrido_hora = hora.getHours()+":"+hora.getMinutes()+":"+hora.getSeconds();    
+    var recorrido_fecha = fecha();
+    var recorrido_detalleresp = document.getElementById('recorrido_detalleresp').value;
+    
+    if(tiporespuesta_id>0){
+    
+        if(cliente_id>0){
+    
+            $.ajax({
+                url:controlador,
+                type:"POST",
+                data:{tiporespuesta_id:tiporespuesta_id,pedido_id:pedido_id,cliente_id:cliente_id,
+                    usuario_id:usuario_id,recorrido_fecha:recorrido_fecha,recorrido_hora:recorrido_hora,
+                    recorrido_detalleresp:recorrido_detalleresp},
+                success:function(respuesta){
+        //            tablaproductos();
+                    alert("Evento realizado con éxito..!")
+                },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                error:function(respuesta){
+        //            tablaproductos();
+                    alert("ERROR: Revise los datos de registrados por favor..!!")
+                },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+            });
+
+        }
+        else{
+            alert("ERROR: Debe seleccionar un cliente...!");
+        }
+        
+    }
+    else{
+        alert("ERROR: Debe seleccionar una respuesta...!");
+    }
+    
+}
+
+
+
 
 function focus_efectivo(){
         $('#modalfinalizar').on('shown.bs.modal', function() {

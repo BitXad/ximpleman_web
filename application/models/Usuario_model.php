@@ -265,4 +265,13 @@ class Usuario_model extends CI_Model
 
         return $usuario;
     }
+
+    function get_tipo_respuesta()
+    {
+        $sql = "select * from tipo_respuesta";
+        
+        $respuesta = $this->db->query($sql)->result_array();
+        return $respuesta;
+        
+    }
 }

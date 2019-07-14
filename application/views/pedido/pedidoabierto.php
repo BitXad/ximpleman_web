@@ -302,8 +302,33 @@ function mostrar_ocultar(){
                         <b>CATEGORIA: </b><?php echo $cliente[0]['categoriaclie_descripcion']; ?> <br>                     
                     
                     </font>
+                        <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar </a>
+                        <br>    
+                        <br>
                 </td>
             </tr>
+            <tr>
+             
+                <td colspan="2">
+                    <b>
+                        RESPUESTAS CLIENTE
+                    </b> 
+                    <select class="btn btn-default btn-xs" id="tiporespuesta_id">
+                        <option value="0"> REGISTRAR PEDIDO </option>
+                        <?php foreach($tipo_respuesta as $t){ ?>
+                                <option value="<?php echo $t["tiporespuesta_id"]; ?>"><?php echo $t["tiporespuesta_descripcion"]; ?></option>
+                        <?php } ?>
+                    </select>
+                    <br><b>DETALLE</b><br>
+                    <input type="text" id="recorrido_detalleresp" value="-" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);">
+                    
+                    <button onclick="registrar_recorrido()" class="btn btn-success btn-sm"><fa class="fa fa-floppy-o"> </fa> Registrar Respuesta </button>
+                  
+                        <br>
+                        <br>
+                </td>
+            </tr>
+                
         </table>
     </div>
     </div>
@@ -1209,9 +1234,9 @@ function mostrar_ocultar(){
                         <div class="box-body table-responsive">
                         <table class="table table-striped" id="mitabla">
                             <tr>
-                                                        <th>#</th>
-                                                        <th>imagen</th>
-                                                        <th>Nombres</th>
+                                                        
+                                <th>#</th>
+                                <th colspan="2">Clientes</th>
                             </tr>
                             
                             <tbody class="buscar4" id="clientes_pedido">

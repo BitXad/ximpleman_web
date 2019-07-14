@@ -253,6 +253,7 @@ class Pedido extends CI_Controller{
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         
@@ -452,6 +453,8 @@ function registrarpedido()
         $porcentaje = 0;
         
         $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+        $pedido_fecha = $this->input->post('pedido_fecha'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+        $pedido_hora = $this->input->post('pedido_hora'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
         
         $sql = "insert into pedido(usuario_id, estado_id, cliente_id, tipotrans_id, pedido_fecha, 
             pedido_subtotal, pedido_descuento, pedido_total, pedido_glosa, 
@@ -513,6 +516,28 @@ function registrarpedido()
         //************* reducir inventario
         
         $this->Inventario_model->reducir_inventario_aux($usuario_id);
+
+        $tiporespuesta_id = 0;
+        //$pedido_id ya existe
+        $cliente_id = 0; //no es necesario
+        //$usuario_id ya existe
+        $recorrido_fecha = "'".$pedido_fecha."'";
+        $recorrido_hora = "'".$pedido_hora."'";
+        $recorrido_detalleresp = "'PEDIDO REALIZADO'";
+
+        $sql = "insert into recorrido_usuario(tiporespuesta_id,
+                pedido_id,cliente_id,usuario_id,recorrido_fecha,
+                recorrido_hora,recorrido_detalleresp) value(".
+                $tiporespuesta_id.",".
+                $pedido_id.",".
+                $cliente_id.",".
+                $usuario_id.",".
+                $recorrido_fecha.",".
+                $recorrido_hora.",".
+                $recorrido_detalleresp.")";
+        $this->Pedido_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+        
+        
 //        
 //        $result = 1;
 //        echo '[{"resultado":"'.$result.'"}]';
@@ -979,6 +1004,44 @@ function registrarpedido()
             		
         //**************** fin contenido ***************
         }
+        			
+        
+    }
+    
+
+    /*
+     * registro de recorrido
+     */
+    function registrar_recorrido()
+    {
+//        if($this->acceso(12)){
+        //**************** inicio contenido ***************        
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $tiporespuesta_id = $this->input->post("tiporespuesta_id");
+        $pedido_id = $this->input->post("pedido_id");
+        $cliente_id = $this->input->post("cliente_id");
+        $usuario_id = $this->input->post("usuario_id");
+        $recorrido_fecha = "'".$this->input->post("recorrido_fecha")."'";
+        $recorrido_hora = "'".$this->input->post("recorrido_hora")."'";
+        $recorrido_detalleresp = "'".$this->input->post("recorrido_detalleresp")."'";
+
+
+        $sql = "insert into recorrido_usuario(tiporespuesta_id,
+                pedido_id,cliente_id,usuario_id,recorrido_fecha,
+                recorrido_hora,recorrido_detalleresp) value(".
+                $tiporespuesta_id.",".
+                $pedido_id.",".
+                $cliente_id.",".
+                $usuario_id.",".
+                $recorrido_fecha.",".
+                $recorrido_hora.",".
+                $recorrido_detalleresp.")";
+        
+        $this->Pedido_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+            		
+        //**************** fin contenido ***************
+//        }
         			
         
     }
