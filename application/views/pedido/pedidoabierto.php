@@ -83,17 +83,17 @@ function mostrar_ocultar(){
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
 
-<div class="panel-group"  style="padding:0;">
+<!--<div class="panel-group"  style="padding:0;">
   <div class="panel panel-warning" style="padding:0;">
     <div class="panel-heading" style="padding:0;">
         
         
-<!--------------------- cliente_id --------------------->
+------------------- cliente_id -------------------
 <div class="container" hidden>
     <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
-<!--------------------- fin cliente_id --------------------->
+------------------- fin cliente_id -------------------
         
         <div class="col-md-3" >
             <label for="nit" class="control-label">NIT</label>
@@ -106,7 +106,7 @@ function mostrar_ocultar(){
             <label for="razon social" class="control-label">RAZON SOCIAL</label>
             <div class="form-group">
                 
-                <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
+                <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>
                 <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
                 <datalist id="listaclientes">
 
@@ -143,10 +143,10 @@ function mostrar_ocultar(){
         
       <h4 class="panel-title">
         <?php if(sizeof($dosificacion)>0){ ?>
-          <!--<input type="checkbox" id="facturado" value="1" name="facturado">-->
+          <input type="checkbox" id="facturado" value="1" name="facturado">
         <?php } else{ ?>
-<!--          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
-          <font color="red" size="2"> Dosificación no activada</font>-->
+          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+          <font color="red" size="2"> Dosificación no activada</font>
         <?php } ?>
         <a data-toggle="collapse" href="#collapse1">Más</a> /
         
@@ -156,7 +156,7 @@ function mostrar_ocultar(){
 
     </div>
     <div id="collapse1" class="panel-collapse collapse">
-<!--      <ul class="list-group">-->
+      <ul class="list-group">
         <div class="container">
             
             <div class="col-md-3">
@@ -215,13 +215,73 @@ function mostrar_ocultar(){
             </div>
         
         </div>
-<!--        <li class="list-group-item">Two</li>
-        <li class="list-group-item">Three</li>-->
-      <!--</ul>-->
-<!--      <div class="panel-footer">Footer</div>-->
+
     </div>
   </div>
-</div>  
+</div>  -->
+<center><font size="3"><b>PEDIDO EN PROCESO</b></font></center>          
+
+<div class="container">
+    <div class="panel panel-primary">
+        
+        <table>
+            <tr>
+                <td style="width: 0.2cm;">
+                    
+                </td>
+                <td>
+                    <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="90">
+                    <br><button class="btn btn-warning btn-xs" data-toggle="collapse" data-target="#informacioncliente">más inform.</button>
+                </td>
+                <td style="width: 0.2cm;">
+                    
+                </td>
+                <td> 
+                    <font size="1" face="arial">
+                        <b>CLIENTE: </b><?php echo $cliente[0]['cliente_nombre']; ?> <br>
+                        <?php echo $cliente[0]['cliente_nombrenegocio']." ".$cliente[0]['cliente_celular']; ?> <br>                     
+                        <b>CÓDIGO: </b><?php echo $cliente[0]['cliente_codigo']; ?> <br>
+                        <b>DIRECCIÓN: </b><?php echo $cliente[0]['cliente_direccion']; ?> <br>                     
+                        <b>ZONA: </b><?php echo $cliente[0]['zona_id']; ?> <br>                     
+                        <b>TELF(S): </b><?php echo $cliente[0]['cliente_telefono']." ".$cliente[0]['cliente_celular']; ?> <br>                     
+                    </font>
+                </td>
+            </tr>
+        </table>
+        
+
+
+<div id="informacioncliente" class="collapse">
+        <table>      
+            <tr>
+                <td style="width: 0.2cm"> 
+                </td> 
+        
+                
+                <td> 
+                    <font size="1" face="arial">
+
+                        <b>NIT: </b><?php echo $cliente[0]['cliente_nit']; ?> <br>                     
+                        <b>RAZON SOCIAL: </b><?php echo $cliente[0]['cliente_razon']; ?> <br>                     
+                        <b>DEPARTAMENTO: </b><?php echo $cliente[0]['cliente_departamento']; ?> <br>                     
+                        <b>EMAIL: </b><?php echo $cliente[0]['cliente_email']; ?> <br>                     
+                        <b>TIPO: </b><?php echo $cliente[0]['tipocliente_descripcion']; ?> <br>                     
+                        <b>CATEGORIA: </b><?php echo $cliente[0]['categoriaclie_descripcion']; ?> <br>                     
+                    
+                    </font>
+                </td>
+            </tr>
+        </table>
+
+
+</div>
+
+    </div>
+</div>
+
+
+
+
 <!-------------------- fin inicio collapse ---------------------->
 
 <!--------------------- FIN CABERECA -------------------------->
