@@ -5,8 +5,8 @@ function inicio(){
         tablaresultados(1);
         tablaproductos(); 
 
-        document.getElementById('nit').focus();
-        document.getElementById('nit').select();
+//        document.getElementById('nit').focus();
+//        document.getElementById('nit').select();
 }
 
 function calculardesc(){
@@ -92,6 +92,12 @@ function validar(e,opcion) {
         if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
            document.getElementById('filtrar').focus();               
         }
+        
+    
+        
+        if (opcion==8){   //si la tecla proviene del buscador de pedido abierto
+           buscar_clientes_pedido();
+        }       
         
         if (opcion==9){   //si la tecla proviene del buscador de pedido abierto
             
@@ -2364,6 +2370,77 @@ function buscar_clientes()
             }
         });
 }
+
+
+
+function buscar_clientes_pedido()
+{    
+    var parametro = document.getElementById('filtrar4').value;
+    var pedido_id = document.getElementById('pedido_id').value;
+    var tipo = document.getElementById('tipo').value;
+    var base_url    = document.getElementById('base_url').value;
+    
+    var controlador = base_url+"cliente/buscarclientes_pedido";
+    
+//    alert(parametro);
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{parametro: parametro, tipo: tipo},
+        success: function(response){
+            var c = JSON.parse(response);
+
+            html = "";
+            for (var i = 0; i < c.length; i++){
+
+            
+                html += "<tr>";
+//                html += "     <form action='"+base_url+"cliente/cambiarcliente/ method='POST' class='form'>";
+                html += "  ";
+                html += "        <td>"+(i+1)+"</td>";
+                html += "        <td>";
+                html += "        <img src='"+base_url+"resources/images/clientes/thumb_"+c[i]["cliente_foto"]+"' class='img-circle' width='50' height='50'>";
+                html += "        <br><a href='"+base_url+"cliente/modificar_cliente/"+c[i]['cliente_id']+"/"+pedido_id+"' class='btn btn-primary btn-xs'><fa class='fa fa-pencil'> </fa> modificar </a>";
+                
+                html += "        </td>";
+
+                html += "        <td>";
+
+
+                html += "                <b> "+c[i]["cliente_nombre"]+"</b> , COD.: "+c[i]["cliente_codigo"]+" <br>";
+                html += "               "+c[i]["cliente_direccion"];
+                html += "            C.I.:"+c[i]["cliente_ci"]+" | Telf.:"+c[i]["cliente_telefono"]+" <br>";
+                html += "            <div class='container' hidden='TRUE'>";
+                html += "                <input id='cliente_id'  name='cliente_id' type='text' class='form-control' value='<?php echo $h['cliente_id']; ?>'>";
+                html += "                <input id='pedido_id'  name='pedido_id' type='text' class='form-control' value='<?php echo $pedido_id; ?>'>";
+                html += "            </div>";       
+                html += "            NIT:";
+                html += "            <input type='text' id='cliente_nit' name='cliente_nit' class='form-control' placeholder='N.I.T.' required='true' value='"+c[i]["cliente_nit"]+"'>";
+                html += "            RAZON SOCIAL:";
+                html += "            <input type='text' id='cliente_razon' name='cliente_razon' class='form-control' placeholder='Razón Social' required='true' value='"+c[i]["cliente_razon"]+"'>";
+                html += "           ";
+//                html += "            <button type='submit' class='btn btn-success btn-xs btn-block'>";
+//                html += "                <i class='fa fa-check'></i> Seleccionar Cliente";
+//                html += "            </button>";
+                html += "            <a href='"+base_url+"pedido/pedidoabierto/"+c[i]["cliente_id"]+"' class='btn btn-success btn-xs btn-block'> Seleccionar Cliente</a>";
+                
+                html += "            ";
+                html += "        </td>";
+                html += "    ";
+//                html += "     </form>";
+                html += "";
+                html += "</tr>       ";     
+
+            }
+
+        
+            $("#clientes_pedido").html(html);
+                        
+            
+            
+        },        
+    });
+}
+
 
 function seleccionar_cliente(){
     var cliente_id = document.getElementById('razon_social').value;

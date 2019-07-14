@@ -25,6 +25,28 @@
                 })
             }(jQuery));
         });    
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar3').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar3 tr').hide();
+                    $('.buscar3 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar4').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar4 tr').hide();
+                    $('.buscar4 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
 
 function mostrar_ocultar(){
     var x = document.getElementById('tipo_transaccion').value;
@@ -77,23 +99,24 @@ function mostrar_ocultar(){
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
 
+
 <input type="text" value="<?php echo 0; ?>" id="pedido_latitud" hidden>
 <input type="text" value="<?php echo 0; ?>" id="pedido_longitud" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
 
-<!--<div class="panel-group"  style="padding:0;">
+<div class="panel-group"  style="padding:0;" hidden>
   <div class="panel panel-warning" style="padding:0;">
     <div class="panel-heading" style="padding:0;">
         
         
-------------------- cliente_id -------------------
+<!--------------------- cliente_id --------------------->
 <div class="container" hidden>
     <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
-------------------- fin cliente_id -------------------
+<!--------------------- fin cliente_id --------------------->
         
         <div class="col-md-3" >
             <label for="nit" class="control-label">NIT</label>
@@ -106,7 +129,7 @@ function mostrar_ocultar(){
             <label for="razon social" class="control-label">RAZON SOCIAL</label>
             <div class="form-group">
                 
-                <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>
+                <!--<input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,2)"  onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();"/>-->
                 <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" value="<?php echo $cliente[0]['cliente_razon']; ?>" onkeypress="validar(event,9)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
                 <datalist id="listaclientes">
 
@@ -218,8 +241,15 @@ function mostrar_ocultar(){
 
     </div>
   </div>
-</div>  -->
-<center><font size="3"><b>PEDIDO EN PROCESO</b></font></center>          
+</div>  
+
+
+
+<center>
+    <font size="3"><b>PEDIDO EN PROCESO</b></font>
+     <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>
+    <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
+</center>   
 
 <div class="container">
     <div class="panel panel-primary">
@@ -252,6 +282,9 @@ function mostrar_ocultar(){
 
 
 <div id="informacioncliente" class="collapse">
+    <div class="container">
+    <div class="panel panel-primary col-md-10">
+        
         <table>      
             <tr>
                 <td style="width: 0.2cm"> 
@@ -272,6 +305,8 @@ function mostrar_ocultar(){
                 </td>
             </tr>
         </table>
+    </div>
+    </div>
 
 
 </div>
@@ -1121,3 +1156,74 @@ function mostrar_ocultar(){
 
 
 <!----------------- fin modal preferencias ---------------------------------------------->
+
+
+
+
+<!--------------------------------- INICIO MODAL CLIENTES ------------------------------------>
+<div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                                <div class="row">
+
+                                           <!--------------------- parametro de buscador por codigo --------------------->
+
+                                           <div class="col-md-8">
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                       <i class="fa fa-binoculars"></i>
+                                                     </span>           
+                                                     <input type="text" name="filtrar4" id="filtrar4" class="form-control" placeholder="Ingrese el nombre, CI, codigo del cliente " onkeyup="validar(event,8)">
+                                                 </div>
+                                           </div>      
+                                          <!--------------------- fin buscador por codigo --------------------->
+
+
+                                           <div class="col-md-4">
+
+                               <!--            ------------------- parametro de buscador --------------------->
+
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                      <i class="fa fa-user"></i>
+                                                     </span>           
+                                                     <select id="tipo" class="form-control">
+                                                         <option value="1">Mis clientes</option>
+                                                         <option value="2">Todos</option>
+                                                     </select>
+                                                 
+                                                 </div>
+
+                               <!--            ------------------- fin parametro de buscador ------------------- -->
+
+                                           </div>
+
+                                       </div>
+
+                                
+			</div>
+			<div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        <div class="box-body table-responsive">
+                        <table class="table table-striped" id="mitabla">
+                            <tr>
+                                                        <th>#</th>
+                                                        <th>imagen</th>
+                                                        <th>Nombres</th>
+                            </tr>
+                            
+                            <tbody class="buscar4" id="clientes_pedido">
+                 
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+			</div>
+		</div>
+	</div>
+</div>
+<!--------------------------------- FIN MODAL CLIENTES ------------------------------------>
