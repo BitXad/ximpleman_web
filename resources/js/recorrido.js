@@ -53,14 +53,16 @@ function recorrido_dist(){
 //                        html += "<td align='center'>"+registros[i]["pedido_id"]+"</td>";
 //                        }else{
 //                        }
+                        var tiporesdescripcion = "";
                         if (registros[i]["tiporespuesta_id"]==0){
                             tipo_respuesta = "PEDIDO: "+registros[i]["pedido_id"];
                         }
-                        /*else{
-                            tipo_respuesta = registros[i]["tiporespuesta_descripcion"];
-                        }*/
-                        html += "<td>"+tipo_respuesta+"</td>";                        
-                        html += "<td class='text-center' >"+registros[i]["tiporespuesta_descripcion"]+"<br>"+registros[i]["recorrido_detalleresp"]+"</td>";                        
+                        else{
+                            tiporesdescripcion = registros[i]["tiporespuesta_descripcion"]+"<br>";
+                        }
+                        html += "<td>"+tipo_respuesta+"</td>";
+                        
+                        html += "<td class='text-center' >"+tiporesdescripcion+registros[i]["recorrido_detalleresp"]+"</td>";                        
                         html += "<td align='center'>"+moment(registros[i]["recorrido_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["recorrido_hora"]+"</td>";                         
                         html += "<td>"+registros[i]['usuario_nombre']+"</td>";                        
                         html += "</tr>";
