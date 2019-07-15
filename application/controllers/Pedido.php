@@ -450,11 +450,14 @@ function registrarpedido()
         
         $usuario_id = $this->session_data['usuario_id'];
         
+        
         $porcentaje = 0;
         
         $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
         $pedido_fecha = $this->input->post('pedido_fecha'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
         $pedido_hora = $this->input->post('pedido_hora'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
+        $cliente_id = $this->input->post('cliente_id'); 
+
         
         $sql = "insert into pedido(usuario_id, estado_id, cliente_id, tipotrans_id, pedido_fecha, 
             pedido_subtotal, pedido_descuento, pedido_total, pedido_glosa, 
@@ -519,7 +522,7 @@ function registrarpedido()
 
         $tiporespuesta_id = 0;
         //$pedido_id ya existe
-        $cliente_id = 0; //no es necesario
+        //$cliente_id = 0; //no es necesario
         //$usuario_id ya existe
         $recorrido_fecha = "'".$pedido_fecha."'";
         $recorrido_hora = "'".$pedido_hora."'";
@@ -871,8 +874,7 @@ function registrarpedido()
             		
         //**************** fin contenido ***************
         			}
-        			
-        
+
     }
 
     /*
@@ -1014,7 +1016,7 @@ function registrarpedido()
      */
     function registrar_recorrido()
     {
-//        if($this->acceso(12)){
+//        if($this->acregistrarpedidoceso(12)){
         //**************** inicio contenido ***************        
         $usuario_id = $this->session_data['usuario_id'];
         

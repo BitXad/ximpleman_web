@@ -1788,7 +1788,7 @@ function registrarpedido(cliente_id)
             type:"POST",
             data:{cad:cad, tipo_trans:tipo_trans, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 pedido_total:pedido_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento, pedido_hora:pedido_hora},
+                facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento, pedido_hora:pedido_hora,cliente_id:cliente_id},
             success:function(respuesta){ 
                 eliminardetalleventa();
                 alert('Pedido registrado con éxito..!!');
@@ -1834,9 +1834,6 @@ function finalizarpedido()
     else{
         alert("ERROR: Debe seleccionar un cliente..!!");
     }
-    
-
-
 }
 
 function mostrar_ocultar_buscador(parametro){
