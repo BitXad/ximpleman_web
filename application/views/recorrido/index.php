@@ -1,5 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/recorrido.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -145,6 +147,7 @@
                         <th>Respuesta</th>
                         <th>Fecha</th>
                         <th>Usuario</th>
+                        <th>Monto</th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
                     </tbody>
@@ -153,6 +156,31 @@
         </div>
     </div>
 </div>
+<div class="col-md-12">
+    <div class="col-md-6" id="reportes">
+      
+    </div>
+    <div class="col-md-6">
+<div  class="row" >
+
+        
+    <div class="box box-primary">
+        <div class="box-header">
+        </div>
+
+        <div class="box-body" id="div_grafica_pie">
+        </div>
+
+                <div class="box-footer">
+                </div>
+    </div>
+
+ 
+
+</div>
+</div>
+</div>
+
 <?php
 /*if($a == 1)
 echo '<script type="text/javascript">
