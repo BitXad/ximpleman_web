@@ -137,9 +137,11 @@
                     <tr>
                         <th>#</th>
                         <th>Cliente</th>
-                        <th>Venta</th>
+                        <th>Negocio</th>
+                        <th>Pedido</th>
+                        <th>Respuesta</th>
                         <th>Fecha</th>
-                        <th>Estado</th>
+                        <th>Usuario</th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
                     </tbody>

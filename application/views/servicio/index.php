@@ -136,6 +136,7 @@
                         <th>Cliente</th>
                         <th>Código</th>
                         <th>Fechas</th>
+                        <th>Detalle</th>
                         <th>Estado</th>
                         <th>Tipo Serv.</th>
 

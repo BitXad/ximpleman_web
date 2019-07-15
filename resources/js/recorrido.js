@@ -39,25 +39,30 @@ function recorrido_dist(){
                    
                    
                     for (var i = 0; i < n ; i++){
-                       html += "<tr>";
+                        html += "<tr>";
                         
-                      
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>"+registros[i]["cliente_nombrenegocio"]+"</td>";
+                        html += "<td><b>"+registros[i]["cliente_nombre"]+"</b></td>";
+                        html += "<td>"+registros[i]["cliente_nombrenegocio"]+"</td>";
+                        
+                        
+                        //html += "<td>"+registros[i]["pedido_id"]+"</td>";
+                        //html += "<td>"+registros[i]["tiporespuesta_descripcion"]+"</td>";
                        
 //                       if (registros[i]["pedido_id"]>0) {
 //                        html += "<td align='center'>"+registros[i]["pedido_id"]+"</td>";
 //                        }else{
 //                        }
-
                         if (registros[i]["tiporespuesta_id"]==0){
                             tipo_respuesta = "PEDIDO: "+registros[i]["pedido_id"];
                         }
                         else{
                             tipo_respuesta = registros[i]["tiporespuesta_descripcion"];
                         }
-                        html += "<td align='center'>"+tipo_respuesta+"<br>"+registros[i]["recorrido_detalleresp"]+"</td>";                        
+                        html += "<td>"+tipo_respuesta+"</td>";                        
+                        html += "<td>"+registros[i]["recorrido_detalleresp"]+"</td>";                        
                         html += "<td align='center'>"+moment(registros[i]["recorrido_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["recorrido_hora"]+"</td>";                         
+                        html += "<td>"+registros[i]['usuario_nombre']+"</td>";                        
                         html += "</tr>";
                        
                     } 

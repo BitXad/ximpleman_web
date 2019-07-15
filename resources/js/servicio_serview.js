@@ -73,7 +73,7 @@ function insumosusados(detalleserv_id){
                     for (var i = 0; i < n ; i++){
                         res += "-"+registros[i]['producto_nombre']+" ("+registros[i]['producto_codigobarra']+")";
                         res += " <b>Cant.: </b>"+registros[i]['detalleven_cantidad'];
-                        res += " <b>Prec.: </b>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"<br>";
+                        //res += " <b>Prec.: </b>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"<br>";
                       //alert(html);  
                    }
                }
@@ -135,7 +135,9 @@ async function processDatacosto (detalleserv_id) {
   try {
     const result = await insumosusadoscosto(detalleserv_id);
     //alert(result);
+    
     $('#insumosusadoscosto'+detalleserv_id).html(result);
+    
     //console.log(result);
     return "";
   } catch (err) {
@@ -238,6 +240,7 @@ function resultadodetalleservicioview(servicio_id){
                         //console.log(processData(registros[i]["detalleserv_id"]));
                         //html += misinsumos+processData(registros[i]["detalleserv_id"])+"</td>";
                         //insumosusados(registros[i]['detalleserv_id']);
+                        
                         html += "<span style='display: none' id='insumosusadoscosto"+registros[i]['detalleserv_id']+"'></span>"
                         html += misinsumos+"<span id='insumosusados"+registros[i]['detalleserv_id']+"'></span>"+"</td>";
                         html += "<td>"+registros[i]["detalleserv_glosa"]+"</td>";
