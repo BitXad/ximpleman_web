@@ -34,13 +34,13 @@ class Recorrido_model extends CI_Model
   {
         $recorrido = $this->db->query("
             SELECT
-                v.*, c.cliente_nombre, c.cliente_razon, t.tiporespuesta_descripcion, u.usuario_nombre
+                v.*, c.cliente_nombre, c.cliente_razon, t.tiporespuesta_descripcion, u.usuario_nombre, p.*
             FROM
-                recorrido v 
+                recorrido_usuario v 
             
             LEFT JOIN cliente c on v.cliente_id=c.cliente_id
-            LEFT JOIN pedido p on v.pedido_id=es.pedido_id
-            LEFT JOIN usuario u on v.usuario_id=es.usuario_id
+            LEFT JOIN pedido p on v.pedido_id=p.pedido_id
+            LEFT JOIN usuario u on v.usuario_id=u.usuario_id
             LEFT JOIN tipo_respuesta t on v.tiporespuesta_id=t.tiporespuesta_id
 
             WHERE
