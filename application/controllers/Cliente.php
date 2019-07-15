@@ -398,10 +398,10 @@ class Cliente extends CI_Controller{
         }
     }
     //modificar clientes en pedidos
-    function modificar_cliente($cliente_id,$pedido_id)
+    function modificar_cliente($cliente_id)
     {
         if($this->acceso(31)){
-            $data['page_title'] = "Cliente";
+            $data['page_title'] = "Modificar Cliente";
         // check if the cliente exists before trying to edit it
         $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
         
@@ -534,9 +534,9 @@ class Cliente extends CI_Controller{
 
                     $this->Cliente_model->update_cliente($cliente_id,$params);
                     
-                    $this->load->model('Pedido_model');
-                    $this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);
-                    redirect('pedido/pedidoabierto/'.$pedido_id);
+                    //$this->load->model('Pedido_model');
+                    //$this->Pedido_model->cambiar_cliente($pedido_id,$cliente_id);
+                    redirect('pedido/pedidoabierto/'.$cliente_id);
                 }
                 else
                 {
@@ -556,7 +556,7 @@ class Cliente extends CI_Controller{
                     $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
 
                     
-                    $data['pedido_id'] = $pedido_id;
+                    $data['pedido_id'] = 0;
                     $data['_view'] = 'cliente/modificar_cliente';
                     $this->load->view('layouts/main',$data);
                 }
@@ -1037,7 +1037,9 @@ class Cliente extends CI_Controller{
                 $parametro = $this->input->post('parametro');
 
                 if ($parametro!=""){
-                $datos = $this->Cliente_model->get_cliente_parametro($parametro);
+                    
+                    $datos = $this->Cliente_model->get_cliente_parametro($parametro);
+                
                 echo json_encode($datos);
                 }
                 else echo json_encode(null);

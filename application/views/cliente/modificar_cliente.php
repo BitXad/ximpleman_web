@@ -51,7 +51,7 @@ function toggle(source) {
 			<i class="fa fa-edit"></i>Codigo Cliente
 		</button>
             </div>
-                        <?php echo form_open_multipart('cliente/modificar_cliente/'.$cliente['cliente_id'].'/'.$pedido_id); ?>
+                        <?php echo form_open_multipart('cliente/modificar_cliente/'.$cliente['cliente_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
                                         <div class="col-md-5">
@@ -351,7 +351,7 @@ function toggle(source) {
             	<button type="submit" class="btn btn-success">
 			<i class="fa fa-check"></i> Guardar
 		</button>
-                    <a href="<?php echo site_url('pedido/pedidoabierto/'.$pedido_id); ?>" class="btn btn-danger">
+                    <a href="<?php echo site_url('pedido/pedidoabierto/'.$cliente['cliente_id']); ?>" class="btn btn-danger">
                                 <i class="fa fa-times"></i> Cancelar</a>
 	        </div>				
 			<?php echo form_close(); ?>

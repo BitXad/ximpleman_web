@@ -25,6 +25,28 @@
                 })
             }(jQuery));
         });    
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar3').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar3 tr').hide();
+                    $('.buscar3 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar4').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar4 tr').hide();
+                    $('.buscar4 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
 
 function mostrar_ocultar(){
     var x = document.getElementById('tipo_transaccion').value;
@@ -77,13 +99,14 @@ function mostrar_ocultar(){
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
 
+
 <input type="text" value="<?php echo 0; ?>" id="pedido_latitud" hidden>
 <input type="text" value="<?php echo 0; ?>" id="pedido_longitud" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
 
-<div class="panel-group"  style="padding:0;">
+<div class="panel-group"  style="padding:0;" hidden>
   <div class="panel panel-warning" style="padding:0;">
     <div class="panel-heading" style="padding:0;">
         
@@ -143,10 +166,10 @@ function mostrar_ocultar(){
         
       <h4 class="panel-title">
         <?php if(sizeof($dosificacion)>0){ ?>
-          <!--<input type="checkbox" id="facturado" value="1" name="facturado">-->
+          <input type="checkbox" id="facturado" value="1" name="facturado">
         <?php } else{ ?>
-<!--          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
-          <font color="red" size="2"> Dosificación no activada</font>-->
+          <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
+          <font color="red" size="2"> Dosificación no activada</font>
         <?php } ?>
         <a data-toggle="collapse" href="#collapse1">Más</a> /
         
@@ -156,7 +179,7 @@ function mostrar_ocultar(){
 
     </div>
     <div id="collapse1" class="panel-collapse collapse">
-<!--      <ul class="list-group">-->
+      <ul class="list-group">
         <div class="container">
             
             <div class="col-md-3">
@@ -215,13 +238,110 @@ function mostrar_ocultar(){
             </div>
         
         </div>
-<!--        <li class="list-group-item">Two</li>
-        <li class="list-group-item">Three</li>-->
-      <!--</ul>-->
-<!--      <div class="panel-footer">Footer</div>-->
+
     </div>
   </div>
 </div>  
+
+
+
+<center>
+    <font size="3"><b>PEDIDO EN PROCESO</b></font>
+     <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>
+    <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
+</center>   
+
+<div class="container">
+    <div class="panel panel-primary">
+        
+        <table>
+            <tr>
+                <td style="width: 0.2cm;">
+                    
+                </td>
+                <td>
+                    <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="90">
+                    <br><button class="btn btn-warning btn-xs" data-toggle="collapse" data-target="#informacioncliente">más inform.</button>
+                </td>
+                <td style="width: 0.2cm;">
+                    
+                </td>
+                <td> 
+                    <font size="1" face="arial">
+                        <b>CLIENTE: </b><?php echo $cliente[0]['cliente_nombre']; ?> <br>
+                        <?php echo $cliente[0]['cliente_nombrenegocio']." ".$cliente[0]['cliente_celular']; ?> <br>                     
+                        <b>CÓDIGO: </b><?php echo $cliente[0]['cliente_codigo']; ?> <br>
+                        <b>DIRECCIÓN: </b><?php echo $cliente[0]['cliente_direccion']; ?> <br>                     
+                        <b>ZONA: </b><?php echo $cliente[0]['zona_id']; ?> <br>                     
+                        <b>TELF(S): </b><?php echo $cliente[0]['cliente_telefono']." ".$cliente[0]['cliente_celular']; ?> <br>                     
+                    </font>
+                </td>
+            </tr>
+        </table>
+        
+
+
+<div id="informacioncliente" class="collapse">
+    <div class="container">
+    <div class="panel panel-primary col-md-10">
+        
+        <table>      
+            <tr>
+                <td style="width: 0.2cm"> 
+                </td> 
+        
+                
+                <td> 
+                    <font size="1" face="arial">
+
+                        <b>NIT: </b><?php echo $cliente[0]['cliente_nit']; ?> <br>                     
+                        <b>RAZON SOCIAL: </b><?php echo $cliente[0]['cliente_razon']; ?> <br>                     
+                        <b>DEPARTAMENTO: </b><?php echo $cliente[0]['cliente_departamento']; ?> <br>                     
+                        <b>EMAIL: </b><?php echo $cliente[0]['cliente_email']; ?> <br>                     
+                        <b>TIPO: </b><?php echo $cliente[0]['tipocliente_descripcion']; ?> <br>                     
+                        <b>CATEGORIA: </b><?php echo $cliente[0]['categoriaclie_descripcion']; ?> <br>                     
+                    
+                    </font>
+                        <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar </a>
+                        <br>    
+                        <br>
+                </td>
+            </tr>
+            <tr>
+             
+                <td colspan="2">
+                    <b>
+                        RESPUESTAS CLIENTE
+                    </b> 
+                    <select class="btn btn-default btn-xs" id="tiporespuesta_id">
+                        <option value="0"> REGISTRAR PEDIDO </option>
+                        <?php foreach($tipo_respuesta as $t){ ?>
+                                <option value="<?php echo $t["tiporespuesta_id"]; ?>"><?php echo $t["tiporespuesta_descripcion"]; ?></option>
+                        <?php } ?>
+                    </select>
+                    <br><b>DETALLE</b><br>
+                    <input type="text" id="recorrido_detalleresp" value="-" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);">
+                    
+                    <button onclick="registrar_recorrido()" class="btn btn-success btn-sm"><fa class="fa fa-floppy-o"> </fa> Registrar Respuesta </button>
+                  
+                        <br>
+                        <br>
+                </td>
+            </tr>
+                
+        </table>
+    </div>
+    </div>
+
+
+</div>
+
+    </div>
+</div>
+
+
+
+
 <!-------------------- fin inicio collapse ---------------------->
 
 <!--------------------- FIN CABERECA -------------------------->
@@ -1061,3 +1181,74 @@ function mostrar_ocultar(){
 
 
 <!----------------- fin modal preferencias ---------------------------------------------->
+
+
+
+
+<!--------------------------------- INICIO MODAL CLIENTES ------------------------------------>
+<div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                                <div class="row">
+
+                                           <!--------------------- parametro de buscador por codigo --------------------->
+
+                                           <div class="col-md-8">
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                       <i class="fa fa-binoculars"></i>
+                                                     </span>           
+                                                     <input type="text" name="filtrar4" id="filtrar4" class="form-control" placeholder="Ingrese el nombre, CI, codigo del cliente " onkeyup="validar(event,8)">
+                                                 </div>
+                                           </div>      
+                                          <!--------------------- fin buscador por codigo --------------------->
+
+
+                                           <div class="col-md-4">
+
+                               <!--            ------------------- parametro de buscador --------------------->
+
+                                                 <div class="input-group">
+                                                     <span class="input-group-addon"> 
+                                                      <i class="fa fa-user"></i>
+                                                     </span>           
+                                                     <select id="tipo" class="form-control">
+                                                         <option value="1">Mis clientes</option>
+                                                         <option value="2">Todos</option>
+                                                     </select>
+                                                 
+                                                 </div>
+
+                               <!--            ------------------- fin parametro de buscador ------------------- -->
+
+                                           </div>
+
+                                       </div>
+
+                                
+			</div>
+			<div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        <div class="box-body table-responsive">
+                        <table class="table table-striped" id="mitabla">
+                            <tr>
+                                                        
+                                <th>#</th>
+                                <th colspan="2">Clientes</th>
+                            </tr>
+                            
+                            <tbody class="buscar4" id="clientes_pedido">
+                 
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+			</div>
+		</div>
+	</div>
+</div>
+<!--------------------------------- FIN MODAL CLIENTES ------------------------------------>

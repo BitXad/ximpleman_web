@@ -35,16 +35,20 @@ class Cliente_model extends CI_Model
      */
     function get_cliente_by_id($cliente_id)
     {
-        $cliente = $this->db->query("
-            SELECT
-                *
+            $sql = "select *
+            from cliente c
+            left join estado e on e.estado_id = c.estado_id
+            left join zona z on z.zona_id = c.zona_id
+            left join categoria_cliente cc on cc.categoriaclie_id = c.categoriaclie_id
+            left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id 
 
-            FROM
-                `cliente`
-
-            WHERE
-                `cliente_id` = ?
-        ",array($cliente_id))->result_array();
+            where c.cliente_id = ".$cliente_id."
+            
+            group by c.cliente_id
+            order by c.cliente_id";
+        
+        
+        $cliente = $this->db->query($sql)->result_array();
 
         return $cliente;
     }
@@ -447,20 +451,32 @@ class Cliente_model extends CI_Model
      */
     function get_cliente_parametro($parametro)
     {
-        $sql = "SELECT
-                c.*, e.estado_color, e.estado_descripcion
+//        $sql = "SELECT
+//                c.*, e.estado_color, e.estado_descripcion
+//
+//            FROM
+//                cliente c, estado e
+//
+//            WHERE
+//                c.estado_id = e.estado_id
+//                and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
+//                   or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%')
+//                
+//            GROUP BY
+//                c.cliente_id
+//              ORDER By c.cliente_id ";
+        $sql = "select *
+                from cliente c
+                left join estado e on e.estado_id = c.estado_id
+                left join zona z on z.zona_id = c.zona_id
+                left join categoria_cliente cc on cc.categoriaclie_id = c.categoriaclie_id
+                left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id 
 
-            FROM
-                cliente c, estado e
-
-            WHERE
-                c.estado_id = e.estado_id
-                and(c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
-                   or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%')
-                
-            GROUP BY
-                c.cliente_id
-              ORDER By c.cliente_id ";
+                where
+                c.cliente_nombre like '%".$parametro."%' or c.cliente_codigo like '%".$parametro."%'
+                or c.cliente_ci like '%".$parametro."%' or c.cliente_nit like '%".$parametro."%'
+                group by c.cliente_id
+                order by c.cliente_id";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
