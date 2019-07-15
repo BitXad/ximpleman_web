@@ -258,9 +258,7 @@ class Usuario_model extends CI_Model
                 and u.tipousuario_id = t.tipousuario_id
                 and u.`tipousuario_id` = 5
                 and u.`estado_id` = 1
-
             ORDER BY `usuario_id` DESC 
-
         ")->result_array();
 
         return $usuario;
