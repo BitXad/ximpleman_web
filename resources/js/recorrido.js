@@ -31,24 +31,35 @@ function recorrido_dist(){
                if (registros != null){
                    
                    
-                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    var tipo_respuesta = ""; //
                    
                    
                     html = "";
                    
                    
                     for (var i = 0; i < n ; i++){
+                       html += "<tr>";
                         
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>"+registros[i]["cliente_nombrenegocio"]+"</td>";
-                        if (registros[i]["pedido_id"]>0) {
-                        html += "<td align='center'>"+registros[i]["pedido_id"]+"</td>";     
-                        }else{
-                        html += "<td align='center'>"+registros[i]["tiporespuesta_descripcion"]+"<br>"+registros[i]["recorrido_detalleresp"]+"</td>";
+                       
+//                       if (registros[i]["pedido_id"]>0) {
+//                        html += "<td align='center'>"+registros[i]["pedido_id"]+"</td>";
+//                        }else{
+//                        }
+
+                        if (registros[i]["tiporespuesta_id"]==0){
+                            tipo_respuesta = "PEDIDO REALIZADO";
                         }
-                        html += "<td align='center'>"+moment(registros[i]["pedido_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["pedido_hora"]+"</td>"; 
+                        else{
+                            tipo_respuesta = registros[i]["tiporespuesta_descripcion"];
+                        }
+                        html += "<td align='center'>"+tipo_respuesta+"<br>"+registros[i]["recorrido_detalleresp"]+"</td>";                        
+                        html += "<td align='center'>"+moment(registros[i]["recorrido_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["recorrido_hora"]+"</td>";                         
                         html += "</tr>";
+                       
                     } 
                         
                    

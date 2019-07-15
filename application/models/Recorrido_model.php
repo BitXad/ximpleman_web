@@ -34,7 +34,7 @@ class Recorrido_model extends CI_Model
   {
         $recorrido = $this->db->query("
             SELECT
-                v.*, c.cliente_nombre, c.cliente_razon, t.tiporespuesta_descripcion, u.usuario_nombre, p.*
+                *
             FROM
                 recorrido_usuario v 
             
@@ -46,7 +46,7 @@ class Recorrido_model extends CI_Model
             WHERE
             1=1
             ".$filtro."
-            ORDER BY v.venta_id  
+            ORDER BY v.recorrido_id
             
         ")->result_array();
 
