@@ -35,7 +35,7 @@ class Recorrido extends CI_Controller{
     {
         
         $filtro = $this->input->post('filtro');
-        $data = $this->Detalle_venta_model->recorrido_dist($filtro);
+        $data = $this->Recorrido_model->recorrido_dist($filtro);
         
        
         echo json_encode($data);
