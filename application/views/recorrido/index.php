@@ -42,6 +42,9 @@
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" />
+<div class="box-header text-center">
+    <h2 class="box-title"><b>REPORTE DE RECORRIDO</b></h2>
+</div>
 <!-------------------------------------------------------->
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
     <div id="cabizquierda">
@@ -137,9 +140,11 @@
                     <tr>
                         <th>#</th>
                         <th>Cliente</th>
-                        <th>Venta</th>
+                        <th>Negocio</th>
+                        <th>Pedido</th>
+                        <th>Respuesta</th>
                         <th>Fecha</th>
-                        <th>Estado</th>
+                        <th>Usuario</th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
                     </tbody>

@@ -895,6 +895,9 @@ function fechadeservicio(elfiltro, busquedade){
                         html += convertDateFormat(registros[i]["servicio_fecharecepcion"])+"|"+registros[i]["servicio_horarecepcion"]+"<br>";
                         html += "<b>Salida: </b>"+fechamos+horamos+"</font>";
                         html += "</td>";
+                        
+                        html += "<td>";
+                        html += "</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td>";
                         html += " <!-- Tipo de Servicio 1 esta definido como Servicio Normal -->";
@@ -1460,4 +1463,48 @@ function eliminartodoelservicio(servicio_id, num){
         }
         
     });
+}
+
+function mostrardetalleserv(serv_id){
+    const promise = new Promise(function (resolve, reject) {
+    //var html = "";
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'servicio/getdetalleservicio/'+detalleserv_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               var res = "";
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    for (var i = 0; i < n ; i++){
+                        res += "-"+registros[i]['producto_nombre']+" ("+registros[i]['producto_codigobarra']+")";
+                        res += " <b>Cant.: </b>"+registros[i]['detalleven_cantidad'];
+                        //res += " <b>Prec.: </b>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"<br>";
+                      //alert(html);  
+                   }
+               }
+               resolve(res);
+        },
+        error:function(error){
+            reject(error);
+        }
+        
+    });
+    });
+  
+  return promise;
+}
+
+async function processData (serv_id) {
+  try {
+    const result = await mostrardetalleserv(serv_id);
+    //alert(result);
+    $('#mostrardetalleserv'+serv_id).html(result);
+    //console.log(result);
+    return "";
+  } catch (err) {
+    return console.log(err.message);
+  }
 }
