@@ -1792,7 +1792,7 @@ function registrarpedido(cliente_id)
             success:function(respuesta){ 
                 eliminardetalleventa();
                 alert('Pedido registrado con éxito..!!');
-
+                
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
@@ -2856,6 +2856,7 @@ function registrar_recorrido()
                 success:function(respuesta){
         //            tablaproductos();
                     alert("Evento realizado con éxito..!")
+                    window.close();
                 },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                 error:function(respuesta){
         //            tablaproductos();
