@@ -113,4 +113,83 @@ class Website extends CI_Controller{
 //        $this->load->view('layouts/login',$data);
         $this->load->view('web/single',$data);
     }
+
+
+    function insertarproducto()
+    {
+
+        if ($this->input->is_ajax_request()) {
+        $producto_id = $this->input->post('producto_id');
+        $cantidad = $this->input->post('cantidad'); 
+        $descuento = $this->input->post('descuento'); 
+        $producto_precio = $this->input->post('producto_precio');
+
+       $existe = "SELECT producto_id from carrito WHERE producto_id=". $producto_id." ";
+        $exis=$this->db->query($existe)->result_array();
+        if ($exis[0]['producto_id'] > 0) {
+         $sumar="UPDATE carrito
+          SET carrito_cantidad=carrito_cantidad+".$cantidad.",
+              carrito_subtotal = carrito_subtotal+(".$cantidad." * carrito_precio),
+              carrito_total = carrito_total+(".$cantidad." * carrito_precio) - ".$descuento*$cantidad."  
+              WHERE producto_id = ".$producto_id." ";
+         $this->db->query($sumar);
+       }else{
+
+        $sql = "INSERT into carrito(
+                
+                producto_id,
+                carrito_precio,
+                carrito_costo,
+                carrito_cantidad,
+                carrito_descuento,
+                carrito_subtotal,
+                carrito_total
+                            
+                )
+                (
+                SELECT
+                
+                producto_id,
+                ".$producto_precio.",
+                producto_costo,
+                ".$cantidad.",
+                ".$descuento.",
+                ".$cantidad." * ".$producto_precio.",
+                (".$cantidad." * ".$producto_precio.") - ".$descuento."
+
+                from producto where producto_id = ".$producto_id."
+                )";
+              
+        $this->db->query($sql);
+
+       }
+
+    }          
+    }
+
+    function cantidad()
+    {
+
+        if ($this->input->is_ajax_request()) {
+        $producto_id = $this->input->post('producto_id');
+        $cantidad = $this->input->post('cantidad'); 
+        $descuento = $this->input->post('descuento'); 
+        $producto_precio = $this->input->post('producto_precio');
+
+         $sumar="UPDATE carrito
+          SET carrito_cantidad = ".$cantidad.",
+              carrito_subtotal = (".$cantidad." * carrito_precio),
+              carrito_total = (".$cantidad." * carrito_precio) - ".$descuento*$cantidad."  
+              WHERE producto_id = ".$producto_id." ";
+         $this->db->query($sumar);
+       }
+   }
+
+function carrito(){
+    $datos = $this->Pagina_web_model->get_carrito();
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else { echo json_encode(null); } 
+    }
+
 }
