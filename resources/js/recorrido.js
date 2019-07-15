@@ -67,44 +67,6 @@ function recorrido_dist(){
 
 }
 
-function consolidar(pedido)
-{
-    
-
- var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+'detalle_pedido/consolidar/'+pedido;
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{},
-          
-           success:function(resul){                
-                
-   buscarpedidosdist();
-      
-
-      }
-    });   
-
-
-}
-function restablecer(pedido)
-{
-    
- var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+'detalle_pedido/restableche/'+pedido;
-    $.ajax({url: controlador,
-           type:"POST",
-           data:{},
-          
-           success:function(resul){                
-                
-    buscarpedidosdist();
-
-      }
-    });   
-
-
-}  
 
 
 
