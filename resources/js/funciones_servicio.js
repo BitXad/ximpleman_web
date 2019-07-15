@@ -1469,7 +1469,7 @@ function mostrardetalleserv(serv_id){
     const promise = new Promise(function (resolve, reject) {
     //var html = "";
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'servicio/obtenerinsumosusados/'+detalleserv_id;
+    var controlador = base_url+'servicio/getdetalleservicio/'+detalleserv_id;
     $.ajax({url: controlador,
            type:"POST",
            data:{},

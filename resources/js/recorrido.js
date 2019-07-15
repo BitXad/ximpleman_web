@@ -56,11 +56,11 @@ function recorrido_dist(){
                         if (registros[i]["tiporespuesta_id"]==0){
                             tipo_respuesta = "PEDIDO: "+registros[i]["pedido_id"];
                         }
-                        else{
+                        /*else{
                             tipo_respuesta = registros[i]["tiporespuesta_descripcion"];
-                        }
+                        }*/
                         html += "<td>"+tipo_respuesta+"</td>";                        
-                        html += "<td>"+registros[i]["recorrido_detalleresp"]+"</td>";                        
+                        html += "<td class='text-center' >"+registros[i]["tiporespuesta_descripcion"]+"<br>"+registros[i]["recorrido_detalleresp"]+"</td>";                        
                         html += "<td align='center'>"+moment(registros[i]["recorrido_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["recorrido_hora"]+"</td>";                         
                         html += "<td>"+registros[i]['usuario_nombre']+"</td>";                        
                         html += "</tr>";
