@@ -34,7 +34,7 @@ class Recorrido_model extends CI_Model
   {
         $recorrido = $this->db->query("
             SELECT
-                *
+                v.*, c.*,u.*, t.tiporespuesta_descripcion
             FROM
                 recorrido_usuario v 
             

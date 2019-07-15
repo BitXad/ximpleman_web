@@ -51,7 +51,7 @@ function recorrido_dist(){
 //                        }
 
                         if (registros[i]["tiporespuesta_id"]==0){
-                            tipo_respuesta = "PEDIDO REALIZADO";
+                            tipo_respuesta = "PEDIDO: "+registros[i]["pedido_id"];
                         }
                         else{
                             tipo_respuesta = registros[i]["tiporespuesta_descripcion"];
