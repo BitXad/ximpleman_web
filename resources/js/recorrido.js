@@ -52,7 +52,7 @@ function formato_fecha(string){
                    usuario = "NO DEFINIDO";
                     for (var i = 0; i < n ; i++){
                         
-                        html += "<tr style='font-size:10px'>";
+                        html += "<tr style='font-size:5px  '>";
                         
                         html += "<td style='padding:0;'>"+(i+1)+"</td>";
                         html += "<td style='padding:0;'><b>"+registros[i]["cliente_nombre"]+"</b></td>";
