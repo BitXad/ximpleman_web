@@ -1792,6 +1792,8 @@ function registrarpedido(cliente_id)
             success:function(respuesta){ 
                 eliminardetalleventa();
                 alert('Pedido registrado con éxito..!!');
+                window.opener.location.reload(); window.close();
+                
                 
             },
             error: function(respuesta){
@@ -2856,7 +2858,8 @@ function registrar_recorrido()
                 success:function(respuesta){
         //            tablaproductos();
                     alert("Evento realizado con éxito..!")
-                    window.close();
+                    window.opener.location.reload(); window.close();
+                    
                 },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
                 error:function(respuesta){
         //            tablaproductos();
