@@ -34,6 +34,7 @@ class Recorrido extends CI_Controller{
     function recorrido_dist()
     {
         
+        
         $filtro = $this->input->post('filtro');
         $data = $this->Recorrido_model->recorrido_dist($filtro);
         

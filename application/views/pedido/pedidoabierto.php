@@ -287,7 +287,7 @@ function mostrar_ocultar(){
         
         <table>      
             <tr>
-                <td style="width: 0.2cm"> 
+                <td style="width: 0.2cm" > 
                 </td> 
         
                 
@@ -552,7 +552,7 @@ function mostrar_ocultar(){
             </a>-->
 
             
-                <button  onclick="" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <button  onclick="window.close();" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x  "></i><br><br>
                Salir <br>
             </button>    

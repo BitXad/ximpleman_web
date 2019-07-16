@@ -42,11 +42,56 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
+
+<table class="table" style="width: 20cm; padding: 0;" >
+    <tr>
+        <td style="width: 6cm; padding: 0" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
+
+            </center>                      
+        </td>
+                   
+        <td style="width: 6cm; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font size="3" face="arial"><b>REPORTE DE RECORRIDO</b></font> <br>
+                <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+
+            </center>
+        </td>
+        <td style="width: 4cm; padding: 0" >
+                ______________________________                
+                   
+                                
+                <div id="datos_recorrido">
+                    
+                </div>
+                
+                ______________________________
+        </td>
+    </tr>
+     
+</table>
+
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" />
-<div class="box-header text-center">
+<!--<div class="box-header text-center">
     <h2 class="box-title"><b>REPORTE DE RECORRIDO</b></h2>
-</div>
+</div>-->
 <!-------------------------------------------------------->
 <div class="row micontenedorep" style="display: none" id="cabeceraprint">
     <div id="cabizquierda">
@@ -144,7 +189,7 @@
                         <th>Cliente</th>
                         <th>Negocio</th>
                         <th>Pedido</th>
-                        <th>Respuesta</th>
+                        <th>Respuesta Cliente</th>
                         <th>Fecha</th>
                         <th>Usuario</th>
                         <th>Monto</th>
@@ -156,29 +201,61 @@
         </div>
     </div>
 </div>
+
 <div class="col-md-12">
-    <div class="col-md-6" id="reportes">
-      
+
+    
+    <div class="col-md-6 no-print">
+        <div  class="row" >
+
+            <div class="box box-primary">
+                <div class="box-header">
+                </div>
+
+                <div class="box-body" id="div_grafica_pie">
+                </div>
+
+                        <div class="box-footer">
+                        </div>
+            </div>
+
+
+
+        </div>
     </div>
-    <div class="col-md-6">
-<div  class="row" >
+    
+    <div class="col-md-6 ">
+        <div class="col-md" id="reportes">
+        </div>
+
+
+            <!----------------------------------- BOTONES ---------------------------------->
+            <?php 
+            $ancho_boton = 100; 
+            $alto_boton = 120; 
+
+            ?>
+            <div class="col-md-12 no-print" style="padding:0;">
+
+                <center>
+
+                <a href="#" data-toggle="modal" onclick="window.onload = window.print();" data-target="#modalfinalizar" class="btn btn-sq-lg btn-facebook" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                    <i class="fa fa-print fa-4x"></i><br><br>Imprimir <br>
+                </a>
+
+                <a  href="<?php echo site_url('pedido'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                    <i class="fa fa-sign-out fa-4x"></i><br><br>
+                   Salir <br>
+                </a>    
+
+                </center>
+                <br>
+            </div>    
+            <!----------------------------------- fin Botones ---------------------------------->
 
         
-    <div class="box box-primary">
-        <div class="box-header">
-        </div>
-
-        <div class="box-body" id="div_grafica_pie">
-        </div>
-
-                <div class="box-footer">
-                </div>
-    </div>
-
- 
-
-</div>
-</div>
+        
+    </div>    
 </div>
 
 <?php

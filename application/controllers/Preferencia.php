@@ -9,6 +9,7 @@ class Preferencia extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Preferencia_model');
+        
     } 
 
     /*
