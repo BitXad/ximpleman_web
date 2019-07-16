@@ -207,7 +207,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>              
         <div class="w3l_search">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+            <input type="text" name="cliente" id="cliente" value="0" />
             <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
+            <input type="text" name="miip" id="miip" value="" />
             <!--<form action="#" method="post">-->
             
             
@@ -763,29 +765,29 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <table class="table table-hover">
          <div class="col-md-6">
             METODO DE PAGO:             
-            <select class="form-control" name="usuario_id" id="usuario_id" required>
+            <select class="form-control" name="metodo_pago" id="metodo_pago" required>
                 <option value="0">Pago en Entrega</option>
                 <option value="0">Transferencia</option>
             </select>
         </div>
         <div class="col-md-6">
             METODO DE ENVIO:             
-            <select class="form-control" name="usuario_id" id="usuario_id" required>
+            <select class="form-control" name="metodo_envio" id="metodo_envio" required>
                 <option value="0">A Domicilio</option>
                 <option value="0">Succursal</option>
             </select>
         </div>
         <div class="col-md-6">
-            NIT: <input type="text" class="form-control" value="" id="fecha_hasta" name="fecha_hasta" required="true">
+            NIT: <input type="text" class="form-control" value="" id="venta_nit" name="venta_nit" required="true">
         </div>
         <div class="col-md-6">
-            RAZON SOCIAL: <input type="text" class="form-control" value="" id="fecha_hasta" name="fecha_hasta" required="true">
+            RAZON SOCIAL: <input type="text" class="form-control" value="" id="venta_razon" name="venta_razon" required="true">
         </div>
         <div class="col-md-6">
-            TELF: <input type="text" class="form-control" value="" id="fecha_hasta" name="fecha_hasta" required="true">
+            TELF: <input type="text" class="form-control" value="" id="venta_telefono" name="venta_telefono" required="true">
         </div>
         <div class="col-md-6">
-            DIRECCION: <input type="text" class="form-control" value="" id="fecha_hasta" name="fecha_hasta" required="true">
+            DIRECCION: <input type="text" class="form-control" value="" id="venta_direccion" name="venta_direccion" required="true">
         </div>
         
         </table>
@@ -801,6 +803,65 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 <!-- Modal: modalCart -->
 
+<!-- Modal: registro -->
+<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Cliente<i class="fa fa-cart-arrow-down"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <div class="col-md-12"></div>
+        <table class="table table-hover">
+         <div class="col-md-4">
+            <h3>Registrate</h3>
+         </div>
+         <div class="col-md-2">
+            <h3>O</h3>
+         </div>   
+         <div class="col-md-6">
+            <br>
+            <b>INICIA SESION</b>
+            <button class="btn btn-primary" type="button" >Iniciar Sesion</button><BR><br>
+         </div>  
+        
+         <div class="col-md-6">
+            NOMBRE:  <input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true">
+        </div>
+        <div class="col-md-6">
+            C.I.: <input type="text" class="form-control" value="" id="cliente_ci" name="cliente_ci" required="true">        
+        </div>
+        <div class="col-md-6">
+            NIT: <input type="text" class="form-control" value="" id="cliente_nit" name="cliente_nit" required="true">
+        </div>
+        <div class="col-md-6">
+            RAZON SOCIAL: <input type="text" class="form-control" value="" id="cliente_razon" name="cliente_razon" required="true">
+        </div>
+        <div class="col-md-6">
+            TELF: <input type="text" class="form-control" value="" id="cliente_telefono" name="cliente_telefono" required="true">
+        </div>
+        <div class="col-md-6">
+            DIRECCION: <input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true">
+        </div>
+        
+        </table>
+
+      </div>
+      <!--Footer-->
+      <div class="modal-footer">
+        <div></div>
+        <button class="btn btn-primary">Registrarse</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal: registro -->
 
 <!-- //footer -->
 <div class="footer">
