@@ -44,6 +44,7 @@ function formato_fecha(string){
                     var n = registros.length; //tamaño del arreglo de la consulta
                     var total = Number(0); //
                     var positivo = Number(0); //
+                    var negativo = Number(0);
                    
                     html = "";
                     html2 = "";
@@ -67,6 +68,7 @@ function formato_fecha(string){
                         
                         }
                         else{
+                            negativo += 1;
                         html += "<td style='padding:0;'></td>";
                         html += "<td style='padding:0;'>"+registros[i]["tiporespuesta_descripcion"]+"/"+registros[i]["recorrido_detalleresp"]+"</td>";
                         pedido_total=0;
@@ -80,6 +82,43 @@ function formato_fecha(string){
                     }
 
                     var porcposi = Number(positivo/n*100);
+                     var porcnega = negativo/n*100;
+                    Highcharts.chart('div_grafica_pie', {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        title: {
+                            text: 'Clientes Visitados'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                                }
+                            }
+                        },
+                        series: [{
+                            name: 'Porc.',
+                            colorByPoint: true,
+                            data: [{
+                                name: 'Pedidos',
+                                y: porcposi
+                               
+                            }, {
+                                name: 'Rechazos',
+                                y: porcnega
+                            }]
+                        }]
+                    });
                     
                     html2 += "<tr><th  colspan='2' style='background-color:black'><b> ESTADISTICA DE RENDIMIENTO</b></th></tr>";
                     html2 += "<tr><th style='padding:0;'>Visitas realizadas</th><td style='padding:0;'><font size='2'><b>"+Number(n).toFixed(2)+" </b></font></td></tr>";
@@ -124,85 +163,5 @@ function formato_fecha(string){
     });   
 
 }
-
-
-function cargar_grafica_pie(){
-
-
-var base_url    = document.getElementById('base_url').value;
- var usuario    = document.getElementById('usuario_id').value;
- var fecha_desde = document.getElementById('fecha_desde').value;
- var fecha_hasta = document.getElementById('fecha_hasta').value;
-   
- if (usuario==0) {
-    var filtro = " and date(v.recorrido_fecha) >= '"+fecha_desde+"'  and  date(v.recorrido_fecha) <='"+fecha_hasta+"' ";
- }else{
-    var filtro = " and date(v.recorrido_fecha) >= '"+fecha_desde+"'  and  date(v.recorrido_fecha) <='"+fecha_hasta+"' and v.usuario_id="+usuario+" ";
- }
-var controlador = base_url+"recorrido/recorrido_dist";
-$.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro},
-           success:function(respuesta){
-var registros= JSON.parse(respuesta);
-
-
-    var n = registros.length;
-    var positivo = 0;
-    var negativo = 0; 
-    for (var i = 0; i < n ; i++){
-    if (registros[i]["tiporespuesta_id"]==0){
-        positivo += 1;
-    }else{
-        negativo += 1;
-    }
-  }
-  var porcposi = positivo/n*100;
-  var porcnega = negativo/n*100;
-Highcharts.chart('div_grafica_pie', {
-    chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie'
-    },
-    title: {
-        text: 'Clientes Visitados'
-    },
-    tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-    },
-    plotOptions: {
-        pie: {
-            allowPointSelect: true,
-            cursor: 'pointer',
-            dataLabels: {
-                enabled: true,
-                format: '<b>{point.name}</b>: {point.percentage:.1f} %'
-            }
-        }
-    },
-    series: [{
-        name: 'Porc.',
-        colorByPoint: true,
-        data: [{
-            name: 'Pedidos',
-            y: porcposi
-           
-        }, {
-            name: 'Rechazos',
-            y: porcnega
-        }]
-    }]
-});
-
-}
-})
-
-
-
-
-}
-
 
 
