@@ -208,6 +208,13 @@ class Pagina_web_model extends CI_Model
         return $resultado; 
         
     }
+    function get_carrito()
+    {
+        $sql = "SELECT c.*, p.producto_nombre from carrito c, inventario p
+               where c.producto_id=p.producto_id ORDER BY c.carrito_id desc ";
+        $result = $this->db->query($sql)->result_array();
+        return $result;        
+    } 
         
     /*
      * function to add new pagina_web

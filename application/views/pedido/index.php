@@ -36,13 +36,16 @@
 <!--<div class="box-header">
 <div class="row clearfix">-->
 <div class="box-body col-md-6">
-<h3 class="box-title">Pedido</h3>
-</div>    
-<div class="box-body col-md-6">
-<div class="row clearfix">
+    <center>
+        <h3 class="box-title">Pedidos</h3>        
+    </center>
+</div>
+
+<div class="box-body col-md-6"  style="padding:0">
+<div class="row clearfix" style="padding:0">
                     
     <?php if($tipousuario_id == 1){ ?>
-    <div class="col-md-3">
+    <div class="col-md-3"  style="padding:3px">
         <div class="form-group">
 
             <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
@@ -57,7 +60,7 @@
     </div>
     <?php } ?>
                  
-    <div class="col-md-3">
+    <div class="col-md-3"  style="padding:3px">
         <div class="form-group">
         <select class="btn btn-facebook btn-sm form-control" id="select_pedidos" onclick="buscar_pedidos()">
             <option value="1">Pedidos de Hoy</option>
@@ -74,7 +77,7 @@
     </div>
     </div>
                 
-    <div class="col-md-3">
+    <div class="col-md-2"  style="padding:3px">
         <div class="form-group">
                     <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm form-control"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
                     <!--<a href="<?php echo site_url('pedido/mapa_pedido'); ?>" target="_blank" class="btn btn-facebook btn-sm"><span class="fa fa-map"></span> Mapa</a>-->
@@ -83,7 +86,13 @@
         </div>
     </div>
     
-    <div class="col-md-3">
+    <div class="col-md-2"  style="padding:3px">
+        <div class="form-group">
+                    <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm form-control"><span class="fa fa-steam"></span> Recorrido</a>
+        </div>
+    </div>
+
+    <div class="col-md-2"  style="padding:3px">
         <div class="form-group">
                     <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm form-control"><span class="fa fa-map"></span> Mapa</a>
         </div>
@@ -166,58 +175,4 @@
         </div>
     </div>
 </div>
-
-<!---------------- PEDIDOS SIN ASIGNAR ------------------------------->
-<!--
-<div class="row">
-    <div class="col-md-12">
-
-        <div class="box">
-            
-            <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
-                    <tr>
-                        <th>Num.</th>
-                        <th>Cliente</th>
-                        <th>COD</th>
-                        <th>Fecha</th>
-                        <th>Subtotal</th>
-                        <th>Descuento</th>
-                        <th>Total</th>
-                        <th>Fecha<br>Entrega</th>
-                        <th>Hora<br>Entrega</th>
-                        <th> </th>
-                    </tr>
-                    <tbody class="buscar">
-                    <?php $cont = 0;
-                          foreach($pedidosn as $psn){;
-                                 $cont = $cont+1; ?>
-                    <tr>
-                        <td><?php echo $cont ?></td>
-                        <td><?php echo $psn['cliente_nombre']; ?></td>
-                        <td align="center"><?php echo $psn['pedido_id']; ?></td>
-                        <td><?php echo $psn['pedido_fecha']; ?></td>
-                        <td><?php echo $psn['pedido_subtotal']; ?></td>
-                        <td><?php echo $psn['pedido_descuento']; ?></td>  
-                        <td><?php echo $psn['pedido_total']; ?></td>
-                        <td><?php echo $psn['pedido_fechaentrega']; ?></td>
-                        <td><?php echo $psn['pedido_horaentrega']; ?></td>
-
-                        <td>
-                            <a href="<?php echo site_url('pedido/pedidoabierto/'.$psn['pedido_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span></a>
-                            <a href="<?php echo site_url('pedido/remove/'.$psn['pedido_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
-                                
-            </div>
-
-        </div>
-    </div>
-</div>-->
-
-
-    
 </body>

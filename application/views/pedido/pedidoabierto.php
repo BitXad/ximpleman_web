@@ -287,7 +287,7 @@ function mostrar_ocultar(){
         
         <table>      
             <tr>
-                <td style="width: 0.2cm"> 
+                <td style="width: 0.2cm" > 
                 </td> 
         
                 
@@ -540,23 +540,23 @@ function mostrar_ocultar(){
         <div class="col-md-12" style="padding:0;">
 
             <center>
-            <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
+            
             <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Pedido<br>
             </a>
-            <?php } ?>
-
+            
+                
 <!--            <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>-->
 
-            <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
-            <a  href="<?php echo site_url('pedido'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
-                <i class="fa fa-sign-out fa-4x"></i><br><br>
+            
+                <button  onclick="window.close();" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <i class="fa fa-sign-out fa-4x  "></i><br><br>
                Salir <br>
-            </a>    
-            <?php } ?>    
+            </button>    
+                
             </center>
             <br>
         </div>    
