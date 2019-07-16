@@ -92,7 +92,7 @@ function tablaresultados(opcion, subcatserv_id)
     
     if (opcion == 1){
         controlador = base_url+'venta/buscarproductos/';
-        parametro = document.getElementById('filtrar').value        
+        parametro = document.getElementById('filtrar').value;
     }
     
     if (opcion == 2){
@@ -895,8 +895,9 @@ function fechadeservicio(elfiltro, busquedade){
                         html += convertDateFormat(registros[i]["servicio_fecharecepcion"])+"|"+registros[i]["servicio_horarecepcion"]+"<br>";
                         html += "<b>Salida: </b>"+fechamos+horamos+"</font>";
                         html += "</td>";
-                        
+                        processData(registros[i]["servicio_id"]);
                         html += "<td>";
+                        html += "<div id='mostrardetalleserv"+registros[i]["servicio_id"]+"'><div>";
                         html += "</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
                         html += "<td>";
@@ -1469,7 +1470,7 @@ function mostrardetalleserv(serv_id){
     const promise = new Promise(function (resolve, reject) {
     //var html = "";
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'servicio/getdetalleservicio/'+detalleserv_id;
+    var controlador = base_url+'servicio/getname_detalleservicio/'+serv_id;
     $.ajax({url: controlador,
            type:"POST",
            data:{},
@@ -1479,10 +1480,7 @@ function mostrardetalleserv(serv_id){
                if (registros != null){
                     var n = registros.length; //tamaño del arreglo de la consulta
                     for (var i = 0; i < n ; i++){
-                        res += "-"+registros[i]['producto_nombre']+" ("+registros[i]['producto_codigobarra']+")";
-                        res += " <b>Cant.: </b>"+registros[i]['detalleven_cantidad'];
-                        //res += " <b>Prec.: </b>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"<br>";
-                      //alert(html);  
+                        res += "-"+registros[i]['detalleserv_descripcion']+"<br>"; 
                    }
                }
                resolve(res);

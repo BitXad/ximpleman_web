@@ -887,7 +887,7 @@ function mostrar_ocultar(){
             -->
             <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarpedido()" style="display: block;">
                 <h4>
-                <span class="fa fa-save"></span>   Finalizar Pedido  
+                <span class="fa fa-save"></span>   Finalizar Pedido
                 </h4>
             </button>
 

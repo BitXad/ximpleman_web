@@ -51,6 +51,9 @@
         <div class="input-group"> <span class="input-group-addon">Buscar</span>
             <input id="filtrar3" type="text" class="form-control" placeholder="Ingrese descripción, código" autofocus>
         </div>
+        <div id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
         <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             
@@ -183,7 +186,7 @@
                             <?php $i=1;
                             foreach($categoria_mis_insumos as $p){ ?>
                                 <tr>
-                                    <?php echo form_open('categoria_insumo/usarinsumo/'.$servicio_id.'/'.$detalleserv_id);?>
+                                    <?php //echo form_open('categoria_insumo/usarinsumo/'.$servicio_id.'/'.$detalleserv_id);?>
                                     <td><?php echo $i++; ?></td>
                                     <td><font size="3"><b><?php echo $p['producto_nombre']; ?></b></font>
                                                     <br><?php echo $p['producto_unidad']; ?> | <?php echo $p['producto_marca']; ?> | <?php echo $p['producto_industria']; ?>
@@ -231,20 +234,21 @@
                                         <label>Caracteristicas:</label>
                                         <textarea name="caracteristicas<?php echo $p['producto_id']; ?>" id="caracteristicas<?php echo $p['producto_id']; ?>" class="form-control"></textarea>
                                     <br>
-                                    <input type="hidden" id="producto_tipocambio"  name="producto_tipocambio" class="form-control" value="<?php echo $p['producto_tipocambio']; ?>" />
-                                    <input type="hidden" id="producto_comision"  name="producto_comision" class="form-control" value="<?php echo $p['producto_comision']; ?>" />
-                                    <input type="hidden" id="producto_precio"  name="producto_precio" class="form-control" value="<?php echo $p['producto_precio']; ?>" />
-                                    <input type="hidden" id="producto_costo"  name="producto_costo" class="form-control" value="<?php echo $p['producto_costo']; ?>" />
-                                    <input type="hidden" id="producto_unidad"  name="producto_unidad" class="form-control" value="<?php echo $p['producto_unidad']; ?>" />
-                                    <input type="hidden" id="producto_codigo"  name="producto_codigo" class="form-control" value="<?php echo $p['producto_codigo']; ?>" />
-                                    <input type="hidden" id="moneda_id"  name="moneda_id" class="form-control" value="<?php echo $p['moneda_id']; ?>" />
-                                    <input type="hidden" id="producto_id"  name="producto_id" class="form-control" value="<?php echo $p['producto_id']; ?>" />
+                                    <input type="hidden" id="producto_tipocambio<?php echo $p['producto_id']; ?>"  name="producto_tipocambio<?php echo $p['producto_id']; ?>" class="form-control" value="<?php echo $p['producto_tipocambio']; ?>" />
+                                    <input type="hidden" id="producto_comision<?php echo $p['producto_id']; ?>"  name="producto_comision<?php echo $p['producto_id']; ?>" class="form-control" value="<?php echo $p['producto_comision']; ?>" />
+                                    <input type="hidden" id="producto_precio<?php echo $p['producto_id']; ?>"  name="producto_precio<?php echo $p['producto_id']; ?>" class="form-control" value="<?php echo $p['producto_precio']; ?>" />
+                                    <input type="hidden" id="producto_costo<?php echo $p['producto_id']; ?>"  name="producto_costo<?php echo $p['producto_id']; ?>" class="form-control" value="<?php echo $p['producto_costo']; ?>" />
+                                    <input type="hidden" id="producto_unidad<?php echo $p['producto_id']; ?>"  name="producto_unidad<?php echo $p['producto_id']; ?>" class="form-control" value="<?php echo $p['producto_unidad']; ?>" />
+                                    <input type="hidden" id="producto_codigo<?php echo $p['producto_id']; ?>"  name="producto_codigo<?php echo $p['producto_id']; ?>" class="form-control" value="<?php echo $p['producto_codigo']; ?>" />
+                                    <input type="hidden" id="moneda_id<?php echo $p['producto_id']; ?>"  name="moneda_id<?php echo $p['producto_id']; ?>" class="form-control" value="<?php echo $p['moneda_id']; ?>" />
+                                    <!--<input type="hidden" id="producto_id<?php //echo $p['producto_id']; ?>"  name="producto_id" class="form-control" value="<?php //echo $p['producto_id']; ?>" />-->
                                     <?php if($p['existencia'] ==0){ $disabled = "disabled"; }else{$disabled = ""; } ?>
-                                    <button type="submit" class="btn btn-success btn-xs" <?php echo $disabled; ?> >
+                                    
+                                    <button class="btn btn-success btn-xs" onclick="usarthisinsumoasignado(<?php echo $servicio_id; ?>, <?php echo $detalleserv_id; ?>, <?php echo $p['producto_id']; ?>)" <?php echo $disabled; ?> >
                                         <i class="fa fa-check"></i> Usar Insumo
                                     </button>
                                 </td>
-                                 <?php echo form_close(); ?>
+                                 <?php //echo form_close(); ?>
                             </tr>
                             <?php } ?>
                             </tbody>
