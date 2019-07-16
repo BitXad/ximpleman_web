@@ -743,4 +743,23 @@ class Detalle_serv_model extends CI_Model
         return $detalle_serv;
     }
     
+    function get_name_detalle_serv_all($servicio_id)
+    {
+        $detalle_serv = $this->db->query("
+            SELECT
+                ds.detalleserv_descripcion
+
+            FROM
+                detalle_serv ds
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            WHERE
+                ds.servicio_id = ".$servicio_id."
+               
+            ORDER BY `detalleserv_id` DESC
+            
+        ")->result_array();
+
+        return $detalle_serv;
+    }
+    
 }

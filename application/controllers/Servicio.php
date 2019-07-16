@@ -684,8 +684,8 @@ class Servicio extends CI_Controller{
                 {                 
                     show_404();
                 }
+        }
     }
-}
     
     /*
      * Obtiene los datos de un servicio; lo que recupera son los montos
@@ -1099,5 +1099,28 @@ class Servicio extends CI_Controller{
         }
     }
 }
+    /*
+     * obtenemos los nombres de los detalles de un determinado servicio
+    */
+    function getname_detalleservicio($servicio_id)
+    {
+        if($this->acceso(69)){
+            if ($this->input->is_ajax_request()){
+                $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+                if(isset($data['servicio']['servicio_id']))
+                {
+                    $this->load->model('Detalle_serv_model');
+                    $datos = $this->Detalle_serv_model->get_name_detalle_serv_all($servicio_id);
+                    echo json_encode($datos);
+                }else{
+                    echo json_encode("noexiste");
+                }
+            }
+            else
+            {                 
+                show_404();
+            }
+        }
+    }
    
 }
