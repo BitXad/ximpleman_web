@@ -379,4 +379,19 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+    
+    function get_all_productosubcategorias($producto_id)
+    {
+        $sql = "SELECT
+                sc.subcatserv_descripcion
+            FROM
+                subcategoria_servicio sc
+            LEFT JOIN categoria_insumo ci on ci.subcatserv_id = sc.subcatserv_id
+            WHERE
+                ci.producto_id = $producto_id";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
 }

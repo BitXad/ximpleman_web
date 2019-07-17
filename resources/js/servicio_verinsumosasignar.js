@@ -9,6 +9,7 @@ function showinsumosusados(servicio_id, detalleserv_id){
     
     var controlador = "";
     var base_url = document.getElementById('base_url').value;
+    document.getElementById('loader').style.display = 'block';
     
     controlador = base_url+'categoria_insumo/verinsumosasignados/';
     $.ajax({url: controlador,
@@ -37,8 +38,16 @@ function showinsumosusados(servicio_id, detalleserv_id){
                         html += "<td>"+registros[i]["detalleven_cantidad"]+"</td>";
                         html += "<td>"+registros[i]["detalleven_precio"]+"</td>";
                         html += "<td>"+registros[i]["detalleven_total"]+"</td>";
-                        html += "<td>"+registros[i]["detalleven_preferencia"]+"</td>";
-                        html += "<td>"+registros[i]["detalleven_caracteristicas"]+"</td>";
+                        var detpreferencia = "";
+                        var detcaracterist = "";
+                        if(registros[i]["detalleven_preferencia"] != null){
+                            detpreferencia = registros[i]["detalleven_preferencia"];
+                        }
+                        if(registros[i]["detalleven_caracteristicas"] != null){
+                            detcaracterist = registros[i]["detalleven_caracteristicas"];
+                        }
+                        html += "<td>"+detpreferencia+"</td>";
+                        html += "<td>"+detcaracterist+"</td>";
                         html += "<td>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
@@ -57,7 +66,7 @@ function showinsumosusados(servicio_id, detalleserv_id){
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
-                        html += "<a href='"+base_url+"categoria_insumo/eliminardetalleventa/"+servicio_id+"/"+detalleserv_id+"/"+registros[i]['detalleven_id']+"' class='btn btn-success' name='eliminardetventa"+i+"' id='eliminardetventa"+i+"' ><span class='fa fa-check'></span> Si </a>";
+                        html += "<a onclick='eliminarinsumo("+servicio_id+", "+detalleserv_id+", "+registros[i]['detalleven_id']+", "+i+")' class='btn btn-success' name='eliminardetventa"+i+"' id='eliminardetventa"+i+"' ><span class='fa fa-check'></span> Si </a>";
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
@@ -71,14 +80,18 @@ function showinsumosusados(servicio_id, detalleserv_id){
                    
                    
                    $("#insumosresultados").html(html);
-                   
+                   document.getElementById('loader').style.display = 'none';
             }
-                
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader    
         },
         error:function(respuesta){
            // alert("Algo salio mal...!!!");
            html = "";
            $("#insumosresultados").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
         }
         
     });
@@ -266,4 +279,72 @@ function usarthisinsumo(servicio_id, detalleserv_id, producto_id){
         
     });
     
+}
+
+function usarthisinsumoasignado(servicio_id, detalleserv_id, producto_id){
+    
+    var controlador = "";
+    var base_url = document.getElementById('base_url').value;
+    var cantidad = document.getElementById('cantidad'+producto_id).value;
+    var descuento = document.getElementById('descuento'+producto_id).value;
+    var agrupa = document.getElementById('agrupar'+producto_id).checked;
+    var preferencia = document.getElementById('preferencia'+producto_id).value;
+    var caracteristicas = document.getElementById('caracteristicas'+producto_id).value;
+    var producto_tipocambio = document.getElementById('producto_tipocambio'+producto_id).value;
+    var producto_comision = document.getElementById('producto_comision'+producto_id).value;
+    var producto_precio = document.getElementById('producto_precio'+producto_id).value;
+    var producto_costo = document.getElementById('producto_costo'+producto_id).value;
+    var producto_unidad = document.getElementById('producto_unidad'+producto_id).value;
+    var producto_codigo = document.getElementById('producto_codigo'+producto_id).value;
+    var moneda_id = document.getElementById('moneda_id'+producto_id).value;
+    
+    controlador = base_url+'categoria_insumo/usarinsumo/';
+    var agrupar = 0;
+    if(agrupa == 1){ agrupar = 1; }
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{servicio_id:servicio_id, detalleserv_id:detalleserv_id, producto_id:producto_id,
+               agrupar:agrupar, cantidad:cantidad, producto_precio:producto_precio, descuento:descuento,
+               moneda_id:moneda_id, producto_codigo:producto_codigo, producto_unidad:producto_unidad,
+               producto_costo:producto_costo, preferencia:preferencia, caracteristicas:caracteristicas,
+               producto_comision:producto_comision, producto_tipocambio:producto_tipocambio},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                showinsumosusados(servicio_id, detalleserv_id);
+            }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#insumosresultados").html(html);
+        }
+        
+    });
+}
+
+function eliminarinsumo(servicio_id, detalleserv_id, detalleven_id, i){
+    var controlador = "";
+    var base_url = document.getElementById('base_url').value;
+    $('#myModal'+i).modal('hide');
+    
+    
+    controlador = base_url+'categoria_insumo/eliminardetalleventa';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{servicio_id:servicio_id, detalleserv_id:detalleserv_id, detalleven_id:detalleven_id},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                showinsumosusados(servicio_id, detalleserv_id);
+            }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#insumosresultados").html(html);
+        }
+
+    });
+
 }

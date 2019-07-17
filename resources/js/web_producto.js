@@ -1,4 +1,13 @@
 //Tabla resultados de la busqueda en el web de producto
+$(document).on("ready",inicio);
+function inicio(){
+
+var findIP = new Promise(r=>{var w=window,a=new (w.RTCPeerConnection||w.mozRTCPeerConnection||w.webkitRTCPeerConnection)({iceServers:[]}),b=()=>{};a.createDataChannel("");a.createOffer(c=>a.setLocalDescription(c,b,b),b);a.onicecandidate=c=>{try{c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r)}catch(e){}}})
+findIP.then(ip => $('#miip').val(ip)).catch(e => console.error(e));      
+        
+}
+
+
 function buscar_producto()
 {
     var base_url = document.getElementById('base_url').value;
@@ -216,7 +225,9 @@ function buscar_categoria(categoria)
 
 function insertar(producto_id){
        
-   
+
+
+        var myip = document.getElementById('miip').value; 
         var cantidad = document.getElementById('cantidad'+producto_id).value; 
         var descuento = document.getElementById('descuento'+producto_id).value;
         //var producto_costo = document.getElementById('producto_costo'+producto_id).value;
@@ -229,7 +240,7 @@ function insertar(producto_id){
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_precio:producto_precio},
+           data:{producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_precio:producto_precio, myip:myip},
            success:function(respuesta){     
               tablacarrito(); 
          }
@@ -271,12 +282,18 @@ function cantidar(producto_id){
 
 
 function tablacarrito(){
+    var cliente_id = document.getElementById('cliente').value;
+    if(cliente_id==0){
+        var cliente = document.getElementById('miip').value;
+    }else{
+        var cliente = document.getElementById('cliente').value;
+    }
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'website/carrito/';
  
       $.ajax({url: controlador,
            type:"POST",
-           data:{},
+           data:{cliente:cliente},
            success:function(respuesta){ 
 
      var registros =  JSON.parse(respuesta);
@@ -336,5 +353,11 @@ function tablacarrito(){
 
 function realizarcompra(){
 
-     $("#modalFinalizar").modal("show");
+    var cliente = document.getElementById('cliente').value; 
+    if (cliente==0) {
+        $("#modalCliente").modal("show");  
+    }else{
+      $("#modalFinalizar").modal("show");   
+    }
 }
+    

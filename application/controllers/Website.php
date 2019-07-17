@@ -123,10 +123,11 @@ class Website extends CI_Controller{
         $cantidad = $this->input->post('cantidad'); 
         $descuento = $this->input->post('descuento'); 
         $producto_precio = $this->input->post('producto_precio');
+        $findip = $this->input->post('myip');
 
        $existe = "SELECT producto_id from carrito WHERE producto_id=". $producto_id." ";
-        $exis=$this->db->query($existe)->result_array();
-        if ($exis[0]['producto_id'] > 0) {
+        $exis=$this->db->query($existe)->row_array();
+        if ($exis['producto_id'] > 0) {
          $sumar="UPDATE carrito
           SET carrito_cantidad=carrito_cantidad+".$cantidad.",
               carrito_subtotal = carrito_subtotal+(".$cantidad." * carrito_precio),
@@ -138,6 +139,7 @@ class Website extends CI_Controller{
         $sql = "INSERT into carrito(
                 
                 producto_id,
+                cliente_id,
                 carrito_precio,
                 carrito_costo,
                 carrito_cantidad,
@@ -150,6 +152,7 @@ class Website extends CI_Controller{
                 SELECT
                 
                 producto_id,
+                '".$findip."',
                 ".$producto_precio.",
                 producto_costo,
                 ".$cantidad.",
@@ -186,7 +189,8 @@ class Website extends CI_Controller{
    }
 
 function carrito(){
-    $datos = $this->Pagina_web_model->get_carrito();
+    $cliente = $this->input->post('cliente');
+    $datos = $this->Pagina_web_model->get_carrito($cliente);
      if(isset($datos)){
                         echo json_encode($datos);
                     }else { echo json_encode(null); } 

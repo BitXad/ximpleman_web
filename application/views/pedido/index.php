@@ -79,7 +79,7 @@
                 
     <div class="col-md-2"  style="padding:3px">
         <div class="form-group">
-                    <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm form-control"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
+            <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm form-control" target="_blank"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
                     <!--<a href="<?php echo site_url('pedido/mapa_pedido'); ?>" target="_blank" class="btn btn-facebook btn-sm"><span class="fa fa-map"></span> Mapa</a>-->
                     <!--<a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm form-control"><span class="fa fa-map"></span> Mapa</a>-->
                 <!--</div>-->

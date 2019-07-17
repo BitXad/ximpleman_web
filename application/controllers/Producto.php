@@ -877,5 +877,16 @@ class Producto extends CI_Controller{
             }
         }
     }
-    
+    /* lista de subcategoriuas asigandos a un producto */
+    function productoasignado($producto_id)
+    {
+        //if($this->acceso(102)) {
+        $nombre_producto = $this->Producto_model->get_esteproducto($producto_id);
+        $data['producto_nombre'] = $nombre_producto['producto_nombre'];
+        $data['all_productosubcategoria'] = $this->Producto_model->get_all_productosubcategorias($producto_id);
+        $data['page_title'] = "Producto-Subcategorias";
+        $data['_view'] = 'producto/productoasignado';
+        $this->load->view('layouts/main',$data);
+        //}
+    }
 }
