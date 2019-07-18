@@ -204,15 +204,15 @@ border-bottom : 1px solid #aaa;
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora'];; ?> <br>
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
         </td>
     </tr>
      
-</table>
+<!--</table>
 
-       <table class="table table-striped table-condensed"  style="width: 18cm;" >
+       <table class="table table-striped table-condensed"  style="width: 18cm;" >-->
            <tr style="border-bottom:black; border-style: solid">
                 <td align="center"><b>CANT</b></td>
                 <td align="center"><b>DESCRIPCIÓN</b></td>
@@ -238,9 +238,9 @@ border-bottom : 1px solid #aaa;
                 <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php }} ?>
-       </table>
+<!--       </table>
        
-    <table class="table" style="max-width: 18cm;">
+    <table class="table" style="max-width: 18cm;">-->
     <tr >
         
         <td align="left" style="max-width: 2cm;">
