@@ -11,6 +11,7 @@ class Website extends CI_Controller{
         $this->load->model('Pagina_web_model');
         $this->load->model('Producto_model');
         $this->load->model('Categoria_producto_model');
+        $this->load->helper('cookie');
     }            
 
     function index($idioma_id)
@@ -123,9 +124,9 @@ class Website extends CI_Controller{
         $cantidad = $this->input->post('cantidad'); 
         $descuento = $this->input->post('descuento'); 
         $producto_precio = $this->input->post('producto_precio');
-        $findip = $this->input->post('myip');
+        $cliente = $this->input->post('cliente');
 
-       $existe = "SELECT producto_id from carrito WHERE producto_id=". $producto_id." ";
+       $existe = "SELECT producto_id from carrito WHERE producto_id=". $producto_id." and cliente_id='".$cliente."' ";
         $exis=$this->db->query($existe)->row_array();
         if ($exis['producto_id'] > 0) {
          $sumar="UPDATE carrito
@@ -152,7 +153,7 @@ class Website extends CI_Controller{
                 SELECT
                 
                 producto_id,
-                '".$findip."',
+                '".$cliente."',
                 ".$producto_precio.",
                 producto_costo,
                 ".$cantidad.",
@@ -195,5 +196,143 @@ function carrito(){
                         echo json_encode($datos);
                     }else { echo json_encode(null); } 
     }
+
+
+function sesioncliente(){
+    $login = $this->input->post('login');
+    $clave = $this->input->post('clave');
+    $ipe = $this->input->post('ipe');
+
+    $resultado = "SELECT * from cliente WHERE cliente_ci='".$login."' AND cliente_telefono = '".$clave."' ";
+    $result=$this->db->query($resultado)->row_array();
+    if ($result){
+    $clienteid=$result['cliente_id'];
+    $update="UPDATE carrito
+              SET cliente_id = '".$clienteid."' 
+              WHERE cliente_id = '".$ipe."' ";
+    $this->db->query($update);
+
+    setcookie("cliente_id", $clienteid, time() + (86400 * 30), "/");
+    return true;
+}else{
+    show_404();
+}
+}
+
+function getcliente(){
+        $cliente = $this->input->post('cliente');
+    $datos = $this->Pagina_web_model->get_cliente($cliente);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else { echo json_encode(null); } 
+    }
+
+    function quitar(){
+        $producto_id = $this->input->post('producto_id');
+    $sql = "DELETE FROM carrito
+            WHERE producto_id=".$producto_id." ";
+    $this->db->query($sql);
+    return true;
+    }
+
+
+function venta_online(){
+    //renovar datos de cliente
+    $nit = $this->input->post('nit');
+    $razon = $this->input->post('razon');
+    $telefono = $this->input->post('telefono');
+    $direccion = $this->input->post('direccion');
+    //datos para venta online
+    $forma = $this->input->post('forma');
+    $cliente = $this->input->post('cliente');
+    $subtotal = $this->input->post('subtotal');
+    $descuento = $this->input->post('descuento');
+    $total = $this->input->post('total');
+    $tipo_servicio = $this->input->post('tipo_servicio');
+
+    $updatecli = "UPDATE cliente SET cliente_nit='".$nit."', cliente_razon='".$razon."', cliente_telefono='".$telefono."',cliente_direccion='".$direccion."' WHERE cliente_id=".$cliente." ";
+    $this->db->query($updatecli);
+    $venta = "INSERT INTO venta_online
+        (forma_id,
+          tipotrans_id,
+          cliente_id,
+          moneda_id,
+          estado_id,
+          venta_subtotal,
+          venta_descuento,
+          venta_total,
+          venta_tipodoc,
+          tiposerv_id,
+          entrega_id
+        )
+        VALUES
+        (".$forma.",          
+          1,
+          ".$cliente.",
+          1,
+          1,
+          ".$subtotal.",
+          ".$descuento.",
+          ".$total.",
+          1,
+          ".$tipo_servicio.",
+          1          
+          )"
+        ;
+        
+        $this->db->query($venta);
+        $venta_id = $this->db->insert_id();
+
+    $detalle =  "INSERT INTO detalle_ventaonline
+        (producto_id,
+          venta_id,
+          moneda_id,
+          detalleven_codigo,
+          detalleven_cantidad,
+          detalleven_unidad,
+          detalleven_costo,
+          detalleven_precio,
+          detalleven_subtotal,
+          detalleven_descuento,
+          detalleven_total,
+          detalleven_caracteristicas,
+          detalleven_comision,
+          detalleven_tipocambio,
+            detalleven_envase,
+            detalleven_nombreenvase,
+            detalleven_costoenvase,
+            detalleven_precioenvase
+        )
+
+
+        (SELECT 
+          c.producto_id,
+          ".$venta_id.",
+          1,
+          producto_codigo,
+          carrito_cantidad,
+          producto_unidad,
+          carrito_costo,
+          carrito_precio,
+          carrito_subtotal,
+          carrito_descuento,
+          carrito_total,
+          producto_caracteristicas,
+          producto_comision,
+          producto_tipocambio,
+            producto_envase,
+            producto_nombreenvase,
+            producto_costoenvase,
+            producto_precioenvase
+        FROM
+          carrito c,producto p
+          WHERE c.cliente_id=".$cliente." and c.producto_id=p.producto_id)"
+        ;
+        $this->db->query($detalle); 
+
+        $borrar_carrito = "DELETE FROM carrito WHERE cliente_id='".$cliente."' ";
+        $this->db->query($borrar_carrito);
+        
+}
 
 }

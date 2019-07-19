@@ -214,7 +214,15 @@ class Pagina_web_model extends CI_Model
                where c.producto_id=p.producto_id and cliente_id='".$cliente."' ORDER BY c.carrito_id desc ";
         $result = $this->db->query($sql)->result_array();
         return $result;        
-    } 
+    }
+    function get_cliente($cliente)
+    {
+        $sql = "SELECT * from cliente
+               where cliente_id='".$cliente."' ";
+        $result = $this->db->query($sql)->row_array();
+        return $result;        
+    }
+
         
     /*
      * function to add new pagina_web
