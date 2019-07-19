@@ -217,7 +217,7 @@ class Pedido extends CI_Controller{
     function pedidoabierto($cliente_id)
     {    
         
-        if($this->acceso(12)){
+        if($this->acceso(30)){
         //**************** inicio contenido ***************        
         $this->load->model('Cliente_model');
         $this->load->model('Tipo_cliente_model');
