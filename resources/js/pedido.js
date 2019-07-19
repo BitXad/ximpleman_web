@@ -703,7 +703,7 @@ function quitarproducto_pedido(detalleped_id)
 {
 
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"pedido/eliminaritem/"+detalleped_id;
+    var controlador = base_url+"pedido/eliminaritemx/"+detalleped_id;
 
     $.ajax({url: controlador,
             type:"POST",

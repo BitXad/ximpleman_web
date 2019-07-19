@@ -148,6 +148,7 @@ border-bottom : 1px solid #aaa;*/
 
 <table class="table" style="width: <?php echo $ancho?>" >
     <tr>
+        <td style="padding: 0; width: 0cm">
         <td style="padding: 0;" colspan="4">
                 
             <center>
@@ -199,7 +200,7 @@ border-bottom : 1px solid #aaa;*/
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora']; ?> <br>
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
             

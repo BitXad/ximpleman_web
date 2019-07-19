@@ -144,175 +144,202 @@ border-bottom : 1px solid #aaa;
           </div>
         </div>
 <!-------------------------------------------------------->
+<?php $margen_izquierdo = "3cm"; ?>
 
+<div class="container">
+<div class="row">
+    <div class="col-xs-1" style="padding: 0;">
+        <table style="width: 15cm;">
+            <tr>
+                <td  style="width: 15cm;">
 
-<table class="table" style="width: 18cm;" >
-    <tr>
-        <td style="width: 6cm;">
-                
-            <center>
-                               
-                    <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
-                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
-                    <font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
-                    <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>                
-
-            </center>                      
-        </td>
-        <td style="width: 6cm;">
-            <center>            
-                <br>
-                <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
-                     else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>    
-                <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
-                <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>                    
-            </center>
-        </td>
-        <td style="width: 6cm;">
-                <table style="width: 6cm;">
-                    <tr>
-                        <td style="font-family: arial; font-size: 8pt;">
-
-                            <b>NIT:      </b><br>
-                            <b>FACTURA No.:  </b><br>
-                            <b>AUTORIZACION: </b>
-
-                        </td>
-                        <td style="font-family: arial; font-size: 8pt;">
-                            <?php echo $factura[0]['factura_nitemisor']; ?> <br>
-                            <?php echo $factura[0]['factura_numero']; ?> <br>
-                            <?php echo $factura[0]['factura_autorizacion'] ?>           
-                        </td>
-                    </tr>
-                </table>            
-            
-                <center>
-                _________________________________________________
-                    <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
-                _________________________________________________
-                </center>
-
-        </td>
-    </tr>
-    <tr>
-        <td colspan="3" style="font-family: arial; font-size: 8pt;">
-                            
-                <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
-                        $fecha_d_m_a = $fecha->format('d/m/Y');
-                  ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                    <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
-                    <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
-        </td>
-    </tr>
-     
-</table>
-
-       <table class="table table-striped table-condensed"  style="width: 18cm;" >
-           <tr style="border-bottom:black; border-style: solid">
-                <td align="center"><b>CANT</b></td>
-                <td align="center"><b>DESCRIPCIÓN</b></td>
-                <td align="center"><b>P.UNIT</b></td>
-                <td align="center"><b>TOTAL</b></td>               
-           </tr>
-           <?php $cont = 0;
-                 $cantidad = 0;
-                 $total_descuento = 0;
-                 $total_final = 0;
-
-                if ($factura[0]['estado_id']<>3){ 
-                 foreach($detalle_venta as $d){;
-                        $cont = $cont+1;
-                        $cantidad += $d['detalleven_cantidad'];
-                        $total_descuento += $d['detalleven_descuento']; 
-                        $total_final += $d['detalleven_total']; 
-            ?>
-           <tr style="border-bottom-style: solid">
-                <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre']; ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
-           </tr>
-           <?php }} ?>
-       </table>
-       
-    <table class="table" style="max-width: 18cm;">
-    <tr >
+                </td>
+            </tr>
+        </table>
         
-        <td align="left" style="max-width: 2cm;">
-            
-                <img src="<?php echo $codigoqr; ?>" width="100" height="100">
-                                    
-        </td>
-        
-       <td  align="left" nowrap style="max-width: 9cm;">
-            <font size="2">
-            
-                COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
-                 <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
-                        $fecha_limite = $fecha_lim->format('d/m/Y');
-                  ?>    
-                LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
-                
-                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
-                TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
-            </font>
-        </td>  
-        
-        <td align="right" style="max-width: 8cm;">
-            
-            <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
-            </font>
-            
-
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($factura[0]['factura_descuento'],2,'.',','); ?><br>
-            </font>
-            <font size="2">
-            <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($factura[0]['factura_total'] ,2,'.',','); ?><br>
-            </b>
-            </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
-            </font>
-            <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
-            </font>
-            
-        </td>          
-    </tr>
-    <tr>
-        <td colspan="3">
-            <center>
-                    <?php echo $factura[0]['factura_leyenda1'];?> <br>
-            <font size="2">
-                    <?php echo $factura[0]['factura_leyenda2']; ?> 
-            </font>
-            <br>
-                    <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
-            </center>
-        </td>
-    </tr>
-     
+    </div>
     
-</table>
-  
-<?php if ($tipousuario_id == 1){ ?>
+    <div class="col-xs-11">
+
+
+            <table class="table" style="width: 18cm;" >
+                <tr>
+                    </td>
+                    <td style="width: 6cm;">
+
+                        <center>
+
+                                <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
+                                <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                                <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                                <font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
+                                <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
+                                <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                                <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                                <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>                
+
+                        </center>                      
+                    </td>
+                    <td style="width: 6cm;">
+                        <center>            
+                            <br>
+                            <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
+                                 else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>    
+                            <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
+                            <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>                    
+                        </center>
+                    </td>
+                    <td style="width: 6cm;">
+                            <table style="width: 6cm;">
+                                <tr>
+                                    <td style="font-family: arial; font-size: 8pt;">
+
+                                        <b>NIT:      </b><br>
+                                        <b>FACTURA No.:  </b><br>
+                                        <b>AUTORIZACION: </b>
+
+                                    </td>
+                                    <td style="font-family: arial; font-size: 8pt;">
+                                        <?php echo $factura[0]['factura_nitemisor']; ?> <br>
+                                        <?php echo $factura[0]['factura_numero']; ?> <br>
+                                        <?php echo $factura[0]['factura_autorizacion'] ?>           
+                                    </td>
+                                </tr>
+                            </table>            
+
+                            <center>
+                            _________________________________________________
+                                <font size="1px" face="arial"><?php echo $factura[0]['factura_actividad']?></font>
+                            _________________________________________________
+                            </center>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="font-family: arial; font-size: 8pt;">
+
+                            <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
+                                    $fecha_d_m_a = $fecha->format('d/m/Y');
+                              ?>    
+                                <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora'];; ?> <br>
+                                <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
+                                <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
+                    </td>
+                </tr>
+
+            <!--</table>
+
+                   <table class="table table-striped table-condensed"  style="width: 18cm;" >-->
+
+
+                        <tr style="border-bottom:black; border-style: solid">
+                            <td align="center"><b>CANT</b></td>
+                            <td align="center"><b>DESCRIPCIÓN</b></td>
+                            <td align="center"><b>P.UNIT</b></td>
+                            <td align="center"><b>TOTAL</b></td>               
+                       </tr>
+                       <?php $cont = 0;
+                             $cantidad = 0;
+                             $total_descuento = 0;
+                             $total_final = 0;
+
+                            if ($factura[0]['estado_id']<>3){ 
+                             foreach($detalle_venta as $d){;
+                                    $cont = $cont+1;
+                                    $cantidad += $d['detalleven_cantidad'];
+                                    $total_descuento += $d['detalleven_descuento']; 
+                                    $total_final += $d['detalleven_total']; 
+                        ?>
+                       <tr style="border-bottom-style: solid">
+                            <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
+                            <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre']; ?></td>
+                            <td align="right"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                            <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                       </tr>
+                       <?php }} ?>
+            <!--       </table>
+
+                <table class="table" style="max-width: 18cm;">-->
+                <tr >
+                    <td align="left" style="max-width: 2cm;">
+
+                            <img src="<?php echo $codigoqr; ?>" width="100" height="100">
+
+                    </td>
+
+                   <td  align="left" nowrap style="max-width: 9cm;">
+                        <font size="2">
+
+                            COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
+                             <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
+                                    $fecha_limite = $fecha_lim->format('d/m/Y');
+                              ?>    
+                            LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
+
+                            USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
+                            TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
+                        </font>
+                    </td>  
+
+                    <td align="right" style="max-width: 8cm;">
+
+                        <font size="1">
+                            <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
+                        </font>
+
+
+                        <font size="1">
+                            <?php echo "TOTAL DESCUENTO Bs ".number_format($factura[0]['factura_descuento'],2,'.',','); ?><br>
+                        </font>
+                        <font size="2">
+                        <b>
+                            <?php echo "TOTAL FINAL Bs: ".number_format($factura[0]['factura_total'] ,2,'.',','); ?><br>
+                        </b>
+                        </font>
+                        <font size="1" face="arial narrow">
+                            <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
+                        </font>
+                        <font size="1">
+                            <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
+                            <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
+                        </font>
+
+                    </td>          
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <center>
+                                <?php echo $factura[0]['factura_leyenda1'];?> <br>
+                        <font size="2">
+                                <?php echo $factura[0]['factura_leyenda2']; ?> 
+                        </font>
+                        <br>
+                                <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
+                        </center>
+                    </td>
+                </tr>
+
+
+            </table>
+
+            <?php if ($tipousuario_id == 1){ ?>
+
+
+                <div class="col-md-12 no-print" style="max-width: 7cm;">
+
+                    <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
+
+                </div>    
+
+
+            <?php } ?>
+
         
-            
-    <div class="col-md-12 no-print" style="max-width: 7cm;">
 
-        <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
-        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
-
-    </div>    
+    </div>
     
-        
-<?php } ?>
+</div>
+</div>
+
+
