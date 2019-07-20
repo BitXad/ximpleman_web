@@ -250,6 +250,9 @@ function venta_online(){
     $total = $this->input->post('total');
     $tipo_servicio = $this->input->post('tipo_servicio');
 
+    $fecha = "now()";
+    $hora = "'".date('H:i:s')."'";
+
     $updatecli = "UPDATE cliente SET cliente_nit='".$nit."', cliente_razon='".$razon."', cliente_telefono='".$telefono."',cliente_direccion='".$direccion."' WHERE cliente_id=".$cliente." ";
     $this->db->query($updatecli);
     $venta = "INSERT INTO venta_online
@@ -258,6 +261,8 @@ function venta_online(){
           cliente_id,
           moneda_id,
           estado_id,
+          venta_fecha,
+          venta_hora,
           venta_subtotal,
           venta_descuento,
           venta_total,
@@ -271,6 +276,8 @@ function venta_online(){
           ".$cliente.",
           1,
           1,
+          ".$fecha.",
+          ".$hora.",
           ".$subtotal.",
           ".$descuento.",
           ".$total.",

@@ -23,7 +23,7 @@ class Venta_online_model extends CI_Model
                 v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, c.cliente_nit, c.cliente_telefono, c.cliente_direccion, ts.tiposerv_descripcion, f.forma_nombre
             FROM
                 venta_online v 
-            /*LEFT JOIN detalle_venta dv on v.venta_id=dv.venta_id*/
+            
             LEFT JOIN entrega e on v.entrega_id=e.entrega_id
             LEFT JOIN cliente c on v.cliente_id=c.cliente_id
             LEFT JOIN tipo_servicio ts on v.tiposerv_id=ts.tiposerv_id

@@ -135,6 +135,7 @@ class Pagina_web_model extends CI_Model
     /*
      * Get all menu_item
      */
+
     function get_menu_item($idioma_id)
     {
         if ($idioma_id%2==1){ //español
@@ -152,7 +153,6 @@ class Pagina_web_model extends CI_Model
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;        
     }
-        
         
     /*
      * Get all menu_item
@@ -177,8 +177,7 @@ class Pagina_web_model extends CI_Model
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;        
     }
-
-        
+      
     /*
      * Ofertas
      */
@@ -188,7 +187,6 @@ class Pagina_web_model extends CI_Model
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;        
     }
-        
         
     /*
      * Ofertas

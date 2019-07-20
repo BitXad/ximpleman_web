@@ -44,7 +44,7 @@
 
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>
-        <td style="width: 6cm; padding: 0" >
+        <td style="width: 10cm; padding: 0" >
                 
             <center>
                                
@@ -61,7 +61,7 @@
             </center>                      
         </td>
                    
-        <td style="width: 6cm; padding: 0" > 
+        <td style="width: 8cm; padding: 0" > 
             <center>
             
                 <br><br>
@@ -136,7 +136,6 @@
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
         </div>
         <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
-        
         
     </div>
     
