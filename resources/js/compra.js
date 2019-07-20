@@ -746,12 +746,13 @@ function compraproveedor(opcion)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font> <font size='1'>["+registros[i]["compra_id"]+"]</font><br>";
+                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><br>";
                         
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
                         if (caja==1) {  
-                        html += "<span class='btn-warning btn-xs'>Pago con Caja</span>";  }                                             
-                        html += "</td><td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
+                        html += "<span class='btn-warning btn-xs'>Pago con Caja</span>";  } 
+                        html += "</td><td align='center'><font size='3'>"+registros[i]["compra_id"]+"</b></font></td>";                                          
+                        html += "<td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
                         html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
@@ -847,12 +848,13 @@ function fechadecompra(filtro)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font> <font size='1'>["+registros[i]["compra_id"]+"]</font><br>";
+                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><br>";
                         
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
                         if (caja==1) {  
-                        html += "<span class='btn-warning btn-xs'>Pago con Caja</span>";  }                                             
-                        html += "</td><td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
+                        html += "<span class='btn-warning btn-xs'>Pago con Caja</span>";  } 
+                        html += "</td><td align='center'><font size='3'><b>"+registros[i]["compra_id"]+"</b></font></td>";                                           
+                        html += "<td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
                         html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
