@@ -16,8 +16,10 @@ class Inventario_model extends CI_Model
      */
     function get_inventario()
     {
-        $sql = "select p.* from inventario p where p.estado_id = 1
-                group by p.producto_id order by p.producto_nombre asc";
+        $sql = "select  p.*,c.categoria_nombre FROM inventario p
+                left join categoria_producto c on c.categoria_id = p.categoria_id
+                where p.estado_id = 1
+                group by p.categoria_id, p.producto_id order by c.categoria_nombre, p.producto_nombre asc";
         
 //        $sql = "select p.*,
 //                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
@@ -99,27 +101,13 @@ class Inventario_model extends CI_Model
     
     function get_inventario_parametro($parametro)
     {
-
-
-        $sql = "SELECT p.* FROM
-                inventario p
-              WHERE p.estado_id=1 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
-              GROUP BY
-                p.producto_id
-              ORDER By p.producto_nombre asc";
-  
-//        $sql = "SELECT p.*,
-//                (SELECT if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) AS FIELD_1 FROM detalle_compra d WHERE d.producto_id = p.producto_id) AS compras,
-//                (SELECT if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) AS FIELD_1 FROM detalle_venta d WHERE d.producto_id = p.producto_id) AS ventas,
-//                (SELECT if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) AS FIELD_1 FROM detalle_pedido e, pedido t WHERE t.pedido_id = e.pedido_id AND e.producto_id = p.producto_id AND t.estado_id = 11) AS pedidos,
-//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) AS existencia
-//              FROM
-//                producto p
-//              WHERE p.estado_id=1 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
-//              GROUP BY
-//                p.producto_id
-//              ORDER By p.producto_id";
-//  
+        
+        $sql = "select  p.*,c.categoria_nombre FROM inventario p
+                left join categoria_producto c on c.categoria_id = p.categoria_id
+                WHERE p.estado_id=1 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
+                GROUP BY p.categoria_id, p.producto_id
+                ORDER By c.categoria_nombre, p.producto_nombre asc";
+        
         $producto = $this->db->query($sql)->result_array();
         return $producto;
 
@@ -173,21 +161,6 @@ class Inventario_model extends CI_Model
         $sql = "truncate inventario";
         $this->db->query($sql);
         
-        
-        //cargar el inventario actualizado
-//        $sql = "insert into inventario
-//                (select p.*,
-//                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-//                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-//                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-//                from
-//                producto p
-//                where p.estado_id = 1
-//                group by
-//                p.producto_id
-//                order by p.producto_nombre)";
-        
         $sql = "insert into inventario (select * from consinventario where estado_id = 1)";
         
         $this->db->query($sql);
@@ -203,21 +176,6 @@ class Inventario_model extends CI_Model
         $sql = "delete from inventario where producto_id = ".$producto_id;
         $this->db->query($sql);
         
-        
-        //cargar el inventario actualizado
-//        $sql = "insert into inventario
-//                (select p.*,
-//                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-//                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-//                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-//                from
-//                producto p  
-//                where p.producto_id = ".$producto_id."
-//                group by
-//                p.producto_id
-//                order by p.producto_nombre)";
-//        
         $sql = "insert into inventario
                 (select p.*
                  from consinventario p  
@@ -233,25 +191,6 @@ class Inventario_model extends CI_Model
      */
     function actualizar_cantidad_producto($producto_id)
     {
-
-        
-        //cargar el inventario actualizado
-//        $sql = "update inventario set existencia = 
-//            
-//                (select 
-//                (select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) as field_1 from detalle_compra d where d.producto_id = p.producto_id) as compras,
-//                (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) as field_1 from detalle_venta d where d.producto_id = p.producto_id) as ventas,
-//                (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) as field_1 from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11) as pedidos,
-//                ((select if(sum(d.detallecomp_cantidad) > 0, sum(d.detallecomp_cantidad), 0) from detalle_compra d where d.producto_id = p.producto_id) - (select if(sum(d.detalleven_cantidad) > 0, sum(d.detalleven_cantidad), 0) from detalle_venta d where d.producto_id = p.producto_id) - (select if(sum(e.detalleped_cantidad) > 0, sum(e.detalleped_cantidad), 0) from detalle_pedido e, pedido t where t.pedido_id = e.pedido_id and e.producto_id = p.producto_id and t.estado_id = 11)) as existencia
-//                from
-//                producto p  
-//                where p.producto_id = ".$producto_id."
-//                group by
-//                p.producto_id
-//                order by p.producto_nombre)
-//                
-//                where producto_id =".$producto_id;
-
         $sql = "update inventario set existencia = 
                 (select c.existencia from consinventario c where c.producto_id = ".$producto_id.")";        
         $this->db->query($sql);
@@ -295,7 +234,6 @@ class Inventario_model extends CI_Model
         return true;
     }
 
-
     /*
      * actualizar las cantidades del inventario
      */
@@ -325,8 +263,6 @@ class Inventario_model extends CI_Model
     }
  function aumentar_cantidad_producto($producto_id,$existencia,$ultimocosto,$producto_precio)
     {
-        /////////////////////////recibir $ultimo costo y poner en la consulta set inventario.producto_ultimocosto=".$ultimocosto.", 
-         //Truncar la tabla inventario
        
         //cargar el inventario actualizado
         $sql = "update inventario set inventario.producto_precio=".$producto_precio.", inventario.producto_ultimocosto=".$ultimocosto.", inventario.existencia=inventario.existencia+".$existencia." where producto_id=".$producto_id."";
