@@ -2021,3 +2021,51 @@ function seleccionar_subcategoria(){
 /*function seleccionar() {
     document.getElementById('subcatserv_id').select();
 }*/
+
+function calculardescserv(){
+
+   var venta_subtotal = document.getElementById('venta_subtotal').value;
+   var venta_descuento = document.getElementById('venta_descuento').value;      
+   var subtotal = Number(venta_subtotal) - Number(venta_descuento);
+
+   $("#venta_totalfinal").val(subtotal);
+   $("#venta_efectivo").val(subtotal);
+}
+
+function seleccionar(opcion) {
+    /*
+        if (opcion==1){             
+            document.getElementById('nit').select();
+        }
+        
+        if (opcion==2){
+            document.getElementById('razon_social').select();
+        }
+        
+        if (opcion==3){
+            document.getElementById('telefono').select();
+        }
+        */
+        if (opcion==4){
+            document.getElementById('venta_descuento').select();
+        }
+        /*
+        if (opcion==5){
+            document.getElementById('venta_efectivo').select();
+        }*/
+}
+
+function calcularcambio(e){
+   
+   tecla = (document.all) ? e.keyCode : e.which; 
+   var venta_efectivo = document.getElementById('venta_efectivo').value;
+   var venta_totalfinal = document.getElementById('venta_totalfinal').value;
+   
+   var venta_cambio = Number(venta_efectivo) - Number(venta_totalfinal);
+   //alert(venta_cambio);
+   $("#venta_cambio").val(venta_cambio);
+   
+   if (tecla==13){ 
+        $("#boton_finalizar").click();
+   }
+}
