@@ -179,6 +179,7 @@
     <tr>
       <th>#</th>
       <th>Proveedor</th>
+      <th>Compra</th>
 <!--                        <th>Sub <br>Total</th>
     <th>Desc.</th>-->
     <th>Total</th>

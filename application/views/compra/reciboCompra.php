@@ -116,8 +116,11 @@ border-bottom: 0px;
 }
  table td {
      
-     
     text-align: right;
+    font-size: 10px;
+    padding: 1px;
+    margin: 1px;
+    border: 1px;
 }
 
          </style>
@@ -127,8 +130,18 @@ border-bottom: 0px;
        
 <div class="cuerpo">
                     <div class="columna_derecha">
-                        <center> 
-                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                        <center>
+                          <table>
+                            <tr>
+                              <td> Proveedor: <b><?php echo $compra[0]['proveedor_nombre'];?></b><br>
+                          Forma de Pago: <b><?php echo $compra[0]['tipotrans_nombre'];?></b><br>
+                          Fecha: <b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></b></td>
+                          <td width="2%"></td>
+                          <td><?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?></td>
+                            </tr>
+                          </table>
+                         
+                        
                     </center>
                     </div>
                     <div class="columna_izquierda">
@@ -139,13 +152,12 @@ border-bottom: 0px;
                     </div> </center>
                     <div class="columna_central">
                         <center>      <h3 class="box-title"><u>BOLETA DE COMPRA</u></h3>
-                           Numero: <b><?php echo $compra[0]['compra_id'];?></b>  <br>
-                         
-               
+                           <font size="3">Numero: <b><?php echo $compra[0]['compra_id'];?></b></font> <br>
+                           <?php echo date('d/m/Y H:i:s'); ?> <br>
+                           
+
                 </center>
                     </div>
-
-          
 
             </div>       
       
@@ -156,7 +168,7 @@ border-bottom: 0px;
   
            <div class="box-body table-responsive">  
 
-        <table class="table table-striped table-condensed" border-bottom="1" id="mitabla">                        
+        <table class="table" border-bottom="1" id="mitabla">                        
                         <tr>
 
                             

@@ -207,10 +207,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>              
         <div class="w3l_search">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-            <input type="text" name="cliente" id="cliente" value="0" />
+            <?php if(!isset($_COOKIE["cliente_id"])) {
+    $cliente_ide = 0;
+} else {
+    $cliente_ide = $_COOKIE["cliente_id"];
+}
+?>
+            <input type="hidden" name="cliente" id="cliente" value="<?php echo $cliente_ide; ?>" />
             <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
-            <input type="text" name="miip" id="miip" value="" />
-            <!--<form action="#" method="post">-->
+            <input type="hidden" name="miip" id="miip" value="" />
+            <!--<form te="#" method="post">-->
             
             
             <div class="row" id='loader'  style='display:none; text-align: center'>
@@ -704,7 +710,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- contact -->
 
 <!-- Modal: modalCart -->
-<div class="modal fade" id="modalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="modalCart" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -716,7 +722,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </button>
       </div>
       <!--Body-->
-      <div class="modal-body">
+      <div class="modal-body" style="overflow-x: auto;">
         
         <div class="col-md-12"></div>
         <table class="table table-hover">
@@ -747,7 +753,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 <!-- Modal: modalCart -->
 
-<!-- Modal: modalCart -->
+<!-- Modal: finalizar -->
 <div class="modal fade" id="modalFinalizar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -766,15 +772,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
          <div class="col-md-6">
             METODO DE PAGO:             
             <select class="form-control" name="metodo_pago" id="metodo_pago" required>
-                <option value="0">Pago en Entrega</option>
-                <option value="0">Transferencia</option>
+                <option value="1">Pago en Entrega</option>
+                <option value="3">Transferencia</option>
             </select>
         </div>
         <div class="col-md-6">
             METODO DE ENVIO:             
             <select class="form-control" name="metodo_envio" id="metodo_envio" required>
-                <option value="0">A Domicilio</option>
-                <option value="0">Succursal</option>
+                <option value="1">A Domicilio</option>
+                <option value="2">Sucursal</option>
             </select>
         </div>
         <div class="col-md-6">
@@ -787,7 +793,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             TELF: <input type="text" class="form-control" value="" id="venta_telefono" name="venta_telefono" required="true">
         </div>
         <div class="col-md-6">
-            DIRECCION: <input type="text" class="form-control" value="" id="venta_direccion" name="venta_direccion" required="true">
+            DIRECCION: <input type="text" class="form-control" value="" id="venta_direccion" name="venta_direccion" required="true"> <input type="hidden" class="form-control" value="" id="venta_subtotal" name="venta_subtotal" required="true">
+            <input type="hidden" class="form-control" value="" id="venta_descuento" name="venta_descuento" required="true">
+            <input type="hidden" class="form-control" value="" id="venta_total" name="venta_total" required="true">
         </div>
         
         </table>
@@ -796,12 +804,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       <!--Footer-->
       <div class="modal-footer">
         <div></div>
-        <button class="btn btn-primary">Realizar la Compra</button>
+        <button class="btn btn-primary" type="button" onclick="venta_online()">Realizar la Compra</button>
       </div>
     </div>
   </div>
 </div>
-<!-- Modal: modalCart -->
+<!-- Modal: finalizar -->
 
 <!-- Modal: registro -->
 <div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -810,7 +818,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Cliente<i class="fa fa-cart-arrow-down"></i></h4>
+        <h4 class="modal-title" id="myModalLabel">Cliente<i class="fa fa-user"></i></h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -828,7 +836,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
          <div class="col-md-6">
             <br>
             <b>INICIA SESION</b>
-            <button class="btn btn-primary" type="button" >Iniciar Sesion</button><BR><br>
+            <button class="btn btn-primary" data-toggle="modal" data-target="#modalSesion" type="button" >Iniciar Sesion</button><BR><br>
          </div>  
         
          <div class="col-md-6">
@@ -857,6 +865,42 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       <div class="modal-footer">
         <div></div>
         <button class="btn btn-primary">Registrarse</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal: registro -->
+
+<!-- Modal: Sesion -->
+<div class="modal fade" id="modalSesion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <!--Header-->
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Iniciar Sesion<i class="fa fa-lock"></i></h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!--Body-->
+      <div class="modal-body">
+        <div class="col-md-12"></div>
+        <table class="table table-hover">
+         
+         <div class="col-md-6">
+            LOGIN:  <input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true">
+        </div>
+        <div class="col-md-6">
+            CLAVE: <input type="text" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true">        
+        </div>
+        </table>
+
+      </div>
+      <!--Footer-->
+      <div class="modal-footer">
+        <div></div>
+        <button class="btn btn-primary" type="button" onclick="sesion()">Ingresar</button>
       </div>
     </div>
   </div>

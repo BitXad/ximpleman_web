@@ -225,9 +225,8 @@ function buscar_categoria(categoria)
 
 function insertar(producto_id){
        
-
-
-        var myip = document.getElementById('miip').value; 
+        var cliente_id = document.getElementById('cliente').value;
+        //var myip = document.getElementById('miip').value; 
         var cantidad = document.getElementById('cantidad'+producto_id).value; 
         var descuento = document.getElementById('descuento'+producto_id).value;
         //var producto_costo = document.getElementById('producto_costo'+producto_id).value;
@@ -236,11 +235,16 @@ function insertar(producto_id){
         var base_url = document.getElementById('base_url').value;
     
         var controlador = base_url+'website/insertarproducto/';
-   
+        if(cliente_id==0){
+        var cliente = document.getElementById('miip').value;
+        }else{
+        var cliente = document.getElementById('cliente').value;
+        }
+
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_precio:producto_precio, myip:myip},
+           data:{producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_precio:producto_precio, cliente:cliente},
            success:function(respuesta){     
               tablacarrito(); 
          }
@@ -273,6 +277,21 @@ function cantidar(producto_id){
     $.ajax({url: controlador,
            type:"POST",
            data:{producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_precio:producto_precio},
+           success:function(respuesta){     
+              tablacarrito(); 
+         }
+    });
+
+}
+
+function quitarcarrito(producto_id){
+       
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'website/quitar/';
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id},
            success:function(respuesta){     
               tablacarrito(); 
          }
@@ -319,11 +338,12 @@ function tablacarrito(){
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["producto_nombre"]+"</b>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'></td>";
-                        html += "<td>"+registros[i]["carrito_precio"]+"<input type='hidden' id='carrito_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["carrito_precio"]+"' ></td> ";
+                        html += "<td align='right'>"+Number(registros[i]["carrito_precio"]).toFixed(2)+"<input type='hidden' id='carrito_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["carrito_precio"]+"' ></td> ";
                         html += "<td><input  type='text' onkeypress='cantimas(event,"+registros[i]["producto_id"]+")' id='carrito_cantidad"+registros[i]["producto_id"]+"' autocomplete='off' name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["carrito_cantidad"]+"' >";
                         html += "<input id='carrito_id'  name='carrito_id' type='hidden' class='form-control' value='"+registros[i]["carrito_id"]+"'></td>";
-                        html += "<td>"+registros[i]["carrito_descuento"]+" <input type='hidden' id='carrito_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["carrito_descuento"]+"' ></td>";
-                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+registros[i]["carrito_total"]+"</b></font></span></center></td>";
+                        html += "<td align='right'>"+Number(registros[i]["carrito_descuento"]).toFixed(2)+" <input type='hidden' id='carrito_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["carrito_descuento"]+"' ></td>";
+                        html += "<td align='right'><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["carrito_total"]).toFixed(2)+"</b></font></span></center></td>";
+                        html += "<td><button class='btn btn-xs btn-danger' onclick='quitarcarrito("+registros[i]["producto_id"]+")'><i class='fa fa-times' style='color: white'></i></button></td>";
                         html += "</tr>";
                        
                        }
@@ -334,10 +354,14 @@ function tablacarrito(){
                        html += "<td></td>";
                        html += "<td><font size='3'>TOTAL</td>";
                        html += "<td></td>";
-                       html += "<td><font size='3'><b>"+suma+"</td>";
+                       html += "<td align='right'><font size='3'><b>"+Number(suma).toFixed(2)+"</td>";
                        html += "</tr>";
                        $("#carritos").html(html);
                        $("#modalCart").modal("show");
+                       $("#venta_subtotal").val(subtotal);
+                       $("#venta_descuento").val(subtotal-suma);
+                       $("#venta_total").val(suma);
+
 
                        
                        
@@ -355,9 +379,101 @@ function realizarcompra(){
 
     var cliente = document.getElementById('cliente').value; 
     if (cliente==0) {
+
         $("#modalCliente").modal("show");  
     }else{
-      $("#modalFinalizar").modal("show");   
+
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'website/getcliente/';
+ 
+      $.ajax({url: controlador,
+           type:"POST",
+           data:{cliente:cliente},
+           success:function(respuesta){
+
+           var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){ 
+                   $("#venta_nit").val(registros["cliente_nit"]);
+                   $("#venta_razon").val(registros["cliente_razon"]);
+                   $("#venta_telefono").val(registros["cliente_telefono"]);
+                   $("#venta_direccion").val(registros["cliente_direccion"]);
+                   
+               
+            $("#modalFinalizar").modal("show");  
+            }   
+    },
+        error:function(respuesta){
+          
+       alert("Datos incorrectos, vuelva a intentar");
+   }
+
+});
+      
     }
+}
+
+function sesion(){
+
+    var login = document.getElementById('cliente_login').value; 
+    var clave = document.getElementById('cliente_clave').value; 
+    var ipe = document.getElementById('miip').value; 
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'website/sesioncliente/';
+ 
+      $.ajax({url: controlador,
+           type:"POST",
+           data:{login:login,clave:clave,ipe:ipe},
+           success:function(respuesta){ 
+               location.reload();
+               
+    },
+        error:function(respuesta){
+          
+       alert("Datos incorrectos, vuelva a intentar");
+   }
+
+});
+
+
+}
+
+
+
+function venta_online(){
+
+        var cliente = document.getElementById('cliente').value; 
+        //para actualizar cliente
+        var nit = document.getElementById('venta_nit').value; 
+        var razon = document.getElementById('venta_razon').value; 
+        var telefono = document.getElementById('venta_telefono').value; 
+        var direccion = document.getElementById('venta_direccion').value; 
+        //para crear la venta
+        var forma = document.getElementById('metodo_pago').value; 
+        var tipo_servicio = document.getElementById('metodo_envio').value; 
+        var subtotal = document.getElementById('venta_subtotal').value; 
+        var descuento = document.getElementById('venta_descuento').value;  
+        var total = document.getElementById('venta_total').value; 
+
+        var base_url = document.getElementById('base_url').value;
+        var controlador = base_url+'website/venta_online/';
+ 
+      $.ajax({url: controlador,
+           type:"POST",
+           data:{cliente:cliente,nit:nit,razon:razon,telefono:telefono,direccion:direccion,forma:forma,tipo_servicio:tipo_servicio,
+               subtotal:subtotal,descuento:descuento,total:total},
+           success:function(respuesta){
+           alert("Compra realizada con exito");
+           location.reload();
+         
+    },
+        error:function(respuesta){
+          
+       alert("OCURRIO UN ERROR, vuelva a intentar");
+   }
+
+});
+      
+    
 }
     
