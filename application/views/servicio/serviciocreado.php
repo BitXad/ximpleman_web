@@ -25,6 +25,25 @@
         $('#codigo').focus();
     });
     }
+    
+    function mostrar_ocultar(){
+    var x = document.getElementById('tipo_transaccion').value;
+    
+    if (x=='2'){ //si la transaccion es a credito
+        
+        document.getElementById('creditooculto').style.display = 'block';
+//        var hoy = new Date();
+//        var dd = hoy.getDate();
+//        var mm = hoy.getMonth()+1;
+//        var yyyy = hoy.getFullYear();
+//        
+//        dd = addZero(dd);
+//        mm = addZero(mm);
+
+    }
+    else{
+        document.getElementById('creditooculto').style.display = 'none';}
+    }
 </script>
     
 <style type="text/css">
@@ -389,6 +408,12 @@ $(document).ready(function(){
             <div class="box-body table-responsive table-condensed">
                 <table class="table table-striped table-condensed" >
                     <tbody>
+                        <?php 
+                            $total_detalle = $servicio['servicio_total'];
+                            $subtotal = $total_detalle;
+                            $descuento = 0;
+                            $totalfinal = $total_detalle;
+                        ?>
                         <!--<tr>
                             <th>Descripción</th>
                             <th></th>
@@ -849,7 +874,7 @@ $(document).ready(function(){
                 <!----------- tabla detalle cuenta ----------------------------------->
                 <?php 
                     $total_descuento = 0;
-
+                    $total_detalle = $servicio['servicio_total'];
                     $subtotal = $total_detalle - $total_descuento; 
                     $efectivo = $subtotal;
                     $cambio = 0.00;
@@ -865,7 +890,7 @@ $(document).ready(function(){
             
             
             <div class="col-md-12">
-            <!--<form action="<?php echo base_url('hotel/checkout/'.$pedido_id."/".$habitacion_id); ?>"  method="POST" class="form">-->
+            <!--<form action="<?php //echo base_url('hotel/checkout/'.$pedido_id."/".$habitacion_id); ?>"  method="POST" class="form">-->
                 <div class="box">
 
             <div class="box-body table-responsive table-condensed">
@@ -878,7 +903,7 @@ $(document).ready(function(){
                 <tr>
                         <td  style="padding: 0" >Total Bs</td>
                         <td align="right">
-                            <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                            <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format($servicio['servicio_total'],2,'.',','); ?>" readonly="true">
                         </td>
                     
                     
@@ -904,7 +929,7 @@ $(document).ready(function(){
                 <tr style="padding: 0">                      
                         <td style="padding: 0">Descuento Bs</td>
                         <td align="right" style="padding: 0">
-                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
+                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php //echo $descuento; ?>" onKeyUp="calculardescserv()" onclick="seleccionar(4)">
                         </td>
                 </tr>
 
@@ -912,7 +937,7 @@ $(document).ready(function(){
                         <td style="padding: 0"><b>Total Final Bs</b></td>
                         <td align="right" style="padding: 0">
 
-                              <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">                                
+                              <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
 
                         </td>
                 </tr>
@@ -1019,7 +1044,7 @@ $(document).ready(function(){
             -->
             <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">
                 <h4>
-                <span class="fa fa-save"></span>   Finalizar Venta  
+                <span class="fa fa-save"></span>   Cobrar Servicio  
                 </h4>
             </button>
 
