@@ -321,9 +321,8 @@ class Pedido extends CI_Controller{
             producto_unidad,
             producto_marca,
             categoria_id,
-            producto_codigobarra
-
-            
+            producto_codigobarra,
+            existencia
             )
             
             (select 
@@ -346,9 +345,10 @@ class Pedido extends CI_Controller{
             p.producto_unidad,
             p.producto_marca,
             p.categoria_id,
-            p.producto_codigobarra
+            p.producto_codigobarra,
+            p.existencia
 
-            from detalle_pedido d, pedido e,usuario u, producto p
+            from detalle_pedido d, pedido e,usuario u, consinventario p
             where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
         
         $this->Pedido_model->ejecutar($sql);
@@ -413,8 +413,8 @@ class Pedido extends CI_Controller{
         //$pedido_horaentrega = $this->input->post('pedido_horaentrega');
                 
         $sql = "update pedido set "
-                ."usuario_id = ".$usuario_id
-                .",estado_id = 11"
+                //."usuario_id = ".$usuario_id
+                ."estado_id = 11"
                 .",tipotrans_id = ".$tipotrans_id
                 .",pedido_fecha = now()"
                 .",pedido_subtotal = ".$pedido_subtotal
@@ -829,8 +829,7 @@ function registrarpedido()
             		
         //**************** fin contenido ***************
         }
-       
-        		         
+       		         
     }
 
     /*

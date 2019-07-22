@@ -43,9 +43,9 @@ function buscarventasdist(){
                     for (var i = 0; i < n ; i++){
                         
                         if (registros[i]["entrega_id"]==1) {
-                            var color="rgba(255, 143, 0, 0.6)";
+                            var color="rgba(255, 143, 0, 0.7)";
                         }else{
-                            var color="rgba(0, 255, 0, 0.6)";
+                            var color="rgba(0, 255, 0, 0.7)";
                         }
 
                         

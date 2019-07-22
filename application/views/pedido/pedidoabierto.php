@@ -302,7 +302,10 @@ function mostrar_ocultar(){
                         <b>CATEGORIA: </b><?php echo $cliente[0]['categoriaclie_descripcion']; ?> <br>                     
                     
                     </font>
-                        <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar </a>
+                        <?php if ($cliente[0]['cliente_id']>0){ ?>
+                            <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar </a>
+                        <?php } ?>
+                        
                         <br>    
                         <br>
                 </td>
@@ -819,7 +822,7 @@ function mostrar_ocultar(){
                            
            <!-- ************************************* datos credito ************************************************-->
                 
-            <div class="row" id='creditooculto'  style='display:none;'>
+            <div class="row" id='creditoocultox'  style='display:none;'>
                                     
                 <div class="col-md-4">
                     <h5 class="modal-title" id="myModalLabel"><b>Nº CUOTAS</b></h5>
