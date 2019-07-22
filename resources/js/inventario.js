@@ -241,10 +241,10 @@ function tabla_inventario(){
                                     total_final += total;
                                     existencia = parseFloat(inv[i]["existencia"]);                                                    
                         html += "             	<td "+margen+">"+(i+1)+"</td>";
-                        html += "             	<td "+margen+"><font size='1'>"+ inv[i]["producto_nombre"]+"</font>";
+                        html += "             	<td "+margen+"><font size='0.5'>"+ inv[i]["producto_nombre"]+"</font>";
                         html += "             	<td "+margen+" style='background: red'><center><font size='1'>"+inv[i]["producto_codigo"]+"</font> </center></td>";
-                        html += "             	<td "+margen+"><font size='1'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
-                        html += "             	<td "+margen+"><font size='1'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
+                        html += "             	<td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
 
                         html += "	<td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
                         html += "             	<td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
@@ -344,6 +344,7 @@ function tabla_inventario(){
                 
                 html += "</tbody>";
                 html += "<tr>";
+                html += "	<th> </th>";
                 html += "	<th> </th>";
                 html += "	<th> </th>";
                 html += "	<th> </th>";
