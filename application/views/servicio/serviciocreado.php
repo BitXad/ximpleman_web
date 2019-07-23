@@ -881,8 +881,8 @@ $(document).ready(function(){
                     $ancho_boton = 10;
                 ?>
             <div hidden="true">        
-                            <input id="total_detalle" name="total_detalle" value="<?php echo $total_detalle; ?>">
-                            <input id="total_descuento" name="total_descuento" value="<?php echo $total_descuento; ?>">
+                <input id="total_detalle" name="total_detalle" value="<?php echo $total_detalle; ?>">
+                <input id="total_descuento" name="total_descuento" value="<?php echo $total_descuento; ?>">
                             
             </div>
                  
@@ -1062,10 +1062,10 @@ $(document).ready(function(){
 <!----------- fin tabla detalle cuenta ----------------------------------->                           
                             
                             
-			</div>
-		</div>
+                </div>
+            </div>
 	</div>
-</div>
+    </div>
 
 </div>
 <!--</form>-->
