@@ -207,9 +207,7 @@
               <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['compra_id']; ?>]</font> <br>
                 <span class="btn-info btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
                 <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?></span></td>
-
-
-
+                <td><center><font size="4"><b><?php echo $c['compra_id']; ?></b></font></center></td>
                 <td align="right" ><?php echo "Sub Total: ".number_format($c['compra_subtotal'],'2','.',','); ?><br>
                   <?php echo "Desc.: ".number_format($c['compra_descuento'],'2','.',','); ?><br>
                   <?php echo "Desc.Global: ".number_format($c['compra_descglobal'],'2','.',','); ?><br>  
@@ -252,7 +250,7 @@
                 <?php } else { ?>
                     <a href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                 <?php } ?>
-                <a href="<?php echo site_url('compra/pdf/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>  
+                <a href="<?php echo site_url('compra/nota/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>  
                 <!--<a href="<?php echo site_url('compra/remove/'.$c['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
             </td>
         </tr>
@@ -261,6 +259,7 @@
 
 
     <tr>
+        <td></td>    
         <td></td>    
         <td align="right"><b>TOTAL</b></td> 
         <td align="right"><font size="4"><b><?php echo number_format($total,'2','.',','); ?></b></font></td>

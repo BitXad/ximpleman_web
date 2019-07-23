@@ -775,7 +775,7 @@ function compraproveedor(opcion)
                         } else {
                         html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
                         }
-                        html += "<a href='"+base_url+"compra/pdf/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
+                        html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
                         
                        // html += "<input type='hidden' id='bandera' name='bandera' value='1'>";
                         //html += "<button class='btn btn-info btn-xs' type='submit'><span class='fa fa-pencil'></span></button>";
@@ -786,6 +786,7 @@ function compraproveedor(opcion)
                        
                    }
                         html += "<tr>";
+                        html += "<td></td>";
                         html += "<td></td>";
                         html += "<td align='right'><b>TOTAL</b></td>";
                         html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font></td>";
@@ -877,7 +878,7 @@ function fechadecompra(filtro)
                         } else {
                         html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
                         }
-                        html += "<a href='"+base_url+"compra/pdf/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
+                        html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
                         
                        // html += "<input type='hidden' id='bandera' name='bandera' value='1'>";
                         //html += "<button class='btn btn-info btn-xs' type='submit'><span class='fa fa-pencil'></span></button>";
@@ -888,6 +889,7 @@ function fechadecompra(filtro)
                        
                    }
                         html += "<tr>";
+                        html += "<td></td>";
                         html += "<td></td>";
                         html += "<td align='right'><b>TOTAL</b></td>";
                         html += "<td align='right'><font size='4'><b>"+numberFormat(Number(total).toFixed(2))+"</b></font></td>";

@@ -1,12 +1,24 @@
 //Tabla resultados de la busqueda en el web de producto
 $(document).on("ready",inicio);
 function inicio(){
-
 var findIP = new Promise(r=>{var w=window,a=new (w.RTCPeerConnection||w.mozRTCPeerConnection||w.webkitRTCPeerConnection)({iceServers:[]}),b=()=>{};a.createDataChannel("");a.createOffer(c=>a.setLocalDescription(c,b,b),b);a.onicecandidate=c=>{try{c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r)}catch(e){}}})
-findIP.then(ip => $('#miip').val(ip)).catch(e => console.error(e));      
-        
-}
+findIP.then(ip => $('#myip').val(ip)).catch(e => console.error(e)); 
+$.getJSON('https://api.ipify.org?format=jsonp&callback=?', function(obj) {
+$("#seip").val((JSON.stringify(obj.ip)).replace(/['"]+/g, ''));
 
+darip();
+});
+ 
+
+}
+function darip(){
+var myip = document.getElementById('myip').value; 
+var seip = document.getElementById('seip').value;
+var losip = myip+seip;
+
+$('#miip').val(losip);
+}
+ 
 
 function buscar_producto()
 {

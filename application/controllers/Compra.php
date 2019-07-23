@@ -1386,6 +1386,17 @@ function remove($compra_id)
             show_error('The compra you are trying to delete does not exist.');
     }
 }
+function nota($compra_id){
+  $num = $this->Compra_model->numero();
+  $este = $num[0]['parametro_tipoimpresora'];
+    if ($este == 'NORMAL') {
+       redirect('compra/pdf/'.$compra_id);
+    }else{
+       redirect('compra/boucher/'.$compra_id);
+ 
+    }
+
+}
 
 function pdf($compra_id){
     if($this->acceso(1)){

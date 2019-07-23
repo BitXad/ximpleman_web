@@ -212,7 +212,7 @@ function sesioncliente(){
               WHERE cliente_id = '".$ipe."' ";
     $this->db->query($update);
 
-    setcookie("cliente_id", $clienteid, time() + (86400 * 30), "/");
+    setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
     return true;
 }else{
     show_404();
