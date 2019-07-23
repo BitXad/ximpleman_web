@@ -1807,8 +1807,7 @@ function registrarpedido(cliente_id)
 function finalizarpedido()
 {
     var monto = document.getElementById('venta_totalfinal').value;
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'/verificardetalle/'+monto;
+//    var base_url = document.getElementById('base_url').value;   
     var cliente_id = document.getElementById('cliente_id').value;
     
     //alert(cliente_id);

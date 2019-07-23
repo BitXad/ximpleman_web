@@ -1214,7 +1214,7 @@ function buscarcotizar()
 */
 function registrarcliente()
 {
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){
         //**************** inicio contenido ***************    
     
         if ($this->input->is_ajax_request()) {
@@ -1263,7 +1263,7 @@ function registrarcliente()
 */
 function modificarcliente()
 {
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){
         //**************** inicio contenido ***************    
     
         if ($this->input->is_ajax_request()) {
@@ -1360,7 +1360,7 @@ function modificarcliente()
 /*************** funcion para mostrar la vista de la factura******************/
 function ultimaventa(){
     
-       if($this->acceso(12)){
+              if($this->acceso(12)||$this->acceso(30)){
         //**************** inicio contenido ***************    
     
                 
