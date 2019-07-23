@@ -83,6 +83,11 @@ function mostrar_ocultar(){
 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="regusuario_id" hidden>
+
+<?php if ($tipousuario_id != 1){ ?>
+    <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
+<?php } ?>
+
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
 <input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
@@ -173,7 +178,6 @@ function mostrar_ocultar(){
         <?php } ?>
         <a data-toggle="collapse" href="#collapse1">Más</a> /
         
-        <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>"><span class="fa fa-user" ></span> Registrar Cliente</a>
                         
       </h4>
 
@@ -246,9 +250,10 @@ function mostrar_ocultar(){
 
 
 <center>
-    <font size="3"><b>PEDIDO EN PROCESO</b></font>
+    <font size="3"><b>PEDIDO</b></font>
      <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>
     <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
+     <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>
 </center>   
 
 <div class="container">
@@ -261,6 +266,7 @@ function mostrar_ocultar(){
                 </td>
                 <td>
                     <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="90">
+                    
                     <br><button class="btn btn-warning btn-xs" data-toggle="collapse" data-target="#informacioncliente">más inform.</button>
                 </td>
                 <td style="width: 0.2cm;">
@@ -271,10 +277,11 @@ function mostrar_ocultar(){
                         <b>CLIENTE: </b><?php echo $cliente[0]['cliente_nombre']; ?> <br>
                         <?php echo $cliente[0]['cliente_nombrenegocio']." ".$cliente[0]['cliente_celular']; ?> <br>                     
                         <b>CÓDIGO: </b><?php echo $cliente[0]['cliente_codigo']; ?> <br>
-                        <b>DIRECCIÓN: </b><?php echo $cliente[0]['cliente_direccion']; ?> <br>                     
+                        <b>DIRECCIÓN: </b><?php echo $cliente[0]['cliente_direccion']; ?> <br>
                         <b>ZONA: </b><?php echo $cliente[0]['zona_id']; ?> <br>                     
                         <b>TELF(S): </b><?php echo $cliente[0]['cliente_telefono']." ".$cliente[0]['cliente_celular']; ?> <br>                     
                     </font>
+                    
                 </td>
             </tr>
         </table>

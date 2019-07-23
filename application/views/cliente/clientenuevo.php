@@ -295,7 +295,13 @@ function toggle(source) {
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-6">
+                            
+                                        <?php 
+                                                $ocultar = "";
+                                                if($tipousuario_id > 1) $ocultar = "hidden";   
+                                        ?>
+                            
+                                        <div class="col-md-6" <?php echo $ocultar; ?> >
 						<label for="usuario_id" class="control-label">Prevendedor</label>
 						<div class="form-group">
 							<select name="usuario_id" class="form-control">
@@ -303,7 +309,7 @@ function toggle(source) {
 								<?php 
 								foreach($all_usuario_prev as $usuario_prev)
 								{
-									$selected = ($usuario_prev['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+									$selected = ($usuario_prev['usuario_id'] == $usuario_id ) ? ' selected="selected"' : "";
 
 									echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
 								} 
@@ -311,6 +317,7 @@ function toggle(source) {
 							</select>
 						</div>
 					</div>
+                            
                                         <div class="col-md-6">
                                             <label for="dias_visita" class="control-label">Dias de Visita</label><input type="checkbox" id="select_all" onClick="toggle(this)" /> Todos
 						<div class="form-group">

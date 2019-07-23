@@ -445,7 +445,7 @@ class Pedido extends CI_Controller{
     
 function registrarpedido()
     {  
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
         
         $usuario_id = $this->session_data['usuario_id'];
@@ -727,7 +727,7 @@ function registrarpedido()
     
     function pedido_a_ventas(){
         
-           if($this->acceso(30)) {
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -957,7 +957,7 @@ function registrarpedido()
 
     function eliminardetalle()
     {       
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************       
         
         $usuario_id = $this->session_data['usuario_id'];
@@ -979,7 +979,7 @@ function registrarpedido()
      */
     function eliminaritem($detalleven_id)
     {
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
 
         $sql = "delete from detalle_venta_aux where detalleven_id = ".$detalleven_id;
@@ -996,7 +996,7 @@ function registrarpedido()
      */
     function eliminartodo()
     {
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
         $usuario_id = $this->session_data['usuario_id'];
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
