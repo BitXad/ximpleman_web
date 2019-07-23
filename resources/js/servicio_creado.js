@@ -1733,6 +1733,8 @@ function resultadomontoservicio(servicio_id){
                     $("#totalfinal").html(numberFormat(Number(total).toFixed(2)));
                     $("#totalacuenta").html(numberFormat(Number(acuenta).toFixed(2)));
                     $("#totalsaldo").html(numberFormat(Number(saldo).toFixed(2)));
+                    
+                    $("#total_detalle").html(numberFormat(Number(total).toFixed(2)));
             }
                 
         },
