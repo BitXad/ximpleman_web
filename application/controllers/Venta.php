@@ -38,8 +38,9 @@ class Venta extends CI_Controller{
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
-            $data['_view'] = 'login/mensajeacceso';
-            $this->load->view('layouts/main',$data);
+//            $data['_view'] = 'login/mensajeacceso';
+//            $this->load->view('layouts/main',$data);
+            return false;
         }
     } 
 
@@ -1214,7 +1215,7 @@ function buscarcotizar()
 */
 function registrarcliente()
 {
-        if($this->acceso(12)||$this->acceso(30)){
+        if(($this->acceso(12)==true)||($this->acceso(30)==true)){
         //**************** inicio contenido ***************    
     
         if ($this->input->is_ajax_request()) {

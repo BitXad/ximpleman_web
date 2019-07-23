@@ -26,6 +26,7 @@ class Pedido extends CI_Controller{
         }
         
     }
+    
     private function acceso($id_rol){
         $rolusuario = $this->session_data['rol'];
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
@@ -271,23 +272,23 @@ class Pedido extends CI_Controller{
     function detalle_pedido()
     {
         
-           if($this->acceso(30)) {
-        //**************** inicio contenido ***************    
-        if ($this->input->is_ajax_request()) {
-             
-            
-           $pedido_id = $this->input->post('pedido_id');
-           $detalle_pedido = $this->Pedido_model->get_detalle_pedido($pedido_id);            
-           echo json_encode($detalle_pedido);
-            
+        if($this->acceso(30)) {
+            //**************** inicio contenido ***************    
+            if ($this->input->is_ajax_request()) {
+
+
+               $pedido_id = $this->input->post('pedido_id');
+               $detalle_pedido = $this->Pedido_model->get_detalle_pedido($pedido_id);            
+               echo json_encode($detalle_pedido);
+
+            }
+            else
+            {                 
+                show_404();
+            }  
+
+            //**************** fin contenido ***************
         }
-        else
-        {                 
-            show_404();
-        }  
-        		
-        //**************** fin contenido ***************
-        			}
         			      
     }
 
@@ -355,7 +356,7 @@ class Pedido extends CI_Controller{
         return true;
         		
         //**************** fin contenido ***************
-        			}
+        }
         			         
     }
     /*
@@ -367,20 +368,20 @@ class Pedido extends CI_Controller{
         //**************** inicio contenido ***************    
         if ($this->input->is_ajax_request()) {
             
-            $cliente_id = $this->input->post('cliente_id');
-            $sql = "select * from cliente where cliente_id = ".$cliente_id;
-            $datosx = $this->Pedido_model->consultar($sql);
+                $cliente_id = $this->input->post('cliente_id');
+                $sql = "select * from cliente where cliente_id = ".$cliente_id;
+                $datosx = $this->Pedido_model->consultar($sql);
 
-           echo json_encode($datosx);
-            
+               echo json_encode($datosx);
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+
+            //**************** fin contenido ***************
         }
-        else
-        {                 
-                    show_404();
-        }  
-        		
-        //**************** fin contenido ***************
-        			}
         			
     }
     
@@ -388,57 +389,57 @@ class Pedido extends CI_Controller{
     {
         
        if($this->acceso(30)) {
-        //**************** inicio contenido ***************    
-        $regusuario_id = $this->session_data['usuario_id'];     
-        $usuario_id = $this->input->post('usuario_id');
-        
-        $estado_id = 3;
+                //**************** inicio contenido ***************    
+                $regusuario_id = $this->session_data['usuario_id'];     
+                $usuario_id = $this->input->post('usuario_id');
 
-        $tipotrans_id = $this->input->post('tipo_transaccion');
-        $pedido_fecha = "now()";
-        $pedido_id = $this->input->post('pedido_id');
-        $pedido_subtotal = $this->input->post('pedido_subtotal');
-        $pedido_descuento = $this->input->post('pedido_descuento');
-        $pedido_total = $this->input->post('pedido_totalfinal');
-        $pedido_glosa = $this->input->post('pedido_glosa');
-        
-        $pedido_latitud = $this->input->post('latitud');
-        $pedido_longitud = $this->input->post('longitud');
-        
-        $fechahora = $this->input->post('fechahora_entrega');
-        
-//        $dato = '2011-07-12 10:35:27';
-        $fecha = date('Y-m-d',strtotime($fechahora)); 
-        $hora = date('H:i:s',strtotime($fechahora));          
-        //$pedido_horaentrega = $this->input->post('pedido_horaentrega');
-                
-        $sql = "update pedido set "
-                //."usuario_id = ".$usuario_id
-                ."estado_id = 11"
-                .",tipotrans_id = ".$tipotrans_id
-                .",pedido_fecha = now()"
-                .",pedido_subtotal = ".$pedido_subtotal
-                .",pedido_descuento = ".$pedido_descuento
-                .",pedido_total = ".$pedido_total
-                .",pedido_glosa = '".$pedido_glosa."'"
-                .",pedido_fechaentrega = '".$fecha."'"
-                .",pedido_horaentrega = '".$hora."'"
-                .",pedido_latitud = '".$pedido_latitud."'"
-                .",pedido_longitud = '".$pedido_longitud."'"
-                .",regusuario_id = ".$regusuario_id
-                ."  where pedido_id=".$pedido_id;        
+                $estado_id = 3;
 
-        $this->Pedido_model->ejecutar($sql);
+                $tipotrans_id = $this->input->post('tipo_transaccion');
+                $pedido_fecha = "now()";
+                $pedido_id = $this->input->post('pedido_id');
+                $pedido_subtotal = $this->input->post('pedido_subtotal');
+                $pedido_descuento = $this->input->post('pedido_descuento');
+                $pedido_total = $this->input->post('pedido_totalfinal');
+                $pedido_glosa = $this->input->post('pedido_glosa');
 
-        $sql = "update inventario i, detalle_pedido d set 
-                i.existencia = i.existencia - d.detalleped_cantidad 
-                where d.pedido_id = ".$pedido_id." and i.producto_id = d.producto_id";
-        $this->Pedido_model->ejecutar($sql);
-        
-        redirect('pedido');
-        		
-        //**************** fin contenido ***************
-        			}
+                $pedido_latitud = $this->input->post('latitud');
+                $pedido_longitud = $this->input->post('longitud');
+
+                $fechahora = $this->input->post('fechahora_entrega');
+
+        //        $dato = '2011-07-12 10:35:27';
+                $fecha = date('Y-m-d',strtotime($fechahora)); 
+                $hora = date('H:i:s',strtotime($fechahora));          
+                //$pedido_horaentrega = $this->input->post('pedido_horaentrega');
+
+                $sql = "update pedido set "
+                        //."usuario_id = ".$usuario_id
+                        ."estado_id = 11"
+                        .",tipotrans_id = ".$tipotrans_id
+                        .",pedido_fecha = now()"
+                        .",pedido_subtotal = ".$pedido_subtotal
+                        .",pedido_descuento = ".$pedido_descuento
+                        .",pedido_total = ".$pedido_total
+                        .",pedido_glosa = '".$pedido_glosa."'"
+                        .",pedido_fechaentrega = '".$fecha."'"
+                        .",pedido_horaentrega = '".$hora."'"
+                        .",pedido_latitud = '".$pedido_latitud."'"
+                        .",pedido_longitud = '".$pedido_longitud."'"
+                        .",regusuario_id = ".$regusuario_id
+                        ."  where pedido_id=".$pedido_id;        
+
+                $this->Pedido_model->ejecutar($sql);
+
+                $sql = "update inventario i, detalle_pedido d set 
+                        i.existencia = i.existencia - d.detalleped_cantidad 
+                        where d.pedido_id = ".$pedido_id." and i.producto_id = d.producto_id";
+                $this->Pedido_model->ejecutar($sql);
+
+                redirect('pedido');
+
+                //**************** fin contenido ***************
+        }
         			         
     }
 
@@ -924,19 +925,12 @@ function registrarpedido()
             $this->load->view('layouts/main',$data);
             
         //**************** fin contenido ***************
-        			}
-        	         
-//        }
-//        else{ redirect('login'); }
-        
+        }     
     }
 
     function mapa_entregas()
     {
 
-        //control de sesion
-//        if ($this->session->userdata('perfil')=='PREVENDEDOR'){
-            
        if($this->acceso(30)) {
         //**************** inicio contenido ***************  
         
