@@ -136,7 +136,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="w3ls_logo_products_left">
 				<h1><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
 			</div>
-
 		</div>
 	</div>
 
@@ -215,6 +214,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 ?>
             <input type="hidden" name="cliente" id="cliente" value="<?php echo $cliente_ide; ?>" />
             <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
+            <input type="hidden" name="myip" id="myip" value="" />
+            <input type="hidden" name="seip" id="seip" value="" />
             <input type="hidden" name="miip" id="miip" value="" />
             <!--<form te="#" method="post">-->
             
@@ -452,15 +453,20 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		<div class="container">
 		<h3>CATEGORIA PRODUCTOS</h3>
 			<div class="brands-agile">
-                <?php foreach ($categorias as $cat) { ?>
-                  <div class="col-md-2 w3layouts-brand">
+                <?php foreach ($categorias as $cat) { 
+                    if (strlen($cat["categoria_nombre"])<13){ ?>
+                  <div class="col-md-3 w3layouts-brand">
                     <div class="brands-w3l">
                         <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p>
                     </div>
                 </div> 
-                <?php } ?>
-				
-				
+                <?php } else { ?>
+				 <div class="col-md-3 w3layouts-brand">
+                    <div class="brands-w3l">
+                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p>
+                    </div>
+                </div>
+				<?php } } ?>
 			</div>
              <div class="row" id='loader1'  style='display:none; text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
