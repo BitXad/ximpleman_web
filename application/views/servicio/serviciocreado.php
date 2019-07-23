@@ -25,6 +25,25 @@
         $('#codigo').focus();
     });
     }
+    
+    function mostrar_ocultar(){
+    var x = document.getElementById('tipo_transaccion').value;
+    
+    if (x=='2'){ //si la transaccion es a credito
+        
+        document.getElementById('creditooculto').style.display = 'block';
+//        var hoy = new Date();
+//        var dd = hoy.getDate();
+//        var mm = hoy.getMonth()+1;
+//        var yyyy = hoy.getFullYear();
+//        
+//        dd = addZero(dd);
+//        mm = addZero(mm);
+
+    }
+    else{
+        document.getElementById('creditooculto').style.display = 'none';}
+    }
 </script>
     
 <style type="text/css">
@@ -389,6 +408,12 @@ $(document).ready(function(){
             <div class="box-body table-responsive table-condensed">
                 <table class="table table-striped table-condensed" >
                     <tbody>
+                        <?php 
+                            $total_detalle = $servicio['servicio_total'];
+                            $subtotal = $total_detalle;
+                            $descuento = 0;
+                            $totalfinal = $total_detalle;
+                        ?>
                         <!--<tr>
                             <th>Descripción</th>
                             <th></th>
@@ -425,6 +450,7 @@ $(document).ready(function(){
         ?>
         
         <a href="<?php echo site_url('servicio');  ?>" id="salir" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Salir</a>
+        <a id="boton_cobrar" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-dollar fa-4x"></span><br>Cobrar Servicio</a>
         <?php
         if($a == 3){
             if(is_null($servicio['servicio_codseguimiento'])){ ?>
@@ -805,3 +831,243 @@ $(document).ready(function(){
                                       </div>
                                     </div>
             <!-- ---------------------- Fin modal para buscar el historial de un servico ----------------- -->
+
+<!----------------------Modal Cobrar--------------------------------------------------->
+<!--<form action="<?php //echo base_url('venta/finalizarventa'); ?>"  method="POST" class="form" name="finalizarventa">-->
+<div class="modal fade" id="modalcobrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">            
+                            <div class="col-md-2" style="padding: 0;">
+                                <?php
+                                    $fecha = date('Y-m-d'); 
+                                    $hora = date('H:i:s');                                                                                         
+                                ?>
+                                <!--<input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
+                                <h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>                                        
+                                <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;">
+                                    <?php
+                                        foreach($forma_pago as $forma){ ?>
+                                            <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
+                                    <?php } ?>
+                                 </select>
+                            </div>
+                            <div class="col-md-2 text-center" style="padding: 0;">
+                                <h5 class="modal-title" id="myModalLabel"><b>TIPO TRANS</b></h5>                                        
+                                <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-default btn-xs"  onchange="mostrar_ocultar()"  style="width: 120px;">
+                                    <?php
+                                        foreach($tipo_transaccion as $tipo){ ?>
+                                            <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+                                    <?php } ?>
+                                 </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                <!----------- tabla detalle cuenta ----------------------------------->
+                <?php 
+                    $total_descuento = 0;
+                    $total_detalle = $servicio['servicio_total'];
+                    $subtotal = $total_detalle - $total_descuento; 
+                    $efectivo = $subtotal;
+                    $cambio = 0.00;
+                    $ancho_boton = 10;
+                ?>
+            <div hidden="true">        
+                            <input id="total_detalle" name="total_detalle" value="<?php echo $total_detalle; ?>">
+                            <input id="total_descuento" name="total_descuento" value="<?php echo $total_descuento; ?>">
+                            
+            </div>
+                 
+        <div class="row">
+            
+            
+            <div class="col-md-12">
+            <!--<form action="<?php //echo base_url('hotel/checkout/'.$pedido_id."/".$habitacion_id); ?>"  method="POST" class="form">-->
+                <div class="box">
+
+            <div class="box-body table-responsive table-condensed">
+            <!--<form method="post" name="descuento">-->                
+            
+            
+            
+            <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
+                
+                <tr>
+                        <td  style="padding: 0" >Total Bs</td>
+                        <td align="right">
+                            <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format($servicio['servicio_total'],2,'.',','); ?>" readonly="true">
+                        </td>
+                    
+                    
+                </tr>                
+                <tr style="padding: 0">
+                        <td style="padding: 0">Descuento Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
+                        </td>
+                    
+                </tr>
+
+                        
+                <tr style="padding: 0">
+                        <td align="right" style="padding: 0"><b>Sub Total Bs</b></td>
+                        <td align="right" style="padding: 0">                
+                            
+                            <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
+                        </td>
+
+                </tr>
+
+                <tr style="padding: 0">                      
+                        <td style="padding: 0">Descuento Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php //echo $descuento; ?>" onKeyUp="calculardescserv()" onclick="seleccionar(4)">
+                        </td>
+                </tr>
+
+                <tr style="padding: 0">                      
+                        <td style="padding: 0"><b>Total Final Bs</b></td>
+                        <td align="right" style="padding: 0">
+
+                              <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
+
+                        </td>
+                </tr>
+
+                <tr style="padding: 0">                      
+                        <td style="padding: 0">Efectivo Bs</td>
+                        <td align="right" style="padding: 0">
+                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
+                        </td>
+                </tr>
+                
+                <tr style="padding: 0">                      
+                    <td style="padding: 0"><b>Cambio Bs</b></td>
+                        <td align="right" style="padding: 0;">
+                            <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
+                        </td>
+                </tr>
+                
+                
+                
+                
+            </table>
+            
+            
+
+          
+            <div class="col-md-12">
+                NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+            </div>
+           
+        </div>
+           
+        </div>
+                
+                
+                           
+           <!-- ************************************* datos credito ************************************************-->
+                
+            <div class="row" id='creditooculto'  style='display:none;'>
+                                    
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>Nº CUOTAS</b></h5>
+
+                    <select name="cuotas"  class="form-control input-sm" id="cuotas">
+                        <?php for($i=1;$i<=36;$i++){ ?>
+                            <option value="<?php echo $i; ?>"><?php echo $i; ?> CUOTA (S)</option>
+                        <?php } ?>
+                    </select>                                      
+                </div>
+
+                
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>MODALIDAD</b></h5>
+                    <select class="form-control input-sm" id="modalidad" name="modalidad">                       
+                        <option value="MENSUAL">MENSUAL</option>
+                        <option value="SEMANAL">SEMANAL</option>
+                    </select>
+                </div>
+                
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>DIA PAGO</b></h5>
+                    <select class="form-control input-sm" id="dia_pago" name="dia_pago">
+                        
+                    <?php for($dia=1; $dia<=31; $dia++){?>
+                            <option value="<?php echo $dia; ?>"><?php echo $dia; ?></option>
+                            <?php } ?>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>INTERES</b></h5>
+                    <input type="text"  class="form-control  input-sm" value="<?php echo 0.00; ?>" name="credito_interes" id="credito_interes">
+                </div>
+
+                <div class="col-md-4">
+                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. Bs</b></h5>
+                    <input type="text" class="form-control  input-sm"  value="0.00"name="cuota_inicial" id="cuota_inicial" >
+                </div>
+
+<!--                <div class="col-md-3">
+                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA Bs</b></h5>
+                    <input type="text" class="form-control"  value="0.00" style="background-color: gray" name="monto_cuota" id="monto_cuota"  width="20" onKeyUp="calcularcredito('pedidototal_final','cuota_inicial','cuotas','monto_cuota')" readonly>
+                </div>
+                -->
+                <?php  $fecha = date('Y-m-d'); ?>
+                <div class="col-md-4">
+                    
+                    <h5 class="modal-title" id="myModalLabel"><b>FECHA INICIAL</b></h5>
+                    <input type="date" class="form-control  input-sm"  value="<?php echo $fecha; ?>" name="fecha_inicio" id="fecha_inicio">
+                    
+                </div>
+                
+           </div>
+           
+           <!--************************************* fin datos credito ************************************************>           
+                 
+                
+            <!--<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>-->   
+            
+<!--            <button class="btn btn-lg btn-facebook btn-sm btn-block" onclick="finalizarventa()">
+                <h4>
+                <span class="fa fa-money"></span>   Finalizar Venta  
+                </h4>
+            </button>
+            -->
+            <button class="btn btn-lg btn-facebook btn-sm btn-block" id="boton_finalizar" data-dismiss="modal" onclick="finalizarventa()" style="display: block;">
+                <h4>
+                <span class="fa fa-save"></span>   Cobrar Servicio  
+                </h4>
+            </button>
+
+            <button class="btn btn-lg btn-danger btn-sm btn-block" data-dismiss="modal">
+                <h4>
+                <span class="fa fa-close"></span>   Cancelar  
+                </h4>
+            </button>
+    <!--</form>-->
+        </div>
+        </div>
+<!-- </form>-->
+
+        
+<!----------- fin tabla detalle cuenta ----------------------------------->                           
+                            
+                            
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+<!--</form>-->
+
+<!----------------------Fin Modal Cobrar--------------------------------------------------->

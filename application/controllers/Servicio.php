@@ -210,6 +210,12 @@ class Servicio extends CI_Controller{
             $this->load->model('Procedencia_model');
 	    $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
             
+            $this->load->model('Forma_pago_model');
+            $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+            
+            $this->load->model('Tipo_transaccion_model');
+            $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+            
             $this->load->model('Parametro_model');
 	    $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
             $data['page_title'] = "Servicio";
