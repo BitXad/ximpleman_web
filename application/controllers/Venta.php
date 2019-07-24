@@ -38,8 +38,9 @@ class Venta extends CI_Controller{
         if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
-            $data['_view'] = 'login/mensajeacceso';
-            $this->load->view('layouts/main',$data);
+//            $data['_view'] = 'login/mensajeacceso';
+//            $this->load->view('layouts/main',$data);
+            return false;
         }
     } 
 
@@ -136,7 +137,7 @@ class Venta extends CI_Controller{
 
     function ingresar_detalle()
     {       
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ // 12 ventas 30 pedidos
         //**************** inicio contenido ***************        
   
         $usuario_id = $this->session_data['usuario_id'];
@@ -916,7 +917,7 @@ function edit($venta_id)
      */
     function incrementar()
     {
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ // 12 ventas 30 pedidos
         //**************** inicio contenido ***************        
         
         $detalleven_id = $this->input->post('detalleven_id');
@@ -943,7 +944,7 @@ function edit($venta_id)
      */
     function incrementar_detalle()
     {
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ // 12 ventas 30 pedidos
         //**************** inicio contenido ***************        
         
         $detalleven_id = $this->input->post('detalleven_id');
@@ -976,7 +977,7 @@ function edit($venta_id)
     function reducir()
     {
       
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ // 12 ventas 30 pedidos
         //**************** inicio contenido ***************
         
         
@@ -1006,7 +1007,7 @@ function edit($venta_id)
     function reducir_detalle()
     {
       
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ // 12 ventas 30 pedidos
         //**************** inicio contenido ***************
         
         
@@ -1214,7 +1215,7 @@ function buscarcotizar()
 */
 function registrarcliente()
 {
-        if($this->acceso(12)){
+        if(($this->acceso(12)==true)||($this->acceso(30)==true)){
         //**************** inicio contenido ***************    
     
         if ($this->input->is_ajax_request()) {
@@ -1263,7 +1264,7 @@ function registrarcliente()
 */
 function modificarcliente()
 {
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){
         //**************** inicio contenido ***************    
     
         if ($this->input->is_ajax_request()) {
@@ -1360,7 +1361,7 @@ function modificarcliente()
 /*************** funcion para mostrar la vista de la factura******************/
 function ultimaventa(){
     
-       if($this->acceso(12)){
+              if($this->acceso(12)||$this->acceso(30)){
         //**************** inicio contenido ***************    
     
                 
@@ -1638,7 +1639,7 @@ function anular_venta($venta_id){
     
     function eliminar_producto_vendido($detalleven_id)
     {
-            if($this->acceso(12)){
+           if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
             //**************** inicio contenido ***************          
 
             if ($this->input->is_ajax_request()) {
@@ -1744,7 +1745,7 @@ function anular_venta($venta_id){
         
     function cantidad_en_detalle()
     {       
-        if($this->acceso(12)){
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************       
         
         $usuario_id = $this->session_data['usuario_id'];
@@ -1759,14 +1760,14 @@ function anular_venta($venta_id){
     
             		
         //**************** fin contenido ***************
-        			}
+        }
         			   
         
     }
         
     function cantidad_en_detalle_otros()
     {       
-         if($this->acceso(12)){
+          if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************       
         
         $usuario_id = $this->session_data['usuario_id'];
@@ -1789,7 +1790,7 @@ function anular_venta($venta_id){
 
     function existencia()
     {       
-        if($this->acceso(12)){
+         if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************       
         
         $usuario_id = $this->session_data['usuario_id'];

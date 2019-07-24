@@ -763,8 +763,11 @@ class Cliente extends CI_Controller{
      */
     function clientenuevo($pedido_id)
     {
-        if($this->acceso(94)){
+        if($this->acceso(30)){ // rol 30 admnistrar pedidos
             $data['page_title'] = "Cliente";
+            $data['tipousuario_id'] =  $this->session_data['tipousuario_id'];
+            $data['usuario_id'] =  $this->session_data['usuario_id'];
+            
             $this->load->library('form_validation');
 
             //$this->form_validation->set_rules('cliente_codigo','Cliente Codigo','required');
@@ -774,6 +777,7 @@ class Cliente extends CI_Controller{
             if($this->form_validation->run())     
             {
                 $this->input->post('cliente_nombre');
+                
                 $resultado = $this->Cliente_model->es_cliente_registrado($this->input->post('cliente_nombre'));
                 if($resultado > 0){
                     $this->load->model('Estado_model');
@@ -955,7 +959,7 @@ class Cliente extends CI_Controller{
     
     function realizar_pedido($cliente_id)
     {
-        if($this->acceso(94)){
+        if($this->acceso(30)){
             //**************** inicio contenido ***************     
             //Crear el pedido
             $usuario_id = $this->session_data['usuario_id'];
@@ -1013,7 +1017,7 @@ class Cliente extends CI_Controller{
         }else{
            $condicion = "";
         }
-        if($this->acceso(96)){
+        if($this->acceso(30)){ //permiso para administrar pedidos
             if ($this->input->is_ajax_request())
             {
                 $datos = $this->Cliente_model->get_all_cliente($condicion);
@@ -1032,7 +1036,7 @@ class Cliente extends CI_Controller{
     */
     function buscarclientes_pedido()
     {
-        //if($this->acceso(31)){
+        if($this->acceso(30)){
             if ($this->input->is_ajax_request()) {
                 $parametro = $this->input->post('parametro');
 
@@ -1048,7 +1052,7 @@ class Cliente extends CI_Controller{
             {                 
                 show_404();
             }
-        //}
+        }
     }
     
 

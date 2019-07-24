@@ -1088,7 +1088,7 @@ function tablaresultados(opcion)
     var existencia = 0;
     var base_url = document.getElementById('base_url').value;    
     var cantidad = 0;
-    var usuario_id = document.getElementById('usuario_id').value;
+  //  var usuario_id = document.getElementById('usuario_id').value;
 
     var modo_visualizacion = document.getElementById('parametro_modoventas').value; // modo de visualizacion 1 = modo texto , 2 = modo grafico
     var ancho_boton = document.getElementById('parametro_anchoboton').value; //base 115
@@ -1807,8 +1807,7 @@ function registrarpedido(cliente_id)
 function finalizarpedido()
 {
     var monto = document.getElementById('venta_totalfinal').value;
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'/verificardetalle/'+monto;
+//    var base_url = document.getElementById('base_url').value;   
     var cliente_id = document.getElementById('cliente_id').value;
     
     //alert(cliente_id);

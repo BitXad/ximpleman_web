@@ -589,7 +589,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
             //   ojo    //totaltablaingresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS(TARJ.(DEBITO, CREDITO), TRANS. BAN. , CHEQUE, VENTA CRED., CONSIGNACION, TRASPASO): </b></td><td style='width:12%;' ></td><td style='width:12%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso).toFixed(2))+"</span></b></td><td style='width:10%;' ></td></tr></table>";
                     
                    totaltablaingresoventas  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL INGRESOS(EFECTIVO, VENTAS CONT., COBROS CRED., SERVICIOS): </b></td><td style='width:12%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalingreso1+totalingreso2+totalingreso3+totalingreso11).toFixed(2))+"</span></b></td><td style='width:12%;' ></td><td style='width:10%;' ></td></tr></table>";
-                    totaltablautilidadventas  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL UTILIDAD (POR VENTAS EFECTIVO, COBROS POR CREDITO, SERVICIOS): </b></td><td style='width:12%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalutilidad2+totalutilidad3+totalutilidad11).toFixed(2))+"</span></b></td><td style='width:12%;' ></td><td style='width:10%;' ></td></tr></table>";
+                    //totaltablautilidadventas  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL UTILIDAD (POR VENTAS EFECTIVO, COBROS POR CREDITO, SERVICIOS): </b></td><td style='width:12%;' id='alinearder'><b><span id='sumtotalventas'>"+numberFormat(Number(totalutilidad2+totalutilidad3+totalutilidad11).toFixed(2))+"</span></b></td><td style='width:12%;' ></td><td style='width:10%;' ></td></tr></table>";
                     /* *****************F I N para suma reporte total de INGRESOS****************** */
                     /* *****************INICIO para reporte de EGRESOS VARIOS****************** */
                     cabecerahtml4= "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosegreso' onclick='mostraregreso(); return false'>+</a></td><td style='width:61%;'>EGRESO DE EFECTIVO: </td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'>"+numberFormat(Number(totalegreso4).toFixed(2))+"</td></tr></table>";
@@ -692,7 +692,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    $("#tablatraspasoresultados").html(cabecerahtml9+html9+piehtml9);
                    $("#sumatablaingresosresultados").html(totaltablaingresoresultados);
                    $("#sumatablaingresosventas").html(totaltablaingresoventas);
-                   $("#sumatablautilidadventas").html(totaltablautilidadventas);
+                   //$("#sumatablautilidadventas").html(totaltablautilidadventas);
                    $("#tablaegresoresultados").html(cabecerahtml4+html4+piehtml4);
                    $("#tablacompraresultados").html(cabecerahtml5+html5+piehtml5);
                    $("#tablapagoresultados").html(cabecerahtml6+html6+piehtml6);

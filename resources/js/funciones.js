@@ -1810,8 +1810,8 @@ function registrarventa(cliente_id)
 function finalizarventa()
 {    
     var monto = document.getElementById('venta_totalfinal').value;
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'/verificardetalle/'+monto;
+    //var base_url = document.getElementById('base_url').value;
+    //var controlador = base_url+'/verificardetalle/'+monto;
 
     
         if (monto>0)
