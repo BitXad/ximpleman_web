@@ -40,7 +40,7 @@
         <!-- Logo -->
         <a href="" class="logo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini">Ximpleman Web</span>
+            <span class="logo-mini" style="font-size:9px;">Ximpleman</span>
             <!-- logo for regular state and mobile devices -->
             <span class="logo-lg">Ximpleman Web</span>
         </a>
@@ -480,7 +480,14 @@
                         if($rolusuario[157-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bars"></i>Graficos</a>
+                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bar-chart"></i>Graficos</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[157-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('reportes/graficas2');?>"><i class="fa fa-pie-chart"></i>Graficos</a>
                         </li>
                         <?php
                         }

@@ -457,13 +457,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     if (strlen($cat["categoria_nombre"])<13){ ?>
                   <div class="col-md-3 w3layouts-brand">
                     <div class="brands-w3l">
-                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p>
+                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p><br>
                     </div>
                 </div> 
                 <?php } else { ?>
 				 <div class="col-md-3 w3layouts-brand">
                     <div class="brands-w3l">
-                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p>
+                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p><br>
                     </div>
                 </div>
 				<?php } } ?>
