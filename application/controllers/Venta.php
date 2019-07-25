@@ -246,7 +246,7 @@ class Venta extends CI_Controller{
         $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
         $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
                "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,".
-               "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa) value(".$cad.")";
+               "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id) value(".$cad.")";
         
         $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
         $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
@@ -258,6 +258,7 @@ class Venta extends CI_Controller{
         $razon = $this->input->post('razon'); // nit del cliente
         $fecha_venta = $this->input->post('venta_fecha'); // nit del cliente
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
+        $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
         
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
@@ -1479,6 +1480,10 @@ function anular_venta($venta_id){
             where venta_id = ".$venta_id;
     $this->Venta_model->ejecutar($sql);
             
+//    $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
+//    $this->Venta_model->ejecutar($sql);
+//    
+    
     $this->Inventario_model->actualizar_inventario(); 
     redirect('venta/index');
     

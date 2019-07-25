@@ -245,7 +245,9 @@ border-bottom : 1px solid #aaa;
     </table>    
 </font>
 
-<font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?></font>
+<font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
+<br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; ?></font>
+
     <table class="table" style="width: 20cm;">
         <tr>
             <td  style="padding: 0">

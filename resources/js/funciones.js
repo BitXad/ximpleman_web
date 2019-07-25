@@ -1711,6 +1711,7 @@ function registrarventa(cliente_id)
     var tipotrans_id = document.getElementById('tipo_transaccion').value; 
     var usuario_id = document.getElementById('usuario_id').value; 
     var pedido_id = document.getElementById('pedido_id').value; 
+    var usuarioprev_id = document.getElementById('usuarioprev_id').value; 
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
     
@@ -1762,7 +1763,7 @@ function registrarventa(cliente_id)
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa;
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id;
         
      //alert(sql); 
     if (tipo_transaccion==2){
@@ -1777,7 +1778,7 @@ function registrarventa(cliente_id)
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
-                venta_descuento:venta_descuento },
+                venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id },
             success:function(respuesta){ 
                 eliminardetalleventa();
 
@@ -2047,10 +2048,19 @@ function tabla_ventas(filtro)
                     if (parametro_modulorestaurante==1){
                     html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
                 }
-                    if (v[i]['venta_tipodoc']==1)
+                    if (v[i]['venta_tipodoc']==1){
                         html += "                                   <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                    }
+                    
+                    html += "<br><br>";
+                    
+                    if (Number(v[i]['pedido_id'])>0){
+                        html += "                                   <a href='"+base_url+"pedido/nota_pedido/"+v[i]['pedido_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver nota de pedido'><span class='fa fa-list'></span></a> ";
+                    }
+                    
+                    
                     html += "                           <!--<a href='<?php echo site_url('venta/eliminar_venta/'.$v[i]['venta_id']); ?>' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a>-->";
-                    html += "                           <br><br><button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
+                    html += "                           <button type='button' class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+v[i]['venta_id']+"'  title='Anular venta'><em class='fa fa-ban'></em></button>";
                     html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                     html += "                               <div class='modal fade' id='myModal"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+v[i]['venta_id']+"'>";
                     html += "                                 <div class='modal-dialog' role='document'>";
@@ -2069,6 +2079,9 @@ function tabla_ventas(filtro)
                     html += "                                          ";
                     html += "                                          ¿Desea anular la venta? <b> <br>";
                     html += "                                          Trans.: "+v[i]['venta_id']+"<br>";
+                    if ((v[i]['pedido_id'])>0){
+                            html += "<b class='btn btn-warning'><b> ADVERTENCIA: Se restablecera el PEDIDO Nº: "+v[i]['pedido_id']+" a PENDIENTE</b> </b>" ;
+                    }
 //                    html += "                                          -----------------------------<br>";
 //                    html += "                                          La venta tiene una FACTURA ASOCIADA<br>";
 //                    html += "                                          <input type='checkbox' name='anular_factura' value='1'> Anular factura<br>";
@@ -2193,6 +2206,8 @@ function borrar_datos_cliente()
     $("#cliente_ci").val("0");
     $("#cliente_nombrenegocio").val("-");
     $("#cliente_codigo").val("0");
+    $("#pedido_id").val("0");
+    $("#usuarioprev_id").val("0");
     
     $("#cliente_direccion").val("-");
     $("#cliente_departamento").val("-");
@@ -2425,10 +2440,11 @@ function pasaraventas(pedido_id,usuariopedido_id,cliente_id)
         data:{},
         success:function(respuesta){  
             
-            $("#pedido_id").val(pedido_id);
-            $("#usuariopedido_id").val(usuariopedido_id);
+            
+            $("#pedido_id").val(pedido_id);           
+            $("#usuarioprev_id").val(usuariopedido_id);
             tablaproductos();
-            datoscliente(cliente_id);           
+            datoscliente(cliente_id);
         },
         error: function(respuesta){
             tablaproductos();
