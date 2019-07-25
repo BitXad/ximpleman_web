@@ -17,7 +17,11 @@ class Venta_model extends CI_Model
      */
     function get_venta($venta_id)
     {
-        $sql = "select * from venta v, usuario u where v.usuario_id = u.usuario_id and v.venta_id = ".$venta_id;
+        $sql = "select * 
+                from venta v  
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                where v.venta_id = ".$venta_id;
         
         $venta = $this->db->query($sql)->row_array();
 
@@ -357,12 +361,16 @@ class Venta_model extends CI_Model
 
     function get_ventas($condicion)
     {    
+//
+//        $sql = "select * from venta v, forma_pago f, tipo_transaccion t, usuario u, cliente c, estado e, moneda m
+//                where v.cliente_id = c.cliente_id and v.usuario_id = u.usuario_id and v.moneda_id = m.moneda_id and
+//                v.forma_id = f.forma_id and v.tipotrans_id = t.tipotrans_id and v.estado_id = e.estado_id 
+//                ".$condicion."
+//                order by venta_id desc";
 
-        $sql = "select * from venta v, forma_pago f, tipo_transaccion t, usuario u, cliente c, estado e, moneda m
-                where v.cliente_id = c.cliente_id and v.usuario_id = u.usuario_id and v.moneda_id = m.moneda_id and
-                v.forma_id = f.forma_id and v.tipotrans_id = t.tipotrans_id and v.estado_id = e.estado_id 
-                ".$condicion."
-                order by venta_id desc";
+        $sql = "select v.* from consventastotales v
+                where 1 = 1 ".$condicion."
+                order by v.venta_id desc";
 
         $ventas = $this->db->query($sql)->result_array();
 

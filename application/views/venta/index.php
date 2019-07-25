@@ -160,9 +160,10 @@
 
                     </tbody>
                 </table>
-                <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
+<!--                <div class="pull-right">
+                    
+                    
+                </div>                -->
             </div>
         </div>
     </div>

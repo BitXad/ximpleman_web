@@ -14,12 +14,24 @@
                 })
             }(jQuery));
         });         
+        
         $(document).ready(function () {
             (function ($) {
                 $('#filtrar2').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar2 tr').hide();
                     $('.buscar2 tr').filter(function () {
+                        return rex.test($(this).text());
+                    }).show();
+                })
+            }(jQuery));
+        });    
+        $(document).ready(function () {
+            (function ($) {
+                $('#filtrar3').keyup(function () {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('.buscar3 tr').hide();
+                    $('.buscar3 tr').filter(function () {
                         return rex.test($(this).text());
                     }).show();
                 })
@@ -769,7 +781,7 @@ function mostrar_ocultar(){
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="myModalLabel">Buscar</h4>
+                            <h4 class="modal-title" id="myModalLabel"><b>PEDIDOS/PREVENTAS</b></h4>
                                 
       <div class="input-group"> <span class="input-group-addon">Buscar</span>
         <input id="filtrar3" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción">
@@ -790,7 +802,7 @@ function mostrar_ocultar(){
                         <!--<th>Estado</th>-->
                            <!--<th> </th>-->
                     </tr>
-                    <tbody class="buscar">
+                    <tbody class="buscar3">
                     <?php $cont = 0;
                           foreach($pedidos as $p){;
                                  $cont = $cont+1; ?>
@@ -799,9 +811,10 @@ function mostrar_ocultar(){
                         <!--<td><?php //echo $p['pedido_id']; ?></td>-->
                         <td style="white-space: nowrap"><font size="3"><b><?php echo $p['cliente_nombre']; ?></b></font> <br>
                         <?php echo $p['cliente_nombrenegocio']; ?><br>
-                        <?php echo $p['pedido_fecha']; ?><br>
-                        
+                        <?php echo $p['pedido_fecha']; ?><br> 
+                        <b>PREVENTISTA:</b> <?php echo $p['usuario_nombre']; ?>
                         </td>
+                        
                         <td align="center" bgcolor="<?php echo $p['estado_color']; ?>">
                             <a href="<?php echo base_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>">
                             <font size="3"><b><?php echo "00".$p['pedido_id']; ?></b></font> <br>
@@ -815,12 +828,10 @@ function mostrar_ocultar(){
                                           <?php echo "Desc.: ".number_format($p['pedido_descuento'],'2','.',','); ?><br>  
                                           <font size="3"><b><?php echo number_format($p['pedido_total'],'2','.',','); ?></b></font></td>
                         
-<!--                        <td>
-                            <?php echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?></td>-->
+                            <?php echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?>
 
                         <td>
                             <a href="<?php echo site_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>" class="btn btn-success btn-sm"><span class="fa fa-cubes" title="Ver detalle del pedido"></span></a>
-                            <!--<a href="<?php echo site_url('pedido/pasaraventas/'.$p['pedido_id']); ?>" class="btn btn-warning btn-sm"><span class="fa fa-arrow-down" title="Añadir pedido a ventas"></span></a>-->
                             <button  class="btn btn-warning btn-sm" data-dismiss="modal" onclick="pasaraventas(<?php echo $p['pedido_id']; ?>,<?php echo $p['usuario_id']; ?>,<?php echo $p['cliente_id']; ?>)"><span class="fa fa-arrow-down" title="Cargar pedido a ventas"></span> </button>
                         </td>
                     </tr>

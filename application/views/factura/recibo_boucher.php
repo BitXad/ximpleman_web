@@ -135,7 +135,7 @@ border-bottom : 1px solid #aaa;
 
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
                 <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
-                _______________________________________________                
+                _____________________________________________                
                    
                 <br> 
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
@@ -144,7 +144,7 @@ border-bottom : 1px solid #aaa;
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
                     <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
-                <br>_______________________________________________
+                <br>_____________________________________________
 
             </center>                      
         </td>
@@ -195,7 +195,7 @@ border-bottom : 1px solid #aaa;
 <table class="table" style="max-width: 7cm;">
     <tr>
         
-        <td align="right">
+        <td align="right"  style="padding:0;">
             
             <font size="1">
                 <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
@@ -220,36 +220,16 @@ border-bottom : 1px solid #aaa;
             
         </td>          
     </tr>
-<!--    <tr>
-        <td nowrap>
-            <font size="2">
-            
-                COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
-                 <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
-                        $fecha_limite = $fecha_lim->format('d/m/Y');
-                  ?>    
-                LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
-            </font>
-        </td>           
-    </tr>-->
-<!--    <tr>
-        <td>
-        <center>
-            <img src="<?php echo $codigoqr; ?>" width="100" height="100">
-        </center>
 
-        </td>
-       
-
-    </tr>    -->
     <tr >
-          <td>
+          <td style="padding:0;">
                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
+               COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
+               TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
             <center>
             <font size="2">
                    
             </font>
-            <br>
                     <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
             </center>
          </td>

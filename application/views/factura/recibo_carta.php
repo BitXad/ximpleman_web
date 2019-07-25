@@ -170,7 +170,8 @@ border-bottom : 1px solid #aaa;
         <td align="left">
                             
                 USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
-                TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
+                COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
+                TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
         </td>
         <td align="right">
 <!--            <center>

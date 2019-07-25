@@ -35,11 +35,17 @@ function tabla_pedidos(filtro)
             var total_pedido = 0;
             var p = JSON.parse(response);
             var tipo = JSON.parse(document.getElementById('tipo_transaccion').value);
+//            var tipo_venta = JSON.parse(document.getElementById('tipo_venta').value);
             var espresentacion="";
             
                 html = "";
 
             total_pedido = 0;   
+            
+            opciones = "";
+            for(var i = 0; i<tipo.length; i++){
+                opciones += "<option value='"+tipo[i].tipotrans_id+"'>"+tipo[i].tipotrans_nombre+"</option>";
+            }
             
             for(var i = 0; i<p.length; i++){
                 
@@ -180,13 +186,22 @@ function tabla_pedidos(filtro)
                         html += "      <div class='modal-body'> ";
                         html += "          <center> ";
                         html += "              <font size='3'><b>Se enviara este pedido como operación de venta</b></font><br>   ";
-                        html += "              <font size='3'>¿Desea continuar?</font><br>   ";
+                        
+                        html += "              <br>   ";
+                        
+                        html += "              <select id='tipo_venta"+p[i]["pedido_id"]+"' class='btn btn-default'>   ";
+                        html += opciones;
+                        html += "              </select>   ";
+                        html += "              <br>   ";
+                        html += "              <br>   ";
+                        
+                        html += "              <font size='3'><b>¿Desea continuar?</b></font><br>   ";
 
                         html += "          </center> ";
                         html += "      </div> ";
                         html += "      <div class='modal-footer'> ";
                         html += "        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button> ";
-                        html += "        <button type='button' class='btn btn-primary' data-dismiss='modal'  onclick='consolidar_pedido("+p[i]["pedido_id"]+")'><span class='fa fa-cart-plus'></span> Vender</button> ";
+                        html += "        <button type='button' class='btn btn-primary' data-dismiss='modal'  onclick='consolidar_pedido("+p[i]["pedido_id"]+","+p[i]["pedido_total"]+")'><span class='fa fa-cart-plus'></span> Vender</button> ";
                         html += "      </div> ";
                         html += "    </div> ";
                         html += "  </div> ";
@@ -394,15 +409,15 @@ function formato_fecha(string){
     return info;
 }
 
-function consolidar_pedido(pedido_id)
+function consolidar_pedido(pedido_id,pedido_total)
 {
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"pedido/pedido_a_ventas";
-
-   // alert(pedido_id);
+    var tipotrans_id =   document.getElementById('tipo_venta'+pedido_id).value;
+   
     $.ajax({url:controlador,
         type:"POST",
-        data:{pedido_id:pedido_id},
+        data:{pedido_id:pedido_id, tipotrans_id:tipotrans_id,pedido_total:pedido_total},
         success: function(response){
             buscar_pedidos();
             //tabla_pedidos(null);

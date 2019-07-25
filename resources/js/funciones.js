@@ -1984,7 +1984,7 @@ function tabla_ventas(filtro)
 
                     var cont = 0;
                     var total_final = 0;
-                    
+                    var margenes = " style='padding:0'";
                     
                 for (var i=0; i< v.length; i++){    
 
@@ -1992,36 +1992,41 @@ function tabla_ventas(filtro)
                     total_final += parseFloat(v[i]['venta_total']);
 
                     html += "                       <tr>";
-                    html += "                       <td>"+cont+"</td>";
+                    html += "                       <td "+margenes+">"+cont+"</td>";
                     
-                    html += "                       <td style='max-width: 5cm'><font size='3'><b> "+v[i]['cliente_nombre']+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
+                    html += "                       <td style='max-width: 5cm; padding:0'><font size='3'><b> "+v[i]['cliente_nombre']+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
                     html += "                           <br>Razón Soc.: "+v[i]['cliente_razon'];
                     html += "                           <br>NIT: "+v[i]['cliente_nit'];
                     html += "                           <br>Telefono(s): "+v[i]['cliente_telefono'];
                     html += "                           <br>Nota: "+v[i]['venta_glosa'];
                     html += "                       </td>";
 
-                    html += "                       <td style='withe-space:nowrap' align='right' >";
-                    html += "                           Sub Total "+v[i]['moneda_descripcion']+': '+v[i]['venta_subtotal']+"<br>";
-                    html += "                           Desc. "+v[i]['moneda_descripcion']+': '+v[i]['venta_descuento']+"<br>";
+                    html += "                       <td style='withe-space:nowrap; padding:0;' align='right'>";
+                    html += "                           Sub Total "+v[i]['moneda_descripcion']+': '+Number(v[i]['venta_subtotal']).toFixed(2)+"<br>";
+                    html += "                           Desc. "+v[i]['moneda_descripcion']+': '+Number(v[i]['venta_descuento']).toFixed(2)+"<br>";
                     html += "                           <!--<span class='btn btn-facebook'>-->";
-                    html += "                           <font size='3' face='Arial narrow'> <b>Total "+v[i]['moneda_descripcion']+': '+v[i]['venta_total']+"</b></font><br>";
+                    html += "                           <font size='3' face='Arial narrow'> <b>Total "+v[i]['moneda_descripcion']+': '+Number(v[i]['venta_total']).toFixed(2)+"</b></font><br>";
                     html += "                           <!--</span>-->";
-                    html += "                               Efectivo "+v[i]['moneda_descripcion']+": "+v[i]['venta_efectivo']+"<br>";
-                    html += "                               Cambio "+v[i]['moneda_descripcion']+": "+v[i]['venta_cambio'];
+                    html += "                               Efectivo "+v[i]['moneda_descripcion']+": "+Number(v[i]['venta_efectivo']).toFixed(2)+"<br>";
+                    html += "                               Cambio "+v[i]['moneda_descripcion']+": "+Number(v[i]['venta_cambio']).toFixed(2);
                     html += "                       </td>";
 
-                    html += "                       <td align='center'><font size='3'><b> 00"+v[i]['venta_id']+"</b></font>";
-                    html += "                           <br><img src='"+base_url+"resources/images/usuarios/thumb_"+v[i]['usuario_imagen']+"' class='img-circle' width='50' height='50'>";
-                    html += "                           <br>"+v[i]['usuario_nombre'];
+                    html += "                       <td align='center' style='padding:0;'><font size='3'><b> 00"+v[i]['venta_id']+"</b></font>";
+                    html += "                           <br><img src='"+base_url+"resources/images/usuarios/thumb_"+v[i]['usuario_imagen']+"' class='img-circle' width='35' height='35'>";
+                    html += "                           <br>Vend.: "+v[i]['usuario_nombre'];
+                   
+                    if (v[i]['prevendedor']!=null){
+                        html += "                           <br>Prev.: "+v[i]['prevendedor'];
+                    }
+                    
                     html += "                        </td>   ";
                     
-                    html += "                       <td align='center'  bgcolor='"+v[i]['estado_color']+"'>"+v[i]['forma_nombre'];
+                    html += "                       <td align='center'  style='padding:0;' bgcolor='"+v[i]['estado_color']+"'>"+v[i]['forma_nombre'];
                     html += "                           <br> "+v[i]['tipotrans_nombre'];
                     html += "                           <br><br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
                     html += "                       </td>";
 
-                    html += "                       <td><center>"+formato_fecha(v[i]['venta_fecha']);
+                    html += "                       <td style='padding:0;'><center>"+formato_fecha(v[i]['venta_fecha']);
                     html += "                           <br> "+v[i]['venta_hora'];
                     html += "                           <br><input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' style='display:block'>";
                     
@@ -2033,7 +2038,7 @@ function tabla_ventas(filtro)
 //                    html += "                           <br>"+v[i]['usuario_nombre'];
 //                    html += "                       </td>";
 
-                    html += "                       <td class='no-print'>";
+                    html += "                       <td class='no-print' style='padding:0;'>";
                     html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
                     html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
