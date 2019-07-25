@@ -286,7 +286,14 @@ function toggle(source) {
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-5">
+                                    
+                                    
+                                        <?php 
+                                            $ocultar = "hidden";
+                                            if($tipousuario_id == 1){ $ocultar=""; } 
+                                        ?>
+                                    
+                                        <div class="col-md-5" <?php echo $ocultar; ?> >
 						<label for="usuario_id" class="control-label">Cliente Asignado a:</label>
 						<div class="form-group">
 							<select name="usuario_id" class="form-control">
@@ -294,7 +301,7 @@ function toggle(source) {
 								<?php 
 								foreach($all_usuario_prev as $usuario_prev)
 								{
-									$selected = ($usuario_prev['usuario_id'] == $cliente['usuario_id']) ? ' selected="selected"' : "";
+									$selected = ($usuario_prev['usuario_id'] == $usuario_id ) ? ' selected="selected"' : "";
 
 									echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
 								} 
@@ -328,8 +335,9 @@ function toggle(source) {
                                                   
 						</div>
 					</div>
+
                                     
-                                        <div class="col-md-2">
+                                        <div class="col-md-2" >
 						<label for="estado_id" class="control-label">Estado</label>
 						<div class="form-group">
 							<select name="estado_id" class="form-control">

@@ -103,12 +103,20 @@ class Pedido_model extends CI_Model
      */
     function get_pedidos_activos()
     {
-        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color "
-               ."from pedido p, estado e, cliente c ".
-               "where ".
-               "p.estado_id = e.estado_id".
-               " and p.cliente_id = c.cliente_id".
-               " and p.estado_id=11";
+//        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color "
+//               ."from pedido p, estado e, cliente c ".
+//               "where ".
+//               "p.estado_id = e.estado_id".
+//               " and p.cliente_id = c.cliente_id".
+//               " and p.estado_id=11";
+
+        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, u.* 
+                from pedido p
+                left join estado e on e.estado_id = p.estado_id
+                left join cliente c on c.cliente_id = p.cliente_id
+                left join usuario u on u.usuario_id = p.usuario_id
+                 where 
+                 p.estado_id = 11";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }

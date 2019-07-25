@@ -50,13 +50,6 @@ class Pedido extends CI_Controller{
         $usuario_nombre = $this->session_data['usuario_nombre'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
         
-//        $params['limit'] = RECORDS_PER_PAGE; 
-//        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-//        
-//        $config = $this->config->item('pagination');
-//        $config['base_url'] = site_url('pedido/index?');
-//        $config['total_rows'] = $this->Pedido_model->get_all_pedido_count();
-//        $this->pagination->initialize($config);
         $rolusuario = $this->session_data['rol'];
         $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
@@ -301,6 +294,9 @@ class Pedido extends CI_Controller{
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
                 
+        $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
+        $this->Pedido_model->ejecutar($sql);
+        
         $sql = "insert into detalle_venta_aux(
             producto_id,
             venta_id,
@@ -341,7 +337,7 @@ class Pedido extends CI_Controller{
             d.detalleped_preferencia,
             d.detalleped_comision,
             1 as tipocambio,
-            e.usuario_id,
+            ".$usuario_id.",
             p.producto_nombre,
             p.producto_unidad,
             p.producto_marca,
@@ -351,6 +347,7 @@ class Pedido extends CI_Controller{
 
             from detalle_pedido d, pedido e,usuario u, consinventario p
             where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
+       
         
         $this->Pedido_model->ejecutar($sql);
         return true;
@@ -446,7 +443,7 @@ class Pedido extends CI_Controller{
     
 function registrarpedido()
     {  
-        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+        if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
         
         $usuario_id = $this->session_data['usuario_id'];
@@ -728,21 +725,28 @@ function registrarpedido()
     
     function pedido_a_ventas(){
         
-        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+        if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
+       
+        
         
         if ($this->input->is_ajax_request()){
             
             $pedido_id = $this->input->post('pedido_id');
+            $tipotrans_id = $this->input->post('tipotrans_id');
+            $venta_total = $this->input->post('pedido_total');
+            $cuotas = 1;
+            $cuota_inicial = 0;
+            
             
             $sql = "insert into venta(forma_id, tipotrans_id, usuario_id, cliente_id, moneda_id, estado_id, 
             venta_fecha, venta_hora, venta_subtotal, venta_descuento, venta_total, venta_efectivo, 
-            venta_cambio, venta_glosa, venta_comision, venta_tipocambio, detalleserv_id)
+            venta_cambio, venta_glosa, venta_comision, venta_tipocambio, detalleserv_id,entrega_estadoid, pedido_id, usuarioprev_id)
 
-            (select 1 as forma_id,tipotrans_id, ".$usuario_id.", cliente_id, 1 as moneda_id, 1 as estado_id, 
+            (select 1 as forma_id,".$tipotrans_id.", ".$usuario_id.", cliente_id, 1 as moneda_id, 1 as estado_id, 
             date(now()) as venta_fecha, time(now()) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
-            1 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id
+            1 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id
             from pedido
             where pedido_id=".$pedido_id." ) ";            
             $venta_id = $this->Pedido_model->ejecutar($sql);
@@ -768,6 +772,109 @@ function registrarpedido()
             echo $sql;
             
             $pedido_idx = $this->Pedido_model->modificar($sql);
+            
+            
+                if($tipotrans_id == 2) //Si la transaccion es a credito
+                {            
+                    //$credito_id =  
+                    $estado_id =  8; //8 pendiente 9 cancelado
+                    $compra_id =  0;
+                    $venta_id =  $venta_id; //
+                    $credito_monto =  $venta_total; //
+                    $credito_cuotainicial =  0;
+                    $credito_interesproc =  0;
+                    $credito_interesmonto =  0; //revisar
+                    $credito_numpagos =  $cuotas;
+                    $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                    $credito_fecha = date('Y-m-d');
+                    $time = time();
+                    $credito_hora =  date("H:i:s", $time);
+                    $credito_tipo = 1; // 1- ventas 2 - compras
+
+                    $cuotas       = 1; //$this->input->post('cuotas');
+                    $interes       = 0; //$this->input->post('interes');
+                    $modalidad    = "MENSUAL"; //$this->input->post('modalidad');
+                    $dia_pago     = date('d');
+                    $fecha_inicio = $credito_fechalimite;
+
+
+
+                    $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
+                            $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
+                    $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+
+
+                    $estado_id =  8; //8 pendiente 9 cancelado
+                    $cuota_numcuota = 1;
+                    $cuota_capital = $venta_total - $cuota_inicial;
+                    $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
+                    $cuota_moradias = 0;
+                    $cuota_multa = 0;
+                    $cuota_subtotal =  $venta_total - $cuota_inicial;
+                    $cuota_descuento = 0;
+                    $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
+
+                    $cuota_cancelado = 0;
+                    $cuota_fecha = "'1900-01-01'";
+                    $cuota_hora = "'00:00'";
+                    $cuota_numercibo =  0;
+                    $cuota_saldo = $venta_total - $cuota_inicial;
+                    $cuota_glosa = "''";
+                    $cuota_saldocredito = $venta_total - $cuota_inicial;
+
+                    $dias_mora = 0;
+                    $multa = 0;
+                    $descuento = 0;
+                    $cancelado = 0;
+                    $credito_monto = $venta_total - $cuota_inicial;
+                    $numcuota = $cuotas; //numero de cuotas
+                    $patron = ($numcuota*0.5) + 0.5;
+                    $cuota_capital = ($credito_monto)/$numcuota;   // bien         
+                    $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
+                    $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+                    $total = $cuota_subtotal - $descuento;
+                    $saldo_deudor = $credito_monto;
+
+                    $siguiente= 0;
+                    $cuota_fechalimite = $fecha_inicio;
+
+                    $cuota_fechalimite = $fecha_inicio;
+
+
+                    if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
+                    else $intervalo = 7; //si los pagos son semanales
+
+
+                        for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                            $cuota_numcuota = $i;
+
+                            $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                            if ($modalidad == "MENSUAL") 
+                                $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                            else 
+                                $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+
+                            $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
+                                    $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
+                                    $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
+
+                            $this->Venta_model->ejecutar($cuota);
+
+        //                    $saldo_deudor = $cuota_total - $cuota_capital;
+        //                    $cuota_total = $saldo_deudor;
+                            $saldo_deudor = $saldo_deudor - $cuota_capital;
+                            //$cuota_total = $saldo_deudor;
+                        }
+
+
+
+                }
+            
+            
+            
+            
+            
+            
 
         }
         		
@@ -951,7 +1058,7 @@ function registrarpedido()
 
     function eliminardetalle()
     {       
-        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+        if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************       
         
         $usuario_id = $this->session_data['usuario_id'];
@@ -973,7 +1080,7 @@ function registrarpedido()
      */
     function eliminaritem($detalleven_id)
     {
-        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+        if($this->acceso(30)){ //12 ventas o 30 pedidos
         //**************** inicio contenido ***************        
 
         $sql = "delete from detalle_venta_aux where detalleven_id = ".$detalleven_id;

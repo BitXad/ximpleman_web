@@ -3,6 +3,31 @@ function inicio(){
        buscarventasdist();
 }
 
+function imprimir_reporte(){
+    var estafh = new Date();
+    $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
+    $(".cabeceraprint").css("display", "");
+    window.print();
+    $(".cabeceraprint").css("display", "none");
+}
+/*aumenta un cero a un digito; es para las horas*/
+function aumentar_cero(num){
+    if (num < 10) {
+        num = "0" + num;
+    }
+    return num;
+}
+/* recibe Date y devuelve en formato dd/mm/YYYY hh:mm:ss ampm */
+function formatofecha_hora_ampm(string){
+    var mifh = new Date(string);
+    var info = "";
+    var am_pm = mifh.getHours() >= 12 ? "p.m." : "a.m.";
+    var hours = mifh.getHours() > 12 ? mifh.getHours() - 12 : mifh.getHours();
+    if(string != null){
+       info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
+   }
+    return info;
+}
 //Tabla resultados de la busqueda de pendientes e npedidos o registros??
 function buscarventasdist(){
  var base_url    = document.getElementById('base_url').value;
@@ -54,7 +79,7 @@ function buscarventasdist(){
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["cliente_nombre"]+"</b></td>";
                         html += "<td align='center'>"+registros[i]["venta_id"]+"</td>"; 
-                        html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["venta_hora"]+"</td>"; 
+                        html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"]+"</td>"; 
                         html += "<td align='center'>"+registros[i]["entrega_nombre"]+"</br>"; 
                         //html += "<b>"+registros[i]["estado_nombre"]+"</b></td>"; 
                          
@@ -63,7 +88,7 @@ function buscarventasdist(){
                         //html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-primary btn-xs'><span class='fa fa-pencil'></a>";
                        if (registros[i]["entrega_id"]==1) {
                             //registros[i]["estado_nombre"]
-                        html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title=''><span class='fa fa-exclamation-circle'></span> CONSOLIDAR</a>";
+                        html += "<a class='btn btn-warning btn-xs no-print' data-toggle='modal' data-target='#myModal"+i+"' title=''><span class='fa fa-exclamation-circle'></span> ENTREGADO</a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -91,7 +116,7 @@ function buscarventasdist(){
                         html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
                         html += "</td>";
                         }else{
-                        html += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#myreModal"+i+"' title='RESTABLECER'><span class='fa fa-reply'></span> RESTABLECER</a>";
+                        html += "<a class='btn btn-success btn-xs no-print' data-toggle='modal' data-target='#myreModal"+i+"' title='RESTABLECER'><span class='fa fa-reply'></span> RESTABLECER</a>";
                         
                         html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
                         html += "<div class='modal fade' id='myreModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";

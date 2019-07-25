@@ -404,6 +404,8 @@ class Cliente extends CI_Controller{
             $data['page_title'] = "Modificar Cliente";
         // check if the cliente exists before trying to edit it
         $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
+        $data['usuario_id'] = $this->session_data["usuario_id"];
+        $data['tipousuario_id'] = $this->session_data["tipousuario_id"];
         
         if(isset($data['cliente']['cliente_id']))
         {

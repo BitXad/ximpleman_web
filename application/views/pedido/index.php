@@ -32,6 +32,7 @@
 <input id="pedido_id" name="pedido_id" value="0" hidden>
 <input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >
 <input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
+<!--<input id='tipo_venta' name='tipo_venta' value='<?php echo json_encode($tipo_venta); ?>' hidden>-->
 
 <!--<div class="box-header">
 <div class="row clearfix">-->
@@ -79,10 +80,7 @@
                 
     <div class="col-md-2"  style="padding:3px">
         <div class="form-group">
-            <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm form-control" target="_blank"><span class="fa fa-cart-arrow-down"></span> Reg. Pedido</a>
-                    <!--<a href="<?php echo site_url('pedido/mapa_pedido'); ?>" target="_blank" class="btn btn-facebook btn-sm"><span class="fa fa-map"></span> Mapa</a>-->
-                    <!--<a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm form-control"><span class="fa fa-map"></span> Mapa</a>-->
-                <!--</div>-->
+            <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm form-control" target="_blank"><span class="fa fa-cart-arrow-down"></span> Pedido</a>
         </div>
     </div>
     
