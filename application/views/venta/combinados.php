@@ -41,10 +41,10 @@
 </div>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="row">
-    <div class="col-md-12">
+<div class="col-md-12">
 
-<div class="panel panel-primary col-md-12" style="border:none;" >
-    <div class="col-md-12 no-print">
+    <div class="panel panel-primary col-md-12" style="border:none;" >
+        <div class="col-md-12 no-print">
                         <h4 align="center" class="no-print"><p>
                             Seleccione el/los usuario(s) de los cuales desea buscar las ventas.<br>
                         </p></h4>
@@ -76,26 +76,34 @@
                         </div>
 
                         
-    </div>
-
-               
-        <div class="col-md-5" style="padding-top:0px; font-size: 11px;">
+        </div>
+        <div class="col-md-12" >
+<span id="usus" style="font-size: 11px;"><b>Vendedor(es): </b></span> <br><br>
+</div>
+     <div class="col-md-12" >          
+        <div class="col-md-5" >
             
-            <span id="usus" style="font-size: 11px;"><b>Vendedor(es): </b></span>   
-        <div class="row" style="font-size: 11px; padding-left: 14px;">
-            <b>Desde: </b><input type="date" class="btn btn-primary btn-sm " style="border:none;font-size: 11px;" id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
+              
+        <div class="row" style="font-size: 11px;">
+            <b>Desde: </b><input type="date" class="btn btn-primary btn-sm " style="font-size: 11px;" id="fecha_desde" name="fecha_desde" required="true" value="<?php echo date('Y-m-d')?>">
        
-            <b>Hasta: </b><input type="date" class="btn btn-primary btn-sm" style="border:none;font-size: 11px;" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
+            <b>Hasta: </b><input type="date" class="btn btn-primary btn-sm" style="font-size: 11px;" id="fecha_hasta" name="fecha_hasta" required="true"  value="<?php echo date('Y-m-d')?>">
         </div>
         
           
        </div>
-        <div class="col-md-3 no-print" style="padding-top:0;">
+       <div class="col-md-2 no-print">
+           <select class="btn btn-primary btn-sm" id="tipousu">
+               <option value="1">VENDEDORES</option>
+               <option value="2">PREVENDEDORES</option>
+           </select>
+       </div>
+        <div class="col-md-2 no-print" style="padding-top:0;">
             
-<!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
+        <!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
             <button class="btn btn-primary btn-sm  no-print" onclick="buscar_fecha_ven(),final()" >
                
-                <span class="fa fa-search"></span>   Realizar Busqueda  
+                <span class="fa fa-search"></span> Buscar
                 
           </button>
            <div class="row no-print" id='loader'  style='display:none;'>
@@ -104,11 +112,19 @@
                         </center>
                     </div> 
         </div>
-        <div class="col-md-2 no-print" style="padding-top:0;">
-            <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>
-       </div>
-       <div class="col-md-2 no-print" style="padding-top:0;">
-            <a  class="btn btn-warning btn-sm no-print" data-toggle="modal" data-target="#myModal"><i class="fa fa-truck"> Asignar Productos</i></a>
+        <div class="col-md-3 no-print" style="padding-top:0;">
+        <div class="box-tools">
+        <center>            
+            
+            <a href="#" onclick="imprimir()" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a  class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#myModal"><font size="5"><span class="fa fa-truck"></span></font><br><small> Asignar </small></a>
+        </center>            
+        </div>
+        </div>
+        
+       
+       
+            
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                       <div class="modal-dialog" role="document">
@@ -152,10 +168,10 @@
                                     </div>
             
        </div>
+   </div>
       
 </div>
 
-</div>
 </div>
  
 <div class="box" style="margin-top:-25px;">
