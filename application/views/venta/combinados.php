@@ -122,7 +122,7 @@
         </div>
         </div>
         
-       </div>
+       
        
             
 
@@ -172,7 +172,6 @@
       
 </div>
 
-</div>
 </div>
  
 <div class="box" style="margin-top:-25px;">
