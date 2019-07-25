@@ -50,10 +50,12 @@ function buscar_fecha_ven()
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var usuario_id = document.getElementById('usuario_id');
+    var tipousu = document.getElementById('tipousu').value;
    // alert(usuario_id[0]['value']);
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
-    for (var i=0; i<usuario_id.length; i++)
+   if (tipousu == 1) {
+  for (var i=0; i<usuario_id.length; i++)
     {
       if (i==0)
       {
@@ -66,6 +68,22 @@ function buscar_fecha_ven()
       }
     }
     filtro +=")";
+   }else{
+      for (var i=0; i<usuario_id.length; i++)
+    {
+      if (i==0)
+      {
+        filtro = " and date(venta_fecha) >= '"+fecha_desde+"'  and  date(venta_fecha) <='"+fecha_hasta+
+            "' and (v.usuarioprev_id = "+usuario_id[i]['value'];
+      }
+      else
+      {
+        filtro += "  or v.usuarioprev_id = "+usuario_id[i]['value'];
+      }
+    }
+    filtro +=")";
+   }
+   
 
     ventacombi(filtro);
     
@@ -76,7 +94,7 @@ function ventacombi(filtro)
    
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"venta/buscarporvendedores";
-    var limite = 1000;
+    var limite = 50000;
     var usuario_id = document.getElementById('usuario_id');
     $.ajax({url: controlador,
            type:"POST",
