@@ -746,7 +746,7 @@ function registrarpedido()
 
             (select 1 as forma_id,".$tipotrans_id.", ".$usuario_id.", cliente_id, 1 as moneda_id, 1 as estado_id, 
             date(now()) as venta_fecha, time(now()) as venta_hora, pedido_subtotal as venta_subtotal, pedido_descuento as venta_descuento, pedido_total as venta_total, pedido_total as venta_efectivo, 
-            1 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id
+            0 as venta_cambio, pedido_glosa as venta_glosa, 0 as venta_comision,1 as venta_tipocambio,'' as  detalleserv_id, 1 as entrega_estadoid, ".$pedido_id.", usuario_id
             from pedido
             where pedido_id=".$pedido_id." ) ";            
             $venta_id = $this->Pedido_model->ejecutar($sql);
