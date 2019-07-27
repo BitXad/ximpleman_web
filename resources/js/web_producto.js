@@ -488,4 +488,7 @@ function venta_online(){
       
     
 }
-    
+
+function cerrarsesion(){
+     location.reload();
+}
