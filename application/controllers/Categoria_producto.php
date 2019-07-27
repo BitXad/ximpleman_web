@@ -33,15 +33,8 @@ class Categoria_producto extends CI_Controller{
     {
         if($this->acceso(118)){
             $data['page_title'] = "Categoria Producto";
-            $params['limit'] = RECORDS_PER_PAGE; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('categoria_producto/index?');
-            $config['total_rows'] = $this->Categoria_producto_model->get_all_categoria_producto_count();
-            $this->pagination->initialize($config);
-
-            $data['categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto($params);
+            
+            $data['categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
 
             $data['_view'] = 'categoria_producto/index';
             $this->load->view('layouts/main',$data);

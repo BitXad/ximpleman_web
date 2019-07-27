@@ -259,6 +259,13 @@
                         </li>
                         <?php
                         }
+                        //if($rolusuario[133-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('tipo_respuesta');?>"><i class="fa fa-clipboard"></i>Tipo Respuesta</a>
+                        </li>
+                        <?php
+                        //}
                         if($rolusuario[134-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
