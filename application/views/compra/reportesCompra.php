@@ -22,7 +22,7 @@
 <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 
-                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                        <?php echo '<img src="'.base_url('/resources/images/empresas/'.$empresa[0]['empresa_imagen']).'"  style="width:90px;height:90px">'; ?>
                     </center>
                     </div>
                     <div class="columna_izquierda">
