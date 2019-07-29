@@ -519,7 +519,7 @@ function mostrar_ocultar(){
                     
                 
                 <b>Total Final</b>
-                <b>Bs <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 150px; border-color: black; border-width: 0; background-color: black; text-align: center" readonly> </b>
+                <b>Bs <input type="text" id="venta_subtotal" name="venta_subtotal" value="0.00" style="width: 150px; border-color: black; border-width: 0; background-color: black; text-align: center" readonly> </b>
                 </font>
     
                 </center>
