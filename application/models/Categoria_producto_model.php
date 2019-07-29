@@ -49,25 +49,16 @@ class Categoria_producto_model extends CI_Model
     /*
      * Get all categoria_producto
      */
-    function get_all_categoria_producto($params = array())
+    function get_all_categoria_producto()
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
-        
         $categoria_producto = $this->db->query("
             SELECT
                 *
-
             FROM
                 `categoria_producto`
-
             WHERE
                 1 = 1
-
             ORDER BY `categoria_id` DESC
-
-            " . $limit_condition . "
         ")->result_array();
 
         return $categoria_producto;

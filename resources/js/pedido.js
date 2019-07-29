@@ -68,7 +68,7 @@ function tabla_pedidos(filtro)
                 html += "<tr> ";
                 html += "    <td>"+cont+"</td> ";
 
-                html += "    <td><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <sub>["+p[i]["cliente_id"]+"]</sub> ";
+                html += "    <td  bgcolor='"+p[i]["estado_color"]+"'><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <sub>["+p[i]["cliente_id"]+"]</sub> ";
                 
                 if (p[i]["pedido_latitud"]!=null && p[i]["pedido_longitud"]!=null)
                         imagen = "blue.png";

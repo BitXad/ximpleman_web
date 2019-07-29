@@ -74,11 +74,11 @@ function mostrar_ocultar(){
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
-<input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
-<input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
-<input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
-<input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio"  hidden>
-<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id"  hidden>
+<input type="text" id="pedido_id" value="0" name="pedido_id" hidden>
+<input type="text" id="usuarioprev_id" value="0" name="usuarioprev_id" hidden>
+<input type="text" id="venta_comision" value="0" name="venta_comision" hidden>
+<input type="text" id="venta_tipocambio" value="1" name="venta_tipocambio" hidden>
+<input type="text" id="usuariopedido_id" value="0" name="usuariopedido_id" hidden>
 <input type="text" id="detalleserv_id" value="0" name="detalleserv_id"  hidden>
 <input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
 <input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
@@ -795,20 +795,18 @@ function mostrar_ocultar(){
                     <tr>
                         <th>#</th>
                         <th>Cliente</th>
-<!--                        <th>Sub <br>Total</th>-->
                         <th align="center">COD</th>
                         <th>Total</th>
-                        <!--<th>Fecha<br>entrega</th>-->
-                        <!--<th>Estado</th>-->
-                           <!--<th> </th>-->
                     </tr>
+                    
                     <tbody class="buscar3">
+                    
                     <?php $cont = 0;
                           foreach($pedidos as $p){;
                                  $cont = $cont+1; ?>
                     <tr>
                         <td><?php echo $cont ?></td>
-                        <!--<td><?php //echo $p['pedido_id']; ?></td>-->
+                        
                         <td style="white-space: nowrap"><font size="3"><b><?php echo $p['cliente_nombre']; ?></b></font> <br>
                         <?php echo $p['cliente_nombrenegocio']; ?><br>
                         <?php echo $p['pedido_fecha']; ?><br> 
@@ -826,9 +824,10 @@ function mostrar_ocultar(){
                         
                         <td align="right" style="white-space: nowrap" ><?php echo "Sub Total: ".number_format($p['pedido_subtotal'],'2','.',','); ?><br>
                                           <?php echo "Desc.: ".number_format($p['pedido_descuento'],'2','.',','); ?><br>  
-                                          <font size="3"><b><?php echo number_format($p['pedido_total'],'2','.',','); ?></b></font></td>
+                                          <font size="3"><b><?php echo number_format($p['pedido_total'],'2','.',','); ?></b></font>
                         
-                            <?php echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?>
+                            <?php //    echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?>
+                        </td>
 
                         <td>
                             <a href="<?php echo site_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>" class="btn btn-success btn-sm"><span class="fa fa-cubes" title="Ver detalle del pedido"></span></a>
@@ -836,6 +835,7 @@ function mostrar_ocultar(){
                         </td>
                     </tr>
                     <?php } ?>
+                    </tbody>
                 </table>
              
                     </div>
