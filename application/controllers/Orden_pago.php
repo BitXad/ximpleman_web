@@ -34,7 +34,8 @@ class Orden_pago extends CI_Controller{
         if($this->acceso(89)) {
             $data['rol'] = $this->session_data['rol'];
         $data['page_title'] = "Orden de pago";
-        $data['orden_pago'] = $this->Orden_pago_model->get_pago_pendiente();
+        $filtro = "1=1";
+        $data['orden_pago'] = $this->Orden_pago_model->get_pago_pendiente($filtro);
         $data['usuario'] = $this->Orden_pago_model->get_usuarios();
         
         $data['page_title'] = "Orden Pago"; 
@@ -42,26 +43,39 @@ class Orden_pago extends CI_Controller{
         $this->load->view('layouts/main',$data);
     }
     }
+    function pendientes()
+    {
+        if($this->acceso(89)) {
+        $filtro = $this->input->post('filtro');
+        $data = $this->Orden_pago_model->get_pago_pendiente($filtro);
+        echo json_encode($data);
+    }
+    }
 
     function pagadas_hoy()
     {
         if($this->acceso(89)) {
-        $data['orden_pago'] = $this->Orden_pago_model->get_pagadas_hoy();
-        $data['usuario'] = $this->Orden_pago_model->get_usuarios();
+        $filtro = $this->input->post('filtro');
+        $data = $this->Orden_pago_model->get_pagadas_hoy($filtro);
+
+        echo json_encode($data);
+        /*$data['usuario'] = $this->Orden_pago_model->get_usuarios();
         $data['page_title'] = "Orden Pago";
         $data['_view'] = 'orden_pago/index';
-        $this->load->view('layouts/main',$data);
+        $this->load->view('layouts/main',$data);*/
     }
 }
 
     function pagadas_antes()
     {
         if($this->acceso(89)) {
-        $data['orden_pago'] = $this->Orden_pago_model->get_pagadas_antes();
-        $data['usuario'] = $this->Orden_pago_model->get_usuarios();
+        $filtro = $this->input->post('filtro');
+        $data = $this->Orden_pago_model->get_pagadas_antes($filtro);
+        echo json_encode($data);
+        /*$data['usuario'] = $this->Orden_pago_model->get_usuarios();
         $data['page_title'] = "Orden Pago";
         $data['_view'] = 'orden_pago/index';
-        $this->load->view('layouts/main',$data);
+        $this->load->view('layouts/main',$data);*/
     }
 }
 
@@ -231,10 +245,10 @@ class Orden_pago extends CI_Controller{
         
         $usuario_id2 = $this->session_data['usuario_id'];
         $orden_fechapago = "'".date("Y-m-d")."'"; 
-        $orden_horapago = "'".date("H:n:s")."'"; 
-        $orden_cancelado = $this->input->post('orden_cancelado'.$orden_id);
-        $orden_cobradapor = "'".$this->input->post('orden_cobradapor'.$orden_id)."'";
-        $orden_ci = "'".$this->input->post('orden_ci'.$orden_id)."'";
+        $orden_horapago = "'".date("H:m:s")."'"; 
+        $orden_cancelado = $this->input->post('cancelado');
+        $orden_cobradapor = "'".$this->input->post('cobrado')."'";
+        $orden_ci = "'".$this->input->post('cicobra')."'";
         $estado_id = 9;
                 
             
@@ -249,7 +263,7 @@ class Orden_pago extends CI_Controller{
                " where orden_id = ".$orden_id;
 
         $orden_pago_id = $this->Orden_pago_model->registrar_orden($sql);
-        redirect('orden_pago/index');
+        
 
 //        $data['_view'] = 'orden_pago/orden';
 //        $this->load->view('layouts/main',$data);

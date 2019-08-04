@@ -42,8 +42,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		});
 	});
 </script>
-
-
+<script src="//norfipc.com/js/jquery.cookie.js"></script>
+<script src="//norfipc.com/js/cookiecompliance.js"></script>
 
 <link href="<?php echo $raiz;?>css/flag-icon.min.css" rel="stylesheet"> 
 <link href="<?php echo $raiz;?>css/bootstrap-select.min.css" rel="stylesheet"> 
@@ -66,8 +66,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <?php foreach($menu_cabecera as $cabecera) { ?>
                         <li><a href="<?php echo base_url().$cabecera['menu_enlace']; ?>"><?php echo $cabecera['menu_nombre']; ?></a></li>
                         <?php } ?>
-
+                        <select class="selectpicker" data-width="fit">
+                    <option data-content='<span class="flag-icon flag-icon-us"></span> English'><span class="flag-icon flag-icon-us"></span>English</option>
+                    <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
+                    </select>
                     </ul>
+
                 </div>
                     <!-- --------------- INICIO Modal para ver el avance de servicios --------------- -->
                     <div class="modal fade" id="seguimientoservicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -106,15 +110,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <input type="hidden" name="cmd" value="_cart">
                         <input type="hidden" name="display" value="1">
                         <button class="w3view-cart" type="button" class="btn btn-primary" onclick="tablacarrito()"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-                       
-                        
-                    </form>                                       
+                        <?php if(isset($_COOKIE["cliente_id"])) { ?>
+                        <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesion"></i></button>
+                        <?php }  ?>
+
+                    </form>
+
                 </div>
 
-                    <select class="selectpicker" data-width="fit">
-                    <option data-content='<span class="flag-icon flag-icon-us"></span> English'><span class="flag-icon flag-icon-us"></span>English</option>
-                    <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
-                    </select>
+                   
                     
                     
                 <div class="clearfix"> </div>
