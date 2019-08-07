@@ -43,7 +43,7 @@ function registrarnuevacategoria(){
                 
                if (registros != null){
                     html = "";
-                    html += "<option value='"+registros["categoria_nombre"]+"' selected >";
+                    html += "<option value='"+registros["categoria_id"]+"' selected >";
                     html += registros["categoria_nombre"];
                     html += "</option>";
                     $("#categoria_id").append(html);

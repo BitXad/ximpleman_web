@@ -1,4 +1,5 @@
-
+<script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script type="text/javascript">
     function cambiarcodproducto(){
         var estetime = new Date();
@@ -131,7 +132,7 @@
                     </div>
                     <div class="col-md-3">
                         <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
-                        <div class="form-group">
+                        <div class="form-group" style="display: flex">
                             <select name="categoria_id" class="form-control" required id="categoria_id">
                                     <option value="">- CATEGORIA -</option>
                                     <?php 
@@ -143,6 +144,8 @@
                                     } 
                                     ?>
                             </select>
+                            <a data-toggle="modal" data-target="#modalcategoria" class="btn btn-warning" title="Registrar Nueva Categoria">
+                                <i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                     <div class="col-md-3">  
@@ -407,7 +410,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="producto_nombreenvase" class="control-label">Nombre de Envase</label>
-                        <div class="form-group">
+                        <div class="form-group" style="display: flex">
                             <select name="producto_nombreenvase" class="form-control" id="producto_nombreenvase" >
                                 <option value="">- SELECCIONE ENVASE -</option>
                                 <?php 
@@ -419,6 +422,8 @@
                                 } 
                                 ?>
                             </select>
+                            <a data-toggle="modal" data-target="#modalunidad" class="btn btn-warning" title="Registrar Nuevo Envase">
+                                <i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -463,3 +468,58 @@
         </div>
     </div>
 </div>
+
+
+<!------------------------ INICIO modal para Registrar nuevo Envase ------------------->
+<div class="modal fade" id="modalunidad" tabindex="-1" role="dialog" aria-labelledby="modalunidad">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_unidad" class="control-label">Registrar Nueva Unidad</label>
+                    <div class="form-group">
+                        <input type="text" name="nueva_unidad"  class="form-control" id="nueva_unidad" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevaunidad()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nuevo Envase ------------------->
+
+<!------------------------ INICIO modal para Registrar nueva Categoria ------------------->
+<div class="modal fade" id="modalcategoria" tabindex="-1" role="dialog" aria-labelledby="modalcategoria">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_categoria" class="control-label">Registrar Nueva Categoria</label>
+                    <div class="form-group">
+                        <input type="text" name="nueva_categoria"  class="form-control" id="nueva_categoria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevacategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva Categoria ------------------->
