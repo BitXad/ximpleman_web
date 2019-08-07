@@ -203,7 +203,7 @@ border-bottom : 1px solid #aaa;
             
 
             <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($total_descuento,2,'.',','); ?><br>
+                <?php echo "TOTAL DESCUENTO Bs ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
             </font>
             <font size="2">
             <b>
