@@ -2,7 +2,7 @@ $(document).on("ready",inicio);
 
 function inicio(){
 
-        
+        fechacotizacion();
         detallecoti();
        
 
@@ -1072,4 +1072,51 @@ function mostrar_saldo(s,producto_id)
    //console.log(s[s.selectedIndex].value); // get value
   //alert(s[s.selectedIndex].id);// get id
   $("#producto_precio"+producto_id).val(s[s.selectedIndex].id);
+}
+
+/*aumenta un cero a un digito; es para las horas*/
+function aumentar_cero(num){
+    if (num < 10) {
+        num = "0" + num;
+    }
+    return num;
+}
+/*aumenta un cero a un digito; es para las horas*/
+function mes_literal(mes){
+    var nombre = "";
+    if(mes == 1){
+        nombre = "Enero";
+    }else if(mes == 2){
+        nombre = "Febrero";
+    }else if(mes == 3){
+        nombre = "Marzo";
+    }else if(mes == 4){
+        nombre = "Abril";
+    }else if(mes == 5){
+        nombre = "Mayo";
+    }else if(mes == 6){
+        nombre = "Junio";
+    }else if(mes == 7){
+        nombre = "Julio";
+    }else if(mes == 8){
+        nombre = "Agosto";
+    }else if(mes == 9){
+        nombre = "Septiembre";
+    }else if(mes == 10){
+        nombre = "Octubre";
+    }else if(mes == 11){
+        nombre = "Noviembre";
+    }else if(mes == 12){
+        nombre = "Diciembre";
+    }
+    return nombre;
+}
+function fechacotizacion(){
+    var fecha = document.getElementById('fecha_cotizacion').value;
+    var fcot = new Date(fecha);
+    var info = "";
+    if(fecha != null){
+       info = "Cochabamba, "+aumentar_cero(fcot.getDate())+" de "+mes_literal((fcot.getMonth()+1))+" de "+fcot.getFullYear();
+   }
+    $("#fechacotizacion").html(info);
 }
