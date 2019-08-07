@@ -113,8 +113,10 @@ class Cotizacion extends CI_Controller{
         $cantidad = $this->input->post('cantidad'); 
         $descuento = $this->input->post('descuento'); 
         $producto_precio = $this->input->post('producto_precio');
-        
         $descripcion = "'".$descripcion."'";
+        $factor = $this->input->post('producto_factor');
+        $nuevacan = $cantidad * $factor;
+        //$nuevoprec = $
 
        $sql = "INSERT into detalle_cotizacion(
                 
@@ -134,10 +136,10 @@ class Cotizacion extends CI_Controller{
                 producto_id,
                 ".$descripcion.",
                 ".$producto_precio.",
-                ".$cantidad.",
+                ".$nuevacan.",
                 ".$descuento.",
-                ".$cantidad." * ".$producto_precio.",
-                (".$cantidad." * ".$producto_precio.") - ".$descuento.",
+                ".$cantidad." * ".$producto_precio." * ".$nuevacan.",
+                (".$cantidad." * ".$producto_precio." - ".$descuento.") * ".$nuevacan.",
                 ".$cotizacion_id."
                 
                 from producto where producto_id = ".$producto_id."

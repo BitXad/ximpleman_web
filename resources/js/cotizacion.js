@@ -98,8 +98,8 @@ function detallecota(cotizacion_id,producto_id){
         var producto_costo = document.getElementById('producto_costo'+producto_id).value;
         var producto_precio = document.getElementById('producto_precio'+producto_id).value;
         var descripcion = document.getElementById('descripcion'+producto_id).value;
+        var producto_factor = document.getElementById('select_factor'+producto_id).value;
 
-    var limite = 500;
     var base_url = document.getElementById('base_url').value;
     
     controlador = base_url+'cotizacion/insertarproducto/';
@@ -107,9 +107,9 @@ function detallecota(cotizacion_id,producto_id){
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{cotizacion_id:cotizacion_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento, descripcion:descripcion, producto_precio:producto_precio},
+           data:{cotizacion_id:cotizacion_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento, descripcion:descripcion, producto_precio:producto_precio, producto_factor:producto_factor},
            success:function(respuesta){     
-               
+               //alert (producto_factor);
                detallecoti();                      
             
         }
@@ -829,8 +829,6 @@ function tablaresultados(opcion)
 
     var cotizacion_id = document.getElementById('cotizacion_id').value;
 
-    var limite = 10;
-
     var base_url = document.getElementById('base_url').value;
 
     
@@ -893,13 +891,11 @@ function tablaresultados(opcion)
 
                     html = "";
 
-                   if (n <= limite) x = n; 
-
-                   else x = limite;
+                   
 
                     
 
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
 
                       var descripcion =  registros[i]["producto_nombre"]+registros[i]["producto_marca"]+registros[i]["producto_industrias"];
 
@@ -935,7 +931,60 @@ function tablaresultados(opcion)
 
 
 
-                        html += "<b>"+registros[i]["producto_nombre"]+"</b><br>";
+                        html += "<b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo(this,"+registros[i]["producto_id"]+")'>";
+                        html += "       <option value='1' id='"+registros[i]["producto_precio"]+"' >";
+                        precio_unidad = registros[i]["producto_precio"];
+                        html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
+                        html += "       </option>";
+                        
+                        if(registros[i]["producto_factor"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor"]+"' id='"+registros[i]["producto_preciofactor"]+"' >";
+                            html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+                            if(registros[i]["producto_factor1"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor1"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor1"]) * parseFloat(registros[i]["producto_factor1"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor1"]+"' id='"+registros[i]["producto_preciofactor1"]+"'>";
+                            html += "           "+registros[i]["producto_unidadfactor1"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+
+                            if(registros[i]["producto_factor2"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor2"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor2"]) * parseFloat(registros[i]["producto_factor2"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor2"]+"' id='"+registros[i]["producto_preciofactor2"]+"' >";
+                            html += "           "+registros[i]["producto_unidadfactor2"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+
+                        if(registros[i]["producto_factor3"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor3"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor3"]) * parseFloat(registros[i]["producto_factor3"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor3"]+"' id='"+registros[i]["producto_preciofactor3"]+"' >";
+                            html += "           "+registros[i]["producto_unidadfactor3"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+
+                        if(registros[i]["producto_factor4"]>0){
+                            precio_factor = parseFloat(registros[i]["producto_preciofactor4"]);
+                            precio_factorcant = parseFloat(registros[i]["producto_preciofactor4"]) * parseFloat(registros[i]["producto_factor4"]);
+
+                            html += "       <option value='"+registros[i]["producto_factor4"]+"' id='"+registros[i]["producto_preciofactor4"]+"' >";
+                            html += "           "+registros[i]["producto_unidadfactor4"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
+                            html += "       </option>";
+                        }
+                        
+                        
+                        
+                        html += "   </select><br>";
 
                         html += "<div class='col-md-2'  >";
 
@@ -1016,3 +1065,11 @@ function tablaresultados(opcion)
 
 
 } 
+
+function mostrar_saldo(s,producto_id)
+{
+
+   //console.log(s[s.selectedIndex].value); // get value
+  //alert(s[s.selectedIndex].id);// get id
+  $("#producto_precio"+producto_id).val(s[s.selectedIndex].id);
+}
