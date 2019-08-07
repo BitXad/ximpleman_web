@@ -7,134 +7,193 @@
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+ <input type="hidden" name="fecha_cotizacion" id="fecha_cotizacion" value="<?php echo $cotizacion['cotizacion_fecha']; ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
  <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
- <div class="box" > 
- <div class="row"> 
-<div class="cuerpo" style="height: 110px;">
-                    <div class="columna_derecha">
-                        <center> 
-                        <?php $mimagen = $empresa[0]['empresa_imagen'];
+ 
+ <br>
+<div id="fechacotizacion" style="text-align: right"></div>
 
-            echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" height="80px" width="80px" "/>'; ?>
-                    </center>
-                    </div>
-                    <div class="columna_izquierda">
-                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
-                        <?php echo $empresa[0]['empresa_zona']; ?><br>
-                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                        <?php echo $empresa[0]['empresa_telefono']; ?>
-                        </center>
-                    </div> 
-                    <div class="columna_central">
-                        <center>      <h3 class="box-title"><u>COTIZACION</u></h3>
-                          Numero: <b><?php echo $cotizacion['cotizacion_id'];?></b>  </center>
-                    </div>
+<div style="text-align: left">
+    <?php $mimagen = $empresa[0]['empresa_imagen'];
+    echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" height="80px" width="25%"/>'; ?>
+    <br><br>
+    Señores:
+    <br>
+    <?php echo $cotizacion['cotizacion_cliente']; ?>
+    <br>Presente.-
+    <br>
+</div>
+<div style="text-align: center">
+    <b>Ref.: COTIZACION</b>
+</div>
+<br>
+<div style="text-align: justify">
+    Mediante la presente me dirijo a su distinguida institución a tiempo de saludarle y desearle éxito
+    en las funciones que desempeña.
+</div>
+<br>
+<div style="text-align: justify">
+    El motivo de la misma es cotizar el(los) siguiente(s) producto(s).
+</div>
 
-            </div> 
-               
-
-   <div style="padding-left: 15px;">
-         
-                    <b>CLIENTE: </b><?php echo ($this->input->post('cotizacion_cliente') ? $this->input->post('cotizacion_cliente') : $cotizacion['cotizacion_cliente']); ?><br>
-					<b>FECHA: </b><?php echo implode("/", array_reverse(explode("-", ($this->input->post('cotizacion_fecha') ? $this->input->post('cotizacion_fecha') : $cotizacion['cotizacion_fecha'])))); ?><br>
-				
-					<b>VALIDEZ: </b><?php echo ($this->input->post('cotizacion_validez') ? $this->input->post('cotizacion_validez') : $cotizacion['cotizacion_validez']); ?><br>
-			
-				    <b>FORMA DE PAGO: </b><?php echo ($this->input->post('cotizacion_formapago') ? $this->input->post('cotizacion_formapago') : $cotizacion['cotizacion_formapago']); ?> <br>
-			
-					<b>TIEMPO DE ENTREGA: </b><?php echo ($this->input->post('cotizacion_tiempoentrega') ? $this->input->post('cotizacion_tiempoentrega') : $cotizacion['cotizacion_tiempoentrega']); ?> 
-	</div>
-        </div>   
+ 
+ <!--<div class="box" >-->
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
 <div class="col-md-12" style="padding: 0px;"> 
-<div class="box" style="padding: 0px;">
-            
-            <div class="box-body table-responsive">
-                <table class="table table-striped " id="mitabla">
-                    <tr>
-                            <th>Item</th>
-                            <th>Producto / Descripcion</th>
-                            <th>Unidad</th>
-                            <th>Precio<br>Unit.</th>
-                            <th>Cantidad</th>
-                            <th>Descuento</th>
-                            <th>Precio<br>Total</th>
-                    </tr>
-                    <tbody class="">
-                    <?php $cont = 0;
-                          $subtotal = 0;
-                          $descuento = 0;
-                          $totalfinal = 0;
-                          
-                          foreach($detalle_cotizacion as $d){;
-                                 $cont = $cont+1; 
+<div style="padding: 0px;">
+    <div class="box-body table-responsive">
+        <table class="table table-striped " id="mitabla">
+            <tr>
+                <th>CANTIDAD</th>
+                <th>UNIDAD</th>
+                <th>DESCRIPCION</th>
+                <th>PROCEDENCIA</th>
+                <th>PRECIO<br>UNITARIO</th>
+                <th>DESCUENTO</th>
+                <th>PRECIO<br>TOTAL</th>
+            </tr>
+            <tbody class="">
+            <?php
+                $cont = 0;
+                $subtotal = 0;
+                $descuento = 0;
+                $totalfinal = 0;
+                foreach($detalle_cotizacion as $d){;
+                    $cont = $cont+1; 
+                    $subtotal += $d['detallecot_subtotal'];
+                    $descuento += $d['detallecot_descuento'];
+                    $totalfinal += $d['detallecot_total'];
+                ?>
+            <tr>    
+                <td  style="text-align: right;"> <?php echo $d['detallecot_cantidad']; ?></font>
+                    <input id="detallecot_id"  name="detallecot_id" type="hidden" class="form-control" value="<?php echo $d['detallecot_id']; ?>">
+                </td>
+                <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
+                <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
+                    Marca: <b><?php echo $d['producto_marca']; ?></b> / 
+                    <!--Industria: <b><?php //echo $d['producto_industria']; ?></b>-->
+                    <?php if($d['detallecot_caracteristica'] != ""){ echo " / ".$d['detallecot_caracteristica'];} ?>
+                </td>
+                <td class="text-center">
+                    <?php echo $d['producto_industria']; ?>
+                </td>
 
-                                 
-                          $subtotal += $d['detallecot_subtotal'];
-                          $descuento += $d['detallecot_descuento'];
-                          $totalfinal += $d['detallecot_total'];
-                         
-                                 ?>
-                    <tr>    
-                            
-                        <td><?php echo $cont ?></td>
-                            <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
-                        Marca: <b><?php echo $d['producto_marca']; ?></b> / 
-                        Industria: <b><?php echo $d['producto_industria']; ?></b> /
-                    
-                        
-                         <?php echo $d['detallecot_caracteristica']; ?></td>
-                         <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
-                        <td  style="text-align: right;"> <input id="cotizacion_id"  name="cotizacion_id" type="hidden" class="form-control" value="<?php echo $cotizacion_id; ?>">
-                        	<input id="detallecot_descripcion"  name="descripcion" type="hidden" class="form-control" value="<?php echo $d['producto_nombre'], $d['producto_marca'], $d['producto_industria'];  ?>">
-                              <input id="producto_id"  name="producto_id" type="hidden" class="form-control" value="<?php echo $d['producto_id']; ?>">
-                            <?php echo number_format($d['detallecot_precio'],2,".",","); ?></font></td>  
-                        <td  style="text-align: right;"> <?php echo $d['detallecot_cantidad']; ?></font>
-                            <input id="detallecot_id"  name="detallecot_id" type="hidden" class="form-control" value="<?php echo $d['detallecot_id']; ?>"></td>
-                        
-                        <td  style="text-align: right;"> <?php echo number_format($d['detallecot_descuento'], 2, ".", ","); ?> </font></td>
-                       
-                            <td  style="text-align: right;">   
-                         
-                                    
-                                    <span class="badge badge-success">
-                                         <b><?php echo number_format($d['detallecot_total'],2,".",","); ?></b></font> <br>                                        
-                                    </span>
-                               
-                     <button type="submit" class="btn btn-success hidden">
-            		<i class="fa fa-check"></i>Finalizar<br>Cotizacion
-            	</button>
-                            </td>
+                <td  style="text-align: right;">
+                    <!--<input id="cotizacion_id"  name="cotizacion_id" type="hidden" class="form-control" value="<?php echo $cotizacion_id; ?>">
+                    <input id="detallecot_descripcion"  name="descripcion" type="hidden" class="form-control" value="<?php echo $d['producto_nombre'], $d['producto_marca'], $d['producto_industria'];  ?>">
+                    <input id="producto_id"  name="producto_id" type="hidden" class="form-control" value="<?php echo $d['producto_id']; ?>">-->
+                    <?php echo number_format($d['detallecot_precio'],2,".",","); ?>
+                </td>  
 
-                          <?php } ?> </form>
-                                            
-                      
-        </div>
-            </div>  
-          </div>
+                <td  style="text-align: right;">
+                    <?php echo number_format($d['detallecot_descuento'], 2, ".", ","); ?>
+                </td>
+
+                <td  style="text-align: right;">
+                    <span class="badge badge-success">
+                         <b><?php echo number_format($d['detallecot_total'],2,".",","); ?></b></font> <br>                                        
+                    </span>
+                    <!--<button type="submit" class="btn btn-success hidden">
+                        <i class="fa fa-check"></i>Finalizar<br>Cotizacion
+                    </button>-->
+                </td>
+            </tr>
+              <?php } ?>
+                        
         
-        <!--<form action="<?php echo base_url('detalle_cotizacion/sacar/'.$d['detallecot_id']."/".$cotizacion_id); ?>"  method="POST" class="form"> 
+        <!--<form action="<?php //echo base_url('detalle_cotizacion/sacar/'.$d['detallecot_id']."/".$cotizacion_id); ?>"  method="POST" class="form"> 
                              <td>   
                                  <button type="submit" class="btn btn-danger btn-sm"><span class="fa fa-trash"></span></button>
                             </form></td>-->
                             
-                    </tr>
-                      </table>
-                    <table class="table table-striped table-condensed" id="mitabla">
+            </tbody>
+            <tr>
+                <td rowspan="2" colspan="3" class="text-center" style="font-size: 16pt">TOTAL</td>
+                <td colspan="3" class="text-center">NUMERAL(Bs.)</td>
+                <td class="text-right">
+                    <span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font></span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" class="text-center">MONTO LITERAL</td>
+            </tr>
+            <tr>
+                <td colspan="7" class="text-center" style="font-size: 16pt">
+                    <b><?php echo num_to_letras($totalfinal); ?></b>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="text-center text-bold" style="font-size: 9pt">CONDICIONES DE TRABAJO</td>
+                <td class="text-center text-bold" style="font-size: 9pt">RECIBI CONFORME</td>
+                <td rowspan="4" colspan="4"></td>
+            </tr>
+            <tr>
+                <td colspan="3"><br></td>
+            </tr>
+            <tr>
+                <td colspan="3">FIRMA</td>
+            </tr>
+            <tr>
+                <td colspan="3">&nbsp;</td>
+            </tr>
+            <tr>
+                <td colspan="3">NOMBRE</td>
+                <!--<td class="text-center text-bold" style="font-size: 9pt">RECIBI CONFORME</td>-->
+                <td rowspan="5" colspan="4" class="text-center">XXXXXXXX
+                    <br>
+                    REPRESENTANTE LEGAL</td>
+            </tr>
+            <tr>
+                <td colspan="3" class="text-center">C.I.:</td>
+            </tr>
+            <tr>
+                <td colspan="3">VALIDEZ DE LA OFERTA <?php echo $cotizacion['cotizacion_validez']; ?> CALENDARIO</td>
+            </tr>
+            <tr>
+                <td colspan="3">TIEMPO DE ENTREGA <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> CALENDARIO</td>
+            </tr>
+            <tr>
+                <td colspan="3">LUGAR DE ENTREGA <?php echo ""; ?></td>
+            </tr>
+            <tr>
+                <td colspan="7" class="text-center">TODOS LOS PRECIOS INCLUYEN IMPUESTOS DE LEY</td>
+            </tr>
+            <tr>
+                <td colspan="7" class="text-center">FAVOR EMITIR EL CHEQUE A NOMBRE DE :xxx</td>
+            </tr>
+            <tr>
+                <td>CONSULTAS</td>
+                <td colspan="2" class="text-center">
+                    TELEFONOS: <?php echo $empresa[0]['empresa_telefono']; ?>
+                </td>
+                <td colspan="4" class="text-center">
+                    FAX: xxxx
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4">
+                    <?php echo $empresa[0]['empresa_departamento'].", ".$empresa[0]['empresa_direccion']; ?>
+                </td>
+                <td colspan="4" class="text-center">
+                    e-mail:<?php echo $empresa[0]['empresa_email']; ?>
+                </td>
+            </tr>
+        </table>
+                    <!--<table class="table table-striped table-condensed" id="mitabla">
    <td>
                     	 <center>  
-                    	 <b>LITERAL: <?php echo num_to_letras($totalfinal); ?></b></center>
+                    	 <b>LITERAL: <?php /*echo num_to_letras($totalfinal); ?></b></center>
                     	 <div class="col-md-12" style="text-align: right;">
                     	 <b>Toltal Desc. <span class="badge badge-success"><font size="3"><b><?php echo number_format($descuento,2,".",","); ?></b></font></span></b><br>
                     	 <b>TOTAL
-                            	<span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font></span>
+                            	<span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,2,".",",");*/ ?></b></font></span>
                             
                         </div>    
                    </td>
                     
                     
-                </table>
+                </table>-->
               
             </div>
     
@@ -190,16 +249,14 @@
        
             
     </div>
-    <center style="padding-top: 5%;">
+    <!--<center style="padding-top: 5%;">
               
-                <?php echo "---------------------------------"; ?><br>
-                <?php echo  $usuario['usuario_nombre']; ?>    
+                <?php /*echo "---------------------------------"; ?><br>
+                <?php echo  $usuario['usuario_nombre'];*/ ?>    
                
- </center>
+ </center>-->
 </div>
 
-</div>
+<!--</div>-->
 
-
-
-        
+ 
