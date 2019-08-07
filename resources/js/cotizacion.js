@@ -109,7 +109,7 @@ function detallecota(cotizacion_id,producto_id){
            type:"POST",
            data:{cotizacion_id:cotizacion_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento, descripcion:descripcion, producto_precio:producto_precio, producto_factor:producto_factor},
            success:function(respuesta){     
-               alert (producto_factor);
+               //alert (producto_factor);
                detallecoti();                      
             
         }
@@ -829,8 +829,6 @@ function tablaresultados(opcion)
 
     var cotizacion_id = document.getElementById('cotizacion_id').value;
 
-    var limite = 10;
-
     var base_url = document.getElementById('base_url').value;
 
     
@@ -893,13 +891,11 @@ function tablaresultados(opcion)
 
                     html = "";
 
-                   if (n <= limite) x = n; 
-
-                   else x = limite;
+                   
 
                     
 
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
 
                       var descripcion =  registros[i]["producto_nombre"]+registros[i]["producto_marca"]+registros[i]["producto_industrias"];
 
