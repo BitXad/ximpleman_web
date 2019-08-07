@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/cotizacion_fecha.js'); ?>" type="text/javascript"></script>
 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -71,9 +72,9 @@
                 </td>
                 <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
                 <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
-                    Marca: <b><?php echo $d['producto_marca']; ?></b> / 
+                    Marca: <b><?php echo $d['producto_marca']; ?></b>
                     <!--Industria: <b><?php //echo $d['producto_industria']; ?></b>-->
-                    <?php if($d['detallecot_caracteristica'] != ""){ echo " / ".$d['detallecot_caracteristica'];} ?>
+                    <?php if($d['detallecot_caracteristica'] != "" || $d['detallecot_caracteristica'] != null){ echo " / ".$d['detallecot_caracteristica'];} ?>
                 </td>
                 <td class="text-center">
                     <?php echo $d['producto_industria']; ?>
