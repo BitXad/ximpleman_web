@@ -1,8 +1,7 @@
 $(document).on("ready",inicio);
 
 function inicio(){
-
-        
+    
         detallecoti();
        
 
@@ -1073,3 +1072,4 @@ function mostrar_saldo(s,producto_id)
   //alert(s[s.selectedIndex].id);// get id
   $("#producto_precio"+producto_id).val(s[s.selectedIndex].id);
 }
+
