@@ -23,20 +23,6 @@
 
 </script>
 
-<!--<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-</script>   -->
-
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->    
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -74,7 +60,7 @@
                 </div>
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
-<form method="post" onclick="ventas_por_fecha()">
+<!--<form method="post">-->
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:none;'>
     <br>
     <center>            
@@ -107,34 +93,39 @@
         <br>
         <div class="col-md-3">
 
-            <button class="btn btn-sm btn-facebook btn-sm btn-block"  type="submit">
+            <button class="btn btn-sm btn-facebook btn-sm btn-block"   onclick="ventas_por_fecha()">
                 <h4>
                 <span class="fa fa-search"></span>   Buscar
                 </h4>
-          </button>
+            </button>
+            
             <br>
         </div>
         
     </center>    
     <br>    
 </div>
-</form>
+<!--</form>-->
 <!------------------------------------------------------------------------------------------->
 
-                
-                
-                
+  
 
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                      <input id="filtrar" type="text" onkeypress="validar(event,10)" class="form-control" placeholder="Ingrese usuario, cliente, fecha">
-                  </div>
-            <!--------------------- fin parametro de buscador --------------------->
+            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+                <input id="filtrar" type="text" onkeypress="validar(event,10)" class="form-control" placeholder="Ingrese usuario, cliente, fecha">
+            </div>
+        <!--------------------- fin parametro de buscador --------------------->
             
 <!--------------------- inicio loader ------------------------->
-<div class="row" id='oculto'  style='display:none;'>
+<div class="row" id='oculto' style='display:block;'>
+    <center>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+    </center>
+</div> 
+
+<div class="row" id='oculto2' style='display:none;'>
     <center>
         <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
     </center>
