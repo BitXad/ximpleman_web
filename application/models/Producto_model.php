@@ -184,7 +184,8 @@ class Producto_model extends CI_Model
                    p.estado_id = e.estado_id
                    and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
                    or producto_codigo like '%".$parametro."%' or producto_marca like '%".$parametro."%'
-                   or producto_industria like '%".$parametro."%' or producto_caracteristicas like '%".$parametro."%')
+                   or producto_industria like '%".$parametro."%' or producto_caracteristicas like '%".$parametro."%'
+                   or producto_principioact like '%".$parametro."%' or producto_accionterap like '%".$parametro."%')
                    ".$categoriaestado."
               GROUP By p.producto_id
               ORDER By p.producto_nombre";
