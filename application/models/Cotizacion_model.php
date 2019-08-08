@@ -51,7 +51,7 @@ class Cotizacion_model extends CI_Model
     {
         $sql = "SELECT d.*, p.* from detalle_cotizacion d, inventario p
                where d.producto_id=p.producto_id and d.cotizacion_id = ".$cotizacion_id."
-               limit 500";
+               order by d.detallecot_id desc";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     } 
