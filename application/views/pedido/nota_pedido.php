@@ -197,6 +197,7 @@ border-bottom : 1px solid #aaa;
             <!--<th>#</th>-->
             <th style="padding: 0"><center>CANT</center></th>
             <th style="padding: 0"><center>DESCRIPCIÓN</center></th>
+            <th style="padding: 0"><center>UNIDAD</center></th>
             <th style="padding: 0"><center>PREC.UNIT</th>
             <th style="padding: 0"><center>TOTAL</th>
         </tr>
@@ -211,9 +212,7 @@ border-bottom : 1px solid #aaa;
         ?>
         
             <tr style="padding: 0;">
-<!--                <td>
-                    <?php echo $i++; ?>
-                </td>-->
+
                 <td style="padding: 0">
                     <center>
                         <?php echo $p['detalleped_cantidad']; ?>
@@ -221,6 +220,9 @@ border-bottom : 1px solid #aaa;
                 </td>
                 <td style="padding: 0">
                     <?php echo $p['producto_nombre']; ?>
+                </td>
+                <td style="padding: 0">
+                    <?php echo $p['producto_unidad']; ?>
                 </td>
                 <td align="right"  style="padding: 0">
                     
@@ -236,7 +238,7 @@ border-bottom : 1px solid #aaa;
         ?>
         <tr align="right" style="border-top: solid; border-bottom: solid;">
 <!--            <th></th>-->
-            <td colspan="3"  style="padding: 0"><font size="3"><b>Total Bs</b></font></td>
+            <td colspan="4"  style="padding: 0"><font size="3"><b>Total Bs</b></font></td>
 <!--            <th></th>
             <th></th>-->
             <td align="right"  style="padding: 0"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
@@ -257,6 +259,10 @@ border-bottom : 1px solid #aaa;
                 </center>  
             </td>
             <td style="padding: 0">
+                <center>
+                    __________________________<br>
+                            DESPACHADO POR
+                </center>  
             </td>
             <td  style="padding: 0">
                 <center>

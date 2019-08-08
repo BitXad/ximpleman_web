@@ -640,7 +640,15 @@ function mostrar_ocultar(){
                                         </div>
                                         
                                         <h5 class="modal-title" id="myModalLabel"><b>FECHA ENTREGA</b></h5>
-                                        <input type="date" id="pedido_fechaentrega" name="pedido_fechaentrega" value="<?php echo date('Y-m-d'); ?>" class="btn btn-default btn-xs" style="width: 120px;">
+                                        <?php 
+                                            $ahora = time();
+                                            $unDiaEnSegundos = 24 * 60 * 60;
+                                            $manana = $ahora + $unDiaEnSegundos;
+                                            $mananaLegible = date("Y-m-d", $manana);
+                                            # ahoraLegible únicamente es para demostrar
+                                            //$ahoraLegible = date("Y-m-d H:i:s", $ahora);
+                                        ?>
+                                        <input type="date" id="pedido_fechaentrega" name="pedido_fechaentrega" value="<?php echo $mananaLegible; ?>" class="btn btn-default btn-xs" style="width: 120px;">
                                     </div>
                                         
                                     <div class="col-md-2" style="padding: 0;">                                      
