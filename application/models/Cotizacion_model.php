@@ -27,10 +27,7 @@ class Cotizacion_model extends CI_Model
      */
     function get_all_cotizacion()
     {
-         $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
-        
+         
         $cotizacion = $this->db->query("
             SELECT
                 c.*, u.*
@@ -40,9 +37,8 @@ class Cotizacion_model extends CI_Model
             WHERE
                 c.usuario_id = u.usuario_id
                
-            ORDER BY `cotizacion_id` DESC
+            ORDER BY `cotizacion_id` DESC limit 500
 
-            " . $limit_condition . "
         ")->result_array();
 
         return $cotizacion;
@@ -55,7 +51,7 @@ class Cotizacion_model extends CI_Model
     {
         $sql = "SELECT d.*, p.* from detalle_cotizacion d, inventario p
                where d.producto_id=p.producto_id and d.cotizacion_id = ".$cotizacion_id."
-               limit 500";
+               order by d.detallecot_id desc";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     } 

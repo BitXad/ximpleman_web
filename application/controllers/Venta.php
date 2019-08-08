@@ -1099,7 +1099,7 @@ function edit($venta_id)
     function actualizarprecio()
     {
      
-        if($this->acceso(12)){
+        //if($this->acceso(12)){
         //**************** inicio contenido *************** 
       
         if ($this->input->is_ajax_request()) {
@@ -1126,7 +1126,7 @@ function edit($venta_id)
 
         		
         //**************** fin contenido ***************
-        }
+        //}
         			
                
     }

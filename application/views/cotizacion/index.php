@@ -52,11 +52,13 @@
                     <tr>
 						<td><?php echo $cont; ?></td>
                         <td><?php echo $c['cotizacion_cliente']; ?></td>
-                        <td><?php echo $c['cotizacion_fecha']; ?></td>
+                        <td><?php echo date("d/m/Y", strtotime($c['cotizacion_fecha'])); ?>
+                         
+                        </td>
                         <td><?php echo $c['cotizacion_validez']; ?></td>
                         <td><?php echo $c['cotizacion_formapago']; ?></td>
                         <td><?php echo $c['cotizacion_tiempoentrega']; ?></td>
-                        <td><?php echo $c['cotizacion_fechahora']; ?></td>
+                        <td><?php echo date("d/m/Y H:i:s", strtotime($c['cotizacion_fechahora'])); ?></td>
                         <td><?php echo $c['cotizacion_total']; ?></td>
                         <td><?php echo $c['usuario_nombre']; ?></td>
                         <td>

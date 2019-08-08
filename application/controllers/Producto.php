@@ -889,4 +889,30 @@ class Producto extends CI_Controller{
         $this->load->view('layouts/main',$data);
         //}
     }
+    
+    /* * añadir unidad en producto */
+    function aniadircategoria()
+    {
+        if($this->acceso(103)) {
+            if ($this->input->is_ajax_request()) {
+                $this->load->model('Categoria_producto_model');
+                $parametro = $this->input->post('parametro');
+                if($parametro != ""){
+                    $params = array(
+                    'categoria_nombre' => $parametro,
+
+                    );
+                    $categoria_id = $this->Categoria_producto_model->add_categoria_producto($params);
+                    $datos = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
+                    echo json_encode($datos);
+                }else{
+                    echo json_encode(null);
+                }
+            }
+            else
+            {                 
+                show_404();
+            }
+        }
+    }
 }

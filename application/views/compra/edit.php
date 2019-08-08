@@ -1,6 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/compra.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_producto_newunidad.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -559,21 +560,23 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <span class="text-danger"><?php echo form_error('producto_codigo');?></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <label for="categoria_id" class="control-label">Categoria</label>
-                        <div class="form-group">
-                            <select name="categoria_id" id="categoria_id" class="form-control">
-                                <option value="1">- SELECCIONAR -</option>
-                                <?php 
-                                foreach($all_categoria_producto as $categoria_producto)
-                                {
-                                    $selected = ($categoria_producto['categoria_id'] == $this->input->post('categoria_id')) ? ' selected="selected"' : "";
+                    <div class="col-md-4">  
+                            <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
+                            <div class="form-group" style="display: flex">
+                                <select name="categoria_id" class="form-control" required id="categoria_id">
+                                            <option value="">- CATEGORIA -</option>
+                                            <?php 
+                                            foreach($all_categoria_producto as $categoria_producto)
+                                            {
+                                                    $selected = ($categoria_producto['categoria_id'] == $this->input->post('categoria_id')) ? ' selected="selected"' : "";
 
-                                    echo '<option value="'.$categoria_producto['categoria_id'].'" '.$selected.'>'.$categoria_producto['categoria_nombre'].'</option>';
-                                } 
-                                ?>
-                            </select>
-                        </div>
+                                                    echo '<option value="'.$categoria_producto['categoria_id'].'" '.$selected.'>'.$categoria_producto['categoria_nombre'].'</option>';
+                                            } 
+                                            ?>
+                                    </select>
+                                <a data-toggle="modal" data-target="#modalcategoria" class="btn btn-warning" title="Registrar Nueva Categoria">
+                                <i class="fa fa-plus-circle"></i></a>
+                            </div>
                     </div>
                     
                               <div class="col-md-6" hidden>
@@ -1429,3 +1432,30 @@ $("#texto2").change(function(){
 </div>
 
 <!--------------------------------------- MODAL HISTORIAL DE COSTOS -------------------------------------->
+
+<!------------------------ INICIO modal para Registrar nueva Categoria ------------------->
+<div class="modal fade" id="modalcategoria" tabindex="-1" role="dialog" aria-labelledby="modalcategoria">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_categoria" class="control-label">Registrar Nueva Categoria</label>
+                    <div class="form-group">
+                        <input type="text" name="nueva_categoria"  class="form-control" id="nueva_categoria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevacategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva Categoria ------------------->

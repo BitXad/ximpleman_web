@@ -1243,7 +1243,7 @@ function reportefechadecompra(filtro)
       
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"compra/buscarrepofecha";
-    var limite = 500;
+   
      
     $.ajax({url: controlador,
            type:"POST",
@@ -1258,18 +1258,18 @@ function reportefechadecompra(filtro)
                if (registros != null){
                    
                     
-                    var cont = 0;
+                    var cant = Number(0);
                     var total = Number(0);
                     var total_detalle = 0;
                     var n = registros.length; //tama«Ðo del arreglo de la consulta
                     $("#pillados").val("- "+n+" -");
                    
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
                    
-                    for (var i = 0; i < x ; i++){
+                   
+                    for (var i = 0; i < n ; i++){
                         
+                        cant += Number(registros[i]["detallecomp_cantidad"]);
                         var suma = Number(registros[i]["detallecomp_total"]);
                         var total = Number(suma+total);
                         //var bandera = 1;
@@ -1307,9 +1307,9 @@ function reportefechadecompra(filtro)
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<td></td>";
-                        html += "<td></td>";
                         html += "<th align='right'><b>TOTAL:</b></td>";
+                        html += "<th align='right'><b>"+Number(cant).toFixed(2)+"</b></th>";
+                        html += "<td></td>";
                         html += "<th align='right'><b>"+Number(total).toFixed(2)+"</b></th>";
                         html += "<td></td>";
                        
