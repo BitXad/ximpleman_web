@@ -1919,6 +1919,7 @@ function ventas_por_fecha()
     var estado_id = document.getElementById('estado_id').value;
     var usuario_id = document.getElementById('usuario_id').value;
     
+
     filtro = " and v.venta_fecha >= '"+fecha_desde+"'  and  v.venta_fecha <='"+fecha_hasta+
             "' and v.estado_id = "+estado_id;
     
@@ -1929,6 +1930,8 @@ function ventas_por_fecha()
    // alert(filtro)
     tabla_ventas(filtro);
 
+
+    
 }
 
 function ventas_por_parametro()

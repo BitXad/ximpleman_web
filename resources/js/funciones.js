@@ -1923,6 +1923,8 @@ function ventas_por_fecha()
     var estado_id = document.getElementById('estado_id').value;
     var usuario_id = document.getElementById('usuario_id').value;
     
+   // document.getElementById('oculto2').style.display = 'block'; //ocultar el bloque del loader
+    
     filtro = " and v.venta_fecha >= '"+fecha_desde+"'  and  v.venta_fecha <='"+fecha_hasta+
             "' and v.estado_id = "+estado_id;
     
@@ -1932,6 +1934,8 @@ function ventas_por_fecha()
     
    // alert(filtro)
     tabla_ventas(filtro);
+    
+   
 
 }
 
@@ -1965,6 +1969,7 @@ function tabla_ventas(filtro)
     var parametro_modulorestaurante = document.getElementById("parametro_modulorestaurante").value;
     
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
+    document.getElementById('oculto2').style.display = 'block'; //mostrar el bloque del loader
     
     $.ajax({url:controlador,
         type:"POST",
@@ -2134,6 +2139,7 @@ function tabla_ventas(filtro)
                     html += "                    </tr> ";
             $("#tabla_ventas").html(html);
             document.getElementById('oculto').style.display = 'none'; //mostrar el bloque del loader
+            document.getElementById('oculto2').style.display = 'none'; //ocultar el bloque del loader
         }        
     });    
             document.getElementById('oculto').style.display = 'none'; //mostrar el bloque del loader
@@ -2267,8 +2273,8 @@ function verificar_ventas()
 {
     var base_url = document.getElementById('base_url').value;    
     var parametro = document.getElementById('parametro').value;
-    var controlador = base_url+'venta/verificar_ventas';                       
-            
+    var controlador = base_url+'venta/verificar_ventas';
+     
     $.ajax({url: controlador,
         type:"POST",
         data:{filtro: filtro},
