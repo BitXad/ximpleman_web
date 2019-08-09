@@ -191,6 +191,8 @@ class Producto extends CI_Controller{
                 'producto_costoenvase' => $this->input->post('producto_costoenvase'),
                 'producto_precioenvase' => $this->input->post('producto_precioenvase'),
                 'destino_id' => $this->input->post('destino_id'),
+                'producto_principioact' => $this->input->post('producto_principioact'),
+                'producto_accionterap' => $this->input->post('producto_accionterap'),
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
@@ -350,6 +352,9 @@ class Producto extends CI_Controller{
                     'producto_costoenvase' => $this->input->post('producto_costoenvase'),
                     'producto_precioenvase' => $this->input->post('producto_precioenvase'),
                     'destino_id' => $this->input->post('destino_id'),
+                    'producto_principioact' => $this->input->post('producto_principioact'),
+                    'producto_accionterap' => $this->input->post('producto_accionterap'),
+                    
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);

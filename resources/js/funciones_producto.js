@@ -126,6 +126,10 @@ function tablaresultadosproducto(limite)
                         if(registros[i]["destino_id"] > 0){
                             html +="<br>Destino: "+registros[i]['destino_nombre'];
                         }
+                        if(true){
+                            html +="<br><label class='text-bold'>Principio Activo:</label> "+registros[i]['producto_principioact'];
+                            html +="<br><label class='text-bold'>Acción Terapeutica:</label> "+registros[i]['producto_accionterap'];
+                        }
                         html += "";
                         html += "</div>";
                         html += "</div>";
