@@ -153,11 +153,13 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2">
-                                        <label for="parametro_modulorestaurante" class="control-label">MODULO RESTAURANTE</label>
+                                        <label for="parametro_modulorestaurante" class="control-label">MODULO</label>
                                         <div class="form-group">
-                                        <select  name="parametro_modulorestaurante" class="form-control" id="parametro_modulorestaurante"  />
-                                        <option value="0" <?php if($parametro['parametro_modulorestaurante']==0) echo 'selected'; ?> >NO</option>
-								        <option value="1" <?php if($parametro['parametro_modulorestaurante']==1) echo 'selected'; ?> >SI</option> </select>
+                                        <select  name="parametro_modulorestaurante" class="form-control" id="parametro_modulorestaurante" >
+                                            <option value="0" <?php if($parametro['parametro_modulorestaurante']==0) echo 'selected'; ?> >NORMAL</option>
+                                            <option value="1" <?php if($parametro['parametro_modulorestaurante']==1) echo 'selected'; ?> >RESTAURANTE</option>
+                                            <option value="2" <?php if($parametro['parametro_modulorestaurante']==2) echo 'selected'; ?> >FARMACIA</option>
+                                        </select>
                                         </div>
                                     </div>
                                     <div class="col-md-2">

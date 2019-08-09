@@ -191,6 +191,8 @@ class Producto extends CI_Controller{
                 'producto_costoenvase' => $this->input->post('producto_costoenvase'),
                 'producto_precioenvase' => $this->input->post('producto_precioenvase'),
                 'destino_id' => $this->input->post('destino_id'),
+                'producto_principioact' => $this->input->post('producto_principioact'),
+                'producto_accionterap' => $this->input->post('producto_accionterap'),
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
@@ -211,6 +213,9 @@ class Producto extends CI_Controller{
             
             $this->load->model('Destino_producto_model');
             $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
             
             $data['resultado'] = 0;
             $data['page_title'] = "Producto";
@@ -350,6 +355,9 @@ class Producto extends CI_Controller{
                     'producto_costoenvase' => $this->input->post('producto_costoenvase'),
                     'producto_precioenvase' => $this->input->post('producto_precioenvase'),
                     'destino_id' => $this->input->post('destino_id'),
+                    'producto_principioact' => $this->input->post('producto_principioact'),
+                    'producto_accionterap' => $this->input->post('producto_accionterap'),
+                    
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);
@@ -372,6 +380,9 @@ class Producto extends CI_Controller{
                 $this->load->model('Destino_producto_model');
                 $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
                 
+                $this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_parametro(1);
+        
                 $this->load->model('Moneda_model');
                 $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
                 $data['page_title'] = "Producto";

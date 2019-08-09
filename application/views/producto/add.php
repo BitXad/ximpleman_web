@@ -385,6 +385,21 @@
                             <textarea rows="1" type="texarea" name="producto_caracteristicas" value="" class="form-control" id="producto_caracteristicas" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"> </textarea>
                         </div>
                     </div>
+                    <?php if($parametro['parametro_modulorestaurante'] == 2){ ?>
+                    <div class="col-md-6">
+                        <label for="producto_principioact" class="control-label">Principio Activo</label>
+                        <div class="form-group">
+                            <input type="text" name="producto_principioact" class="form-control" id="producto_principioact" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                            <label for="producto_accionterap" class="control-label">Acción Terapeutica</label>
+                            <div class="form-group">
+                                <input type="text" name="producto_accionterap" class="form-control" id="producto_accionterap" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            </div>
+                    </div>
+                    <?php } ?>
+                    
                     <div class="col-md-2">
                         <label for="producto_envase" class="control-label">Envase Retornable</label>
                         <div class="form-group">
