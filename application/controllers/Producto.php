@@ -214,6 +214,9 @@ class Producto extends CI_Controller{
             $this->load->model('Destino_producto_model');
             $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
             
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+            
             $data['resultado'] = 0;
             $data['page_title'] = "Producto";
             $data['_view'] = 'producto/add';
@@ -377,6 +380,9 @@ class Producto extends CI_Controller{
                 $this->load->model('Destino_producto_model');
                 $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
                 
+                $this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_parametro(1);
+        
                 $this->load->model('Moneda_model');
                 $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
                 $data['page_title'] = "Producto";

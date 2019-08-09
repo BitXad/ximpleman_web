@@ -50,6 +50,7 @@ function tablaresultadosproducto(limite)
     var estadotext = "";
     var categoriaestado = "";
     var base_url = document.getElementById('base_url').value;
+    var parametro_modulo = document.getElementById('parametro_modulorestaurante').value;
     //al inicar carga con los ultimos 50 productos
     if(limite == 1){
         controlador = base_url+'producto/buscarproductoslimit/';
@@ -126,9 +127,9 @@ function tablaresultadosproducto(limite)
                         if(registros[i]["destino_id"] > 0){
                             html +="<br>Destino: "+registros[i]['destino_nombre'];
                         }
-                        if(true){
-                            html +="<br><label class='text-bold'>Principio Activo:</label> "+registros[i]['producto_principioact'];
-                            html +="<br><label class='text-bold'>Acción Terapeutica:</label> "+registros[i]['producto_accionterap'];
+                        if(parametro_modulo == 2){
+                            html +="<br>Principio Activo: "+registros[i]['producto_principioact'];
+                            html +="<br>Acción Terapeutica: "+registros[i]['producto_accionterap'];
                         }
                         html += "";
                         html += "</div>";

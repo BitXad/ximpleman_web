@@ -95,8 +95,8 @@ break;
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ANCHO IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">ALTO IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FORMA IMAGEN</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODULO RESTAURANTE</th>
-                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR ITEMS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODULO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">AGRUPAR ITEMS</th>
                     </tr> 
                     <tr>
                         <td><?php foreach($all_categoria_producto as $categoria_producto)
@@ -112,7 +112,11 @@ break;
                         <td><?php echo $p['parametro_anchoimagen']; ?></td>
                         <td><?php echo $p['parametro_altoimagen']; ?></td>
                         <td><?php  if ($p['parametro_formaimagen']==''){ echo 'RECTANGULAR'; }else{ echo'CIRCULAR'; } ?></td>
-                        <td><?php  if ($p['parametro_modulorestaurante']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php  if ($p['parametro_modulorestaurante']==0){
+                                       echo 'NORMAL';
+                                   }elseif($p['parametro_modulorestaurante']==1){
+                                       echo'RESTAURANTE';
+                                   }else{ echo'FARMACIA';} ?></td>
                         <td><?php  if ($p['parametro_agruparitems']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                     </tr>
                    
