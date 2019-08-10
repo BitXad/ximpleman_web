@@ -541,6 +541,7 @@ class Producto extends CI_Controller{
         $producto_costo = $this->input->post('producto_costo');
         $producto_precio = $this->input->post('producto_precio');
         $factor = $this->input->post('unidad_compra');
+        $fecha_venc = $this->input->post('fecha_venc');
         
      $this->load->model('Compra_model');
       $this->load->library('form_validation');
@@ -636,6 +637,7 @@ class Producto extends CI_Controller{
              $sql = "INSERT into detalle_compra_aux(
                 compra_id,
                 producto_id,
+                detallecomp_fechavencimiento,
                 detallecomp_codigo,
                 detallecomp_unidad,
                 detallecomp_costo,
@@ -649,6 +651,7 @@ class Producto extends CI_Controller{
                 SELECT
                 ".$compra_id.",
                 producto_id,
+                '".$fecha_venc."',
                 producto_codigo,
                 producto_unidad,
                 ".$producto_costo.",

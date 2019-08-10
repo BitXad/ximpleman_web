@@ -609,7 +609,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <input type="number" step="any" name="producto_precio" value="<?php echo $this->input->post('producto_precio'); ?>" class="form-control" id="texto2" required/>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="cantidad" class="control-label">Cantidad Compra</label>
                         <div class="form-group">
                             <input type="number" step="any" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
@@ -617,13 +617,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
                     </div>
-                    <div class="col-md-6" id="select_unidad">
+                    <div class="col-md-4" id="select_unidad">
                         <label for="unidad_compra" class="control-label">Unidad Compra</label>
                         <div class="form-group">
                             <select name="unidad_compra" class="form-control" id="unidad_compra" >
                                 <option value="1">--Unidad--</option>
                                
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="fecha_venc" class="control-label">Fecha Venc.</label>
+                        <div class="form-group">
+                            <input type="date" name="fecha_venc" value="" class="form-control" id="fecha_venc" required/>
                         </div>
                     </div>  
                     
