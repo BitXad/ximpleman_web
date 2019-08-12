@@ -150,49 +150,49 @@
                         if($rolusuario[114-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoría_cliente');?>"><i class="fa fa-user"></i>Categoría Negocio</a>
+                            <a href="<?php echo site_url('Categoria_cliente');?>"><i class="fa fa-user"></i>Categoría Negocio</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[115-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoría_clientezona');?>"><i class="fa fa-map-marker"></i>Categoría Zonas</a>
+                            <a href="<?php echo site_url('Categoria_clientezona');?>"><i class="fa fa-map-marker"></i>Categoría Zonas</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[116-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoría_egreso');?>"><i class="fa fa-list"></i>Categoría Egreso</a>
+                            <a href="<?php echo site_url('Categoria_egreso');?>"><i class="fa fa-list"></i>Categoría Egreso</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[117-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoría_ingreso');?>"><i class="fa fa-list-alt"></i>Categoría Ingreso</a>
+                            <a href="<?php echo site_url('Categoria_ingreso');?>"><i class="fa fa-list-alt"></i>Categoría Ingreso</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[118-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoría_producto');?>"><i class="fa fa-cubes"></i>Categoría Productos</a>
+                            <a href="<?php echo site_url('Categoria_producto');?>"><i class="fa fa-cubes"></i>Categoría Productos</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[119-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoría_servicio');?>"><i class="fa fa-list-ul"></i>Categoría Servicio</a>
+                            <a href="<?php echo site_url('Categoria_servicio');?>"><i class="fa fa-list-ul"></i>Categoría Servicio</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[120-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoría_trabajo');?>"><i class="fa fa-building"></i> Categoría Trabajo</a>
+                            <a href="<?php echo site_url('Categoria_trabajo');?>"><i class="fa fa-building"></i> Categoría Trabajo</a>
                         </li>
                         <?php
                         }
@@ -241,7 +241,7 @@
                         if($rolusuario[127-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('subCategoría_servicio');?>"><i class="fa fa-list"></i>Sub Categoría Servicio</a>
+                            <a href="<?php echo site_url('subCategoria_servicio');?>"><i class="fa fa-list"></i>Sub Categoría Servicio</a>
                         </li>
                         <?php
                         }
@@ -602,7 +602,7 @@
                             <a href="<?php echo site_url('categ_imagen');?>"><i class="fa fa-image"></i>Categoría Imagen</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('Categoría_imagen');?>"><i class="fa fa-list-ul"></i><i class="fa fa-image"></i>Categoría Imagen</a>
+                            <a href="<?php echo site_url('Categoria_imagen');?>"><i class="fa fa-list-ul"></i><i class="fa fa-image"></i>Categoría Imagen</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('empresa_pagina');?>"><i class="fa fa-bank"></i><i class="fa fa-sitemap"></i>Empresa Pagina</a>
