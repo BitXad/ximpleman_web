@@ -52,7 +52,7 @@
                 <th>DESCRIPCION</th>
                 <th>PROCEDENCIA</th>
                 <th>PRECIO<br>UNITARIO</th>
-                <th>DESCUENTO</th>
+                <th>DESC.</th>
                 <th>PRECIO<br>TOTAL</th>
             </tr>
             <tbody class="">
@@ -68,7 +68,7 @@
                     $totalfinal += $d['detallecot_total'];
                 ?>
             <tr>    
-                <td  style="text-align: right;"> <?php echo $d['detallecot_cantidad']; ?></font>
+                <td  style="text-align: center;"> <?php echo $d['detallecot_cantidad']; ?></font>
                     <input id="detallecot_id"  name="detallecot_id" type="hidden" class="form-control" value="<?php echo $d['detallecot_id']; ?>">
                 </td>
                 <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
@@ -134,13 +134,13 @@
                 <td colspan="3"><br></td>
             </tr>
             <tr>
-                <td colspan="3">FIRMA</td>
+                <td colspan="3" class="text-bold">FIRMA</td>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="3">NOMBRE</td>
+                <td colspan="3" class="text-bold">NOMBRE</td>
                 <!--<td class="text-center text-bold" style="font-size: 9pt">RECIBI CONFORME</td>-->
                 <td rowspan="5" colspan="4" class="text-center">
                     <?php echo $empresa[0]['empresa_propietario']; ?>
@@ -157,24 +157,24 @@
                 <td colspan="3" class="text-center">C.I.:</td>
             </tr>
             <tr>
-                <td colspan="3">VALIDEZ DE LA OFERTA <?php echo $cotizacion['cotizacion_validez']; ?> CALENDARIO</td>
+                <td colspan="3" class="text-bold">VALIDEZ DE LA OFERTA <?php echo $cotizacion['cotizacion_validez']; ?> CALENDARIO</td>
             </tr>
             <tr>
-                <td colspan="3">TIEMPO DE ENTREGA: <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> CALENDARIO</td>
+                <td colspan="3" class="text-bold">TIEMPO DE ENTREGA: <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> CALENDARIO</td>
             </tr>
             <tr>
-                <td colspan="3">LUGAR DE ENTREGA: <?php echo $cotizacion['cotizacion_lugarentrega']; ?></td>
+                <td colspan="3" class="text-bold">LUGAR DE ENTREGA: <?php echo $cotizacion['cotizacion_lugarentrega']; ?></td>
             </tr>
             <tr>
                 <td colspan="7" class="text-center">TODOS LOS PRECIOS INCLUYEN IMPUESTOS DE LEY</td>
             </tr>
             <tr>
-                <td colspan="7" class="text-center">FAVOR EMITIR EL CHEQUE A NOMBRE DE: <?php echo $cotizacion['cotizacion_chequenombre'] ?></td>
+                <td colspan="7" class="text-center"><b>FAVOR EMITIR EL CHEQUE A NOMBRE DE:</b> <?php echo $cotizacion['cotizacion_chequenombre'] ?></td>
             </tr>
             <tr>
-                <td>CONSULTAS</td>
+                <td class="text-bold">CONSULTAS</td>
                 <td colspan="2" class="text-center">
-                    TELEFONOS: <?php echo $empresa[0]['empresa_telefono']; ?>
+                    <b>TELEFONOS:</b> <?php echo $empresa[0]['empresa_telefono']; ?>
                 </td>
                 <td colspan="4" class="text-center">
                     
@@ -182,10 +182,10 @@
             </tr>
             <tr>
                 <td colspan="4">
-                    <?php echo $empresa[0]['empresa_departamento'].", Dirección: ".$empresa[0]['empresa_direccion']; ?>
+                    <?php echo $empresa[0]['empresa_departamento'].", <b>Dirección:</b> ".$empresa[0]['empresa_direccion']; ?>
                 </td>
                 <td colspan="4" class="text-center">
-                    e-mail:<?php echo $empresa[0]['empresa_email']; ?>
+                    <b>e-mail:</b> <?php echo $empresa[0]['empresa_email']; ?>
                 </td>
             </tr>
         </table>

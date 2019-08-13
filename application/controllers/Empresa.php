@@ -124,6 +124,9 @@ class Empresa extends CI_Controller{
                     'empresa_departamento' => $this->input->post('empresa_departamento'),
                     'empresa_propietario' => $this->input->post('empresa_propietario'),
                     'empresa_codigo' => $this->input->post('empresa_codigo'),
+                    'empresa_email' => $this->input->post('empresa_email'),
+                    'empresa_profesion' => $this->input->post('empresa_profesion'),
+                    'empresa_cargo' => $this->input->post('empresa_cargo'),
             );
             
             $empresa_id = $this->Empresa_model->add_empresa($params);
@@ -233,6 +236,9 @@ class Empresa extends CI_Controller{
                         'empresa_departamento' => $this->input->post('empresa_departamento'),
                         'empresa_propietario' => $this->input->post('empresa_propietario'),
                         'empresa_codigo' => $this->input->post('empresa_codigo'),
+                        'empresa_email' => $this->input->post('empresa_email'),
+                        'empresa_profesion' => $this->input->post('empresa_profesion'),
+                        'empresa_cargo' => $this->input->post('empresa_cargo'),
                 );
 
                 $this->Empresa_model->update_empresa($empresa_id,$params);            
