@@ -49,15 +49,13 @@ private function acceso($id_rol){
                     'thumb' => $session_data['thumb']
                 );*/
 
-                $params['limit'] = RECORDS_PER_PAGE;
-                $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
+                $p
                 $config = $this->config->item('pagination');
                 $config['base_url'] = site_url('usuario/index?');
                 $config['total_rows'] = $this->Usuario_model->get_all_usuario_count();
                 $this->pagination->initialize($config);
                 $data['page_title'] = "Usuario";
-                $data['usuario'] = $this->Usuario_model->get_all_usuario($params);
+                $data['usuario'] = $this->Usuario_model->get_all_usuario();
                 //$data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario($params);
                 //$data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario($params);
 
