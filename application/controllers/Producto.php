@@ -191,6 +191,8 @@ class Producto extends CI_Controller{
                 'producto_costoenvase' => $this->input->post('producto_costoenvase'),
                 'producto_precioenvase' => $this->input->post('producto_precioenvase'),
                 'destino_id' => $this->input->post('destino_id'),
+                'producto_principioact' => $this->input->post('producto_principioact'),
+                'producto_accionterap' => $this->input->post('producto_accionterap'),
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
@@ -211,6 +213,9 @@ class Producto extends CI_Controller{
             
             $this->load->model('Destino_producto_model');
             $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
             
             $data['resultado'] = 0;
             $data['page_title'] = "Producto";
@@ -350,6 +355,9 @@ class Producto extends CI_Controller{
                     'producto_costoenvase' => $this->input->post('producto_costoenvase'),
                     'producto_precioenvase' => $this->input->post('producto_precioenvase'),
                     'destino_id' => $this->input->post('destino_id'),
+                    'producto_principioact' => $this->input->post('producto_principioact'),
+                    'producto_accionterap' => $this->input->post('producto_accionterap'),
+                    
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);
@@ -372,6 +380,9 @@ class Producto extends CI_Controller{
                 $this->load->model('Destino_producto_model');
                 $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
                 
+                $this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_parametro(1);
+        
                 $this->load->model('Moneda_model');
                 $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
                 $data['page_title'] = "Producto";
@@ -530,6 +541,7 @@ class Producto extends CI_Controller{
         $producto_costo = $this->input->post('producto_costo');
         $producto_precio = $this->input->post('producto_precio');
         $factor = $this->input->post('unidad_compra');
+        $fecha_venc = $this->input->post('fecha_venc');
         
      $this->load->model('Compra_model');
       $this->load->library('form_validation');
@@ -625,6 +637,7 @@ class Producto extends CI_Controller{
              $sql = "INSERT into detalle_compra_aux(
                 compra_id,
                 producto_id,
+                detallecomp_fechavencimiento,
                 detallecomp_codigo,
                 detallecomp_unidad,
                 detallecomp_costo,
@@ -638,6 +651,7 @@ class Producto extends CI_Controller{
                 SELECT
                 ".$compra_id.",
                 producto_id,
+                '".$fecha_venc."',
                 producto_codigo,
                 producto_unidad,
                 ".$producto_costo.",
