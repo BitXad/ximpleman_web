@@ -993,7 +993,6 @@ function mostrar_ocultar(){
                                                 <?php 
                                                 foreach($preferencia as $p)
                                                 {?>
-                                                    <!--<input class="btn btn-xs btn-facebook" id="preferencia<?php echo $p["preferencia_descripcion"]; ?>"  value="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead">-->
                                                     <button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>
                                                     <br>
                                                 <?php } 
