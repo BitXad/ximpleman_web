@@ -1,0 +1,30 @@
+/* tabla-------------------*/
+#mitabla {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 9px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#mitabla td, #mitabla th {
+    border: 2px solid #000;
+    padding: 3px;
+    
+}
+
+#mitabla tr:nth-child(even){background-color: #f2f2f2;}
+
+#mitabla tr:hover {background-color: #ddd;}
+
+#mitabla th {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: center;
+    background-color: #3c8dbc;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+

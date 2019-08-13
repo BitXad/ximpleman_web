@@ -5,13 +5,14 @@
 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/cotizacion.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="fecha_cotizacion" id="fecha_cotizacion" value="<?php echo $cotizacion['cotizacion_fecha']; ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
- <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
  
+ <br>
+ <br>
  <br>
 <div id="fechacotizacion" style="text-align: right"></div>
 
@@ -110,7 +111,7 @@
                             
             </tbody>
             <tr>
-                <td rowspan="2" colspan="3" class="text-center" style="font-size: 16pt">TOTAL</td>
+                <td rowspan="2" colspan="3" class="text-center" style="font-size: 13pt">TOTAL</td>
                 <td colspan="3" class="text-center">NUMERAL(Bs.)</td>
                 <td class="text-right">
                     <span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font></span>
@@ -120,7 +121,7 @@
                 <td colspan="4" class="text-center">MONTO LITERAL</td>
             </tr>
             <tr>
-                <td colspan="7" class="text-center" style="font-size: 16pt">
+                <td colspan="7" class="text-center" style="font-size: 11pt">
                     <b><?php echo num_to_letras($totalfinal); ?></b>
                 </td>
             </tr>
@@ -141,9 +142,16 @@
             <tr>
                 <td colspan="3">NOMBRE</td>
                 <!--<td class="text-center text-bold" style="font-size: 9pt">RECIBI CONFORME</td>-->
-                <td rowspan="5" colspan="4" class="text-center">XXXXXXXX
+                <td rowspan="5" colspan="4" class="text-center">
+                    <?php echo $empresa[0]['empresa_propietario']; ?>
+                    <?php echo "<br>".$empresa[0]['empresa_profesion']; ?>
                     <br>
-                    REPRESENTANTE LEGAL</td>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <?php echo $empresa[0]['empresa_cargo']; ?> <?php echo $empresa[0]['empresa_nombre']; ?>
+                </td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center">C.I.:</td>
@@ -152,16 +160,16 @@
                 <td colspan="3">VALIDEZ DE LA OFERTA <?php echo $cotizacion['cotizacion_validez']; ?> CALENDARIO</td>
             </tr>
             <tr>
-                <td colspan="3">TIEMPO DE ENTREGA <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> CALENDARIO</td>
+                <td colspan="3">TIEMPO DE ENTREGA: <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> CALENDARIO</td>
             </tr>
             <tr>
-                <td colspan="3">LUGAR DE ENTREGA <?php echo ""; ?></td>
+                <td colspan="3">LUGAR DE ENTREGA: <?php echo $cotizacion['cotizacion_lugarentrega']; ?></td>
             </tr>
             <tr>
                 <td colspan="7" class="text-center">TODOS LOS PRECIOS INCLUYEN IMPUESTOS DE LEY</td>
             </tr>
             <tr>
-                <td colspan="7" class="text-center">FAVOR EMITIR EL CHEQUE A NOMBRE DE :xxx</td>
+                <td colspan="7" class="text-center">FAVOR EMITIR EL CHEQUE A NOMBRE DE: <?php echo $cotizacion['cotizacion_chequenombre'] ?></td>
             </tr>
             <tr>
                 <td>CONSULTAS</td>
@@ -169,12 +177,12 @@
                     TELEFONOS: <?php echo $empresa[0]['empresa_telefono']; ?>
                 </td>
                 <td colspan="4" class="text-center">
-                    FAX: xxxx
+                    
                 </td>
             </tr>
             <tr>
                 <td colspan="4">
-                    <?php echo $empresa[0]['empresa_departamento'].", ".$empresa[0]['empresa_direccion']; ?>
+                    <?php echo $empresa[0]['empresa_departamento'].", Dirección: ".$empresa[0]['empresa_direccion']; ?>
                 </td>
                 <td colspan="4" class="text-center">
                     e-mail:<?php echo $empresa[0]['empresa_email']; ?>
