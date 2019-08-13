@@ -51,9 +51,7 @@ class Usuario_model extends CI_Model
      */
     function get_all_usuario($params = array())
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
         
         $usuario = $this->db->query("
             SELECT
@@ -69,7 +67,7 @@ class Usuario_model extends CI_Model
 
             ORDER BY `usuario_id` DESC
 
-            " . $limit_condition . "
+            
         ")->result_array();
 
         return $usuario;

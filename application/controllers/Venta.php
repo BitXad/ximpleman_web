@@ -1532,8 +1532,6 @@ function anular_venta($venta_id){
         //**************** inicio contenido ***************          
 
                 
-        $params['limit'] = RECORDS_PER_PAGE;
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
         $config = $this->config->item('pagination');
        
@@ -1550,7 +1548,7 @@ function anular_venta($venta_id){
              $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
         }
         
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario($params);
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
         $data['empresa'] = $this->Empresa_model->get_empresa(1); 
       
         $data['_view'] = 'venta/combinados';
