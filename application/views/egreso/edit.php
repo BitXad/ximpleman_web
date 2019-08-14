@@ -7,15 +7,15 @@
                 EDITAR EGRESO
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
+                
 						
-						<?php echo form_open('egreso/edit/'.$egreso['egreso_id'],array("class"=>"form-horizontal")); ?>
-
+						<?php echo form_open('egreso/edit/'.$egreso['egreso_id']); ?>
+				<div class="box-body">
+          		<div class="row clearfix">
 						
-							<div class="form-group">
-									<label for="egreso_categoria" class="col-md-4 control-label">CATEGORIA</label>
-									<div class="col-md-8">
+							<div class="col-md-4">
+									<label for="egreso_categoria" class="control-label">CATEGORIA</label>
+									<div class="form-group">
 									<select name="egreso_categoria" class="form-control" >
                 <option value="">Selecciona categoria egreso</option>
                 <?php 
@@ -29,21 +29,21 @@
               </select>
 									</div>
 								</div>
-							<div class="form-group">
-								<label for="egreso_nombre" class="col-md-4 control-label">Nombre</label>
-								<div class="col-md-8">
+							<div class="col-md-4">
+								<label for="egreso_nombre" class="control-label">Nombre</label>
+								<div class="form-group">
 									<input type="text" name="egreso_nombre" value="<?php echo ($this->input->post('egreso_nombre') ? $this->input->post('egreso_nombre') : $egreso['egreso_nombre']); ?>" class="form-control" id="egreso_nombre" required/>
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="egreso_monto" class="col-md-4 control-label">Monto</label>
-								<div class="col-md-8">
+							<div class="col-md-4">
+								<label for="egreso_monto" class="control-label">Monto</label>
+								<div class="form-group">
 									<input type="number" step="any" min="0" name="egreso_monto" value="<?php echo ($this->input->post('egreso_monto') ? $this->input->post('egreso_monto') : $egreso['egreso_monto']); ?>" class="form-control" id="egreso_monto" required/>
 								</div>
 							</div>
-							<div class="form-group">
-									<label for="egreso_moneda" class="col-md-4 control-label">Moneda</label>
-									<div class="col-md-8">
+							<div class="col-md-4">
+									<label for="egreso_moneda" class="control-label">Moneda</label>
+									<div class="form-group">
 										<select name="egreso_moneda" class="form-control" required>
 											<option value="">select</option>
 											<?php 
@@ -62,30 +62,30 @@
 										</select>
 									</div>
 								</div>
-							<div class="form-group">
-								<label for="egreso_concepto" class="col-md-4 control-label">Concepto</label>
-								<div class="col-md-8">
+							<div class="col-md-4">
+								<label for="egreso_concepto" class="control-label">Concepto</label>
+								<div class="form-group">
 									<input type="text" name="egreso_concepto" value="<?php echo ($this->input->post('egreso_concepto') ? $this->input->post('egreso_concepto') : $egreso['egreso_concepto']); ?>" class="form-control" id="egreso_concepto"  />
 								</div>
 							</div>
 							
-							<div class="form-group">
-								<label for="egreso_numero" class="col-md-4 control-label">Numero de egreso</label>
-								<div class="col-md-8">
+							<div class="col-md-4">
+								<label for="egreso_numero" class="control-label">Numero de egreso</label>
+								<div class="form-group">
 									<input type="text" readonly="readonly" name="egreso_numero" value="<?php echo ($this->input->post('egreso_numero') ? $this->input->post('egreso_numero') : $egreso['egreso_numero']); ?>" class="form-control" id="egreso_numero" required />
 								</div>
 							</div>
 							
 							
-							<div class="form-group">
-								<div class="col-sm-offset-4 col-sm-8">
+							<div class="col-md-4">
+								
 									<button type="submit" class="btn btn-success">
 										<i class="fa fa-check"></i> Guardar
 									</button>
 									<a href="javascript:history.back()"><button type="button" class="btn btn-danger">
             		<i class="fa fa-times"></i> Cancelar
             	</button></a>
-						        </div>
+						       
 							</div>
 							
 						<?php echo form_close(); ?>
