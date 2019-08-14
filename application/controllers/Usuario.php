@@ -49,7 +49,7 @@ private function acceso($id_rol){
                     'thumb' => $session_data['thumb']
                 );*/
 
-                $p
+                
                 $config = $this->config->item('pagination');
                 $config['base_url'] = site_url('usuario/index?');
                 $config['total_rows'] = $this->Usuario_model->get_all_usuario_count();

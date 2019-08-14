@@ -49,15 +49,15 @@
                 <h4>REGISTRAR INGRESO</h4>
             </div>
             <div class="panel-body">
-                <div class="row">
-                    <div class="col-md-12">
+                
                         
-						<?php echo form_open('ingreso/add',array("class"=>"form-horizontal")); ?>
+						<?php echo form_open('ingreso/add/'); ?>
 
-							
-							<div class="form-group">
-									<label for="ingreso_categoria" class="col-md-4 control-label">Categoria</label>
-									<div class="col-md-8">
+				<div class="box-body">
+          		<div class="row clearfix">
+							<div class="col-md-4">
+									<label for="ingreso_categoria" class="control-label">Categoria</label>
+									<div class="form-group">
 										
 										<select name="ingreso_categoria" class="form-control" >
                 <option value="">- CATEGORIA INGRESO -</option>
@@ -72,21 +72,21 @@
               </select>
 									</div>
 								</div>
-							<div class="form-group">
-								<label for="ingreso_nombre" class="col-md-4 control-label">NOMBRE <a data-title="Nombre de la persona que realiza el ingreso" class="boton-ayuda">?</a></label>
-								<div class="col-md-8">
+							<div class="col-md-4">
+								<label for="ingreso_nombre" class="control-label">NOMBRE</label>
+								<div class="form-group">
 									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" required/>
 								</div>
 							</div>
-							<div class="form-group">
-								<label for="ingreso_monto" class="col-md-4 control-label">MONTO</label>
-								<div class="col-md-8">
+							<div class="col-md-4">
+								<label for="ingreso_monto" class="control-label">MONTO</label>
+								<div class="form-group">
 									<input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
 								</div>
 							</div>
-							<div class="form-group">
-									<label for="ingreso_moneda" class="col-md-4 control-label">- MONEDA -</label>
-									<div class="col-md-8">
+							<div class="col-md-4">
+									<label for="ingreso_moneda" class="control-label">- MONEDA -</label>
+									<div class="form-group">
 										<select name="ingreso_moneda" class="form-control" required>
 											<option value="">-- MONEDA --</option>
 											<?php 
@@ -106,9 +106,9 @@
 									</div>
 								</div>
 							
-							<div class="form-group">
-								<label for="ingreso_concepto" class="col-md-4 control-label">CONCEPTO</label>
-								<div class="col-md-8">
+							<div class="col-md-4">
+								<label for="ingreso_concepto" class="control-label">CONCEPTO</label>
+								<div class="form-group">
 									<input type="text" name="ingreso_concepto" value="<?php echo $this->input->post('ingreso_concepto'); ?>" class="form-control" id="ingreso_concepto" required/>
 								</div>
 							</div>
@@ -116,15 +116,15 @@
 							</div>
 							
 							
-							<div class="form-group">
-								<div class="col-sm-offset-4 col-sm-8">
+							<div class="col-md-4">
+								
 									<button type="submit" class="btn btn-success">
 										<i class="fa fa-check"></i> GUARDAR
 									</button>
 									<a href="index"><button type="button" class="btn btn-danger">
             		<i class="fa fa-times"></i> Cancelar
             	</button></a>
-						        </div>
+						        
 							</div>
 
 						<?php echo form_close(); ?>                            
