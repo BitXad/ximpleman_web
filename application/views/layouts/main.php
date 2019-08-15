@@ -38,7 +38,7 @@
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
-        <a href="" class="logo">
+        <a href="" class="logo" id="nologo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
             <span class="logo-mini" style="font-size:9px;">Ximpleman</span>
             <!-- logo for regular state and mobile devices -->
@@ -87,6 +87,9 @@
                     </li>
                 </ul>
             </div>
+<div style="float: none; width: 90%" class="text-center">
+    <span class="text-bold" style="display: block; padding-top: 9px; color: #FFF; font-size: 20px;">Ximpleman Web</span>
+</div>
         </nav>
     </header>
     <!-- Left side column. contains the logo and sidebar -->
@@ -144,7 +147,7 @@
                 </li>
                 
                 <li>
-                    <a href="#"><i class="fa fa-list-ol"></i> <span>Parametros</span></a>
+                    <a href="#"><i class="fa fa-list-ol"></i> <span>Parámetros Generales</span></a>
                     <ul class="treeview-menu">
                         <?php
                         if($rolusuario[114-1]['rolusuario_asignado'] == 1){
@@ -227,7 +230,7 @@
                         if($rolusuario[125-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('parametro');?>"><i class="fa fa-connectdevelop"></i> <span>Parametros</span></a>
+                            <a href="<?php echo site_url('parametro');?>"><i class="fa fa-connectdevelop"></i> <span>Parámetros de Negocio</span></a>
                         </li>
                         <?php
                         }
@@ -283,7 +286,7 @@
                         if($rolusuario[136-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('unidad');?>"><i class="fa fa-hourglass"></i>Unidad</a>
+                            <a href="<?php echo site_url('unidad');?>"><i class="fa fa-file-text-o"></i>Unidad</a>
                         </li>
                         <?php
                         }
@@ -305,7 +308,7 @@
                         if($rolusuario[1-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-cube"></i>Compras</a>
+                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-shopping-basket"></i>Compras</a>
                         </li>
                         <?php
                         }
@@ -382,13 +385,13 @@
                         if($rolusuario[89-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Ordenes de Pago</a>
+                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Órdenes de Pago</a>
                         </li>
                         <?php
                         }
                         ?>
                         <li>
-                            <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-money"></i>Ver Proceso de Venta</a>
+                            <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-list-ol"></i>Proceso de Venta</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i>Cocina</a>
@@ -410,7 +413,7 @@
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-cart-arrow-down"></i>Compras</a>
+                            <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-shopping-basket"></i>Compras</a>
                         </li>
                         <?php
                         }
@@ -431,7 +434,7 @@
                         if($rolusuario[139-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrow-right"></i>Mi Movimiento Diario</a>
+                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrows-h"></i>Mi Movimiento Diario</a>
                         </li>
                         <?php
                         }
@@ -452,7 +455,7 @@
                         if($rolusuario[142-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/servicioreportes');?>"><i class="fa fa-exchange"></i>Servicios</a>
+                            <a href="<?php echo site_url('reportes/servicioreportes');?>"><i class="fa fa-wrench"></i>Servicios</a>
                         </li>
                         <?php
                         }
@@ -537,7 +540,7 @@
                         if($rolusuario[148-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('usuario');?>"><i class="fa fa-user"></i>Usuarios</a>
+                            <a href="<?php echo site_url('usuario');?>"><i class="fa fa-users"></i>Usuarios</a>
                         </li>
                         <?php
                         }
@@ -558,14 +561,14 @@
                         if($rolusuario[152-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-table"></i> <span>Libro de Ventas</span></a>
+                            <a href="<?php echo site_url('factura');?>"><i class="fa fa-shopping-cart"></i> <span>Libro de Ventas</span></a>
                         </li>
                         <?php
                         }
                         if($rolusuario[153-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('factura/factura_compra');?>"><i class="fa fa-table"></i> <span>Libro de Compras</span></a>
+                            <a href="<?php echo site_url('factura/factura_compra');?>"><i class="fa fa-shopping-basket"></i> <span>Libro de Compras</span></a>
                         </li>
                         <?php
                         }
@@ -584,34 +587,34 @@
                 if($rolusuario[155-1]['rolusuario_asignado'] == 1){
                 ?>
                 <li>
-                    <a href="#"><i class="fa fa-sitemap"></i> <span>Web Site</span></a>
+                    <a href="#"><i class="fa fa-sitemap"></i> <span>Configuración Web Site</span></a>
                     <ul class="treeview-menu">
                         <li>
-                            <a href="<?php echo site_url('articulo');?>"><i class="fa fa-gg"></i>Articulos</a>
+                            <a href="<?php echo site_url('articulo');?>"><i class="fa fa-gg"></i>Artículos</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('boton');?>"><i class="fa fa-square"></i>Boton</a>
+                            <a href="<?php echo site_url('boton');?>"><i class="fa fa-square"></i>Botón</a>
+                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('boton_articulo');?>"><i class="fa fa-square"></i><i class="fa fa-gg"></i>Botón Artículo</a>
+                        </li>-->
+                        <!--<li>
+                            <a href="<?php //echo site_url('boton_slide');?>"><i class="fa fa-square"></i><i class="fa fa-image"></i>Botón Slide</a>
+                        </li>-->
+                        <!--<li>
+                            <a href="<?php //echo site_url('categ_imagen');?>"><i class="fa fa-image"></i>Categoría Imagen</a>
+                        </li>-->
+                        <li>
+                            <a href="<?php echo site_url('Categoria_imagen');?>"><!--<i class="fa fa-list-ul"></i>--><i class="fa fa-list-ul"></i>Categoría Imagen</a>
+                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('empresa_pagina');?>"><i class="fa fa-bank"></i><i class="fa fa-sitemap"></i>Empresa Página</a>
+                        </li>-->
+                        <li>
+                            <a href="<?php echo site_url('estado_pagina');?>"><i class="fa fa-arrows-h"></i>Estado Página</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('boton_articulo');?>"><i class="fa fa-square"></i><i class="fa fa-gg"></i>Boton Articulo</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('boton_slide');?>"><i class="fa fa-square"></i><i class="fa fa-image"></i>Boton Slide</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('categ_imagen');?>"><i class="fa fa-image"></i>Categoría Imagen</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_imagen');?>"><i class="fa fa-list-ul"></i><i class="fa fa-image"></i>Categoría Imagen</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('empresa_pagina');?>"><i class="fa fa-bank"></i><i class="fa fa-sitemap"></i>Empresa Pagina</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('estado_pagina');?>"><i class="fa fa-ellipsis-v"></i><i class="fa fa-sitemap"></i>Estado Pagina</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('galeria');?>"><i class="fa fa-image"></i>Galeria</a>
+                            <a href="<?php echo site_url('galeria');?>"><i class="fa fa-list-ol"></i>Galería</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('idioma');?>"><i class="fa fa-language"></i>Idioma</a>
@@ -626,28 +629,28 @@
                             <a href="<?php echo site_url('mapa');?>"><i class="fa fa-map-marker"></i>Mapa</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('menu');?>"><i class="fa fa-list-alt"></i>Menu</a>
+                            <a href="<?php echo site_url('menu');?>"><i class="fa fa-list-alt"></i>Menú</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('menu_principal');?>"><i class="fa fa-th-list"></i>Menu Principal</a>
+                            <a href="<?php echo site_url('menu_principal');?>"><i class="fa fa-th-list"></i>Menú Principal</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('pagina_web');?>"><i class="fa fa-globe"></i>Pagina Web</a>
+                            <a href="<?php echo site_url('pagina_web');?>"><i class="fa fa-globe"></i>Página Web</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('promocion');?>"><i class="fa fa-percent"></i><i class="fa fa-minus-circle"></i>Promoción</a>
+                            <a href="<?php echo site_url('promocion');?>"><!--<i class="fa fa-percent"></i>--><i class="fa fa-minus-circle"></i>Promoción</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('seccion');?>"><i class="fa fa-list-alt"></i>Sección</a>
+                            <a href="<?php echo site_url('seccion');?>"><i class="fa fa-paragraph"></i>Sección</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('slide');?>"><i class="fa fa-image"></i>Slide</a>
+                            <a href="<?php echo site_url('slide');?>"><i class="fa fa-sliders"></i>Slide</a>
                         </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('slide_image');?>"><i class="fa fa-list"></i><i class="fa fa-image"></i>Slide Imagen</a>
+                        </li>-->
                         <li>
-                            <a href="<?php echo site_url('slide_image');?>"><i class="fa fa-list"></i><i class="fa fa-image"></i>Slide Imagn</a>
-                        </li>
-                        <li>
-                            <a href="<?php echo site_url('submenu');?>"><i class="fa fa-list-alt"></i>Sub Menu</a>
+                            <a href="<?php echo site_url('submenu');?>"><i class="fa fa-tasks"></i>Sub Menú</a>
                         </li>
                     </ul>
                 </li>

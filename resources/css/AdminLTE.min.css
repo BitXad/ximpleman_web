@@ -5218,3 +5218,9 @@ table.text-center, table.text-center td, table.text-center th {
     text-align: left;
     vertical-align: middle;
 }
+
+@media (max-width: 991px) {
+    #nologo {
+        display: none;
+    }
+}
