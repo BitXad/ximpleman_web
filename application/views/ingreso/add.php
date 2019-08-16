@@ -56,6 +56,13 @@
 				<div class="box-body">
           		<div class="row clearfix">
 							<div class="col-md-4">
+								<label for="ingreso_nombre" class="control-label">NOMBRE</label>
+								<div class="form-group">
+									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" required/>
+								</div>
+							</div>
+							
+							<div class="col-md-4">
 									<label for="ingreso_categoria" class="control-label">Categoria</label>
 									<div class="form-group">
 										
@@ -72,12 +79,7 @@
               </select>
 									</div>
 								</div>
-							<div class="col-md-4">
-								<label for="ingreso_nombre" class="control-label">NOMBRE</label>
-								<div class="form-group">
-									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" required/>
-								</div>
-							</div>
+							
 							<div class="col-md-4">
 								<label for="ingreso_monto" class="control-label">MONTO</label>
 								<div class="form-group">
