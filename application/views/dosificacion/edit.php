@@ -4,66 +4,67 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Dosificación</h3>
             </div>
-			<?php echo form_open('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>
-			<div class="box-body">
-				<div class="row clearfix">
-					<div class="col-md-6">
-						<label for="empresa_id" class="control-label">Empresa</label>
-						<div class="form-group">
-							<select name="empresa_id" class="form-control">
-								<option value="">select empresa</option>
-								<?php 
-								foreach($all_empresa as $empresa)
-								{
-									$selected = ($empresa['empresa_id'] == $dosificacion['empresa_id']) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$empresa['empresa_id'].'" '.$selected.'>'.$empresa['empresa_nombre'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
+            <?php echo form_open('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>
+            <div class="box-body">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                        <label for="empresa_id" class="control-label">Empresa</label>
+                        <div class="form-group">
+                            <select name="empresa_id" class="form-control">
+                                <option value="">select empresa</option>
+                                <?php 
+                                    foreach($all_empresa as $empresa)
+                                    {
+                                        $selected = ($empresa['empresa_id'] == $dosificacion['empresa_id']) ? ' selected="selected"' : "";
+                                        echo '<option value="'.$empresa['empresa_id'].'" '.$selected.'>'.$empresa['empresa_nombre'].'</option>';
+                                    } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
 					<!--<div class="col-md-6">
 						<label for="dosificacion_fechahora" class="control-label">Fecha, Hora</label>
                                                 <?php
-                                                $fechayhora = ($this->input->post('dosificacion_fechahora') ? $this->input->post('dosificacion_fechahora') : $dosificacion['dosificacion_fechahora']);
+                                                /*$fechayhora = ($this->input->post('dosificacion_fechahora') ? $this->input->post('dosificacion_fechahora') : $dosificacion['dosificacion_fechahora']);
                                                 $fecha = date("Y-m-d", strtotime($fechayhora));
-                                                $hora = date("H:i:s", strtotime($fechayhora));
+                                                $hora = date("H:i:s", strtotime($fechayhora)); */
                                                 ?>
 						<div class="form-group">
                                                     <input type="datetime-local" name="dosificacion_fechahora" value="<?php echo $fecha."T".$hora; ?>" class="form-control" id="dosificacion_fechahora" />
 						</div>
 					</div>-->
-					<div class="col-md-6">
-						<label for="dosificacion_fechalimite" class="control-label">Fecha Limite</label>
-						<div class="form-group">
-							<input type="text" name="dosificacion_fechalimite" value="<?php echo ($this->input->post('dosificacion_fechalimite') ? $this->input->post('dosificacion_fechalimite') : $dosificacion['dosificacion_fechalimite']); ?>" class="form-control" id="dosificacion_fechalimite" />
-						</div>
-					</div>
-					<div class="col-md-6">
+                                        <div class="col-md-3">
 						<label for="dosificacion_nitemisor" class="control-label">Nit Emisor</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_nitemisor" value="<?php echo ($this->input->post('dosificacion_nitemisor') ? $this->input->post('dosificacion_nitemisor') : $dosificacion['dosificacion_nitemisor']); ?>" class="form-control" id="dosificacion_nitemisor" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="dosificacion_autorizacion" class="control-label">Autorización</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_autorizacion" value="<?php echo ($this->input->post('dosificacion_autorizacion') ? $this->input->post('dosificacion_autorizacion') : $dosificacion['dosificacion_autorizacion']); ?>" class="form-control" id="dosificacion_autorizacion" />
 						</div>
 					</div>
-					<div class="col-md-6">
+                                        <div class="col-md-6">
 						<label for="dosificacion_llave" class="control-label">Llave</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_llave" value="<?php echo ($this->input->post('dosificacion_llave') ? $this->input->post('dosificacion_llave') : $dosificacion['dosificacion_llave']); ?>" class="form-control" id="dosificacion_llave" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="dosificacion_numfact" class="control-label">Num. Factura</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_numfact" value="<?php echo ($this->input->post('dosificacion_numfact') ? $this->input->post('dosificacion_numfact') : $dosificacion['dosificacion_numfact']); ?>" class="form-control" id="dosificacion_numfact" />
 						</div>
 					</div>
+					<div class="col-md-3">
+						<label for="dosificacion_fechalimite" class="control-label">Fecha Limite</label>
+						<div class="form-group">
+							<input type="date" name="dosificacion_fechalimite" value="<?php echo ($this->input->post('dosificacion_fechalimite') ? $this->input->post('dosificacion_fechalimite') : $dosificacion['dosificacion_fechalimite']); ?>" class="form-control" id="dosificacion_fechalimite" />
+						</div>
+					</div>
+					
+					
                                         <div class="col-md-6">
 						<label for="dosificacion_sucursal" class="control-label">Sucursal</label>
 						<div class="form-group">
