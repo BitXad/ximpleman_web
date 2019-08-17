@@ -28,9 +28,10 @@
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="hidden" id="esrol" name="esrol" value="<?php echo $esrol; ?>">
 <input type="hidden" id="esrolconsolidar" name="esrolconsolidar" value="<?php echo $esrolconsolidar; ?>">
+
 <input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
 <input id="pedido_id" name="pedido_id" value="0" hidden>
-<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >
+<!--<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >-->
 <input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
 <!--<input id='tipo_venta' name='tipo_venta' value='<?php echo json_encode($tipo_venta); ?>' hidden>-->
 
