@@ -203,6 +203,36 @@ class Detalle_venta extends CI_Controller{
          
     }
 
+    function repocategoria()
+    {
+       
+        $this->load->model('Categoria_producto_model');
+        $data['categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+        $data['_view'] = 'detalle_venta/reportecategoria';
+        $this->load->view('layouts/main',$data);
+    }
+
+    function buscarcategoria()
+    {
+        
+            if ($this->input->is_ajax_request()) {
+
+                $parametro = $this->input->post('parametro');   
+
+                if ($parametro!=""){
+                    $datos = $this->Detalle_venta_model->get_categoria($parametro);            
+                   
+                    echo json_encode($datos);
+                }
+                else echo json_encode(null);
+            }
+            else
+            {                 
+                show_404();
+            }     
+         
+    }
+
     /*
      * Adding a new detalle_venta
      */

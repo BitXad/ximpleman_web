@@ -114,6 +114,20 @@ function ventas_dia($estado)
         ")->result_array();
         return $cliente;
     }
+    function get_categoria($parametro)
+    {
+        
+        $categoria = $this->db->query(
+        "SELECT SUM(d.detalleven_cantidad) as cantidad,  SUM(d.detalleven_total) as total, v.venta_fecha, p.producto_nombre
+        FROM detalle_venta d        
+        LEFT JOIN producto p ON d.producto_id=p.producto_id
+        LEFT JOIN categoria_producto c ON p.categoria_id=c.categoria_id
+        LEFT JOIN venta v ON d.venta_id=v.venta_id
+        WHERE ".$parametro."
+        GROUP BY p.producto_nombre 
+        ")->result_array();
+        return $categoria;
+    }
 
 
     function get_venta($venta_id)
