@@ -177,4 +177,29 @@ class Dosificacion_model extends CI_Model
 
         return $dosificacion;
     }
+    
+    /*
+     * Get this dosificacion
+     */
+    function get_this_dosificacion()
+    {
+        $dosificacion = $this->db->query("
+            SELECT
+                d.*, e.`estado_descripcion`,
+                em.`empresa_nombre`
+                
+            FROM
+                dosificacion d, estado e, empresa em
+
+            WHERE
+                d.estado_id = e.estado_id
+                and d.empresa_id = em.empresa_id
+
+            ORDER BY `dosificacion_id` DESC
+            
+        ")->row_array();
+
+        return $dosificacion;
+    }
+    
 }

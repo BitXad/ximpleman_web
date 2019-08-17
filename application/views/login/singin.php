@@ -79,14 +79,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             ?>
         </p>
         <div class="login-head">
-              <h2 class="text-center">Ximpleman</h2>
+          <h2 class="text-center"><?php echo $empresa[0]["empresa_nombre"] ?></h2>
+          <center><img src="<?php echo base_url('resources/images/empresas/'.$empresa[0]["empresa_imagen"].''); ?>"  style="width:80px;height:80px"></center>
+              <h3 class="text-center">Ximpleman</h3>
         </div>
         <div class="login-block">
             <!--                <form>-->
             <?php echo form_open('verificar'); ?>
             <input type="text" name="username" id="username" placeholder="Usuario" autocomplete="off" autofocus  required="" <?php if($diaslic['dias'] < 0){ ?> readonly <?php } ?> >
             <input type="password" name="password" id="password" class="lock" placeholder="Contraseña" <?php if($diaslic['dias'] < 0){ ?> readonly <?php } ?> >
-            <div class="forgot-top-grids">
+            <!--<div class="forgot-top-grids">
                 <div class="forgot-grid">
                     <ul>
                         <li>
@@ -99,11 +101,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <a href="#">¿Olvidaste tu contraseña?</a>
                 </div>
                 <div class="clearfix"> </div>
-            </div>
+            </div>-->
 
             <input type="submit" name="Sign In" value="Ingresar">
 
-            <h3>No estas registrado?<a href="#">  Registrate Ahora</a></h3>
+            <!--<h3>No estas registrado?<a href="#">  Registrate Ahora</a></h3>-->
 
             <!--                </form>-->
             <h5><a href="<?php echo base_url(); ?>">Regresar</a></h5>

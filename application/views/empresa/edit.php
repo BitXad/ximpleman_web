@@ -64,9 +64,27 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
+                                        <label for="empresa_profesion" class="control-label">Profesión</label>
+                                        <div class="form-group">
+                                            <input type="text" name="empresa_profesion" value="<?php echo ($this->input->post('empresa_profesion') ? $this->input->post('empresa_profesion') : $empresas['empresa_profesion']); ?>" class="form-control" id="empresa_profesion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="empresa_cargo" class="control-label">Cargo</label>
+                                        <div class="form-group">
+                                            <input type="text" name="empresa_cargo" value="<?php echo ($this->input->post('empresa_cargo') ? $this->input->post('empresa_cargo') : $empresas['empresa_cargo']); ?>" class="form-control" id="empresa_cargo" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
                                         <label for="empresa_codigo" class="control-label">Código</label>
                                         <div class="form-group">
                                             <input type="text" name="empresa_codigo" value="<?php echo ($this->input->post('empresa_codigo') ? $this->input->post('empresa_codigo') : $empresas['empresa_codigo']); ?>" class="form-control" id="empresa_codigo" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="empresa_email" class="control-label">Correo Electrónico</label>
+                                        <div class="form-group">
+                                            <input type="email" name="empresa_email" value="<?php echo ($this->input->post('empresa_email') ? $this->input->post('empresa_email') : $empresas['empresa_email']); ?>" class="form-control" id="empresa_email" />
                                         </div>
                                     </div>
 				</div>

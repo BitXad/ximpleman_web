@@ -97,6 +97,12 @@
                                         if($e['empresa_propietario']){
                                             echo "<br><b>de: </b>".$e['empresa_propietario'];
                                         }
+                                        if($e['empresa_profesion']){
+                                            echo "<br><b>Profesión: </b>".$e['empresa_profesion'];
+                                        }
+                                        if($e['empresa_cargo']){
+                                            echo "<br><b>Cargo: </b>".$e['empresa_cargo'];
+                                        }
                                         if($e['empresa_codigo']){
                                             echo "<br><b>Código: </b>".$e['empresa_codigo'];
                                         }
@@ -106,7 +112,10 @@
                             
                         </td>
                         <td><?php echo $e['empresa_eslogan']; ?></td>
-                        <td><?php echo $e['empresa_direccion']; ?></td>
+                        <td><?php echo $e['empresa_direccion'];
+                                  if($e['empresa_email']){
+                                            echo "<br><b>e-mail: </b>".$e['empresa_email'];
+                                        } ?></td>
                         <td><?php echo $e['empresa_telefono']; ?></td>
                         <td><?php echo $e['empresa_zona']; ?></td>
                         <td><?php echo $e['empresa_ubicacion']; ?></td>

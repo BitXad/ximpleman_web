@@ -137,7 +137,7 @@ border-bottom: 0px;
                           Forma de Pago: <b><?php echo $compra[0]['tipotrans_nombre'];?></b><br>
                           Fecha: <b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></b></td>
                           <td width="2%"></td>
-                          <td><?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?></td>
+                          <td><img src="<?php echo base_url('resources/images/empresas/'.$empresa[0]["empresa_imagen"].''); ?>"  style="width:80px;height:80px"></td>
                             </tr>
                           </table>
                          

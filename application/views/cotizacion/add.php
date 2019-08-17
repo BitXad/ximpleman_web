@@ -118,6 +118,20 @@ input[type=number] { -moz-appearance:textfield; }
 							<input type="text" name="cotizacion_tiempoentrega"  value="<?php echo ($this->input->post('cotizacion_tiempoentrega') ? $this->input->post('cotizacion_tiempoentrega') : $cotizacion['cotizacion_tiempoentrega']); ?>" class="form-control" id="cotizacion_tiempoentrega" />
 						</div>
 					</div>
+           <div class="col-md-4" >
+            <label for="cotizacion_lugarentrega" class="control-label">Lugar de Entrega</label>
+            <div class="form-group">
+              <input type="text" id="cotizacion_lugarentrega" name="cotizacion_lugarentrega" value="<?php echo ($this->input->post('cotizacion_lugarentrega') ? $this->input->post('cotizacion_lugarentrega') : $cotizacion['cotizacion_lugarentrega']); ?>" class="form-control"  />
+      
+            </div>
+          </div>
+          <div class="col-md-4" >
+            <label for="cotizacion_chequenombre" class="control-label">Cheque a Favor de: </label>
+            <div class="form-group">
+              <input type="text" id="cotizacion_chequenombre" name="cotizacion_chequenombre" value="<?php echo ($this->input->post('cotizacion_chequenombre') ? $this->input->post('cotizacion_chequenombre') : $cotizacion['cotizacion_chequenombre']); ?>" class="form-control"  />
+      
+            </div>
+          </div>
  <?php $cont = 0;
                           $subtotal = 0;
                           $descuento = 0;
@@ -142,7 +156,8 @@ input[type=number] { -moz-appearance:textfield; }
       
             </div>
           </div>
-           <div class="col-md-6">
+         
+           <div class="col-md-4">
             <label for="cotizacion_glosa" class="control-label">Glosa</label>
             <div class="form-group">
               <input type="text" name="cotizacion_glosa"  value="<?php echo ($this->input->post('cotizacion_glosa') ? $this->input->post('cotizacion_glosa') : $cotizacion['cotizacion_glosa']); ?>" class="form-control" id="cotizacion_glosa" />

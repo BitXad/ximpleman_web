@@ -28,7 +28,7 @@
                     <?php
                     if($newdosif == 1){
                     ?>
-                        <a href="<?php echo site_url('dosificacion/edit/'.$dosificacion[0]['dosificacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span>Editar</a> 
+                        <a href="<?php echo site_url('dosificacion/edit/'.$dosificacion['dosificacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span>Editar</a> 
                     <?php } ?>
                 </div>
                 
@@ -46,19 +46,22 @@
                 <label class="control-label">Empresa</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['empresa_nombre']; ?>
+                <?php echo $dosificacion['empresa_nombre']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Fecha Limite</label>
             </div>
             <div class="col-md-3">
-                <?php echo date("d/m/Y",strtotime($dosificacion[0]['dosificacion_fechalimite'])); ?>
+                <?php
+                if($dosificacion['dosificacion_fechalimite']){
+                    echo date("d/m/Y",strtotime($dosificacion['dosificacion_fechalimite']));
+                }?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Nit Emisor</label>
             </div>
             <div class="col-md-2">
-                <?php echo $dosificacion[0]['dosificacion_nitemisor']; ?>
+                <?php echo $dosificacion['dosificacion_nitemisor']; ?>
             </div>
         </div>
         <div class="col-md-12 linea">
@@ -66,19 +69,19 @@
                 <label class="control-label">Autorización</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_autorizacion']; ?>
+                <?php echo $dosificacion['dosificacion_autorizacion']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Llave</label>
             </div>
             <div class="col-md-3" style="word-break: break-word;">
-                <?php echo $dosificacion[0]['dosificacion_llave']; ?>
+                <?php echo $dosificacion['dosificacion_llave']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Num. Factura</label>
             </div>
             <div class="col-md-2">
-                <?php echo $dosificacion[0]['dosificacion_numfact']; ?>
+                <?php echo $dosificacion['dosificacion_numfact']; ?>
             </div>
         </div>
         <div class="col-md-12 linea">
@@ -86,19 +89,19 @@
                 <label class="control-label">Sucursal</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_sucursal']; ?>
+                <?php echo $dosificacion['dosificacion_sucursal']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Sfc</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_sfc']; ?>
+                <?php echo $dosificacion['dosificacion_sfc']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Actividad</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_actividad']; ?>
+                <?php echo $dosificacion['dosificacion_actividad']; ?>
             </div>
         </div>
         <div class="col-md-12 linea">
@@ -106,19 +109,19 @@
                 <label class="control-label">Leyenda 1</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_leyenda1']; ?>
+                <?php echo $dosificacion['dosificacion_leyenda1']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Leyenda 2</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_leyenda2']; ?>
+                <?php echo $dosificacion['dosificacion_leyenda2']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Leyenda 3</label>
             </div>
             <div class="col-md-2">
-                <?php echo $dosificacion[0]['dosificacion_leyenda3']; ?>
+                <?php echo $dosificacion['dosificacion_leyenda3']; ?>
             </div>
         </div>
         <div class="col-md-12 linea">
@@ -126,19 +129,19 @@
                 <label class="control-label">Leyenda 4</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_leyenda4']; ?>
+                <?php echo $dosificacion['dosificacion_leyenda4']; ?>
             </div>
             <div class="col-md-1">
                 <label class="control-label">Leyenda 5</label>
             </div>
             <div class="col-md-3">
-                <?php echo $dosificacion[0]['dosificacion_leyenda5']; ?>
+                <?php echo $dosificacion['dosificacion_leyenda5']; ?>
             </div>
            <div class="col-md-1">
                 <label class="control-label">Estado</label>
             </div>
             <div class="col-md-2">
-                <?php echo $dosificacion[0]['estado_descripcion']; ?>
+                <?php echo $dosificacion['estado_descripcion']; ?>
             </div>
              
         </div>
@@ -147,7 +150,7 @@
                 <label class="control-label">Actividad Secundaria</label>
             </div>
             <div class="col-md-2">
-                <?php echo $dosificacion[0]['dosificasion_actividadsec']; ?>
+                <?php echo $dosificacion['dosificasion_actividadsec']; ?>
             </div>
         </div>
     </div>

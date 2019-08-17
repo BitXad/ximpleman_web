@@ -32,19 +32,14 @@ class Dosificacion extends CI_Controller{
     function index()
     {
         if($this->acceso(149)){
-            $data['page_title'] = "Dosificación";
-            $params['limit'] = RECORDS_PER_PAGE; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('dosificacion/index?');
+           
             $config['total_rows'] = $this->Dosificacion_model->get_all_dosificacion_count();
             $this->pagination->initialize($config);
             if($config['total_rows'] > 0){
                 $data['newdosif'] = 1;
             }else{ $data['newdosif'] =0; }
 
-            $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion($params);
+            $data['dosificacion'] = $this->Dosificacion_model->get_this_dosificacion();
 
             $data['_view'] = 'dosificacion/index';
             $this->load->view('layouts/main',$data);
@@ -63,21 +58,23 @@ class Dosificacion extends CI_Controller{
             //estado activo al crear
             $estado_id = 1;
             $params = array(
-				'estado_id' => $estado_id,
-				'empresa_id' => $this->input->post('empresa_id'),
-				'dosificacion_fechahora' => $this->input->post('dosificacion_fechahora'),
-				'dosificacion_nitemisor' => $this->input->post('dosificacion_nitemisor'),
-				'dosificacion_autorizacion' => $this->input->post('dosificacion_autorizacion'),
-				'dosificacion_llave' => $this->input->post('dosificacion_llave'),
-				'dosificacion_numfact' => $this->input->post('dosificacion_numfact'),
-				'dosificacion_leyenda1' => $this->input->post('dosificacion_leyenda1'),
-				'dosificacion_leyenda2' => $this->input->post('dosificacion_leyenda2'),
-				'dosificacion_leyenda3' => $this->input->post('dosificacion_leyenda3'),
-				'dosificacion_leyenda4' => $this->input->post('dosificacion_leyenda4'),
-				'dosificacion_leyenda5' => $this->input->post('dosificacion_leyenda5'),
-				'dosificacion_sucursal' => $this->input->post('dosificacion_sucursal'),
-				'dosificacion_sfc' => $this->input->post('dosificacion_sfc'),
-				'dosificacion_actividad' => $this->input->post('dosificacion_actividad'),
+                'estado_id' => $estado_id,
+                'empresa_id' => $this->input->post('empresa_id'),
+                //'dosificacion_fechahora' => $this->input->post('dosificacion_fechahora'),
+                'dosificacion_nitemisor'    => $this->input->post('dosificacion_nitemisor'),
+                'dosificacion_autorizacion' => $this->input->post('dosificacion_autorizacion'),
+                'dosificacion_llave'       => $this->input->post('dosificacion_llave'),
+                'dosificacion_fechalimite' => $this->input->post('dosificacion_fechalimite'),
+                'dosificacion_numfact'     => $this->input->post('dosificacion_numfact'),
+                'dosificacion_leyenda1'    => $this->input->post('dosificacion_leyenda1'),
+                'dosificacion_leyenda2'    => $this->input->post('dosificacion_leyenda2'),
+                'dosificacion_leyenda3'    => $this->input->post('dosificacion_leyenda3'),
+                'dosificacion_leyenda4'    => $this->input->post('dosificacion_leyenda4'),
+                'dosificacion_leyenda5'    => $this->input->post('dosificacion_leyenda5'),
+                'dosificacion_sucursal'    => $this->input->post('dosificacion_sucursal'),
+                'dosificacion_sfc'         => $this->input->post('dosificacion_sfc'),
+                'dosificacion_actividad'   => $this->input->post('dosificacion_actividad'),
+                'dosificasion_actividadsec' => $this->input->post('dosificacion_actividadsec'),
             );
             
             $dosificacion_id = $this->Dosificacion_model->add_dosificacion($params);
@@ -109,21 +106,21 @@ class Dosificacion extends CI_Controller{
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
-					'estado_id' => $this->input->post('estado_id'),
-					'empresa_id' => $this->input->post('empresa_id'),
-					'dosificacion_fechahora' => $this->input->post('dosificacion_fechahora'),
-					'dosificacion_nitemisor' => $this->input->post('dosificacion_nitemisor'),
-					'dosificacion_autorizacion' => $this->input->post('dosificacion_autorizacion'),
-					'dosificacion_llave' => $this->input->post('dosificacion_llave'),
-					'dosificacion_numfact' => $this->input->post('dosificacion_numfact'),
-					'dosificacion_leyenda1' => $this->input->post('dosificacion_leyenda1'),
-					'dosificacion_leyenda2' => $this->input->post('dosificacion_leyenda2'),
-					'dosificacion_leyenda3' => $this->input->post('dosificacion_leyenda3'),
-					'dosificacion_leyenda4' => $this->input->post('dosificacion_leyenda4'),
-					'dosificacion_leyenda5' => $this->input->post('dosificacion_leyenda5'),
-					'dosificacion_sucursal' => $this->input->post('dosificacion_sucursal'),
-					'dosificacion_sfc' => $this->input->post('dosificacion_sfc'),
-					'dosificacion_actividad' => $this->input->post('dosificacion_actividad'),
+                    'estado_id' => $this->input->post('estado_id'),
+                    'empresa_id' => $this->input->post('empresa_id'),
+                    //'dosificacion_fechahora' => $this->input->post('dosificacion_fechahora'),
+                    'dosificacion_nitemisor' => $this->input->post('dosificacion_nitemisor'),
+                    'dosificacion_autorizacion' => $this->input->post('dosificacion_autorizacion'),
+                    'dosificacion_llave' => $this->input->post('dosificacion_llave'),
+                    'dosificacion_numfact' => $this->input->post('dosificacion_numfact'),
+                    'dosificacion_leyenda1' => $this->input->post('dosificacion_leyenda1'),
+                    'dosificacion_leyenda2' => $this->input->post('dosificacion_leyenda2'),
+                    'dosificacion_leyenda3' => $this->input->post('dosificacion_leyenda3'),
+                    'dosificacion_leyenda4' => $this->input->post('dosificacion_leyenda4'),
+                    'dosificacion_leyenda5' => $this->input->post('dosificacion_leyenda5'),
+                    'dosificacion_sucursal' => $this->input->post('dosificacion_sucursal'),
+                    'dosificacion_sfc' => $this->input->post('dosificacion_sfc'),
+                    'dosificacion_actividad' => $this->input->post('dosificacion_actividad'),
                     'dosificacion_fechalimite' => $this->input->post('dosificacion_fechalimite'),
                     'dosificasion_actividadsec' => $this->input->post('dosificasion_actividadsec'),
                 );
@@ -133,11 +130,11 @@ class Dosificacion extends CI_Controller{
             }
             else
             {
-				$this->load->model('Estado_model');
-				$data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
 
-				$this->load->model('Empresa_model');
-				$data['all_empresa'] = $this->Empresa_model->get_all_empresa();
+                $this->load->model('Empresa_model');
+                $data['all_empresa'] = $this->Empresa_model->get_all_empresa();
 
                 $data['_view'] = 'dosificacion/edit';
                 $this->load->view('layouts/main',$data);

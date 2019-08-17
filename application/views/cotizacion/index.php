@@ -66,7 +66,8 @@
                             <a href="<?php echo site_url('cotizacion/add/'.$c['cotizacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <?php }
                             if($rol[39-1]['rolusuario_asignado'] == 1){ ?>
-                            <a href="<?php echo site_url('cotizacion/cotizarecibo/'.$c['cotizacion_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a> 
+                            <a href="<?php echo site_url('cotizacion/cotizarecibo/'.$c['cotizacion_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
+                            <a href="<?php echo site_url('cotizacion/recibo/'.$c['cotizacion_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
                             <?php }
                             if($rol[40-1]['rolusuario_asignado'] == 1){ ?>
                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>

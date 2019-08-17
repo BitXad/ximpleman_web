@@ -87,6 +87,23 @@ class Cotizacion extends CI_Controller{
        
         }
     }
+    function recibo($cotizacion_id)
+    {
+        if($this->acceso(36)){
+            $data['page_title'] = "Cotización";
+            $usuario_id = $this->session_data['usuario_id'];
+            $data['cotizacion_id'] = $cotizacion_id;
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $this->load->model('Detalle_cotizacion_model');
+            $data['detalle_cotizacion'] = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
+            $data['usuario'] = $this->Cotizacion_model->get_cotizacion_usuario($usuario_id);  
+            $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);     
+            $data['_view'] = 'cotizacion/recibo';
+            $this->load->view('layouts/main',$data);
+       
+        }
+    }
 
     function detallecotizacion()
     {
@@ -238,6 +255,8 @@ class Cotizacion extends CI_Controller{
                                             'cotizacion_total' => $this->input->post('cotizacion_total'),
                         'cotizacion_glosa' => $this->input->post('cotizacion_glosa'),
                         'cotizacion_cliente' => $this->input->post('cotizacion_cliente'),
+                        'cotizacion_lugarentrega' => $this->input->post('cotizacion_lugarentrega'),
+                        'cotizacion_chequenombre' => $this->input->post('cotizacion_chequenombre'),
                     );
 
 
@@ -279,7 +298,9 @@ class Cotizacion extends CI_Controller{
                         'usuario_id' => $usuario_id,
                         'cotizacion_total' => $this->input->post('cotizacion_total'),
                          'cotizacion_glosa' => $this->input->post('cotizacion_glosa'),
-                         'cotizacion_cliente' => $this->input->post('cotizacion_cliente')
+                         'cotizacion_cliente' => $this->input->post('cotizacion_cliente'),
+                         'cotizacion_lugarentrega' => $this->input->post('cotizacion_lugarentrega'),
+                        'cotizacion_chequenombre' => $this->input->post('cotizacion_chequenombre')
                     );
 
 
