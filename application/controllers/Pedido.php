@@ -55,12 +55,13 @@ class Pedido extends CI_Controller{
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
         
         $data['page_title'] = "Pedidos";
-        $data['usuario'] = $this->Usuario_model->get_todos_usuario();
-        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
-        $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;
+        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+        $data['usuario_id'] = $usuario_id; //el usuario logueado
+        
+        $data['tipousuario_id'] = $tipousuario_id; 
         $data['usuario_nombre'] = $usuario_nombre;
-        $data['usuarios'] = $this->Venta_model->get_usuarios();
+        //$data['usuarios'] = $this->Venta_model->get_usuarios(); corregido mediante left join
         
         $filtro = $this->input->post('filtro');
         
@@ -68,7 +69,7 @@ class Pedido extends CI_Controller{
             $data['pedido'] = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(now())");
         }
         else{
-            $data['pedido'] = $this->Pedido_model->get_pedidos($filtro);            
+            $data['pedido'] = $this->Pedido_model->get_pedidos($filtro);
         }
         
         $data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);

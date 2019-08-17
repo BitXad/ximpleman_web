@@ -23,11 +23,11 @@
 							</select>
 						</div>
 					</div>
-					<div class="col-md-6">
+					<!--<div class="col-md-3">
 						<label for="dosificacion_fechahora" class="control-label">Fecha, Hora</label>
 						<div class="form-group">
                                                     <?php
-                                                    $res = $this->input->post('dosificacion_fechahora');
+                                                    /*$res = $this->input->post('dosificacion_fechahora');
                                                     if(empty($res)){
                                                         $fecha = date("Y-m-d");
                                                         $hora = date("h:i:s");
@@ -36,18 +36,18 @@
                                                         $fecha = date("Y-m-d", strtotime($fechayhora));
                                                         $hora = date("h:i:s", strtotime($fechayhora));      
                                                         $fechayhora = $fecha.$t.$hora;
-                                                    }
+                                                    }*/
                                                     ?>
                                                     <input type="datetime-local" name="dosificacion_fechahora" value="<?php echo $fecha."T".$hora; ?>" class="form-control" id="dosificacion_fechahora" />
 						</div>
-					</div>
-					<div class="col-md-6">
+					</div>-->
+					<div class="col-md-3">
 						<label for="dosificacion_nitemisor" class="control-label">Nit Emisor</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_nitemisor" value="<?php echo $this->input->post('dosificacion_nitemisor'); ?>" class="form-control" id="dosificacion_nitemisor" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="dosificacion_autorizacion" class="control-label">Autorización</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_autorizacion" value="<?php echo $this->input->post('dosificacion_autorizacion'); ?>" class="form-control" id="dosificacion_autorizacion" />
@@ -59,10 +59,16 @@
 							<input type="text" name="dosificacion_llave" value="<?php echo $this->input->post('dosificacion_llave'); ?>" class="form-control" id="dosificacion_llave" />
 						</div>
 					</div>
-					<div class="col-md-6">
+					<div class="col-md-3">
 						<label for="dosificacion_numfact" class="control-label">Num. Factura</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_numfact" value="<?php echo $this->input->post('dosificacion_numfact'); ?>" class="form-control" id="dosificacion_numfact" />
+						</div>
+					</div>
+                                        <div class="col-md-3">
+						<label for="dosificacion_fechalimite" class="control-label">Fecha Limite</label>
+						<div class="form-group">
+                                                    <input type="date" name="dosificacion_fechalimite" value="<?php echo $this->input->post('dosificacion_fechalimite'); ?>" class="form-control" id="dosificacion_fechalimite" />
 						</div>
 					</div>
                                         <div class="col-md-6">
@@ -81,6 +87,12 @@
 						<label for="dosificacion_actividad" class="control-label">Actividad</label>
 						<div class="form-group">
 							<input type="text" name="dosificacion_actividad" value="<?php echo $this->input->post('dosificacion_actividad'); ?>" class="form-control" id="dosificacion_actividad" />
+						</div>
+					</div>
+                                        <div class="col-md-6">
+						<label for="dosificasion_actividadsec" class="control-label">Actividad Secundaria</label>
+						<div class="form-group">
+							<input type="text" name="dosificasion_actividadsec" value="<?php echo $this->input->post('dosificasion_actividadsec'); ?>" class="form-control" id="dosificasion_actividadsec" />
 						</div>
 					</div>
 					<div class="col-md-6">

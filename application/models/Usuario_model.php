@@ -215,7 +215,7 @@ class Usuario_model extends CI_Model
      */
     function get_todos_usuario()
     {
-        $sql = "SELECT u.* FROM usuario u WHERE 1=1 ORDER BY `usuario_id` ASC";
+        $sql = "SELECT u.* FROM usuario u ORDER BY `usuario_id` ASC";
         $usuario = $this->db->query($sql)->result_array();
         
         return $usuario;

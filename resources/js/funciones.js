@@ -1023,6 +1023,7 @@ function mostrar_saldo(existencia, producto_id)
     var saldo = 0;
 
     
+    alert(factor_seleccionado+" "+ unidadfactor);
     
     if (factor_seleccionado == 1)
     {
@@ -1031,16 +1032,17 @@ function mostrar_saldo(existencia, producto_id)
         exist = "<center><font size='3'><b>"+existencia+"</b></font><br>"+unidad+"</center>";
         $("#input_existencia"+producto_id).html(exist); //establece la cantidad requerida en el modal
 
-    }
+    }    
     else
-    {
-                        
+    {                        
+    
         var entero = parseInt(existencia / factor_seleccionado);
-        var saldo = parseInt(existencia) - parseInt(entero*factor_seleccionado);
-        
-        //$("#input_existencia"+producto_id).val(entero+" "+unidadfactor+"+"+saldo+" "+unidad); //establece la cantidad requerida en el modal
+        var saldo = parseInt(existencia) - parseInt(entero*factor_seleccionado);        
         $("#input_existencia"+producto_id).html("<center><b>"+entero+" "+unidadfactor+"+"+saldo+" "+unidad+"</center></b>"); //establece la cantidad requerida en el modal
+    
+    
     }
+    
 }
 
 function esMobil(){
@@ -1172,7 +1174,7 @@ function tablaresultados(opcion)
                         
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
                         html += "<tr>";
-                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td class='button btn-default' onclick='ocultar_busqueda();'>"+(i+1)+"</td>";
                         
                         html += "<td><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         

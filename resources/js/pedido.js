@@ -29,7 +29,7 @@ function tabla_pedidos(filtro)
         success: function(response){
             //alert("llega hasta aqui...!");
             //console.log(response);
-            var usuarios = JSON.parse(document.getElementById('usuarios').value);
+            //var usuarios = JSON.parse(document.getElementById('usuarios').value);
             var cont =  0;
             var cantidad_pedidos = 0;
             var total_pedido = 0;
@@ -42,25 +42,28 @@ function tabla_pedidos(filtro)
 
             total_pedido = 0;   
             
-            opciones = "";
+            opciones = "";           
+            
             for(var i = 0; i<tipo.length; i++){
                 opciones += "<option value='"+tipo[i].tipotrans_id+"'>"+tipo[i].tipotrans_nombre+"</option>";
             }
             
             for(var i = 0; i<p.length; i++){
                 
-                if(p[i]["tipotrans_id"] == null || p[i]["tipotrans_id"] == 0 || p[i]["tipotrans_id"]-1 > tipo.length){
-                    tipotrans = "No definido";
-                }else{
-                    tipotrans = tipo[p[i]["tipotrans_id"]-1]["tipotrans_nombre"];
-                }
+//                if(p[i]["tipotrans_id"] == null || p[i]["tipotrans_id"] == 0 || p[i]["tipotrans_id"]-1 > tipo.length){
+//                    tipotrans = "No definido";
+//                }else{
+//                    tipotrans = tipo[p[i]["tipotrans_id"]-1]["tipotrans_nombre"];
+//                }
+                tipotrans = p[i]["tipotrans_nombre"];
                 
-                if(p[i]["usuario_id"] == null || p[i]["usuario_id"] == 0 || p[i]["usuario_id"]-1 > usuarios.length){
-                    nombreusuario = "No definido";
-                }else{
-                    nombreusuario = usuarios[p[i]["usuario_id"]-1]["usuario_nombre"];
-                }
+//                if(p[i]["usuario_id"] == null || p[i]["usuario_id"] == 0 || p[i]["usuario_id"]-1 > usuarios.length){
+//                    nombreusuario = "No definido";
+//                }else{
+//                    nombreusuario = usuarios[p[i]["usuario_id"]-1]["usuario_nombre"];
+//                }
 
+                nombreusuario = p[i]["usuario_nombre"];
                 
                 cont += 1;//    html += "             $cont = $cont+1;  ";
                 total_pedido += parseFloat(p[i]["pedido_total"]); // html += "             $total_pedido+=$p['pedido_total']; ";
@@ -108,7 +111,7 @@ function tabla_pedidos(filtro)
                 html += "    </td> ";
 
                 html += "    <td> ";
-                    
+                   
 
                     if (p[i]["estado_id"]>=10 && p[i]["estado_id"]<=14){
                         
