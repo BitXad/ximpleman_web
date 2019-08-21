@@ -121,9 +121,6 @@ function tablarecliente()
     var controlador = base_url+'detalle_venta/buscarcliente';
     var parametro = document.getElementById('cliente_id').value    
     
-    
-   
-    
 
     $.ajax({url: controlador,
            type:"POST",
@@ -371,3 +368,88 @@ function repoproducto(producto)
 	}
 });
 }
+
+
+function buscarcategorias()
+{  
+var base_url    = document.getElementById('base_url').value;
+var controlador = base_url+"detalle_venta/buscarcategoria";
+var desde    = document.getElementById('fecha_desde').value;
+var hasta    = document.getElementById('fecha_hasta').value;
+var categoria    = document.getElementById('categoria').value;
+document.getElementById('loader').style.display = 'block';
+if (desde=='' && hasta=='') {
+    var parametro = " p.categoria_id="+categoria+" ";
+} else {
+   var parametro = " date(v.venta_fecha) >= '"+desde+"'  and  date(v.venta_fecha) <='"+hasta+"' and p.categoria_id="+categoria+" ";
+}
+   
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+          
+           success:function(report){     
+              
+                            
+                $("#enco").val("- 0 -");
+               var registros =  JSON.parse(report);
+           
+               if (registros != null){
+                   
+                    
+                    var cantidades = Number(0);
+                    var totales = Number(0);
+                    
+                    var n = registros.length; //tama«Ðo del arreglo de la consulta
+                    
+                   
+                    html = "";
+                 
+                    for (var i = 0; i < n ; i++){
+                        
+                         totales += Number(registros[i]["total"]);
+                         cantidades += Number(registros[i]["cantidad"]);
+                        
+                        
+                        html += "<tr>";
+                      
+                        html += "<td align='center' style='width:5px;'>"+(i+1)+"</td>";
+                        
+                        
+                        html += "<td> "+registros[i]["producto_nombre"]+" </td>";     
+                        html += "<td align='center'>"+Number(registros[i]["cantidad"])+"</td>" ;// CUOTA INICIAL
+                        html += "<td align='right'> "+Number(registros[i]["total"]/registros[i]["cantidad"]).toFixed(2)+" </td>"; 
+                        html += "<td align='right'> "+Number(registros[i]["total"]).toFixed(2)+" </td>";
+                        
+                       
+                        html += "</tr>";
+                       
+                   }
+                        html += "<tr>";
+                       
+                        html += "<th></th>";
+                        html += "<th></th>";
+                        html += "<th>"+cantidades+"</td>";
+                        html += "<th></th>";
+                        html += "<th style='text-align:right'>"+Number(totales).toFixed(2)+"</th>";
+                        
+                        html += "</tr>";
+                   /*desde1 = "<b>Desde: "+moment(desde).format('DD/MM/YYYY')+"</b>";
+                   hasta1 = "<b>Hasta: "+moment(hasta).format('DD/MM/YYYY')+"</b>";
+                   
+                   $("#desde").html(desde1);
+                   $("#hasta").html(hasta1);*/
+                   $("#categorias").html(html);
+                   document.getElementById('loader').style.display = 'none';
+            }
+                
+        },
+        error:function(result){
+           alert("Algo salio mal...!!!");
+           html = "";
+           $("#categorias").html(html);
+        }
+        
+    });   
+
+} 
