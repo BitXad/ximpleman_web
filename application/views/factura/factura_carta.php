@@ -164,8 +164,8 @@ border-bottom : 1px solid #aaa;
 
             <table class="table" style="width: 18cm;" >
                 <tr>
-                    </td>
-                    <td style="width: 6cm;">
+                    
+                    <td style="width: 6cm;" colspan="3">
 
                         <center>
 
@@ -189,6 +189,7 @@ border-bottom : 1px solid #aaa;
                             <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>                    
                         </center>
                     </td>
+                    
                     <td style="width: 6cm;">
                             <table style="width: 6cm;">
                                 <tr>
@@ -232,11 +233,11 @@ border-bottom : 1px solid #aaa;
                    <table class="table table-striped table-condensed"  style="width: 18cm;" >-->
 
 
-                        <tr style="border-bottom:black; border-style: solid">
-                            <td align="center"><b>CANT</b></td>
-                            <td align="center"><b>DESCRIPCIÓN</b></td>
-                            <td align="center"><b>P.UNIT</b></td>
-                            <td align="center"><b>TOTAL</b></td>               
+                        <tr style=" border-style: solid">
+                            <td align="center" ><b>CANT</b></td>
+                            <td align="center" colspan="2"><b>DESCRIPCIÓN</b></td>
+                            <td align="center" ><b>P.UNIT</b></td>
+                            <td align="center" ><b>TOTAL</b></td>               
                        </tr>
                        <?php $cont = 0;
                              $cantidad = 0;
@@ -251,23 +252,23 @@ border-bottom : 1px solid #aaa;
                                     $total_final += $d['detalleven_total']; 
                         ?>
                        <tr style="border-bottom-style: solid">
-                            <td align="center"><?php echo $d['detalleven_cantidad']; ?></td>
-                            <td><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre']; ?></td>
-                            <td align="right"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                            <td align="right"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                           <td align="center" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['detalleven_cantidad']; ?></font></td>
+                            <td colspan="2" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['factura_descripcion']; ?></font></td>
+                            <td align="right" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></font></td>
+                            <td align="right" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></font></td>
                        </tr>
                        <?php }} ?>
             <!--       </table>
 
                 <table class="table" style="max-width: 18cm;">-->
                 <tr >
-                    <td align="left" style="max-width: 2cm;">
+                    <td align="left" nowrap style="width: 3cm;" colspan="1">
 
                             <img src="<?php echo $codigoqr; ?>" width="100" height="100">
 
                     </td>
 
-                   <td  align="left" nowrap style="max-width: 9cm;">
+                    <td  align="left" nowrap style="max-width: 9cm;" colspan="2">
                         <font size="2">
 
                             COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
@@ -280,8 +281,8 @@ border-bottom : 1px solid #aaa;
                             TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
                         </font>
                     </td>  
-
-                    <td align="right" style="max-width: 8cm;">
+                                        
+                    <td align="right" style="max-width: 8cm;" colspan="2">
 
                         <font size="1">
                             <b><?php echo "SUB TOTAL Bs ".number_format($factura[0]['factura_subtotal'],2,'.',','); ?></b><br>
@@ -307,7 +308,7 @@ border-bottom : 1px solid #aaa;
                     </td>          
                 </tr>
                 <tr>
-                    <td colspan="3">
+                    <td colspan="6">
                         <center>
                                 <?php echo $factura[0]['factura_leyenda1'];?> <br>
                         <font size="2">
