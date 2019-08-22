@@ -1216,7 +1216,7 @@ function updateDetalle()
     detallecomp_descuento = ".$descuento.",
     detallecomp_subtotal = ".$cantidad." * ".$producto_costo.",
     detallecomp_total = (".$cantidad.") * (".$producto_costo." - ".$descuento.")          
-    WHERE compra_id = ".$compra_id." and producto_id = ".$producto_id." and detallecomp_id = ".$detallecomp_id."
+    WHERE detallecomp_id = ".$detallecomp_id."
     ";
     $this->Compra_model->ejecutar($sql);
     

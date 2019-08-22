@@ -97,13 +97,13 @@ function tabladetallecompra(){
                         html += "</td><td><input id='compra_identi'  name='compra_id' type='hidden' class='form-control' value='"+compra_id+"'>";
                         html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
                         
-                        html += "<input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_precio"+registros[i]["producto_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
-                        html += "<td><input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_costo"+registros[i]["producto_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
-                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["producto_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' onkeypress='return pulsar(event)'>";
+                        html += "<input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_precio"+registros[i]["detallecomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
+                        html += "<td><input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_costo"+registros[i]["detallecomp_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
+                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' onkeypress='return pulsar(event)'>";
                         html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detallecomp_id"]+"'>";
                        
                         html += "<td style='font-size:13px; text-align:center;'>"+Number(registros[i]["detallecomp_subtotal"]).toFixed(2)+"</b></td>";
-                        html += "<td><input  class='input-sm' style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["producto_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
+                        html += "<td><input  class='input-sm' style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["detallecomp_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
                        
                         
                        
@@ -270,16 +270,17 @@ function editadetalle(detallecomp_id,producto_id,compra_id){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'compra/updateDetalle/';
-    var costo = document.getElementById('detallecomp_costo'+producto_id).value;
-    var precio = document.getElementById('detallecomp_precio'+producto_id).value;
-    var cantidad = document.getElementById('detallecomp_cantidad'+producto_id).value;
-    var descuento = document.getElementById('detallecomp_descuento'+producto_id).value;
+    var costo = document.getElementById('detallecomp_costo'+detallecomp_id).value;
+    var precio = document.getElementById('detallecomp_precio'+detallecomp_id).value;
+    var cantidad = document.getElementById('detallecomp_cantidad'+detallecomp_id).value;
+    var descuento = document.getElementById('detallecomp_descuento'+detallecomp_id).value;
     
     
     $.ajax({url: controlador,
             type:"POST",
             data:{detallecomp_id:detallecomp_id,costo:costo,precio:precio,cantidad:cantidad,descuento:descuento,producto_id:producto_id,compra_id:compra_id},
             success:function(respuesta){
+                alert(detallecomp_id);
                 tabladetallecompra();
             }        
     });
