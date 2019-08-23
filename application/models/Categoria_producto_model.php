@@ -58,7 +58,7 @@ class Categoria_producto_model extends CI_Model
                 `categoria_producto`
             WHERE
                 1 = 1
-            ORDER BY `categoria_id` DESC
+            ORDER BY `categoria_nombre`
         ")->result_array();
 
         return $categoria_producto;
@@ -105,7 +105,7 @@ class Categoria_producto_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `categoria_id`
+            ORDER BY `categoria_nombre`
 
         ")->result_array();
 
