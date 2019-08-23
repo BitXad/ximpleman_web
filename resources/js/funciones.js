@@ -1012,6 +1012,7 @@ function cambiarcantidadjs(e,producto)
     }
 }
 
+
 function mostrar_saldo(existencia, producto_id)
 {
 
@@ -1023,7 +1024,6 @@ function mostrar_saldo(existencia, producto_id)
     var saldo = 0;
 
     
-    alert(factor_seleccionado+" "+ unidadfactor);
     
     if (factor_seleccionado == 1)
     {
@@ -1032,18 +1032,18 @@ function mostrar_saldo(existencia, producto_id)
         exist = "<center><font size='3'><b>"+existencia+"</b></font><br>"+unidad+"</center>";
         $("#input_existencia"+producto_id).html(exist); //establece la cantidad requerida en el modal
 
-    }    
-    else
-    {                        
-    
-        var entero = parseInt(existencia / factor_seleccionado);
-        var saldo = parseInt(existencia) - parseInt(entero*factor_seleccionado);        
-        $("#input_existencia"+producto_id).html("<center><b>"+entero+" "+unidadfactor+"+"+saldo+" "+unidad+"</center></b>"); //establece la cantidad requerida en el modal
-    
-    
     }
-    
+    else
+    {
+                        
+        var entero = parseInt(existencia / factor_seleccionado);
+        var saldo = parseInt(existencia) - parseInt(entero*factor_seleccionado);
+        
+        //$("#input_existencia"+producto_id).val(entero+" "+unidadfactor+"+"+saldo+" "+unidad); //establece la cantidad requerida en el modal
+        $("#input_existencia"+producto_id).html("<center><b>"+entero+" "+unidadfactor+"+"+saldo+" "+unidad+"</center></b>"); //establece la cantidad requerida en el modal
+    }
 }
+
 
 function esMobil(){
     
@@ -1190,7 +1190,7 @@ function tablaresultados(opcion)
                         }
                         
                         html += "<center> ";                        
-                        html += "   <select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
+                        html += "   <select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1'>";
                         precio_unidad = registros[i]["producto_precio"];
                         html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";

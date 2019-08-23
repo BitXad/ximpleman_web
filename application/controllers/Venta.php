@@ -285,20 +285,24 @@ class Venta extends CI_Controller{
           detalleven_preferencia,
           detalleven_comision,
           detalleven_tipocambio,
-            detalleven_envase,
-            detalleven_nombreenvase,
-            detalleven_costoenvase,
-            detalleven_precioenvase,
-            detalleven_cantidadenvase,
-            detalleven_garantiaenvase,
-            detalleven_devueltoenvase,
-            detalleven_fechadevolucion,
-            detalleven_horadevolucion,
-            detalleven_montodevolucion,
-            detalleven_prestamoenvase,          
-          usuario_id          
+          detalleven_envase,
+          detalleven_nombreenvase,
+          detalleven_costoenvase,
+          detalleven_precioenvase,
+          detalleven_cantidadenvase,
+          detalleven_garantiaenvase,
+          detalleven_devueltoenvase,
+          detalleven_fechadevolucion,
+          detalleven_horadevolucion,
+          detalleven_montodevolucion,
+          detalleven_prestamoenvase,          
+          usuario_id,
+          factura_id,
+          factura_cantidad,          
+          factura_preciounit,
+          factura_subtotal,
+          factura_descripcion
         )
-
 
         (SELECT 
           producto_id,
@@ -327,7 +331,13 @@ class Venta extends CI_Controller{
             detalleven_horadevolucion,
             detalleven_montodevolucion,
             detalleven_prestamoenvase,          
-          usuario_id
+          usuario_id,
+          0 as factura_id,
+          detalleven_cantidad,
+          detalleven_precio,
+          detalleven_subtotal,
+          producto_nombre
+          
         FROM
           detalle_venta_aux
         WHERE 
