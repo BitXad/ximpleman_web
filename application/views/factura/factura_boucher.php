@@ -148,15 +148,24 @@ border-bottom : 1px solid #aaa;*/
 
 <table class="table" style="width: <?php echo $ancho?>" >
     <tr>
-        <td style="padding: 0; width: 0cm">
+<!--        <td style="padding: 0; width: 0cm">-->
         <td style="padding: 0;" colspan="4">
                 
             <center>
                                
-                    <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
-                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
-                    <font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
+                    
+                    <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
+                    <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->                    
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <?php if (sizeof($empresa[0]['empresa_propietario'])>2){ ?>
+                    <font size="1" face="Arial"></b>
+
+                        <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
+
+                        </b></font><br>
+                    <?php } ?>
+
                     <font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
@@ -229,10 +238,11 @@ border-bottom : 1px solid #aaa;*/
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
-                <td align="center" style="padding: 0;"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['producto_nombre']; ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td align="center" style="padding: 0;"><?php echo $d['factura_cantidad']; ?></td>
+                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['factura_descripcion']; ?></td>
+                <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>-->
+                <td align="right" style="padding: 0;"><?php echo number_format($d['factura_preciounit'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['factura_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php }} ?>
 <!--       </table>
