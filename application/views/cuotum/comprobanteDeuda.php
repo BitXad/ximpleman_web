@@ -110,7 +110,7 @@ body {
  </center>
 </div>
 <div style="float:right; width:78%;">
-<div  style="padding-left: 35px;"><b>PROVEEDOR: </b><?php echo $cuota[0]['proveedor_nombre'];?> <b style="margin-left: 100px;">FECHA: </b><?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fecha'])); ?>  </div>
+<div  style="padding-left: 35px;"><b>PROVEEDOR: </b><?php echo $cuota[0]['proveedor_nombre'];?> <b style="margin-left: 100px;">FECHA: </b><?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fecha'])); ?>  <b style="margin-left: 100px;">CUOTA N:</b> <?php echo $cuota[0]['cuota_numcuota'] ?>/<?php echo $cuota[0]['credito_numpagos'] ?></div>
 </div></div>
  <hr style="border-color: black; margin: 5px;">
  <div style="width: 100%;overflow-x:hidden;overflow-y:auto;">

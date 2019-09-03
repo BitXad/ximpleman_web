@@ -235,8 +235,15 @@ border-bottom : 1px solid #aaa;
             </b>
             </font>
             <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($compra[0]['compra_totalfinal'],' Bolivianos'); ?>         
+                <?php echo "SON: ".num_to_letras($compra[0]['compra_totalfinal'],' Bolivianos'); ?><br>      
             </font>
+            <?php if ($compra[0]['tipotrans_id']==2) { ?>
+                    <font size="1">
+                        <b>A CUENTA: <?php echo  number_format($credito['credito_cuotainicial'],'2','.',',');?></b><br>
+                   
+                        <b>SALDO: <?php echo  number_format($credito['credito_monto'],'2','.',',');?></b>
+                    </font> 
+                    <?php } ?>  
            
             
         </td>          

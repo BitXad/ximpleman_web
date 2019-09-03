@@ -176,7 +176,9 @@
                      
                    </tr>
                    <tr>
-                    <th colspan="10"> SALDO A CANCELAR <?php echo number_format($saldito, 2, ".", ",") ?></th>    
+                    <th colspan="2"></th>
+                    <th colspan="5" style="text-align: right;"> SALDO A CANCELAR: <?php echo number_format($saldito, 2, ".", ",") ?></th>
+                    <th colspan="2"></th>
                       
                     </tr>
                 </table>               
