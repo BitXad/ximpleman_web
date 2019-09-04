@@ -288,6 +288,14 @@ class Compra_model extends CI_Model
         return $compra_id;        
         
     }
+    function get_credito($compra_id)
+    {
+        $sql = "SELECT c.* FROM credito c
+               WHERE c.compra_id = ".$compra_id."
+               ";
+        $result = $this->db->query($sql)->row_array();
+        return $result;        
+    }
     function get_detalle_compra_aux($compra_id)
     {
         $sql = "SELECT d.*, p.* from detalle_compra_aux d, producto p

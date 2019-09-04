@@ -7,9 +7,10 @@
     width: 100%;
 }
 
-#mitabla td, #mitabla th {
+#mitabla td {
     border: 1px solid #ddd;
-    padding: 3px;
+    padding-top: 0px;
+    padding-bottom: 0px;
     
 }
 
@@ -18,8 +19,8 @@
 #mitabla tr:hover {background-color: #ddd;}
 
 #mitabla th {
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 1px;
+    padding-bottom: 1px;
     text-align: center;
     background-color: #3c8dbc;
     color: white;

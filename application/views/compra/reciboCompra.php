@@ -219,7 +219,7 @@ border-bottom: 0px;
 <div class="box4">
 <div class="box-body table-responsive"> 
 
-       <table class="table table-striped table-condensed" border-bottom="1"> 
+       <table class="table table-striped table-condensed" border-bottom="0"> 
                     <tr>
                         <td>TOTAL COMPRA</td><td><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></td>
                     </tr>                      
@@ -231,7 +231,15 @@ border-bottom: 0px;
                     </tr>
                     <tr>
                         <td><b>TOTAL FINAL  <?php echo $compra[0]['moneda_descripcion'];?>.</b></td> <td><b><?php echo  number_format($compra[0]['compra_totalfinal'],'2','.',',');?></b></td>
+                    </tr>
+                    <?php if ($compra[0]['tipotrans_id']==2) { ?>
+                    <tr>
+                        <td><b>A CUENTA</b></td> <td><b><?php echo  number_format($credito['credito_cuotainicial'],'2','.',',');?></b></td>
+                    </tr>
+                    <tr>
+                        <td><b>SALDO</b></td> <td><b><?php echo  number_format($credito['credito_monto'],'2','.',',');?></b></td>
                     </tr> 
+                    <?php } ?>  
                                  
  
 </table>

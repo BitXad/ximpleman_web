@@ -195,7 +195,8 @@ function tablacuentas(filtro)
                         html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
                         if (registros[i]['venta_id']>0) {
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
-                        html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
+                        html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
+                        html += "<a href='"+base_url+"credito/factura/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></span></a></td>";
                         } else { 
                         html += "<td><a href='"+base_url+"cuotum/cuenta_serv/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planCuentaServ/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>"; 

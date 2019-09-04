@@ -44,6 +44,7 @@ class Compra extends CI_Controller{
          $data['compra'] = $this->Compra_model->join_compras($compra_id);
          $this->load->model('detalle_compra_model');
          $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+         $data['credito'] = $this->Compra_model->get_credito($compra_id);
          $data['_view'] = 'compra/boucher';
          $this->load->view('layouts/main',$data);
      }
@@ -1407,6 +1408,7 @@ function pdf($compra_id){
         $data['compra'] = $this->Compra_model->join_compras($compra_id);
         $this->load->model('Detalle_compra_model');
         $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
+        $data['credito'] = $this->Compra_model->get_credito($compra_id);
         $data['_view'] = 'compra/reciboCompra';
         $this->load->view('layouts/main',$data);
     }
