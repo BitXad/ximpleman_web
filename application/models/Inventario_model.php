@@ -459,7 +459,23 @@ class Inventario_model extends CI_Model
         
         $duplicados = $this->db->query($sql)->result_array();
         return $duplicados;
-    }    
+    }
     
+    /* Get producto by producto_id from Inventario */
+    function get_productoinventario($producto_id)
+    {
+        $producto = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                `inventario`
+
+            WHERE
+                `producto_id` = ?
+        ",array($producto_id))->row_array();
+
+        return $producto;
+    }
     
 }
