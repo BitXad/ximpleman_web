@@ -5,11 +5,7 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Añadir Usuario</h3>
             </div>
-            <ol class="breadcrumb">
-                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="<?php echo site_url('usuario')?>">Usuarios</a></li>
-                <li class="active">Editar Usuario</li>
-            </ol>
+            
             <?php $attributes = array("name" => "usuarioForm", "id"=>"usuarioForm");
             echo form_open_multipart("usuario/add", $attributes);?>
           	<div class="box-body">
@@ -47,7 +43,7 @@
 					</div>
 
                     <div class="col-md-6">
-                        <label for="user_login class="control-label">login</label>
+                        <label for="user_login" class="control-label">Login</label>
                         <div class="form-group">
                             <input type="text" name="usuario_login" value="<?php echo $this->input->post('usuario_login'); ?>" class="form-control" id="usuario_login"  autocomplete="off" />
                             <span class="text-danger"><?php echo form_error('usuario_login');?></span>
