@@ -747,11 +747,16 @@ class Detalle_serv_model extends CI_Model
     {
         $detalle_serv = $this->db->query("
             SELECT
-                ds.detalleserv_descripcion
+                ds.detalleserv_id, ds.detalleserv_descripcion, c.cliente_nombre,
+                ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
+                c.cliente_telefono, cliente_celular
 
             FROM
                 detalle_serv ds
             LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
             WHERE
                 ds.servicio_id = ".$servicio_id."
                
