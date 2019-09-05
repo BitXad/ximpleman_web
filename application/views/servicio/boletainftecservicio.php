@@ -130,7 +130,7 @@ if(isset($sintitulo)){
     <div class="negrita micontenedorlineas" style="width: 100%;">DIAGNOSTICO:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style=" text-align: justify; font-family: Arial, 'Arial Narrow'; margin-left: 2cm; margin-right: 2cm; font-size: 6pt;">
+    <div class="micontenedorlineas" style=" text-align: justify; font-family: Arial, 'Arial Narrow'; margin-left: 2cm; margin-right: 0cm; font-size: 6pt;">
         <?php echo $d['detalleserv_diagnostico'] ?>
     </div><!--<br>-->
     <div class="negrita micontenedorlineas" style="width: 100%;">SOLUCIÓN:
@@ -161,7 +161,7 @@ if(isset($sintitulo)){
 
 <?php $i++; } ?>
 <br>
-<div style="margin-left: 5.5cm; margin-right: 2cm; font-size: 10pt;">
+<div style="margin-left: 5.5cm; margin-right: 0cm; font-size: 10pt;">
     <div class="negrita micontenedorlineas" style="width: 100%;">COSTO TOTAL:
         <hr style="margin-left: 0px;">
     </div>
