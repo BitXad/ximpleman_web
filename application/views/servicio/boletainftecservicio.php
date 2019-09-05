@@ -109,11 +109,11 @@ if(isset($sintitulo)){
     $acuenta = 0;
     $saldo = 0;
     foreach($detalle_serv as $d){
-        $total = $total + $d['detalleserv_total'];
+        $total   = $total + $d['detalleserv_total'];
         $acuenta = $acuenta + $d['detalleserv_acuenta'];
-        $saldo = $saldo + $d['detalleserv_saldo'];
+        $saldo   = $saldo + $d['detalleserv_saldo'];
 ?>
-<div style="margin-left: 5.5cm; margin-right: 2cm;">
+<div style="margin-left: 5.5cm; margin-right: 0cm;">
     <div class="negrita micontenedorlineas" style="width: 100%; display: flex; font-size: 10pt;">
         <div style="width: 45%">DETALLE/FECHA ING.:</div>
         <div style="width: 10%"><?php echo "No. ".$i;?></div>
@@ -124,19 +124,19 @@ if(isset($sintitulo)){
     <div class="micontenedorlineas" style="width: 100%;">
         <hr style="margin-left: 0px; border-top: 1px solid;">
     </div>
-    <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 10pt;">
+    <div class="micontenedorlineas" style="text-align: justify; margin-left: 2cm; ">
         <?php echo $d['detalleserv_descripcion'] ?>
     </div><!--<br>-->
     <div class="negrita micontenedorlineas" style="width: 100%;">DIAGNOSTICO:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 10pt;">
+    <div class="micontenedorlineas" style=" text-align: justify; font-family: Arial, 'Arial Narrow'; margin-left: 2cm; margin-right: 2cm; font-size: 6pt;">
         <?php echo $d['detalleserv_diagnostico'] ?>
     </div><!--<br>-->
     <div class="negrita micontenedorlineas" style="width: 100%;">SOLUCIÓN:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 10pt;">
+    <div class="micontenedorlineas" style="text-align: justify; font-family: Arial, 'Arial Narrow'; margin-left: 2cm; margin-right: 2cm; font-size: 6pt;">
         <?php echo $d['detalleserv_solucion'] ?>
         <?php if(!empty($d['detalleserv_glosa'])){
                 echo "<br>".$d['detalleserv_glosa'];
