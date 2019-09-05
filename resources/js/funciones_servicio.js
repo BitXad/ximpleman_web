@@ -930,7 +930,7 @@ function fechadeservicio(elfiltro, busquedade){
                         if(registros[i]["servicio_total"] != null){
                             servtotal = Number(registros[i]["servicio_total"]).toFixed(2);
                         }
-                        html += "<td class='text-right'>"+servtotal+"</td>";
+                        html += "<td class='text-bold text-right'><span style='font-size: 10pt;'>"+servtotal+"</span></td>";
                         var servacuenta = "";
                         if(registros[i]["servicio_acuenta"] != null){
                             servacuenta = Number(registros[i]["servicio_acuenta"]).toFixed(2);
@@ -940,7 +940,7 @@ function fechadeservicio(elfiltro, busquedade){
                         if(registros[i]["servicio_saldo"] != null){
                             servsaldo = Number(registros[i]["servicio_saldo"]).toFixed(2);
                         }
-                        html += "<td class='text-right'>"+servsaldo+"</td>";
+                        html += "<td class='text-bold text-right'><span style='font-size: 10pt;'>"+servsaldo+"</span></td>";
                         html += "<td>";
                         html += "<!------------------------ INICIO modal para confirmar Anulacion ------------------->";
                         html += "<div class='modal fade' id='modalanulado"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";

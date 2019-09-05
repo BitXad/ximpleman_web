@@ -180,7 +180,7 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<td>"+(i+1)+"</td>";
                         
                         html += "<td id='horizontal'>";
-                        html += "<font size='1'>"+registros[i]["detalleserv_descripcion"]+"</font><br>";
+                        html += "<span style='font-weight: bold; font-size: 12pt;'>"+registros[i]["detalleserv_descripcion"]+"</span><sub>  ["+registros[i]['detalleserv_id']+"]</sub><br>";
                         if(registros[i]["procedencia_id"] != 0){
                             html += "<font size='1'><b>Proc.: </b>"+registros[i]["procedencia_descripcion"]+"</font><br>";
                         }
@@ -199,7 +199,7 @@ function resultadodetalleservicioview(servicio_id){
                         }
                         //html += fechaentrega;
                         html += "</td>";
-                        html += "<td>"+registros[i]["detalleserv_codigo"]+"</td>";
+                        html += "<td><span style='font-weight: bold; font-size: 10pt;'>"+registros[i]["detalleserv_codigo"]+"</span></td>";
                         html += "<td>";
                         if(registros[i]["catserv_id"] !=0){ html+= registros[i]["catserv_descripcion"]; }
                         if(registros[i]["subcatserv_id"] !=0){ html += "/"+registros[i]["subcatserv_descripcion"];}
@@ -244,9 +244,9 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<span style='display: none' id='insumosusadoscosto"+registros[i]['detalleserv_id']+"'></span>"
                         html += misinsumos+"<span id='insumosusados"+registros[i]['detalleserv_id']+"'></span>"+"</td>";
                         html += "<td>"+registros[i]["detalleserv_glosa"]+"</td>";
-                        html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                        html += "<td id='alinear'><span style='font-weight: bold; font-size: 10pt;'>"+ numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</span></td>";
                         html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
-                        html += "<td id='alinear'>"+ numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
+                        html += "<td id='alinear'><span style='font-weight: bold; font-size: 10pt;'>"+ numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</span></td>";
                         html += "<td>";
                         
                         html += "<!-- ---------------------- INICIO modal para Registrar Diagnostico, Solucion, Terminado ----------------- -->";
