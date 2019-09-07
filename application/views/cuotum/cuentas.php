@@ -1,5 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/cuota.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -59,7 +60,7 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
     <center>
         <h3 class="box-title"><b>PLAN DE PAGOS</b></h3>
@@ -259,6 +260,7 @@ $(document).ready(function(){
                <h1><b> <span class="btn-success" >Cuota Bs: 
                     <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
               </b></h1>
+              <input type="checkbox" name="factura" id="factura" onclick="facturar(<?php echo $c['cuota_id']; ?>)"> Más
           </div>
           <div class="col-md-12">
             <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
@@ -295,6 +297,8 @@ $(document).ready(function(){
                         <div class="form-group">
                             <input type="text" name="cuota_glosa" value="" class="form-control" id="cuota_glosa" />
                         </div>
+                    </div>
+                    <div class="col-md-12" id="detallec<?php echo $c['cuota_id']; ?>">
                     </div>
                 </div>
               <div class="modal-footer" align="right">

@@ -58,6 +58,7 @@
                    Estado: <select  class="btn btn-primary "  id="estado_id" >
                         <option value="8">Pendiente</option>
                         <option value="9">Cancelado</option>
+                        <option value="">Todos</option>
                    
                        
                     </select>

@@ -26,7 +26,7 @@
                 <input type="hidden" name="usu" id="usu">
                 <input type="hidden" name="feini" id="feini">
                 <input type="hidden" name="fefin" id="fefin">
-                <input type="hidden" name="esti" id="esti" value="8">
+                <input type="hidden" name="esti" id="esti" value="">
                  <input type="hidden" name="vendedor" id="vendedor" value="">
               <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
               <button class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</button>
@@ -55,9 +55,11 @@
     </div>
       <div class="col-md-2">
         <!--------------------- parametro de buscador --------------------->
-                  Estado: <select  class="btn btn-primary "  id="estado_id" ">
+                  Estado: <select  class="btn btn-primary"  id="estado_id" >
+                        
                         <option value="8">Pendiente</option>
                         <option value="9">Cancelado</option>
+                        <option value="">Todos</option>
                        
                     </select>
         <!--------------------- fin parametro de buscador --------------------->
