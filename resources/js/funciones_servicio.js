@@ -930,7 +930,7 @@ function fechadeservicio(elfiltro, busquedade){
                         if(registros[i]["servicio_total"] != null){
                             servtotal = Number(registros[i]["servicio_total"]).toFixed(2);
                         }
-                        html += "<td class='text-right'>"+servtotal+"</td>";
+                        html += "<td class='text-bold text-right'><span style='font-size: 10pt;'>"+servtotal+"</span></td>";
                         var servacuenta = "";
                         if(registros[i]["servicio_acuenta"] != null){
                             servacuenta = Number(registros[i]["servicio_acuenta"]).toFixed(2);
@@ -940,7 +940,7 @@ function fechadeservicio(elfiltro, busquedade){
                         if(registros[i]["servicio_saldo"] != null){
                             servsaldo = Number(registros[i]["servicio_saldo"]).toFixed(2);
                         }
-                        html += "<td class='text-right'>"+servsaldo+"</td>";
+                        html += "<td class='text-bold text-right'><span style='font-size: 10pt;'>"+servsaldo+"</span></td>";
                         html += "<td>";
                         html += "<!------------------------ INICIO modal para confirmar Anulacion ------------------->";
                         html += "<div class='modal fade' id='modalanulado"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
@@ -1547,13 +1547,13 @@ function mostrardetalleserv(serv_id){
                         res +="<tr>";
                         res +="<th><div class='text-right'>Diagnóstico: </div></th>";
                         res +="<td colspan='2' style='width: 70%'>";
-                        res +="<input style='width: 100%' type='text' name='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' id='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_diagnostico']+"' />";
+                        res +="<input style='width: 100%' type='text' name='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' id='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_diagnostico']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
                         res +="</td>";
                         res +="</tr>";
                         res +="<tr>";
                         res +="<th><div class='text-right'>Solución Aplicada: </div></th>";
                         res +="<td colspan='2'>";
-                        res +="<input style='width: 100%' type='text' name='detalleserv_solucion"+registros[i]['detalleserv_id']+"' id='detalleserv_solucion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_solucion']+"' />"; 
+                        res +="<input style='width: 100%' type='text' name='detalleserv_solucion"+registros[i]['detalleserv_id']+"' id='detalleserv_solucion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_solucion']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />"; 
                         res +="</td>";
                         res +="</tr>";
                         res +="<tr>";
