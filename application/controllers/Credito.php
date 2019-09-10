@@ -90,15 +90,20 @@ class Credito extends CI_Controller{
             $feini = $this->input->post('feini');
             $fefin = $this->input->post('fefin');
             $vende = $this->input->post('vendedor');
+            if ($estado_id ==''){
+                $estadosi='';
+            }else{
+                $estadosi="and c.estado_id = ".$estado_id." ";
+            }
             if ($vende ==''){
                 $vendedor='';
             }else{
                 $vendedor="and co.usuario_id=".$vende." ";
             }
             if ($feini =='' && $fefin ==''){
-                $filtro = " p.proveedor_nombre like '%".$usu."%' and c.estado_id = ".$estado_id." ".$vendedor." ";   
+                $filtro = " p.proveedor_nombre like '%".$usu."%' ".$estadosi." ".$vendedor." ";   
             } else {
-                $filtro = " p.proveedor_nombre like '%".$usu."%' and c.estado_id = ".$estado_id." and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."'  ".$vendedor." ";
+                $filtro = " p.proveedor_nombre like '%".$usu."%' ".$estadosi." and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."'  ".$vendedor." ";
             }
 
             $config = $this->config->item('pagination');
@@ -153,15 +158,20 @@ class Credito extends CI_Controller{
             $feini = $this->input->post('feini');
             $fefin = $this->input->post('fefin');
             $vende = $this->input->post('vendedor');
+            if ($estado_id ==''){
+                $estadosi='';
+            }else{
+                $estadosi="and c.estado_id = ".$estado_id." ";
+            }
             if ($vende ==''){
                 $vendedor='';
             }else{
                 $vendedor="and ve.usuario_id=".$vende." ";
             }
             if ($feini =='' && $fefin ==''){
-                $filtro = " (p.cliente_nombre like '%".$usu."%' or r.cliente_nombre  like '%".$usu."%') and c.estado_id = ".$estado_id." ".$vendedor." ";   
+                $filtro = " (p.cliente_nombre like '%".$usu."%' or r.cliente_nombre  like '%".$usu."%') ".$estadosi."  ".$vendedor." ";   
             } else {
-                $filtro = " (p.cliente_nombre like '%".$usu."%' or r.cliente_nombre  like '%".$usu."%') and c.estado_id = ".$estado_id." and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."' ".$vendedor." ";
+                $filtro = " (p.cliente_nombre like '%".$usu."%' or r.cliente_nombre  like '%".$usu."%')  and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."' ".$estadosi." ".$vendedor." ";
             }
             $config = $this->config->item('pagination');
             $config['base_url'] = site_url('credito/repoCuentas?');

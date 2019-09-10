@@ -86,7 +86,7 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
-                u.usuario_nombre, c.cliente_nombre
+                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -132,7 +132,7 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
-                u.usuario_nombre, c.cliente_nombre
+                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -198,7 +198,7 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
-                i.usuario_nombre, c.cliente_nombre
+                i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id

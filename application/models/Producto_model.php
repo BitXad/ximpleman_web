@@ -395,4 +395,39 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+    /* Get busqueda all productos de parametros */
+    function buscar_allproducto($parametro){
+        $producto = $this->db->query("
+            SELECT
+                p.producto_id, p.producto_nombre
+            FROM
+                inventario p, estado e
+            WHERE
+                p.estado_id = e.estado_id
+                and p.estado_id = 1
+                and (p.producto_nombre like '%".$parametro."%'
+                    or p.producto_codigo like '%".$parametro."%'
+                    or p.producto_codigobarra like '%".$parametro."%')
+            ORDER BY p.producto_nombre
+        ")->result_array();
+
+        return $producto;
+    }
+    
+    /*
+     * Get this Insumo
+     */
+    function get_this_insumo($producto_id){
+        $producto = $this->db->query("
+            SELECT
+                p.producto_id, p.producto_nombre, p.existencia, producto_precio
+            FROM
+                inventario p
+            WHERE
+                p.producto_id = $producto_id
+                
+        ")->row_array();
+
+        return $producto;
+    }
 }

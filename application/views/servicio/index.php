@@ -140,10 +140,10 @@
                         <th>Estado</th>
                         <th>Tipo Serv.</th>
 
-                        <th>Reg. por </th>
+                        <th>Recepcionado</th>
 
-                        <th>Tot.</th>
-                        <th>A. C.</th>
+                        <th>Total</th>
+                        <th>A Cuenta</th>
                         <th>Saldo</th>
                         <th></th>
                     </tr>

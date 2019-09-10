@@ -96,7 +96,7 @@
                     <div class="columna_derecha">
                       TOTAL: <b><?php echo  number_format($cuota[0]['credito_monto'], 2, ".", ",") ?></b><br>
                       CUOTA INICIAL: <b><?php echo  number_format($cuota[0]['credito_cuotainicial'], 2, ".", ",") ?></b><br>
-                      INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?>
+                      INT.: <b><?php echo  number_format($cuota[0]['credito_interesproc'], 2, ".", ",") ?></b> SALDO CRED.:<b><?php echo number_format($cuota[0]['cuota_saldo']-$cuota[0]['cuota_cancelado']+$cuota[0]['cuota_interes'], 2, ".", ",");   ?></b>
                     </div>
                     <div class="columna_izquierda">
                     
@@ -141,7 +141,7 @@
                                  $cancelados = $subcancelados + $cancelados;
                                  $saldito = $cuota[0]['credito_monto']-$cancelados;
                                  ?>
-                  <tr  >
+                  <tr>
 
 
 
@@ -166,19 +166,21 @@
                     </tr>
                    <?php  $i++;  } ?>
                    <tr>
-                     <td><b>TOTAL</td>
+                     <td><b>TOTAL</b></td>
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
                      <td style="text-align: right;"></td>
-                     <td style="text-align: right; font-size: 12px;"><b><?php echo  number_format($cancelados, 2, ".", ","); ?></td>
+                     <td style="text-align: right; font-size: 12px;"><b><?php echo  number_format($cancelados, 2, ".", ","); ?></b></td>
                      <td style="text-align: right;"></td>
                      
                    </tr>
                    <tr>
-                    <th colspan="10"> SALDO A CANCELAR <?php echo number_format($saldito, 2, ".", ",") ?></th>    
+                    <th colspan="2"></th>
+                    <th colspan="5" style="text-align: right;"> SALDO A CANCELAR: <?php echo number_format($saldito, 2, ".", ",") ?></th>
+                    <th colspan="2"></th>    
                       
                     </tr>
                 </table>               

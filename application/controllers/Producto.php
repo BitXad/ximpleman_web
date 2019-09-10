@@ -929,4 +929,22 @@ class Producto extends CI_Controller{
             }
         }
     }
+    
+    function buscar_insumos()
+    {
+        $parametro = $this->input->post('parametro');
+        $res = $this->Producto_model->buscar_allproducto($parametro);
+        
+        echo json_encode($res);
+    }
+    
+    /* funcion que busca y devuelve un insumo(producto) */
+    function seleccionar_insumo()
+    {
+        $producto_id = $this->input->post('producto_id');
+        $res = $this->Producto_model->get_this_insumo($producto_id);
+
+        echo json_encode($res);
+    }
+    
 }

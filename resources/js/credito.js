@@ -18,11 +18,16 @@ function buscar_fecha_deuda()
    $("#usu").val(proveedor);
    $("#esti").val(estado);
    $("#vendedor").val(usuario);
+   if (estado==''){
+     var estadosi = "";
+   }else{
+     var estadosi = "and c.estado_id="+estado+" ";
+   }
     if (fecha_desde =='' && fecha_hasta =='' ){
       if (usuario=='') {
-        var  filtro = " and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+        var  filtro = " and p.proveedor_nombre like '%"+proveedor+"%' "+estadosi+" ";
       }else{
-        var  filtro = " and co.usuario_id='"+usuario+"' and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+        var  filtro = " and co.usuario_id='"+usuario+"' and p.proveedor_nombre like '%"+proveedor+"%' "+estadosi+" ";
       }
            
           }
@@ -30,10 +35,10 @@ function buscar_fecha_deuda()
 
        if (usuario=='') {
         var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"'  and  date(credito_fecha) <='"+fecha_hasta+
-            "' and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+            "' and p.proveedor_nombre like '%"+proveedor+"%' "+estadosi+" ";
       }else{
         var  filtro = " and co.usuario_id='"+usuario+"' and date(credito_fecha) >= '"+fecha_desde+"'  and  date(credito_fecha) <='"+fecha_hasta+
-            "' and p.proveedor_nombre like '%"+proveedor+"%' and c.estado_id = '"+estado+"' ";
+            "' and p.proveedor_nombre like '%"+proveedor+"%' "+estadosi+" ";
       }
     
     }  
@@ -46,7 +51,7 @@ function buscar_fecha_deuda()
 function tabladeudas(filtro)
 {
      var controlador = "";
-     var limite = 500;
+     var limite = 1500;
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarDeuda/';
@@ -124,17 +129,22 @@ function buscar_fecha_cuenta()
    $("#usu").val(cliente);
    $("#esti").val(estado);
    $("#vendedor").val(usuario);
+   if (estado==''){
+     var estadosi = "";
+   }else{
+     var estadosi = "and c.estado_id="+estado+" ";
+   }
    if (usuario=='') {
     var cadusuario = "";
    }else{
     var cadusuario = "and ve.usuario_id="+usuario+" ";
    }
     if (fecha_desde =='' && fecha_hasta ==''){
-           var  filtro = " and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' "+cadusuario+" ";
+           var  filtro = " and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') "+estadosi+" "+cadusuario+" ";
           }
     else {
     var  filtro = " and date(credito_fecha) >= '"+fecha_desde+"' and  date(credito_fecha) <='"+fecha_hasta+
-            "' and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') and c.estado_id = '"+estado+"' "+cadusuario+" ";
+            "' and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') "+estadosi+" "+cadusuario+" ";
     }  
     
     tablacuentas(filtro);
@@ -145,7 +155,7 @@ function buscar_fecha_cuenta()
 function tablacuentas(filtro)
 {
      var controlador = "";
-     var limite = 500;
+     var limite = 1500;
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarCuenta/';
@@ -195,7 +205,10 @@ function tablacuentas(filtro)
                         html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
                         if (registros[i]['venta_id']>0) {
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
-                        html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
+                        html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
+                        if (registros[i]["estado_id"]==9){
+                        //html += "<a href='"+base_url+"credito/factura/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></span></a></td>";
+                        }
                         } else { 
                         html += "<td><a href='"+base_url+"cuotum/cuenta_serv/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planCuentaServ/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>"; 

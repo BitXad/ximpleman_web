@@ -280,7 +280,7 @@ function editadetalle(detallecomp_id,producto_id,compra_id){
             type:"POST",
             data:{detallecomp_id:detallecomp_id,costo:costo,precio:precio,cantidad:cantidad,descuento:descuento,producto_id:producto_id,compra_id:compra_id},
             success:function(respuesta){
-                alert(detallecomp_id);
+                //alert(detallecomp_id);
                 tabladetallecompra();
             }        
     });

@@ -786,6 +786,13 @@ class Cuotum extends CI_Controller{
             show_error('The cuotum you are trying to edit does not exist.');
         }
     }
+
+    function detallecuota()
+    {
+      $cuota_id = $this->input->post('cuota');
+      $cuotum = $this->Cuotum_model->get_cuotum($cuota_id);
+      echo json_encode($cuotum);
+    }
     /*
      * Deleting cuotum
      */

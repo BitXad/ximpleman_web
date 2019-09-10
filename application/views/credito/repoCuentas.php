@@ -117,7 +117,7 @@
                           foreach($credito as $c){;
                                  $cont = $cont+1;
                                  $saldo = 0;
-                                 $totalCreditos+=$c['credito_monto'];
+                                 $totalCreditos+=$c['credito_monto']-$c['credito_cuotainicial'];
                         
                         
                         ?>
@@ -127,10 +127,10 @@
                         <td style="text-align: center;"><?php echo $c['venta_id']; ?><?php echo $c['servicio_id']; ?></td>
                         <td style="text-align: center;"><?php echo $c['credito_id']; ?></td>				    
                         <td style="text-align: center;"><?php echo date('d/m/Y',strtotime($c['credito_fecha'])) ; ?> <?php echo $c['credito_hora']; ?></td>                   
-                        <td style="text-align: right;"><?php echo number_format($c['credito_monto'], 2, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo number_format($c['credito_monto']-$c['credito_cuotainicial'], 2, ".", ","); ?></td>
                         <td style="text-align: right;"><?php $cancelado=0; foreach($cuota as $k){ if($c['credito_id']==$k['credito_id']){ 
                         $cancelado+=$k['cuota_cancelado'];  }  } echo  number_format($cancelado, 2, ".", ",");  $totalCancelados+=$cancelado; ?></td>
-                        <td style="text-align: right;"><?php $saldo=$c['credito_monto']-$cancelado; echo number_format($saldo, 2, ".", ","); $totalSaldos+=$saldo; ?></td>
+                        <td style="text-align: right;"><?php $saldo=$c['credito_monto']-$c['credito_cuotainicial']-$cancelado; echo number_format($saldo, 2, ".", ","); $totalSaldos+=$saldo; ?></td>
 						<td style="text-align: center;"><?php echo $c['cliente_telefono']; ?><?php if($c['cliente_celular']!=NULL && $c['cliente_telefono']!=NULL){ ?> - <?php echo $c['cliente_celular'];} else { echo $c['cliente_celular']; } ?></td>
                         <td ><?php echo $c['usuario_nombre']; ?></td>
 						
