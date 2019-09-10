@@ -84,7 +84,10 @@ class Orden_trabajo extends CI_Controller{
                 'usuario_id' => $usuario_id,
             );
             
-            $forma_pago_id = $this->Orden_trabajo_model->add_orden_trabajo($params);
+             $orden_id = $this->Orden_trabajo_model->add_orden_trabajo($params);
+
+            $actualizar = "UPDATE detalle_orden set orden_id=".$orden_id." where usuario_id=".$usuario_id." and orden_id is null ";
+            $this->db->query($actualizar);
             redirect('orden_trabajo/index');
         }
         else

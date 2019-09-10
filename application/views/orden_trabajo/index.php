@@ -33,15 +33,14 @@
                 <table class="table table-striped" id="mitabla">
                     <tr>
 						<th>#</th>
-                        <th>Cliente</th>
+            <th>Cliente</th>
 						<th>Fecha</th>
-						<th>Validez</th>
-						<th>Forma de Pago</th>
-						<th>Tiempo de Entrega</th>
-						<th>Registro<br>Fecha/Hora</th>
+						<th>Fecha de Entrega</th>
 						<th>Total Bs.</th>
-                        <th>Usuario</th>
-						<th></th>
+            <th>A Cuenta Bs.</th>
+            <th>Saldo Bs.</th>
+            <th>Usuario</th>
+						
                     </tr>
                     <tbody class="buscar">
                     <?php $cont=0;
@@ -51,15 +50,15 @@
                          ?>
                     <tr>
 						<td><?php echo $cont; ?></td>
-                        <td><?php echo $c['cliente_id']; ?></td>
+                        <td><?php echo $c['cliente_nombre']; ?></td>
                         <td><?php echo date("d/m/Y", strtotime($c['orden_fecha'])); ?><br>
-                         <td><?php echo date("H:i:s", strtotime($c['orden_hora'])); ?></td>
+                        <?php echo date("H:i:s", strtotime($c['orden_hora'])); ?>
                         </td>
+                        <td><?php echo date("d/m/Y", strtotime($c['orden_fechaentrega'])); ?><br>
                         <td><?php echo $c['orden_total']; ?></td>
-                        <td><?php echo $c['orden_formapago']; ?></td>
-                        <td><?php echo $c['orden_tiempoentrega']; ?></td>
+                        <td><?php echo $c['orden_acuenta']; ?></td>
+                        <td><?php echo $c['orden_saldo']; ?></td>
                         
-                        <td><?php echo $c['orden_total']; ?></td>
                         <td><?php echo $c['usuario_nombre']; ?></td>
                         <!--<td>
                             <?php if($rol[38-1]['rolusuario_asignado'] == 1){ ?>

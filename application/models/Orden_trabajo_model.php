@@ -30,14 +30,15 @@ class Orden_trabajo_model extends CI_Model
          
         $orden_trabajo = $this->db->query("
             SELECT
-                c.*, u.*
+                c.*, u.*, cli.cliente_nombre
 
             FROM
-                orden_trabajo c, usuario u
+                orden_trabajo c, usuario u, cliente cli
             WHERE
-                c.usuario_id = u.usuario_id
+                c.usuario_id = u.usuario_id and 
+                c.cliente_id = cli.cliente_id
                
-            ORDER BY `orden_trabajo_id` DESC limit 500
+            ORDER BY `orden_id` DESC limit 1000
 
         ")->result_array();
 
@@ -50,7 +51,7 @@ class Orden_trabajo_model extends CI_Model
  function get_detalle_orden_trabajo($usuario_id)
     {
         $sql = "SELECT d.*, p.* from detalle_orden d, inventario p
-               where d.producto_id=p.producto_id and d.usuario_id = ".$usuario_id."
+               where d.producto_id=p.producto_id and d.usuario_id = ".$usuario_id." and d.orden_is is null
                order by d.detalleorden_id desc";
         $result = $this->db->query($sql)->result_array();
         return $result;        
