@@ -35,7 +35,7 @@ class Orden_trabajo extends CI_Controller{
         if($this->acceso(36)){
             $data['page_title'] = "Orden de Trabajo";
             $data['rol'] = $this->session_data['rol'];
-            //$data['orden_trabajo'] = $this->Orden_trabajo_model->get_all_orden_trabajo();
+            $data['orden_trabajo'] = $this->Orden_trabajo_model->get_all_orden_trabajo();
 
             $data['_view'] = 'orden_trabajo/index';
             $this->load->view('layouts/main',$data);
@@ -59,19 +59,39 @@ class Orden_trabajo extends CI_Controller{
         }
     }
 
-    function add($orden_trabajo)
+    function add()
     {
         if($this->acceso(37)){
-            $data['page_title'] = "Orden de Trabajo";
-            $usuario_id = $this->session_data['usuario_id'];
-            $data['Orden_trabajo_id'] = $orden_trabajo; 
-            $this->load->model('Detalle_Orden_trabajo_model');
-            $data['detalle_orden_trabajo'] = $this->Orden_trabajo_model->get_detalle_orden_trabajo($orden_trabajo);
-            $this->load->model('Producto_model');
-            //$data['producto'] = $this->Producto_model->get_all_productos();  
-            $data['Orden_trabajo'] = $this->Orden_trabajo_model->get_orden_trabajo($orden_trabajo);     
-            $data['_view'] = 'Orden_trabajo/add';
+            
+        $usuario_id = $this->session_data['usuario_id'];
+        $data['usuario_id'] = $this->session_data['usuario_id'];
+        $fecha = date("Y-m-d");
+        $hora = date("H:i:s");
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('numero','Orden Numero','required');
+           if($this->form_validation->run())     
+        {   
+            $params = array(
+                'orden_numero' => $this->input->post('numero'),
+                'orden_fecha' => $fecha,
+                'orden_hora' => $hora,
+                'orden_fechaentrega' => $this->input->post('orden_trabajo_fecha'),
+                'orden_total' => $this->input->post('total'),
+                'orden_acuenta' => $this->input->post('cuenta'),
+                'orden_saldo' => $this->input->post('saldo'),
+                'orden_observacion' => $this->input->post('nota'),
+                'cliente_id' => $this->input->post('cliente_id'),
+                'usuario_id' => $usuario_id,
+            );
+            
+            $forma_pago_id = $this->Orden_trabajo_model->add_orden_trabajo($params);
+            redirect('orden_trabajo/index');
+        }
+        else
+        {            
+            $data['_view'] = 'orden_trabajo/add';
             $this->load->view('layouts/main',$data);
+        }
        
         }
     }

@@ -78,6 +78,7 @@ function detalleordeni(){
                        html += "</tr>";
                         //$('#orden_trabajo_total').value(total_detalle.toFixed(2));
                        $("#detalleordeniza").html(html);
+                       $("#total").val(total_preciodetalle);
                        totality(total_detalle);
                        
           }  
@@ -271,8 +272,9 @@ function buscarcliente(){
                     
 
                     $("#razon_social").val(registros[0]["cliente_razon"]);
+                    $("#telefono").val(registros[0]["cliente_telefono"]);
 
-                    document.getElementById('telefono').focus();
+                    //document.getElementById('telefono').focus();
 
                     $("#cliente_id").val(registros[0]["cliente_id"]);
 
@@ -1075,5 +1077,14 @@ function totalar(producto_id)
   var ancho = Number(document.getElementById('ancho'+producto_id).value);
   var largo = Number(document.getElementById('largo'+producto_id).value);
   $("#total"+producto_id).val(Number(ancho*largo).toFixed(2));
+}
+
+function saldar()
+{
+  var cuenta = Number(document.getElementById('cuenta').value);
+  var total = Number(document.getElementById('total').value);
+  var numero = Number(document.getElementById('orden_numero').value);
+  $("#numero").val(numero);
+  $("#saldo").val(Number(total-cuenta).toFixed(2));
 }
 

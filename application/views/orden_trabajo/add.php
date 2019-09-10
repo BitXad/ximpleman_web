@@ -76,7 +76,7 @@ input[type=number] { -moz-appearance:textfield; }
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
- <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>">
+ <input type="text" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>">
 
 <div class="row">
     <div class="col-md-12">
@@ -90,48 +90,47 @@ input[type=number] { -moz-appearance:textfield; }
       		<div class="box-body">
           		<div class="row clearfix">
                 <div class="col-md-12">
-            <div class="col-md-6">
-            <label for="orden_trabajo_cliente" class="control-label">Cliente</label>
+            <div class="col-md-3">
+            <label for="nit" class="control-label">NIT</label>
             <div class="form-group">
-              <input type="text" name="orden_trabajo_cliente" value=""  class="form-control" id="orden_trabajo_cliente" />
+              <input type="text" name="nit" value="" class="form-control" id="nit" onkeypress="cotivalidar(event,1)" />
+            </div>
+          </div>      
+            <div class="col-md-3">
+            <label for="razon_social" class="control-label">Cliente</label>
+            <div class="form-group">
+              <input type="text" name="razon_social" value=""  class="form-control" id="razon_social" />
             </div>  
             </div>
-						<div class="col-md-3">
-            <label for="orden_trabajo_fecha" class="control-label">No.Orden</label>
+             
+             
+           
+            <div class="col-md-3">
+            <label for="telefono" class="control-label">Telefono</label>
             <div class="form-group">
-              <input type="text" name="orden_trabajo_fecha" value="" class="form-control" id="orden_fecha" required/>
+              <input type="text" name="telefono" value="" class="form-control" id="telefono" />
             </div>
           </div>
-            <div class="col-md-3">
-						<label for="orden_trabajo_fecha" class="control-label">Fecha Entrega</label>
-						<div class="form-group">
-							<input type="date" name="orden_trabajo_fecha" value="" class="form-control" id="orden_fecha" required/>
-						</div>
-					</div>
-					
-<!-- <?php $cont = 0;
-                          $subtotal = 0;
-                          $descuento = 0;
-                          $totalfinal = 0;
-                          
-                          foreach($detalle_orden_trabajo as $d){;
-                                
-
-                                 
-                          $subtotal += $d['detalleorden_subtotal'];
-                          $descuento += $d['detalleorden_descuento'];
-                          $totalfinal += $d['detalleorden_total'];
-                         
-                                 ?>
-                                        
-                        
-                          <?php } ?> -->
+						<div class="col-md-3">
+            <label for="orden_numero" class="control-label">No.Orden</label>
+            <div class="form-group">
+              <input type="text" name="orden_numero" value="" class="form-control" id="orden_numero" required/>
+            </div>
+          </div>
+           
+          
+<div class="col-md-3">
+</div>
+<div class="col-md-3"></div>
+<div class="col-md-3"></div>
+				
                   
          
-							<div class="col-md-4">
-            <button  type="submit"  class="btn btn-success">
-                <i class="fa fa-check"></i>Finalizar orden_trabajo
-              </button></form>
+							<div class="col-md-3">
+           
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+                <i class="fa fa-check"></i> Finalizar OT
+              </button>
               <a href="javascript:history.back()"><button type="button" class="btn btn-danger">
                 <i class="fa fa-times"></i> Cancelar
               </button></a>
@@ -232,3 +231,65 @@ input[type=number] { -moz-appearance:textfield; }
 
 <!---------------------- fin modal productos --------------------------------------------------->
 
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Finalizar OT</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row clearfix">
+        <?php echo form_open('orden_trabajo/add'); ?>
+        <div class="col-md-4">
+            <label for="total" class="control-label">Total</label>
+            <div class="form-group">
+              <input type="number" name="total" readonly value="" class="form-control" id="total" required/>
+            </div>
+          </div>
+          <input type="hidden" name="cliente_id" value=""  class="form-control" id="cliente_id" />
+          <input type="hidden" name="numero" value=""  class="form-control" id="numero" />
+          
+           
+          <div class="col-md-4">
+            <label for="cuenta" class="control-label">A cuenta</label>
+            <div class="form-group">
+              <input type="number" name="cuenta" value="" onkeyup='saldar()' class="form-control" id="cuenta" required/>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="saldo" class="control-label">Saldo</label>
+            <div class="form-group">
+              <input type="number" name="saldo" readonly value="" class="form-control" id="saldo" required/>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <label for="orden_trabajo_fecha" class="control-label">Fecha Entrega</label>
+            <div class="form-group">
+              <input type="date" name="orden_trabajo_fecha" value="" class="form-control" id="orden_fecha" required/>
+            </div>
+          </div>
+          <div class="col-md-8">
+            <label for="nota" class="control-label">Nota</label>
+            <div class="form-group">
+              <input type="text" name="nota" value="" class="form-control" id="nota" required/>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-success">
+                <i class="fa fa-check"></i> Finalizar OT
+              </button>
+              <button type="button" class="btn btn-danger" data-dismiss="modal">
+                <i class="fa fa-times"></i> Cancelar
+              </button>
+      </div>
+      <?php echo form_close(); ?>
+    </div>
+  </div>
+</div>
