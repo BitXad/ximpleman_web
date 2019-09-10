@@ -4,7 +4,8 @@ function inicio(){
 //        alert("holaxxx");
         tablaresultados(1);
         tablaproductos(); 
-
+        //pedidos_pendientes();
+        
         document.getElementById('nit').focus();
         document.getElementById('nit').select();
 }
@@ -1071,6 +1072,17 @@ function esMobil(){
     return isMobile.any()
     
 }
+
+function ingreso_rapido(producto_id){
+  
+        var base_url = document.getElementById('base_url').value;   
+        var controlador = base_url+"venta/ejecutar_consulta";
+        var usuario_id = document.getElementById('usuario_id').value;
+        var existencia =  parseFloat(producto.existencia);    
+        var producto_id =  producto.producto_id; 
+    
+}
+
 //Tabla resultados de la busqueda
 function tablaresultados(opcion)
 {   
@@ -1182,6 +1194,8 @@ function tablaresultados(opcion)
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
+                        
+                        html += "<button class='btn btn-facebook btn-xs' type='text' id='button"+registros[i]["producto_id"]+"' onclick='ingreso_rapido("+registros[i]["producto_id"]+")'>[+]</button>";
                         
                        if(! esMobil()){
                         html += "</td>";
@@ -1783,7 +1797,7 @@ function registrarventa(cliente_id)
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id },
             success:function(respuesta){ 
                 eliminardetalleventa();
-
+                //if (pedido_id>0){ pedidos_pendientes(); }
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
@@ -1800,7 +1814,7 @@ function registrarventa(cliente_id)
                 facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit, venta_descuento:venta_descuento},
             success:function(respuesta){ 
                 eliminardetalleventa();
-
+                //if (pedido_id>0){ pedidos_pendientes(); }
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
@@ -2803,4 +2817,142 @@ function focus_efectivo(){
         $('#venta_efectivo').focus();
         $('#venta_efectivo').select();
     });
+}
+
+function pedidos_pendientes()
+{    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'/pedido/mostrar_pedidos';
+    var parametro = document.getElementById('filtrar3').value;
+    
+    if (parametro != null)
+        filtro = " and c.cliente_nombre like '%"+parametro+"%' and p.estado_id = 11 ";
+    else
+        filtro = 0;
+    
+        
+    $.ajax({
+        url:controlador,
+        type:"POST",
+        data:{filtro:filtro},
+        success:function(respuesta){
+                var p = JSON.parse(respuesta);
+                html = "";
+                //alert("aqui tambien: "+p.length);
+                            
+                if (p.length>0){
+                cont = 0;
+                
+                for(var i=1; i<p.length; i++){
+                     cont = cont+1;
+                    
+                     
+                        html += "<tr>";
+                        html += "     <td>"+cont+"</td>";
+                        html += "     ";
+                        html += "     <td style='white-space: nowrap'><font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
+                        if (p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!=""){                        
+                            html += "     <br>"+p[i]['cliente_nombrenegocio'];
+                        }
+                        html += "     <br>"+p[i]['pedido_fecha'];
+                        html += "     <br><small><b>PREVENTISTA:</b> "+p[i]['usuario_nombre']+"</small>";
+                        html += "     </td>";
+                        html += "     <td align='center' bgcolor='"+p[i]['estado_color']+"'>";
+                        //html += "         <a href='<?php echo base_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>'>";
+                        html += "         <font size='3'><b> 00"+p[i]['pedido_id']+"</b></font> <br>";
+                        html += "         <font size='1'>"+p[i]['estado_descripcion']+"</font>";
+                        html += "         </a>";
+                        html += "         <b>"+p[i]['pedido_fechaentrega']+"</b> <br>"+p[i]['pedido_horaentrega'];
+                        html += "     </td>";
+                        html += "      ";
+                        html += "     ";
+                        html += "     <td align='right' style='white-space: nowrap' >Sub Total: "+p[i]['pedido_subtotal']+"<br>";
+                        html += "		Desc.: "+p[i]['pedido_descuento']+"<br>  ";
+                        html += "	    <font size='3'><b>"+p[i]['pedido_total']+"</b></font>";
+                        html += "     </td>";
+
+                        html += "     <td>";
+                        //html += "         <a href='<?php echo site_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>' class='btn btn-success btn-sm'><span class='fa fa-cubes' title='Ver detalle del pedido'></span></a>";
+                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuario_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
+                        html += "     </td>";
+                        html += " </tr>";
+                    
+                    }
+                }
+                $("#pedidos_pendientes").html(html);
+                
+
+        },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+    });
+    
+}
+
+function ordenes_pendientes()
+{    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'/pedido/mostrar_pedidos';
+    var parametro = document.getElementById('filtrar3').value;
+    
+    if (parametro != null)
+        filtro = " and c.cliente_nombre like '%"+parametro+"%' and p.estado_id = 11 ";
+    else
+        filtro = 0;
+    
+        
+    $.ajax({
+        url:controlador,
+        type:"POST",
+        data:{filtro:filtro},
+        success:function(respuesta){
+                var p = JSON.parse(respuesta);
+                html = "";
+                //alert("aqui tambien: "+p.length);
+                            
+                if (p.length>0){
+                cont = 0;
+                
+                for(var i=1; i<p.length; i++){
+                     cont = cont+1;
+                    
+                     
+                        html += "<tr>";
+                        html += "     <td>"+cont+"</td>";
+                        html += "     ";
+                        html += "     <td style='white-space: nowrap'><font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
+                        if (p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!=""){                        
+                            html += "     <br>"+p[i]['cliente_nombrenegocio'];
+                        }
+                        html += "     <br>"+p[i]['pedido_fecha'];
+                        html += "     <br><small><b>PREVENTISTA:</b> "+p[i]['usuario_nombre']+"</small>";
+                        html += "     </td>";
+                        html += "     <td align='center' bgcolor='"+p[i]['estado_color']+"'>";
+                        //html += "         <a href='<?php echo base_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>'>";
+                        html += "         <font size='3'><b> 00"+p[i]['pedido_id']+"</b></font> <br>";
+                        html += "         <font size='1'>"+p[i]['estado_descripcion']+"</font>";
+                        html += "         </a>";
+                        html += "         <b>"+p[i]['pedido_fechaentrega']+"</b> <br>"+p[i]['pedido_horaentrega'];
+                        html += "     </td>";
+                        html += "      ";
+                        html += "     ";
+                        html += "     <td align='right' style='white-space: nowrap' >Sub Total: "+p[i]['pedido_subtotal']+"<br>";
+                        html += "		Desc.: "+p[i]['pedido_descuento']+"<br>  ";
+                        html += "	    <font size='3'><b>"+p[i]['pedido_total']+"</b></font>";
+                        html += "     </td>";
+
+                        html += "     <td>";
+                        //html += "         <a href='<?php echo site_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>' class='btn btn-success btn-sm'><span class='fa fa-cubes' title='Ver detalle del pedido'></span></a>";
+                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuario_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
+                        html += "     </td>";
+                        html += " </tr>";
+                    
+                    }
+                }
+                $("#pedidos_pendientes").html(html);
+                
+
+        },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+
+    });
+    
 }

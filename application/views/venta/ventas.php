@@ -56,6 +56,70 @@ function mostrar_ocultar(){
     else{
         document.getElementById('creditooculto').style.display = 'none';}
 }
+
+
+function compruebaTecla (e) {
+var keyCode = document.all ? e.which : e.keyCode;
+ 
+ 
+//  if (keyCode == 39)
+//alert("flecha derecha")
+//  else if (keyCode == 40)
+//
+//MarcaCheck ();
+//  else if (keyCode == 38)
+//alert("flecha arriba")
+//  else if (keyCode == 37)
+//alert("flecha izquierda")
+//  return true;
+
+//  if (keyCode == 112) //f1
+//  { alert("Tecla F1"); }    
+
+  if (keyCode == 113) //f2
+  { //alert("Tecla F2"); 
+    $('#codigo').focus();
+      
+  }    
+
+  if (keyCode == 115) //f4
+  {       
+    $('#filtrar').focus();
+  }
+
+  if (keyCode == 118) //f7
+  {       
+    $('#filtrar').focus();
+  }
+
+  if (keyCode == 119) //f8
+  {       
+    $('#boton_finalizar').click();
+  }
+
+  if (keyCode == 120) //f9
+  {       
+    $('#imprimir').click();
+  }
+
+  if (keyCode == 121) //f10
+  {       
+    $('#nit').focus();
+  }
+  
+}
+ 
+ 
+function MarcaCheck () {
+elemento = document.getElementById('obj'); 
+    if (elemento.type == "checkbox") 
+    { 
+    elemento.checked = true
+    } 
+}
+ 
+ 
+window.onkeydown = compruebaTecla;
         
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
@@ -362,7 +426,7 @@ function mostrar_ocultar(){
             <!--------------- botones ---------------------->
             <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
-                    <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs" onclick="pedidos_pendientes()"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
                 <?php }
                 } ?>
                     
@@ -448,9 +512,17 @@ function mostrar_ocultar(){
             <br>
         </div>    
         <!----------------------------------- fin Botones ---------------------------------->
+        
+        <b>
+            
+        TECLAS DE ACCESO DIRECTO <br>
+        </b>
+        [F2] Busqueda por código de barras <br>
+        [F4] Busqueda por nombre/descripción <br>
+        [F8] Finalizar venta<br>
+        [F10] Registrar NIT
 
     </div>
-    
 </div>
 
 <div class="col-md-6">
@@ -783,62 +855,31 @@ function mostrar_ocultar(){
 				</button>
                             <h4 class="modal-title" id="myModalLabel"><b>PEDIDOS/PREVENTAS</b></h4>
                                 
-      <div class="input-group"> <span class="input-group-addon">Buscar</span>
-        <input id="filtrar3" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción">
-      </div>
+                            <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                              <input id="filtrar3" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción">
+                            </div>
                                 
 			</div>
-			<div class="modal-body">
+			<div class="modal-body table-responsive">
                         <!--------------------- TABLA---------------------------------------------------->
                         <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
-                    <tr>
-                        <th>#</th>
-                        <th>Cliente</th>
-                        <th align="center">COD</th>
-                        <th>Total</th>
-                    </tr>
-                    
-                    <tbody class="buscar3">
-                    
-                    <?php $cont = 0;
-                          foreach($pedidos as $p){;
-                                 $cont = $cont+1; ?>
-                    <tr>
-                        <td><?php echo $cont ?></td>
-                        
-                        <td style="white-space: nowrap"><font size="3"><b><?php echo $p['cliente_nombre']; ?></b></font> <br>
-                        <?php echo $p['cliente_nombrenegocio']; ?><br>
-                        <?php echo $p['pedido_fecha']; ?><br> 
-                        <b>PREVENTISTA:</b> <?php echo $p['usuario_nombre']; ?>
-                        </td>
-                        
-                        <td align="center" bgcolor="<?php echo $p['estado_color']; ?>">
-                            <a href="<?php echo base_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>">
-                            <font size="3"><b><?php echo "00".$p['pedido_id']; ?></b></font> <br>
-                            <font size="1"><?php echo $p['estado_descripcion']; ?></font>
-                            </a>
-                            <?php echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?>
-                        </td>
-                         
-                        
-                        <td align="right" style="white-space: nowrap" ><?php echo "Sub Total: ".number_format($p['pedido_subtotal'],'2','.',','); ?><br>
-                                          <?php echo "Desc.: ".number_format($p['pedido_descuento'],'2','.',','); ?><br>  
-                                          <font size="3"><b><?php echo number_format($p['pedido_total'],'2','.',','); ?></b></font>
-                        
-                            <?php //    echo "<b>".$p['pedido_fechaentrega']."</b> <br>".$p['pedido_horaentrega']; ?>
-                        </td>
+                            <table class="table table-striped table-condensed" id="mitabla">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cliente</th>
+                                    <th align="center">COD</th>
+                                    <th>Total</th>
+                                </tr>
 
-                        <td>
-                            <a href="<?php echo site_url('pedido/pedidoabierto/'.$p['pedido_id']); ?>" class="btn btn-success btn-sm"><span class="fa fa-cubes" title="Ver detalle del pedido"></span></a>
-                            <button  class="btn btn-warning btn-sm" data-dismiss="modal" onclick="pasaraventas(<?php echo $p['pedido_id']; ?>,<?php echo $p['usuario_id']; ?>,<?php echo $p['cliente_id']; ?>)"><span class="fa fa-arrow-down" title="Cargar pedido a ventas"></span> </button>
-                        </td>
-                    </tr>
-                    <?php } ?>
-                    </tbody>
-                </table>
+                                <tbody class="buscar3" id="pedidos_pendientes">
+
+
+
+
+                                </tbody>
+                            </table>
              
-                    </div>
+                        </div>
 
                         <!----------------------FIN TABLA--------------------------------------------------->
 			</div>
@@ -997,6 +1038,70 @@ function mostrar_ocultar(){
                                                     <br>
                                                 <?php } 
                                                 ?>
+                                            </div>
+                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Guadar
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display:none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+<!----------------- fin modal preferencias ---------------------------------------------->
+
+
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalingreso" tabindex="-1" role="dialog" aria-labelledby="modalingreso" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>INGRESO RAPIDO</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+
+                            <input id="detalleven_id" value="0" hidden>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Preferencia de producto</label>
+                                            <div class="form-group">
+							
+                                                
+                                                
                                             </div>
                                             <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
 					</div>

@@ -236,24 +236,6 @@ class Pedido_model extends CI_Model
      */
     function get_pedidos($condicion)
     {
-//        $pedido = $this->db->query("
-//            SELECT
-//                p.*, e.*,c.cliente_id, c.tipocliente_id, c.categoriaclie_id, 
-//                c.cliente_codigo, c.cliente_nombre, c.cliente_ci, c.cliente_direccion, 
-//                c.cliente_telefono, c.cliente_celular, c.cliente_foto, c.cliente_email, 
-//                c.cliente_nombrenegocio, c.cliente_direccion, c.cliente_aniversario, 
-//                c.cliente_latitud, c.cliente_longitud, c.cliente_nit, c.cliente_razon
-//            FROM
-//                pedido p, estado e, cliente c, usuario u
-//
-//            WHERE
-//                p.estado_id = e.estado_id
-//                and p.cliente_id = c.cliente_id 
-//                and p.usuario_id = u.usuario_id
-//                ".$condicion." 
-//            ORDER BY pedido_id DESC
-//        ")->result_array();
-//        
 
         $sql = "select 
                 p.pedido_id,p.pedido_fecha,p.pedido_fechaentrega,p.pedido_glosa,
