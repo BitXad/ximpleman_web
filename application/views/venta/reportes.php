@@ -103,13 +103,27 @@
       </div>
    
     </div>  
+    <div class="col-md-6 no-print" >                     
+      <div class="input-group no-print"> <span class="input-group-addon">Buscar Proveedor</span>
+        <input id="proveedor_id" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor"  onkeypress="ventaproveedor(event)">
+      </div>
+   
+    </div>
+    <!--<div class="col-md-6 no-print" >                     
+      <div class="input-group no-print"> <span class="input-group-addon">Buscar Categoria</span>
+        <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor"  onkeypress="ventaproducto(event)">
+      </div>
+   
+    </div>-->
 
                               
            <div id="tablas" style="visibility: block">  
           <div class="col-md-6 no-print" id="tablareproducto"></div>
           <div class="col-md-6 no-print" id="tablarecliente"></div>
+          <div class="col-md-6 no-print" id="tablareproveedor"></div>
            <input id="producto" type="hidden" class="form-control" >
            <input id="cliente" type="hidden" class="form-control" > 
+           <input id="proveedor" type="text" class="form-control" > 
        </div>
             
 </div>
