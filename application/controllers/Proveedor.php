@@ -379,4 +379,13 @@ class Proveedor extends CI_Controller{
             }
             
     }
+    function buscarreproveedor()
+    {
+        if($this->acceso(113)){
+                $filtro = $this->input->post('parametro');
+                $data = $this->Proveedor_model->get_busqueda_proveedor($filtro);
+                echo json_encode($data);
+            }
+            
+    }
 }

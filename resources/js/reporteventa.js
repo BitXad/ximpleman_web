@@ -26,6 +26,20 @@ function ventacliente(e) {
     
 }
 
+function ventaproveedor(e) {
+  tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){ 
+    
+                  
+            tablareproveedor();            
+      
+        
+    } 
+
+    
+}
+
 function tablareproducto()
 {   
 	var base_url = document.getElementById('base_url').value;
@@ -195,7 +209,89 @@ function tablarecliente()
         
     });    
 
-}  
+}
+function tablareproveedor()
+{   
+  var base_url = document.getElementById('base_url').value;
+   
+    var controlador = base_url+'proveedor/buscarreproveedor';
+    var parametro = document.getElementById('proveedor_id').value    
+    
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+           success:function(respuesta){     
+               
+                            
+                $("#encontrados").val("- 0 -");
+               var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){
+                   
+                   
+                 
+                    var n = registros.length; //tama«Ðo del arreglo de la consulta
+                    $("#encontrados").val("- "+n+" -");
+                    html = "";
+                    html += "<table class='table table-striped no-print' id='mitabla'>";
+                    html += "<tr>"
+                    html += "<th>N</th>";
+                    html += "<th>ID</th>";
+                    html += "<th>Proveedor</th>";
+                    html += "<th></th>";
+                    html += "</tr>";
+                    html += "<tbody class='buscar' id='tablarecliente'>";
+                    
+                    for (var i = 0; i < n ; i++){
+                       
+                        html += "<tr>";
+                       // "echo form_open('cotizacion/insertarproducto/')"; 
+                      
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td>";
+                        
+                        html += "<div clas='row'>";                                            
+                        
+                        html += "<b>"+registros[i]["proveedor_id"]+"</b>";
+                        html += "<input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["proveedor_id"]+"'>";
+                        html += "</td>";
+                        html += "</div>";   
+                        html += "<div class='col-md-12'>";
+                        html += "<td>";
+                        html += "<b>"+registros[i]["proveedor_nombre"]+"</b>";
+                        
+                        html += "<td>";
+
+                        html += "<button type='button' onclick='repoproveedor("+registros[i]["proveedor_id"]+")' class='btn btn-primary btn-xs'><i class='fa fa-search'></i></button>";
+                        
+                        
+                        
+                        html += "</div>";
+                        html += "</div>";
+                      
+                        html += "</td>";
+                      
+                       
+                        html += "</tr>";
+
+                   }
+                       html += "</tbody>"
+                   
+                   $("#tablareproveedor").html(html);
+                   document.getElementById('tablas').style.display = 'block';
+            }
+                
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tablareproveedor").html(html);
+        }
+        
+    });    
+
+}   
 
 function reportes()
 {  
@@ -206,7 +302,13 @@ var hasta    = document.getElementById('fecha_hasta').value;
 var cliente    = document.getElementById('cliente').value;
 var tipo    = document.getElementById('tipo_transaccion').value;
 var producto    = document.getElementById('producto').value;
+var proveedor   = document.getElementById('proveedor').value;
 document.getElementById('loader').style.display = 'block';
+if (proveedor=="") {
+  elprove = "";
+} else {
+  elprove = "and producto_marca like '%"+proveedor+"%' "; 
+}
 if (cliente=="") {
 	elcliente = "";
 } else {
@@ -222,7 +324,7 @@ if (tipo==0) {
 }else{
   eltipo = " and tipotrans_id = "+tipo+" ";
 } 
-	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" ";
+	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" "+elprove+" ";
 
 
      
@@ -343,6 +445,7 @@ function repocliente(cliente)
             html += "<font size='2'><b>Cliente: "+registros["cliente_nombre"]+"</b></font>";  
 	$("#labusqueda").html(html);
 	$("#producto").val('');
+  $("#proveedor").val('');
 	document.getElementById('tablas').style.display = 'none';
 }
 });
@@ -364,8 +467,31 @@ function repoproducto(producto)
             html += "<font size='2'><b>Producto: "+registros["producto_nombre"]+"</b></font>";  
 	$("#labusqueda").html(html);
 	$("#cliente").val('');
+  $("#proveedor").val('');
 	document.getElementById('tablas').style.display = 'none';
 	}
+});
+}
+function repoproveedor(proveedor)
+{
+  
+  var base_url    = document.getElementById('base_url').value;
+  var controlador = base_url+"detalle_venta/nomproveedor/"+proveedor;
+  
+   $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+          
+           success:function(report){  
+            var registros =  JSON.parse(report);
+            html = "";
+            html += "<font size='2'><b>Proveedor: "+registros["proveedor_nombre"]+"</b></font>";  
+  $("#labusqueda").html(html);
+  $("#proveedor").val(registros["proveedor_nombre"]);
+  $("#producto").val('');
+  $("#cliente").val('');
+  document.getElementById('tablas').style.display = 'none';
+}
 });
 }
 

@@ -128,6 +128,13 @@ class Detalle_venta extends CI_Controller{
             echo json_encode($nombre);
     }
 
+    function nomproveedor($proveedor)
+    {
+            $sql="SELECT * FROM proveedor WHERE proveedor_id='".$proveedor."' ";
+            $nombre=$this->db->query($sql)->row_array();
+            echo json_encode($nombre);
+    }
+
 
     function actualizar()
     {
