@@ -1,47 +1,3 @@
-<!--<link href="<?php echo base_url('resources/css/factura_boucher.css'); ?>" rel="stylesheet">
-<!DOCTYPE html> 
- 
-  <div class="ticket">
-    <img src="https://yt3.ggpht.com/-3BKTe8YFlbA/AAAAAAAAAAI/AAAAAAAAAAA/ad0jqQ4IkGE/s900-c-k-no-mo-rj-c0xffffff/photo.jpg" alt="Logotipo">
-    <p class="centrado">APPS PERFECTAS
-      <br>5 de mayo #1006
-      <br>23/08/2017 08:22 a.m.</p>
-    <table>
-      <thead>
-        <tr>
-          <th class="cantidad">CANT</th>
-          <th class="producto">PRODUCTO</th>
-          <th class="precio">$$</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="cantidad">1.00</td>
-          <td class="producto">CHEETOS VERDES 80 G</td>
-          <td class="precio">$8.50</td>
-        </tr>
-        <tr>
-          <td class="cantidad">2.00</td>
-          <td class="producto">KINDER DELICE</td>
-          <td class="precio">$10.00</td>
-        </tr>
-        <tr>
-          <td class="cantidad">1.00</td>
-          <td class="producto">COCA COLA 600 ML</td>
-          <td class="precio">$10.00</td>
-        </tr>
-        <tr>
-          <td class="cantidad"></td>
-          <td class="producto">TOTAL</td>
-          <td class="precio">$28.50</td>
-        </tr>
-      </tbody>
-    </table>
-    <p class="centrado">¡GRACIAS POR SU COMPRA!
-      <br>appsperfectas.com</p>
-  </div>-->
-
-
 <script type="text/javascript">
     $(document).ready(function()
     {
@@ -70,8 +26,8 @@
 
 p {
     font-family: Arial;
-    font-size: 7pt;
-    line-height: 120%;   /*esta es la propiedad para el interlineado*/
+    font-size: 8pt;
+    line-height: 100%;   /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 10px;
 }
@@ -92,8 +48,7 @@ padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
 font-family: Arial narrow;
-font-size: 7pt;  
-
+font-size: 7pt;
 td {
 border:hidden;
 
@@ -106,7 +61,7 @@ border-spacing : 0;
 }
 div#content {
 background : #ddd;
-font-size : 7px;
+font-size : 8px;
 margin : 0 0 0 0;
 padding : 0 5px 0 5px;
 /*border-left : 1px solid #aaa;
@@ -181,7 +136,7 @@ border-bottom : 1px solid #aaa;*/
                    
                 <!--<div class="panel panel-primary col-md-12" style="width: 6cm;">-->
                 <table style="width:<?php echo $ancho?>" >
-                    <tr  style="border-top-style: solid; border-top-width: 3px; border-bottom-style: solid; border-bottom-width: 3px;" >
+                    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
                         <td style="font-family: arial; font-size: 8pt; padding: 0;">
 
                             <b>NIT:      </b><br>
@@ -203,24 +158,23 @@ border-bottom : 1px solid #aaa;*/
     </tr>            
 <!--                <br>_______________________________________________
                 <br> -->
-    <tr  style="border-top-style: solid; border-top-width: 3px; border-bottom-style: solid; border-bottom-width: 3px;" >
-        <td colspan="4">
+    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+        <td colspan="4" style="padding: 0;  font-size: 9pt;">
             
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
                     <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora']; ?> <br>
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
-                    <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
-            
+                    <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>            
         </td>
     </tr>
      
 <!--</table>
 
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
-           <tr  style="border-top-style: solid; border-top-width: 3px; border-bottom-style: solid; border-bottom-width: 3px;" >
-               <td align="center" style="padding: 0;"><b>CN</b></td>
+           <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+                <td align="center" style="padding: 0;"><b>CN</b></td>
                 <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
                 <td align="center" style="padding: 0;"><b>TOTAL</b></td>               
@@ -237,7 +191,7 @@ border-bottom : 1px solid #aaa;*/
                         $total_descuento += $d['detalleven_descuento']; 
                         $total_final += $d['detalleven_total']; 
                         ?>
-           <tr>
+           <tr style="font-size: 8pt;">
                 <td align="center" style="padding: 0;"><?php echo $d['factura_cantidad']; ?></td>
                 <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['factura_descripcion']; ?></td>
                 <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>-->
@@ -250,7 +204,7 @@ border-bottom : 1px solid #aaa;*/
 <table class="table" style="max-width: 7cm;">-->
     
         
-    <tr style="border-top-style: solid; border-top-width: 3px;">
+    <tr style="border-top-style: solid; border-top-width: 2px;">
         
             
         <td align="right" style="padding: 0;" colspan="4">
@@ -301,11 +255,11 @@ border-bottom : 1px solid #aaa;*/
 
     </tr>    
     <tr >
-        <td style="padding: 0;" colspan="4">
+        <td style="padding: 0;  line-height: 12px;" colspan="4">
                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b> / TRANS: <b><?php echo "00".$venta[0]['venta_id']; ?></b>
             <center>
                     <?php echo $factura[0]['factura_leyenda1'];?> <br>
-            <font size="2">
+            <font size="1">
                     <?php echo $factura[0]['factura_leyenda2']; ?> 
             </font>
             <br>
@@ -319,7 +273,7 @@ border-bottom : 1px solid #aaa;*/
 <?php if ($tipousuario_id == 1){ ?>
         
             
-    <div class="col-md-12 no-print" style="max-width:<?php echo $ancho?>">
+    <div class="col-md-12 no-print" style="max-width:<?php echo $ancho?>;">
 
         <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
         <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
