@@ -27,37 +27,18 @@
             }(jQuery));
         });
 
-    $(document).ready(function () {
-            (function ($) {
-                $('#filtrar3').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar3 tr').hide();
-                    $('.buscar3 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
 
 
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar4').click(function () {
-                  $('.oscar4').removeClass('hidden');
-                    var rex = new RegExp($(this).val(), 'i');
-                    
-                    $('.os1car4 tr').hide();
-                    $('.oscar4 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
+      
 
   function myFunction() {
-     
-          
-   alert("Debe agregar y guardar cambios en la cabecera");
+     var cliente_id = document.getElementById('cliente_id').value;
+     if (cliente_id=='' || cliente_id==0) {
+      alert("Cliente no existe");
+     } else {
+       $("#exampleModal").modal("show");
+     } 
+   
       
       }
 
@@ -102,9 +83,7 @@ input[type=number] { -moz-appearance:textfield; }
               <input type="text" name="razon_social" value=""  class="form-control" id="razon_social" />
             </div>  
             </div>
-             
-             
-           
+            
             <div class="col-md-3">
             <label for="telefono" class="control-label">Telefono</label>
             <div class="form-group">
@@ -128,7 +107,7 @@ input[type=number] { -moz-appearance:textfield; }
          
 							<div class="col-md-3">
            
-            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn btn-success" onclick="myFunction()">
                 <i class="fa fa-check"></i> Finalizar OT
               </button>
               <a href="javascript:history.back()"><button type="button" class="btn btn-danger">
@@ -251,8 +230,8 @@ input[type=number] { -moz-appearance:textfield; }
               <input type="number" name="total" readonly value="" class="form-control" id="total" required/>
             </div>
           </div>
-          <input type="hidden" name="cliente_id" value=""  class="form-control" id="cliente_id" />
-          <input type="hidden" name="numero" value=""  class="form-control" id="numero" />
+          <input type="hidden" name="cliente_id" value=""  class="form-control" id="cliente_id" required />
+          <input type="hidden" name="numero" value=""  class="form-control" id="numero" required/>
           
            
           <div class="col-md-4">

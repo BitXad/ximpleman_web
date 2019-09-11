@@ -99,19 +99,28 @@ class Orden_trabajo extends CI_Controller{
         }
     }
 
-    function cotizarecibo($orden_trabajo)
+    function editar($orden_trabajo)
+    {
+        if($this->acceso(37)){
+            $data['page_title'] = "Orden de Trabajo";
+            $data['usuario_id'] = $this->session_data['usuario_id'];
+            //$data['Orden_trabajo_id'] = $orden_trabajo; 
+            //$data['detalle_orden'] = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);     
+            $data['_view'] = 'orden_trabajo/add';
+            $this->load->view('layouts/main',$data);
+       
+        }
+    }
+
+    function ordenrecibo($orden_trabajo)
     {
         if($this->acceso(36)){
             $data['page_title'] = "Orden de Trabajo";
-            $usuario_id = $this->session_data['usuario_id'];
-            $data['Orden_trabajo_id'] = $orden_trabajo;
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $this->load->model('Detalle_Orden_trabajo_model');
-            $data['detalle_Orden_trabajo'] = $this->Orden_trabajo_model->get_detalle_orden_trabajo($orden_trabajo);
-            $data['usuario'] = $this->Orden_trabajo_model->get_orden_trabajo_usuario($usuario_id);  
-            $data['Orden_trabajo'] = $this->Orden_trabajo_model->get_orden_trabajo($orden_trabajo);     
-            $data['_view'] = 'Orden_trabajo/cotiza';
+            $data['detalle_orden_trabajo'] = $this->Orden_trabajo_model->detalle_ordentrabajo($orden_trabajo);
+            $data['Orden_trabajo'] = $this->Orden_trabajo_model->la_orden_trabajo($orden_trabajo);     
+            $data['_view'] = 'orden_trabajo/recibo';
             $this->load->view('layouts/main',$data);
        
         }

@@ -25,6 +25,26 @@ class Orden_trabajo_model extends CI_Model
     /*
      * Get all orden_trabajo
      */
+     function la_orden_trabajo($ordentrabajo_id)
+    {
+         
+        $orden_trabajo = $this->db->query("
+            SELECT
+                c.*, u.*, cli.*
+
+            FROM
+                orden_trabajo c, usuario u, cliente cli
+            WHERE
+                c.usuario_id = u.usuario_id and 
+                c.cliente_id = cli.cliente_id and
+                c.orden_id = ".$ordentrabajo_id."
+          
+
+        ")->row_array();
+
+        return $orden_trabajo;
+    }
+
     function get_all_orden_trabajo()
     {
          
@@ -45,13 +65,22 @@ class Orden_trabajo_model extends CI_Model
         return $orden_trabajo;
     }
         
+
+ function detalle_ordentrabajo($orden_id)
+    {
+        $sql = "SELECT d.*, p.* from detalle_orden d, inventario p
+               where d.producto_id=p.producto_id and d.orden_id = ".$orden_id." 
+               order by d.detalleorden_id desc";
+        $result = $this->db->query($sql)->result_array();
+        return $result;        
+    }       
     /*
      * function to add new orden_trabajo
      */
  function get_detalle_orden_trabajo($usuario_id)
     {
         $sql = "SELECT d.*, p.* from detalle_orden d, inventario p
-               where d.producto_id=p.producto_id and d.usuario_id = ".$usuario_id." and d.orden_is is null
+               where d.producto_id=p.producto_id and d.usuario_id = ".$usuario_id." and d.orden_id is null
                order by d.detalleorden_id desc";
         $result = $this->db->query($sql)->result_array();
         return $result;        
