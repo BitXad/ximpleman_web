@@ -105,6 +105,7 @@ function detalleordena(usuario_id,producto_id){
         var producto_precio = document.getElementById('producto_precio'+producto_id).value;
         var total = document.getElementById('total'+producto_id).value;
         var producto_factor = document.getElementById('select_factor'+producto_id).value;
+        var tipo_orden = document.getElementById('selec_tipo'+producto_id).value;
 
     var base_url = document.getElementById('base_url').value;
     
@@ -113,7 +114,7 @@ function detalleordena(usuario_id,producto_id){
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{usuario_id:usuario_id, producto_id:producto_id, cantidad:cantidad, ancho:ancho, largo:largo, producto_precio:producto_precio, total:total, producto_factor:producto_factor},
+           data:{usuario_id:usuario_id, producto_id:producto_id, cantidad:cantidad, ancho:ancho, largo:largo, producto_precio:producto_precio, total:total, producto_factor:producto_factor, tipo_orden:tipo_orden},
            success:function(respuesta){     
                //alert (producto_factor);
                detalleordeni();                      
@@ -839,8 +840,8 @@ function tablaresultados(opcion)
 
     var base_url = document.getElementById('base_url').value;
     var usuario_id = document.getElementById('usuario_id').value;
-    var tipo_orden = document.getElementById('tipo_orden').value;
-
+    var tipo_orden = JSON.parse(document.getElementById('tipo_orden').value);
+    
     
 
     if (opcion == 1){
@@ -981,7 +982,7 @@ function tablaresultados(opcion)
                         html += "   </select>";
                         html += "   <select class='btn btn-info btn-xs' style='font-size:10px; face=arial narrow;' id='selec_tipo"+registros[i]["producto_id"]+"' >";
                         var w = tipo_orden.length;
-                        alert(w);
+                       
                         for (var x=0; x<w; x++) {
                           
                         html += "       <option value='"+tipo_orden[x]["tipoorden_id"]+"'>"+tipo_orden[x]["tipoorden_nombre"]+"</option>";
