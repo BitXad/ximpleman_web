@@ -895,6 +895,55 @@ window.onkeydown = compruebaTecla;
      <?php       }
     ?>
 <!---------------------- fin modal pedidos --------------------------------------------------->
+
+
+<!----------------- modal ordenes---------------------------------------------->
+
+
+<div class="modal fade" id="modalordenes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+                            <h4 class="modal-title" id="myModalLabel"><b>ORDENES DE TRABAJO</b></h4>
+                                
+                            <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                              <input id="filtrar4" type="text" class="form-control" placeholder="Ingresa el nombre del cliente/ Numero de orden">
+                            </div>
+                                
+			</div>
+			<div class="modal-body table-responsive">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        <div class="box-body table-responsive">
+                            <table class="table table-striped table-condensed" id="mitabla">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Cliente</th>
+                                    <th align="center">O.T.</th>
+                                    <th>Total</th>
+                                </tr>
+
+                                <tbody class="buscar3" id="ordenes_pendientes">
+
+
+
+
+                                </tbody>
+                            </table>
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+			</div>
+		</div>
+	</div>
+</div>
+            
+<!---------------------- fin modal ordenes --------------------------------------------------->
+
 <!-- <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Open Modal</button>
 
 <div id="modalespera">

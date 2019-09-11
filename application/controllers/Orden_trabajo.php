@@ -361,5 +361,95 @@ class Orden_trabajo extends CI_Controller{
                 show_error('The Orden_trabajo you are trying to delete does not exist.');
         }
     }
+
+    /*
+     * Ordenes de trabajo pendientes
+     */
+    function ordenes_pendientes()
+    {
+        if($this->acceso(40)){
+            
+            $condicion = $this->input->post('filtro');
+            
+            $resultado = $this->Orden_trabajo_model->ordenes_pendientes($condicion);
+            
+            echo json_encode($resultado);
+            
+        }
+    }
+    
+
+    /*
+     * Pasar un pedido a ventas
+     */
+    function pasaraventas($pedido_id,$cliente_id)
+    {
+        if($this->acceso(40)) {
+        //**************** inicio contenido ***************    
+        $usuario_id = $this->session_data['usuario_id'];
+                
+        $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
+        $this->Pedido_model->ejecutar($sql);
+        
+        $sql = "insert into detalle_venta_aux(
+            producto_id,
+            venta_id,
+            
+            detalleven_codigo,
+            detalleven_cantidad,
+            detalleven_unidad,
+            detalleven_costo,
+            detalleven_precio,
+            detalleven_subtotal,
+            detalleven_descuento,
+            detalleven_total,
+            detalleven_caracteristicas,
+            detalleven_preferencia,
+            detalleven_comision,
+            detalleven_tipocambio,
+            usuario_id,
+            producto_nombre,
+            producto_unidad,
+            producto_marca,
+            categoria_id,
+            producto_codigobarra,
+            existencia
+            )
+            
+            (select 
+            d.producto_id,
+            0 as venta_id,
+            d.detalleped_codigo,
+            d.detalleped_cantidad,
+            d.detalleped_unidad,
+            d.detalleped_costo,
+            d.detalleped_precio,
+            d.detalleped_subtotal,
+            d.detalleped_descuento,
+            d.detalleped_total,
+            '' as caracteristicas,
+            d.detalleped_preferencia,
+            d.detalleped_comision,
+            1 as tipocambio,
+            ".$usuario_id.",
+            p.producto_nombre,
+            p.producto_unidad,
+            p.producto_marca,
+            p.categoria_id,
+            p.producto_codigobarra,
+            p.existencia
+
+            from detalle_pedido d, pedido e,usuario u, consinventario p
+            where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
+       
+        
+        $this->Pedido_model->ejecutar($sql);
+        return true;
+        		
+        //**************** fin contenido ***************
+        }
+        			         
+    }
+    
     
 }
