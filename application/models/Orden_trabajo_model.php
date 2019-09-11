@@ -109,4 +109,24 @@ class Orden_trabajo_model extends CI_Model
     {
         return $this->db->delete('orden_trabajo',array('orden_trabajo_id'=>$orden_trabajo_id));
     }
+
+    /*
+     * function mostrar las ordenes en estado pendientes
+     */
+    function ordenes_pendientes($condicion)
+    {
+        $sql = "select o.*, c.*, e.estado_descripcion, e.estado_color, u.usuario_nombre, u.usuario_imagen
+                from
+                  orden_trabajo o
+
+                left join cliente c on c.cliente_id = o.cliente_id
+                left join estado e on e.estado_id = o.estado_id
+                left join usuario u on u.usuario_id = o.usuario_id
+
+                WHERE
+                  o.estado_id = 1".$condicion;
+        $result = $this->db->query($sql)->result_array();
+        
+        return $result;
+    }
 }

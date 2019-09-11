@@ -2452,6 +2452,7 @@ function seleccionar_cliente(){
         });    
     
 }
+
 function pasaraventas(pedido_id,usuariopedido_id,cliente_id)
 {
     var base_url = document.getElementById('base_url').value;
@@ -2464,6 +2465,31 @@ function pasaraventas(pedido_id,usuariopedido_id,cliente_id)
             
             
             $("#pedido_id").val(pedido_id);           
+            $("#usuarioprev_id").val(usuariopedido_id);
+            tablaproductos();
+            datoscliente(cliente_id);
+        },
+        error: function(respuesta){
+            tablaproductos();
+            datoscliente(cliente_id);
+        }
+    });
+   
+}
+
+
+function ordenaventas(orden_id,usuario_id,cliente_id)
+{
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"orden_trabajo/ordenaventas/"+orden_id+"/"+cliente_id;
+   
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{},
+        success:function(respuesta){  
+            
+            $("#pedido_id").val(pedido_id);
             $("#usuarioprev_id").val(usuariopedido_id);
             tablaproductos();
             datoscliente(cliente_id);
@@ -2843,7 +2869,7 @@ function pedidos_pendientes()
                 if (p.length>0){
                 cont = 0;
                 
-                for(var i=1; i<p.length; i++){
+                for(var i=0; i<p.length; i++){
                      cont = cont+1;
                     
                      
@@ -2891,14 +2917,15 @@ function pedidos_pendientes()
 function ordenes_pendientes()
 {    
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'/pedido/mostrar_pedidos';
-    var parametro = document.getElementById('filtrar3').value;
+    var controlador = base_url+'/orden_trabajo/ordenes_pendientes';
+    var parametro = document.getElementById('filtrar4').value;
     
-    if (parametro != null)
-        filtro = " and c.cliente_nombre like '%"+parametro+"%' and p.estado_id = 11 ";
-    else
-        filtro = 0;
-    
+//    if (parametro != null)
+//        filtro = " and c.cliente_nombre like '%"+parametro+"%' and p.estado_id = 11 ";
+//    else
+//        filtro = 0;
+//    
+    filtro = "";
         
     $.ajax({
         url:controlador,
@@ -2909,10 +2936,12 @@ function ordenes_pendientes()
                 html = "";
                 //alert("aqui tambien: "+p.length);
                             
+                //alert("elementos: "+p.length);
+                
                 if (p.length>0){
                 cont = 0;
                 
-                for(var i=1; i<p.length; i++){
+                for(var i=0; i<p.length; i++){
                      cont = cont+1;
                     
                      
@@ -2920,35 +2949,32 @@ function ordenes_pendientes()
                         html += "     <td>"+cont+"</td>";
                         html += "     ";
                         html += "     <td style='white-space: nowrap'><font size='3'><b>"+p[i]['cliente_nombre']+"</b></font>";
-                        if (p[i]['cliente_nombrenegocio']!=null && p[i]['cliente_nombrenegocio']!=""){                        
-                            html += "     <br>"+p[i]['cliente_nombrenegocio'];
-                        }
-                        html += "     <br>"+p[i]['pedido_fecha'];
-                        html += "     <br><small><b>PREVENTISTA:</b> "+p[i]['usuario_nombre']+"</small>";
+                        
+                        html += "     <br>"+p[i]['orden_fechaentrega'];
+                        html += "     <br><small><b>VENDEDOR:</b> "+p[i]['usuario_nombre']+"</small>";
                         html += "     </td>";
                         html += "     <td align='center' bgcolor='"+p[i]['estado_color']+"'>";
                         //html += "         <a href='<?php echo base_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>'>";
-                        html += "         <font size='3'><b> 00"+p[i]['pedido_id']+"</b></font> <br>";
-                        html += "         <font size='1'>"+p[i]['estado_descripcion']+"</font>";
+                        html += "         <font size='3'><b> 00"+p[i]['orden_numero']+"</b></font> <br>";
+                        html += "         <font size='1'>"+p[i]['estado_descripcion']+"</font><br>";
                         html += "         </a>";
-                        html += "         <b>"+p[i]['pedido_fechaentrega']+"</b> <br>"+p[i]['pedido_horaentrega'];
+                        html += "         "+p[i]['orden_fecha']+" <br>"+p[i]['orden_hora'];
                         html += "     </td>";
                         html += "      ";
                         html += "     ";
-                        html += "     <td align='right' style='white-space: nowrap' >Sub Total: "+p[i]['pedido_subtotal']+"<br>";
-                        html += "		Desc.: "+p[i]['pedido_descuento']+"<br>  ";
-                        html += "	    <font size='3'><b>"+p[i]['pedido_total']+"</b></font>";
+                        html += "     <td align='right' style='white-space: nowrap'><font size='3'><b>Total: "+p[i]['orden_total']+"</b></font><br>";
+                        html += "	 a Cuenta: "+p[i]['orden_acuenta']+"<br>  ";
+                        html += "	    Saldo: "+p[i]['orden_saldo']+"";
                         html += "     </td>";
 
                         html += "     <td>";
-                        //html += "         <a href='<?php echo site_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>' class='btn btn-success btn-sm'><span class='fa fa-cubes' title='Ver detalle del pedido'></span></a>";
-                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuario_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
+                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='ordenaventas("+p[i]['orden_id']+","+p[i]['usuario_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar OT a ventas'></span> </button>";
                         html += "     </td>";
                         html += " </tr>";
                     
                     }
                 }
-                $("#pedidos_pendientes").html(html);
+                $("#ordenes_pendientes").html(html);
                 
 
         },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
