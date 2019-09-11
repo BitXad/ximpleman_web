@@ -2482,7 +2482,7 @@ function ordenaventas(orden_id,usuario_id,cliente_id)
 {
     
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"orden_trabajo/ordenaventas/"+orden_id+"/"+cliente_id;
+    var controlador = base_url+"orden_trabajo/pasaraventas/"+orden_id+"/"+cliente_id;
    
     $.ajax({url: controlador,
         type:"POST",

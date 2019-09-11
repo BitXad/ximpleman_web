@@ -391,19 +391,20 @@ class Orden_trabajo extends CI_Controller{
     /*
      * Pasar un pedido a ventas
      */
-    function pasaraventas($pedido_id,$cliente_id)
+    function pasaraventas($orden_id,$cliente_id)
     {
         if($this->acceso(40)) {
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
                 
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
-        $this->Pedido_model->ejecutar($sql);
+        $this->Orden_trabajo_model->ejecutar($sql);
         
-        $sql = "insert into detalle_venta_aux(
+        $sql = "insert into detalle_venta_aux( 
             producto_id,
             venta_id,
-            
+            moneda_id,
+            detalleven_id,
             detalleven_codigo,
             detalleven_cantidad,
             detalleven_unidad,
@@ -417,42 +418,71 @@ class Orden_trabajo extends CI_Controller{
             detalleven_comision,
             detalleven_tipocambio,
             usuario_id,
+            existencia,
             producto_nombre,
             producto_unidad,
             producto_marca,
             categoria_id,
             producto_codigobarra,
-            existencia
-            )
-            
-            (select 
-            d.producto_id,
-            0 as venta_id,
-            d.detalleped_codigo,
-            d.detalleped_cantidad,
-            d.detalleped_unidad,
-            d.detalleped_costo,
-            d.detalleped_precio,
-            d.detalleped_subtotal,
-            d.detalleped_descuento,
-            d.detalleped_total,
-            '' as caracteristicas,
-            d.detalleped_preferencia,
-            d.detalleped_comision,
-            1 as tipocambio,
-            ".$usuario_id.",
-            p.producto_nombre,
-            p.producto_unidad,
-            p.producto_marca,
-            p.categoria_id,
-            p.producto_codigobarra,
-            p.existencia
+            detalleven_envase,
+            detalleven_nombreenvase,
+            detalleven_costoenvase,
+            detalleven_precioenvase,
+            detalleven_cantidadenvase,
+            detalleven_garantiaenvase,
+            detalleven_devueltoenvase,
+            detalleven_fechadevolucion,
+            detalleven_horadevolucion,
+            detalleven_montodevolucion,
+            detalleven_prestamoenvase
+          )
+          (
+          select 
+          d.producto_id, 
+          0 as venta_id,
+          1 as moneda_id,
+          0 as detalleven_id,
+          p.producto_codigo,
+          sum(d.detalleorden_total) as detalleven_cantidad, 
+          p.producto_unidad as detalleven_unidad,
+          p.producto_costo as detalleven_costo,
+          sum(d.detalleorden_preciototal)/sum(d.detalleorden_total) as detalleven_precio,
+          sum(d.detalleorden_preciototal) as detalleven_subtotal,
+          0 as detalleven_descuento,
+          sum(d.detalleorden_preciototal) as detalleven_total,
+          '' as detalleven_caracteristicas,
+          '' as detalleven_preferencias,
+          p.producto_comision as detalleven_comision,
+          1 as detalleven_tipocambio,
+          ".$usuario_id." as usuario_id,
+          p.existencia,
+          p.producto_nombre,
+          p.producto_unidad,
+          p.producto_marca,
+          p.categoria_id,
+          p.producto_codigobarra,
+          p.producto_envase,
+          p.producto_nombreenvase,
+          p.producto_costoenvase,
+          p.producto_precioenvase,
+          0 as detalleven_cantidadenvase,
+          0 as detalleven_garantiaenvase,
+          0 as detalleven_devueltoenvase,
+          null as detalleven_fechadevolucion,
+          null as detalleven_horadevolucion,
+          0 as detalleven_montodevolucion,
+          0 as detalleven_prestamosenvase
 
-            from detalle_orden d, orden e,usuario u, consinventario p
-            where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
-       
+          from orden_trabajo o, detalle_orden d, inventario p
+          where 
+
+          o.orden_id = d.orden_id and
+          d.producto_id = p.producto_id and
+          o.orden_id = ".$orden_id."
+          group by d.producto_id
+          );";
         
-        $this->Pedido_model->ejecutar($sql);
+        $this->Orden_trabajo_model->ejecutar($sql);
         return true;
         		
         //**************** fin contenido ***************
