@@ -448,7 +448,7 @@ class Orden_trabajo extends CI_Controller{
             p.producto_codigobarra,
             p.existencia
 
-            from detalle_pedido d, pedido e,usuario u, consinventario p
+            from detalle_orden d, orden e,usuario u, consinventario p
             where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
        
         
