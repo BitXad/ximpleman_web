@@ -28,7 +28,7 @@
         });
 
 
-
+  
       
 
   function myFunction() {
@@ -58,6 +58,7 @@ input[type=number] { -moz-appearance:textfield; }
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>">
+ <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php echo json_encode($tipo_orden); ?>' />
 
 <div class="row">
     <div class="col-md-12">

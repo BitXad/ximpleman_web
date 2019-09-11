@@ -329,6 +329,13 @@
                         if($rolusuario[36-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
+                            <a href="<?php echo site_url('orden_trabajo');?>"><i class="fa fa-text-height"></i>Orden de Trabajo</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[36-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
                             <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-list-ul"></i>Cotizaciones</a>
                         </li>
                         <?php

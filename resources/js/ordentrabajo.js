@@ -839,6 +839,7 @@ function tablaresultados(opcion)
 
     var base_url = document.getElementById('base_url').value;
     var usuario_id = document.getElementById('usuario_id').value;
+    var tipo_orden = document.getElementById('tipo_orden').value;
 
     
 
@@ -977,8 +978,17 @@ function tablaresultados(opcion)
                             html += "       </option>";
                         }
                         
-                        
-                        
+                        html += "   </select>";
+                        html += "   <select class='btn btn-info btn-xs' style='font-size:10px; face=arial narrow;' id='selec_tipo"+registros[i]["producto_id"]+"' >";
+                        var w = tipo_orden.length;
+                        alert(w);
+                        for (var x=0; x<w; x++) {
+                          
+                        html += "       <option value='"+tipo_orden[x]["tipoorden_id"]+"'>"+tipo_orden[x]["tipoorden_nombre"]+"</option>";
+  
+                        }
+
+                       
                         html += "   </select><br>";
 
                         html += "<div class='col-md-2'  >";
