@@ -51,13 +51,13 @@
                     <tr>
 						<td><?php echo $cont; ?></td>
                         <td><?php echo $c['cliente_nombre']; ?></td>
-                        <td><?php echo date("d/m/Y", strtotime($c['orden_fecha'])); ?><br>
+                        <td align="center"><?php echo date("d/m/Y", strtotime($c['orden_fecha'])); ?><br>
                         <?php echo date("H:i:s", strtotime($c['orden_hora'])); ?>
                         </td>
-                        <td><?php echo date("d/m/Y", strtotime($c['orden_fechaentrega'])); ?><br>
-                        <td><?php echo $c['orden_total']; ?></td>
-                        <td><?php echo $c['orden_acuenta']; ?></td>
-                        <td><?php echo $c['orden_saldo']; ?></td>
+                        <td align="center"><?php echo date("d/m/Y", strtotime($c['orden_fechaentrega'])); ?><br>
+                        <td align="right"><?php echo $c['orden_total']; ?></td>
+                        <td align="right"><?php echo $c['orden_acuenta']; ?></td>
+                        <td align="right"><?php echo $c['orden_saldo']; ?></td>
                         
                         <td><?php echo $c['usuario_nombre']; ?></td>
                         <!--<td>

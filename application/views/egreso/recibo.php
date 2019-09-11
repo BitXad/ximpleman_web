@@ -81,7 +81,7 @@ border-top: 0px;
 <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 
-                        <?php echo "<img src='/ximpleman_web/resources/images/empresas/".$empresa[0]['empresa_imagen']."';  style='width:90px;height:90px'>"; ?>
+                        <img src="<?php echo base_url('resources/images/empresas/'.$empresa[0]["empresa_imagen"].''); ?>"  style="width:90px;height:90px">
                     </center>
                     </div>
                     <div class="columna_izquierda">
