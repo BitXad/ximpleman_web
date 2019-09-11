@@ -27,32 +27,9 @@
             }(jQuery));
         });
 
-    $(document).ready(function () {
-            (function ($) {
-                $('#filtrar3').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar3 tr').hide();
-                    $('.buscar3 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
 
 
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar4').click(function () {
-                  $('.oscar4').removeClass('hidden');
-                    var rex = new RegExp($(this).val(), 'i');
-                    
-                    $('.os1car4 tr').hide();
-                    $('.oscar4 tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
+      
 
   function myFunction() {
      
