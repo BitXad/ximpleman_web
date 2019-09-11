@@ -55,9 +55,9 @@ function detalleordeni(){
                         html += "<td><input id='detalleorden_precio"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_precio"]+"' ></td>";
                         html += "<td><input id='ancho"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_ancho"]+"' ></td>";
                         html += "<td><input id='largo"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_largo"]+"' ></td>";
-                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+registros[i]["detalleorden_total"]+"</b></font> <br></span>";
+                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["detalleorden_total"]).toFixed(2)+"</b></font> <br></span>";
                         html += "</center></td>";
-                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+registros[i]["detalleorden_preciototal"]+"</b></font> <br></span>";
+                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["detalleorden_preciototal"]).toFixed(2)+"</b></font> <br></span>";
                         html += "</center></td>";
                         html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detalleorden_id"]+","+usuario_id+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
                         html += "<button type='button' onclick='quitardetallec("+registros[i]["detalleorden_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
@@ -73,8 +73,8 @@ function detalleordeni(){
                        html += "<td></td>";
                        html += "<td></td>";
                        html += "<td><font size='3'></td>";
-                       html += "<td><font size='3'><b>"+total_detalle+" M2</td>";
-                       html += "<td><font size='3'><b>"+total_preciodetalle+" Bs.</td>";
+                       html += "<td><font size='3'><b>"+Number(total_detalle).toFixed(2)+" M2</td>";
+                       html += "<td><font size='3'><b>"+Number(total_preciodetalle).toFixed(2)+" Bs.</td>";
                        html += "</tr>";
                         //$('#orden_trabajo_total').value(total_detalle.toFixed(2));
                        $("#detalleordeniza").html(html);
@@ -998,7 +998,7 @@ function tablaresultados(opcion)
                         html += "Total: <input class='input-sm' id='total"+registros[i]["producto_id"]+"' name='total' type='text' readonly='readonly' class='form-control'  value=''  > </div>";
                         html += "<div class='col-md-2'  >";
 
-                        html += "Cant.: <input class='input-sm'  id='cantidad"+registros[i]["producto_id"]+"' name='cantidad' type='number' class='form-control'  value=''> </div>";
+                        html += "Cant.: <input class='input-sm'  id='cantidad"+registros[i]["producto_id"]+"' name='cantidad' type='number' class='form-control'  value='1'> </div>";
 
                         html += "<div class='col-md-2'  >";
 
