@@ -983,22 +983,22 @@ function tablaresultados(opcion)
 
                         html += "<div class='col-md-2'  >";
 
-                        html += "Precio: <input class='input-sm' id='producto_precio"+registros[i]["producto_id"]+"'  name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                        html += "Precio <input class='input-sm' id='producto_precio"+registros[i]["producto_id"]+"'  name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
 
                         html += "<div class='col-md-2'  >";
 
-                        html += "Ancho: <input class='input-sm' id='ancho"+registros[i]["producto_id"]+"'  name='ancho' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any' > </div>";
+                        html += "Ancho(mm) <input class='input-sm' id='ancho"+registros[i]["producto_id"]+"'  name='ancho' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any' > </div>";
 
                         html += "<div class='col-md-2'  >";
 
-                        html += "Largo: <input class='input-sm' id='largo"+registros[i]["producto_id"]+"'  name='largo' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any'  ></div>";
+                        html += "Largo(mm) <input class='input-sm' id='largo"+registros[i]["producto_id"]+"'  name='largo' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any'  ></div>";
 
                         html += "<div class='col-md-2'  >";
 
-                        html += "Total: <input class='input-sm' id='total"+registros[i]["producto_id"]+"' name='total' type='text' readonly='readonly' class='form-control'  value=''  > </div>";
+                        html += "Total(M2) <input class='input-sm' id='total"+registros[i]["producto_id"]+"' name='total' type='text' readonly='readonly' class='form-control'  value=''  > </div>";
                         html += "<div class='col-md-2'  >";
 
-                        html += "Cant.: <input class='input-sm'  id='cantidad"+registros[i]["producto_id"]+"' name='cantidad' type='number' class='form-control'  value='1'> </div>";
+                        html += "Cant. <input class='input-sm'  id='cantidad"+registros[i]["producto_id"]+"' name='cantidad' type='number' class='form-control'  value='1'> </div>";
 
                         html += "<div class='col-md-2'  >";
 
@@ -1076,7 +1076,7 @@ function totalar(producto_id)
 {
   var ancho = Number(document.getElementById('ancho'+producto_id).value);
   var largo = Number(document.getElementById('largo'+producto_id).value);
-  $("#total"+producto_id).val(Number(ancho*largo).toFixed(2));
+  $("#total"+producto_id).val(Number(ancho*largo/1000000).toFixed(2));
 }
 
 function saldar()
