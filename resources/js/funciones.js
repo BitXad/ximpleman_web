@@ -1727,6 +1727,7 @@ function registrarventa(cliente_id)
     var tipotrans_id = document.getElementById('tipo_transaccion').value; 
     var usuario_id = document.getElementById('usuario_id').value; 
     var pedido_id = document.getElementById('pedido_id').value; 
+    var orden_id = document.getElementById('orden_id').value; 
     var usuarioprev_id = document.getElementById('usuarioprev_id').value; 
     var nit = document.getElementById('nit').value;
     var razon = document.getElementById('razon_social').value;
@@ -1779,7 +1780,7 @@ function registrarventa(cliente_id)
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id;
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id;
         
      //alert(sql); 
     if (tipo_transaccion==2){
@@ -2077,6 +2078,10 @@ function tabla_ventas(filtro)
                     
                     if (Number(v[i]['pedido_id'])>0){
                         html += "                                   <a href='"+base_url+"pedido/nota_pedido/"+v[i]['pedido_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver nota de pedido'><span class='fa fa-list'></span></a> ";
+                    }
+
+                    if (Number(v[i]['orden_id'])>0){
+                        html += "                                   <a href='"+base_url+"orden_trabajo/ordenrecibo/"+v[i]['orden_id']+"' target='_blank' class='btn btn-default btn-xs' title='Ver Orden de Trabajo'><span class='fa fa-list'></span></a> ";
                     }
                     
                     
@@ -2483,15 +2488,17 @@ function ordenaventas(orden_id,usuario_id,cliente_id)
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"orden_trabajo/pasaraventas/"+orden_id+"/"+cliente_id;
-   
-   alert("el cliente:"+cliente_id);
+    var usuariopedido_id = usuario_id;
+    
+  
    
     $.ajax({url: controlador,
         type:"POST",
         data:{},
         success:function(respuesta){  
             
-            $("#pedido_id").val(pedido_id);
+            $("#orden_id").val(orden_id);
+            $("#pedido_id").val(0);
             $("#usuarioprev_id").val(usuariopedido_id);
             tablaproductos();
             datoscliente(cliente_id);
@@ -2841,6 +2848,7 @@ function guardar_preferencia()
 //}
 
 function focus_efectivo(){
+    
         $('#modalfinalizar').on('shown.bs.modal', function() {
         $('#venta_efectivo').focus();
         $('#venta_efectivo').select();

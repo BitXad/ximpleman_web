@@ -246,7 +246,9 @@ class Venta extends CI_Controller{
         $cad = $this->input->post('cad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
         $sql = "insert into venta(forma_id,tipotrans_id,usuario_id,cliente_id,moneda_id,".
                "estado_id,venta_fecha,venta_hora,venta_subtotal,venta_descuento,venta_total,".
-               "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id) value(".$cad.")";
+               "venta_efectivo,venta_cambio,venta_glosa,venta_comision,venta_tipocambio,detalleserv_id,".
+               "venta_tipodoc, tiposerv_id, entrega_id,venta_numeromesa, venta_numeroventa,usuarioprev_id,pedido_id, orden_id".
+               ") value(".$cad.")";
         
         $tipo_transaccion = $this->input->post('tipo_transaccion'); // recuperamos la consulta sql enviada mediante JS
         $cuotas = $this->input->post('cuotas'); // recuperamos la consulta sql enviada mediante JS
@@ -259,6 +261,7 @@ class Venta extends CI_Controller{
         $fecha_venta = $this->input->post('venta_fecha'); // nit del cliente
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
+        $orden_id = $this->input->post('orden_id'); // Orden de trabajo
         
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
@@ -523,6 +526,12 @@ class Venta extends CI_Controller{
                 
                 $this->ultimaventa();
        //     }
+        }
+        
+        if($orden_id > 0)
+        {
+            $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
+            $this->Venta_model->ejecutar($sql);
         }
         
       
@@ -1646,9 +1655,6 @@ function modificarcliente()
                     echo  '[{"cliente_id":'.$cliente_id.'}]';
                 }
                 else{
-                        
-
- 
                         $cliente_ci = $cliente_nit;
                         $cliente_nombre = $cliente_razon;
                         $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,cliente_razon,cliente_telefono,estado_id,usuario_id) value(1,1,".
