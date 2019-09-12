@@ -1795,7 +1795,7 @@ function registrarventa(cliente_id)
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
-                venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id },
+                venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id },
             success:function(respuesta){ 
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
@@ -1812,7 +1812,7 @@ function registrarventa(cliente_id)
             type:"POST",
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit, venta_descuento:venta_descuento},
+                facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit, venta_descuento:venta_descuento,orden_id:orden_id},
             success:function(respuesta){ 
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
