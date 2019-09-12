@@ -64,7 +64,23 @@ class Orden_trabajo_model extends CI_Model
 
         return $orden_trabajo;
     }
-        
+   
+function get_all_tipo_orden()
+    {
+         
+        $orden_trabajo = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                tipo_orden
+         
+            ORDER BY `tipoorden_id` DESC 
+
+        ")->result_array();
+
+        return $orden_trabajo;
+    }     
 
  function detalle_ordentrabajo($orden_id)
     {

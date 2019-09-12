@@ -51,6 +51,8 @@ class Orden_trabajo extends CI_Controller{
         if($this->acceso(37)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
+            $data['tipo_orden'] = $this->Orden_trabajo_model->get_all_tipo_orden(); 
+
             //$data['Orden_trabajo_id'] = $orden_trabajo; 
             //$data['detalle_orden'] = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);     
             $data['_view'] = 'orden_trabajo/add';
@@ -172,6 +174,7 @@ class Orden_trabajo extends CI_Controller{
         $producto_precio = $this->input->post('producto_precio');
         $factor = $this->input->post('producto_factor');
         $total = $this->input->post('total');
+        $tipo_orden = $this->input->post('tipo_orden');
         $nuevacan = $cantidad * $factor;
         //$nuevoprec = $
 
@@ -179,6 +182,7 @@ class Orden_trabajo extends CI_Controller{
                 
                 producto_id,
                 usuario_id,
+                tipoorden_id,
                 detalleorden_cantidad,
                 detalleorden_ancho,
                 detalleorden_largo,
@@ -192,6 +196,7 @@ class Orden_trabajo extends CI_Controller{
                 
                 producto_id,
                 ".$usuario_id.",
+                ".$tipo_orden.",
                 ".$cantidad.",
                 ".$ancho.",
                 ".$largo.",
