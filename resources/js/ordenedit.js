@@ -11,12 +11,13 @@ function detalleordeni(){
      var controlador = "";
      
      var base_url = document.getElementById('base_url').value;
-     var usuario_id = document.getElementById('usuario_id').value;
-     controlador = base_url+'orden_trabajo/detalle_orden_trabajo/';
+     var orden_id = document.getElementById('orden_id').value;
+     var orden_id = document.getElementById('orden_id').value;
+     controlador = base_url+'orden_trabajo/edit_detalle_orden/';
      
       $.ajax({url: controlador,
            type:"POST",
-           data:{usuario_id:usuario_id},
+           data:{orden_id:orden_id},
            success:function(respuesta){     
                               
                var registros =  JSON.parse(respuesta);
@@ -47,10 +48,10 @@ function detalleordeni(){
                         html += "Obs.: <b>"+registros[i]["tipoorden_nombre"]+"</b></td>"; 
                         //html += "<form action='"+base_url+"orden_trabajo/updatedetalleorden/"+usuario_id+"/"+registros[i]["producto_id"]+"'  method='POST' class='form'>";
                         //html += "<input id='detalleorden_caracteristica"+registros[i]["producto_id"]+"'  name='detalleorden_caracteristica' type='text' class='form-control' value='"+registros[i]["detalleorden_caracteristica"]+"' placeholder='caracteristica'> </td>";
-                        html += "<td> <input id='usuario_id'  name='usuario_id' type='hidden' class='form-control' value='"+usuario_id+"'>";
+                       // html += "<td> <input id='usuario_id'  name='usuario_id' type='hidden' class='form-control' value='"+usuario_id+"'>";
                         //html += "<input id='detalleorden_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         
-                        html += "<input id='detalleorden_cantidad"+registros[i]["detalleorden_id"]+"' name='cantidad' type='text' size='3' class='form-control'  value='"+registros[i]["detalleorden_cantidad"]+"' ></td> ";
+                        html += "<td><input id='detalleorden_cantidad"+registros[i]["detalleorden_id"]+"' name='cantidad' type='text' size='3' class='form-control'  value='"+registros[i]["detalleorden_cantidad"]+"' ></td> ";
                         html += "<td><input id='detalleorden_precio"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_precio"]+"' ></td>";
                         html += "<td><input id='ancho"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_ancho"]+"' ></td>";
                         html += "<td><input id='largo"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_largo"]+"' ></td>";
@@ -58,7 +59,7 @@ function detalleordeni(){
                         html += "</center></td>";
                         html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["detalleorden_preciototal"]).toFixed(2)+"</b></font> <br></span>";
                         html += "</center></td>";
-                        html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detalleorden_id"]+","+usuario_id+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
+                        html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detalleorden_id"]+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
                         html += "<button type='button' onclick='quitardetallec("+registros[i]["detalleorden_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
 
                       
@@ -77,7 +78,7 @@ function detalleordeni(){
                        html += "</tr>";
                         //$('#orden_trabajo_total').value(total_detalle.toFixed(2));
                        $("#detalleordeniza").html(html);
-                       $("#total").val(total_preciodetalle);
+                       $("#total").val(Number(total_preciodetalle).toFixed(2));
                        totality(total_detalle);
                        
           }  
@@ -94,7 +95,7 @@ function totality(total_detalle){
   $("#orden_trabajo_total").val(totalfinal.toFixed(2));
 }
 
-function detalleordena(usuario_id,producto_id){
+function detalleordena(orden_id,producto_id){
        
         var controlador = "";
    
@@ -108,12 +109,12 @@ function detalleordena(usuario_id,producto_id){
 
     var base_url = document.getElementById('base_url').value;
     
-    controlador = base_url+'orden_trabajo/insertarproducto/';
+    controlador = base_url+'orden_trabajo/agregarproducto/';
    
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{usuario_id:usuario_id, producto_id:producto_id, cantidad:cantidad, ancho:ancho, largo:largo, producto_precio:producto_precio, total:total, producto_factor:producto_factor, tipo_orden:tipo_orden},
+           data:{orden_id:orden_id, producto_id:producto_id, cantidad:cantidad, ancho:ancho, largo:largo, producto_precio:producto_precio, total:total, producto_factor:producto_factor, tipo_orden:tipo_orden},
            success:function(respuesta){     
                //alert (producto_factor);
                detalleordeni();                      
@@ -127,10 +128,10 @@ function detalleordena(usuario_id,producto_id){
 
 
 
-function actualizarDetalle(detalleorden_id,usuario_id){
+function actualizarDetalle(detalleorden_id){
 
     var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+'orden_trabajo/updatedetalleorden/';
+    var controlador = base_url+'orden_trabajo/actualizaDetalleorden/';
     
     var precio = document.getElementById('detalleorden_precio'+detalleorden_id).value;
     var cantidad = document.getElementById('detalleorden_cantidad'+detalleorden_id).value;
@@ -140,7 +141,7 @@ function actualizarDetalle(detalleorden_id,usuario_id){
    
  $.ajax({url: controlador,
             type:"POST",
-            data:{detalleorden_id:detalleorden_id,precio:precio,cantidad:cantidad,ancho:ancho,largo:largo,usuario_id:usuario_id},
+            data:{detalleorden_id:detalleorden_id,precio:precio,cantidad:cantidad,ancho:ancho,largo:largo},
             success:function(respuesta){
                 detalleordeni();
             }        
@@ -286,7 +287,7 @@ function buscarcliente(){
 
                 {
 
-                    alert("Cliente Nuevo");
+                    //$("#razon_social").val('SIN NOMBRECILLO');
 
                     document.getElementById('razon_social').focus();
 
@@ -838,7 +839,7 @@ function tablaresultados(opcion)
     
 
     var base_url = document.getElementById('base_url').value;
-    var usuario_id = document.getElementById('usuario_id').value;
+    var orden_id = document.getElementById('orden_id').value;
     var tipo_orden = JSON.parse(document.getElementById('tipo_orden').value);
     
     
@@ -1016,7 +1017,7 @@ function tablaresultados(opcion)
 
 
 
-                        html += "<button type='button' onclick='detalleordena("+usuario_id+","+registros[i]["producto_id"]+")'  class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button>";
+                        html += "<button type='button' onclick='detalleordena("+orden_id+","+registros[i]["producto_id"]+")'  class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button>";
 
                         //html += "<a href=''  onclick='submit()' class='btn btn-danger'><span class='fa fa-cart-arrow-down'></span></a>";
 
@@ -1094,12 +1095,6 @@ function saldar()
   var cuenta = Number(document.getElementById('cuenta').value);
   var total = Number(document.getElementById('total').value);
   var numero = Number(document.getElementById('orden_numero').value);
-  var cliente_nombre = document.getElementById('razon_social').value;
-  var cliente_nit = document.getElementById('nit').value;
-  var cliente_telefono = document.getElementById('telefono').value;
-  $("#cliente_nombre").val(cliente_nombre);
-  $("#cliente_nit").val(cliente_nit);
-  $("#cliente_telefono").val(cliente_telefono);
   $("#numero").val(numero);
   $("#saldo").val(Number(total-cuenta).toFixed(2));
 }
