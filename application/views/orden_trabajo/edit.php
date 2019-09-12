@@ -1,7 +1,7 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/ordentrabajo.js'); ?>" type="text/javascript"></script>
 
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/ordenedit.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -57,7 +57,7 @@ input[type=number] { -moz-appearance:textfield; }
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
- <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>">
+ <input type="text" name="orden_id" id="orden_id" value="<?php echo $orden_trabajo['orden_id']; ?>">
  <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php echo json_encode($tipo_orden); ?>' />
 
 <div class="row">
@@ -75,26 +75,26 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="col-md-3">
             <label for="nit" class="control-label">NIT</label>
             <div class="form-group">
-              <input type="text" name="nit" value="" class="form-control" id="nit" onkeypress="cotivalidar(event,1)" />
+              <input type="text" name="nit" value="<?php echo $orden_trabajo['cliente_nit'] ?>" class="form-control" id="nit" onkeypress="cotivalidar(event,1)" />
             </div>
           </div>      
             <div class="col-md-3">
             <label for="razon_social" class="control-label">Cliente</label>
             <div class="form-group">
-              <input type="text" name="razon_social" value=""  class="form-control" id="razon_social" />
+              <input type="text" name="razon_social" value="<?php echo $orden_trabajo['cliente_nombre'] ?>"  class="form-control" id="razon_social" />
             </div>  
             </div>
             
             <div class="col-md-3">
             <label for="telefono" class="control-label">Telefono</label>
             <div class="form-group">
-              <input type="text" name="telefono" value="" class="form-control" id="telefono" />
+              <input type="text" name="telefono" value="<?php echo $orden_trabajo['cliente_telefono'] ?>" class="form-control" id="telefono" />
             </div>
           </div>
 						<div class="col-md-3">
             <label for="orden_numero" class="control-label">No.Orden</label>
             <div class="form-group">
-              <input type="text" name="orden_numero" value="" class="form-control" id="orden_numero" required/>
+              <input type="text" name="orden_numero" value="<?php echo $orden_trabajo['orden_numero'] ?>" class="form-control" id="orden_numero" required/>
             </div>
           </div>
            
@@ -224,15 +224,15 @@ input[type=number] { -moz-appearance:textfield; }
       </div>
       <div class="modal-body">
         <div class="row clearfix">
-        <?php echo form_open('orden_trabajo/add'); ?>
+        <?php echo form_open('orden_trabajo/edit/'.$orden_trabajo['orden_id']) ?>
         <div class="col-md-4">
             <label for="total" class="control-label">Total</label>
             <div class="form-group">
               <input type="number" name="total" readonly value="" class="form-control" id="total" required/>
             </div>
           </div>
-          <input type="hidden" name="cliente_id" value=""  class="form-control" id="cliente_id" required />
-          <input type="hidden" name="numero" value=""  class="form-control" id="numero" required/>
+          <input type="hidden" name="cliente_id" value="<?php echo $orden_trabajo['cliente_id'] ?>"  class="form-control" id="cliente_id" required />
+          <input type="hidden" name="numero" value="<?php echo $orden_trabajo['orden_numero'] ?>"  class="form-control" id="numero" required/>
           
            
           <div class="col-md-4">
@@ -250,13 +250,13 @@ input[type=number] { -moz-appearance:textfield; }
           <div class="col-md-4">
             <label for="orden_trabajo_fecha" class="control-label">Fecha Entrega</label>
             <div class="form-group">
-              <input type="date" name="orden_trabajo_fecha" value="" class="form-control" id="orden_fecha" required/>
+              <input type="date" name="orden_trabajo_fecha" value="<?php echo $orden_trabajo['orden_fechaentrega'] ?>" class="form-control" id="orden_fecha" required/>
             </div>
           </div>
           <div class="col-md-8">
             <label for="nota" class="control-label">Nota</label>
             <div class="form-group">
-              <input type="text" name="nota" value="" class="form-control" id="nota" required/>
+              <input type="text" name="nota" value="<?php echo $orden_trabajo['orden_observacion'] ?>" class="form-control" id="nota" required/>
             </div>
           </div>
         </div>

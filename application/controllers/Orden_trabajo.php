@@ -84,6 +84,7 @@ class Orden_trabajo extends CI_Controller{
                 'orden_observacion' => $this->input->post('nota'),
                 'cliente_id' => $this->input->post('cliente_id'),
                 'usuario_id' => $usuario_id,
+                'estado_id' => 17,
             );
             
              $orden_id = $this->Orden_trabajo_model->add_orden_trabajo($params);
@@ -101,14 +102,50 @@ class Orden_trabajo extends CI_Controller{
         }
     }
 
+    function edit($orden_trabajo)
+    {
+        if($this->acceso(37)){
+            
+        $usuario_id = $this->session_data['usuario_id'];
+        $data['usuario_id'] = $this->session_data['usuario_id'];
+        $fecha = date("Y-m-d");
+        $hora = date("H:i:s");
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('numero','Orden Numero','required');
+           if($this->form_validation->run())     
+        {   
+            $params = array(
+                'orden_numero' => $this->input->post('numero'),
+                'orden_fechaentrega' => $this->input->post('orden_trabajo_fecha'),
+                'orden_total' => $this->input->post('total'),
+                'orden_acuenta' => $this->input->post('cuenta'),
+                'orden_saldo' => $this->input->post('saldo'),
+                'orden_observacion' => $this->input->post('nota'),
+                'cliente_id' => $this->input->post('cliente_id'),
+                'usuario_id' => $usuario_id,
+            );
+            
+             $orden_id = $this->Orden_trabajo_model->update_orden_trabajo($orden_trabajo,$params);
+
+            redirect('orden_trabajo/index');
+        }
+        else
+        {            
+            $data['_view'] = 'orden_trabajo/edit';
+            $this->load->view('layouts/main',$data);
+        }
+       
+        }
+    }
+
     function editar($orden_trabajo)
     {
         if($this->acceso(37)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
-            //$data['Orden_trabajo_id'] = $orden_trabajo; 
-            //$data['detalle_orden'] = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);     
-            $data['_view'] = 'orden_trabajo/add';
+            $data['tipo_orden'] = $this->Orden_trabajo_model->get_all_tipo_orden();
+            $data['orden_trabajo'] = $this->Orden_trabajo_model->la_orden_trabajo($orden_trabajo);     
+            $data['_view'] = 'orden_trabajo/edit';
             $this->load->view('layouts/main',$data);
        
         }
@@ -145,12 +182,51 @@ class Orden_trabajo extends CI_Controller{
         }
     }
 
+    function buscarcliente()
+    {
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $nit = $this->input->post('nit');                    
+                    $datos = $this->Orden_trabajo_model->buscar_cliente($nit);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        }
+                
+               
+    }
     function detalle_orden_trabajo()
     {
         if ($this->input->is_ajax_request()) {  
             $usuario_id = $this->session_data['usuario_id'];
         
         $datos = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+     
+    
+    }
+    function edit_detalle_orden()
+    {
+        if ($this->input->is_ajax_request()) {  
+            $orden_id = $this->input->post('orden_id');
+        
+        $datos = $this->Orden_trabajo_model->detalle_ordentrabajo($orden_id);
      if(isset($datos)){
                         echo json_encode($datos);
                     }else echo json_encode(null);
@@ -218,6 +294,64 @@ class Orden_trabajo extends CI_Controller{
                     show_404();
         }          
     }
+     function agregarproducto()
+    {
+        if ($this->input->is_ajax_request()) {
+        $orden_id = $this->input->post('orden_id');
+        $usuario_id = $this->session_data['usuario_id'];
+        $producto_id = $this->input->post('producto_id');
+        $cantidad = $this->input->post('cantidad'); 
+        $ancho = $this->input->post('ancho'); 
+        $largo = $this->input->post('largo');
+        $producto_precio = $this->input->post('producto_precio');
+        $factor = $this->input->post('producto_factor');
+        $total = $this->input->post('total');
+        $tipo_orden = $this->input->post('tipo_orden');
+        $nuevacan = $cantidad * $factor;
+        //$nuevoprec = $
+
+       $sql = "INSERT into detalle_orden(
+                
+                producto_id,
+                orden_id,
+                usuario_id,
+                tipoorden_id,
+                detalleorden_cantidad,
+                detalleorden_ancho,
+                detalleorden_largo,
+                detalleorden_total,
+                detalleorden_precio,
+                detalleorden_preciototal
+                            
+                )
+                (
+                SELECT
+                
+                producto_id,
+                ".$orden_id.",
+                ".$usuario_id.",
+                ".$tipo_orden.",
+                ".$cantidad.",
+                ".$ancho.",
+                ".$largo.",
+                ".$total.",
+                ".$producto_precio.",
+                (".$nuevacan." * ".$producto_precio." * ".$total.")
+                
+                from producto where producto_id = ".$producto_id."
+                )";
+              
+        $this->Orden_trabajo_model->ejecutar($sql);
+        $datos = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+    }
 
     function updateDetalleorden()
     {
@@ -232,7 +366,42 @@ class Orden_trabajo extends CI_Controller{
         $producto_precio = $this->input->post('precio');
         $ancho = $this->input->post('ancho');
         $largo = $this->input->post('largo');
-        $total = $ancho*$largo;
+        $total = $ancho*$largo/1000000;
+        
+       
+       
+       $cot = "UPDATE detalle_orden
+                SET
+                
+                detalleorden_precio = ".$producto_precio.",
+                detalleorden_cantidad = ".$cantidad.",
+                detalleorden_ancho = ".$ancho.",
+                detalleorden_largo = ".$largo.",
+                detalleorden_total = ".$total.",
+                detalleorden_preciototal = (".$cantidad." * ".$producto_precio.") * ".$total."
+                        
+                WHERE detalleorden_id = ".$detalleorden_id."
+            ";
+
+    
+        $this->Orden_trabajo_model->ejecutar($cot);
+       }
+         
+    }
+    function actualizaDetalleorden()
+    {
+        if ($this->input->is_ajax_request()) {
+        $orden_id = $this->input->post('orden_id');
+        
+        $detalleorden_id = $this->input->post('detalleorden_id');
+       // $descripcion = $this->input->post('descripcion');
+        
+        $cantidad = $this->input->post('cantidad'); 
+         
+        $producto_precio = $this->input->post('precio');
+        $ancho = $this->input->post('ancho');
+        $largo = $this->input->post('largo');
+        $total = $ancho*$largo/1000000;
         
        
        
@@ -271,7 +440,7 @@ class Orden_trabajo extends CI_Controller{
     /*
      * Editing a Orden_trabajo
      */
-    function edit($orden_trabajo)
+    function editaaa($orden_trabajo)
     {
         if($this->acceso(38)){
             $data['page_title'] = "Orden de Trabajo";
