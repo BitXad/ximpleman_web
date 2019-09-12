@@ -69,6 +69,18 @@ class Orden_trabajo extends CI_Controller{
         $data['usuario_id'] = $this->session_data['usuario_id'];
         $fecha = date("Y-m-d");
         $hora = date("H:i:s");
+        $cliente_id = $this->input->post('cliente_id');
+        $nombre = $this->input->post('cliente_nombre');
+        $nit = $this->input->post('cliente_nit');
+        $telefono = $this->input->post('cliente_telefono');
+        if ($cliente_id==''  || $cliente_id==0) {
+        $sql="INSERT INTO cliente (cliente_nombre,cliente_razon,cliente_nit,cliente_ci,cliente_telefono) VALUES ('".$nombre."','".$nombre."',".$nit.",'".$nit."','".$telefono."')";
+        $this->db->query($sql);
+        $cliente = $this->db->insert_id();
+        }else{
+        $cliente=$cliente_id;
+        }
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('numero','Orden Numero','required');
            if($this->form_validation->run())     
@@ -82,7 +94,7 @@ class Orden_trabajo extends CI_Controller{
                 'orden_acuenta' => $this->input->post('cuenta'),
                 'orden_saldo' => $this->input->post('saldo'),
                 'orden_observacion' => $this->input->post('nota'),
-                'cliente_id' => $this->input->post('cliente_id'),
+                'cliente_id' => $cliente,
                 'usuario_id' => $usuario_id,
                 'estado_id' => 17,
             );

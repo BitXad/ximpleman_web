@@ -286,7 +286,7 @@ function buscarcliente(){
 
                 {
 
-                    //$("#razon_social").val('SIN NOMBRECILLO');
+                    alert("Cliente Nuevo");
 
                     document.getElementById('razon_social').focus();
 
@@ -1094,6 +1094,12 @@ function saldar()
   var cuenta = Number(document.getElementById('cuenta').value);
   var total = Number(document.getElementById('total').value);
   var numero = Number(document.getElementById('orden_numero').value);
+  var cliente_nombre = document.getElementById('razon_social').value;
+  var cliente_nit = document.getElementById('nit').value;
+  var cliente_telefono = document.getElementById('telefono').value;
+  $("#cliente_nombre").val(cliente_nombre);
+  $("#cliente_nit").val(cliente_nit);
+  $("#cliente_telefono").val(cliente_telefono);
   $("#numero").val(numero);
   $("#saldo").val(Number(total-cuenta).toFixed(2));
 }

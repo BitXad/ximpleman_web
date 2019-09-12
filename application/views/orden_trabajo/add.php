@@ -32,12 +32,12 @@
       
 
   function myFunction() {
-     var cliente_id = document.getElementById('cliente_id').value;
+     /*var cliente_id = document.getElementById('cliente_id').value;
      if (cliente_id=='' || cliente_id==0) {
       alert("Cliente no existe");
-     } else {
+     } else {*/
        $("#exampleModal").modal("show");
-     } 
+    /* } */
    
       
       }
@@ -81,7 +81,7 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="col-md-3">
             <label for="razon_social" class="control-label">Cliente</label>
             <div class="form-group">
-              <input type="text" name="razon_social" value=""  class="form-control" id="razon_social" />
+              <input type="text" name="razon_social" value=""  class="form-control" id="razon_social" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
             </div>  
             </div>
             
@@ -233,6 +233,9 @@ input[type=number] { -moz-appearance:textfield; }
           </div>
           <input type="hidden" name="cliente_id" value=""  class="form-control" id="cliente_id" required />
           <input type="hidden" name="numero" value=""  class="form-control" id="numero" required/>
+          <input type="hidden" name="cliente_nit" value=""  class="form-control" id="cliente_nit" required/>
+          <input type="hidden" name="cliente_nombre" value=""  class="form-control" id="cliente_nombre" required/>
+          <input type="hidden" name="cliente_telefono" value=""  class="form-control" id="cliente_telefono" required/>
           
            
           <div class="col-md-4">

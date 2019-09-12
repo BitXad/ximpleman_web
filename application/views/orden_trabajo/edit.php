@@ -75,26 +75,26 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="col-md-3">
             <label for="nit" class="control-label">NIT</label>
             <div class="form-group">
-              <input type="text" name="nit" value="<?php echo $orden_trabajo['cliente_nit'] ?>" class="form-control" id="nit" onkeypress="cotivalidar(event,1)" />
+              <input type="text" name="nit" value="<?php echo $orden_trabajo['cliente_nit'] ?>" class="form-control" id="nit" onkeypress="cotivalidar(event,1)" readonly />
             </div>
           </div>      
             <div class="col-md-3">
             <label for="razon_social" class="control-label">Cliente</label>
             <div class="form-group">
-              <input type="text" name="razon_social" value="<?php echo $orden_trabajo['cliente_nombre'] ?>"  class="form-control" id="razon_social" />
+              <input type="text" name="razon_social" value="<?php echo $orden_trabajo['cliente_nombre'] ?>"  class="form-control" id="razon_social" readonly/>
             </div>  
             </div>
             
             <div class="col-md-3">
             <label for="telefono" class="control-label">Telefono</label>
             <div class="form-group">
-              <input type="text" name="telefono" value="<?php echo $orden_trabajo['cliente_telefono'] ?>" class="form-control" id="telefono" />
+              <input type="text" name="telefono" value="<?php echo $orden_trabajo['cliente_telefono'] ?>" class="form-control" id="telefono" readonly />
             </div>
           </div>
 						<div class="col-md-3">
             <label for="orden_numero" class="control-label">No.Orden</label>
             <div class="form-group">
-              <input type="text" name="orden_numero" value="<?php echo $orden_trabajo['orden_numero'] ?>" class="form-control" id="orden_numero" required/>
+              <input type="text" name="orden_numero" value="<?php echo $orden_trabajo['orden_numero'] ?>" class="form-control" id="orden_numero" required />
             </div>
           </div>
            
