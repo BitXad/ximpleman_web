@@ -238,7 +238,7 @@ input[type=number] { -moz-appearance:textfield; }
           <div class="col-md-4">
             <label for="cuenta" class="control-label">A cuenta</label>
             <div class="form-group">
-              <input type="number" name="cuenta" value="" onkeyup='saldar()' step="any" class="form-control" id="cuenta" required/>
+              <input type="number" name="cuenta" min="0" value="" onkeyup='saldar()' step="any" class="form-control" id="cuenta" required/>
             </div>
           </div>
           <div class="col-md-4">
