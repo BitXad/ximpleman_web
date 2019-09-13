@@ -179,7 +179,7 @@ function get_all_tipo_orden()
                 left join usuario u on u.usuario_id = o.usuario_id
 
                 WHERE
-                  o.estado_id = 1".$condicion;
+                  o.estado_id = 17".$condicion;
         $result = $this->db->query($sql)->result_array();
         
         return $result;

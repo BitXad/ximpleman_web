@@ -51,6 +51,7 @@ function tablaresultadosproducto(limite)
     var categoriaestado = "";
     var base_url = document.getElementById('base_url').value;
     var parametro_modulo = document.getElementById('parametro_modulorestaurante').value;
+    //var lapresentacion = JSON.parse(document.getElementById('lapresentacion').value);
     //al inicar carga con los ultimos 50 productos
     if(limite == 1){
         controlador = base_url+'producto/buscarproductoslimit/';
