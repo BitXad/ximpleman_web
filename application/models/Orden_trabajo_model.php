@@ -64,12 +64,28 @@ class Orden_trabajo_model extends CI_Model
 
         return $orden_trabajo;
     }
-        
+   
+function get_all_tipo_orden()
+    {
+         
+        $orden_trabajo = $this->db->query("
+            SELECT
+                *
+
+            FROM
+                tipo_orden
+         
+            ORDER BY `tipoorden_id` ASC 
+
+        ")->result_array();
+
+        return $orden_trabajo;
+    }     
 
  function detalle_ordentrabajo($orden_id)
     {
-        $sql = "SELECT d.*, p.* from detalle_orden d, inventario p
-               where d.producto_id=p.producto_id and d.orden_id = ".$orden_id." 
+        $sql = "SELECT d.*, p.*, t.* from detalle_orden d, inventario p, tipo_orden t
+               where d.producto_id=p.producto_id and d.orden_id = ".$orden_id." and d.tipoorden_id=t.tipoorden_id 
                order by d.detalleorden_id desc";
         $result = $this->db->query($sql)->result_array();
         return $result;        
@@ -79,12 +95,14 @@ class Orden_trabajo_model extends CI_Model
      */
  function get_detalle_orden_trabajo($usuario_id)
     {
-        $sql = "SELECT d.*, p.* from detalle_orden d, inventario p
-               where d.producto_id=p.producto_id and d.usuario_id = ".$usuario_id." and d.orden_id is null
+        $sql = "SELECT d.*, p.*, t.* from detalle_orden d, inventario p, tipo_orden t
+               where d.producto_id=p.producto_id and d.tipoorden_id=t.tipoorden_id and d.usuario_id = ".$usuario_id." and d.orden_id is null
                order by d.detalleorden_id desc";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     } 
+
+  
 
  function crear_orden_trabajo($usuario_id)
     {
@@ -109,6 +127,14 @@ class Orden_trabajo_model extends CI_Model
         }
 
     }
+    function buscar_cliente($nit)
+    {
+
+        $sql = "select * from cliente where cliente_nit = ".$nit." or cliente_ci=".$nit." or cliente_codigo=".$nit;        
+        $resultado = $this->db->query($sql)->result_array();
+        
+        return $resultado;
+    }
 
     function add_orden_trabajo($params)
     {
@@ -119,9 +145,9 @@ class Orden_trabajo_model extends CI_Model
     /*
      * function to update orden_trabajo
      */
-    function update_orden_trabajo($orden_trabajo_id,$params)
+    function update_orden_trabajo($orden_id,$params)
     {
-        $this->db->where('orden_trabajo_id',$orden_trabajo_id);
+        $this->db->where('orden_id',$orden_id);
         return $this->db->update('orden_trabajo',$params);
     }
     
@@ -153,7 +179,7 @@ class Orden_trabajo_model extends CI_Model
                 left join usuario u on u.usuario_id = o.usuario_id
 
                 WHERE
-                  o.estado_id = 1".$condicion;
+                  o.estado_id = 17".$condicion;
         $result = $this->db->query($sql)->result_array();
         
         return $result;

@@ -55,11 +55,13 @@
                         <?php echo date("H:i:s", strtotime($c['orden_hora'])); ?>
                         </td>
                         <td align="center"><?php echo date("d/m/Y", strtotime($c['orden_fechaentrega'])); ?><br>
-                        <td align="right"><?php echo $c['orden_total']; ?></td>
-                        <td align="right"><?php echo $c['orden_acuenta']; ?></td>
-                        <td align="right"><?php echo $c['orden_saldo']; ?></td>
+                        <td align="right"><?php echo number_format($c['orden_total'], 2, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['orden_acuenta'], 2, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['orden_saldo'], 2, ".", ","); ?></td>
                         
                         <td><?php echo $c['usuario_nombre']; ?></td>
+                        <td><a href="<?php echo site_url('orden_trabajo/editar/'.$c['orden_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                        <a href="<?php echo site_url('orden_trabajo/ordenrecibo/'.$c['orden_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a></td>
                         <!--<td>
                             <?php if($rol[38-1]['rolusuario_asignado'] == 1){ ?>
                             <a href="<?php echo site_url('cotizacion/add/'.$c['cotizacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 

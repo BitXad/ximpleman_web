@@ -51,6 +51,8 @@ class Orden_trabajo extends CI_Controller{
         if($this->acceso(37)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
+            $data['tipo_orden'] = $this->Orden_trabajo_model->get_all_tipo_orden(); 
+
             //$data['Orden_trabajo_id'] = $orden_trabajo; 
             //$data['detalle_orden'] = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);     
             $data['_view'] = 'orden_trabajo/add';
@@ -67,6 +69,18 @@ class Orden_trabajo extends CI_Controller{
         $data['usuario_id'] = $this->session_data['usuario_id'];
         $fecha = date("Y-m-d");
         $hora = date("H:i:s");
+        $cliente_id = $this->input->post('cliente_id');
+        $nombre = $this->input->post('cliente_nombre');
+        $nit = $this->input->post('cliente_nit');
+        $telefono = $this->input->post('cliente_telefono');
+        if ($cliente_id==''  || $cliente_id==0) {
+        $sql="INSERT INTO cliente (cliente_nombre,cliente_razon,cliente_nit,cliente_ci,cliente_telefono) VALUES ('".$nombre."','".$nombre."',".$nit.",'".$nit."','".$telefono."')";
+        $this->db->query($sql);
+        $cliente = $this->db->insert_id();
+        }else{
+        $cliente=$cliente_id;
+        }
+
         $this->load->library('form_validation');
         $this->form_validation->set_rules('numero','Orden Numero','required');
            if($this->form_validation->run())     
@@ -80,8 +94,9 @@ class Orden_trabajo extends CI_Controller{
                 'orden_acuenta' => $this->input->post('cuenta'),
                 'orden_saldo' => $this->input->post('saldo'),
                 'orden_observacion' => $this->input->post('nota'),
-                'cliente_id' => $this->input->post('cliente_id'),
+                'cliente_id' => $cliente,
                 'usuario_id' => $usuario_id,
+                'estado_id' => 17,
             );
             
              $orden_id = $this->Orden_trabajo_model->add_orden_trabajo($params);
@@ -99,14 +114,50 @@ class Orden_trabajo extends CI_Controller{
         }
     }
 
+    function edit($orden_trabajo)
+    {
+        if($this->acceso(37)){
+            
+        $usuario_id = $this->session_data['usuario_id'];
+        $data['usuario_id'] = $this->session_data['usuario_id'];
+        $fecha = date("Y-m-d");
+        $hora = date("H:i:s");
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules('numero','Orden Numero','required');
+           if($this->form_validation->run())     
+        {   
+            $params = array(
+                'orden_numero' => $this->input->post('numero'),
+                'orden_fechaentrega' => $this->input->post('orden_trabajo_fecha'),
+                'orden_total' => $this->input->post('total'),
+                'orden_acuenta' => $this->input->post('cuenta'),
+                'orden_saldo' => $this->input->post('saldo'),
+                'orden_observacion' => $this->input->post('nota'),
+                'cliente_id' => $this->input->post('cliente_id'),
+                'usuario_id' => $usuario_id,
+            );
+            
+             $orden_id = $this->Orden_trabajo_model->update_orden_trabajo($orden_trabajo,$params);
+
+            redirect('orden_trabajo/index');
+        }
+        else
+        {            
+            $data['_view'] = 'orden_trabajo/edit';
+            $this->load->view('layouts/main',$data);
+        }
+       
+        }
+    }
+
     function editar($orden_trabajo)
     {
         if($this->acceso(37)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
-            //$data['Orden_trabajo_id'] = $orden_trabajo; 
-            //$data['detalle_orden'] = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);     
-            $data['_view'] = 'orden_trabajo/add';
+            $data['tipo_orden'] = $this->Orden_trabajo_model->get_all_tipo_orden();
+            $data['orden_trabajo'] = $this->Orden_trabajo_model->la_orden_trabajo($orden_trabajo);     
+            $data['_view'] = 'orden_trabajo/edit';
             $this->load->view('layouts/main',$data);
        
         }
@@ -143,12 +194,51 @@ class Orden_trabajo extends CI_Controller{
         }
     }
 
+    function buscarcliente()
+    {
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************
+        
+                if ($this->input->is_ajax_request()) {       
+                    
+                    $nit = $this->input->post('nit');                    
+                    $datos = $this->Orden_trabajo_model->buscar_cliente($nit);
+                    echo json_encode($datos);                        
+
+                }
+                else
+                {                 
+                            show_404();
+                }  
+                
+        //**************** fin contenido ***************
+        }
+                
+               
+    }
     function detalle_orden_trabajo()
     {
         if ($this->input->is_ajax_request()) {  
             $usuario_id = $this->session_data['usuario_id'];
         
         $datos = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+     
+    
+    }
+    function edit_detalle_orden()
+    {
+        if ($this->input->is_ajax_request()) {  
+            $orden_id = $this->input->post('orden_id');
+        
+        $datos = $this->Orden_trabajo_model->detalle_ordentrabajo($orden_id);
      if(isset($datos)){
                         echo json_encode($datos);
                     }else echo json_encode(null);
@@ -172,6 +262,7 @@ class Orden_trabajo extends CI_Controller{
         $producto_precio = $this->input->post('producto_precio');
         $factor = $this->input->post('producto_factor');
         $total = $this->input->post('total');
+        $tipo_orden = $this->input->post('tipo_orden');
         $nuevacan = $cantidad * $factor;
         //$nuevoprec = $
 
@@ -179,6 +270,7 @@ class Orden_trabajo extends CI_Controller{
                 
                 producto_id,
                 usuario_id,
+                tipoorden_id,
                 detalleorden_cantidad,
                 detalleorden_ancho,
                 detalleorden_largo,
@@ -192,6 +284,65 @@ class Orden_trabajo extends CI_Controller{
                 
                 producto_id,
                 ".$usuario_id.",
+                ".$tipo_orden.",
+                ".$cantidad.",
+                ".$ancho.",
+                ".$largo.",
+                ".$total.",
+                ".$producto_precio.",
+                (".$nuevacan." * ".$producto_precio." * ".$total.")
+                
+                from producto where producto_id = ".$producto_id."
+                )";
+              
+        $this->Orden_trabajo_model->ejecutar($sql);
+        $datos = $this->Orden_trabajo_model->get_detalle_orden_trabajo($usuario_id);
+     if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
+    }
+     function agregarproducto()
+    {
+        if ($this->input->is_ajax_request()) {
+        $orden_id = $this->input->post('orden_id');
+        $usuario_id = $this->session_data['usuario_id'];
+        $producto_id = $this->input->post('producto_id');
+        $cantidad = $this->input->post('cantidad'); 
+        $ancho = $this->input->post('ancho'); 
+        $largo = $this->input->post('largo');
+        $producto_precio = $this->input->post('producto_precio');
+        $factor = $this->input->post('producto_factor');
+        $total = $this->input->post('total');
+        $tipo_orden = $this->input->post('tipo_orden');
+        $nuevacan = $cantidad * $factor;
+        //$nuevoprec = $
+
+       $sql = "INSERT into detalle_orden(
+                
+                producto_id,
+                orden_id,
+                usuario_id,
+                tipoorden_id,
+                detalleorden_cantidad,
+                detalleorden_ancho,
+                detalleorden_largo,
+                detalleorden_total,
+                detalleorden_precio,
+                detalleorden_preciototal
+                            
+                )
+                (
+                SELECT
+                
+                producto_id,
+                ".$orden_id.",
+                ".$usuario_id.",
+                ".$tipo_orden.",
                 ".$cantidad.",
                 ".$ancho.",
                 ".$largo.",
@@ -227,7 +378,42 @@ class Orden_trabajo extends CI_Controller{
         $producto_precio = $this->input->post('precio');
         $ancho = $this->input->post('ancho');
         $largo = $this->input->post('largo');
-        $total = $ancho*$largo;
+        $total = $ancho*$largo/1000000;
+        
+       
+       
+       $cot = "UPDATE detalle_orden
+                SET
+                
+                detalleorden_precio = ".$producto_precio.",
+                detalleorden_cantidad = ".$cantidad.",
+                detalleorden_ancho = ".$ancho.",
+                detalleorden_largo = ".$largo.",
+                detalleorden_total = ".$total.",
+                detalleorden_preciototal = (".$cantidad." * ".$producto_precio.") * ".$total."
+                        
+                WHERE detalleorden_id = ".$detalleorden_id."
+            ";
+
+    
+        $this->Orden_trabajo_model->ejecutar($cot);
+       }
+         
+    }
+    function actualizaDetalleorden()
+    {
+        if ($this->input->is_ajax_request()) {
+        $orden_id = $this->input->post('orden_id');
+        
+        $detalleorden_id = $this->input->post('detalleorden_id');
+       // $descripcion = $this->input->post('descripcion');
+        
+        $cantidad = $this->input->post('cantidad'); 
+         
+        $producto_precio = $this->input->post('precio');
+        $ancho = $this->input->post('ancho');
+        $largo = $this->input->post('largo');
+        $total = $ancho*$largo/1000000;
         
        
        
@@ -266,7 +452,7 @@ class Orden_trabajo extends CI_Controller{
     /*
      * Editing a Orden_trabajo
      */
-    function edit($orden_trabajo)
+    function editaaa($orden_trabajo)
     {
         if($this->acceso(38)){
             $data['page_title'] = "Orden de Trabajo";
@@ -391,19 +577,20 @@ class Orden_trabajo extends CI_Controller{
     /*
      * Pasar un pedido a ventas
      */
-    function pasaraventas($pedido_id,$cliente_id)
+    function pasaraventas($orden_id,$cliente_id)
     {
         if($this->acceso(40)) {
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
                 
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
-        $this->Pedido_model->ejecutar($sql);
+        $this->Orden_trabajo_model->ejecutar($sql);
         
-        $sql = "insert into detalle_venta_aux(
+        $sql = "insert into detalle_venta_aux( 
             producto_id,
             venta_id,
-            
+            moneda_id,
+            detalleven_id,
             detalleven_codigo,
             detalleven_cantidad,
             detalleven_unidad,
@@ -417,42 +604,71 @@ class Orden_trabajo extends CI_Controller{
             detalleven_comision,
             detalleven_tipocambio,
             usuario_id,
+            existencia,
             producto_nombre,
             producto_unidad,
             producto_marca,
             categoria_id,
             producto_codigobarra,
-            existencia
-            )
-            
-            (select 
-            d.producto_id,
-            0 as venta_id,
-            d.detalleped_codigo,
-            d.detalleped_cantidad,
-            d.detalleped_unidad,
-            d.detalleped_costo,
-            d.detalleped_precio,
-            d.detalleped_subtotal,
-            d.detalleped_descuento,
-            d.detalleped_total,
-            '' as caracteristicas,
-            d.detalleped_preferencia,
-            d.detalleped_comision,
-            1 as tipocambio,
-            ".$usuario_id.",
-            p.producto_nombre,
-            p.producto_unidad,
-            p.producto_marca,
-            p.categoria_id,
-            p.producto_codigobarra,
-            p.existencia
+            detalleven_envase,
+            detalleven_nombreenvase,
+            detalleven_costoenvase,
+            detalleven_precioenvase,
+            detalleven_cantidadenvase,
+            detalleven_garantiaenvase,
+            detalleven_devueltoenvase,
+            detalleven_fechadevolucion,
+            detalleven_horadevolucion,
+            detalleven_montodevolucion,
+            detalleven_prestamoenvase
+          )
+          (
+          select 
+          d.producto_id, 
+          0 as venta_id,
+          1 as moneda_id,
+          0 as detalleven_id,
+          p.producto_codigo,
+          sum(d.detalleorden_total) as detalleven_cantidad, 
+          p.producto_unidad as detalleven_unidad,
+          p.producto_costo as detalleven_costo,
+          sum(d.detalleorden_preciototal)/sum(d.detalleorden_total) as detalleven_precio,
+          sum(d.detalleorden_preciototal) as detalleven_subtotal,
+          0 as detalleven_descuento,
+          sum(d.detalleorden_preciototal) as detalleven_total,
+          '' as detalleven_caracteristicas,
+          '' as detalleven_preferencias,
+          p.producto_comision as detalleven_comision,
+          1 as detalleven_tipocambio,
+          ".$usuario_id." as usuario_id,
+          p.existencia,
+          p.producto_nombre,
+          p.producto_unidad,
+          p.producto_marca,
+          p.categoria_id,
+          p.producto_codigobarra,
+          p.producto_envase,
+          p.producto_nombreenvase,
+          p.producto_costoenvase,
+          p.producto_precioenvase,
+          0 as detalleven_cantidadenvase,
+          0 as detalleven_garantiaenvase,
+          0 as detalleven_devueltoenvase,
+          null as detalleven_fechadevolucion,
+          null as detalleven_horadevolucion,
+          0 as detalleven_montodevolucion,
+          0 as detalleven_prestamosenvase
 
-            from detalle_orden d, orden e,usuario u, consinventario p
-            where p.producto_id = d.producto_id and e.pedido_id =".$pedido_id." and d.pedido_id = e.pedido_id and e.usuario_id = u.usuario_id)";
-       
+          from orden_trabajo o, detalle_orden d, inventario p
+          where 
+
+          o.orden_id = d.orden_id and
+          d.producto_id = p.producto_id and
+          o.orden_id = ".$orden_id."
+          group by d.producto_id
+          );";
         
-        $this->Pedido_model->ejecutar($sql);
+        $this->Orden_trabajo_model->ejecutar($sql);
         return true;
         		
         //**************** fin contenido ***************

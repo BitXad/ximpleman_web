@@ -66,16 +66,16 @@
                       <tr>
                       <td align="center"><?php echo $cont ?></td>
                       <td align="center"><?php echo $d['detalleorden_cantidad']; ?></td>
-                      <td><?php echo $d['producto_nombre']; ?></td>
+                      <td align="center"><?php echo $d['producto_nombre']; ?></td>
                       <td align="center"><?php echo $d['detalleorden_ancho']; ?></td>
                       <td align="center"><?php echo $d['detalleorden_largo']; ?></td>
-                      <td align="center"><?php echo $d['detalleorden_total']; ?></td>
-                      <td><?php echo $d['detalleorden_observacion']; ?></td>
+                      <td align="center"><?php echo number_format($d['detalleorden_total'], 2, ".", ","); ?></td>
+                      <td align="center"><?php echo $d['tipoorden_nombre']; ?></td>
 					  </tr>
                       <?php }?>
                       <tr>
                       	<th colspan="5">TOTAL M2</th>
-                      	<th ><?php echo $total; ?></th>
+                      	<th ><?php echo number_format($total, 2, ".", ","); ?></th>
                       	<th colspan="2"></th>
                       </tr>  
 
