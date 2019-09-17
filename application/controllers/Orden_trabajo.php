@@ -10,6 +10,7 @@ class Orden_trabajo extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Orden_trabajo_model');
+        $this->load->model('Cliente_model');
         $this->load->helper('numeros');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -73,10 +74,28 @@ class Orden_trabajo extends CI_Controller{
         $nombre = $this->input->post('cliente_nombre');
         $nit = $this->input->post('cliente_nit');
         $telefono = $this->input->post('cliente_telefono');
+        $codigo = $this->input->post('cliente_codigo');
         if ($cliente_id==''  || $cliente_id==0) {
-        $sql="INSERT INTO cliente (cliente_nombre,cliente_razon,cliente_nit,cliente_ci,cliente_telefono) VALUES ('".$nombre."','".$nombre."',".$nit.",'".$nit."','".$telefono."')";
-        $this->db->query($sql);
-        $cliente = $this->db->insert_id();
+        $params = array(
+                'cliente_nombre' => $nombre,
+                'cliente_razon' => $nombre,
+                'cliente_nit' => $nit,
+                'cliente_ci' => $nit,
+                'cliente_telefono' => $telefono,
+                'cliente_codigo' => $codigo,
+                'cliente_direccion' => '',
+                'cliente_celular' => '',
+                'cliente_departamento' => '',
+                'cliente_nombrenegocio' => '',
+                'tipocliente_id' => 1,
+                'categoriaclie_id' => 1,
+                'usuario_id' => $usuario_id,
+                'estado_id' => 1,
+                'zona_id' => 0,
+            );
+            
+        $cliente = $this->Cliente_model->add_cliente($params);
+        
         }else{
         $cliente=$cliente_id;
         }

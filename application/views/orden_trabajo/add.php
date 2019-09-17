@@ -28,8 +28,20 @@
         });
 
 
-  
-      
+    $(document).ready(function(){
+    $("#razon_social").change(function(){
+        var nombre = $("#razon_social").val();
+        var cad1 = nombre.substring(0,2);
+        var cad2 = nombre.substring(nombre.length-1,nombre.length);
+        var fecha = new Date();
+        var pararand = fecha.getFullYear()+fecha.getMonth()+fecha.getDay();
+        var cad3 = Math.floor((Math.random(1001,9999) * pararand));
+        var cad = cad1+cad2+cad3;
+        $('#cliente_codigo').val(cad);
+       
+    });
+  } );
+          
 
   function myFunction() {
      /*var cliente_id = document.getElementById('cliente_id').value;
@@ -236,12 +248,13 @@ input[type=number] { -moz-appearance:textfield; }
           <input type="hidden" name="cliente_nit" value=""  class="form-control" id="cliente_nit" required/>
           <input type="hidden" name="cliente_nombre" value=""  class="form-control" id="cliente_nombre" required/>
           <input type="hidden" name="cliente_telefono" value=""  class="form-control" id="cliente_telefono" required/>
+          <input type="text" name="cliente_codigo" value=""  class="form-control" id="cliente_codigo" required/>
           
            
           <div class="col-md-4">
             <label for="cuenta" class="control-label">A cuenta</label>
             <div class="form-group">
-              <input type="number" name="cuenta" value="" onkeyup='saldar()' step="any" class="form-control" id="cuenta" required/>
+              <input type="number" name="cuenta" min="0" value="" onkeyup='saldar()' step="any" class="form-control" id="cuenta" required/>
             </div>
           </div>
           <div class="col-md-4">
