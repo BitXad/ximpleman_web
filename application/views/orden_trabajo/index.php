@@ -19,12 +19,12 @@
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, login, email">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre del cliente">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
             <div class="box-header">
-                <h3 class="box-title">Cotizaciones</h3>
+                <h3 class="box-title">Orden de Trabajo OT</h3>
             	<div class="box-tools">
                     <a href="<?php echo site_url('orden_trabajo/nuevo'); ?>" class="btn btn-success btn-sm">+ Nueva Orden de Trabajo</a> 
                 </div>
