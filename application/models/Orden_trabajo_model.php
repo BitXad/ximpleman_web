@@ -170,7 +170,33 @@ function get_all_tipo_orden()
      */
     function ordenes_pendientes($condicion)
     {
-        $sql = "select o.*, c.*, e.estado_descripcion, e.estado_color, u.usuario_nombre, u.usuario_imagen
+        $sql = "select o.*,   c.cliente_id,
+                c.tipocliente_id,
+                c.categoriaclie_id,
+                c.cliente_codigo,
+                c.cliente_nombre,
+                c.cliente_ci,
+                c.cliente_direccion,
+                c.cliente_telefono,
+                c.cliente_celular,
+                c.cliente_foto,
+                c.cliente_email,
+                c.cliente_nombrenegocio,
+                c.cliente_aniversario,
+                c.cliente_latitud,
+                c.cliente_longitud,
+                c.cliente_nit,
+                c.cliente_razon,
+                c.cliente_departamento,
+                c.zona_id,
+                c.lun,
+                c.mar,
+                c.mie,
+                c.jue,
+                c.vie,
+                c.sab,
+                c.dom,
+                e.estado_descripcion, e.estado_color, u.usuario_nombre, u.usuario_imagen
                 from
                   orden_trabajo o
 

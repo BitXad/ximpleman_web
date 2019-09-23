@@ -1716,15 +1716,7 @@ function ultimacomanda(){
     $venta_id = $venta[0]['venta_id'];
     
         redirect('factura/comanda_boucher/'.$venta_id);
-//    if ($venta_tipodoc==1){ 
-//        redirect('factura/imprimir_factura/'.$venta_id);
-//        
-//    }
-//    else{
-//        redirect('factura/imprimir_recibo/'.$venta_id);
-//        //redirect('factura/recibo_boucher/'.$venta_id);        
-//    }
-        
+
        //**************** fin contenido ***************
         }
             
