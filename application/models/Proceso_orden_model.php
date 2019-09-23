@@ -65,6 +65,48 @@ class Proceso_orden_model extends CI_Model
         return $proceso_orden;
     }
 
+    function get_en_recepcion($estado)
+    {
+        $proceso_orden = $this->db->query("
+            SELECT
+                p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso'
+
+            FROM
+                proceso_orden p
+            LEFT JOIN orden_trabajo o on p.orden_id=o.orden_id
+            LEFT JOIN cliente c on o.cliente_id=c.cliente_id
+            LEFT JOIN estado e on p.estado=e.estado_id
+            LEFT JOIN estado i on p.estado_id=i.estado_id
+            WHERE 
+                p.estado=".$estado." and p.estado_id=1
+        ")->result_array();
+
+        return $proceso_orden;
+    }
+
+    function get_en_terminado($estadoante,$estado_id)
+    {
+        $estadoact=$estadoante+1;
+        $proceso_orden = $this->db->query("
+            SELECT
+    p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso'
+
+FROM
+    proceso_orden p
+LEFT JOIN orden_trabajo o on p.orden_id=o.orden_id
+LEFT JOIN cliente c on o.cliente_id=c.cliente_id
+LEFT JOIN estado e on p.estado=e.estado_id
+LEFT JOIN estado i on p.estado_id=i.estado_id
+LEFT JOIN proceso_orden pro on p.orden_id=pro.orden_id
+WHERE 
+ pro.estado=".$estadoante." and pro.proceso_fechaterminado is not null and pro.estado_id=3
+     and p.estado=".$estadoact." and p.proceso_fechaterminado is null 
+GROUP BY p.proceso_id
+        ")->result_array();
+
+        return $proceso_orden;
+    }
+
     function terminar_proceso($proceso)
     {
         $proceso_orden = $this->db->query("

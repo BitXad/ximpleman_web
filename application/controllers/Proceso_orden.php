@@ -40,14 +40,42 @@ class Proceso_orden extends CI_Controller{
         }
     }
 
+    function terminados()
+    {
+        if($this->acceso(155)){
+            
+            $data['estados'] = $this->Estado_model->get_estado_tipo(6);
+            $data['_view'] = 'proceso_orden/terminados';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+
     function  buscar()
     {
         if($this->acceso(155)){
             $estado = $this->input->post('estado');
-            $estado_id = 1;
+            $estado_id = 2;
             $datos = $this->Proceso_orden_model->get_en_proceso($estado,$estado_id);
     
                         echo json_encode($datos);
+        }
+    }
+    function  buscarterminados()
+    {
+        if($this->acceso(155)){
+            $estado = $this->input->post('estado');
+            if ($estado==17) {
+                $datos = $this->Proceso_orden_model->get_en_recepcion($estado);
+    
+                        echo json_encode($datos); 
+            }else{
+                $estado_id = 3;
+                $estadoante=$estado-1;
+                $datos = $this->Proceso_orden_model->get_en_terminado($estadoante,$estado_id);
+    
+                        echo json_encode($datos); 
+            }
+           
         }
     }
 
@@ -57,24 +85,24 @@ class Proceso_orden extends CI_Controller{
             $usuario_id = $this->session_data['usuario_id'];
             $proceso = $this->input->post('proceso');
             $estado = $this->input->post('estado');
-            $sigestado = $estado+1;
+            /*$sigestado = $estado+1;*/
             
             $data = "
             UPDATE
                 proceso_orden
-            SET estado_id=2, fecha_terminado=NOW(), usuario_id=".$usuario_id."
+            SET estado_id=3, proceso_fechaterminado=NOW(), usuario_id=".$usuario_id."
 
             WHERE 
                 proceso_id=".$proceso." ";
-            $this->db->query($data);
-            $sql = "UPDATE
+            $datos=$this->db->query($data);
+            /* $sql = "UPDATE
                 proceso_orden
             SET estado_id=1
 
             WHERE 
                 orden_id=1 and estado=".$sigestado." ";
 
-           /*$sql = "INSERT into proceso_orden(
+          $sql = "INSERT into proceso_orden(
                 
                 orden_id,
                 estado,
@@ -90,9 +118,50 @@ class Proceso_orden extends CI_Controller{
                 
                 from proceso_orden where proceso_id = ".$proceso."
                 )";*/
-            $datos=$this->db->query($sql);
+            
             
                         echo json_encode($datos);
+        }
+    }
+
+    function  recibir()
+    {
+        if($this->acceso(155)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $estado = $this->input->post('estado');
+            $orden = $this->input->post('orden');
+            $sigestado = $estado+1;
+            
+           
+               $sql = "UPDATE
+                proceso_orden
+            SET estado_id=2, proceso_fechaproceso=NOW()
+
+            WHERE 
+                orden_id=".$orden." and estado=".$estado." ";
+                  $datos=$this->db->query($sql);
+            
+                        echo json_encode($datos);
+            
+            
+
+         /* $sql = "INSERT into proceso_orden(
+                
+                orden_id,
+                estado,
+                estado_id
+                            
+                )
+                (
+                SELECT
+                
+                orden_id,
+                ".$estado."+1,
+                1
+                
+                from proceso_orden where proceso_id = ".$proceso."
+                )";*/
+          
         }
     }
 
