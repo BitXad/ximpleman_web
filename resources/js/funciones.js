@@ -2489,7 +2489,9 @@ function ordenaventas(orden_id,usuario_id,cliente_id)
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"orden_trabajo/pasaraventas/"+orden_id+"/"+cliente_id;
     var usuariopedido_id = usuario_id;
+    var acuenta = document.getElementById('acuenta'+orden_id).value;
     
+    alert("usario_id"+usuario_id);
   
    
     $.ajax({url: controlador,
@@ -2500,6 +2502,10 @@ function ordenaventas(orden_id,usuario_id,cliente_id)
             $("#orden_id").val(orden_id);
             $("#pedido_id").val(0);
             $("#usuarioprev_id").val(usuariopedido_id);
+            $("#cuota_inicial").val(acuenta);
+            $("#tipo_transaccion").val(2); // select a credito
+                        
+            document.getElementById('creditooculto').style.display = 'block';
             tablaproductos();
             datoscliente(cliente_id);
         },
@@ -2954,7 +2960,7 @@ function ordenes_pendientes()
                 for(var i=0; i<p.length; i++){
                      cont = cont+1;
                     
-                     
+                     alert(p[i]['usuario_id']);
                         html += "<tr>";
                         html += "     <td>"+cont+"</td>";
                         html += "     ";
@@ -2969,6 +2975,7 @@ function ordenes_pendientes()
                         html += "         <font size='1'>"+p[i]['estado_descripcion']+"</font><br>";
                         html += "         </a>";
                         html += "         "+p[i]['orden_fecha']+" <br>"+p[i]['orden_hora'];
+                        html += "         <input type='text' id='acuenta"+p[i]['orden_id']+"' value='"+p[i]['orden_acuenta']+"' hidden>";
                         html += "     </td>";
                         html += "      ";
                         html += "     ";

@@ -301,42 +301,42 @@
                         if($rolusuario[12-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                            <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i> Ventas</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[1-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-shopping-basket"></i>Compras</a>
+                            <a href="<?php echo site_url('compra');?>"><i class="fa fa-shopping-basket"></i> Compras</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[24-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i>Inventario</a>
+                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i> Inventario</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[30-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i>Pedidos</a>
+                            <a href="<?php echo site_url('pedido');?>"><i class="fa fa-clipboard"></i> Pedidos</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[36-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('orden_trabajo');?>"><i class="fa fa-text-height"></i>Orden de Trabajo</a>
+                            <a href="<?php echo site_url('orden_trabajo');?>"><i class="fa fa-text-height"></i> Orden de Trabajo</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[36-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-list-ul"></i>Cotizaciones</a>
+                            <a href="<?php echo site_url('cotizacion');?>"><i class="fa fa-list-ul"></i> Cotizaciones</a>
                         </li>
                         <?php
                         }
@@ -357,28 +357,28 @@
                         if($rolusuario[53-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('ingreso');?>"><i class="fa fa-arrow-right"></i> <span>Ingresos</span></a>
+                            <a href="<?php echo site_url('ingreso');?>"><i class="fa fa-arrow-right"></i> <span> Ingresos</span></a>
                         </li>
                         <?php
                         }
                         if($rolusuario[59-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i> <span>Egresos</span></a>
+                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-arrow-left"></i> <span> Egresos</span></a>
                         </li>
                         <?php
                         }
                         if($rolusuario[12-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('cliente/reporte_distribuidor');?>"><i class="fa fa-truck"></i> <span>Entregas</span></a>
+                            <a href="<?php echo site_url('cliente/reporte_distribuidor');?>"><i class="fa fa-truck"></i> <span> Entregas</span></a>
                         </li>
                         <?php
                         }
                         if($rolusuario[65-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-exchange"></i> <span>Cambios/Devoluciones</span></a>
+                            <a href="<?php echo site_url('cambio_producto');?>"><i class="fa fa-exchange"></i> <span> Cambios/Devoluciones</span></a>
                         </li>
                         <?php
                         }
@@ -392,16 +392,16 @@
                         if($rolusuario[89-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i>Órdenes de Pago</a>
+                            <a href="<?php echo site_url('orden_pago');?>"><i class="fa fa-money"></i> Órdenes de Pago</a>
                         </li>
                         <?php
                         }
                         ?>
                         <li>
-                            <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-list-ol"></i>Proceso de Venta</a>
+                            <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-list-ol"></i> Visor de Venta</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i>Cocina</a>
+                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Cocina</a>
                         </li>
                     </ul>
                 </li>
