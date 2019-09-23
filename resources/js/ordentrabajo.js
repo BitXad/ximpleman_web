@@ -997,11 +997,11 @@ function tablaresultados(opcion)
 
                         html += "<div class='col-md-2'  >";
 
-                        html += "Ancho(mm) <input class='input-sm' id='ancho"+registros[i]["producto_id"]+"'  name='ancho' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any' > </div>";
+                        html += "Ancho(mm) <input class='input-sm' id='ancho"+registros[i]["producto_id"]+"'  name='ancho' min='0' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any' > </div>";
 
                         html += "<div class='col-md-2'  >";
 
-                        html += "Largo(mm) <input class='input-sm' id='largo"+registros[i]["producto_id"]+"'  name='largo' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any'  ></div>";
+                        html += "Largo(mm) <input class='input-sm' id='largo"+registros[i]["producto_id"]+"'  name='largo' min='0' type='number' onkeyup='totalar("+registros[i]["producto_id"]+")' class='form-control' value='' step='any'  ></div>";
 
                         html += "<div class='col-md-2'  >";
 
