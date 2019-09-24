@@ -19,7 +19,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-                <h3 class="box-title">Proceso Orden</h3>
+                <h3 class="box-title">OT EN PROCESO</h3>
             	<div class="box-tools">
                     
                 </div>

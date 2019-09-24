@@ -99,8 +99,8 @@ LEFT JOIN estado e on p.estado=e.estado_id
 LEFT JOIN estado i on p.estado_id=i.estado_id
 LEFT JOIN proceso_orden pro on p.orden_id=pro.orden_id
 WHERE 
- pro.estado=".$estadoante." and pro.proceso_fechaterminado is not null and pro.estado_id=3
-     and p.estado=".$estadoact." and p.proceso_fechaterminado is null 
+ pro.estado=".$estadoante." and pro.proceso_fechaterminado is not null and pro.estado_id>1
+     and p.estado=".$estadoact." and p.proceso_fechaproceso is null 
 GROUP BY p.proceso_id
         ")->result_array();
 
