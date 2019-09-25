@@ -89,8 +89,8 @@ class Proceso_orden_model extends CI_Model
         $estadoact=$estadoante+1;
         $proceso_orden = $this->db->query("
             SELECT
-    p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso'
-
+    p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso',
+    pro.proceso_fechaproceso as 'inicio', pro.proceso_fechaterminado as 'fin'
 FROM
     proceso_orden p
 LEFT JOIN orden_trabajo o on p.orden_id=o.orden_id

@@ -78,9 +78,8 @@ function buscarterminados(){
                         html += "<td align='center'>"+(i+1)+"</td>";
                         html += "<td align='center'><b>"+registros[i]["orden_numero"]+"</b></td>";
                         html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
-                        html += "<td align='center'>"+registros[i]["estado_orden"]+"</td>";
-                        html += "<td align='center'>"+moment(registros[i]["proceso_fechaproceso"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
-                        html += "<td align='center'>"+registros[i]["estado_proceso"]+"</td>";
+                        html += "<td align='center'>"+moment(registros[i]["inicio"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
+                        html += "<td align='center'>"+moment(registros[i]["fin"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
                         html += "<td align='center'><button class='btn btn-warning btn-xs' onclick='recibir("+registros[i]["orden_id"]+")'>Recibir</button></td>";
                         html += "</tr>";
                        

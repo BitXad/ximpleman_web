@@ -53,8 +53,8 @@
 						<th>#</th>
 						<th>OT</th>
 						<th>Cliente</th>
-            <th>Estado</th>
-						<th>Fecha</th>
+            <th>Proceso</th>
+						<th>Fecha Inicio</th>
             <th>Estado</th>
             <th></th>
                     </tr>

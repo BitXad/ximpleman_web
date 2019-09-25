@@ -53,9 +53,9 @@
 						<th>#</th>
 						<th>OT</th>
 						<th>Cliente</th>
-            <th>Estado</th>
-						<th>Fecha</th>
-            <th>Estado</th>
+            <th>Fecha Inicio</th>
+						<th>Fecha Terminado</th>
+            
             <th></th>
                     </tr>
                     <tbody class="buscar" id="tablaproceso">
