@@ -75,7 +75,15 @@
 									<input type="text" readonly="readonly" name="egreso_numero" value="<?php echo ($this->input->post('egreso_numero') ? $this->input->post('egreso_numero') : $egreso['egreso_numero']); ?>" class="form-control" id="egreso_numero" required />
 								</div>
 							</div>
+							<?php  if ($tipousuario_id==1) { ?>
+							<div class="col-md-4">
+								<label for="egreso_fecha" class="control-label">Fecha</label>
+								<div class="form-group">
+									<input type="datetime" name="egreso_fecha" value="<?php echo ($this->input->post('egreso_fecha') ? $this->input->post('egreso_fecha') : $egreso['egreso_fecha']); ?>" class="form-control" id="egreso_fecha" required />
+								</div>
+							</div>
 							
+							<?php } ?>
 							
 							<div class="col-md-4">
 								
