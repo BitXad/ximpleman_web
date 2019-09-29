@@ -19,7 +19,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-                <h3 class="box-title">OT EN PROCESO</h3>
+                <h3 class="box-title">OT TERMINADOS</h3>
             	<div class="box-tools">
                     
                 </div>
@@ -27,7 +27,7 @@
 <div class="row">
   <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
     <div class="col-md-12">
-      <select name="estado" class="btn-primary btn-sm btn-block" id="estado" onchange="buscarorden()">
+      <select name="estado" class="btn-primary btn-sm btn-block" id="estado" onchange="buscarterminados()">
                         <option value="" disabled selected >-- PROCESO --</option>
                         <?php 
                         foreach($estados as $estado)
@@ -53,9 +53,9 @@
 						<th>#</th>
 						<th>OT</th>
 						<th>Cliente</th>
-            <th>Proceso</th>
-						<th>Fecha Inicio</th>
-            <th>Estado</th>
+            <th>Fecha Inicio</th>
+						<th>Fecha Terminado</th>
+            
             <th></th>
                     </tr>
                     <tbody class="buscar" id="tablaproceso">
