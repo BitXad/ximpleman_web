@@ -187,16 +187,16 @@ border-bottom : 1px solid #aaa;*/
                 if ($factura[0]['estado_id']<>3){ 
                  foreach($detalle_venta as $d){;
                         $cont = $cont+1;
-                        $cantidad += $d['detalleven_cantidad'];
-                        $total_descuento += $d['detalleven_descuento']; 
-                        $total_final += $d['detalleven_total']; 
+                        $cantidad += $d['detallefact_cantidad'];
+                        $total_descuento += $d['detallefact_descuento']; 
+                        $total_final += $d['detallefact_total']; 
                         ?>
            <tr style="font-size: 8pt;">
-                <td align="center" style="padding: 0;"><?php echo $d['factura_cantidad']; ?></td>
-                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['factura_descripcion']; ?></td>
-                <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>-->
-                <td align="right" style="padding: 0;"><?php echo number_format($d['factura_preciounit'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0;"><?php echo number_format($d['factura_subtotal'],2,'.',','); ?></td>
+                <td align="center" style="padding: 0;"><?php echo $d['detallefact_cantidad']; ?></td>
+                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['detallefact_descripcion']; ?></td>
+                <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></td>
            </tr>
            <?php }} ?>
 <!--       </table>

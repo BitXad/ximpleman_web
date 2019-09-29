@@ -267,16 +267,16 @@ border-bottom : 1px solid #aaa;
                             if ($factura[0]['estado_id']<>3){ 
                              foreach($detalle_venta as $d){;
                                     $cont = $cont+1;
-                                    $cantidad += $d['detalleven_cantidad'];
-                                    $total_descuento += $d['detalleven_descuento']; 
-                                    $total_final += $d['detalleven_total']; 
+                                    $cantidad += $d['detallefact_cantidad'];
+                                    $total_descuento += $d['detallefact_descuento']; 
+                                    $total_final += $d['detallefact_total']; 
                         ?>
                        <tr style="border-top-style: solid;  border-color: black;  border-top-width: 1px;">
-                           <td align="center" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['detalleven_cantidad']; ?></font></td>
-                            <td colspan="2" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['factura_descripcion']; ?></font></td>
-                            <td align="right" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></font></td>
+                           <td align="center" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['detallefact_cantidad']; ?></font></td>
+                            <td colspan="2" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['detallefact_descripcion']; ?></font></td>
+                            <td align="right" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></font></td>
                             <td></td>
-                            <td align="right" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></font></td>
+                            <td align="right" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></font></td>
                             <td></td>
                        </tr>
                        <?php }} ?>

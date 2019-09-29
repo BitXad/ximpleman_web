@@ -300,11 +300,7 @@ class Venta extends CI_Controller{
           detalleven_montodevolucion,
           detalleven_prestamoenvase,          
           usuario_id,
-          factura_id,
-          factura_cantidad,          
-          factura_preciounit,
-          factura_subtotal,
-          factura_descripcion
+          factura_id          
         )
 
         (SELECT 
@@ -335,11 +331,7 @@ class Venta extends CI_Controller{
             detalleven_montodevolucion,
             detalleven_prestamoenvase,          
           usuario_id,
-          0 as factura_id,
-          detalleven_cantidad,
-          detalleven_precio,
-          detalleven_subtotal,
-          producto_nombre
+          0 as factura_id
           
         FROM
           detalle_venta_aux
@@ -522,7 +514,47 @@ class Venta extends CI_Controller{
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."')";
-                $this->Venta_model->ejecutar($sql);
+
+                    $factura_id = $this->Venta_model->ejecutar($sql);
+               
+    
+            
+                $sql =  "insert into detalle_factura(
+                 producto_id,
+                venta_id,
+                factura_id,
+                detallefact_codigo,
+                detallefact_unidad,
+                detallefact_cantidad,            
+                detallefact_descripcion,
+                detallefact_precio,
+                detallefact_subtotal,
+                detallefact_descuento,
+                detallefact_total,                
+                detallefact_preferencia,
+                detallefact_caracteristicas)
+
+                (SELECT 
+                  producto_id,
+                  ".$venta_id." as venta_id,          
+                  ".$factura_id." as factura_id,
+                  detalleven_codigo,
+                  detalleven_unidad,
+                  detalleven_cantidad,
+                  producto_nombre,          
+                  detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                  detalleven_subtotal,
+                 (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                  detalleven_total * (1 - ".$porcentaje."),     
+                  detalleven_preferencia,
+                  detalleven_caracteristicas
+
+                FROM
+                  detalle_venta_aux
+                WHERE 
+                  usuario_id=".$usuario_id.")";
+         
+                $this->Venta_model->ejecutar($sql);               
                 
                 $this->ultimaventa();
        //     }
@@ -586,75 +618,31 @@ class Venta extends CI_Controller{
       
         
             
-        $sql =  "insert into detalle_venta
-        (producto_id,
-          venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio,
-          detalleven_subtotal,
-          detalleven_descuento,
-          detalleven_total,
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-          detalleven_envase,
-          detalleven_nombreenvase,
-          detalleven_costoenvase,
-          detalleven_precioenvase,
-          detalleven_cantidadenvase,
-          detalleven_garantiaenvase,
-          detalleven_devueltoenvase,
-          detalleven_fechadevolucion,
-          detalleven_horadevolucion,
-          detalleven_montodevolucion,
-          detalleven_prestamoenvase,          
-          usuario_id,
-          factura_id,
-          factura_cantidad,          
-          factura_preciounit,
-          factura_subtotal,
-          factura_descripcion,
-          
-        )
+        $sql =  "insert into detalle_factura(
+         producto_id
+        ,venta_id
+        ,factura_id
+        ,detallefact_codigo
+        ,detallefact_unidad
+        ,detallefact_cantidad                
+        ,detallefact_descripcion
+        ,detallefact_preciounit
+        ,detallefact_subtotal
+        ,detallefact_preferencia
+        ,detallefact_caracteristicas)
 
         (SELECT 
           producto_id,
-          ".$venta_id." as venta_id,
-          moneda_id,
+          ".$venta_id." as venta_id,          
+          ".$factura_id.",
           detalleven_codigo,
-          detalleven_cantidad,
           detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_subtotal,
-          (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_total * (1 - ".$porcentaje."),
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-            detalleven_envase,
-            detalleven_nombreenvase,
-            detalleven_costoenvase,
-            detalleven_precioenvase,
-            detalleven_cantidadenvase,
-            detalleven_garantiaenvase,
-            detalleven_devueltoenvase,
-            detalleven_fechadevolucion,
-            detalleven_horadevolucion,
-            detalleven_montodevolucion,
-            detalleven_prestamoenvase,          
-          usuario_id,
-          0 as factura_id,
           detalleven_cantidad,
-          detalleven_precio,
-          detalleven_subtotal,
-          producto_nombre
+          detalleven_producto,          
+          detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+          detalleven_total * (1 - ".$porcentaje."),
+          detalleven_preferencia,
+          detalleven_caracteristicas
           
         FROM
           detalle_venta_aux
