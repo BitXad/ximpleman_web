@@ -84,6 +84,8 @@
                         <th>TEMPLADO</th>
                         <th></th>
                         <th>PARA<br>ENTREGA</th>
+                        <TH></TH>
+                        <th>ENTREGADO</th>
                         
                     </tr>
                     <tr style="font-family: Arial">
@@ -109,15 +111,20 @@
                                 <?php 
 
                                     $dt = new DateTime($p['proceso_fechaproceso']);
+                                    $df = new DateTime($p['proceso_fechaterminado']);
                                     //print $dt->format('d/m/Y'); // imprime 29/03/2018
                                     //print $dt->format('H:i:s'); // imprime 15:20:40
                                 ?>
                                 
                                 
                                 <font size="1"><b><?php echo $p['estado_descripcion']; ?></b></font>
+                                <?php if ($p['estado_id']==26) { ?>
+                                <br><font size="1"><?php echo $df->format('d/m/Y'); ?>
+                                <br><?php echo $df->format('H:i:s'); ?></font>    
+                                <?php }else{ ?>
                                 <br><font size="1"><?php echo $dt->format('d/m/Y'); ?>
                                 <br><?php echo $dt->format('H:i:s'); ?></font>
-                                                              
+                                <?php } ?>                            
                             </button> 
                             </div>
                         </td>                                                   
@@ -192,7 +199,7 @@
     <div class="col-md-5">
     </div>
     <div class="col-md-2">        
-        <a href="<?php echo base_url("login"); ?>" class="btn btn-success btn-block"><fa class="fa fa-close"></fa> SALIR</a>            
+        <a href="<?php echo base_url(''); ?>" class="btn btn-success btn-block"><fa class="fa fa-close"></fa> SALIR</a>            
         
     </div>
     <div class="col-md-5">

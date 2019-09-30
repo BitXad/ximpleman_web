@@ -78,7 +78,7 @@ class Proceso_orden_model extends CI_Model
             LEFT JOIN estado e on p.estado=e.estado_id
             LEFT JOIN estado i on p.estado_id=i.estado_id
             WHERE 
-                p.estado=".$estado." and p.estado_id=1
+                p.estado=".$estado." and p.estado_id=24
         ")->result_array();
 
         return $proceso_orden;
@@ -112,7 +112,7 @@ GROUP BY p.proceso_id
         $proceso_orden = $this->db->query("
             UPDATE
                 proceso_orden
-            SET estado_id=2, fecha_terminado=NOW()
+            SET estado_id=25, fecha_terminado=NOW()
 
             WHERE 
                 proceso_id=".$proceso."
