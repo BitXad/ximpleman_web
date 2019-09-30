@@ -1127,11 +1127,7 @@ function tablaresultados(opcion)
                        
                         html += "</tr>";
 
-                   }
-                 
-
-                 
-                   
+                   }   
                    $("#tablaresultados").html(html);
                    
             }

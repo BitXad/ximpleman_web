@@ -300,11 +300,7 @@ class Venta extends CI_Controller{
           detalleven_montodevolucion,
           detalleven_prestamoenvase,          
           usuario_id,
-          factura_id,
-          factura_cantidad,          
-          factura_preciounit,
-          factura_subtotal,
-          factura_descripcion
+          factura_id          
         )
 
         (SELECT 
@@ -335,11 +331,7 @@ class Venta extends CI_Controller{
             detalleven_montodevolucion,
             detalleven_prestamoenvase,          
           usuario_id,
-          0 as factura_id,
-          detalleven_cantidad,
-          detalleven_precio,
-          detalleven_subtotal,
-          producto_nombre
+          0 as factura_id
           
         FROM
           detalle_venta_aux
@@ -522,7 +514,47 @@ class Venta extends CI_Controller{
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
                     $factura_sucursal."','".$factura_sfc."','".$factura_actividad."')";
-                $this->Venta_model->ejecutar($sql);
+
+                    $factura_id = $this->Venta_model->ejecutar($sql);
+               
+    
+            
+                $sql =  "insert into detalle_factura(
+                 producto_id,
+                venta_id,
+                factura_id,
+                detallefact_codigo,
+                detallefact_unidad,
+                detallefact_cantidad,            
+                detallefact_descripcion,
+                detallefact_precio,
+                detallefact_subtotal,
+                detallefact_descuento,
+                detallefact_total,                
+                detallefact_preferencia,
+                detallefact_caracteristicas)
+
+                (SELECT 
+                  producto_id,
+                  ".$venta_id." as venta_id,          
+                  ".$factura_id." as factura_id,
+                  detalleven_codigo,
+                  detalleven_unidad,
+                  detalleven_cantidad,
+                  producto_nombre,          
+                  detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                  detalleven_subtotal,
+                 (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+                  detalleven_total * (1 - ".$porcentaje."),     
+                  detalleven_preferencia,
+                  detalleven_caracteristicas
+
+                FROM
+                  detalle_venta_aux
+                WHERE 
+                  usuario_id=".$usuario_id.")";
+         
+                $this->Venta_model->ejecutar($sql);               
                 
                 $this->ultimaventa();
        //     }
@@ -532,6 +564,21 @@ class Venta extends CI_Controller{
         {
             $sql = "update orden_trabajo set estado_id = 18  where orden_id = ".$orden_id;
             $this->Venta_model->ejecutar($sql);
+            $proceso_fechaproceso = "now()";
+            $contador = 1;
+
+            for ($contador = 17; $contador<=22; $contador++){
+                 
+                //$orden_id = 
+                $estado = $contador;
+                $estado_id = 1;
+                
+                $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso) value(".
+                        $orden_id.",".$estado.",".$estado_id.",0,".$proceso_fechaproceso.")";
+                $id = $this->Venta_model->ejecutar($sql);              
+                
+            }
+            
         }
         
       
@@ -570,287 +617,11 @@ class Venta extends CI_Controller{
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
         
-        $usuario_id = $this->session_data['usuario_id'];
         
-        $cuota_id = $this->input->post('cuota_id'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $ingreso_id = $this->input->post('ingreso_id'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $servicio_id = $this->input->post('servicio_id'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $credito_id = $this->input->post('credito_id'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $venta_id = $this->input->post('venta_id'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-
-        $cantidad = $this->input->post('cantidad'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $detalle = $this->input->post('detalle'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $precio = $this->input->post('precio'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-        $subtotal = $this->input->post('subtotal'); // recuperamos la consulta sql enviada mediante JS para el insert en la venta
-
-      
-        
-            
-        $sql =  "insert into detalle_venta
-        (producto_id,
-          venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio,
-          detalleven_subtotal,
-          detalleven_descuento,
-          detalleven_total,
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-          detalleven_envase,
-          detalleven_nombreenvase,
-          detalleven_costoenvase,
-          detalleven_precioenvase,
-          detalleven_cantidadenvase,
-          detalleven_garantiaenvase,
-          detalleven_devueltoenvase,
-          detalleven_fechadevolucion,
-          detalleven_horadevolucion,
-          detalleven_montodevolucion,
-          detalleven_prestamoenvase,          
-          usuario_id,
-          factura_id,
-          factura_cantidad,          
-          factura_preciounit,
-          factura_subtotal,
-          factura_descripcion,
-          
-        )
-
-        (SELECT 
-          producto_id,
-          ".$venta_id." as venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_subtotal,
-          (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
-          detalleven_total * (1 - ".$porcentaje."),
-          detalleven_caracteristicas,
-          detalleven_preferencia,
-          detalleven_comision,
-          detalleven_tipocambio,
-            detalleven_envase,
-            detalleven_nombreenvase,
-            detalleven_costoenvase,
-            detalleven_precioenvase,
-            detalleven_cantidadenvase,
-            detalleven_garantiaenvase,
-            detalleven_devueltoenvase,
-            detalleven_fechadevolucion,
-            detalleven_horadevolucion,
-            detalleven_montodevolucion,
-            detalleven_prestamoenvase,          
-          usuario_id,
-          0 as factura_id,
-          detalleven_cantidad,
-          detalleven_precio,
-          detalleven_subtotal,
-          producto_nombre
-          
-        FROM
-          detalle_venta_aux
-        WHERE 
-          usuario_id=".$usuario_id.")";
-        
-        //$sqldetalle = $sql;
-        $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-        
-        
-        //************* reducri inventario
-        
-        $this->Inventario_model->reducir_inventario_aux($usuario_id);
-        
-  
-        if($tipo_transaccion==2) //Si la transaccion es a credito
-        {            
-            //$credito_id =  
-            $estado_id =  8; //8 pendiente 9 cancelado
-            $compra_id =  0;
-            $venta_id =  $venta_id;
-            $credito_monto =  $venta_total;
-            $credito_cuotainicial =  $cuota_inicial;
-            $credito_interesproc =  $credito_interes;
-            $credito_interesmonto =  $venta_total * $venta_interes; //revisar
-            $credito_numpagos =  $cuotas;
-            $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
-            $credito_fecha = date('Y-m-d');
-            $time = time();
-            $credito_hora =  date("H:i:s", $time);
-            $credito_tipo = 1; // 1- ventas 2 - compras
-         
-            $cuotas       = $this->input->post('cuotas');
-            $interes       = $this->input->post('interes');
-            $modalidad    = $this->input->post('modalidad');
-            $dia_pago     = $this->input->post('dia_pago');
-            $fecha_inicio = $this->input->post('fecha_inicio');
-
-            
-            
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
-                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
-            $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-
-            
-            $estado_id =  8; //8 pendiente 9 cancelado
-            $cuota_numcuota = 1;
-            $cuota_capital = $venta_total - $cuota_inicial;
-            $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
-            $cuota_moradias = 0;
-            $cuota_multa = 0;
-            $cuota_subtotal =  $venta_total - $cuota_inicial;
-            $cuota_descuento = 0;
-            $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
-            
-            $cuota_cancelado = 0;
-            $cuota_fecha = "'1900-01-01'";
-            $cuota_hora = "'00:00'";
-            $cuota_numercibo =  0;
-            $cuota_saldo = $venta_total - $cuota_inicial;
-            $cuota_glosa = "''";
-            $cuota_saldocredito = $venta_total - $cuota_inicial;
-                 
-            
-//            for ($ncuotas=1; $ncuotas <= $cuotas; $ncuotas++){
-//                
-//                $sql = "insert into cuota(credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_subtotal,cuota_descuento,cuota_total,cuota_fechalimite,cuota_cancelado,cuota_fecha,cuota_hora,cuota_numercibo,cuota_saldo,cuota_glosa,cuota_saldocredito) value(".
-//                $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$cuota_interes.",".$cuota_moradias.",".$cuota_multa.",".$cuota_subtotal.",".$cuota_descuento.",".$cuota_total.",".$cuota_fechalimite.",".$cuota_cancelado.",".$cuota_fecha.",".$cuota_hora.",".$cuota_numercibo.",".$cuota_saldo.",".$cuota_glosa.",".$cuota_saldocredito.")";
-//          
-//            }
-            
-//***********************************************************************************************
-
-//    if ($_POST['tipotrans_id']==2) { // tipotrans_id = 2 : CREDITO
-//        
-//       $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-//                    $this->db->query($sql);
-//                    $credito_id = $this->db->insert_id();
-           
-            $dias_mora = 0;
-            $multa = 0;
-            $descuento = 0;
-            $cancelado = 0;
-            $credito_monto = $venta_total - $cuota_inicial;
-            $numcuota = $cuotas; //numero de cuotas
-            $patron = ($numcuota*0.5) + 0.5;
-            $cuota_capital = ($credito_monto)/$numcuota;   // bien         
-            $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
-            $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
-            $total = $cuota_subtotal - $descuento;
-            $saldo_deudor = $credito_monto;
-            
-            $siguiente= 0;
-            $cuota_fechalimite = $fecha_inicio;
-           
-           // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
-            
-            $cuota_fechalimite = $fecha_inicio;
-            
-            
-            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
-            else $intervalo = 7; //si los pagos son semanales
-                
-            
-                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
-                    $cuota_numcuota = $i;
-                    
-                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
-                    if ($modalidad == "MENSUAL") 
-                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
-                    else 
-                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
-                    
-                    $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
-                            $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
-                            $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
-                  
-                    $this->Venta_model->ejecutar($cuota);
-
-//                    $saldo_deudor = $cuota_total - $cuota_capital;
-//                    $cuota_total = $saldo_deudor;
-                    $saldo_deudor = $saldo_deudor - $cuota_capital;
-                    //$cuota_total = $saldo_deudor;
-                }
-            
-
-            
-        }
-              
-        if($pedido_id > 0)
-        {
-            $sql = "update pedido set estado_id = 13  where pedido_id = ".$pedido_id;
-            $this->Venta_model->ejecutar($sql);
-        }
-                
-        
-        if($facturado=="true"){//si la venta es facturada
-
-            $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
-
-  //          if (sizeof($dosificacion)>0){ //si existe una dosificacion activa
-                
-                $estado_id = 1; 
-                
-                $factura_fechaventa    = "date(now())";
-                $factura_fecha         = "date(now())";
-                $factura_hora          = "time(now())";
-                $factura_subtotal      = $subtotal;
-                $factura_nit           = $nit;
-                $factura_razonsocial   = $razon;
-                $factura_ice           = 0;
-                $factura_exento        = 0;
-                $factura_descuento     = $descuento;
-                $factura_total         = $subtotal;
-                $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
-                $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
-                $factura_llave         = $dosificacion[0]['dosificacion_llave'];
-                $factura_fechalimite   = $dosificacion[0]['dosificacion_fechalimite'];
-                $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $nit,$factura_fechaventa, $factura_total);
-                $factura_leyenda1       = $dosificacion[0]['dosificacion_leyenda1'];
-                $factura_leyenda2       = $dosificacion[0]['dosificacion_leyenda2'];
-                $factura_nitemisor     = $dosificacion[0]['dosificacion_nitemisor'];
-                $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
-                $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
-                $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
-
-                $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
-                $this->Venta_model->ejecutar($sql);
-                             
-                $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
-                    factura_fecha, factura_hora, factura_subtotal, 
-                    factura_ice, factura_exento, factura_descuento, factura_total, 
-                    factura_numero, factura_autorizacion, factura_llave, 
-                    factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad) value(".
-                    $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                    $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
-                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
-                    $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
-                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
-                    $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."')";
-                $this->Venta_model->ejecutar($sql);
-                
-                
-                
-                $this->ultimaventa();
-                
-       //     }
-        }
         
       
         //**************** fin contenido ***************
         }
-               
-        
     }
         
     

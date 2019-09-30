@@ -1,0 +1,36 @@
+#mitabla {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 8px;
+    border-collapse: collapse;
+    width: 100%;
+    padding : 0 0 0 0;
+}
+
+#mitabla td, #mitabla th {
+    border: 0px solid #ddd;
+    padding: 8px;
+    
+}
+
+/*#mitabla tr:nth-child(even){background-color: #f2f2f2;}*/
+
+/*#mitabla tr:hover {background-color: #ddd;}*/
+
+#mitabla th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: center;
+    background-color: #000000;
+    color: white;
+    font-size: 12px;
+}
+#div1 {
+     overflow:scroll;
+     height:200px;
+     width:500px;
+}
+#div1 table {
+    width:500px;
+    background-color:lightgray;
+}    

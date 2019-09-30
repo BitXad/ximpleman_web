@@ -174,4 +174,40 @@ GROUP BY p.proceso_id
     {
         return $this->db->delete('proceso_orden',array('botonartic_id'=>$botonartic_id));
     }
+    
+    /*
+     * Seguimiento de procesos
+     */
+    function get_seguimiento($orden_id,$venta_id)
+    {
+        
+        $sql = "SELECT 
+                v.venta_fecha,
+                v.venta_id,
+                o.orden_numero,
+                p.*,
+                c.cliente_nombre,
+                c.cliente_ci,
+                e.estado_descripcion,
+                e.estado_color
+
+
+                FROM
+                venta v,
+                orden_trabajo o,
+                proceso_orden p,
+                cliente c,
+                estado e
+              WHERE
+                v.venta_id = ".$venta_id." and
+                o.orden_id = ".$orden_id." and
+                v.orden_id = o.orden_id and
+                o.orden_id = p.orden_id and
+                p.estado_id = e.estado_id and
+                v.cliente_id = c.cliente_id";
+ 
+        $seguimiento = $this->db->query($sql)->result_array();
+
+        return $seguimiento;
+    }
 }

@@ -162,6 +162,13 @@ function ventas_dia($estado)
         return $detalle_venta;
     }
 
+    function get_detalle_factura($venta_id)
+    {
+        $sql = "select * from detalle_factura d where d.venta_id = ".$venta_id;
+        $detalle_venta = $this->db->query($sql)->result_array();        
+        return $detalle_venta;
+    }
+
     function cargar_detalle_venta($venta_id,$usuario_id)
     {
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;

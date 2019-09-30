@@ -42,25 +42,81 @@
     <section class="content">
       <!-- Small boxes (Stat box) -->
       <div class="row">
+          
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
           <div class="small-box bg-aqua">
-            <div class="inner">
-                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
+              <div class="inner" >
+                
+                <script type="text/javascript">
+                    function esMobilx(){
+    
+                    var isMobile = {
+                        Android: function() {
+                            return navigator.userAgent.match(/Android/i);
+                        },
+                        BlackBerry: function() {
+                            return navigator.userAgent.match(/BlackBerry/i);
+                        },
+                        iOS: function() {
+                            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+                        },
+                        Opera: function() {
+                            return navigator.userAgent.match(/Opera Mini/i);
+                        },
+                        Windows: function() {
+                            return navigator.userAgent.match(/IEMobile/i);
+                        },
+                        any: function() {
+                            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+                        }
+                    };    
 
+                    return isMobile.any()
+
+                }
+                var interlineado = "style='line-height: 10px;'";
+//                if(esMobilx()){
+//                    document.write("<h1 style='line-height: 0px;'><fa class='fa fa-money'></fa> </h1>");
+//                    interlineado = "style='line-height: 2px;'";
+//                }
+//                    
+                </script>
+                
+                <?php 
+                    
+                    //$interlineado = "<script> document.write(interlineado);</script>";
+                    $interlineado = "";
+                    
+                ?>    
+
+                <?php echo $interlineado; ?>
+                
+              <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
               <p><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?></p>
+              
             </div>
+              
             <div class="icon">
-              <i class="ion ion-bag"></i>
+              <i class="ion ion-bag"></i>              
             </div>
             <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer">Realizar Ventas <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
+          
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
-          <div class="small-box bg-green">
+          <div class="small-box bg-green" >
             <div class="inner">
+                
+                <script type="text/javascript">
+                if(esMobilx()){
+                    document.write("<h1><fa class='fa fa-money'></fa> </h1>");
+                }                    
+                </script>
+                
+                
                 <h4><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h4>
 
               <p><?php echo "En ".$pedidos[0]['cantidad_pedidos']." pedidos"; ?></p>
