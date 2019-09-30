@@ -492,3 +492,25 @@ function venta_online(){
 function cerrarsesion(){
      location.reload();
 }
+
+function buscarseguimiento(){
+     var orden = document.getElementById('orden').value; 
+     var venta = document.getElementById('transaccion').value;
+     var base_url = document.getElementById('base_url').value;
+     var controlador = base_url+'seguimiento/buscarseguimiento/';
+     var loca = base_url+"seguimiento/seguimiento/"+orden+"/"+venta;
+     
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{orden:orden,venta:venta},
+           success:function(respuesta){
+           location.href=loca;
+         
+    },
+        error:function(respuesta){
+          
+       alert("NO SE ENCUENTRA LA ORDEN, vuelva a intentar");
+   }
+
+});
+}

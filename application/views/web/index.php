@@ -15,7 +15,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
 <meta property="og:image" content="<?php echo site_url('resources/images/icono.png');?>" >
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-		function hideURLbar(){ window.scrollTo(0,1); } </script>
+        function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- //for-mobile-apps -->
 <?php $raiz = base_url('resources/web/'); ?>
 
@@ -35,12 +35,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript" src="<?php echo $raiz;?>js/move-top.js"></script>
 <script type="text/javascript" src="<?php echo $raiz;?>js/easing.js"></script>
 <script type="text/javascript">
-	jQuery(document).ready(function($) {
-		$(".scroll").click(function(event){		
-			event.preventDefault();
-			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
-		});
-	});
+    jQuery(document).ready(function($) {
+        $(".scroll").click(function(event){     
+            event.preventDefault();
+            $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+        });
+    });
 </script>
 <script src="//norfipc.com/js/jquery.cookie.js"></script>
 <script src="//norfipc.com/js/cookiecompliance.js"></script>
@@ -50,11 +50,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
 <!-- start-smoth-scrolling -->
 </head>
-	
+    
 <body>
 <!-- header -->
 <!------------------ PRIMERA SECCION -------------------------------------->
-	<div class="agileits_header">
+    <div class="agileits_header">
             <div class="container" style="margin-bottom: -10px; ">
                 <div class="w3l_offers">                        
                         <b> <?php if (strlen($pagina_web[0]['empresa_nombre'])>28) { ?> 
@@ -64,14 +64,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!------------------ MENU CABECERA  ----------------------------------->                    
                 <div class="agile-login">
                     <ul>
+                        <li><a href="" data-toggle="modal" data-target="#seguimientoOT">O.T.</a></li>
                         <li><a href="" data-toggle="modal" data-target="#seguimientoservicio">servicio</a></li>
                         <?php foreach($menu_cabecera as $cabecera) { ?>
                         <li><a href="<?php echo base_url().$cabecera['menu_enlace']; ?>"><?php echo $cabecera['menu_nombre']; ?></a></li>
                         <?php } ?>
-                        <select class="selectpicker" data-width="fit">
+                        <!--<li><select class="selectpicker" data-width="fit">
                     <option data-content='<span class="flag-icon flag-icon-us"></span> English'><span class="flag-icon flag-icon-us"></span>English</option>
                     <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
-                    </select>
+                    </select></li>-->
                     </ul>
 
                 </div>
@@ -107,6 +108,45 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                       </div>
                     </div>
                     <!-- --------------- F I N Modal para ver el avance de servicios --------------- -->
+                     <!-- --------------- INICIO Modal para ver el avance de OT --------------- -->
+                    <div class="modal fade" id="seguimientoOT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                            <br><br>
+                            <div class="modal-content text-left">
+                          <div class="modal-header">
+                              <label>Ver Proceso de Orden de Trabajo</label>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                          </div>
+                           
+                          <div class="modal-body">
+                           <!-- --------------------------------------------------------------- -->
+                           <div class="row">
+                            <div class="col-md-6">
+                                <label for="orden" class="control-label">Orden</label>
+                                <div class="form-group">
+                                    <input type="text" name="orden" id="orden" class="form-control" required  autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="transaccion" class="control-label">Transaccion</label>
+                                <div class="form-group">
+                                    <input type="text" name="transaccion" id="transaccion" class="form-control" required autocomplete="off" />
+                                </div>
+                            </div>
+                            </div>
+                            
+                           <!------------------------------------------------------------------->
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" onclick="buscarseguimiento()" class="btn btn-success">
+                                    <i class="fa fa-eye"></i> Mostrar
+                            </button>
+                          </div>
+                            
+                        </div>
+                      </div>
+                    </div>
+                    <!-- --------------- F I N Modal para ver el avance de OT --------------- -->
                 <div class="product_list_header">  
                     <form action="#" method="post" class="last"> 
                         <input type="hidden" name="cmd" value="_cart">
@@ -126,32 +166,32 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="clearfix"> </div>
 <!------------------ FIN MENU CABECERA  ----------------------------------->                    
             </div>
-	</div>
+    </div>
 <!------------------ FIN PRIMERA SECCION ----------------------------------->
 
 
 <!------------------ SEGUNDA SECCION 
-	<div class="logo_products">
-		<div class="container">
-		<div class="w3ls_logo_products_left1">
-				<ul class="phone_email">
-					<li><i class="fa fa-phone" aria-hidden="true"></i><?php echo 'PEDIDOS: '.$pagina_web[0]['pagina_telefono']; ?></li>
-					
-				</ul>
-			</div>
-			<div class="w3ls_logo_products_left">
-				<h1><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
-			</div>
-		</div>
-	</div>
+    <div class="logo_products">
+        <div class="container">
+        <div class="w3ls_logo_products_left1">
+                <ul class="phone_email">
+                    <li><i class="fa fa-phone" aria-hidden="true"></i><?php echo 'PEDIDOS: '.$pagina_web[0]['pagina_telefono']; ?></li>
+                    
+                </ul>
+            </div>
+            <div class="w3ls_logo_products_left">
+                <h1><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
+            </div>
+        </div>
+    </div>
 
  FIN SEGUNDA SECCION -------------------------------------->
 
 <!-- //header -->
 <!-- navigation -->
-	<div class="navigation-agileits">
-		<div class="container">
-			<nav class="navbar navbar-default">
+    <div class="navigation-agileits">
+        <div class="container">
+            <nav class="navbar navbar-default">
                             
                             <!-- Brand and toggle get grouped for better mobile display -->
                             <div class="navbar-header nav_2">
@@ -174,33 +214,33 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     </ul>
                                 </div>
                                 <!--------------------- FIN MENU PRINCIPAL ---------------------------------------->                            
-							</nav>
-			</div>
-		</div>
-		
+                            </nav>
+            </div>
+        </div>
+        
 <!-- //navigation -->
-	<!-- main-slider -->
-		<ul id="demo1">
+    <!-- main-slider -->
+        <ul id="demo1">
                     <?php 
                         
                     foreach($slider as $s){
                     ?>
-			<li>
+            <li>
                             <img src="<?php echo $raiz.'images/sliders/'.$s['slide_imagen'];?>" alt="" />
                             <!--Slider Description example-->
                             <div class="slide-desc">
                                 <h3><?php echo $s['slide_leyenda1']; ?></h3> 
                                 <h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>
                             </div>
-			</li>
+            </li>
                     <?php } ?>
 
-		</ul>
-	<!-- //main-slider -->
-	<!-- //top-header and slider -->
-	<!-- top-brands -->
+        </ul>
+    <!-- //main-slider -->
+    <!-- //top-header and slider -->
+    <!-- top-brands -->
     
-	<div class="top-brands">
+    <div class="top-brands">
         <!------------------------ BUSCADOR --------------------------->     
     <div class="container"> 
     <div class="input-group input-group-lg">
@@ -237,35 +277,35 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <br><br>
             <div id="tablaresultados"></div>
     </div>
-		<div class="container">
-		<!--<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
-		
+        <div class="container">
+        <!--<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
+        
                 <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
                     <h3><?php echo $seccion1[0]['seccion_descripcion']; ?></h3>
                 <?php } ?>
-		
+        
                     <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
-		<h5><?php echo $seccion1[0]['seccion_texto']; ?></h5>
+        <h5><?php echo $seccion1[0]['seccion_texto']; ?></h5>
                 <?php } ?>-->
                 
 <!------------------------------------- SEGUNDA SECCION -------------------------------------->
 
                         <div class="grid_3 grid_5">
-				<div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
-					<ul id="myTab" class="nav nav-tabs" role="tablist">
-						<li role="presentation" class="active"><a href="#expeditions" id="expeditions-tab" role="tab" data-toggle="tab" aria-controls="expeditions" aria-expanded="true"><?php echo $seccion2[0]['seccion_titulo']; ?></a></li>
-						<li role="presentation"><a href="#tours" role="tab" id="tours-tab" data-toggle="tab" aria-controls="tours"><?php echo $seccion3[0]['seccion_titulo']; ?></a></li>
-					</ul>
-					<div id="myTabContent" class="tab-content">
-						<div role="tabpanel" class="tab-pane fade in active" id="expeditions" aria-labelledby="expeditions-tab">
-							<div class="agile-tp">
-								<h5><?php echo $seccion1[0]['seccion_descripcion']; ?></h5>
-								<p class="w3l-ad"><?php echo $seccion1[0]['seccion_texto']; ?></p>
-							</div>
-							<div class="agile_top_brands_grids">
+                <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
+                    <ul id="myTab" class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#expeditions" id="expeditions-tab" role="tab" data-toggle="tab" aria-controls="expeditions" aria-expanded="true"><?php echo $seccion2[0]['seccion_titulo']; ?></a></li>
+                        <li role="presentation"><a href="#tours" role="tab" id="tours-tab" data-toggle="tab" aria-controls="tours"><?php echo $seccion3[0]['seccion_titulo']; ?></a></li>
+                    </ul>
+                    <div id="myTabContent" class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="expeditions" aria-labelledby="expeditions-tab">
+                            <div class="agile-tp">
+                                <h5><?php echo $seccion1[0]['seccion_descripcion']; ?></h5>
+                                <p class="w3l-ad"><?php echo $seccion1[0]['seccion_texto']; ?></p>
+                            </div>
+                            <div class="agile_top_brands_grids">
                                                             <?php foreach($ofertasemanal as $os) { ?>
                                                             
-								<div class="col-md-4 top_brand_left">
+                                <div class="col-md-4 top_brand_left">
                                         <div class="hover14 column">
                                             <div class="agile_top_brand_left_grid">
                                                 <div class="agile_top_brand_left_grid_pos">
@@ -275,7 +315,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                     <figure>
                                                         <div class="snipcart-item block" >
                                                             <div class="snipcart-thumb">
-                                                                    <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$os['producto_foto'];?>" /></a>		
+                                                                    <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$os['producto_foto'];?>" /></a>     
                                                                     <p><?php echo $os['producto_nombre'];?></p>
                                                                     <div class="stars">
                                                                             <i class="fa fa-star blue-star" aria-hidden="true"></i>
@@ -308,75 +348,75 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                                 </div>
                                             </div>
                                         </div>
-								</div>
+                                </div>
                                                             
                                                             <?php } ?>
 
                                                                 <!-------------- Bloque de codigo 2 ---------------->
-								<div class="clearfix"> </div>
-							</div>
-						</div>
+                                <div class="clearfix"> </div>
+                            </div>
+                        </div>
                                             
-						<div role="tabpanel" class="tab-pane fade" id="tours" aria-labelledby="tours-tab">
-							<div class="agile-tp">
-								<h5><?php echo $seccion3[0]['seccion_titulo']; ?></h5>
-								<p class="w3l-ad"><?php echo $seccion3[0]['seccion_texto']; ?></p>
-							</div>
-							<div class="agile_top_brands_grids">
+                        <div role="tabpanel" class="tab-pane fade" id="tours" aria-labelledby="tours-tab">
+                            <div class="agile-tp">
+                                <h5><?php echo $seccion3[0]['seccion_titulo']; ?></h5>
+                                <p class="w3l-ad"><?php echo $seccion3[0]['seccion_texto']; ?></p>
+                            </div>
+                            <div class="agile_top_brands_grids">
                                                             <?php foreach($ofertasdia as $od) { ?>
-								<div class="col-md-4 top_brand_left">
-									<div class="hover14 column">
-										<div class="agile_top_brand_left_grid">
-											<div class="agile_top_brand_left_grid_pos">
-												<img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive" />
-											</div>
-											<div class="agile_top_brand_left_grid1">
-												<figure>
-													<div class="snipcart-item block" >
-														<div class="snipcart-thumb">
-															<a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$od['producto_foto'];?>" /></a>		
-															<p><?php echo $od['producto_nombre'];?></p>
-															<div class="stars">
-																<i class="fa fa-star blue-star" aria-hidden="true"></i>
-																<i class="fa fa-star blue-star" aria-hidden="true"></i>
-																<i class="fa fa-star blue-star" aria-hidden="true"></i>
-																<i class="fa fa-star blue-star" aria-hidden="true"></i>
-																<i class="fa fa-star gray-star" aria-hidden="true"></i>
-															</div>
-															<h4><?php echo number_format($os['producto_precio'], 2, '.',',');?><span><?php echo number_format($os['producto_precio']*1.20, 2, '.', ','); ?></span></h4>
-														</div>
-														<div class="snipcart-details top_brand_home_details">
-															<form action="#" method="post">
-																<fieldset>
-																	<input type="hidden" name="cmd" value="_cart" />
-																	<input type="hidden" name="add" id="cantidad<?php echo $od['producto_id'];?>" value="1" />
-																	<input type="hidden" name="business" value=" " />
-																	<input type="hidden" name="item_name" value="<?php echo $od['producto_nombre'];?>" />
-																	<input type="hidden" name="amount" id="producto_precio<?php echo $od['producto_id'];?>" value="<?php echo $od['producto_precio'];?>" />
-																	<input type="hidden" name="discount_amount" id="descuento<?php echo $od['producto_id'];?>" value="<?php echo ($os['producto_precio']-$os['promocion_preciototal']); ?>" />
-																	<input type="hidden" name="currency_code" value="USD" />
-																	<input type="hidden" name="return" value=" " />
-																	<input type="hidden" name="cancel_return" value=" " />
-																	<input type="button" name="submit" value="Añadir al pedido" class="button" onclick="insertar(<?php echo $od['producto_id'];?>)"/>
-																</fieldset>
-															</form>
-														</div>
-													</div>
-												</figure>
-											</div>
-										</div>
-									</div>
-								</div>
+                                <div class="col-md-4 top_brand_left">
+                                    <div class="hover14 column">
+                                        <div class="agile_top_brand_left_grid">
+                                            <div class="agile_top_brand_left_grid_pos">
+                                                <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive" />
+                                            </div>
+                                            <div class="agile_top_brand_left_grid1">
+                                                <figure>
+                                                    <div class="snipcart-item block" >
+                                                        <div class="snipcart-thumb">
+                                                            <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$od['producto_foto'];?>" /></a>     
+                                                            <p><?php echo $od['producto_nombre'];?></p>
+                                                            <div class="stars">
+                                                                <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                                <i class="fa fa-star gray-star" aria-hidden="true"></i>
+                                                            </div>
+                                                            <h4><?php echo number_format($os['producto_precio'], 2, '.',',');?><span><?php echo number_format($os['producto_precio']*1.20, 2, '.', ','); ?></span></h4>
+                                                        </div>
+                                                        <div class="snipcart-details top_brand_home_details">
+                                                            <form action="#" method="post">
+                                                                <fieldset>
+                                                                    <input type="hidden" name="cmd" value="_cart" />
+                                                                    <input type="hidden" name="add" id="cantidad<?php echo $od['producto_id'];?>" value="1" />
+                                                                    <input type="hidden" name="business" value=" " />
+                                                                    <input type="hidden" name="item_name" value="<?php echo $od['producto_nombre'];?>" />
+                                                                    <input type="hidden" name="amount" id="producto_precio<?php echo $od['producto_id'];?>" value="<?php echo $od['producto_precio'];?>" />
+                                                                    <input type="hidden" name="discount_amount" id="descuento<?php echo $od['producto_id'];?>" value="<?php echo ($os['producto_precio']-$os['promocion_preciototal']); ?>" />
+                                                                    <input type="hidden" name="currency_code" value="USD" />
+                                                                    <input type="hidden" name="return" value=" " />
+                                                                    <input type="hidden" name="cancel_return" value=" " />
+                                                                    <input type="button" name="submit" value="Añadir al pedido" class="button" onclick="insertar(<?php echo $od['producto_id'];?>)"/>
+                                                                </fieldset>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </figure>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                                                 <?php } ?>
 <!----------------------------- bloque de codigo 3 --------------------->
-								<div class="clearfix"> </div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                <div class="clearfix"> </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 <!-- //top-brands -->
  <!-- Carousel
     ================================================== -->
@@ -417,48 +457,48 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
       </div>
           </center>
     
-    </div><!-- /.carousel -->	
+    </div><!-- /.carousel -->   
 <!--banner-bottom--><!--
-				<div class="ban-bottom-w3l">
-					<div class="container">
-					<div class="col-md-6 ban-bottom3">
-							<div class="ban-top">
-								<img src="<?php echo $raiz;?>images/p2.jpg" class="img-responsive" alt=""/>
-								
-							</div>
-							<div class="ban-img">
-								<div class=" ban-bottom1">
-									<div class="ban-top">
-										<img src="<?php echo $raiz;?>images/p3.jpg" class="img-responsive" alt=""/>
-										
-									</div>
-								</div>
-								<div class="ban-bottom2">
-									<div class="ban-top">
-										<img src="<?php echo $raiz;?>images/p4.jpg" class="img-responsive" alt=""/>
-										
-									</div>
-								</div>
-								<div class="clearfix"></div>
-							</div>
-						</div>
-						<div class="col-md-6 ban-bottom">
-							<div class="ban-top">
-								<img src="<?php echo $raiz;?>images/111.jpg" class="img-responsive" alt=""/>
-								
-								
-							</div>
-						</div>
-						
-						<div class="clearfix"></div>
-					</div>
-				</div>-->
+                <div class="ban-bottom-w3l">
+                    <div class="container">
+                    <div class="col-md-6 ban-bottom3">
+                            <div class="ban-top">
+                                <img src="<?php echo $raiz;?>images/p2.jpg" class="img-responsive" alt=""/>
+                                
+                            </div>
+                            <div class="ban-img">
+                                <div class=" ban-bottom1">
+                                    <div class="ban-top">
+                                        <img src="<?php echo $raiz;?>images/p3.jpg" class="img-responsive" alt=""/>
+                                        
+                                    </div>
+                                </div>
+                                <div class="ban-bottom2">
+                                    <div class="ban-top">
+                                        <img src="<?php echo $raiz;?>images/p4.jpg" class="img-responsive" alt=""/>
+                                        
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 ban-bottom">
+                            <div class="ban-top">
+                                <img src="<?php echo $raiz;?>images/111.jpg" class="img-responsive" alt=""/>
+                                
+                                
+                            </div>
+                        </div>
+                        
+                        <div class="clearfix"></div>
+                    </div>
+                </div>-->
 <!--banner-bottom-->
 <!--brands-->
-	<div class="brands">
-		<div class="container">
-		<h3>CATEGORIA PRODUCTOS</h3>
-			<div class="brands-agile">
+    <div class="brands">
+        <div class="container">
+        <h3>CATEGORIA PRODUCTOS</h3>
+            <div class="brands-agile">
                 <?php foreach ($categorias as $cat) { 
                     if (strlen($cat["categoria_nombre"])<13){ ?>
                   <div class="col-md-3 w3layouts-brand">
@@ -467,258 +507,258 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </div>
                 </div> 
                 <?php } else { ?>
-				 <div class="col-md-3 w3layouts-brand">
+                 <div class="col-md-3 w3layouts-brand">
                     <div class="brands-w3l">
                         <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p><br>
                     </div>
                 </div>
-				<?php } } ?>
-			</div>
+                <?php } } ?>
+            </div>
              <div class="row" id='loader1'  style='display:none; text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
             </div>
-			<center><a><h2 id="la_categoria"></h2></a></center>
-				<div class="clearfix"></div>
-			<div id="tablacategorias"></div>
-		</div>
-	</div>	
+            <center><a><h2 id="la_categoria"></h2></a></center>
+                <div class="clearfix"></div>
+            <div id="tablacategorias"></div>
+        </div>
+    </div>  
 <!--//brands-->
 <!-- new -->
-<!--	<div class="newproducts-w3agile">
-		<div class="container">
-			<h3>New offers</h3>
-				<div class="agile_top_brands_grids">
-					<div class="col-md-3 top_brand_left-1">
-						<div class="hover14 column">
-							<div class="agile_top_brand_left_grid">
-								<div class="agile_top_brand_left_grid_pos">
-									<img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-								</div>
-								<div class="agile_top_brand_left_grid1">
-									<figure>
-										<div class="snipcart-item block">
-											<div class="snipcart-thumb">
-												<a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/14.png"></a>		
-												<p>Fried-gram</p>
-												<div class="stars">
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star gray-star" aria-hidden="true"></i>
-												</div>
-													<h4>$35.99 <span>$55.00</span></h4>
-											</div>
-											<div class="snipcart-details top_brand_home_details">
-												<form action="#" method="post">
-													<fieldset>
-														<input type="hidden" name="cmd" value="_cart">
-														<input type="hidden" name="add" value="1">
-														<input type="hidden" name="business" value=" ">
-														<input type="hidden" name="item_name" value="Fortune Sunflower Oil">
-														<input type="hidden" name="amount" value="35.99">
-														<input type="hidden" name="discount_amount" value="1.00">
-														<input type="hidden" name="currency_code" value="USD">
-														<input type="hidden" name="return" value=" ">
-														<input type="hidden" name="cancel_return" value=" ">
-														<input type="submit" name="submit" value="Add to cart" class="button">
-													</fieldset>
-												</form>
-											</div>
-										</div>
-									</figure>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 top_brand_left-1">
-						<div class="hover14 column">
-							<div class="agile_top_brand_left_grid">
-								<div class="agile_top_brand_left_grid_pos">
-									<img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-								</div>
-								<div class="agile_top_brand_left_grid1">
-									<figure>
-										<div class="snipcart-item block">
-											<div class="snipcart-thumb">
-												<a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/15.png"></a>		
-												<p>Navaratan-dal</p>
-												<div class="stars">
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star gray-star" aria-hidden="true"></i>
-												</div>
-													<h4>$30.99 <span>$45.00</span></h4>
-											</div>
-											<div class="snipcart-details top_brand_home_details">
-												<form action="#" method="post">
-													<fieldset>
-														<input type="hidden" name="cmd" value="_cart">
-															<input type="hidden" name="add" value="1">
-															<input type="hidden" name="business" value=" ">
-															<input type="hidden" name="item_name" value="basmati rise">
-															<input type="hidden" name="amount" value="30.99">
-															<input type="hidden" name="discount_amount" value="1.00">
-															<input type="hidden" name="currency_code" value="USD">
-															<input type="hidden" name="return" value=" ">
-															<input type="hidden" name="cancel_return" value=" ">
-															<input type="submit" name="submit" value="Add to cart" class="button">
-													</fieldset>
-												</form>
-											</div>
-										</div>
-									</figure>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 top_brand_left-1">
-						<div class="hover14 column">
-							<div class="agile_top_brand_left_grid">
-								<div class="agile_top_brand_left_grid_pos">
-									<img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-								</div>
-								<div class="agile_top_brand_left_grid_pos">
-									<img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-								</div>
-								<div class="agile_top_brand_left_grid1">
-									<figure>
-										<div class="snipcart-item block">
-											<div class="snipcart-thumb">
-												<a href="products.html"><img src="<?php echo $raiz;?>images/16.png" alt=" " class="img-responsive"></a>
-												<p>White-peasmatar</p>
-												<div class="stars">
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star gray-star" aria-hidden="true"></i>
-												</div>
-													<h4>$80.99 <span>$105.00</span></h4>
-											</div>
-											<div class="snipcart-details top_brand_home_details">
-												<form action="#" method="post">
-													<fieldset>
-														<input type="hidden" name="cmd" value="_cart">
-														<input type="hidden" name="add" value="1">
-														<input type="hidden" name="business" value=" ">
-														<input type="hidden" name="item_name" value="Pepsi soft drink">
-														<input type="hidden" name="amount" value="80.00">
-														<input type="hidden" name="discount_amount" value="1.00">
-														<input type="hidden" name="currency_code" value="USD">
-														<input type="hidden" name="return" value=" ">
-														<input type="hidden" name="cancel_return" value=" ">
-														<input type="submit" name="submit" value="Add to cart" class="button">
-													</fieldset>
-												</form>
-											</div>
-										</div>
-									</figure>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="col-md-3 top_brand_left-1">
-						<div class="hover14 column">
-							<div class="agile_top_brand_left_grid">
-								<div class="agile_top_brand_left_grid_pos">
-									<img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-								</div>
-								<div class="agile_top_brand_left_grid1">
-									<figure>
-										<div class="snipcart-item block">
-											<div class="snipcart-thumb">
-												<a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/17.png"></a>		
-												<p>Channa-dal</p>
-												<div class="stars">
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star blue-star" aria-hidden="true"></i>
-													<i class="fa fa-star gray-star" aria-hidden="true"></i>
-												</div>
-													<h4>$35.99 <span>$55.00</span></h4>
-											</div>
-											<div class="snipcart-details top_brand_home_details">
-												<form action="#" method="post">
-													<fieldset>
-														<input type="hidden" name="cmd" value="_cart">
-														<input type="hidden" name="add" value="1">
-														<input type="hidden" name="business" value=" ">
-														<input type="hidden" name="item_name" value="Fortune Sunflower Oil">
-														<input type="hidden" name="amount" value="35.99">
-														<input type="hidden" name="discount_amount" value="1.00">
-														<input type="hidden" name="currency_code" value="USD">
-														<input type="hidden" name="return" value=" ">
-														<input type="hidden" name="cancel_return" value=" ">
-														<input type="submit" name="submit" value="Add to cart" class="button">
-													</fieldset>
-												</form>
-											</div>
-										</div>
-									</figure>
-								</div>
-							</div>
-						</div>
-					</div>
-						<div class="clearfix"> </div>
-				</div>
-		</div>
-	</div> -->
+<!--    <div class="newproducts-w3agile">
+        <div class="container">
+            <h3>New offers</h3>
+                <div class="agile_top_brands_grids">
+                    <div class="col-md-3 top_brand_left-1">
+                        <div class="hover14 column">
+                            <div class="agile_top_brand_left_grid">
+                                <div class="agile_top_brand_left_grid_pos">
+                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
+                                </div>
+                                <div class="agile_top_brand_left_grid1">
+                                    <figure>
+                                        <div class="snipcart-item block">
+                                            <div class="snipcart-thumb">
+                                                <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/14.png"></a>      
+                                                <p>Fried-gram</p>
+                                                <div class="stars">
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
+                                                </div>
+                                                    <h4>$35.99 <span>$55.00</span></h4>
+                                            </div>
+                                            <div class="snipcart-details top_brand_home_details">
+                                                <form action="#" method="post">
+                                                    <fieldset>
+                                                        <input type="hidden" name="cmd" value="_cart">
+                                                        <input type="hidden" name="add" value="1">
+                                                        <input type="hidden" name="business" value=" ">
+                                                        <input type="hidden" name="item_name" value="Fortune Sunflower Oil">
+                                                        <input type="hidden" name="amount" value="35.99">
+                                                        <input type="hidden" name="discount_amount" value="1.00">
+                                                        <input type="hidden" name="currency_code" value="USD">
+                                                        <input type="hidden" name="return" value=" ">
+                                                        <input type="hidden" name="cancel_return" value=" ">
+                                                        <input type="submit" name="submit" value="Add to cart" class="button">
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 top_brand_left-1">
+                        <div class="hover14 column">
+                            <div class="agile_top_brand_left_grid">
+                                <div class="agile_top_brand_left_grid_pos">
+                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
+                                </div>
+                                <div class="agile_top_brand_left_grid1">
+                                    <figure>
+                                        <div class="snipcart-item block">
+                                            <div class="snipcart-thumb">
+                                                <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/15.png"></a>      
+                                                <p>Navaratan-dal</p>
+                                                <div class="stars">
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
+                                                </div>
+                                                    <h4>$30.99 <span>$45.00</span></h4>
+                                            </div>
+                                            <div class="snipcart-details top_brand_home_details">
+                                                <form action="#" method="post">
+                                                    <fieldset>
+                                                        <input type="hidden" name="cmd" value="_cart">
+                                                            <input type="hidden" name="add" value="1">
+                                                            <input type="hidden" name="business" value=" ">
+                                                            <input type="hidden" name="item_name" value="basmati rise">
+                                                            <input type="hidden" name="amount" value="30.99">
+                                                            <input type="hidden" name="discount_amount" value="1.00">
+                                                            <input type="hidden" name="currency_code" value="USD">
+                                                            <input type="hidden" name="return" value=" ">
+                                                            <input type="hidden" name="cancel_return" value=" ">
+                                                            <input type="submit" name="submit" value="Add to cart" class="button">
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 top_brand_left-1">
+                        <div class="hover14 column">
+                            <div class="agile_top_brand_left_grid">
+                                <div class="agile_top_brand_left_grid_pos">
+                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
+                                </div>
+                                <div class="agile_top_brand_left_grid_pos">
+                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
+                                </div>
+                                <div class="agile_top_brand_left_grid1">
+                                    <figure>
+                                        <div class="snipcart-item block">
+                                            <div class="snipcart-thumb">
+                                                <a href="products.html"><img src="<?php echo $raiz;?>images/16.png" alt=" " class="img-responsive"></a>
+                                                <p>White-peasmatar</p>
+                                                <div class="stars">
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
+                                                </div>
+                                                    <h4>$80.99 <span>$105.00</span></h4>
+                                            </div>
+                                            <div class="snipcart-details top_brand_home_details">
+                                                <form action="#" method="post">
+                                                    <fieldset>
+                                                        <input type="hidden" name="cmd" value="_cart">
+                                                        <input type="hidden" name="add" value="1">
+                                                        <input type="hidden" name="business" value=" ">
+                                                        <input type="hidden" name="item_name" value="Pepsi soft drink">
+                                                        <input type="hidden" name="amount" value="80.00">
+                                                        <input type="hidden" name="discount_amount" value="1.00">
+                                                        <input type="hidden" name="currency_code" value="USD">
+                                                        <input type="hidden" name="return" value=" ">
+                                                        <input type="hidden" name="cancel_return" value=" ">
+                                                        <input type="submit" name="submit" value="Add to cart" class="button">
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 top_brand_left-1">
+                        <div class="hover14 column">
+                            <div class="agile_top_brand_left_grid">
+                                <div class="agile_top_brand_left_grid_pos">
+                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
+                                </div>
+                                <div class="agile_top_brand_left_grid1">
+                                    <figure>
+                                        <div class="snipcart-item block">
+                                            <div class="snipcart-thumb">
+                                                <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/17.png"></a>      
+                                                <p>Channa-dal</p>
+                                                <div class="stars">
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
+                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
+                                                </div>
+                                                    <h4>$35.99 <span>$55.00</span></h4>
+                                            </div>
+                                            <div class="snipcart-details top_brand_home_details">
+                                                <form action="#" method="post">
+                                                    <fieldset>
+                                                        <input type="hidden" name="cmd" value="_cart">
+                                                        <input type="hidden" name="add" value="1">
+                                                        <input type="hidden" name="business" value=" ">
+                                                        <input type="hidden" name="item_name" value="Fortune Sunflower Oil">
+                                                        <input type="hidden" name="amount" value="35.99">
+                                                        <input type="hidden" name="discount_amount" value="1.00">
+                                                        <input type="hidden" name="currency_code" value="USD">
+                                                        <input type="hidden" name="return" value=" ">
+                                                        <input type="hidden" name="cancel_return" value=" ">
+                                                        <input type="submit" name="submit" value="Add to cart" class="button">
+                                                    </fieldset>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </figure>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="clearfix"> </div>
+                </div>
+        </div>
+    </div> -->
 <!-- //new -->
 
 <!-- contact -->
-	<div class="about">
-		<div class="w3_agileits_contact_grids">
-			<div class="col-md-6 w3_agileits_contact_grid_left">
-				<div class="agile_map">
-					<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.3905851087434!2d-34.90500565012194!3d-8.061582082752993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab18d90992e4ab%3A0x8e83c4afabe39a3a!2sSport+Club+Do+Recife!5e0!3m2!1sen!2sin!4v1478684415917" style="border:0"></iframe>
-				</div>
-				<div class="agileits_w3layouts_map_pos">
-					<div class="agileits_w3layouts_map_pos1">
-						<h3>Contact Info</h3>
-						<p><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</p>
-						<ul class="wthree_contact_info_address">
-							<li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
-							<li><i class="fa fa-phone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
-						</ul>
-						<div class="w3_agile_social_icons w3_agile_social_icons_contact">
-							<ul>
-								<li><a href="#" class="icon icon-cube agile_facebook"></a></li>
-								<li><a href="#" class="icon icon-cube agile_rss"></a></li>
-								<li><a href="#" class="icon icon-cube agile_t"></a></li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-6 w3_agileits_contact_grid_right">
-				<h2 class="w3_agile_header">Leave a<span> Message</span></h2>
+    <div class="about">
+        <div class="w3_agileits_contact_grids">
+            <div class="col-md-6 w3_agileits_contact_grid_left">
+                <div class="agile_map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.3905851087434!2d-34.90500565012194!3d-8.061582082752993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab18d90992e4ab%3A0x8e83c4afabe39a3a!2sSport+Club+Do+Recife!5e0!3m2!1sen!2sin!4v1478684415917" style="border:0"></iframe>
+                </div>
+                <div class="agileits_w3layouts_map_pos">
+                    <div class="agileits_w3layouts_map_pos1">
+                        <h3>Contact Info</h3>
+                        <p><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</p>
+                        <ul class="wthree_contact_info_address">
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
+                            <li><i class="fa fa-phone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
+                        </ul>
+                        <div class="w3_agile_social_icons w3_agile_social_icons_contact">
+                            <ul>
+                                <li><a href="#" class="icon icon-cube agile_facebook"></a></li>
+                                <li><a href="#" class="icon icon-cube agile_rss"></a></li>
+                                <li><a href="#" class="icon icon-cube agile_t"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 w3_agileits_contact_grid_right">
+                <h2 class="w3_agile_header">Leave a<span> Message</span></h2>
 
-				<?php echo form_open('website/email'); ?>
-					<span class="input input--ichiro">
-						<input class="input__field input__field--ichiro" type="text" id="input-25" name="nomemail" placeholder=" " required="" />
-						<label class="input__label input__label--ichiro" for="input-25">
-							<span class="input__label-content input__label-content--ichiro">Your Name</span>
-						</label>
-					</span>
-					<span class="input input--ichiro">
-						<input class="input__field input__field--ichiro" type="email" id="input-26" name="froemail" placeholder=" " required="" />
+                <?php echo form_open('website/email'); ?>
+                    <span class="input input--ichiro">
+                        <input class="input__field input__field--ichiro" type="text" id="input-25" name="nomemail" placeholder=" " required="" />
+                        <label class="input__label input__label--ichiro" for="input-25">
+                            <span class="input__label-content input__label-content--ichiro">Your Name</span>
+                        </label>
+                    </span>
+                    <span class="input input--ichiro">
+                        <input class="input__field input__field--ichiro" type="email" id="input-26" name="froemail" placeholder=" " required="" />
 
-						<label class="input__label input__label--ichiro" for="input-26">
-							<span class="input__label-content input__label-content--ichiro">Your Email</span>
-						</label>
-					</span>
+                        <label class="input__label input__label--ichiro" for="input-26">
+                            <span class="input__label-content input__label-content--ichiro">Your Email</span>
+                        </label>
+                    </span>
                     <input class="form-control" type="hidden" id="empresa_email" name="empresa_email" value="<?php echo $pagina_web[0]['empresa_email']; ?>" />
-					<textarea placeholder="Your message here..." required="" id="mensaje12" name="mensaje12"></textarea>
-					<input type="submit" value="Submit">
-				<?php echo form_close(); ?>
-			</div>
-			<div class="clearfix"> </div>
-		</div>
-	</div>
+                    <textarea placeholder="Your message here..." required="" id="mensaje12" name="mensaje12"></textarea>
+                    <input type="submit" value="Submit">
+                <?php echo form_close(); ?>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
 <!-- contact -->
 
 <!-- Modal: modalCart -->
@@ -921,120 +961,120 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 <!-- //footer -->
 <div class="footer">
-		<div class="container">
-			<div class="w3_footer_grids">
-				<div class="col-md-3 w3_footer_grid">
-					<h3>Contact</h3>
-					
-					<ul class="address">
-						<li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</li>
-						<li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
-						<li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
-					</ul>
-				</div>
-				<div class="col-md-3 w3_footer_grid">
-					<h3>Information</h3>
-					<ul class="info"> 
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="about.html">About Us</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="contact.html">Contact Us</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="short-codes.html">Short Codes</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="faq.html">FAQ's</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="products.html">Special Products</a></li>
-					</ul>
-				</div>
-				<div class="col-md-3 w3_footer_grid">
-					<h3>Category</h3>
-					<ul class="info"> 
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="groceries.html">Groceries</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="household.html">Household</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="personalcare.html">Personal Care</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="packagedfoods.html">Packaged Foods</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="beverages.html">Beverages</a></li>
-					</ul>
-				</div>
-				<div class="col-md-3 w3_footer_grid">
-					<h3>Profile</h3>
-					<ul class="info"> 
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="products.html">Store</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="checkout.html">My Cart</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="login.html">Login</a></li>
-						<li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="registered.html">Create Account</a></li>
-					</ul>
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-		
-		<div class="footer-copy">
-			
-			<div class="container">
-				<p>© 2017 Super Market. All rights reserved | Design by <a href="http://w3layouts.com/">W3layouts</a></p>
-			</div>
-		</div>
-		
-	</div>	
-	<div class="footer-botm">
-			<div class="container">
-				<div class="w3layouts-foot">
-					<ul>
-						<li><a href="#" class="w3_agile_facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-						<li><a href="#" class="agile_twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-						<li><a href="#" class="w3_agile_dribble"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-						<li><a href="#" class="w3_agile_vimeo"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
-					</ul>
-				</div>
-				<div class="payment-w3ls">	
-					<img src="<?php echo $raiz;?>images/card.png" alt=" " class="img-responsive">
-				</div>
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-<!-- //footer -->	
+        <div class="container">
+            <div class="w3_footer_grids">
+                <div class="col-md-3 w3_footer_grid">
+                    <h3>Contact</h3>
+                    
+                    <ul class="address">
+                        <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</li>
+                        <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
+                        <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 w3_footer_grid">
+                    <h3>Information</h3>
+                    <ul class="info"> 
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="about.html">About Us</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="contact.html">Contact Us</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="short-codes.html">Short Codes</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="faq.html">FAQ's</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="products.html">Special Products</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 w3_footer_grid">
+                    <h3>Category</h3>
+                    <ul class="info"> 
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="groceries.html">Groceries</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="household.html">Household</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="personalcare.html">Personal Care</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="packagedfoods.html">Packaged Foods</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="beverages.html">Beverages</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 w3_footer_grid">
+                    <h3>Profile</h3>
+                    <ul class="info"> 
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="products.html">Store</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="checkout.html">My Cart</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="login.html">Login</a></li>
+                        <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="registered.html">Create Account</a></li>
+                    </ul>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        
+        <div class="footer-copy">
+            
+            <div class="container">
+                <p>© 2017 Super Market. All rights reserved | Design by <a href="http://w3layouts.com/">W3layouts</a></p>
+            </div>
+        </div>
+        
+    </div>  
+    <div class="footer-botm">
+            <div class="container">
+                <div class="w3layouts-foot">
+                    <ul>
+                        <li><a href="#" class="w3_agile_facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="#" class="agile_twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <li><a href="#" class="w3_agile_dribble"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
+                        <li><a href="#" class="w3_agile_vimeo"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+                <div class="payment-w3ls">  
+                    <img src="<?php echo $raiz;?>images/card.png" alt=" " class="img-responsive">
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+<!-- //footer -->   
 <!-- Bootstrap Core JavaScript -->
 <script src="<?php echo $raiz;?>js/bootstrap.min.js"></script>
 <?php echo $raiz;?>js/bootstrap.min.js
 <!-- top-header and slider -->
 <!-- here stars scrolling icon -->
-	<script type="text/javascript">
-		$(document).ready(function() {
-			/*
-				var defaults = {
-				containerID: 'toTop', // fading element id
-				containerHoverID: 'toTopHover', // fading element hover id
-				scrollSpeed: 1200,
-				easingType: 'linear' 
-				};
-			*/
-								
-			$().UItoTop({ easingType: 'easeOutQuart' });
-								
-			});
-	</script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            /*
+                var defaults = {
+                containerID: 'toTop', // fading element id
+                containerHoverID: 'toTopHover', // fading element hover id
+                scrollSpeed: 1200,
+                easingType: 'linear' 
+                };
+            */
+                                
+            $().UItoTop({ easingType: 'easeOutQuart' });
+                                
+            });
+    </script>
 <!-- //here ends scrolling icon -->
 <script src="<?php echo $raiz;?>js/minicart.min.js"></script>
 <script>
-	// Mini Cart
-	paypal.minicart.render({
-		action: '#'
-	});
+    // Mini Cart
+    paypal.minicart.render({
+        action: '#'
+    });
 
-	if (~window.location.search.indexOf('reset=true')) {
-		paypal.minicart.reset();
-	}
+    if (~window.location.search.indexOf('reset=true')) {
+        paypal.minicart.reset();
+    }
 </script>
 <!-- main slider-banner -->
 <script src="<?php echo $raiz;?>js/skdslider.min.js"></script>
 <link href="<?php echo $raiz;?>css/skdslider.css" rel="stylesheet">
 <script type="text/javascript">
-		jQuery(document).ready(function(){
-			jQuery('#demo1').skdslider({'delay':5000, 'animationSpeed': 2000,'showNextPrev':true,'showPlayButton':true,'autoSlide':true,'animationType':'fading'});
-						
-			jQuery('#responsive').change(function(){
-			  $('#responsive_wrapper').width(jQuery(this).val());
-			});
-			
-		});
-</script>	
+        jQuery(document).ready(function(){
+            jQuery('#demo1').skdslider({'delay':5000, 'animationSpeed': 2000,'showNextPrev':true,'showPlayButton':true,'autoSlide':true,'animationType':'fading'});
+                        
+            jQuery('#responsive').change(function(){
+              $('#responsive_wrapper').width(jQuery(this).val());
+            });
+            
+        });
+</script>   
 <!-- //main slider-banner --> 
 </body>
 </html>

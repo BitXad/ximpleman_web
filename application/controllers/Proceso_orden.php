@@ -43,18 +43,7 @@ class Proceso_orden extends CI_Controller{
     /*
      * Seguimeinto de procesos
      */
-    function seguimiento($orden_id,$venta_id)
-    {
-        
-            
-            $data['estados'] = $this->Estado_model->get_estado_tipo(3);
-            $data['procesos'] = $this->Proceso_orden_model->get_seguimiento($orden_id,$venta_id);
-            $data['orden_id'] = $orden_id;
-            $data['_view'] = 'proceso_orden/seguimiento';
-            
-            $this->load->view('layouts/clientmain',$data);
-        
-    }
+    
 
     function terminados()
     {
@@ -70,7 +59,7 @@ class Proceso_orden extends CI_Controller{
     {
         if($this->acceso(155)){
             $estado = $this->input->post('estado');
-            $estado_id = 2;
+            $estado_id = 25;
             $datos = $this->Proceso_orden_model->get_en_proceso($estado,$estado_id);
     
                         echo json_encode($datos);
@@ -85,7 +74,7 @@ class Proceso_orden extends CI_Controller{
     
                         echo json_encode($datos); 
             }else{
-                $estado_id = 3;
+                $estado_id = 26;
                 $estadoante=$estado-1;
                 $datos = $this->Proceso_orden_model->get_en_terminado($estadoante,$estado_id);
     
@@ -106,7 +95,7 @@ class Proceso_orden extends CI_Controller{
             $data = "
             UPDATE
                 proceso_orden
-            SET estado_id=3, proceso_fechaterminado=NOW(), usuario_id=".$usuario_id."
+            SET estado_id=26, proceso_fechaterminado=NOW(), usuario_id=".$usuario_id."
 
             WHERE 
                 proceso_id=".$proceso." ";
@@ -151,7 +140,7 @@ class Proceso_orden extends CI_Controller{
            
                $sql = "UPDATE
                 proceso_orden
-            SET estado_id=2, proceso_fechaproceso=NOW()
+            SET estado_id=25, proceso_fechaproceso=NOW()
 
             WHERE 
                 orden_id=".$orden." and estado=".$estado." ";
