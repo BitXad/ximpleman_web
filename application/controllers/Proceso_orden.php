@@ -40,6 +40,22 @@ class Proceso_orden extends CI_Controller{
         }
     }
 
+    /*
+     * Seguimeinto de procesos
+     */
+    function seguimiento($orden_id,$venta_id)
+    {
+        
+            
+            $data['estados'] = $this->Estado_model->get_estado_tipo(3);
+            $data['procesos'] = $this->Proceso_orden_model->get_seguimiento($orden_id,$venta_id);
+            $data['orden_id'] = $orden_id;
+            $data['_view'] = 'proceso_orden/seguimiento';
+            
+            $this->load->view('layouts/clientmain',$data);
+        
+    }
+
     function terminados()
     {
         if($this->acceso(155)){

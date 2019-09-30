@@ -2491,7 +2491,7 @@ function ordenaventas(orden_id,usuario_id,cliente_id)
     var usuariopedido_id = usuario_id;
     var acuenta = document.getElementById('acuenta'+orden_id).value;
     
-    alert("usario_id"+usuario_id);
+    //alert("usario_id"+usuario_id);
   
    
     $.ajax({url: controlador,
@@ -2960,7 +2960,7 @@ function ordenes_pendientes()
                 for(var i=0; i<p.length; i++){
                      cont = cont+1;
                     
-                     alert(p[i]['usuario_id']);
+                    // alert(p[i]['usuario_id']);
                         html += "<tr>";
                         html += "     <td>"+cont+"</td>";
                         html += "     ";
