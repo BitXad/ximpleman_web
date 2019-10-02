@@ -111,9 +111,9 @@
             <div class="inner">
                 
                 <script type="text/javascript">
-                if(esMobilx()){
-                    document.write("<h1><fa class='fa fa-money'></fa> </h1>");
-                }                    
+//                if(esMobilx()){
+//                    document.write("<h1><fa class='fa fa-money'></fa> </h1>");
+//                }                    
                 </script>
                 
                 
