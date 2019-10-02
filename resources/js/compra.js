@@ -752,6 +752,8 @@ function compraproveedor(opcion)
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
                         if (caja==1) {  
                         html += "<span class='btn-warning btn-xs'>Pago con Caja</span>";  } 
+                        if (caja==2) {  
+                        html += "<span class='btn-warning btn-xs'>Orden de pago</span>";  }
                         html += "</td><td align='center'><font size='3'>"+registros[i]["compra_id"]+"</b></font></td>";                                          
                         html += "<td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
                         html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
@@ -855,6 +857,8 @@ function fechadecompra(filtro)
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
                         if (caja==1) {  
                         html += "<span class='btn-warning btn-xs'>Pago con Caja</span>";  } 
+                        if (caja==2) {  
+                        html += "<span class='btn-warning btn-xs'>Orden de pago</span>";  }
                         html += "</td><td align='center'><font size='3'><b>"+registros[i]["compra_id"]+"</b></font></td>";                                           
                         html += "<td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
                         html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
