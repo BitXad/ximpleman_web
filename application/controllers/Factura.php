@@ -14,6 +14,14 @@ class Factura extends CI_Controller{
         $this->load->model('Detalle_venta_model');
         $this->load->model('Parametro_model');
         $this->load->model('Tipo_servicio_model');
+        $this->load->model('Dosificacion_model');
+        $this->load->model('Pedido_model');
+        $this->load->model('Venta_model');
+        $this->load->model('Tipo_transaccion_model');
+        $this->load->model('Forma_pago_model');
+        $this->load->model('Tipo_cliente_model');
+        $this->load->model('Usuario_model');
+        $this->load->model('Preferencia_model');
         $this->load->library('ControlCode');
        
         if ($this->session->userdata('logged_in')) {
@@ -745,7 +753,7 @@ class Factura extends CI_Controller{
                 ",estado_id     = 3".
                 " where factura_id = ".$factura_id;
         
-        echo $sql;
+        //echo $sql;
         // check if the factura exists before trying to delete it
         $this->Factura_model->ejecutar($sql);
             
@@ -823,6 +831,59 @@ class Factura extends CI_Controller{
         //**************** fin contenido ***************
         }   
             
-    }    
+    }   
+    
+    /*
+     * emitir factura   
+     */
+    function emisor()
+    {    
+        
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************        
+        $data['rolusuario'] = $this->session_data['rol'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];        
+        
+        $factura_id = 1;
+        
+        $data['page_title'] = "Emisor";
+        
+        $venta_id = 1889;
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion(1);        
+        
+        //$data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['factura'] = $this->Factura_model->get_factura($factura_id);
+        $data['detalle_factura'] = $this->Factura_model->get_detalle_factura_aux($usuario_id);
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+                        
+        
+//        
+//        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
+//        $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
+//        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+//        $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
+//        $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
+//        $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
+//        $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+//        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+//        $data['parametro'] = $this->Parametro_model->get_parametros();
+//        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+//        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
+//        $data['usuario_id'] = $usuario_id;
+//        $data['tipousuario_id'] = $tipousuario_id;
+//        
+        //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
+        
+        $data['_view'] = 'factura/emisor';
+        $this->load->view('layouts/main',$data);
+        		
+        //**************** fin contenido ***************
+        }    
+        
+    }
+    
+    
     
 }

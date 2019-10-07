@@ -140,7 +140,7 @@ class Factura_model extends CI_Model
             WHERE
                 factura_fecha >= '".$inicio."'
                 and factura_fecha <= '".$fin."'
-                and venta_id <> 0 
+                
 
             ORDER BY `factura_id` ASC";
         
@@ -175,6 +175,16 @@ class Factura_model extends CI_Model
         $this->db->query($sql);     
         return $true;
     }
-            
+
+
+    function get_detalle_factura_aux($usuario_id)
+    {
+        $sql = "select * from detalle_factura_aux where usuario_id = ".$usuario_id;
+        
+        $factura = $this->db->query($sql)->result_array();
+       
+        return $factura;
+    }
+
     
 }
