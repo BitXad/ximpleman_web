@@ -268,6 +268,8 @@ $(document).ready(function(){
           <div class="col-md-6">
                         <label for="cuota_cancelado" class="control-label">Cancelado Bs</label>
                         <div class="form-group">
+                          <input type="hidden" step="any" name="cuota_nit" id="cuota_nit<?php echo $c['cuota_id']; ?>" value="<?php echo $credito[0]['cliente_nit']; ?>" class="form-control"  />
+                          <input type="hidden" step="any" name="cuota_razon" id="cuota_razon<?php echo $c['cuota_id']; ?>" value="<?php echo $credito[0]['cliente_razon']; ?>" class="form-control"  />
                             <input type="number" step="any" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>" />
                             <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden"  name="credito_id" value="<?php echo $c['credito_id']; ?>" class="form-control" id="credito_id" />
@@ -303,7 +305,7 @@ $(document).ready(function(){
                 </div>
               <div class="modal-footer" align="right">
 
-            <button class="btn btn-lg btn-success"  type="submit">
+            <button class="btn btn-lg btn-success"  type="submit" onclick="facturarcuota(<?php echo $c['cuota_id']; ?>)">
                 <h4>
                 <span class="fa fa-money"></span>   Cobrar  
                 </h4>
