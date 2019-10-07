@@ -34,8 +34,9 @@ function facturar(cuota){
 function facturarcuota(cuota_id){
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'venta/generar_factura/';
+   
    var factura = document.getElementById('factura').value;
-   var detalle = document.getElementById('detalle').value;
+   var detalle_factura = document.getElementById('detalle').value;
   if(factura!=null && detalle!=null){
    
    var fecha_venta = document.getElementById('cuota_fecha').value;
@@ -46,11 +47,12 @@ function facturarcuota(cuota_id){
   // var credito_id = document.getElementById('credito_id').value;
   // var cuota_numercibo = document.getElementById('cuota_numercibo').value;
   // var cuota_glosa = document.getElementById('cuota_glosa').value;
+  
    var detalle_cantidad = 1;
    var detalle_unidad= 'CUOTA';
    $.ajax({url: controlador,
            type:"POST",
-           data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_cantidad:detalle_cantidad,detalle_precio:detalle_precio,detalle_unidad:detalle_unidad},
+           data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_cantidad:detalle_cantidad,detalle_precio:detalle_precio,detalle_unidad:detalle_unidad,detalle_factura:detalle_factura},
            success:function(respuesta){     
                               
                var registros =  JSON.parse(respuesta);

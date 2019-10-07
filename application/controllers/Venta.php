@@ -626,10 +626,10 @@ class Venta extends CI_Controller{
             //********** parametros para la generacion de factura *************            
             
             $nit_factura = $this->input->post('nit');
-            $razon_social = "'".$this->input->post('razon_social')."'";
-            $fecha_venta = "'".$this->input->post('fecha_venta')."'";            
-            $detallefact_descripcion = "'".$this->input->post('detalle_factura')."'";
-            $unidad = "'".$this->input->post('detalle_unidad')."'";
+            $razon_social = $this->input->post('razon_social');
+            $fecha_venta = $this->input->post('fecha_venta');            
+            $detallefact_descripcion = $this->input->post('detalle_factura');
+            $unidad = $this->input->post('detalle_unidad');
             $cantidad = $this->input->post('detalle_cantidad');
             $precio = $this->input->post('detalle_precio');            
 
