@@ -118,29 +118,33 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                         fecha2 = "";
                     }
 
-                    var totalegreso4 = 0;
-                    var totalegreso5 = 0;
-                    var totalegreso6 = 0;
+                    var totalegreso4  = 0;
+                    var totalegreso5  = 0;
+                    var totalegreso6  = 0;
+                    var totalegreso10 = 0;
                     
                     var totalegreso = 0;
 
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#resingegr").val("- "+n+" -");
                    
-                    html = "";
-                    html4 = "";
-                    html5 = "";
-                    html6 = "";
-                    cabecerahtml1= "";
-                    cabecerahtml2= "";
-                    cabecerahtml3= "";
-                    cabecerahtml4= "";
-                    cabecerahtml5= "";
-                    cabecerahtml6= "";
+                    html   = "";
+                    html4  = "";
+                    html5  = "";
+                    html6  = "";
+                    html10 = "";
+                    cabecerahtml1 = "";
+                    cabecerahtml2 = "";
+                    cabecerahtml3 = "";
+                    cabecerahtml4 = "";
+                    cabecerahtml5 = "";
+                    cabecerahtml6 = "";
+                    cabecerahtml10= "";
                     
-                    var cont4 = 1;
-                    var cont5 = 1;
-                    var cont6 = 1;
+                    var cont4  = 1;
+                    var cont5  = 1;
+                    var cont6  = 1;
+                    var cont10 = 1;
                     /*
                    if (n <= limite) x = n; 
                    else x = limite;
@@ -180,7 +184,17 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           html6 += "</tr>";
                           cont6 += 1;
                       }
-
+                      
+                      if(registros[i]['tipo'] == 10){
+                          totalegreso10  += parseFloat(registros[i]['egreso']);
+                          html10 += "<tr>";
+                          html10 += "<td>"+cont6+"</td>";
+                          html10 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html10 += "<td>"+registros[i]["detalle"]+"</td>";
+                          html10 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
+                          html10 += "</tr>";
+                          cont10 += 1;
+                      }
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -257,6 +271,23 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     
                     piehtml6 = "</tbody></table></div></div>";
                     /* *****************F I N para reporte de PAGOS****************** */
+                    /* *****************INICIO para reporte de ORDENES DE PAGOS****************** */
+                    cabecerahtml10= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'><a href='#' id='mosordenpago' onclick='mostrarordenpago(); return false'>+</a></td><td style='width:60%;'>PAGOS POR ORDENES DE PAGO: </td><td style='width:35%;' id='alinearder'>"+numberFormat(Number(totalegreso10).toFixed(2))+"</td></tr></table>";
+                    //cabecerahtml6= "<label  class='control-label col-md-12'><div class='col-md-1'><a href='#' id='mospago' onclick='mostrarpago(); return false'>+</a></div><div class='col-md-4'>Pagos por Credito: </div><div class='col-md-4'>"+numberFormat(Number(totalegreso6).toFixed(2))+"</div><div class='col-md-3'></div></label>";
+                    cabecerahtml10 += "<div id='oculto10' style='visibility: hidden; width: 0; height: 0;'>";
+                    cabecerahtml10 += "<div id='map10'>";
+                    
+                    cabecerahtml10 += "<table class='table table-striped table-condensed' id='mitabladetimpresion'>";
+                    cabecerahtml10 += "<tr>";
+                    cabecerahtml10 += "<th>N°</th>";
+                    cabecerahtml10 += "<th>Fecha</th>";
+                    cabecerahtml10 += "<th>Detalle</th>";
+                    cabecerahtml10 += "<th>Egreso</th>";
+                    cabecerahtml10 += "</tr>";
+                    cabecerahtml10 += "<tbody>";
+                    
+                    piehtml10 = "</tbody></table></div></div>";
+                    /* *****************F I N para reporte de ORDENES DE PAGOS****************** */
                     //para mostrar saldo en caja
                     saldoencaja= "<table style='width:50%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:60%;'><b>TOTAL EGRESO: </b></td><td style='width:35%;' id='alinearder'><b>"+numberFormat(Number(totalegreso).toFixed(2))+"</b></td></tr></table>";
                     /* *****************INICIO para reporte TOTAL****************** */
@@ -280,6 +311,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    $("#tablaegresoresultados").html(cabecerahtml4+html4+piehtml4);
                    $("#tablacompraresultados").html(cabecerahtml5+html5+piehtml5);
                    $("#tablapagoresultados").html(cabecerahtml6+html6+piehtml6);
+                   $("#tablaordenpagoresultados").html(cabecerahtml10+html10+piehtml10);
                    $("#saldoencaja").html(saldoencaja);
                    $("#tablatotalresultados").html(cabecerahtmlt+html+htmls+piehtmlt);
                    
@@ -292,6 +324,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
            $("#tablaegresoresultados").html(html);
            $("#tablacompraresultados").html(html);
            $("#tablapagoresultados").html(html);
+           $("#tablaordenpagoresultados").html(html);
            $("#saldoencaja").html(html);
            $("#tablatotalresultados").html(html);
         }
