@@ -231,10 +231,10 @@ border-bottom : 1px solid #aaa;
                     <td></td>
                     <td colspan="5" style="font-family: arial; font-size: 8pt; padding: 0;">
                        
-                            <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
+                            <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
                                     $fecha_d_m_a = $fecha->format('d/m/Y');
                               ?>    
-                                <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora'];; ?> <br>
+                                <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$factura[0]['factura_hora'];; ?> <br>
                                 <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
                                 <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>
                     </td>
@@ -303,9 +303,11 @@ border-bottom : 1px solid #aaa;
                               ?>    
                             LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
 
-                            USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
-                            TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
-                        </font>
+                            USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b>
+                            <?php if (isset($venta[0]['venta_id'])){ ?>
+                            <br>TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
+                            <?php } ?>
+                            </font>
                         
                         
                         <center>
@@ -335,11 +337,12 @@ border-bottom : 1px solid #aaa;
                         <font size="1" face="arial narrow">
                             <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
                         </font>
+                        <?php if(isset($venta[0]['venta_efectivo'])){ ?>
                         <font size="1" face="Arial">
                             <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
                             <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
                         </font>
-                        
+                        <?php } ?>
                     </td>          
                 </tr>
 

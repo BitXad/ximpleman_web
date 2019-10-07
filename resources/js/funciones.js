@@ -295,7 +295,7 @@ if (registros[i]["detalleven_envase"] == 1){
     html += "<br>";
     html += "<table id='mitabla'>";
     
-    html += "<tr >";
+    html += "<tr>";
     
         html += "<th style='padding: 0;' colspan='2'> Prestar</th>";    
 //        html += "<th style='padding: 0;'></th>";

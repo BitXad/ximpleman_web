@@ -620,7 +620,10 @@ class Venta extends CI_Controller{
             //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
             $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
 
-            //********** parametros para la generacion de factura *************
+            $usuario_id = $this->session_data['usuario_id'];
+            
+            
+            //********** parametros para la generacion de factura *************            
             
             $nit_factura = $this->input->post('nit');
             $razon_social = "'".$this->input->post('razon_social')."'";
@@ -630,13 +633,13 @@ class Venta extends CI_Controller{
             $cantidad = $this->input->post('detalle_cantidad');
             $precio = $this->input->post('detalle_precio');            
 
-            $nit_factura = "5152377019";
-            $razon_social = "LOZANO SRL";
-            $fecha_venta = "2019-05-22";            
-            $detallefact_descripcion = "CUOTA POR CREDITO Nº 445";
-            $unidad = "CUOTA";
-            $cantidad = 1;
-            $precio = 385.90; 
+//            $nit_factura = "5152377019";
+//            $razon_social = "LOZANO SRL";
+//            $fecha_venta = "2019-05-22";            
+//            $detallefact_descripcion = "CUOTA POR CREDITO Nº 445";
+//            $unidad = "CUOTA";
+//            $cantidad = 1;
+//            $precio = 385.90; 
             
             $monto_factura = $cantidad * $precio;
             
@@ -688,14 +691,14 @@ class Venta extends CI_Controller{
                     factura_ice, factura_exento, factura_descuento, factura_total, 
                     factura_numero, factura_autorizacion, factura_llave, 
                     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad) value(".
+                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id) value(".
                     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."')";
+                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.")";
 
             $factura_id = $this->Venta_model->ejecutar($sql);
 
