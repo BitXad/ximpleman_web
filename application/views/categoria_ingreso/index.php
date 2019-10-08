@@ -15,12 +15,15 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+
 <div class="box-header">
-                <h3 class="box-title">Categoria Ingreso</h3>
+    <font size='4' face='Arial'><b>Categoria Ingreso</b></font>
+    <br><font size='2' face='Arial'>Registro Encontrados: <?php echo sizeof($categoria_ingreso); ?></font>
+    <!--<h3 class="box-title"><b>Categorias:</b> Ingreso</h3>-->
             	<div class="box-tools">
-                    <a href="<?php echo site_url('categoria_ingreso/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+                    <a href="<?php echo site_url('categoria_ingreso/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Categoria</a> 
                 </div>
-            </div>
+</div>
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
