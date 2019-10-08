@@ -500,17 +500,24 @@ function buscarseguimiento(){
      var controlador = base_url+'seguimiento/buscarseguimiento/';
      var loca = base_url+"seguimiento/seguimiento/"+orden+"/"+venta;
      
-     $.ajax({url: controlador,
-           type:"POST",
-           data:{orden:orden,venta:venta},
-           success:function(respuesta){
-           location.href=loca;
-         
-    },
-        error:function(respuesta){
-          
-       alert("NO SE ENCUENTRA LA ORDEN, vuelva a intentar");
-   }
+     if (orden!="" && venta!=""){
 
-});
+        $.ajax({url: controlador,
+              type:"POST",
+              data:{orden:orden,venta:venta},
+              success:function(respuesta){
+              location.href=loca;
+
+       },
+           error:function(respuesta){
+
+          alert("La ORDEN o el CÓDIGO no existen..!");
+      }
+
+       });
+    }
+    else{
+        alert("Uno de los campos ORDEN/CÓDIGO estan vacios.\nVerifique y vuelva a intentar por favor...!")
+    }
+        
 }
