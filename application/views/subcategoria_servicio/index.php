@@ -68,15 +68,16 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <h3 class="box-title">Sub Categoria Servicio</h3>
-    <div class="box-tools">
-        <a href="<?php echo site_url('subcategoria_servicio/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+    <font size='4' face='Arial'><b>Sub Categoria Servicio</b></font>
+    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($subcategoria_servicio); ?></font>
+    <div class="box-tools no-print">
+        <a href="<?php echo site_url('subcategoria_servicio/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Sub Categoria</a> 
     </div>
 </div>
 <div class="row">    
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-        <div class="input-group"> <span class="input-group-addon">Buscar</span>
+        <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese descripción">
           </div>
         <!--------------------- fin parametro de buscador --------------------->
@@ -90,7 +91,7 @@
 						<th>Precio</th>
 						<th>Categoria</th>
 						<th>Estado</th>
-						<th></th>
+                                                <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar" id="tablasubcatresultados">
                     <?php /* $i = 1; $cont = 0;

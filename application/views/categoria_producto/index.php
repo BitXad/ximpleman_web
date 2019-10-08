@@ -18,15 +18,16 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-                <h3 class="box-title">Categoria Producto</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('categoria_producto/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+    <font size='4' face='Arial'><b>Categoria Producto</b></font>
+    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($categoria_producto); ?></font>
+            	<div class="box-tools no-print">
+                    <a href="<?php echo site_url('categoria_producto/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Categoria</a> 
                 </div>
 </div>
 <div class="row">
     <div class="col-md-12">
             <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre">
                   </div>
             <!--------------------- fin parametro de buscador ---------------------> 
@@ -35,10 +36,9 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-                        <!--<th>Id</th>-->
-						<th>Nombre</th>
-						<th></th>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $i = 0;
@@ -47,7 +47,7 @@
                     <tr>
                         <td><?php echo $i ?></td>
                         <td><?php echo $c['categoria_nombre']; ?></td>
-                        <td>
+                        <td class="no-print">
                              <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                                       <div class="modal-dialog" role="document">
