@@ -248,7 +248,7 @@ input[type=number] { -moz-appearance:textfield; }
           <input type="hidden" name="cliente_nit" value=""  class="form-control" id="cliente_nit" required/>
           <input type="hidden" name="cliente_nombre" value=""  class="form-control" id="cliente_nombre" required/>
           <input type="hidden" name="cliente_telefono" value=""  class="form-control" id="cliente_telefono" required/>
-          <input type="text" name="cliente_codigo" value=""  class="form-control" id="cliente_codigo" required/>
+          <input type="hidden" name="cliente_codigo" value=""  class="form-control" id="cliente_codigo" required/>
           
            
           <div class="col-md-4">

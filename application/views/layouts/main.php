@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
+<head><meta http-equiv="Content-Type" content="text/html" charset="gb18030">
     <?php
         $session_data = $this->session->userdata('logged_in');
         $rolusuario = $session_data['rol'];
@@ -27,6 +27,15 @@
 
     <!-- jQuery 2.2.3 -->
     <script src="<?php echo site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
+        <script type="text/javascript"> 
+        function mueveReloj(){
+            momentoActual = new Date();
+            var today = moment(momentoActual).format('DD/MM/YYYY HH:mm:ss');
+            $("#reloj").html(today);
+            
+        } 
+        setInterval("mueveReloj()",1000);
+        </script>
     <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
     
 </head>
@@ -34,15 +43,15 @@
 
 <input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php if(isset($empresa)){ echo $empresa[0]['empresa_nombre'];} else {echo ""; }?>" />
 
-<body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse">
+<body class="hold-transition skin-blue sidebar-mini sidebar-collapsed sidebar-collapse" onload="mueveReloj()">
 <div class="wrapper">
     <header class="main-header">
         <!-- Logo -->
         <a href="" class="logo" id="nologo">
             <!-- mini logo for sidebar mini 50x50 pixels -->
-            <span class="logo-mini" style="font-size:9px;">Ximpleman</span>
+            <span class="logo-mini"><img src="<?php echo site_url('resources/images/icono.png');?>"></span>
             <!-- logo for regular state and mobile devices -->
-            <span class="logo-lg">Ximpleman Web</span>
+            <span class="logo-lg"><img src="<?php echo site_url('resources/images/icono.png');?>"></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top">
@@ -53,8 +62,6 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </a>
-<!---<div style="float: left; padding-top: 12px; padding-left: 40%; color: white; font-size: 15pt">
-    <b><?php $misitio  = trim(dirname($_SERVER['PHP_SELF']), "/"); echo $misitio; ?></b></div>-->
             <div class="navbar-custom-menu">
                 
                 <ul class="nav navbar-nav">
@@ -87,8 +94,10 @@
                     </li>
                 </ul>
             </div>
-<div style="float: none; width: 90%" class="text-center">
-    <span class="text-bold" style="display: block; padding-top: 9px; color: #FFF; font-size: 20px;">Ximpleman Web</span>
+<div style="float: none; width: 90%" face="Arial" class="text-center" >
+    <span class="text-bold" style="display: block; padding-top: 0px;padding-bottom: -8px; color: #FFF; font-size: 22px;">Ximpleman Web</span>
+    <span name="reloj" id="reloj" style="color: #FFF; font-size: 12px;"></span> 
+    
 </div>
         </nav>
     </header>
@@ -114,186 +123,6 @@
                         <i class="fa fa-dashboard"></i> <span>Inicio</span>
                     </a>
                 </li>
-                 <li>
-                    <a href="#"><i class="fa fa-address-book"></i> <span>Registro</span></a>
-                    <ul class="treeview-menu">
-                        <?php
-                        if($rolusuario[94-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('cliente');?>"><i class="fa fa-user"></i>Clientes</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[102-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('producto');?>"><i class="fa fa-cubes"></i>Productos</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[110-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('proveedor');?>"><i class="fa fa-truck"></i>Proveedores</a>
-                        </li>
-                        <?php
-                        }
-                        ?>
-                        <!--<li>
-                            <a href="<?php //echo site_url('responsable/index');?>"><i class="fa fa-user"></i>Responsable</a>
-                        </li>-->
-                    </ul>
-                </li>
-                
-                <li>
-                    <a href="#"><i class="fa fa-list-ol"></i> <span>Parámetros Generales</span></a>
-                    <ul class="treeview-menu">
-                        <?php
-                        if($rolusuario[114-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_cliente');?>"><i class="fa fa-user"></i>Categoría Negocio</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[115-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_clientezona');?>"><i class="fa fa-map-marker"></i>Categoría Zonas</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[116-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_egreso');?>"><i class="fa fa-list"></i>Categoría Egreso</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[117-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_ingreso');?>"><i class="fa fa-list-alt"></i>Categoría Ingreso</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[118-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_producto');?>"><i class="fa fa-cubes"></i>Categoría Productos</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[119-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_servicio');?>"><i class="fa fa-list-ul"></i>Categoría Servicio</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[120-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('Categoria_trabajo');?>"><i class="fa fa-building"></i> Categoría Trabajo</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[121-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('empresa');?>"><i class="fa fa-bank"></i>Empresas</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[122-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('estado');?>"><i class="fa fa-ellipsis-v"></i>Estados</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[123-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('forma_pago');?>"><i class="fa fa-dollar"></i>Forma de Pago</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[124-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('moneda');?>"><i class="fa fa-money"></i>Moneda</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[125-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('parametro');?>"><i class="fa fa-connectdevelop"></i> <span>Parámetros de Negocio</span></a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[126-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('procedencia');?>"><i class="fa fa-car"></i>Procedencia</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[127-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('subCategoria_servicio');?>"><i class="fa fa-list"></i>Sub Categoría Servicio</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[132-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('tipo_cliente');?>"><i class="fa fa-user"></i>Tipo Cliente</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[133-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('tipo_transaccion');?>"><i class="fa fa-houzz"></i>Tipo Transacción</a>
-                        </li>
-                        <?php
-                        }
-                        //if($rolusuario[133-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('tipo_respuesta');?>"><i class="fa fa-clipboard"></i>Tipo Respuesta</a>
-                        </li>
-                        <?php
-                        //}
-                        if($rolusuario[134-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('tipo_servicio');?>"><i class="fa fa-wrench"></i>Tipo Servicio</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[135-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('tiempo_uso');?>"><i class="fa fa-hourglass"></i>Tiempo de Uso</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[136-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('unidad');?>"><i class="fa fa-file-text-o"></i>Unidad</a>
-                        </li>
-                        <?php
-                        }
-                        ?>
-                    </ul>
-                </li>
-                
                 <li>
                     <a href="#"><i class="fa fa-cogs"></i> <span>Operaciones</span></a>
                     <ul class="treeview-menu">
@@ -343,14 +172,14 @@
                         if($rolusuario[41-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('credito/indexDeuda');?>"><i class="fa fa-hand-o-right"></i><i class="fa fa-money"></i> Deudas por Pagar</a>
+                            <a href="<?php echo site_url('credito/indexDeuda');?>"><i class="fa fa-hand-o-left"></i><i class="fa fa-money"></i> Deudas por Pagar</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[47-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('credito/indexCuenta');?>"><i class="fa fa-hand-o-left"></i><i class="fa fa-money"></i> Deudas por Cobrar</a>
+                            <a href="<?php echo site_url('credito/indexCuenta');?>"><i class="fa fa-hand-o-right"></i><i class="fa fa-money"></i> Deudas por Cobrar</a>
                         </li>
                         <?php
                         }
@@ -405,7 +234,190 @@
                         </li>
                     </ul>
                 </li>
+                <li>
+                    <a href="#"><i class="fa fa-address-book"></i> <span>Registro</span></a>
+                    <ul class="treeview-menu">
+                        <?php
+                        if($rolusuario[94-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('cliente');?>"><i class="fa fa-group"></i>Clientes</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[102-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('producto');?>"><i class="fa fa-cubes"></i>Productos</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[110-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('proveedor');?>"><i class="fa fa-truck"></i>Proveedores</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                </li>
                 
+                <li>
+                    <a href="#"><i class="fa fa-list-ol"></i> <span>Parámetros</span></a>
+                    <ul class="treeview-menu">
+                        <?php
+                        if($rolusuario[121-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('empresa');?>"><i class="fa fa-bank"></i>Empresas</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[122-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('estado');?>"><i class="fa fa-ellipsis-v"></i>Estados</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[123-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('forma_pago');?>"><i class="fa fa-dollar"></i>Forma de Pago</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[124-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('moneda');?>"><i class="fa fa-money"></i>Moneda</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[125-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('parametro');?>"><i class="fa fa-connectdevelop"></i> <span>Parámetros de Negocio</span></a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[126-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('procedencia');?>"><i class="fa fa-car"></i>Procedencia</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[132-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('tipo_cliente');?>"><i class="fa fa-user"></i>Tipo Cliente</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[133-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('tipo_transaccion');?>"><i class="fa fa-houzz"></i>Tipo Transacción</a>
+                        </li>
+                        <?php
+                        }
+                        //if($rolusuario[133-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('tipo_respuesta');?>"><i class="fa fa-clipboard"></i>Tipo Respuesta</a>
+                        </li>
+                        <?php
+                        //}
+                        if($rolusuario[134-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('tipo_servicio');?>"><i class="fa fa-wrench"></i>Tipo Servicio</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[135-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('tiempo_uso');?>"><i class="fa fa-hourglass"></i>Tiempo de Uso</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[136-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('unidad');?>"><i class="fa fa-file-text-o"></i>Unidad</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[115-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Categoria_clientezona');?>"><i class="fa fa-map-marker"></i>Zonas</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-braille"></i> <span>Categorías</span></a>
+                    <ul class="treeview-menu">
+                         <?php
+                        if($rolusuario[114-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Categoria_cliente');?>"><i class="fa fa-user"></i>Categoría Negocio</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[116-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Categoria_egreso');?>"><i class="fa fa-list"></i>Categoría Egreso</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[117-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Categoria_ingreso');?>"><i class="fa fa-list-alt"></i>Categoría Ingreso</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[118-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Categoria_producto');?>"><i class="fa fa-cubes"></i>Categoría Productos</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[119-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Categoria_servicio');?>"><i class="fa fa-list-ul"></i>Categoría Servicio</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[127-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('subCategoria_servicio');?>"><i class="fa fa-list"></i>Sub Categoría Servicio</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[120-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Categoria_trabajo');?>"><i class="fa fa-building"></i> Categoría Trabajo</a>
+                        </li>
+                        <?php
+                        } 
+                        ?>
+                    </ul>
+                </li>
+         
                 <li>
                     <a href="#"><i class="fa fa-clipboard"></i> <span>Reportes</span></a>
                     <ul class="treeview-menu">
@@ -452,13 +464,6 @@
                         </li>
                         <?php
                         }
-                        /*if($rolusuario[X-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes/planillacaja');?>"><i class="fa fa-exchange"></i>Planilla de Caja</a>
-                        </li>
-                        <?php
-                        }*/
                         if($rolusuario[142-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -519,43 +524,9 @@
 
                     </ul>
                 </li>
+                
                 <li>
-                    <a href="#"><!-- i class="fa fa-lock"></i--><i class="fa fa-lock"></i> <span>Seguridad</span></a>
-                    <ul class="treeview-menu">
-                        <?php
-                        if($rolusuario[145-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('rol');?>"><i class="fa fa-gg"></i>Roles</a>
-                        </li>
-                        <?php
-                        }
-                      /*  if($rolusuario[146-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php //echo site_url('rol_usuario');?>"><i class="fa fa-compress"></i> <span>Rol Usuario</span></a>
-                        </li>
-                        <?php
-                        }*/
-                        if($rolusuario[147-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('tipo_usuario');?>"><i class="fa fa-list-ul"></i>Tipo Usuario</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[148-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('usuario');?>"><i class="fa fa-users"></i>Usuarios</a>
-                        </li>
-                        <?php
-                        }
-                        ?>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><i class="fa fa-braille"></i> <span>Contabilidad</span></a>
+                    <a href="#"><i class="fa fa-calculator"></i> <span>Contabilidad</span></a>
                     <ul class="treeview-menu">
                         <?php
                         if($rolusuario[149-1]['rolusuario_asignado'] == 1){
@@ -590,11 +561,39 @@
                     </ul>
                    
                 </li>
+                <li>
+                    <a href="#"><i class="fa fa-lock"></i> <span>Seguridad</span></a>
+                    <ul class="treeview-menu">
+                        <?php
+                        if($rolusuario[145-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('rol');?>"><i class="fa fa-gg"></i>Roles</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[147-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('tipo_usuario');?>"><i class="fa fa-list-ul"></i>Tipo Usuario</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[148-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('usuario');?>"><i class="fa fa-users"></i>Usuarios</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                    </ul>
+                </li>
                 <?php
                 if($rolusuario[155-1]['rolusuario_asignado'] == 1){
                 ?>
                 <li>
-                    <a href="#"><i class="fa fa-sitemap"></i> <span>Configuración Web Site</span></a>
+                    <a href="#"><i class="fa fa-sitemap"></i> <span>Sitio Web</span></a>
                     <ul class="treeview-menu">
                         <li>
                             <a href="<?php echo site_url('articulo');?>"><i class="fa fa-gg"></i>Artículos</a>
