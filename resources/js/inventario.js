@@ -651,18 +651,18 @@ function mostrar_kardex(producto_id){
             }
 
                     html +="    <tr>";
-                    html +="    <th></th>";
-                    html +="    <th></th>";
-                    html +="    <th><small>ENTRADAS</small><br><h5><b>"+total_compras.toFixed(2)+"</b></h5></th>";
-                    html +="    <th></th>";
-                    html +="    <th></th>";
-                    html +="    <th></th>";
-                    html +="    <th><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(2)+"</b></h5></th>";
-                    html +="    <th></th>";
-                    html +="    <th></th>";
-                    html +="    <th><small>SALDOS</small><br><h5><b>"+saldo.toFixed(2)+"</b></h5></th>";
-                    html +="    <th></th>";
-                    html +="     <th></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'><small>ENTRADAS</small><br><h5><b>"+total_compras.toFixed(2)+"</b></h5></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(2)+"</b></h5></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="    <th style='padding:0'><small>SALDOS</small><br><h5><b>"+saldo.toFixed(2)+"</b></h5></th>";
+                    html +="    <th style='padding:0'></th>";
+                    html +="     <th style='padding:0'></th>";
                     html +="    </tr>";
                     
                     $("#tabla_kardex").html(html);
