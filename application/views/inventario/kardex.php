@@ -70,8 +70,8 @@ border-spacing : 1;
                 
                     
                 <font size="3" face="arial"><b>KARDEX DE EXISTENCIA</b></font> <br>
-                <font size="1" face="arial"><b>FISICO - VALORADO</b></font> <br><br>
-                <font size="1" face="arial"><b>PRODUCTO: <?php echo $producto[0]['producto_codigobarra']." ".$producto[0]['producto_nombre']; ?></b></font> <br>
+                <font size="1" face="arial"><b>FISICO - VALORADO</b></font> <br>
+                <font size="1" face="arial"><b>PRODUCTO: <?php echo $producto[0]['producto_codigobarra']." ".$producto[0]['producto_nombre']; ?></b></font>
 
                                 <br>    
             </center>                      
@@ -133,7 +133,7 @@ border-spacing : 1;
 
 <!--<div class="box-body table-responsive">-->
     <!--<table class="table table-condensed" id="mitabla" style="font-size:10px" style="width: 17cm;">-->
-<div class="container  table-responsive" >
+<div class="container  table-responsive" style='padding: 0;' >
     
 
     <table class="table table-responsive" id="mitabla" style="font-size:10px" style="width: 18cm;" >
