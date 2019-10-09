@@ -436,46 +436,19 @@
                 <li>
                     <a href="#"><i class="fa fa-clipboard"></i> <span>Reportes</span></a>
                     <ul class="treeview-menu">
+                      
                         <?php
-                       /* if($rolusuario[X-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/cajareportes');?>"><i class="fa fa-archive"></i>Caja</a>
+                            <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
                         </li>
                         <?php
-                        }*/
+                        }
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('reportes/comprareportes');?>"><i class="fa fa-shopping-basket"></i>Compras</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[138-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes/egresorep');?>"><i class="fa fa-arrow-left"></i>Egresos</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[140-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes/ingresorep');?>"><i class="fa fa-arrow-right"></i>Ingresos</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[139-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes/reportepersonal');?>"><i class="fa fa-arrows-h"></i>Mi Movimiento Diario</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[141-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>
                         </li>
                         <?php
                         }
@@ -486,17 +459,17 @@
                         </li>
                         <?php
                         }
-                        if($rolusuario[156-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[140-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                            <a href="<?php echo site_url('reportes/ingresorep');?>"><i class="fa fa-arrow-right"></i>Ingresos</a>
                         </li>
                         <?php
                         }
-                        if($rolusuario[18-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[138-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('venta');?>"><i class="fa fa-list-alt"></i>Ventas del Dia</a>
+                            <a href="<?php echo site_url('reportes/egresorep');?>"><i class="fa fa-arrow-left"></i>Egresos</a>
                         </li>
                         <?php
                         }
@@ -504,27 +477,20 @@
                         ?>
                         <li>
                             <a href="<?php echo site_url('venta/comision');?>"><i class="fa fa-percent"></i>Comisiones</a>
-                        </li>
+                        </li>                        
+                        <?php
+                        }
+                        if($rolusuario[141-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>
+                        </li> 
                         <?php
                         }
                         if($rolusuario[144-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('venta/busquedacombi');?>"><i class="fa fa-file"></i>Reporte de Embarque</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[157-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bar-chart"></i>Gráficos</a>
-                        </li>
-                        <?php
-                        }
-                        if($rolusuario[157-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('reportes/graficas2');?>"><i class="fa fa-pie-chart"></i>Estadísticas</a>
                         </li>
                         <?php
                         }
@@ -536,8 +502,33 @@
                         <?php
                         }
                         ?>
+                        
 
                     </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-line-chart"></i> <span>Estadísticas</span></a>
+                    <ul class="treeview-menu">
+                        <?php
+                        
+                        if($rolusuario[157-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('reportes/graficas2');?>"><i class="fa fa-pie-chart"></i>Tortas</a>
+                        </li>
+                        <?php
+                        }
+                        if($rolusuario[157-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bar-chart"></i>Barras</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        
+                    </ul>
+                   
                 </li>
                 
                 <li>
@@ -626,16 +617,16 @@
                             <a href="<?php //echo site_url('categ_imagen');?>"><i class="fa fa-image"></i>Categoría Imagen</a>
                         </li>-->
                         <li>
-                            <a href="<?php echo site_url('Categoria_imagen');?>"><!--<i class="fa fa-list-ul"></i>--><i class="fa fa-list-ul"></i>Categoría Imagen</a>
+                            <a href="<?php echo site_url('Categoria_imagen');?>"><!--<i class="fa fa-list-ul"></i>--><i class="fa fa-file-image-o"></i>Categoría Imagen</a>
                         </li>
                         <!--<li>
                             <a href="<?php //echo site_url('empresa_pagina');?>"><i class="fa fa-bank"></i><i class="fa fa-sitemap"></i>Empresa Página</a>
                         </li>-->
                         <li>
-                            <a href="<?php echo site_url('estado_pagina');?>"><i class="fa fa-arrows-h"></i>Estado Página</a>
+                            <a href="<?php echo site_url('estado_pagina');?>"><i class="fa fa-toggle-on"></i>Estado Página</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('galeria');?>"><i class="fa fa-list-ol"></i>Galería</a>
+                            <a href="<?php echo site_url('galeria');?>"><i class="fa fa-film"></i>Galería</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('idioma');?>"><i class="fa fa-language"></i>Idioma</a>
