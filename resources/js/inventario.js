@@ -566,10 +566,31 @@ function mostrar_kardex(producto_id){
             var total_compras = 0; 
             var total_ventas = 0;
             var ocultar = "";
+            var saldox = 0;
+            var cont = 1;
             for(var i=0; i<tam; i++){
             
                 if( Date.parse(k[i]['fecha'])>=Date.parse(fecha_desde) && Date.parse(k[i]['fecha'])<=Date.parse(fecha_hasta)){
                     ocultar = "";
+                   
+                    if (cont == 1){
+                        html += "<tr style='padding:0'>";
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                      
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'><center><b>"+Number(saldo).toFixed(2)+"</b></center></td>";                    
+                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'><center><b>SALDO INICIAL<b></center></td>";                    
+                        html += "</tr>";
+                    }
+                    cont++;
+                    
                 }
                 else{
                     ocultar = "style='display:none;'";
@@ -579,46 +600,51 @@ function mostrar_kardex(producto_id){
                     total_compras += Number(k[i]['unidad_comp']);
                     total_ventas += Number(k[i]['unidad_vend']);
                     
-                    html += "    <tr align='center' ocultar>    ";
-                    html += "            <td>"+formato_fecha(k[i]['fecha'])+" - "+k[i]['hora']+"</td>";
-                    html += "            <td>";
+                    html += "    <tr align='center' "+ocultar+">";
+                    html += "            <td style='padding:0'>"+formato_fecha(k[i]['fecha'])+" - "+k[i]['hora']+"</td>";
+                    html += "            <td style='padding:0'>";
                     if (k[i]['num_ingreso']!=0) 
                         html += k[i]['num_ingreso'];
                     html += "</td>";
                     
-                    html += "            <td><b>";
+                    html += "            <td style='padding:0'><b>";
                         if (k[i]['unidad_comp']!=0) 
                             html += k[i]['unidad_comp'];
                     html += "</b></td>";
                     
-                    html += "            <td>";                    
+                    html += "            <td style='padding:0'>";                    
                         if (k[i]['costoc_unit']!=0) html += Number(k[i]['costoc_unit']).toFixed(2);
                     html += "</td>";
                     
-                    html += "            <td>";
+                    html += "            <td style='padding:0'>";
                     
                         if (k[i]['importe_ingreso']!=0) html += Number(k[i]['importe_ingreso']).toFixed(2);
                     html += "</td>";
                         
-                    html += "            <td>";
+                    html += "            <td style='padding:0'>";
                         if (k[i]['num_salida']!=0)  html += Number(k[i]['num_salida']).toFixed(2);
                     html += "</td>";
                         
-                    html += "            <td><b>";
+                    html += "            <td style='padding:0'><b>";
                             if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(2);
                             
                     html += "</b></td>";
                             
-                    html += "            <td>";
+                    html += "            <td style='padding:0'>";
                                 if (k[i]['costov_unit'] != 0) html += Number(k[i]['costov_unit']).toFixed(2);
                     html +="</td>";
                     
-                    html +="            <td>";
+                    html +="            <td style='padding:0'>";
                                 if (k[i]['importe_salida'] != 0)  html += Number(k[i]['importe_salida']).toFixed(2);
                     html +="</td>";
-                    html +="            <td><b>"+Number(saldo).toFixed(2)+"</b></td>";
-                    html +="            <td>"+Number(saldo * k[i]['costoc_unit']).toFixed(2)+"</td>";
-                    html +="            <td></td>";
+                    html +="            <td style='padding:0'><b>"+Number(saldo).toFixed(2)+"</b></td>";
+                    html +="            <td style='padding:0'>";
+                    
+                        if(Number(saldo * k[i]['costoc_unit']).toFixed(2)>0){ saldox = saldo * k[i]['costoc_unit'];}
+                        else {  saldox = saldo * k[i]['costov_unit']; }
+                        
+                    html += saldox.toFixed(2)+"</td>";
+                    html +="            <td style='padding:0'></td>";
                     html +="            ";
                     html +="        </tr>";
                 
@@ -634,8 +660,8 @@ function mostrar_kardex(producto_id){
                     html +="    <th><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(2)+"</b></h5></th>";
                     html +="    <th></th>";
                     html +="    <th></th>";
-                    html +="    <th></th>";
                     html +="    <th><small>SALDOS</small><br><h5><b>"+saldo.toFixed(2)+"</b></h5></th>";
+                    html +="    <th></th>";
                     html +="     <th></th>";
                     html +="    </tr>";
                     
