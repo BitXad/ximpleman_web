@@ -40,7 +40,11 @@ class Dosificacion_model extends CI_Model
 
         return $dosificacion;
     }
-    
+
+    /*
+     * Retoran la ultima dosificacion activa
+     */
+
     /*
      * Get all dosificacion count
      */

@@ -11,8 +11,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- for-mobile-apps -->
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="keywords" content="Super Market Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+<meta name="keywords" content="Ximpleman, Sistema de facturación, Sistema de ventas, facturacíon, Password SRL, Password Ingenieria Hardware & Software" />
 <meta property="og:image" content="<?php echo site_url('resources/images/icono.png');?>" >
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
         function hideURLbar(){ window.scrollTo(0,1); } </script>
@@ -64,7 +63,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!------------------ MENU CABECERA  ----------------------------------->                    
                 <div class="agile-login">
                     <ul>
-                        <li><a href="" data-toggle="modal" data-target="#seguimientoOT">O.T.</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#seguimientoOT">Clientes</a></li>
                         <li><a href="" data-toggle="modal" data-target="#seguimientoservicio">servicio</a></li>
                         <?php foreach($menu_cabecera as $cabecera) { ?>
                         <li><a href="<?php echo base_url().$cabecera['menu_enlace']; ?>"><?php echo $cabecera['menu_nombre']; ?></a></li>
@@ -114,7 +113,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             <br><br>
                             <div class="modal-content text-left">
                           <div class="modal-header">
-                              <label>Ver Proceso de Orden de Trabajo</label>
+                              <label>Seguimiento: Ordenes de trabajo</label>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                           </div>
                            
@@ -128,7 +127,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 </div>
                             </div>
                             <div class="col-md-6">
-                                <label for="transaccion" class="control-label">Transaccion</label>
+                                <label for="transaccion" class="control-label">Código</label>
                                 <div class="form-group">
                                     <input type="text" name="transaccion" id="transaccion" class="form-control" required autocomplete="off" />
                                 </div>
@@ -139,7 +138,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                           </div>
                           <div class="modal-footer">
                             <button type="button" onclick="buscarseguimiento()" class="btn btn-success">
-                                    <i class="fa fa-eye"></i> Mostrar
+                                    <i class="fa fa-check "></i> Consultar
                             </button>
                           </div>
                             

@@ -41,7 +41,7 @@
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
+<!--<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">-->
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <!-------------------------------------------------------->
@@ -74,23 +74,28 @@
         </div>
         
 </div>
-<div class="row no-print">
+<div class="row">
         <div class="col-md-6">
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row">
+<!--        <div class="row">
             <ol class="breadcrumb">
                 <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
+                <li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>
                 <li class="active"><b>Proveedores: </b></li>
                 <input style="border-width: 0; background-color: #DEDEDE" id="pillados" type="text"  size="5" value="-<?php echo $total ?>-" readonly="true">
             </ol>
+        </div>-->
+        <div class="box-header">
+            <font size='4' face='Arial'><b>Proveedores</b></font>
+            <br><font size='2' face='Arial'>Registros Encontrados: <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true"></font> 
         </div>
+
         <!--este es FIN del BREADCRUMB buscador-->
  
         <!--este es INICIO de input buscador-->
-        <div class="col-md-12">
+        <div class="col-md-12 no-print">
             <div class="input-group">
                       <span class="input-group-addon"> 
                         Buscar 
@@ -184,16 +189,16 @@
                     <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->
                                     </div>
                                     <div><?php
-                                        echo $p['proveedor_nombre']."<br>";
-                                        echo "<b>Cod: </b>".$p['proveedor_codigo']."<br>";
-                                        echo "<b>Dir..: </b>".$p['proveedor_direccion']."<br>";
-                                        echo "<b>Em@il.: </b>".$p['proveedor_email'];
+                                        echo "<font size='3' face='Arial'><b>".$p['proveedor_nombre']."</b></font><br>";
+                                        echo "<b>CODIGO: </b>".$p['proveedor_codigo']."<br>";
+                                        echo "<b>DIRECC.: </b>".$p['proveedor_direccion']."<br>";
+                                        echo "<b>EMAIL: </b>".$p['proveedor_email'];
                                         ?>
                                     </div>
                                 </div>
                             </td>
                             <td><?php echo $p['proveedor_contacto']; ?></br>
-                            <b>Telf.:</b> <?php echo $p['proveedor_telefono']."-".$p['proveedor_telefono2']; ?></td>
+                            <b>TELEF.:</b> <?php echo $p['proveedor_telefono']."-".$p['proveedor_telefono2']; ?></td>
                             <td><?php echo $p['proveedor_nit']; ?></br>
                             <?php echo $p['proveedor_razon']; ?></td>
                             <td style="background-color: #<?php echo $p['estado_color']; ?>"><?php echo $p['estado_descripcion']; ?></td>

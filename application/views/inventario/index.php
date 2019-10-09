@@ -39,7 +39,7 @@
 <!-------------------------------------------------------->
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>
-        <td style="width: 6cm; padding: 0" >
+        <td style="width: 6cm; padding: 0; line-height:10px;" >
                 
             <center>
                                
@@ -67,14 +67,14 @@
             </center>
         </td>
         <td style="width: 4cm; padding: 0" >
-                ______________________________                
+<!--                ______________________________                
                    
                                 
                 <div id="datos_recorrido">
                     
                 </div>
                 
-                ______________________________
+                ______________________________-->
         </td>
     </tr>
      

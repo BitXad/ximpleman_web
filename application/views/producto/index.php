@@ -36,7 +36,8 @@
 </style>
 
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
+<!--<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">-->
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="parametro_modulorestaurante" id="parametro_modulorestaurante" value="<?php echo $parametro['parametro_modulorestaurante']; ?>" />
@@ -79,14 +80,19 @@
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row">
+<!--        <div class="row">
             <ol class="breadcrumb">
                 <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
+                <li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>
                 <li class="active"><b>Productos: </b></li>
                 <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5"  readonly="true">
             </ol>
+        </div>-->
+        <div class="box-header">
+            <font size='4' face='Arial'><b>Productos</b></font>
+            <br><font size='2' face='Arial'>Registros Encontrados: <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true"></font> 
         </div>
+
         <!--este es FIN del BREADCRUMB buscador-->
  
         <!--este es INICIO de input buscador-->
@@ -180,14 +186,14 @@
         <div class="box">
                  
             <div class="box-body  table-responsive">
-               <table class="table table-condensed" id="mitablaimpresion" role="table">
+               <table class="table table-condensed" id="mitabla" role="table">
                <!--<table role="table">-->
                     <thead role="rowgroup">
                         <tr role="row">
                             <th  role="columnheader" >#</th>
                             <th  role="columnheader" >Nombre</th>
                             <th  role="columnheader" >Categoria|<br>Presentación</th>
-                            <th  role="columnheader" style="width: 20%;" >Caracteristicas</th>
+                            <!--<th  role="columnheader" style="width: 20%;" >Caracteristicas</th>-->
                             <th  role="columnheader" >Envase</th>
                             <th  role="columnheader" >Código|<br>Cód. Barra</th>
                             <th  role="columnheader" >Precio</th>

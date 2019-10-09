@@ -53,7 +53,7 @@ function mostrar_facturas() {
             success:function(result){
                 var factura = JSON.parse(result);
                 var tam = factura.length;
-                var totalfinal = 0;
+              
                 var mensaje = "";
                 
                 html = "";
@@ -82,13 +82,14 @@ function mostrar_facturas() {
                     html += "</tr>";
                     html += "<tbody class='buscar'>";
                     
-                    
+                      var totalfinal = Number(0);
                     
                     for(var i = 0; i < tam; i++ ){                        
                         if (factura[i]['estado_id']==3)
                             color = "style = 'background-color:gray'";
                         else
                             color = "";
+                        
                         html += "<tr  "+color+">";
                         html += "   <td>0</td>";
                         html += "   <td>1</td>";
@@ -108,11 +109,11 @@ function mostrar_facturas() {
                         html += "   <td>"+Number(factura[i]["factura_total"]*0.13).toFixed(2)+"</td>";
                         html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
                         html += "   <td>"+factura[i]["venta_id"]+"</td>";
-                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' '><i class='fa fa-list'></i> </a>";
+                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
                         html += "  <button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button></td>";
                         html += "</tr>";
                         
-                        totalfinal += Number(factura[i]["factura_total"]);
+                        totalfinal += Number(factura[i]["factura_subtotal"]);
                         
                         
                     }
@@ -131,9 +132,9 @@ function mostrar_facturas() {
                         html += "<th> </th> ";
                         html += "<th> </th> ";
                         html += "<th> </th> ";
-                        html += "<th>"+formato_numerico(Number(totalfinal).toFixed(2))+"</th> ";
-                        html += "<th>"+formato_numerico(Number(debitofiscal).toFixed(2))+"</th> ";
                         html += "<th> </th> ";
+                        html += "<th>"+Number(totalfinal).toFixed(2)+"</th> ";
+                        html += "<th>"+Number(debitofiscal).toFixed(2)+"</th> ";
                         html += "<th> </th> ";
                         html += "<th> </th> ";
                    html += "<tbody>";

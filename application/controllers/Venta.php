@@ -99,9 +99,9 @@ class Venta extends CI_Controller{
         $this->load->view('layouts/main',$data);
         		
         //**************** fin contenido ***************
-        }    
-        
+        }        
     }
+    
     function ventas_cliente($cliente_id)
     {    
         
@@ -616,9 +616,136 @@ class Venta extends CI_Controller{
     {  
         if($this->acceso(12)){
         //**************** inicio contenido ***************        
-        
-        
-        
+
+            //$dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
+            $dosificacion = $this->Dosificacion_model->get_dosificacion(1);
+
+            $usuario_id = $this->session_data['usuario_id'];
+            
+            
+            //********** parametros para la generacion de factura *************            
+            
+            $nit_factura = $this->input->post('nit');
+            $razon_social = $this->input->post('razon_social');
+            $fecha_venta = $this->input->post('fecha_venta');            
+            $detallefact_descripcion = $this->input->post('detalle_factura');
+            $unidad = $this->input->post('detalle_unidad');
+            $cantidad = $this->input->post('detalle_cantidad');
+            $precio = $this->input->post('detalle_precio');            
+
+//            $nit_factura = "5152377019";
+//            $razon_social = "LOZANO SRL";
+//            $fecha_venta = "2019-05-22";            
+//            $detallefact_descripcion = "CUOTA POR CREDITO Nº 445";
+//            $unidad = "CUOTA";
+//            $cantidad = 1;
+//            $precio = 385.90; 
+            
+            $monto_factura = $cantidad * $precio;
+            
+            
+            
+            //********** fin parametros para la generacion de factura *************
+
+//            $nit = "51523773019";
+//            $razon_social = "PEALEZ SRL";
+//            $fecha_venta = "PEALEZ SRL";
+//            $detalle_factura = "Pago por mercaderia";
+//            $monto_factura = "Pago por mercaderia";
+                        
+            $numero_factura = $dosificacion["dosificacion_numfact"]+1;
+            $estado_id = 1;
+            $venta_id = 0;
+            $factura_fechaventa = $fecha_venta;
+            $factura_fecha = "date(now())";
+            $factura_hora = "time(now())";
+            $factura_subtotal = $monto_factura;
+            $factura_ice = 0;
+            $factura_exento = 0;
+            $factura_descuento = 0;
+            $factura_total = $monto_factura;
+            $factura_numero = $numero_factura;
+            $factura_autorizacion = $dosificacion["dosificacion_autorizacion"];
+            $factura_llave = $dosificacion["dosificacion_llave"];
+            $factura_fechalimite = $dosificacion["dosificacion_fechalimite"];
+            $factura_leyenda1 = $dosificacion["dosificacion_leyenda1"];
+            $factura_leyenda2 = $dosificacion["dosificacion_leyenda2"];
+            $factura_nit = $nit_factura;
+            $factura_razonsocial = $razon_social;
+            $factura_nitemisor = $dosificacion["dosificacion_leyenda2"];
+            $factura_sucursal = $dosificacion["dosificacion_nitemisor"];
+            $factura_sfc = $dosificacion["dosificacion_sfc"];
+            $factura_actividad = $dosificacion["dosificacion_actividad"];
+            
+            $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
+            $cuota_id = 0;
+            $credito_id = 0;
+            $ingreso_id = 0;
+            $servicio_id = 0;
+            
+            $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+            $this->Venta_model->ejecutar($sql);
+            
+            $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+                    factura_fecha, factura_hora, factura_subtotal, 
+                    factura_ice, factura_exento, factura_descuento, factura_total, 
+                    factura_numero, factura_autorizacion, factura_llave, 
+                    factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id) value(".
+                    $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                    $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
+                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                    $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                    $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.")";
+
+            $factura_id = $this->Venta_model->ejecutar($sql);
+
+
+            $producto_id = 0;
+            $detallefact_codigo = "-";
+            $detallefact_cantidad = $cantidad;
+            $detallefact_precio = $precio;
+            $detallefact_subtotal =  $monto_factura;
+            $detallefact_descuento = 0;
+            $detallefact_total = $monto_factura;
+            $detallefact_preferencia =  "";
+            $detallefact_caracteristicas = "";
+            
+            $sql =  "insert into detalle_factura(
+             producto_id,
+            venta_id,
+            factura_id,
+            detallefact_codigo,
+            detallefact_unidad,
+            detallefact_cantidad,            
+            detallefact_descripcion,
+            detallefact_precio,
+            detallefact_subtotal,
+            detallefact_descuento,
+            detallefact_total,                
+            detallefact_preferencia,
+            detallefact_caracteristicas)
+            
+            value(
+            ".$producto_id.",
+            ".$venta_id.",
+            ".$factura_id.",
+            '".$detallefact_codigo."',
+            '".$unidad."',
+            ".$detallefact_cantidad.",            
+            '".$detallefact_descripcion."',
+            ".$detallefact_precio.",
+            ".$detallefact_subtotal.",
+            ".$detallefact_descuento.",
+            ".$detallefact_total.",                
+            '".$detallefact_preferencia."',
+            '".$detallefact_caracteristicas."')";
+
+            $this->Venta_model->ejecutar($sql);           
+            
+
       
         //**************** fin contenido ***************
         }

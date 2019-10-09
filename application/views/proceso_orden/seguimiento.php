@@ -40,17 +40,19 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitablaproceso.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+
+
+<?php if(sizeof($procesos)>0){  ?>
+
 <div class="box-header">
-    <center>
+    <!--<center>-->
         
         <font face="Arial" size="3"><b>ORDEN DE TRABAJO Nº 00<?php echo $orden_id; ?>  </b></font>
-        <br><font face="Arial" size="3"><?php echo $procesos[0]['cliente_nombre']; ?></font>
-    <!--<h3 class="box-title"><b>ORDEN DE TRABAJO Nº 00<?php echo $orden_id; ?>  </b></h3>-->
-    <!--<br><h3 class="box-title"><?php echo $cliente_nombre; ?> </h3>-->
+        <br><font face="Arial" size="2"><b>CLIENTE:</b><?php echo $procesos[0]['cliente_nombre']; ?></font>
             	<div class="box-tools">
                     
                 </div>
-    </center>
+    <!--</center>-->
 </div>
 <!--<div class="row">
   <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
@@ -206,3 +208,11 @@
     </div>
     
 </div>
+<?php } else{ ?>
+<center>    
+    <h2><b>LA ORDEN DE TRABAJO NO EXISTE..!!</b></h2>
+    <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3>    
+    <a href='<?php echo base_url(); ?>' class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
+</center>
+    
+<?php } ?>

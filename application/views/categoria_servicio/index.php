@@ -18,15 +18,16 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <h3 class="box-title">Categoria Servicio</h3>
-    <div class="box-tools">
-        <a href="<?php echo site_url('categoria_servicio/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a>
+    <font size='4' face='Arial'><b>Categoria Servicio</b></font>
+    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($categoria_servicio); ?></font>
+    <div class="box-tools no-print">
+        <a href="<?php echo site_url('categoria_servicio/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Categoria</a>
     </div>
 </div>
 <div class="row">    
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-        <div class="input-group"> <span class="input-group-addon">Buscar</span>
+        <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese descripción">
           </div>
         <!--------------------- fin parametro de buscador --------------------->
@@ -38,7 +39,7 @@
 						<th>#</th>
 						<th>Descripción</th>
 						<th>Estado</th>
-						<th></th>
+                                                <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $i = 1; $cont = 0;
@@ -52,7 +53,7 @@
                         <td><?php echo $c['catserv_descripcion']; ?></td>
 
                         <td style="background-color: #<?php echo $c['estado_color']; ?>"> <?php echo $c['estado_descripcion']; ?></td>
-                        <td>
+                        <td class="no-print">
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                             <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                               <div class="modal-dialog" role="document">

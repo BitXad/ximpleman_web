@@ -2,9 +2,10 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <h3 class="box-title">Estado</h3>
-    <div class="box-tools">
-        <a href="<?php echo site_url('estado/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
+    <font size='4' face='Arial'><b>Estados</b></font>
+    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($estado); ?></font>
+    <div class="box-tools no-print">
+        <!--<a href="<?php //echo site_url('estado/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Estado</a>-->
     </div>
 </div>
 <div class="row">
@@ -17,7 +18,7 @@
                         <th>Descripción</th>
                         <th>Tipo</th>
                         <th>Color</th>
-                        <th></th>
+                        <th class="no-print"></th>
                     </tr>
                     <?php
                         $i = 0;
@@ -27,7 +28,7 @@
                         <td><?php echo $e['estado_descripcion']; ?></td>
                         <td><?php echo $e['estado_tipo']; ?></td>
                         <td style="background-color: #<?php echo $e['estado_color']; ?>"><?php echo $e['estado_color']; ?></td>
-                        <td>
+                        <td class="no-print">
                             <a href="<?php echo site_url('estado/edit/'.$e['estado_id']); ?>" class="btn btn-info btn-xs" title="Editar"><span class="fa fa-pencil"></span></a> 
                              <!--<a data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->

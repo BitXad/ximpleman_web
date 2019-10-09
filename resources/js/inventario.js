@@ -29,6 +29,14 @@ function fecha(){
 }
 
 
+function formato_fecha(string){
+    var info = "";
+    if(string != null){
+       info = string.split('-').reverse().join('/');
+   }
+    return info;
+}
+
 function formato_numerico(numer){
     var partdecimal = "";
     var numero = "";
@@ -333,6 +341,8 @@ function tabla_inventario(){
 
     //                    html += "             	<td "+margen+" ><center style='line-height:70%'> <sub> "+ existencia +"<br>"+inv[i]["producto_unidad"]+"</sub></center></td>";
 
+                        html += "<td> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank' class='btn btn-warning btn-xs no-print'><fa class='fa fa-list'> </fa> Kardex</a></small> </td>";
+                        //html += "<td><a href='"+base_url++"'>kardex</a></td>";
                         html += "</tr>";
                    
                  
@@ -544,12 +554,6 @@ function mostrar_kardex(producto_id){
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     
-    
-    //alert(controlador);
-    
-    //alert(fecha_desde+" "+fecha_hasta+" "+producto_id);
-    //window.open(controlador); //Levantar el formulario de kardex
-    
     $.ajax({
         url:controlador,
         type: "POST",
@@ -576,7 +580,7 @@ function mostrar_kardex(producto_id){
                     total_ventas += Number(k[i]['unidad_vend']);
                     
                     html += "    <tr align='center' ocultar>    ";
-                    html += "            <td>"+k[i]['fecha']+"-"+k[i]['hora']+"</td>";
+                    html += "            <td>"+formato_fecha(k[i]['fecha'])+" - "+k[i]['hora']+"</td>";
                     html += "            <td>";
                     if (k[i]['num_ingreso']!=0) 
                         html += k[i]['num_ingreso'];
@@ -588,20 +592,20 @@ function mostrar_kardex(producto_id){
                     html += "</b></td>";
                     
                     html += "            <td>";                    
-                        if (k[i]['costoc_unit']!=0) html += k[i]['costoc_unit'];
+                        if (k[i]['costoc_unit']!=0) html += Number(k[i]['costoc_unit']).toFixed(2);
                     html += "</td>";
                     
                     html += "            <td>";
                     
-                        if (k[i]['importe_ingreso']!=0) html += k[i]['importe_ingreso'];
+                        if (k[i]['importe_ingreso']!=0) html += Number(k[i]['importe_ingreso']).toFixed(2);
                     html += "</td>";
                         
                     html += "            <td>";
-                        if (k[i]['num_salida']!=0)  html +=  k[i]['num_salida'];
+                        if (k[i]['num_salida']!=0)  html += Number(k[i]['num_salida']).toFixed(2);
                     html += "</td>";
                         
                     html += "            <td><b>";
-                            if (k[i]['unidad_vend']!=0) html += k[i]['unidad_vend'];
+                            if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(2);
                             
                     html += "</b></td>";
                             
@@ -610,10 +614,10 @@ function mostrar_kardex(producto_id){
                     html +="</td>";
                     
                     html +="            <td>";
-                                if (k[i]['importe_salida'] != 0)  html += k[i]['importe_salida'];
+                                if (k[i]['importe_salida'] != 0)  html += Number(k[i]['importe_salida']).toFixed(2);
                     html +="</td>";
-                    html +="            <td><b>"+saldo+"</b></td>";
-                    html +="            <td>"+ saldo * k[i]['costoc_unit']+"</td>";
+                    html +="            <td><b>"+Number(saldo).toFixed(2)+"</b></td>";
+                    html +="            <td>"+Number(saldo * k[i]['costoc_unit']).toFixed(2)+"</td>";
                     html +="            <td></td>";
                     html +="            ";
                     html +="        </tr>";
@@ -623,15 +627,15 @@ function mostrar_kardex(producto_id){
                     html +="    <tr>";
                     html +="    <th></th>";
                     html +="    <th></th>";
-                    html +="    <th><small>ENTRADAS</small><br><h5><b>"+total_compras+"</b></h5></th>";
+                    html +="    <th><small>ENTRADAS</small><br><h5><b>"+total_compras.toFixed(2)+"</b></h5></th>";
                     html +="    <th></th>";
                     html +="    <th></th>";
                     html +="    <th></th>";
-                    html +="    <th><small>SALIDAS</small><br><h5><b>"+total_ventas+"</b></h5></th>";
+                    html +="    <th><small>SALIDAS</small><br><h5><b>"+total_ventas.toFixed(2)+"</b></h5></th>";
                     html +="    <th></th>";
                     html +="    <th></th>";
                     html +="    <th></th>";
-                    html +="    <th><small>SALDOS</small><br><h5><b>"+saldo+"</b></h5></th>";
+                    html +="    <th><small>SALDOS</small><br><h5><b>"+saldo.toFixed(2)+"</b></h5></th>";
                     html +="     <th></th>";
                     html +="    </tr>";
                     

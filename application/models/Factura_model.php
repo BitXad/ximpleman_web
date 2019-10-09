@@ -42,6 +42,19 @@ class Factura_model extends CI_Model
     }
     
     /*
+     * Get factura by factura_id
+     */
+    function get_factura_id($factura_id)
+    {
+        $sql = "select f.*,u.* from factura f 
+                left join usuario u on u.usuario_id = f.usuario_id
+                where f.factura_id = ".$factura_id;
+        $factura = $this->db->query($sql)->result_array();
+        return $factura;
+        
+    }
+    
+    /*
      * Get all factura count
      */
     function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
@@ -140,7 +153,7 @@ class Factura_model extends CI_Model
             WHERE
                 factura_fecha >= '".$inicio."'
                 and factura_fecha <= '".$fin."'
-                and venta_id <> 0 
+                
 
             ORDER BY `factura_id` ASC";
         
@@ -175,6 +188,16 @@ class Factura_model extends CI_Model
         $this->db->query($sql);     
         return $true;
     }
-            
+
+
+    function get_detalle_factura_aux($usuario_id)
+    {
+        $sql = "select * from detalle_factura_aux where usuario_id = ".$usuario_id;
+        
+        $factura = $this->db->query($sql)->result_array();
+       
+        return $factura;
+    }
+
     
 }
