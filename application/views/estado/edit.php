@@ -10,7 +10,7 @@
 					<div class="col-md-6">
 						<label for="estado_descripcion" class="control-label">Descripcion</label>
 						<div class="form-group">
-							<input type="text" name="estado_descripcion" value="<?php echo ($this->input->post('estado_descripcion') ? $this->input->post('estado_descripcion') : $estado['estado_descripcion']); ?>" class="form-control" id="estado_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                                    <input type="text" name="estado_descripcion" value="<?php echo ($this->input->post('estado_descripcion') ? $this->input->post('estado_descripcion') : $estado['estado_descripcion']); ?>" class="form-control" id="estado_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" readonly />
 						</div>
 					</div>
 					<div class="col-md-6">
@@ -22,7 +22,7 @@
 					<div class="col-md-6">
 						<label for="estado_tipo" class="control-label">Tipo</label>
 						<div class="form-group">
-							<input type="text" name="estado_tipo" value="<?php echo ($this->input->post('estado_tipo') ? $this->input->post('estado_tipo') : $estado['estado_tipo']); ?>" class="form-control" id="estado_tipo" />
+                                                    <input type="text" name="estado_tipo" value="<?php echo ($this->input->post('estado_tipo') ? $this->input->post('estado_tipo') : $estado['estado_tipo']); ?>" class="form-control" id="estado_tipo" readonly />
 						</div>
 					</div>
 				</div>

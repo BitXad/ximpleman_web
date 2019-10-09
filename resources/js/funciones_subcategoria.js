@@ -32,7 +32,7 @@ function mostrarsubcategorias(){
                         html += "<td style='text-align: right'>"+Number(registros[i]["subcatserv_precio"]).toFixed(2)+"</td>";
                         html += "<td>"+registros[i]["catserv_descripcion"]+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td>";
+                        html += "<td class='no-print'>";
                         html += "<!-- ---------------------- INICIO modal para Ver Insumos Asignados ----------------- -->";
                         html += "<div class='modal fade' id='modalverinsumo"+registros[i]["subcatserv_id"]+"' tabindex='-1' role='dialog' aria-labelledby='modalverinsumoLabel'>";
                         html += "<div class='modal-dialog' role='document'>";
