@@ -105,7 +105,14 @@ function tablaresultadosproducto(limite)
                     $("#encontrados").val("- "+n+" -");
                     html = "";
                     for (var i = 0; i < n ; i++){
-                        html += "<tr>";
+//                        html += "<td>";
+                        var caracteristica = "";
+                        if(registros[i]["producto_caracteristicas"] != null){
+                            caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
+                        }
+//                        html+= caracteristica+"</td>";                        
+                       
+                       html += "<tr>";
                         
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>";
@@ -123,15 +130,17 @@ function tablaresultadosproducto(limite)
                         html += mimagen;
                         html += "</div>";
                         html += "<div style='padding-left: 4px'>";
-                        html += "<b id='masgrande'>"+registros[i]["producto_nombre"]+"</b><br>";
+                        html += "<b id='masgrande'><font size='3' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
                         html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
                         if(registros[i]["destino_id"] > 0){
-                            html +="<br>Destino: "+registros[i]['destino_nombre'];
+                                html +="<br><b>DESTINO:</b> "+registros[i]['destino_nombre'];
                         }
                         if(parametro_modulo == 2){
                             html +="<br>Principio Activo: "+registros[i]['producto_principioact'];
                             html +="<br>Acción Terapeutica: "+registros[i]['producto_accionterap'];
                         }
+                        
+                        html += caracteristica;
                         html += "";
                         html += "</div>";
                         html += "</div>";
@@ -148,19 +157,14 @@ function tablaresultadosproducto(limite)
                         }else{
                             esmoneda = registros[i]["moneda_descripcion"];
                         }
-                        html += "<td><b>Cat.: </b>"+escategoria+"<br><b>Pres.: </b>"+registros[i]["producto_unidad"]+"<br>";
-                        html += "<b>Cant. Min.: </b>";
+                        html += "<td><b>CATEGORIA: </b>"+escategoria+"<br><b>UNIDAD: </b>"+registros[i]["producto_unidad"]+"<br>";
+                        html += "<b>CANT. MIN.: </b>";
                         var cantmin= 0;
                         if(registros[i]["producto_cantidadminima"] != null || registros[i]["producto_cantidadminima"] ==""){
                             cantmin = registros[i]["producto_cantidadminima"];
                         }
                         html += cantmin+"</td>";
-                        html += "<td>";
-                        var caracteristica = "";
-                        if(registros[i]["producto_caracteristicas"] != null){
-                            caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
-                        }
-                        html+= caracteristica+"</td>";
+
                         html += "<td>";
                         var sinconenvase = "";
                         var nombreenvase = "";
@@ -186,12 +190,12 @@ function tablaresultadosproducto(limite)
                             codbarras = registros[i]["producto_codigobarra"];
                         }
                         html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-                        html += "<td><b>Compra: </b>"+registros[i]["producto_costo"]+"<br>";
-                            html += "<b>Venta: </b>"+registros[i]["producto_precio"]+"<br>";
-                            html += "<b>Comisión: </b>"+registros[i]["producto_comision"];
+                        html += "<td><b>COMPRA: </b>"+registros[i]["producto_costo"]+"<br>";
+                            html += "<b>VENTA: </b>"+registros[i]["producto_precio"]+"<br>";
+                            html += "<b>COMISION (%): </b>"+registros[i]["producto_comision"];
                             html += "</td>";
-                        html += "<td><b>Moneda: </b>"+esmoneda+"<br>";
-                        html += "<b>T. Cambio: </b>";
+                        html += "<td><b>MONEDA: </b>"+esmoneda+"<br>";
+                        html += "<b>T.C.: </b>";
                         var tipocambio= 0;
                         if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
                         html += tipocambio+"</td>";

@@ -38,7 +38,8 @@
     }
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/servicio_reportediax.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
@@ -81,14 +82,20 @@
     <div class="col-md-8">
     
         <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row">
+<!--        <div class="row">
             <ol class="breadcrumb">
                 <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
+                <li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>
                 <li class="active"><b>Clientes: </b></li>
                 <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true">
             </ol>
-        </div>
+        </div>-->
+
+<div class="box-header">
+    <font size='4' face='Arial'><b>Clientes</b></font>
+    <br><font size='2' face='Arial'>Registros Encontrados: <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true"></font> 
+</div>
+
         <!--este es FIN del BREADCRUMB buscador-->
          <div class="col-md-12">
             <!--este es INICIO de input buscador-->
@@ -213,7 +220,7 @@
         <div class="box">
             
             <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitablaimpresion">
+                <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
@@ -223,8 +230,8 @@
 <!--                        <th>Email</th>-->
                         <!--<th>Aniversario</th>-->
 <!--                        <th>Tipo</th>-->
-                        <th>Categoria</th>
-                        <th>Asignado a/Estado</th>
+                        <!--<th>Categoria</th>-->
+                        <th>Estado</th>
                         <!--<th>Estado</th>-->
                         <th class="no-print"></th>
                     </tr>

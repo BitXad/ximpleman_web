@@ -186,34 +186,50 @@ function tablaresultadoscliente(limite)
                         if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
                             celular = registros[i]["cliente_celular"];
                         }
-                        var linea = "";
-                        if(telef>0 && celular>0){
-                            linea = "-";
-                        }
-                        //html += "<img src='"+base_url+"/resources/images/"+mimagen+"' />";
-                        html += mimagen;
-                        html += "</div>";
-                        html += "<div style='padding-left: 4px'>";
-                        html += "<b id='masg'>"+registros[i]["cliente_nombre"]+"</b><br>";
-                        html += "<b>Codigo: </b>"+codigo+"<br>";
-                        html += "<b>C.I.: </b>"+registros[i]["cliente_ci"]+"<br>";
-                        html += "<b>Tel.: </b>"+telef+linea+celular;
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</td>";
-                        html += "<td>";
-                        html += "<div style='white-space: nowrap;'><b>Neg.: </b>"+neg+"<br></div>";
-                        html += "<div>";
-                        html += "<b>Dir.: </b>"+dir+"<br>";
-                        html += "<b>Nit: </b>"+registros[i]["cliente_nit"]+"<br>";
-                        html += "<b>Razon: </b>"+registros[i]["cliente_razon"]+"<br>";
+                        
                         var escategoria_clientezona="";
+                        
                         if(registros[i]["zona_id"] == null || registros[i]["zona_id"] == 0 || registros[i]["zona_id"] == ""){
                             escategoria_clientezona = "No definido";
                         }else{
                             escategoria_clientezona = registros[i]["zona_nombre"];
                         }
-                        html += "<b>Zona: </b>"+escategoria_clientezona;
+                        var linea = "";
+                        if(telef>0 && celular>0){
+                            linea = "-";
+                        }
+                        
+                        //html += "<img src='"+base_url+"/resources/images/"+mimagen+"' />";
+                        html += mimagen;
+                        html += "</div>";
+                        html += "<div style='padding-left: 4px'>";
+                        tam = 3;
+                        if(registros[i]["cliente_nombre"].length>25){
+                           tam = 1; 
+                        }
+                        html += "<b><font face='Arial' size='"+tam+"' >"+registros[i]["cliente_nombre"]+"</font></b><br>";
+                        
+                        html += "<div><b>EMPRESA: </b>"+neg+"<br></div>";
+                        html += "<b>ZONA: </b>"+escategoria_clientezona+" <b>DPTO: </b>"+registros[i]["cliente_departamento"];                        
+                        
+                        html += "<div><b>TIPO: </b>"+registros[i]["categoriaclie_descripcion"]+"<br></div>";
+                        html += "<b>DIREC.: </b>"+dir+"<br>";
+                        html += "<b>TELF.: </b>"+telef+linea+celular;                        
+                       
+                       
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</td>";
+                        html += "<td>";
+                        
+                        html += "<div>";
+                        html += "<b>CÓDIGO: </b>"+codigo+"<br>";
+                        html += "<b>C.I.: </b>"+registros[i]["cliente_ci"]+"<br>";
+                        html += "<b>RAZÓN SOC.: </b>"+registros[i]["cliente_razon"]+"<br>";
+                        html += "<b>NIT: </b>"+registros[i]["cliente_nit"]+"<br>";
+                        html += "<b>EMAIL: </b>"+registros[i]["cliente_email"]+"<br>";
+                        html += "<b>ANIVERS.: </b>"+aniv+"<br>";
+                        
                         html += "</div>";
                         html += "</td>";
                         html += "<td class='no-print' style='text-align: center'>";
@@ -231,22 +247,24 @@ function tablaresultadoscliente(limite)
                         }else{
                             estipo_cliente = registros[i]["tipocliente_descripcion"]+"<br>";
                         }
+                        
                         var escategoria_cliente="";
                         if(registros[i]["categoriaclie_id"] == null || registros[i]["categoriaclie_id"] == 0 || registros[i]["categoriaclie_id"] == ""){
                             escategoria_cliente = "No definido"+"<br>";
                         }else{
                             escategoria_cliente = registros[i]["categoriaclie_descripcion"]+"<br>";
                         }
+                        
                         var esusuario="";
                         if(registros[i]["usuario_id"] == null || registros[i]["usuario_id"] == 0 || registros[i]["usuario_id"] == ""){ 
                             esusuario = "No definido";
                         }else{
                             esusuario = registros[i]["usuario_nombre"];
                         }
-                        html += "<td>"+corr+aniv;
-                        html += estipo_cliente;
-                        html += escategoria_cliente;
-                        var visita = "Visitas: ";
+                        //html += "<td>"
+                        //html += estipo_cliente;
+                        //html += escategoria_cliente;
+                        var visita = "<b>VISITAS:</b> ";
                         if(registros[i]["lun"]== 1){ visita += "Lun. "; }
                         if(registros[i]["mar"]== 1){ visita += "Mar. "; }
                         if(registros[i]["mie"]== 1){ visita += "Mie. "; }
@@ -254,15 +272,17 @@ function tablaresultadoscliente(limite)
                         if(registros[i]["vie"]== 1){ visita += "Vie. "; }
                         if(registros[i]["sab"]== 1){ visita += "Sab. "; }
                         if(registros[i]["dom"]== 1){ visita += "Dom."; }
-                        var dpto = "";
-                        if(registros[i]["cliente_departamento"] != null && registros[i]["cliente_departamento"] != "")
-                        { dpto += registros[i]["cliente_departamento"]; }
-                        html += visita;
-                        html += "<br>Dep.: "+dpto;
-                        html += "</td>";
+//                        var dpto = "";
+//                        if(registros[i]["cliente_departamento"] != null && registros[i]["cliente_departamento"] != "")
+//                        { dpto += registros[i]["cliente_departamento"]; }
+                        //html += visita;
+//                        html += "<br>Dep.: "+dpto;
+                        //html += "</td>";
                         //html += "<td>"+esusuario+"</td>";
-                        html += "<td style='background-color: #"+registros[i]["estado_color"]+";'>"+esusuario+"<br>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td class='no-print'>";
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+";'><center>"+esusuario+"<br>";
+                        html += visita;
+                        html += "<br>"+registros[i]["estado_descripcion"]+"</center></td>";
+                        html += "<br><td class='no-print'>";
                         html += "<a href='"+base_url+"venta/ventas_cliente/"+registros[i]["cliente_id"]+"' class='btn btn-success btn-xs' title='Vender'><span class='fa fa-cart-plus'></span></a>";
                         
                         html += "<a href='"+base_url+"pedido/pedidoabierto/"+registros[i]["cliente_id"]+"' class='btn btn-facebook btn-xs' title='Generar pedido Pre-Venta'><span class='fa fa-clipboard'></span></a>";
