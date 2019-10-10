@@ -45,13 +45,10 @@
 <div class="row">
     <div class="col-md-6 no-print">
         <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row">
-            <ol class="breadcrumb">
-                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <!--<li><a href="<?php //echo site_url('cliente')?>">Clientes</a></li>-->
-                <li class="active"><b>Servicios: </b></li>
-                <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true">
-            </ol>
+        <div class="box-header">
+            <font size='4' face='Arial'><b>Tipo Usuario</b></font>
+            <br><font size='2' face='Arial'>Registros Encontrados: <span id="regencontrados"></span></font>
+            
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
         <div class="col-md-8">

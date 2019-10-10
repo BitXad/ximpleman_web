@@ -1057,6 +1057,7 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</tr>";
                    }
                    $("#tablaresultados").html(html);
+                   $("#regencontrados").html(n);
                    document.getElementById('loader').style.display = 'none';
             }
             document.getElementById('loader').style.display = 'none';
