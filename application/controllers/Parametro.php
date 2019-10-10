@@ -105,10 +105,10 @@ class Parametro extends CI_Controller{
             if(isset($_POST) && count($_POST) > 0)     
             {   
                 $params = array(
-					'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
-					'parametro_numrecing' => $this->input->post('parametro_numrecing'),
-					'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
-					'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
+                    'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
+                    'parametro_numrecing' => $this->input->post('parametro_numrecing'),
+                    'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
+                    'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
                     'parametro_numcuotas' => $this->input->post('parametro_numcuotas'),
                     'parametro_montomax' => $this->input->post('parametro_montomax'),
                     'parametro_diasgracia' => $this->input->post('parametro_diasgracia'),
@@ -131,6 +131,7 @@ class Parametro extends CI_Controller{
                     'parametro_modulorestaurante' => $this->input->post('parametro_modulorestaurante'),
                     'parametro_permisocredito' => $this->input->post('parametro_permisocredito'),
                     'parametro_agruparitems' => $this->input->post('parametro_agruparitems'),
+                    'parametro_diasvenc' => $this->input->post('parametro_diasvenc'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
