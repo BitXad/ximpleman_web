@@ -97,6 +97,7 @@ break;
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">FORMA IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODULO</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">AGRUPAR ITEMS</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DIAS DE VENCIMIENTO</th>
                     </tr> 
                     <tr>
                         <td><?php foreach($all_categoria_producto as $categoria_producto)
@@ -118,6 +119,7 @@ break;
                                        echo'RESTAURANTE';
                                    }else{ echo'FARMACIA';} ?></td>
                         <td><?php  if ($p['parametro_agruparitems']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
+                        <td><?php echo $p['parametro_diasvenc']; ?></td>
                     </tr>
                    
                     
