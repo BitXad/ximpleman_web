@@ -266,24 +266,38 @@ class Servicio extends CI_Controller{
     function asignartiposervicio($servicio_id)
     {
         if($this->acceso(69)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );  
-                if ($this->input->is_ajax_request()){
-                    $tiposerv_id = $this->input->post('tiposerv_id');   
-                    $direccion = $this->input->post('direccion');
+            if ($this->input->is_ajax_request()){
+                $tiposerv_id = $this->input->post('tiposerv_id');
+                if($tiposerv_id == 1)
+                {
                     $params = array(
-			'tiposerv_id' => $tiposerv_id,
-			'servicio_direccion' => $direccion,
+                        'tiposerv_id' => $tiposerv_id,
                     );
                     $this->Servicio_model->update_servicio($servicio_id,$params);
                     $datos = $this->Servicio_model->get_servicio_tiposervicio($servicio_id);
                     echo json_encode($datos);
+                }else{
+                    $this->load->library('form_validation');
+                    $this->form_validation->set_rules('direccion','Direcció','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                    if($this->form_validation->run())     
+                    {
+                        $direccion = $this->input->post('direccion');
+                        $params = array(
+                            'tiposerv_id' => $tiposerv_id,
+                            'servicio_direccion' => $direccion,
+                        );
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                        $datos = $this->Servicio_model->get_servicio_tiposervicio($servicio_id);
+                        echo json_encode($datos);
+                    }else{
+                        echo json_encode("nodir");
+                    }
                 }
-                else
-                {                 
-                    show_404();
-                }
+            }
+            else
+            {                 
+                show_404();
+            }
                 
     }
 }
