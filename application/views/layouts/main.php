@@ -190,13 +190,21 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[158-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="javascript:window.open('<?php echo site_url('detalle_venta/venta_proceso');?>','','toolbar=yes');"><i class="fa fa-television"></i> Monitor de Venta</a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[139-1]['rolusuario_asignado'] == 1){
+                        ?>
                         <li>
                             <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
                         </li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </li>
                 <li>
@@ -326,13 +334,13 @@
                         </li>
                         <?php
                         }
-                        //if($rolusuario[133-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[159-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('tipo_respuesta');?>"><i class="fa fa-comments-o"></i>Tipo Respuesta</a>
                         </li>
                         <?php
-                        //}
+                        }
                         if($rolusuario[134-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
