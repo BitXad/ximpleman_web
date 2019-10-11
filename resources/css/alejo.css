@@ -19,6 +19,7 @@
 #mitabla tr:hover {background-color: #ddd;}
 
 #mitabla th {
+  border: white 1px solid;
     padding-top: 1px;
     padding-bottom: 1px;
     text-align: center;

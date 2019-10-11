@@ -127,14 +127,14 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 <input type="hidden" name="modificar_detalle" id="modificar_detalle" value="<?php echo $rolusuario[6-1]['rolusuario_asignado']; ?>">
 <input type="hidden" name="eliminar_detalle" id="eliminar_detalle" value="<?php echo $rolusuario[7-1]['rolusuario_asignado']; ?>">
 
-<div class="container">
+<div class="container" style="margin-left: 0;">
    
-    <div class="panel panel-primary col-md-3" >
+    <div class="panel panel-primary col-md-4" >
       
         <b>Proveedor:</b> <span id="provedordecompra"><?php echo $compra[0]['proveedor_nombre']; ?></span> <br>
         
         <b>Código Proveedor:</b> <span id="provedorcodigo" ><?php echo $compra[0]['proveedor_codigo']; ?></span> <label id="prove_iden" ><input id="prove_id" type="hidden" style="padding: 0px;" value="<?php echo $compra[0]['proveedor_id']; ?>"></label><br>
-        <b>Fecha:</b> <span id="fechacompra" ><?php echo $compra[0]['compra_fecha']; ?></span>
+        <b>Fecha:</b> <span id="fechacompra" ><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?></span>
      
      
     </div>
@@ -225,7 +225,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
          <!--<span class="btn btn-info" style="margin-right: 50%">Agrupar Detalle <input  type="checkbox"  id="agrupar" name="agrupar" value="1" checked></span>-->  
          
         <span style="margin-right: 40%">Buscar Productos</span>  
-         <label class="btn btn-info btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar detalle</label>  
+         <label class="btn btn-info btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar</label>  
                 <?php if($bandera==1) { ?>
                 <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1){ ?> 
                 <a href="#" data-toggle="modal" data-target="#anularmodal" class="btn btn-xs btn-warning" >
@@ -244,7 +244,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
   <div class="modal fade" id="cambiarfecha" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 
           <div class="modal-dialog" role="document" >
-            <div class="modal-content" id="modale">
+            <div class="modal-content" >
               <div class="modal-header">
 
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -254,6 +254,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
               </b></h2>
               </div>
               <div class="modal-body" align="center">
+                <div class="row">
               <div class="col-md-6">
             <label for="compra_fecha" class="control-label">Fecha</label>
             <div class="form-group">
@@ -266,7 +267,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
               <input type="time" name="compra_hora" value="<?php echo $compra[0]['compra_hora']; ?>" class="form-control" id="horac" />
             </div>
           </div>
-               
+          </div>     
           </div>
               <div class="modal-footer" align="right">
 
@@ -290,7 +291,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <!---------------------------------FIN MODAL DE CAMBIAR FECHA------------------------->
 
             <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-xs btn-success" >
-                <i class="fa fa-money "></i>Guardar Cambios
+                <i class="fa fa-money "></i> Finalizar Cambios
             </a>
         
  <?php  } ?>
@@ -329,20 +330,20 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </button>
               </div>
               <div class="form">   
-               <h1><b> Desea Salir de esta Compra sin Guardar Cambios? 
-              </b></h1>
+               <h2><b> Desea Salir de esta Compra sin Guardar Cambios? 
+              </b></h2>
           </div>
               <div class="modal-footer" >
         
         
-                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-lg btn-success" >
+                  <a  href="<?php echo site_url('compra'); ?>" class="btn btn-md btn-success" >
                 <i class="fa fa-sign-out "></i>
                Salir sin guardar
             </a>  
              
            
             
-            <button class="btn btn-lg btn-danger" data-dismiss="modal">
+            <button class="btn btn-md btn-danger" data-dismiss="modal">
        
                 <span class="fa fa-close"></span>   Cancelar  
                     </div>
@@ -395,10 +396,15 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 
         <!--------------------- fin parametro de buscador --------------------->
   
-       <div class="box" >
+       
             
             <div class="box-body table-responsive" style="padding-left:0px;">
                 <table class="table table-striped table-condensed" id="mitabla">
+                  <tr>
+                    <th colspan="7"></th>
+                    <th colspan="2">Descuento</th>
+                    <th colspan="3"></th>
+                  </tr>
                     <tr>
                             <th>#</th>
                             <th>Producto/<br>Unidad</th>
@@ -407,11 +413,11 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                             <th>Costo</th>
                             <th>Cant.</th>
                             <th>Subtotal</th>
-                            <th>Desc. U.</th>
-                            <th>D.Glo</th>
+                            <th>Unit.</th>
+                            <th>Global</th>
                             <th>Total</th>
                             <?php if($rolusuario[7-1]['rolusuario_asignado'] == 1){ ?>
-                            <th colspan="2"><a  onclick="borrartodo()" class="btn btn-xs btn-danger" ><i class="fa fa-trash "></i><br>Todo</a></th>
+                            <th colspan="2"><a  onclick="borrartodo()" class="btn btn-xs btn-danger" ><i class="fa fa-trash "></i></a></th>
                             <?php }else{ echo "<th colspan='2'></th>"; } ?>
                     </tr>
                     <tbody class="buscar" id="detallecompringa">
@@ -422,7 +428,26 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <div class="pull-right">
 
                 </div>                
-        </div>
+        
+                <!----------------------------------- BOTONES ---------------------------------->
+        <div class="col-md-12">
+
+            <center>
+            <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-money fa-4x"></i><br>
+               Finalizar<br>Cambios<br>
+            </a>
+
+            
+            <a  href="#" data-toggle="modal" data-target="#aviso" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-sign-out fa-4x"></i><br><br>
+               Salir<br>
+            </a>    
+              
+            </center>
+            <br>
+        </div>    
+        <!----------------------------------- fin Botones ---------------------------------->
     </div>
 </div> 
 </div>
@@ -537,14 +562,14 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-8">
                         <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="producto_nombre" required/>
+                            <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="producto_nombre" required/>
                             
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label for="producto_marca" class="control-label">Marca</label>
                         <div class="form-group">
-                            <input type="text" name="producto_marca" onKeyUp="this.value = this.value.toUpperCase();" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
+                            <input type="text" name="producto_marca" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -763,7 +788,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="proveedor_nombre1" required />
+                            <input type="text" name="proveedor_nombre" value="<?php echo $this->input->post('proveedor_nombre'); ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_nombre1" required />
                             
                         </div>
                         <input id="bandera" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
@@ -772,7 +797,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_contacto" class="control-label">Contacto</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_contacto" value="<?php echo $this->input->post('proveedor_contacto'); ?>"  onKeyUp="this.value = this.value.toUpperCase();" class="form-control" id="proveedor_contacto" />
+                            <input type="text" name="proveedor_contacto" value="<?php echo $this->input->post('proveedor_contacto'); ?>"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_contacto" />
                         </div>
                     </div>
                     
@@ -800,13 +825,13 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6" >
                         <label for="proveedor_razon" class="control-label">Razon</label>
                         <div class="form-group">
-                            <input type="text" id="proveedor_razon" class="form-control" value="<?php echo $this->input->post('proveedor_razon'); ?>" class="form-control" />
+                            <input type="text" id="proveedor_razon" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" value="<?php echo $this->input->post('proveedor_razon'); ?>" class="form-control" />
                         </div>
                     </div>
                     <div class="col-md-6" >
                         <label for="proveedor_codigo" class="control-label">Código</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_codigo" value="" class="form-control" id="proveedor_codigo1" />                            
+                            <input type="text" name="proveedor_codigo" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_codigo1" />                            
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -825,7 +850,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-6">
                         <label for="proveedor_direccion" class="control-label">Dirección</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_direccion" value="<?php echo $this->input->post('proveedor_direccion'); ?>" class="form-control" id="proveedor_direccion" />
+                            <input type="text" name="proveedor_direccion" value="<?php echo $this->input->post('proveedor_direccion'); ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_direccion" />
                         </div>
                     </div>
 
@@ -1236,30 +1261,31 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
+                <h2><b> <em class="fa fa-minus-circle"></em> Desea Anular la Venta? 
+              </b></h2>
               </div>
               <div class="modal-body" align="center">
                 <form action="<?php echo base_url('compra/anular'); ?>"  method="POST" class="form">
 <input id="compra_id"  name="compra_id" type="hidden" class="form-control" value="<?php echo $compra_id; ?>">
 
          
-               <h1><b> <em class="fa fa-minus-circle">Desea Anular esta Compra?</em> 
-              </b></h1> Esta compra puede tener una orden de Pago, tomar en cuenta.
+               Esta compra puede tener una orden de Pago, tomar en cuenta.
           </div>
               <div class="modal-footer" align="right">
 
-            <button class="btn btn-lg btn-warning"  type="submit">
-                <h4>
+            <button class="btn btn-xs btn-warning"  type="submit">
+                <h5>
                 <span class="fa fa-check"></span>   Anular  
-                </h4>
+                </h5>
             </button>
             </form>
-            <button class="btn btn-lg btn-danger" data-dismiss="modal">
-                <h4>
+            <button class="btn btn-xs btn-danger" data-dismiss="modal">
+                <h5>
                 <span class="fa fa-close"></span>   Cancelar  
-                </h4>
+                </h5>
             </button>
                          
         </div>

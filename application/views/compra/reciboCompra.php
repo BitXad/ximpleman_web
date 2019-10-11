@@ -36,33 +36,16 @@ font-family: "Arial", Arial, Arial, arial;
     padding: 0px;
 }
 
-.box3 {
-width:100%;
-margin:0% 0% 0% 0%;
-font-family: "Arial", Arial, Arial, arial;
-    font-size: 11px;
-border-bottom:2px solid black;
-border-top:2px solid black;
- padding: 0px;
-}
+
 .box4 {
 width:100%;
 margin:0% 0% 0% 0%;
 font-family: "Arial", Arial, Arial, arial;
     font-size: 11px;
-border-bottom:2px solid black;
+border-bottom:1px solid black;
  padding: 0px;
 }
-.box6 {
-width:100%;
-margin:0% 0% 0% 0%;
-font-family: "Arial", Arial, Arial, arial;
-    font-size: 11px;
-border:2px solid black;
-border-top: 0px;
-border-bottom: 0px;
- padding: 0px;
-}
+
 
 
     .box {
@@ -123,52 +106,106 @@ border-bottom: 0px;
     border: 1px;
 }
 
+#mitabla {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 11px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#mitabla td {
+    border: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    
+}
+#mitabla th {
+    border-top:2px solid black;
+    border-bottom:2px solid black;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    text-align: center;
+    background-color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+#mitabla2 {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 11px;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+#mitabla2 td {
+    border: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    
+}
+#mitabla2 th {
+    border: none;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    text-align: center;
+    background-color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
          </style>
-    <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">     
-       <div class="box" > 
-        <div class="row"> 
-       
-<div class="cuerpo">
-                    <div class="columna_derecha">
-                        <center>
-                          <table>
-                            <tr>
-                              <td> Proveedor: <b><?php echo $compra[0]['proveedor_nombre'];?></b><br>
+<table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
+
+            </center>                      
+        </td>
+                   
+        <td style="width: 25%; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font size="3" face="arial"><b>INVENTARIO FISICO VALORADO</b></font> <br>
+                <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+
+            </center>
+        </td>
+        <td style="width: 25%; padding: 0" >
+                <center>
+                         
+                              <br><br><br><font size="2" face="Arial"> Proveedor: <b><?php echo $compra[0]['proveedor_nombre'];?></b><br>
                           Forma de Pago: <b><?php echo $compra[0]['tipotrans_nombre'];?></b><br>
-                          Fecha: <b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></b></td>
-                          <td width="2%"></td>
-                          <td><img src="<?php echo base_url('resources/images/empresas/'.$empresa[0]["empresa_imagen"].''); ?>"  style="width:80px;height:80px"></td>
-                            </tr>
-                          </table>
+                          Fecha: <b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></b></font>
+                         
+                            
                          
                         
                     </center>
-                    </div>
-                    <div class="columna_izquierda">
-                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
-                        <?php echo $empresa[0]['empresa_zona']; ?><br>
-                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                        <?php echo $empresa[0]['empresa_telefono']; ?>
-                    </div> </center>
-                    <div class="columna_central">
-                        <center>      <h3 class="box-title"><u>BOLETA DE COMPRA</u></h3>
-                           <font size="3">Numero: <b><?php echo $compra[0]['compra_id'];?></b></font> <br>
-                           <?php echo date('d/m/Y H:i:s'); ?> <br>
-                           
+        </td>
+    </tr>
+     
+    
+    
+</table>       
 
-                </center>
-                    </div>
 
-            </div>       
-      
-          </div>
-         <div class="row">               
- <div class="box3">
-
-  
-           <div class="box-body table-responsive">  
-
-        <table class="table" border-bottom="1" id="mitabla">                        
+        <table class="table" border-bottom="1" id="mitabla" style="width: 100%; padding: 0;">                        
                         <tr>
 
                             
@@ -208,18 +245,18 @@ border-bottom: 0px;
                            <?php } ?>
 
 </table>
- </div>
- </div>
-   <div class="box6">
+ 
+
+   <hr style="border:1px solid black;">
            <div class="left">
                 <div class="content">Nota.- 
                             <b><?php echo $compra[0]['compra_glosa'];?> </b>
           </div></div>
-          </div>
-<div class="box4">
+        
+
 <div class="box-body table-responsive"> 
 
-       <table class="table table-striped table-condensed" border-bottom="0"> 
+       <table class="table table-striped table-condensed" border-bottom="0" id="mitabla2"> 
                     <tr>
                         <td>TOTAL COMPRA</td><td><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></td>
                     </tr>                      
@@ -244,7 +281,7 @@ border-bottom: 0px;
  
 </table>
 
-</div></div>
+</div>
 <center>
                     <div class="col-md-12" style="margin-top: 50px; ">
 

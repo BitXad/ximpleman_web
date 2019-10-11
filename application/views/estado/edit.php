@@ -16,7 +16,7 @@
 					<div class="col-md-6">
 						<label for="estado_color" class="control-label">Color</label>
 						<div class="form-group">
-							<input type="color" name="estado_color" value="<?php echo ($this->input->post('estado_color') ? $this->input->post('estado_color') : $estado['estado_color']); ?>" class="form-control" id="estado_color" />
+							<input type="color" name="estado_color" value="<?php echo '#'.$estado['estado_color']; ?>" class="form-control" id="estado_color" />
 						</div>
 					</div>
 					<div class="col-md-6">

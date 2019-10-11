@@ -35,7 +35,7 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
+
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <!-------------------------------------------------------->
@@ -75,13 +75,9 @@
 
 
         <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row no-print">
-            <ol class="breadcrumb">
-                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <!--<li><a href="<?php echo site_url('cliente')?>">Clientes</a></li>-->
-                <li class="active"><b>Compras: </b></li>
-                <input style="border-width: 0; background-color: #DEDEDE" id="pillados" type="text"  size="5" value="0" readonly="true">
-            </ol>
+        <div class="box-header">
+                <font size='4' face='Arial'><b>Compras</b></font>
+                <br><font size='2' face='Arial' id="pillados">Registros Encontrados: <?php echo sizeof($compra); ?></font>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
  
@@ -141,8 +137,7 @@
    
         <!-------------------- CATEGORIAS------------------------------------->
        
-        <form method="post"  onclick="buscar_por_fecha()">
-            <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:none; padding-bottom: 10px;'>
+            <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='font-family: Arial; display:none; padding-bottom: 10px;'>
                 <br>
                 <center>            
                     <div class="col-md-2">
@@ -161,13 +156,17 @@
                             <?php } ?>
                         </select>
                     </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary btn-sm form-control" face='Arial' onclick="buscar_por_fecha()"><span class="fa fa-search"> Buscar</span></button>
+                        
+                    </div>
                     <br>
 
 
                 </center>    
                 <br>    
             </div>
-        </form>
+        
         <div class="container" id="categoria">
 
 

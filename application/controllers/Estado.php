@@ -87,11 +87,11 @@ class Estado extends CI_Controller{
 			$this->form_validation->set_rules('estado_descripcion','Estado Descripcion','required');
 		
 			if($this->form_validation->run())     
-            {   
+            {   $color=$this->input->post('estado_color');
                 $params = array(
 					'estado_descripcion' => $this->input->post('estado_descripcion'),
 					'estado_tipo' => $this->input->post('estado_tipo'),
-                    'estado_color' => $this->input->post('estado_color'),
+                    'estado_color' => substr($color, 1),
                 );
 
                 $this->Estado_model->update_estado($estado_id,$params);            
