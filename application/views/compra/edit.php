@@ -58,7 +58,7 @@
       var prove = $('#prove_id').val();
       if(prove == 0){
           
-   alert("Debe anadir un Proveedor");
+   alert("Debe sleccionar un Proveedor");
       
       }
 }
@@ -359,7 +359,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="col-md-4" style="padding-left:0px;">
                         
       <div class="input-group"> <span class="input-group-addon" onclick="ocultar_busqueda();">Buscar</span>
-        <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event,4)">
+        <input id="comprar" type="text" class="form-control"  placeholder="Ingresa el nombre de producto, código o descripción"  onkeypress="compravalidar(event)">
       </div>
       <!-------------------- CATEGORIAS------------------------------------->
 <div class="container" id="categoria">
@@ -380,6 +380,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                      <tr>
                                                 <th>#</th>
                                                 <th>Producto</th>
+                                                <th></th>
                     </tr>
                     <tbody class="buscar3" id="tablaresultados">
                     
@@ -997,7 +998,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <span aria-hidden="true">&times;</span>
                 </button>
                             -->
-
+<input type="hidden" name="banderafin" id="banderafin" value="<?php echo $bandera; ?>">
                             <div class="row" id='loader'  style='display:none;'>
                         <center>
                             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        

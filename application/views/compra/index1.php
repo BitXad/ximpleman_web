@@ -115,8 +115,12 @@
     <div class="col-md-6 no-print">
         
     <div class="box-tools">
-        <center>            
+        <center> <?php if (sizeof($comprasn)>0){ ?>
+            <a href="#" data-toggle="modal" data-target="#avisar" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
+            
+        <?php }else{ ?>    
             <a href="<?php echo site_url('compra/crearcompra'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Comprar</small></a>
+        <?php } ?>           
             <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechadecompra('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <?php if($rolusuario[10-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" onclick="imprimir_compra()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
@@ -166,7 +170,53 @@
                 </center>    
                 <br>    
             </div>
-        
+
+            <!-- Modal AVISO-->
+<div class="modal fade" id="avisar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLabel">Tiene compras sin finalizar</h3>
+      
+      </div>
+      <div class="modal-body">
+        <div class="box-body table-responsive">
+                <table class="table table-striped table-condensed" id="mitabla">
+                    <tr>
+                        <th>#</th>
+                        <th>Compra</th>
+                        <th>Prov.</th>
+                        <th>Fecha</th>
+                        <th></th>
+                    </tr>
+                    <tbody class="buscar2">
+                        <?php $cont = 0;
+                        $bandera = 0;
+                        foreach($comprasn as $psn){;
+                           $cont = $cont+1; ?>
+                           <tr>
+                            <td><?php echo $cont ?></td>
+                            <td><?php echo $psn['compra_id']; ?></td>
+                            <td>NO DEF.</td>
+                            <td><?php echo date('d/m/Y',strtotime($psn['compra_fecha'])) ;  ?> <?php echo $psn['compra_hora']; ?></td>
+                            
+                            <td>
+                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar Esta Compra</a>
+                            </td>
+                    </tr>
+                    <?php } ?></tbody>
+                </table>
+
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+        <a href="<?php echo site_url('compra/crearcompra'); ?>"  class="btn btn-success">Continuar Compra Nueva</a>
+      </div>
+    </div>
+  </div>
+</div>
+        <!-- Fin Modal AVISO-->
         <div class="container" id="categoria">
 
 
@@ -323,7 +373,7 @@
                             
                             <td><?php echo $psn['estado_descripcion']; ?></td>
                             <td>
-                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar Esta Compra</a>
                            <!--<a href="<?php echo site_url('compra/edito/'.$psn['compra_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a>  
                             <a href="<?php echo site_url('compra/remove/'.$psn['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>

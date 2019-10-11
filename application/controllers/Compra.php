@@ -656,6 +656,9 @@ class Compra extends CI_Controller{
  $patron = ($numcuota*0.5) + 0.5;
  $totalcompra=$this->input->post('compra_total');
  $descglobal=$this->input->post('compra_descglobal');
+ $banderafin=$this->input->post('banderafin');
+ $nueva_fecha = date("Y-m-d"); 
+ $nueva_hora = date("H:i:s"); 
  if ($descglobal>0) {
     $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
 
@@ -663,7 +666,28 @@ class Compra extends CI_Controller{
  }
  if(isset($_POST) && count($_POST) > 0)     
  {   
-     
+     if ($banderafin==0) {
+    $params = array(
+        'compra_glosa' => $this->input->post('compra_glosa'),
+        'compra_numdoc' => $this->input->post('compra_numdoc'),
+        'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+        'tipotrans_id' => $this->input->post('tipotrans_id'),                       
+        'forma_id' => $this->input->post('forma_id'),
+        'compra_subtotal' => $this->input->post('compra_subtotal'),
+        'compra_descuento' => $this->input->post('compra_descuento'),
+        'compra_descglobal' => $this->input->post('compra_descglobal'),
+        'compra_total' => $this->input->post('compra_total'),
+        'compra_totalfinal' => $this->input->post('compra_totalfinal'),
+        'usuario_id' => $usuario_id,
+        'compra_efectivo' => $this->input->post('compra_efectivo'),
+        'compra_cambio' => $this->input->post('compra_cambio'),
+        'compra_caja' => $this->input->post('compra_caja'),
+        'compra_placamovil' => $null,
+        'compra_codcontrol' => $this->input->post('compra_codcontrol'),
+        'compra_fecha' => $nueva_fecha,
+        'compra_hora' => $nueva_hora,
+    );  
+        } else{
     $params = array(
 
         'compra_glosa' => $this->input->post('compra_glosa'),
@@ -677,14 +701,15 @@ class Compra extends CI_Controller{
         'compra_total' => $this->input->post('compra_total'),
         'compra_totalfinal' => $this->input->post('compra_totalfinal'),
         'usuario_id' => $usuario_id,
-        
         'compra_efectivo' => $this->input->post('compra_efectivo'),
-        'compra_cambio' => $this->input->post('compra_cambio'),
+        'compra_cambio' =>$this->input->post('compra_cambio'),
         'compra_caja' => $this->input->post('compra_caja'),
         'compra_placamovil' => $null,
         'compra_codcontrol' => $this->input->post('compra_codcontrol'),
 
-    );
+    );  
+        }
+    
     $this->Compra_model->update_compra($compra_id,$params);
     $facturation=$this->input->post('documento_respaldo_id');
     if ($facturation==1){
@@ -1137,12 +1162,12 @@ function ingresarproducto()
         producto_id,
         producto_codigo,
         producto_unidad,
-        ".$producto_costo."- ".$descuento.",
+        ".$producto_costo.",
         ".$nuevacan.",
         ".$producto_precio.",
         '".$fecha_venc."',
         ".$descuento.",
-        (".$producto_costo." - ".$descuento.") * ".$nuevacan.",
+        (".$producto_costo.") * ".$nuevacan.",
         (".$producto_costo." - ".$descuento.") * ".$nuevacan."
         
         from producto where producto_id = ".$producto_id."
