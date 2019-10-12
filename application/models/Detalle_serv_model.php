@@ -566,12 +566,8 @@ class Detalle_serv_model extends CI_Model
     /*
      * Obtiene todas las coincidencias de subcategorias de detalles de servicios
      */
-    function get_all_cliente($parametro, $params = array())
+    function get_all_cliente($parametro)
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
-        
         $detalle_serv = $this->db->query("
             SELECT
                 s.*, c.cliente_nombre, c.cliente_codigo, c.cliente_ci,
@@ -582,12 +578,13 @@ class Detalle_serv_model extends CI_Model
 
             WHERE
                 s.estado_id = e.estado_id
-                and c.cliente_nombre like '%".$parametro."%'
+                and (c.cliente_nombre like '%".$parametro."%'
+                  or c.cliente_codigo like '%".$parametro."%'
+                  or c.cliente_ci like '%".$parametro."%')
                 and c.cliente_id = s.cliente_id
 
             ORDER BY `cliente_id` DESC
-
-            " . $limit_condition . "
+            
         ")->result_array();
 
         return $detalle_serv;
@@ -766,5 +763,34 @@ class Detalle_serv_model extends CI_Model
 
         return $detalle_serv;
     }
-    
+    /*
+     * ******************Funcion que busca a todos los Productos de un CLIENTE **********************
+     */
+    function buscar_detalle_serv_cliente($cliente_id)
+    {
+        $detalle_serv = $this->db->query("
+            SELECT
+                ds.*, r.usuario_nombre as respusuario_nombre, u.usuario_nombre, e.estado_id as esteestado,
+                e.estado_color, e.estado_descripcion, p.procedencia_descripcion,
+                cs.catserv_descripcion, scs.subcatserv_descripcion, ct.cattrab_descripcion,
+                tu.tiempouso_descripcion, s.cliente_id
+            FROM
+                detalle_serv ds
+            LEFT JOIN estado e on ds.estado_id = e.estado_id
+            LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+            LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+            LEFT JOIN categoria_servicio cs on ds.catserv_id = cs.catserv_id
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN subcategoria_servicio scs on ds.subcatserv_id = scs.subcatserv_id
+            LEFT JOIN procedencia p on ds.procedencia_id = p.procedencia_id
+            LEFT JOIN categoria_trabajo ct on ds.cattrab_id = ct.cattrab_id
+            LEFT JOIN tiempo_uso tu on ds.tiempouso_id = tu.tiempouso_id
+            WHERE
+                s.cliente_id = $cliente_id
+            ORDER BY `detalleserv_id` DESC
+
+        ")->result_array();
+
+        return $detalle_serv;
+    }
 }

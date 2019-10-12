@@ -450,18 +450,18 @@ $(document).ready(function(){
         ?>
         
         <a href="<?php echo site_url('servicio');  ?>" id="salir" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Salir</a>
-        <a id="boton_cobrar" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-dollar fa-4x"></span><br>Cobrar Servicio</a>
+        <a id="boton_cobrar" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-dollar fa-4x"></span><br>Cobrar</a>
         <?php
         if($a == 3){
             if(is_null($servicio['servicio_codseguimiento'])){ ?>
-                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
             <?php
             }else{ ?>
-                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio2(2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio2(2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
             <?php
             }
         }else{?>
-            <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar Servicio</a>
+            <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
         <?php } ?>
 </div>
 </div>
@@ -498,8 +498,8 @@ $(document).ready(function(){
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre, apellidos o ci del Clie..." onkeypress="validar(event,3,<?php echo $servicio['servicio_id']; ?>)" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                 </div>
                 <!--este es FIN de input buscador-->
-                <div class="container col-md-4" id="categoria">    
-                    <span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                <div class="container col-md-4" id="categoria">
+                    <a  class="btn btn-success btn-xs" data-dismiss="modal" data-toggle="modal" href="#myModal"><span class="fa fa-user-plus"></span>&nbsp;Nuevo Cliente</a>
                 </div>
             </div>
             <div class="modal-body">
@@ -509,7 +509,10 @@ $(document).ready(function(){
                         <tr>
                             <th>#</th>
                             <th> Nombres
-                                <a style="float: right;" class="btn btn-success btn-xs" data-dismiss="modal" data-toggle="modal" href="#myModal"><span class="fa fa-user-plus"></span>&nbsp;Nuevo Cliente</a>
+                                <!--<div class="container col-md-4" id="categoria">-->    
+                                    <span style="float: right;" class="right badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="5" value="0" readonly="true"> </span></span>
+                                <!--</div>-->
+                                
                             </th>
                         </tr>
                         <tbody class="buscar" id="tablaresultados" >
@@ -742,7 +745,8 @@ $(document).ready(function(){
             <br><br>
         <div class="modal-content">
           <div class="modal-header">
-              <label>Tipo Servicio:</label>
+              <label>Tipo de Servicio:</label>
+              <span class="text-danger" id="mensajetiposerv"></span>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
           </div>
             <?php
@@ -751,7 +755,7 @@ $(document).ready(function(){
           <div class="modal-body">
 
            <!------------------------------------------------------------------->
-
+           
            <div class="col-md-6">
                 <label for="tiposerv_id" class="control-label">Servicio</label>
                     <div class="form-group">
@@ -804,7 +808,7 @@ $(document).ready(function(){
                                             <br><br>
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                              <label>buscar detalle de servicio:</label>
+                                              <label>Buscar Detalle de Servicio:</label>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                           </div>
                                             <?php

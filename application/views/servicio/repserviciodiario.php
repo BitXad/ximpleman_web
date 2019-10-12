@@ -11,9 +11,56 @@
 </script>-->
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
+<!--<link href="<?php //echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">-->
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+<table class="table" style="width: 20cm; padding: 0;" >
+    <tr>
+        <td style="width: 6cm; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
+
+            </center>                      
+        </td>
+                   
+        <td style="width: 6cm; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font size="3" face="arial"><b>ORDENES DE SERVICIO</b></font> <br>
+                <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+
+            </center>
+        </td>
+        <td style="width: 4cm; padding: 0" >
+<!--                ______________________________                
+                   
+                                
+                <div id="datos_recorrido">
+                    
+                </div>
+                
+                ______________________________-->
+        </td>
+    </tr>
+     
+    
+    
+</table>
+<?php /* ?>
  <div class=" row micontenedorep">
     <div id="cabizquierda">
         <?php
@@ -41,7 +88,7 @@
 
         </div>
         
-</div>
+</div><?php */ ?>
 <!--
 <div class="row col-md-12 no-print">
     <div class="col-md-2">
@@ -95,13 +142,23 @@
     </div>
 </div> -->
 <!--<div class="parametrosbusqueda" id="detalledebusqueda">-->
-<div class="parametrosbusqueda">
-    <span class="negrita">TECNICO: </span>-<br>
-    <?php echo "<span class='negrita'>DESDE: </span>".date('d/m/Y')."<span class='negrita'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HASTA: </span>".date('d/m/Y'); ?>
+<div style="font-family: Arial Narrow; font-size: 8pt !important">
+    <span class="text-bold">T&Eacute;CNICO: </span>-<br>
+    <?php echo "<span class='text-bold'>DESDE: </span>".date('d/m/Y')."<span class='text-bold'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HASTA: </span>".date('d/m/Y'); ?>
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
     <a style="width: 10%;" id="imprimirestedetalle" class="btn btn-xs btn-success no-print" target="_blank" onclick="imprimirdetalle()" ><span class="fa fa-print"></span>&nbsp;Imprimir</a>
     
 </div>
+<style type="text/css">
+    #mitabla {
+        font-family: Arial Narrow;
+        font-size: 9px;
+    }
+    #mitabla td{
+        padding-top: 1px;
+        padding-bottom: 1px;
+    }
+</style>
 <div class="row col-md-12" >
        
         
@@ -109,23 +166,23 @@
         <!--<div class="box">-->
             
             <!--<div class="box-body table-responsive">-->
-                <table class="table table-striped table-condensed" id="mitablaimpresion">
+                <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-                                                <th>Cliente</th>
-                                                <th>Serv.</th>
-                                                <th>Recepción</th>
-                                                <th>Terminado</th>
-                                                <th>Entrega</th>
-						<th>Costo</th>
-						<th>Ins.</th>
-						<th>A C.</th>
-						<th>Saldo</th>
-						<th>Util.</th>
-						<th>Estado</th>
-						<th>Tipo</th>
-						<th>Detalle</th>
-						<th>Resp.</th>
+                        <th>#</th>
+                        <th style="width: 4.5cm">CLIENTE</th>
+                        <th>ORDEN</th>
+                        <th>FECHA/HORA<br>RECEPCIÓN</th>
+                        <th>FECHA/HORA<br>TERMINADO</th>
+                        <th>FECHA/HORA<br>ENTREGA</th>
+                        <th>COSTO</th>
+                        <th>INS.</th>
+                        <th>A CTA.</th>
+                        <th>SALDO</th>
+                        <th>UTILID.</th>
+                        <th>ESTADO</th>
+                        <th>TIPO<br>SERVICIO</th>
+                        <th style="width: 4.5cm">DETALLE</th>
+                        <th>TEC. RESP.</th>
                     </tr>
                     <tbody id="tablaresultados">
                     <?php /* $i =1; $cont = 0;
