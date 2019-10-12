@@ -1,8 +1,8 @@
-function buscarorden(){
+function buscarorden(estado){
      var controlador = "";
      
      var base_url = document.getElementById('base_url').value;
-     var estado = document.getElementById('estado').value;
+     //var estado = document.getElementById('estado').value;
      controlador = base_url+'proceso_orden/buscar/';
      
       $.ajax({url: controlador,
@@ -37,7 +37,7 @@ function buscarorden(){
                    
                         //$('#cotizacion_total').value(total_detalle.toFixed(2));
                        $("#tablaproceso").html(html);
-                      
+                       $("#estado").val(estado);
                        
           }  
         },
@@ -49,11 +49,11 @@ function buscarorden(){
 
 }
 
-function buscarterminados(){
+function buscarterminados(estado){
      var controlador = "";
      
      var base_url = document.getElementById('base_url').value;
-     var estado = document.getElementById('estado').value;
+    // var estado = document.getElementById('estado').value;
      controlador = base_url+'proceso_orden/buscarterminados/';
      
       $.ajax({url: controlador,
@@ -87,6 +87,7 @@ function buscarterminados(){
                    
                         //$('#cotizacion_total').value(total_detalle.toFixed(2));
                        $("#tablaproceso").html(html);
+                       $("#estado").val(estado);
                       
                        
           }  
@@ -110,7 +111,7 @@ function terminar(proceso,estado)
           
            success:function(report){  
            
-              buscarorden();
+              buscarorden(estado);
   }
 });
 }
@@ -126,7 +127,7 @@ function recibir(orden)
           
            success:function(report){  
            
-                         buscarterminados();
+                         buscarterminados(estado);
   }
 });
 }

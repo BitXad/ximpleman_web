@@ -26,16 +26,17 @@
 </div>
 <div class="row">
   <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+  <input type="text" name="estado" id="estado" value="">
     <div class="col-md-12">
-      <select name="estado" class="btn-primary btn-sm btn-block" id="estado" onchange="buscarterminados()">
-                        <option value="" disabled selected >-- PROCESO --</option>
+     
+                    
                         <?php 
                         foreach($estados as $estado)
-                        {
-                            echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
-                        } 
-                        ?>
-                    </select>
+                        { ?>
+                            <button class="btn btn-success" onclick="buscarterminados(<?php echo $estado['estado_id']; ?>)"><?php echo $estado['estado_descripcion']; ?></button>
+                         
+                        
+                        <?php }  ?>
     </div>
 </div>
 <div class="row">
