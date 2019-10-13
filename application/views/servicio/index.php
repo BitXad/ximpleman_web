@@ -45,13 +45,10 @@
 <div class="row">
     <div class="col-md-6 no-print">
         <!--este es INICIO del BREADCRUMB buscador-->
-        <div class="row">
-            <ol class="breadcrumb">
-                <li><a href="<?php echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <!--<li><a href="<?php //echo site_url('cliente')?>">Clientes</a></li>-->
-                <li class="active"><b>Servicios: </b></li>
-                <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true">
-            </ol>
+        <div class="box-header">
+            <font size='4' face='Arial'><b>Servicios</b></font>
+            <br><font size='2' face='Arial'>Registros Encontrados: <span id="regencontrados"></span></font>
+            
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
         <div class="col-md-8">
@@ -81,11 +78,11 @@
             <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
             <?php
             if($rol[72-1]['rolusuario_asignado'] == 1){ ?>
-            <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los Servicios" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Ver Todos</small></a>
+            <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los servicios" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Ver Todos</small></a>
             <?php } ?>
-            <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="buscar por codigo" onclick="codigoservfocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Codigo Servicio</small></a>
-            <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Busqueda de detalles de Servicio" onclick="kardexdetallefocus()"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Kardex Detalle</small></a>
-            <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="buscar kardex de un Cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Kardex Cliente</small></a>
+            <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="Buscar servicio por codigo" onclick="codigoservfocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Servicio</small></a>
+            <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Busqueda del historial de productos" onclick="kardexdetallefocus()"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Historial Producto</small></a>
+            <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="Buscar historial de un cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Historial Cliente</small></a>
             <a href="<?php echo base_url('servicio/repserviciodiario'); ?>" class="btn btn-danger btn-foursquarexs" target="_blank" title="Movimiento economico diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Reporte Diario</small></a>           
         </div>
     </div>
@@ -265,7 +262,7 @@ if(isset($a) && $a == 1){ ?>
                                             <br><br>
                                         <div class="modal-content">
                                           <div class="modal-header">
-                                              <label>Buscar servicio por Código:</label>
+                                              <label>Buscar Servicio por Código:</label>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                           </div>
                                             <?php
@@ -304,7 +301,7 @@ if(isset($a) && $a == 1){ ?>
         <br><br>
     <div class="modal-content">
       <div class="modal-header">
-          <label>Buscar Cliente:</label>
+          <label>Buscar Historial de Cliente:</label>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
       </div>
         <?php
@@ -316,7 +313,7 @@ if(isset($a) && $a == 1){ ?>
        <div class="col-md-6">
             <label for="buscarcliente" class="control-label"><span class="text-danger">*</span>Nombre Cliente</label>
             <div class="form-group">
-                <input type="text" name="buscarcliente" class="form-control text-uppercase" id="buscarcliente" required />
+                <input type="text" name="buscarcliente" class="form-control text-uppercase" id="buscarcliente" placeholder="nombre, codigo, ci" required />
             </div>
       </div>
        <!------------------------------------------------------------------->
@@ -342,7 +339,7 @@ if(isset($a) && $a == 1){ ?>
         <br><br>
         <div class="modal-content">
           <div class="modal-header">
-              <label>buscar Kardex:</label>
+              <label>Buscar Historial de Producto:</label>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
           </div>
             <?php

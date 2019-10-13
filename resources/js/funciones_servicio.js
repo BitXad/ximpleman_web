@@ -873,9 +873,9 @@ function fechadeservicio(elfiltro, busquedade){
                         var guion = "";
                         var nomtelef = "";
                         if(registros[i]["cliente_nombre"] == null || registros[i]["cliente_nombre"] == ""){
-                            cliente_nombre = "NO DEFINIDO";
+                            cliente_nombre = "NO DEFINIDO"+"</span>";
                         }else{
-                            cliente_nombre = registros[i]["cliente_nombre"];
+                            cliente_nombre = registros[i]["cliente_nombre"]+"</span><sub>["+"<a href='"+base_url+"detalle_serv/historial_cliente/"+registros[i]["cliente_id"]+"' target='_blank' title='Ver historial del cliente'>"+registros[i]['cliente_id']+"</a>]</sub>";
                             if((registros[i]["cliente_telefono"] != "") && (registros[i]["cliente_telefono"] != null) && (registros[i]["cliente_celular"] != "") && (registros[i]["cliente_celular"] != null))
                             {
                                 guion = "-";
@@ -890,11 +890,11 @@ function fechadeservicio(elfiltro, busquedade){
                                 nomtelef = "Telef.: ";
                             }
                         }
-                        html += "<td><span class='text-bold' style='font-size: 12pt;'>"+cliente_nombre+"</span><sub>  ["+registros[i]['servicio_id']+"]</sub>";
+                        html += "<td><span class='text-bold' style='font-size: 12pt;'>"+cliente_nombre;
                         html += "<br>"+nomtelef+cliente_telef+guion+cliente_celu+"</td>";
                         html += "<td class='text-center'>";
                         if(registros[i]["estado_id"] == 5){
-                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3' class='btn btn-info btn-xs' title='Añadir, Modificar Servicio Creado'>"+registros[i]["servicio_id"];
+                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3' class='btn btn-info btn-xs' title='Añadir, Modificar Servicio Creado'>"+registros[i]["servicio_id"]+"</a>";
                         }else{
                             html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
                         }
@@ -1057,6 +1057,7 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</tr>";
                    }
                    $("#tablaresultados").html(html);
+                   $("#regencontrados").html(n);
                    document.getElementById('loader').style.display = 'none';
             }
             document.getElementById('loader').style.display = 'none';

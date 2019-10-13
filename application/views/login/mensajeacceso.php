@@ -5,7 +5,7 @@
                 <h2 class="modal-title text-danger text-center"><span class="fa fa-exclamation-triangle"></span> No tiene permisos para usar este modulo <span class="fa fa-exclamation-triangle"></span></h2>
             </div>
             <div class="modal-body">
-              <p><b>Por favor consulte con su adminsitrador</b></p>
+              <p><b>Por favor consulte con su administrador</b></p>
             </div>
         </div>
     </div>

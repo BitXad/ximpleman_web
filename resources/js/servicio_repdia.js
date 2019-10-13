@@ -132,42 +132,42 @@ function reportedetservicio(){
                             html += nombrecliente;
                             html += "</td>";
                             html += "<td>"+registros[i]["servicio_id"]+"</td>";
-                            html += "<td class='alinearcentro'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
+                            html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
                             var fechater = "";
                             if(registros[i]['detalleserv_fechaterminado'] !=null){
                                 fechater = convertDateFormat(registros[i]["detalleserv_fechaterminado"])+" "+registros[i]["detalleserv_horaterminado"]
                             }
-                            html += "<td class='alinearcentro'>"+fechater+"</td>";
+                            html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+fechater+"</td>";
                             var fechaentreg = "";
                             if(registros[i]['detalleserv_fechaentregado'] !=null){
                                 fechaentreg = convertDateFormat(registros[i]["detalleserv_fechaentregado"])+" "+registros[i]["detalleserv_horaentregado"]
                             }
-                            html += "<td class='alinearcentro'>"+fechaentreg+"</td>";
+                            html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+fechaentreg+"</td>";
                             if(registros[i]["estado_id"] == 7){
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
-                                html += "<td class='alinearder'>0.00</td>";
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>0.00</td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
 
                             }else{
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'>0.00</td>";
-                                html += "<td class='alinearder'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'>0.00</td>";
+                                html += "<td class='text-right'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</span></td>";
 
                             }
-                            /*html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                            html += "<td class='alinearder'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
-                            html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
-                            html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
-                            html += "<td class='alinearder'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_total"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                            /*html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                            html += "<td class='text-right'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                            html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                            html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
+                            html += "<td class='text-right'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_total"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
                             */
-                            html += "<td  class='alinearcentro' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                            html += "<td class='alinearcentro'>"+registros[i]["tiposerv_descripcion"]+"</td>";
-                            html += "<td>"+registros[i]["detalleserv_descripcion"]+"</td>";
-                            html += "<td>"+registros[i]["respnombre"]+"</td>";
+                            html += "<td  class='text-center' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
+                            html += "<td class='text-center'>"+registros[i]["tiposerv_descripcion"]+"</td>";
+                            html += "<td style='padding-left: 1px; padding-right: 1px;' >"+registros[i]["detalleserv_descripcion"]+"</td>";
+                            html += "<td style='font-size: 8px; padding-left: 1px; padding-right: 1px;' >"+registros[i]["respnombre"]+"</td>";
 
                             html += "</tr>";
                             cont++;
@@ -199,57 +199,57 @@ function reportedetservicio(){
                             html += nombrecliente;
                             html += "</td>";
                             html += "<td>"+registros[i]["servicio_id"]+"</td>";
-                            html += "<td class='alinearcentro'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
+                            html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
                             var fechater = "";
                             if(registros[i]['detalleserv_fechaterminado'] !=null){
                                 fechater = convertDateFormat(registros[i]["detalleserv_fechaterminado"])+" "+registros[i]["detalleserv_horaterminado"]
                             }
-                            html += "<td class='alinearcentro'>"+fechater+"</td>";
+                            html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+fechater+"</td>";
                             var fechaentreg = "";
                             if(registros[i]['detalleserv_fechaentregado'] !=null){
                                 fechaentreg = convertDateFormat(registros[i]["detalleserv_fechaentregado"])+" "+registros[i]["detalleserv_horaentregado"]
                             }
-                            html += "<td class='alinearcentro'>"+fechaentreg+"</td>";
+                            html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+fechaentreg+"</td>";
                             if(registros[i]["estado_id"] == 7){
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
-                                html += "<td class='alinearder'>0.00</td>";
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>0.00</td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
 
                             }else{
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
-                                html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
-                                html += "<td class='alinearder'>0.00</td>";
-                                html += "<td class='alinearder'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                                html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                                html += "<td class='text-right'>0.00</td>";
+                                html += "<td class='text-right'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</span></td>";
 
                             }
-                            /*html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                            html += "<td class='alinearder'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
-                            html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
-                            html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
-                            html += "<td class='alinearder'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_total"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                            /*html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                            html += "<td class='text-right'><span id='esteprecioinsumo"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
+                            html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                            html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
+                            html += "<td class='text-right'><span id='totalutilidad"+registros[i]["detalleserv_id"]+"'>"+numberFormat(Number(registros[i]["detalleserv_total"]- registros[i]["precioinsumo"]).toFixed(2))+"</span></td>";
                             */
-                            html += "<td  class='alinearcentro' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                            html += "<td class='alinearcentro'>"+registros[i]["tiposerv_descripcion"]+"</td>";
-                            html += "<td>"+registros[i]["detalleserv_descripcion"]+"</td>";
-                            html += "<td>"+registros[i]["respnombre"]+"</td>";
+                            html += "<td  class='text-center' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
+                            html += "<td class='text-center'>"+registros[i]["tiposerv_descripcion"]+"</td>";
+                            html += "<td style='padding-left: 1px; padding-right: 1px;' >"+registros[i]["detalleserv_descripcion"]+"</td>";
+                            html += "<td style='font-size: 8px; padding-left: 1px; padding-right: 1px;' >"+registros[i]["respnombre"]+"</td>";
 
                             html += "</tr>";
                             cont++;
                         }
                        esinicio = 2;
                     }
-                    var html1 ="<tr class='negrita'>";
+                    var html1 ="<tr class='text-bold'>";
                     html1 += "<td colspan='6' class='text-right'>";
                     html1 += "TOTAL:";
                     html1 += "</td>";
-                    html1 += "<td class='alinearder'>"+numberFormat(Number(totaltotal).toFixed(2))+"</td>";
+                    html1 += "<td class='text-right'>"+numberFormat(Number(totaltotal).toFixed(2))+"</td>";
                     html1 += "<td></td>";
-                    html1 += "<td class='alinearder'>"+numberFormat(Number(totalacuenta).toFixed(2))+"</td>";
-                    html1 += "<td class='alinearder'>"+numberFormat(Number(totalsaldo).toFixed(2))+"</td>";
-                    html1 += "<td class='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
+                    html1 += "<td class='text-right'>"+numberFormat(Number(totalacuenta).toFixed(2))+"</td>";
+                    html1 += "<td class='text-right'>"+numberFormat(Number(totalsaldo).toFixed(2))+"</td>";
+                    html1 += "<td class='text-right'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
                     html1 += "</tr>";
                     /*$('#eltotal').html(numberFormat(Number(totaltotal).toFixed(2)));
                     $('#elacuenta').html(numberFormat(Number(totalacuenta).toFixed(2)));

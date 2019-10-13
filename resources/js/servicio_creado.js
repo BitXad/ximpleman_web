@@ -1348,24 +1348,30 @@ function cambiartiposervicio(servicio_id){
            data:{tiposerv_id:tiposerv_id, direccion:direccion},
            success:function(respuesta){
                
-               var registros =  JSON.parse(respuesta);
-               if (registros != null){
-                   mires = "";
-                   var tiposerv_id = registros["tiposerv_id"];
-                   var servicio_direccion = registros["servicio_direccion"];
-                   var tiposerv_descripcion = registros["tiposerv_descripcion"];
-               }
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    if(registros == "nodir"){
+                       $('#mensajetiposerv').html("<br>Dirección no debe estar vacio");
+                    }else{
+                        mires = "";
+                        var tiposerv_id = registros["tiposerv_id"];
+                        var servicio_direccion = registros["servicio_direccion"];
+                        var tiposerv_descripcion = registros["tiposerv_descripcion"];
+                        if(tiposerv_id == null){
+                           mires += "NO DEFINIDO";
+                        }else{
+                            mires += tiposerv_descripcion;
+                        }
+                        if(tiposerv_id == 2){
+                            mires += "<br><b>Dirección: </b>"+servicio_direccion;
+                        }
+                        $('#'+nombremodal).modal('hide');
+                    }
+                }
                
-                if(tiposerv_id == null){
-                    mires += "NO DEFINIDO";
-                }else{
-                    mires += tiposerv_descripcion;
-                }
-                if(tiposerv_id == 2){
-                    mires += "<br><b>Dirección: </b>"+servicio_direccion;
-                }
+                
                $('#mitiposervicio').html(mires);
-               $('#'+nombremodal).modal('hide');
+               
         }
         
     });

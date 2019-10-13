@@ -9,6 +9,7 @@ class Detalle_serv extends CI_Controller{
     function __construct()
     {
         parent::__construct();
+        $this->load->library('ControlCode'); // para generar codigo
         $this->load->model('Detalle_serv_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -1678,15 +1679,7 @@ class Detalle_serv extends CI_Controller{
         $parametro = $this->input->post('buscarcliente');
         if(isset($parametro))
         {
-            $params['limit'] = RECORDS_PER_PAGE; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('detalle_serv/buscarcliente?');
-            $config['total_rows'] = $this->Detalle_serv_model->get_all_cliente_count($parametro);
-            $this->pagination->initialize($config);
-
-            $data['all_cliente'] = $this->Detalle_serv_model->get_all_cliente($parametro, $params);
+            $data['all_cliente'] = $this->Detalle_serv_model->get_all_cliente($parametro);
         
             $data['_view'] = 'detalle_serv/buscarcliente';
             $this->load->view('layouts/main',$data);
@@ -1993,5 +1986,209 @@ class Detalle_serv extends CI_Controller{
                 redirect('detalle_serv/kardex_detallek/'.$codigo);
             }
         }
+    }
+    /*
+     *  *********************Crea un nuevo Servicio con un detalle seleccionado por kardex **************
+     */
+    function nuevodetallehistorialc($detalleserv_id)
+    {
+        if($this->acceso(69)){
+            $this->load->model('Servicio_model');
+            $this->load->library('form_validation');
+	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
+	    //$this->form_validation->set_rules('detalleserv_codigo','Detalle Servicio Codigo','required');
+	    $this->form_validation->set_rules('detalleserv_falla','Detalle Servicio Falla','required');
+            $cliente_id = $this->input->post('cliente_id');
+	    if($this->form_validation->run())     
+            {
+                /* ************ INICIO CREAR NUEVO SERVICIO ************** */
+                $estado_id = 5; // este valor (PENDIENTE) esta definido en la tabla Estado
+                $usuario_id = $this->session_data['usuario_id'];
+                $tiposerv_id = 1; //este valor (Servicio Normal) esta definido en la tabla tipo_servicio
+                
+
+                date_default_timezone_set('America/La_Paz');
+                $fecha_res = date('Y-m-d');
+                $hora_res = date('H:i:s');
+                $params = array(
+                                'estado_id' => $estado_id,
+                                'usuario_id' => $usuario_id,
+                                'tiposerv_id' => $tiposerv_id,
+                                'cliente_id' => $cliente_id,
+                                'servicio_fecharecepcion' => $fecha_res,
+                                'servicio_horarecepcion' => $hora_res,
+                );
+
+                $servicio_id = $this->Servicio_model->add_servicio($params);
+                /* ************ F I N  CREAR NUEVO SERVICIO ************** */
+                //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                $fecha_entrega = $this->input->post('detalleserv_fechaentrega');
+                $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
+                //
+                //$estado_id = 5;
+                //$usuario_id = $session_data['usuario_id'];
+                $catserv_id = $this->input->post('catserv_id');
+                $subcatserv_id = $this->input->post('subcatserv_id');
+                
+                $inputotal = $this->input->post('detalleserv_total'); 
+                $inputacuenta = $this->input->post('detalleserv_acuenta');
+                $inputsaldo = $this->input->post('detalleserv_saldo');
+                $params = array(
+                                    'estado_id' => $estado_id,
+                                    'responsable_id' => $this->input->post('responsable_id'),
+                                    'usuario_id' => $usuario_id,
+                                    'servicio_id' => $servicio_id,
+                                    'catserv_id' => $catserv_id,
+                                    'subcatserv_id' => $subcatserv_id,
+                                    'cattrab_id' => $this->input->post('cattrab_id'),
+                                    'tiempouso_id' => $this->input->post('tiempouso_id'),
+                                    'procedencia_id' => $this->input->post('procedencia_id'),
+                                    'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
+                                    'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_falla' => $this->input->post('detalleserv_falla'),
+                                    'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                                    'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
+                                    'detalleserv_pesoentrada' => $this->input->post('detalleserv_pesoentrada'),
+                                    'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
+                                    'detalleserv_total' => $inputotal,
+                                    'detalleserv_acuenta' => $inputacuenta,
+                                    'detalleserv_saldo' => $inputsaldo,
+//                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
+//                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
+                                    'detalleserv_fechaentrega' => $fecha_entrega,
+                                    'detalleserv_horaentrega' => $hora_entrega,
+                                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
+                );
+                $detalle_serv_id = $this->Detalle_serv_model->add_detalle_serv($params);
+
+                $facuenta = date('Y-m-d H:i:s');
+                if($inputacuenta >0)
+                {
+                    $detparam = array(
+                                'detalleserv_fpagoacuenta' => $facuenta,
+                                'usuariopacuenta_id' => $usuario_id,
+                    );
+                    $this->Detalle_serv_model->update_detalle_serv($detalle_serv_id, $detparam);
+                }
+                
+                $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                $total = $data['resultado']['total'];
+                $acuenta = $data['resultado']['acuenta'];
+                $saldo = $data['resultado']['saldo'];
+                $sumparams = array(
+                                    'servicio_total' => $total,
+                                    'servicio_acuenta' => $acuenta,
+                                    'servicio_saldo' => $saldo,
+                );
+
+                $this->load->model('Servicio_model');
+                $this->Servicio_model->update_servicio($servicio_id,$sumparams);            
+                
+                $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+                $esparafin = $this->input->post('parafinalizar'.$detalleserv_id);
+                if($esparafin> 0){
+                    
+                    $fecha_reg = date('Y-m-d');
+                    $hora_reg = date('H:i:s');
+                    $minseg = date('is');
+                    //$servicio_id = $this->input->post('servicio_id');
+
+                    $minutosegundo = date('is');
+
+                    $this->load->model('Dosificacion_model');
+                    $dosificacion   = $this->Dosificacion_model->get_dosificacion_activa();
+                    $autorizacion   = $dosificacion[0]['dosificacion_autorizacion'];
+                    $llave          = $dosificacion[0]['dosificacion_llave'];
+                    $codseguimiento = $this->codigo_control($llave, $autorizacion, $servicio_id, $servicio_id,$fecha_reg, $minseg);
+
+                    $params = array(
+                        'servicio_fecharecepcion' => $fecha_reg,
+                        'servicio_horarecepcion' => $hora_reg,
+                        'servicio_codseguimiento' => $codseguimiento,
+                    );
+                    $this->Servicio_model->update_servicio($servicio_id,$params);
+                    //echo "<script>window.opener.location.reload(); window.close();</script>";exit;
+                    echo "<script>window.opener.location.reload(); window.location='".base_url('servicio/boletacomprobanteserv/'.$servicio_id)."';</script>";exit;
+                    //redirect('servicio/boletacomprobanteserv/'.$servicio_id);
+                }else{
+                    redirect('servicio/serviciocreado/'.$servicio_id);
+                }
+                
+            }else{
+                redirect('detalle_serv/historial_cliente/'.$cliente_id);
+            }
+        }
+    }
+    /*
+     * ************* recupera el kardex por medio de un codigo ***********
+     */
+    function get_historial_cliente()
+    {
+        if ($this->input->is_ajax_request()) {
+            $cliente_id = $this->input->post('cliente_id');
+            if ($cliente_id!=""){
+                $this->load->model('Detalle_serv_model');
+                $datos = $this->Detalle_serv_model->buscar_detalle_serv_cliente($cliente_id);
+                echo json_encode($datos);
+            }else echo json_encode("faltadatos");
+        }else{                 
+            show_404();
+        }
+    }
+    /* *** Historial de cliente **** */
+    function historial_cliente($cliente_id)
+    {
+        if($this->acceso(75)){
+            $data['page_title'] = "Historial Cliente";
+            $data['cliente_id'] = $cliente_id;
+            
+            $this->load->model('Cliente_model');
+            $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
+
+            $this->load->model('Servicio_model');
+            //$data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+
+            $this->load->model('Categoria_servicio_model');
+            $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+            if(isset($data['cliente']['cliente_id'])){
+                $this->load->model('Subcategoria_servicio_model');
+                $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
+
+                $this->load->model('Usuario_model');
+                $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+
+                $this->load->model('Categoria_trabajo_model');
+                $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+
+                $this->load->model('Tiempo_uso_model');
+                $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
+
+                $this->load->model('Procedencia_model');
+                $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+
+                $this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_parametro_servicio();
+
+                $data['_view'] = 'detalle_serv/historial_cliente';
+                $this->load->view('layouts/main',$data);
+            }else{
+                
+            }
+        }
+    }
+    function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
+    {
+
+        //include 'ControlCode.php';
+
+        $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
+                                                   $dosificacion_numfact,//Numero de factura
+                                                   $nit,//Número de Identificación Tributaria o Carnet de Identidad
+                                                   str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
+                                                   $monto,//Monto de la transacción
+                                                   $dosificacion_llave//Llave de dosificación
+                        );        
+         return str_replace('-','',$code);
     }
 }

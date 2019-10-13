@@ -80,6 +80,21 @@ border-left : 1px solid #aaa;
 border-right : 1px solid #aaa;
 border-bottom : 1px solid #aaa;
 }
+#mitabla td {
+    border: none;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    
+}
+#mitabla th {
+    border: none;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    text-align: center;
+    background-color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
 </style>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -96,8 +111,7 @@ border-bottom : 1px solid #aaa;
                                
                     <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
-                    <font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>
+                    </font><br>
                     
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>

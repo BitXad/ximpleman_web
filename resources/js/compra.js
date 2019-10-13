@@ -48,6 +48,32 @@ function borrartodo(){
 }  
 
 
+function pasardetalle(e,compra_id,producto_id) {
+
+  tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){ 
+
+
+            detallecompra(compra_id,producto_id);
+                      
+                      
+
+        }
+}
+
+function actualizadetalle(e,detalle_id,producto_id,compra_id) {
+
+  tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){ 
+             
+            editadetalle(detalle_id,producto_id,compra_id);            
+
+        }
+}
+
+
 function tabladetallecompra(){
      var controlador = "";
      //var limite = 1000;
@@ -71,19 +97,24 @@ function tabladetallecompra(){
                    
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
                     var total_detalle = Number(0);
-                    var suma = Number(0);
+                    var cantidad = Number(0);
                     var subtotal = Number(0);
                     var descuento = Number(0);
+                    var descglo = Number(0);
+                    var descuentosum = Number(0);
                     html = "";
                    /*if (n <= limite) x = n; 
                    else x = limite;*/
                     
                     for (var i = 0; i < n ; i++){
                         
-                        var suma = Number(registros[i]["detallecomp_total"]);
+                        //var suma = Number(registros[i]["detallecomp_total"]);
                         descuento += Number(registros[i]["detallecomp_descuento"]);
+                        descglo += Number(registros[i]["detallecomp_descglobal"]);
                         subtotal += Number(registros[i]["detallecomp_subtotal"]);
-                        total_detalle = Number(subtotal-descuento); 
+                        cantidad += Number(registros[i]["detallecomp_cantidad"]);
+                        total_detalle = Number(subtotal-(descuento*cantidad)); 
+                        descuentosum = Number(descuento*cantidad); 
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -97,13 +128,13 @@ function tabladetallecompra(){
                         html += "</td><td><input id='compra_identi'  name='compra_id' type='hidden' class='form-control' value='"+compra_id+"'>";
                         html += "<input id='producto_identi'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>" ;
                         
-                        html += "<input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_precio"+registros[i]["detallecomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
-                        html += "<td><input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_costo"+registros[i]["detallecomp_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text'  class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
-                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' onkeypress='return pulsar(event)'>";
+                        html += "<input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_precio"+registros[i]["detallecomp_id"]+"'  name='producto_precio"+registros[i]["producto_id"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")'  class='form-control'  value='"+Number(registros[i]["detallecomp_precio"]).toFixed(2)+"'  ></td>"; 
+                        html += "<td><input  class='input-sm' style='font-size:13px; width:100%;' id='detallecomp_costo"+registros[i]["detallecomp_id"]+"'  name='producto_costo"+registros[i]["producto_id"]+"' type='text' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='form-control' value='"+Number(registros[i]["detallecomp_costo"]).toFixed(2)+"' ></td>";
+                        html += "<td style='padding-left:0px; padding-right:0px;'><input  class='input-sm' style='font-size:13px;width:65px;' id='detallecomp_cantidad"+registros[i]["detallecomp_id"]+"'  name='cantidad' type='text' autocomplete='off' class='form-control' value='"+registros[i]["detallecomp_cantidad"]+"' type='text' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' >";
                         html += "<input id='detallecomp_id'  name='detallecomp_id' type='hidden' class='form-control' value='"+registros[i]["detallecomp_id"]+"'>";
                        
                         html += "<td style='font-size:13px; text-align:center;'>"+Number(registros[i]["detallecomp_subtotal"]).toFixed(2)+"</b></td>";
-                        html += "<td><input  class='input-sm' style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["detallecomp_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='return pulsar(event)' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
+                        html += "<td><input  class='input-sm' style='font-size:13px; width:55px;' id='detallecomp_descuento"+registros[i]["detallecomp_id"]+"'  name='descuento'  type='text' autocomplete='off' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' value='"+Number(registros[i]["detallecomp_descuento"]).toFixed(2)+"' >";
                        
                         
                        
@@ -127,13 +158,22 @@ function tabladetallecompra(){
                         //html += "<button type='submit' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button>";
                         html += "<td style='padding-left:4px; padding-right:4px;'>";
                         if(eliminar_detalle == 1){
-                            html += "<button type='button' onclick='quitardetalle("+registros[i]["detallecomp_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button>";
+                            html += "<button type='button' onclick='quitardetalle("+registros[i]["detallecomp_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-times'></span></button>";
                         }
                         //html += "</form></td>";
                         html += "</td>";
                     }
+                    html += "<tr>";
+                    html += "<th colspan='6' ><font size='3' face='Arial'<b>TOTAL</b></th>";
+                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(subtotal).toFixed(2)+"</b></th>";
+                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(descuentosum).toFixed(2)+"</b></th>";
+                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(descglo).toFixed(2)+"</b></th>";
+                    html += "<th align='right'><font size='2' face='Arial'<b>"+Number(total_detalle).toFixed(2)+"</b></th>";
+                    html += "<th colspan='2'></th>";
+                    html += "</font></tr>";
+
                    $("#detallecompringa").html(html);
-                   tablatotales(total_detalle,descuento,subtotal);
+                   tablatotales(total_detalle,descuentosum,subtotal);
                    
                 }
 
@@ -215,7 +255,7 @@ function tablatotales(total_detalle,descuento,subtotal)
 }
 
 
-function detallecompra(compra_id, producto_id){
+function detallecompra(compra_id,producto_id){
        
         var controlador = "";
         if(document.getElementById("agrupar").checked==true){
@@ -230,11 +270,10 @@ function detallecompra(compra_id, producto_id){
         var producto_factor = document.getElementById('select_factor'+producto_id).value;
      
 
-    var limite = 500;
     var base_url = document.getElementById('base_url').value;
     
     controlador = base_url+'compra/ingresarproducto/';
-   
+  
      document.getElementById('producto'+producto_id).style.display = 'none';
      
     $.ajax({url: controlador,
@@ -242,7 +281,9 @@ function detallecompra(compra_id, producto_id){
            data:{compra_id:compra_id, producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_costo:producto_costo, producto_precio:producto_precio, agrupar:agrupar, producto_fechavenc:producto_fechavenc,producto_factor:producto_factor},
            success:function(respuesta){     
                
-                tabladetallecompra();                                         
+                tabladetallecompra(); 
+                
+                                                         
                 
         }
         
@@ -438,25 +479,14 @@ function validacompra(e,opcion) {
 
     
 }
-function compravalidar(e,opcion) {
+function compravalidar(e) {
   tecla = (document.all) ? e.keyCode : e.which;
   
     if (tecla==13){ 
     
-        if (opcion==1){             
-            buscarcliente();            
-        }
-
-        if (opcion==2){   
-            $("#telefono").val(''); //si la tecla proviene del input telefono
-           document.getElementById('telefono').focus();           
-        } 
-        if (opcion==3){   //si la tecla proviene del input codigo de barras
-            buscarporcodigo();           
-        } 
-        if (opcion==4){   //si la tecla proviene del 
+       
             tablaresultados(1);           
-        } 
+        
         
     } 
 
@@ -723,7 +753,7 @@ function compraproveedor(opcion)
            success:function(respuesta){     
                
                             
-                $("#encontrados").val("- 0 -");
+                
                var registros =  JSON.parse(respuesta);
                 
                if (registros != null){
@@ -733,7 +763,7 @@ function compraproveedor(opcion)
                     var total = Number(0);
                     var total_detalle = 0;
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
                     html = "";
                    if (n <= limite) x = n; 
                    else x = limite;
@@ -755,8 +785,8 @@ function compraproveedor(opcion)
                         if (caja==2) {  
                         html += "<span class='btn-warning btn-xs'>Orden de pago</span>";  }
                         html += "</td><td align='center'><font size='3'>"+registros[i]["compra_id"]+"</b></font></td>";                                          
-                        html += "<td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
-                        html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right' > Subtotal:"+numberFormat(Number(registros[i]["compra_subtotal"]).toFixed(2))+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
+                        html += "<font size='3'><b>Total:"+numberFormat(Number(registros[i]["compra_totalfinal"]).toFixed(2))+"</b></font></td>";
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
                         html += "<td  align='center'>"+registros[i]["estado_descripcion"]+"<br>";
@@ -837,7 +867,7 @@ function fechadecompra(filtro)
                     var total = Number(0);
                     var total_detalle = 0;
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                    $("#pillados").val("- "+n+" -");
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
                    
                     html = "";
                    if (n <= limite) x = n; 
@@ -860,8 +890,8 @@ function fechadecompra(filtro)
                         if (caja==2) {  
                         html += "<span class='btn-warning btn-xs'>Orden de pago</span>";  }
                         html += "</td><td align='center'><font size='3'><b>"+registros[i]["compra_id"]+"</b></font></td>";                                           
-                        html += "<td align='right' > Subtotal:"+Number(registros[i]["compra_subtotal"]).toFixed(2)+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
-                        html += "<font size='3'><b>Total:"+Number(registros[i]["compra_totalfinal"]).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right' > Subtotal:"+numberFormat(Number(registros[i]["compra_subtotal"]).toFixed(2))+"<br>Desc: "+Number(registros[i]["compra_descuento"]).toFixed(2)+"<br> DescGlobal: "+Number(registros[i]["compra_descglobal"]).toFixed(2)+"<br>";
+                        html += "<font size='3'><b>Total:"+numberFormat(Number(registros[i]["compra_totalfinal"]).toFixed(2))+"</b></font></td>";
                         html += "<td  align='center'>"+convertDateFormat(registros[i]["compra_fecha"])+"<br>"+registros[i]['compra_hora']+"</td>" ;
                         
                         html += "<td  align='center'>"+registros[i]["estado_descripcion"]+"<br>";
@@ -1013,7 +1043,7 @@ function tablaresultados(opcion)
                             
                         html += "<div class='col-md-12' style='padding-left: 0px;'>";
 
-                        html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
+                        html += "<b><font size=2>"+registros[i]["producto_nombre"]+"</font>    ("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
 //                        html += " <span class='btn btn-danger btn-xs' style='font-size:10px; face=arial narrow;' title='Historial de precios de compra'><i class='fa fa-book'></i> </span>";
 
                        
@@ -1096,15 +1126,15 @@ function tablaresultados(opcion)
                         else{
                             
                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "<label  class='control-label'>Prec.Vent.: </label><input class='input-sm' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                        html += "<label  class='control-label' style='margin-bottom :0px'>PREC. </label><input class='input-sm' style='padding-left: 1px;' id='producto_preciodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_precio' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
                         html += "<div class='col-md-2' style='padding-left: 0px;'>";
-                        html += "<label  class='control-label'>Costo: </label><input class='input-sm' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
+                        html += "<label  class='control-label' style='margin-bottom :0px'>COSTO </label><input class='input-sm' style='padding-left: 1px;' id='producto_costodetalle"+registros[i]["producto_id"]+"'   autocomplete='off' name='producto_costo' type='number' step='0.01' class='form-control' value='"+registros[i]["producto_ultimocosto"]+"' > </div>";
                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "<label  class='control-label'>Desc.Unit.: </label><input class='input-sm' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+                        html += "<label  class='control-label' style='margin-bottom :0px'>DESC. </label><input class='input-sm' style='padding-left: 1px;' id='descuentodetalle"+registros[i]["producto_id"]+"' min='0' autocomplete='off' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
                         html += "<div class='col-md-2'style='padding-left: 0px;'  >";
-                        html += "<label  class='control-label'>Cant.: </label><input class='input-sm ' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' class='form-control' placeholder='cantidad' required value='1'> </div>";
+                        html += "<label  class='control-label' style='margin-bottom :0px'>CANT. </label><input class='input-sm ' style='padding-left: 1px; width:70px' id='cantidaddetalle"+registros[i]["producto_id"]+"'  name='cantidad' type='number' autocomplete='off' onkeypress='pasardetalle(event,"+compra_id+","+registros[i]["producto_id"]+")' class='form-control' placeholder='cantidad' required value='1'> </div>";
                         html += "<div class='col-md-2' style='padding-left: 0px;' >";
-                        html += "<label  class='control-label'>Fec.Venc.: </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div>";
+                        html += "<label  class='control-label' style='margin-bottom :0px'>FEC.VENC. </label><input class='input-sm ' type='date' id='detallecomp_fechavencimiento"+registros[i]["producto_id"]+"'  name='detallecomp_fechavencimiento'  class='form-control' ></div></td>";
                        
                        }
                         
@@ -1117,8 +1147,8 @@ function tablaresultados(opcion)
                             
                        }
                        else{
-                            html += "<div class='col-md-2' style='padding-left: 35px;' >";                      
-                            html += "<label  class='control-label'>Añadir</label><button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button></div>";
+                            html += "<td style='padding :0px'><div>";                      
+                            html += "<label  class='control-label' style='margin-bottom :0px'>AÑADIR</label><button type='button' onclick='detallecompra("+compra_id+","+registros[i]["producto_id"]+")' class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button></div>";
                         }
                        //html += "<a href=''  onclick='submit()' class='btn btn-danger'><span class='fa fa-cart-arrow-down'></span></a>";
                         
@@ -1263,7 +1293,7 @@ function reportefechadecompra(filtro)
                     var total = Number(0);
                     var total_detalle = 0;
                     var n = registros.length; //tama«Ðo del arreglo de la consulta
-                    $("#pillados").val("- "+n+" -");
+                    $("#pillados").val("- "+n+" ");
                    
                     html = "";
                    

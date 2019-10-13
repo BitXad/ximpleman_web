@@ -120,7 +120,7 @@
                             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 255, 0, 0.3);"><u><b>VENTAS</b></u><br>
 							<div class="row clearfix">
                                    
-                                      <div class="col-md-3">
+                                      <div class="col-md-2">
                                         <label for="parametro_mostrarcategoria" class="control-label">MOSTRAR CATEGORIA</label>
                                         <div class="form-group">
                                         <select name="parametro_mostrarcategoria" class="form-control" required id="parametro_mostrarcategoria">
@@ -222,7 +222,14 @@
 								        <option value="circle" <?php if($parametro['parametro_formaimagen']=='circle') echo 'selected'; ?> >CIRCULAR</option> </select>
                                         </div>
                                     </div>
-                                    </div></div>
+                                    <div class="col-md-2">
+                                        <label for="parametro_diasvenc" class="control-label">DIAS DE VENCIMIENTO</label>
+                                        <div class="form-group">
+                                            <input type="number" min="0" name="parametro_diasvenc" value="<?php echo ($this->input->post('parametro_diasvenc') ? $this->input->post('parametro_diasvenc') : $parametro['parametro_diasvenc']); ?>" class="form-control" id="parametro_diasvenc"  />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                                      <!--<div class="col-md-3">
                                         <label for="parametro_tituldoc" class="control-label">TITULDOC</label>
                                         <div class="form-group">
