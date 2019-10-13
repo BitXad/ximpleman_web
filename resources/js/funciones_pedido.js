@@ -211,7 +211,7 @@ function tablaproductos()
     var base_url = document.getElementById('base_url').value;
     var categ = JSON.parse(document.getElementById('categoria_producto').value);
     var controlador = base_url+'venta/detalleventa';
-    
+    var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     
     $.ajax({url: controlador,
            type:"POST",
@@ -300,7 +300,7 @@ if (registros[i]["detalleven_envase"] == 1){
     html += "<br>";
     html += "<table id='mitabla'>";
     
-    html += "<tr >";
+    html += "<tr>";
     
         html += "<th style='padding: 0;' colspan='2'> Prestar</th>";    
 //        html += "<th style='padding: 0;'></th>";
@@ -318,11 +318,19 @@ if (registros[i]["detalleven_envase"] == 1){
 //        html += "<td style='padding: 0;'><center><input type='text' style='width:40px' value='"+registros[i]["detalleven_precioenvase"]+"' ></center></td>";
         html += "<td style='padding: 0;'><center><input type='text' style='width:30px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_garantiaenvase"]+"' ></center></td>";
     html += "</tr>";
-
-    html += "</table>";
-   
     
+    html += "</table>";    
+}else
+{
+    html += "<input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
+    html += "<input type='text' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
+    html += "<input type='text' id='garantia"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
 }
+
+
+    if(parametro_diasvenc>0){
+        html += "<b>VENCIMIENTO:</b> <input type='date' value='"+registros[i]["detalleven_fechavenc"]+"' id='fecha_vencimiento"+registros[i]["detalleven_id"]+"'/>  ";
+    }
     
     
 html += "               <button class='btn btn-primary btn-xs' onclick='actualizar_caracteristicas("+registros[i]["detalleven_id"]+")' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-save'></i> Guardar</button>";
@@ -413,8 +421,7 @@ html += "  </div>";
                    $("#tablaproductos").html(html);                 
                    tabladetalle(total_detalle,0,total_detalle);
             }
-            
-                
+
         },
         error:function(respuesta){
 
@@ -900,6 +907,78 @@ function ingresorapido(producto_id,cantidad)
     
 }
 
+//function ingresorapidojs(cantidad,producto)
+//{       
+//    var factor = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+//    var indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
+//    cantidad = cantidad * factor;
+//    var precio = 0;  
+//    
+//    //if (Number(factor)>1){
+//    if (indice>0){
+//    
+//        if (factor == producto.producto_factor)
+//            precio = producto.producto_preciofactor;    
+//    
+//        if (factor == producto.producto_factor1)
+//            precio = producto.producto_preciofactor1;    
+//    
+//        if (factor == producto.producto_factor2)
+//            precio = producto.producto_preciofactor2;    
+//    
+//        if (factor == producto.producto_factor3)
+//            precio = producto.producto_preciofactor3;    
+//    
+//        if (factor == producto.producto_factor4)
+//            precio = producto.producto_preciofactor4;    
+//    }
+//    else 
+//    {    precio = producto.producto_precio;}
+//
+//    
+//    var base_url = document.getElementById('base_url').value;   
+//    var controlador = base_url+"venta/ingresar_detalle";
+//    var usuario_id = document.getElementById('usuario_id').value;
+//    var existencia =  producto.existencia;    
+//    var producto_id =  producto.producto_id;    
+//    var datos1 = "";
+//    var descuento = 0;
+//    var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
+//    var check_agrupar = document.getElementById('check_agrupar').checked;
+//    
+//    if (check_agrupar){
+//        agrupado = 1;
+//    }
+//    else{
+//        agrupado = 0;
+//    }
+//        
+//
+//    if (cantidad_total <= producto.existencia){
+//
+//        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
+//        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
+//        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+//        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";
+//        
+//        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+//        datos1 += cantidad+",0,"+cantidad+",0,0";        
+//        //alert(datos1);
+//
+//        $.ajax({url: controlador,
+//            type:"POST",
+//            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado},
+//            success:function(respuesta){
+//                tablaproductos();
+//
+//            }
+//        });
+//    
+//    }
+//    else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+//    
+//}
+
 function ingresorapidojs(cantidad,producto)
 {       
     var factor = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
@@ -938,7 +1017,8 @@ function ingresorapidojs(cantidad,producto)
     var descuento = 0;
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
-    
+    var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
+        
     if (check_agrupar){
         agrupado = 1;
     }
@@ -952,10 +1032,9 @@ function ingresorapidojs(cantidad,producto)
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
         datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
-        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";
-        
+        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0";        
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day)";        
         //alert(datos1);
 
         $.ajax({url: controlador,
@@ -2546,6 +2625,8 @@ function actualizar_caracteristicas(detalleven_id)
     var micheck = document.getElementById('check'+detalleven_id).checked;
     var cantidadenvase = document.getElementById('cantidadenvase'+detalleven_id).value;
     var garantia = document.getElementById('garantia'+detalleven_id).value;
+    var fecha_vencimiento = document.getElementById('fecha_vencimiento'+detalleven_id).value;
+    //alert(fecha_vencimiento);
     var check = 0;
     //alert(micheck+" "+garantia+" "+cantidadenvase);
     
@@ -2564,7 +2645,7 @@ function actualizar_caracteristicas(detalleven_id)
     $.ajax({url: controlador,
         type:"POST",
         data:{detalleven_id:detalleven_id, preferencia:preferencia, caracteristicas:caracteristicas, check:check,
-            cantidadenvase:cantidadenvase, garantia:garantia},
+            cantidadenvase:cantidadenvase, garantia:garantia, fecha_vencimiento:fecha_vencimiento},
         success:function(result){
             tablaproductos();
         }

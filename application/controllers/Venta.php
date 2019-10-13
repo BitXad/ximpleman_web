@@ -154,7 +154,7 @@ class Venta extends CI_Controller{
         $sql1 = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ".
                 "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,".
                 "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra,
-                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase) ".
+                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase, detalleven_fechavenc) ".
                 " value(".$datos1.")";
         
         $sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
@@ -261,7 +261,7 @@ class Venta extends CI_Controller{
         $fecha_venta = $this->input->post('venta_fecha'); // nit del cliente
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
-        $orden_id = $this->input->post('orden_id'); // Orden de trabajo
+        $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
         
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
@@ -298,9 +298,10 @@ class Venta extends CI_Controller{
           detalleven_fechadevolucion,
           detalleven_horadevolucion,
           detalleven_montodevolucion,
-          detalleven_prestamoenvase,          
+          detalleven_prestamoenvase,
+          detalleven_fechavenc,
           usuario_id,
-          factura_id          
+          factura_id
         )
 
         (SELECT 
@@ -329,9 +330,10 @@ class Venta extends CI_Controller{
             detalleven_fechadevolucion,
             detalleven_horadevolucion,
             detalleven_montodevolucion,
-            detalleven_prestamoenvase,          
-          usuario_id,
-          0 as factura_id
+            detalleven_prestamoenvase,
+            detalleven_fechavenc,
+            usuario_id,
+            0 as factura_id
           
         FROM
           detalle_venta_aux
@@ -567,7 +569,7 @@ class Venta extends CI_Controller{
             $proceso_fechaproceso = "now()";
             $contador = 1;
 
-            for ($contador = 17; $contador<=22; $contador++){
+            for ($contador = 17; $contador<=23; $contador++){
                  
                 //$orden_id = 
                 $estado = $contador;
@@ -2104,10 +2106,12 @@ function anular_venta($venta_id){
                $check = $this->input->post('check');
                $cantidadenvase = $this->input->post('cantidadenvase');
                $garantia = $this->input->post('garantia');
+               $fecha_vencimiento = $this->input->post('fecha_vencimiento');
                
                $sql =  "update detalle_venta_aux set ".
                        " detalleven_preferencia = '".$detalleven_preferencia."'".
                        " ,detalleven_caracteristicas = '".$detalleven_caracteristicas."'".
+                       " ,detalleven_fechavenc = '".$fecha_vencimiento."'".
                        
                        " ,detalleven_devueltoenvase = 0".
                        " ,detalleven_montodevolucion = 0".
@@ -2229,4 +2233,85 @@ function anular_venta($venta_id){
         //**************** fin contenido ***************        
     }   
     
+    //Muestra la lista de vencimientos
+    function vencimientos()
+    {
+        
+        if($this->acceso(30)) {
+                
+        //**************** inicio contenido ***************            
+        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_nombre = $this->session_data['usuario_nombre'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];
+        
+        $rolusuario = $this->session_data['rol'];
+
+        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+        
+        $data['page_title'] = "Vencimientos"
+                . "";
+        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+        $data['usuario_id'] = $usuario_id; //el usuario logueado
+        
+        $data['tipousuario_id'] = $tipousuario_id; 
+        $data['usuario_nombre'] = $usuario_nombre;
+        
+        
+        $sql = "select 
+                c.cliente_nombre, c.cliente_codigo,c.cliente_nombrenegocio, c.cliente_telefono, c.cliente_celular,
+                v.venta_fecha, p.producto_nombre, p.producto_precio, d.detalleven_fechavenc, d.detalleven_id,c.cliente_id
+
+
+                from 
+                cliente c, venta v, detalle_venta d, producto p
+                where
+                v.cliente_id = c.cliente_id and
+                v.venta_id = d.venta_id and
+                d.producto_id = p.producto_id and
+                d.detalleven_fechavenc >= '2019-10-01' and
+                d.detalleven_fechavenc <= '2019-10-10' and
+                d.usuario_id > 0";
+        
+        $data['vencimientos'] = $this->Venta_model->consultar($sql); //corregido mediante left join
+        
+        $filtro = $this->input->post('filtro');
+        
+        if ($filtro == null){
+            $data['pedido'] = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(now())");
+        }
+        else{
+            $data['pedido'] = $this->Pedido_model->get_pedidos($filtro);
+        }
+        
+        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
+        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
+        
+        $data['_view'] = 'venta/vencimientos';
+        $this->load->view('layouts/main',$data);
+        //**************** fin contenido ***************
+        }    
+    }
+    
+    function lista_vencimientos(){
+        
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+        
+            $fecha_desde = $this->input->post("fecha_desde");
+            $fecha_hasta = $this->input->post("fecha_hasta");
+            $usuario_id = $this->input->post("usuario_id");
+
+            $resultado = $this->Venta_model->get_vencimientos($fecha_desde,$fecha_hasta,$usuario_id);
+            echo json_encode($resultado);
+        }
+        else
+        {
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+        
+   }
 }

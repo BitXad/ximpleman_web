@@ -424,10 +424,35 @@ function get_busqueda($condicion)
 
         return $detalle_venta;
     }
+
     /* obtiene detalle venta aux con imagen de producto*/
     function get_detalle_auxfoto($usuario_id)
     {
         $sql = "select d.*, p.producto_foto from detalle_venta_aux d, producto p where d.producto_id = p.producto_id and d.usuario_id = ".$usuario_id." order by d.detalleven_id asc";
+        $detalle = $this->db->query($sql)->result_array();
+        return $detalle;
+    }
+
+    /* obtiene detalle venta aux con imagen de producto*/
+    function get_vencimientos($fecha_desde,$fecha_hasta,$usuario_id)
+    {
+        if ($usuario_id>0) $condicion = " and d.usuario_id = ".$usuario_id;
+        else $condicion = "";
+        
+        $sql = "select 
+                c.cliente_nombre, c.cliente_codigo,c.cliente_nombrenegocio, c.cliente_telefono, c.cliente_celular,
+                v.venta_fecha, p.producto_nombre, p.producto_precio, d.detalleven_fechavenc, d.detalleven_id,c.cliente_id,
+                u.usuario_nombre,c.cliente_id 
+                from 
+                cliente c, venta v, detalle_venta d, producto p, usuario u
+                where
+                v.cliente_id = c.cliente_id and
+                v.venta_id = d.venta_id and
+                d.producto_id = p.producto_id and
+                d.usuario_id = u.usuario_id and
+                d.detalleven_fechavenc >= '".$fecha_desde."' and
+                d.detalleven_fechavenc <= '".$fecha_hasta."'".$condicion;
+        //echo $sql;
         $detalle = $this->db->query($sql)->result_array();
         return $detalle;
     }

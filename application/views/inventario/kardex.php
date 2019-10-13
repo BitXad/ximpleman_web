@@ -59,9 +59,54 @@ border-spacing : 1;
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <!-------------------------------------------------------->
+<table class="table" style="width: 20cm; padding: 0;" >
+    <tr>
+        <td style="width: 6cm; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
+
+            </center>                      
+        </td>
+                   
+        <td style="width: 6cm; padding: 0" > 
+            <center>
+                <br>
+                <br>
+                <font size="2" face="arial"><b>KARDEX DE EXISTENCIA</b></font> <br>
+                <!--<font size="1" face="arial"><b>FISICO - VALORADO</b></font> <br>-->
+                <font size="1" face="arial"><b><?php echo $producto[0]['producto_codigobarra']." ".$producto[0]['producto_nombre']; ?></b></font>
 
 
-<table class="table" style="width: 18cm;" >
+            </center>
+        </td>
+        <td style="width: 4cm; padding: 0" >
+<!--                ______________________________                
+                   
+                                
+                <div id="datos_recorrido">
+                    
+                </div>
+                
+                ______________________________-->
+        </td>
+    </tr>
+     
+    
+    
+</table>
+
+
+<!--<table class="table" style="width: 18cm;" >
     <tr>
         <td>
                 
@@ -73,12 +118,12 @@ border-spacing : 1;
                 <font size="1" face="arial"><b>FISICO - VALORADO</b></font> <br>
                 <font size="1" face="arial"><b>PRODUCTO: <?php echo $producto[0]['producto_codigobarra']." ".$producto[0]['producto_nombre']; ?></b></font>
 
-                                <br>    
+                <br>    
             </center>                      
         </td>
     </tr>
      
-</table>
+</table>-->
 
 
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
