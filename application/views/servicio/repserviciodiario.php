@@ -241,15 +241,14 @@
             <!--</div>-->
         <!--</div>-->
         <br><br>
-        <div class=" micontenedorfirmas">
-            <div class="cabsoloizqderechafirmas"></div>
-            <div class="cabsoloderechafirmas">
-                <div>__________________________</div>
-                <div>Responsable</div>
-                <div>Firma - Sello</div>
-            </div>
+        
+        <div class="col-md-12 text-center">
+            <div>__________________________</div>
+            <div>Responsable</div>
+            <div>Firma - Sello</div>
         </div>
     </div>
+
 <div class="no-print">
     <a onclick="javascript:window.close();" class="btn btn-danger">
     <i class="fa fa-times"></i>Salir

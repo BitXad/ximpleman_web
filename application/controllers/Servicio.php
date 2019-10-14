@@ -957,31 +957,28 @@ class Servicio extends CI_Controller{
     function repserviciodiario()
     {
         if($this->acceso(76)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
-        $data['servicio'] = $this->Servicio_model->get_all_repservicios();
-        
-        $this->load->model('Empresa_model');
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        
-       /* $this->load->model('Estado_model');
-        $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
-        */
-        $this->load->model('Usuario_model');
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-        
-        //$data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
-        /*
-        $this->load->model('Responsable_model');
-        $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
-        */
-        $this->load->model('Cliente_model');
-        $data['all_cliente'] = $this->Cliente_model->get_all_cliente("");
-        
-        $data['page_title'] = "Servicio";
-        $data['_view'] = 'servicio/repserviciodiario';
-        $this->load->view('layouts/main',$data);
+            $data['page_title'] = "Reporte Servicio Diario";
+            $data['servicio'] = $this->Servicio_model->get_all_repservicios();
+
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+
+           /* $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+            */
+            $this->load->model('Usuario_model');
+            $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
+            //$data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+            /*
+            $this->load->model('Responsable_model');
+            $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+            */
+            $this->load->model('Cliente_model');
+            $data['all_cliente'] = $this->Cliente_model->get_all_cliente("");
+            
+            $data['_view'] = 'servicio/repserviciodiario';
+            $this->load->view('layouts/main',$data);
     }
 }
     /*
@@ -1201,38 +1198,39 @@ class Servicio extends CI_Controller{
                         
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
-                    $venta_id = 0; //obliga a ponerle un id de venta
-                    $usuario_id = $this->session_data['usuario_id'];
                     
                     $producto_id = $this->input->post('producto_id');
-                    $this->load->model('Detalle_venta_model');
-                    $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
-                    $this->load->model('Inventario_model');
-                    $inventario = $this->Inventario_model->get_productoinventario($producto_id);
-                    $cantidad = 1;
-                    $detalleparams = array(
-                        'producto_id' => $producto_id,
-                        'venta_id' => $venta_id,
-                        'moneda_id' => $inventario['moneda_id'],
-                        'detalleven_codigo' => $inventario['producto_codigo'],
-                        'detalleven_cantidad' => $cantidad,
-                        'detalleven_unidad' => $inventario['producto_unidad'],
-                        'detalleven_costo' => $inventario['producto_costo'],
-                        'detalleven_precio' => $this->input->post('producto_precio'),
-                        'detalleven_subtotal' => $this->input->post('producto_precio'),
-                        'detalleven_descuento' => 0,
-                        'detalleven_total' => $this->input->post('producto_precio'),
-                        'detalleven_preferencia' => "",
-                        'detalleven_caracteristicas' => "",
-                        'detalleven_comision' => $inventario['producto_comision'],
-                        'detalleven_tipocambio' => $inventario['producto_tipocambio'],
-                        'usuario_id' => $usuario_id,
-                        'detalleserv_id' => $detalleserv_id,
-                    );
-                    $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
-                    
-                    $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
-                
+                    if($producto_id >0){
+                        $venta_id = 0; //obliga a ponerle un id de venta
+                        $usuario_id = $this->session_data['usuario_id'];
+                        $this->load->model('Detalle_venta_model');
+                        $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
+                        $this->load->model('Inventario_model');
+                        $inventario = $this->Inventario_model->get_productoinventario($producto_id);
+                        $cantidad = 1;
+                        $detalleparams = array(
+                            'producto_id' => $producto_id,
+                            'venta_id' => $venta_id,
+                            'moneda_id' => $inventario['moneda_id'],
+                            'detalleven_codigo' => $inventario['producto_codigo'],
+                            'detalleven_cantidad' => $cantidad,
+                            'detalleven_unidad' => $inventario['producto_unidad'],
+                            'detalleven_costo' => $inventario['producto_costo'],
+                            'detalleven_precio' => $this->input->post('producto_precio'),
+                            'detalleven_subtotal' => $this->input->post('producto_precio'),
+                            'detalleven_descuento' => 0,
+                            'detalleven_total' => $this->input->post('producto_precio'),
+                            'detalleven_preferencia' => "",
+                            'detalleven_caracteristicas' => "",
+                            'detalleven_comision' => $inventario['producto_comision'],
+                            'detalleven_tipocambio' => $inventario['producto_tipocambio'],
+                            'usuario_id' => $usuario_id,
+                            'detalleserv_id' => $detalleserv_id,
+                        );
+                        $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
+
+                        $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
+                    }
                     echo json_encode("ok");
                 }else{
                     echo json_encode("faltainf");
