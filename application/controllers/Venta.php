@@ -2253,40 +2253,11 @@ function anular_venta($venta_id){
         $data['page_title'] = "Vencimientos"
                 . "";
         $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
-        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
         $data['usuario_id'] = $usuario_id; //el usuario logueado
         
         $data['tipousuario_id'] = $tipousuario_id; 
         $data['usuario_nombre'] = $usuario_nombre;
         
-        
-        $sql = "select 
-                c.cliente_nombre, c.cliente_codigo,c.cliente_nombrenegocio, c.cliente_telefono, c.cliente_celular,
-                v.venta_fecha, p.producto_nombre, p.producto_precio, d.detalleven_fechavenc, d.detalleven_id,c.cliente_id
-
-
-                from 
-                cliente c, venta v, detalle_venta d, producto p
-                where
-                v.cliente_id = c.cliente_id and
-                v.venta_id = d.venta_id and
-                d.producto_id = p.producto_id and
-                d.detalleven_fechavenc >= '2019-10-01' and
-                d.detalleven_fechavenc <= '2019-10-10' and
-                d.usuario_id > 0";
-        
-        $data['vencimientos'] = $this->Venta_model->consultar($sql); //corregido mediante left join
-        
-        $filtro = $this->input->post('filtro');
-        
-        if ($filtro == null){
-            $data['pedido'] = $this->Pedido_model->get_pedidos(" and date(p.pedido_fecha) = date(now())");
-        }
-        else{
-            $data['pedido'] = $this->Pedido_model->get_pedidos($filtro);
-        }
-        
-        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
         $data['estado'] = $this->Estado_model->get_tipo_estado(5);
         
         $data['_view'] = 'venta/vencimientos';
@@ -2314,4 +2285,102 @@ function anular_venta($venta_id){
         }
         
    }
+
+    //Muestra la lista de vencimientos
+    function prestamos()
+    {
+        
+        if($this->acceso(30)) {
+                
+        //**************** inicio contenido ***************            
+        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_nombre = $this->session_data['usuario_nombre'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];
+        
+        $rolusuario = $this->session_data['rol'];
+
+        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+        
+        $data['page_title'] = "Vencimientos"
+                . "";
+        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+        $data['usuario_id'] = $usuario_id; //el usuario logueado
+        
+        $data['tipousuario_id'] = $tipousuario_id; 
+        $data['usuario_nombre'] = $usuario_nombre;
+        
+
+        
+        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
+        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
+        
+        $data['_view'] = 'venta/prestamos';
+        $this->load->view('layouts/main',$data);
+        //**************** fin contenido ***************
+        }    
+    }
+    
+    function lista_prestamos(){
+        
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+        
+            $fecha_desde = $this->input->post("fecha_desde");
+            $fecha_hasta = $this->input->post("fecha_hasta");
+            $usuario_id = $this->input->post("usuario_id");
+            $tipo_prestamo = $this->input->post("tipo_prestamo");
+            $kardex = $this->input->post("kardex");
+            $producto_id = $this->input->post("producto_id");
+            
+            if($kardex == 0){
+                if ($tipo_prestamo==1)
+                    $resultado = $this->Venta_model->get_prestamos($fecha_desde,$fecha_hasta,$usuario_id);
+                else
+                    $resultado = $this->Venta_model->get_devoluciones($fecha_desde,$fecha_hasta,$usuario_id);
+            }
+            else{
+                    $resultado = $this->Venta_model->get_kardex($producto_id);
+            }
+            
+            echo json_encode($resultado);
+        }
+        else
+        {
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+        
+   }   
+
+   function registrar_devolucion(){
+        
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+            $usuario_id = $this->session_data['usuario_id'];
+            $detalleven_id = $this->input->post("detalleven_id");
+            $cantidad = $this->input->post("detalleven_cantidadenvase");
+            $garantia = $this->input->post("detalleven_garantiaenvase");
+
+            $sql = "update detalle_venta set".
+                    " detalleven_devueltoenvase = ".$cantidad.
+                    ",detalleven_montodevolucion = ".$garantia.
+                    ",detalleven_fechadevolucion = date(now()) ".
+                    ",detalleven_horadevolucion = time(now()) ".
+                    ",detalleven_usuario_id = ".$usuario_id.
+                    " where detalleven_id = ".$detalleven_id;
+            
+            $this->Venta_model->ejecutar($sql);
+            return true;
+        }
+        else
+        {
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+        
+   }   
+   
 }
