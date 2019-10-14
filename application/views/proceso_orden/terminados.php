@@ -26,10 +26,9 @@
 </div>
 <div class="row">
   <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-  <input type="text" name="estado" id="estado" value="">
+  <input type="hidden" name="estado" id="estado" value="">
     <div class="col-md-12">
-     
-                    
+                       
                         <?php 
                         foreach($estados as $estado)
                         { ?>
@@ -37,7 +36,7 @@
                          
                         
                         <?php }  ?>
-    </div>
+
 </div>
 <div class="row">
     <div class="col-md-12">
