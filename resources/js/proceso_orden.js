@@ -38,6 +38,8 @@ function buscarorden(estado){
                         //$('#cotizacion_total').value(total_detalle.toFixed(2));
                        $("#tablaproceso").html(html);
                        $("#estado").val(estado);
+                       nombreestado(estado);
+                       
                        
           }  
         },
@@ -66,7 +68,7 @@ function buscarterminados(estado){
                if (registros != null){                   
                    
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                    
+                    var estado1 = Number(estado-1);
                     html = "";
                
                     
@@ -88,6 +90,8 @@ function buscarterminados(estado){
                         //$('#cotizacion_total').value(total_detalle.toFixed(2));
                        $("#tablaproceso").html(html);
                        $("#estado").val(estado);
+                       nombreestado(estado);
+                       nombreestadou1(estado1);
                       
                        
           }  
@@ -128,6 +132,39 @@ function recibir(orden)
            success:function(report){  
            
                          buscarterminados(estado);
+  }
+});
+}
+
+
+function nombreestado(estado)
+{
+  var base_url    = document.getElementById('base_url').value;
+  var controlador = base_url+"proceso_orden/elestado/";
+   $.ajax({url: controlador,
+           type:"POST",
+           data:{estado:estado},
+          
+           success:function(report){  
+             var registros =  JSON.parse(report);
+           
+                        $("#elestado").html(registros["estado_descripcion"]);
+  }
+});
+}
+
+function nombreestadou1(estado)
+{
+  var base_url    = document.getElementById('base_url').value;
+  var controlador = base_url+"proceso_orden/elestado/";
+   $.ajax({url: controlador,
+           type:"POST",
+           data:{estado:estado},
+          
+           success:function(report){  
+             var registros =  JSON.parse(report);
+           
+                        $("#elestado1").html(registros["estado_descripcion"]);
   }
 });
 }
