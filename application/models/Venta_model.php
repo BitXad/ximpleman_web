@@ -456,5 +456,84 @@ function get_busqueda($condicion)
         $detalle = $this->db->query($sql)->result_array();
         return $detalle;
     }
+
+    /* obtiene detalle venta aux con imagen de producto*/
+    function get_prestamos($fecha_desde,$fecha_hasta,$usuario_id)
+    {
+        if ($usuario_id>0) $condicion = " and d.usuario_id = ".$usuario_id;
+        else $condicion = "";
+        
+        $sql = "select v.venta_id, c.cliente_nombre, c.cliente_codigo, v.venta_fecha,v.venta_hora, c.cliente_telefono, c.cliente_celular, d.detalleven_id, 
+                d.detalleven_nombreenvase, d.`detalleven_cantidad`,  d.detalleven_cantidadenvase, d.detalleven_devueltoenvase, d.detalleven_prestamoenvase,
+                d.detalleven_garantiaenvase, d.detalleven_montodevolucion, d.detalleven_fechadevolucion, u.usuario_nombre, x.usuario_nombre as cobrador, d.detalleven_usuario_id,
+                p.producto_id, p.producto_nombre,p.producto_cantidadenvase
+                from venta v
+
+                left join detalle_venta d on d.venta_id = v.venta_id
+                left join producto p on p.producto_id = d.producto_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join usuario x on x.usuario_id = d.detalleven_usuario_id
+
+                where
+
+                v.venta_fecha >= '".$fecha_desde."' and
+                v.venta_fecha <= '".$fecha_hasta."' and
+                d.detalleven_prestamoenvase = 1 ".$condicion;
+
+        $detalle = $this->db->query($sql)->result_array();
+        return $detalle;
+    }
    
+    function get_devoluciones($fecha_desde,$fecha_hasta,$usuario_id)
+    {
+        if ($usuario_id>0) $condicion = " and d.usuario_id = ".$usuario_id;
+        else $condicion = "";
+        
+        $sql = "select v.venta_id, c.cliente_nombre, c.cliente_codigo, v.venta_fecha,v.venta_hora, c.cliente_telefono, c.cliente_celular, d.detalleven_id, 
+                d.detalleven_nombreenvase, d.`detalleven_cantidad`,  d.detalleven_cantidadenvase, d.detalleven_devueltoenvase, d.detalleven_prestamoenvase,
+                d.detalleven_garantiaenvase, d.detalleven_montodevolucion, d.detalleven_fechadevolucion, u.usuario_nombre, x.usuario_nombre as cobrador, d.detalleven_usuario_id,
+                p.producto_id, p.producto_nombre,p.producto_cantidadenvase
+                from venta v
+
+                left join detalle_venta d on d.venta_id = v.venta_id
+                left join producto p on p.producto_id = d.producto_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join usuario x on x.usuario_id = d.detalleven_usuario_id
+
+                where
+
+                d.detalleven_fechadevolucion >= '".$fecha_desde."' and
+                d.detalleven_fechadevolucion <= '".$fecha_hasta."' and
+                d.detalleven_prestamoenvase = 1 ".$condicion;
+
+        $detalle = $this->db->query($sql)->result_array();
+        return $detalle;
+    }
+   
+    function get_kardex($producto_id)
+    {
+        
+        $sql = "select v.venta_id, c.cliente_nombre, c.cliente_codigo, v.venta_fecha,v.venta_hora, c.cliente_telefono, c.cliente_celular, d.detalleven_id, 
+                d.detalleven_nombreenvase, d.`detalleven_cantidad`,  d.detalleven_cantidadenvase, d.detalleven_devueltoenvase, d.detalleven_prestamoenvase,
+                d.detalleven_garantiaenvase, d.detalleven_montodevolucion, d.detalleven_fechadevolucion, u.usuario_nombre, x.usuario_nombre as cobrador, d.detalleven_usuario_id,
+                p.producto_id, p.producto_nombre, p.producto_cantidadenvase
+                from venta v
+
+                left join detalle_venta d on d.venta_id = v.venta_id
+                left join producto p on p.producto_id = d.producto_id
+                left join cliente c on c.cliente_id = v.cliente_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join usuario x on x.usuario_id = d.detalleven_usuario_id
+
+                where
+                d.producto_id = ".$producto_id." and 
+                d.detalleven_prestamoenvase = 1 ";
+
+        $detalle = $this->db->query($sql)->result_array();
+        return $detalle;
+    }    
+    
+    
 }

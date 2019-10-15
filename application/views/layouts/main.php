@@ -95,7 +95,7 @@
                 </ul>
             </div>
 <div style="float: none; width: 90%" face="Arial" class="text-center" >
-    <span class="text-bold" style="display: block; padding-top: 0px;padding-bottom: -8px; color: #FFF; font-size: 22px;">Ximpleman Web</span>
+    <span class="text-bold" style="display: block; padding-top: 0px;padding-bottom: -8px; color: #FFF; font-size: 22px;">Ximpleman web</span>
     <span name="reloj" id="reloj" style="color: #FFF; font-size: 12px;"></span> 
     
 </div>
@@ -506,6 +506,24 @@
                         ?>
                         <li>
                             <a href="<?php echo site_url('inventario_usuario');?>"><i class="fa fa-cubes"></i>Inventario Individual</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        
+                        <?php if($rolusuario[156-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('venta/vencimientos');?>"><i class="fa fa-calendar"></i>Vencimientos</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        
+                        <?php if($rolusuario[156-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('venta/prestamos');?>"><i class="fa fa-bitbucket"></i>Envases prestados</a>
                         </li>
                         <?php
                         }
