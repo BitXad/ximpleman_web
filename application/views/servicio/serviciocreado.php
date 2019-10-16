@@ -933,7 +933,7 @@ $(document).ready(function(){
                 <tr style="padding: 0">                      
                         <td style="padding: 0">Descuento Bs</td>
                         <td align="right" style="padding: 0">
-                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php //echo $descuento; ?>" onKeyUp="calculardescserv()" onclick="seleccionar(4)">
+                            <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo number_format(0.00,2,'.',','); ?>" onKeyUp="calculardescserv()" onclick="this.select(); seleccionar(4);">
                         </td>
                 </tr>
 
@@ -949,7 +949,7 @@ $(document).ready(function(){
                 <tr style="padding: 0">                      
                         <td style="padding: 0">Efectivo Bs</td>
                         <td align="right" style="padding: 0">
-                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
+                            <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="this.select(); seleccionar(5);">
                         </td>
                 </tr>
                 
