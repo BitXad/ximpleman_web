@@ -1498,18 +1498,35 @@ $detalle = "INSERT into detalle_compra(
 
 function compra_rapida(){
         
-       $producto_id = $this->input->post('producto_id');
+$producto_id = $this->input->post('producto_id');
 $cantidad = $this->input->post('cantidad');
 $usuario_id = $this->session_data['usuario_id'];
-$fecha = date('Y-m-d');
-$hora =  date("H:i:s", $time);
+$compra_fecha = date('Y-m-d');               
+$compra_hora = date('H:i:s');
 
+$costo_producto = "SELECT producto_costo FROM inventario WHERE producto_id=".$producto_id." ";
+$costo = $this->db->query($costo_producto)->result_array();
+$producto_costo = $costo[0]['producto_costo'];
+$compra = array(
+                    'estado_id' => 1,
+                    'tipotrans_id' => 1,
+                    'usuario_id' => $usuario_id,
+                    'moneda_id' => 1,
+                    'proveedor_id' => 1,
+                    'forma_id' => 1,
+                    'compra_fecha' => $compra_fecha,
+                    'compra_hora' => $compra_hora,
+                    'compra_subtotal' => $producto_costo*$cantidad,
+                    'compra_descuento' => 0,
+                    'compra_descglobal' => 0,
+                    'compra_total' => $producto_costo*$cantidad,
+                    'compra_totalfinal' => $producto_costo*$cantidad,
+                    'compra_efectivo' => $producto_costo*$cantidad,
+                    'compra_cambio' => 0,
+                    
+                );
 
-$sql = "INSERT INTO `compra` (`estado_id`, `tipotrans_id`, `usuario_id`, `moneda_id`, `proveedor_id`, `forma_id`, `compra_fecha`, `compra_hora`, `compra_subtotal`, `compra_descuento`, `compra_descglobal`, `compra_total`, `compra_totalfinal`, `compra_efectivo`, `compra_cambio`) VALUES 
-  (1, 1, ".$usuario_id.", 1, 1, 1, '".$fecha."', '".$hora."', 0, 0, 0, 0, 0, 0, 0) ";
-
-$this->db->query($sql);
-$compra_id = $this->db->insert_id();
+                $compra_id=$this->Compra_model->add_compra($compra);
 
 
 $detalle = "INSERT INTO detalle_compra
@@ -1528,21 +1545,22 @@ $detalle = "INSERT INTO detalle_compra
     moneda_id
     )
     (SELECT
-    $compra_id, 
-    $producto_id,
+    ".$compra_id.", 
+    ".$producto_id.",
     producto_codigo,
-    $cantidad,
+    ".$cantidad.",
     producto_unidad,
     producto_costo,
     producto_precio,
-    $cantidad*producto_costo,
-    $cantidad*producto_costo,
+    ".$cantidad."*producto_costo,
+    ".$cantidad."*producto_costo,
     0,
     0,
     1
 
     FROM 
-    inventario)";
+    inventario
+WHERE producto_id=".$producto_id.")";
 
     $this->db->query($detalle);  
 
