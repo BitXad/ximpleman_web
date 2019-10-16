@@ -19,7 +19,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-                <h3 class="box-title">OT TERMINADOS</h3>
+                <h3 class="box-title">ORDENES DE TRABAJO QUE TERMINARON EL PROCESO DE: <B><span id="elestado1"></span></B> LISTAS PARA SER RECEPCIONADAS EN: <B><span id="elestado"></span></B></h3>
             	<div class="box-tools">
                     
                 </div>
@@ -27,15 +27,19 @@
 <div class="row">
   <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
   <input type="hidden" name="estado" id="estado" value="">
+
     <div class="col-md-12">
                        
                         <?php 
                         foreach($estados as $estado)
-                        { ?>
+                        { if ($estado['estado_id']==17) {
+                           
+                        }else{?>
+                            <div class="col-md-2">
                             <button class="btn btn-success" onclick="buscarterminados(<?php echo $estado['estado_id']; ?>)"><?php echo $estado['estado_descripcion']; ?></button>
-                         
+                            </div>
                         
-                        <?php }  ?>
+                        <?php } }  ?>
 
 </div>
 <div class="row">
@@ -53,7 +57,7 @@
 						<th>#</th>
 						<th>OT</th>
 						<th>Cliente</th>
-            <th>Fecha Inicio</th>
+                        <th>Fecha Inicio</th>
 						<th>Fecha Terminado</th>
             
             <th></th>

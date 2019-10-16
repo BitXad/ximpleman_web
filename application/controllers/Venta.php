@@ -568,15 +568,17 @@ class Venta extends CI_Controller{
             $this->Venta_model->ejecutar($sql);
             $proceso_fechaproceso = "now()";
             $contador = 1;
+            $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.")";
+            $primid = $this->Venta_model->ejecutar($prisql); 
 
-            for ($contador = 17; $contador<=23; $contador++){
+            for ($contador = 18; $contador<=23; $contador++){
                  
                 //$orden_id = 
                 $estado = $contador;
-                $estado_id = 1;
+                $estado_id = 24;
                 
-                $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso) value(".
-                        $orden_id.",".$estado.",".$estado_id.",0,".$proceso_fechaproceso.")";
+                $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id) value(".
+                        $orden_id.",".$estado.",".$estado_id.",0)";
                 $id = $this->Venta_model->ejecutar($sql);              
                 
             }
