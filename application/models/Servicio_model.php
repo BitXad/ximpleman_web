@@ -218,8 +218,7 @@ class Servicio_model extends CI_Model
      */
     function get_all_repservicios()
     {
-        $servicio = $this->db->query("
-            SELECT
+        /*SELECT
                 c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
                 ds.detalleserv_id, s.servicio_total, s.servicio_acuenta, s.servicio_saldo,
                 ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
@@ -237,6 +236,27 @@ class Servicio_model extends CI_Model
                 LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
                 LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
 
+            WHERE*/
+        $servicio = $this->db->query("
+            SELECT
+                  c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                  ds.detalleserv_id, s.servicio_total, s.servicio_acuenta, s.servicio_saldo,
+                  ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
+                  ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
+                  ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                  e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion, ds.detalleserv_descripcion,
+                  r.usuario_nombre as respusuario_nombre, ifnull(t1.total_insumo, 0) as total_insumo
+              FROM
+                  detalle_serv ds
+                  LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+                  LEFT JOIN estado e on ds.estado_id = e.estado_id
+                  LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+                  LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+                  LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+                  LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+                  LEFT JOIN 
+                  (SELECT sum(dv.detalleven_total) as total_insumo, dv.detalleserv_id as estedetalleserv_id
+                    FROM detalle_venta dv group by dv.detalleserv_id) as t1 on t1.estedetalleserv_id = ds.detalleserv_id
             WHERE
                 date(s.servicio_fecharecepcion) = date(now())
 
@@ -250,8 +270,7 @@ class Servicio_model extends CI_Model
      */
     function get_all_busquedarepservicios($filtro)
     {
-        $servicio = $this->db->query("
-            SELECT
+        /*SELECT
                 c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
                 ds.detalleserv_id, s.servicio_total, s.servicio_acuenta, s.servicio_saldo,
                 ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
@@ -267,8 +286,28 @@ class Servicio_model extends CI_Model
                 LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
                 LEFT JOIN cliente c on s.cliente_id = c.cliente_id
                 LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
-                LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
-
+                LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id*/
+        $servicio = $this->db->query("
+                
+            SELECT
+                  c.cliente_nombre, s.servicio_id, s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                  ds.detalleserv_id, s.servicio_total, s.servicio_acuenta, s.servicio_saldo,
+                  ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
+                  ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
+                  ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                  e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion, ds.detalleserv_descripcion,
+                  r.usuario_nombre as respusuario_nombre, ifnull(t1.total_insumo, 0) as total_insumo
+              FROM
+                  detalle_serv ds
+                  LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+                  LEFT JOIN estado e on ds.estado_id = e.estado_id
+                  LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+                  LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+                  LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+                  LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+                  LEFT JOIN 
+                  (SELECT sum(dv.detalleven_total) as total_insumo, dv.detalleserv_id as estedetalleserv_id
+                    FROM detalle_venta dv group by dv.detalleserv_id) as t1 on t1.estedetalleserv_id = ds.detalleserv_id
             WHERE
                  ".
                 $filtro." 

@@ -1003,15 +1003,15 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<a href='"+base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"]+"' id='imprimir' class='btn btn-success btn-xs'  target='_blank' title='Imprimir Comprobante' ><span class='fa fa-print'></span></a>";
                         var dir_url = "";
                         var titprint = "";
-                        if(tipoimpresora = "FACTURADORA"){
+                        if(tipoimpresora == "FACTURADORA"){
                             dir_url = base_url+"servicio/boletarecepcion_boucher/"+registros[i]["servicio_id"];
                             titprint = "Imp. Boucher";
                         }else{
                             dir_url = base_url+"servicio/boletarecepcion/"+registros[i]["servicio_id"];
-                            $titprint = "Imp. Normal";
+                            titprint = "Imp. Normal";
                         }
                         html += "<a href='"+dir_url+"' id='imprimir' class='btn btn-facebook btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span></a>";
-                        html += "<a data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+")' class='btn btn-primary btn-xs' title='Informe Técnico'><span class='fa fa-print'></span></a>";
+                        html += "<a data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+")' class='btn btn-primary btn-xs' title='Informe Técnico'><span class='fa fa-file-text'></span></a>";
                         html += "<!------------------------ INICIO modal para imprimir reporte Técnico ------------------->";
                         html += "<div class='modal fade' id='modalinformetecnico"+i+"' tabindex='-1' role='dialog' aria-labelledby='modalinformetecnicoLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
