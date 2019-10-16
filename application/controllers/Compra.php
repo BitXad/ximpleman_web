@@ -1496,6 +1496,63 @@ $detalle = "INSERT into detalle_compra(
     }
 }
 
+function compra_rapida(){
+        
+       $producto_id = $this->input->post('producto_id');
+$cantidad = $this->input->post('cantidad');
+$usuario_id = $this->session_data['usuario_id'];
+$fecha = date('Y-m-d');
+$hora =  date("H:i:s", $time);
+
+
+$sql = "INSERT INTO `compra` (`estado_id`, `tipotrans_id`, `usuario_id`, `moneda_id`, `proveedor_id`, `forma_id`, `compra_fecha`, `compra_hora`, `compra_subtotal`, `compra_descuento`, `compra_descglobal`, `compra_total`, `compra_totalfinal`, `compra_efectivo`, `compra_cambio`) VALUES 
+  (1, 1, ".$usuario_id.", 1, 1, 1, '".$fecha."', '".$hora."', 0, 0, 0, 0, 0, 0, 0) ";
+
+$this->db->query($sql);
+$compra_id = $this->db->insert_id();
+
+
+$detalle = "INSERT INTO detalle_compra
+    (
+    compra_id,
+    producto_id,
+    detallecomp_codigo,
+    detallecomp_cantidad,
+    detallecomp_unidad,
+    detallecomp_costo,
+    detallecomp_precio,
+    detallecomp_subtotal,
+    detallecomp_total,
+    detallecomp_descuento, 
+    detallecomp_descglobal,
+    moneda_id
+    )
+    (SELECT
+    $compra_id, 
+    $producto_id,
+    producto_codigo,
+    $cantidad,
+    producto_unidad,
+    producto_costo,
+    producto_precio,
+    $cantidad*producto_costo,
+    $cantidad*producto_costo,
+    0,
+    0,
+    1
+
+    FROM 
+    inventario)";
+
+    $this->db->query($detalle);  
+
+$inventario = "update inventario set inventario.existencia=inventario.existencia+".$cantidad." where producto_id=".$producto_id."";
+
+        $resulrado=$this->db->query($inventario);
+    echo json_encode($resultado);  
+        
+    }
+
     function historial_compras(){
         
         $producto_id = $this->input->post('producto_id');
