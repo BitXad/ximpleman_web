@@ -140,6 +140,7 @@ function ventas_dia($estado)
                 left join usuario u on u.usuario_id = v.usuario_id
                 left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
                 left join zona z on z.zona_id = c.zona_id
+                left join credito r on r.venta_id = v.venta_id
                 where v.venta_id = ".$venta_id;
         
         $venta = $this->db->query($sql)->result_array();        

@@ -171,7 +171,9 @@ border-bottom : 1px solid #aaa;
                             
                 USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
                 COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
-                TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
+                TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
+                CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
+                SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>                
         </td>
         <td align="right">
 <!--            <center>

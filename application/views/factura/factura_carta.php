@@ -303,7 +303,7 @@ border-bottom : 1px solid #aaa;
                               ?>    
                             LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
 
-                            USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b>
+                            USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
                             <?php if (isset($venta[0]['venta_id'])){ ?>
                             <br>TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
                             <?php } ?>

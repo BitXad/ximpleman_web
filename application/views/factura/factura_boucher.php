@@ -256,7 +256,7 @@ border-bottom : 1px solid #aaa;*/
     </tr>    
     <tr >
         <td style="padding: 0;  line-height: 12px;" colspan="4">
-               USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b> / TRANS: <b><?php echo "00".$venta[0]['venta_id']; ?></b>
+               USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b> / TRANS: <b><?php echo "00".$factura[0]['venta_id']; ?></b>
             <center>
                     <?php echo $factura[0]['factura_leyenda1'];?> <br>
             <font size="1">

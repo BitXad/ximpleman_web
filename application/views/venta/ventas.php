@@ -1131,8 +1131,12 @@ window.onkeydown = compruebaTecla;
 	</div>
 </div>
 <!----------------- fin modal preferencias ---------------------------------------------->
-
-
+<div hidden>
+    
+<button type="button" id="boton_modal_ingreso" class="btn btn-primary" data-toggle="modal" data-target="#modalingreso" >
+  Launch demo modal
+</button>
+</div>
 <!----------------- modal preferencias ---------------------------------------------->
 
 <div class="modal fade" id="modalingreso" tabindex="-1" role="dialog" aria-labelledby="modalingreso" aria-hidden="true">
@@ -1147,39 +1151,35 @@ window.onkeydown = compruebaTecla;
                                 <h4 class="modal-title" id="myModalLabel"><b>INGRESO RAPIDO</b></h4>
                                 <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
                             </center>
-
-                            <input id="detalleven_id" value="0" hidden>
                             
                     </div>
                     <div class="modal-body">
                         <!--------------------- TABLA---------------------------------------------------->
                         
                         <div class="box-body table-responsive">
+                            <input type="text" id="ingresorapido_producto" value="-" class="form-control btn btn-xs btn-default" readonly>
                                         <div class="col-md-6">
-                                            <label for="usuario_idx" class="control-label">Preferencia de producto</label>
-                                            <div class="form-group">
-							
-                                                
-                                                
-                                            </div>
-                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
+                                            <label for="usuario_idx" class="control-label">Cantidad:</label>
+                                            
+                                            <input type="text" id="ingresorapido_producto_id" value="0.00" hidden >
+                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning">
 					</div>
                                         <div class="col-md-6" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
                                                         
-                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="guardar_preferencia()" data-dismiss="modal" >
-                                                            <span class="fa fa-floppy-o"></span> Guadar
+                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Registrar
                                                     </button>
                                                     
-                                                    <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
                                                         <span class="fa fa-close"></span>   Cancelar                                                          
                                                     </button>
 						</div>
 					</div>
                             
                                         <!--------------------- inicio loader ------------------------->
-                                        <div class="col-md-6" id='loaderinventario'  style='display:none;'>
+                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
                                             <center>
                                                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
                                             </center>

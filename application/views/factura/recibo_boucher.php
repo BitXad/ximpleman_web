@@ -210,8 +210,15 @@ border-bottom : 1px solid #aaa;
             </font>
             <font size="1">
                 <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
+                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>            
             </font>
+            
+            <?php if($venta[0]['tipotrans_id']==2){ ?>
+            <font size="1">
+                <br>CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b>
+                <br>SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
+            </font>
+            <?php } ?>
             
         </td>          
     </tr>

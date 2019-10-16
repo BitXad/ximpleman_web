@@ -1092,6 +1092,38 @@ function ingreso_rapido(producto_id){
     
 }
 
+function registrar_ingreso_rapido(producto){
+    
+    $("#ingresorapido_producto").val(producto.producto_nombre);
+    $("#ingresorapido_producto_id").val(producto.producto_id);
+    $("#ingresorapido_cantidad").val("0.00");
+    $("#boton_modal_ingreso").click();
+    
+    focus_ingreso_rapido();
+    
+}
+
+function guardar_ingreso_rapido(){
+      
+    var base_url = document.getElementById('base_url').value;   
+    var controlador = base_url+"compra/compra_rapida";
+    var producto_id = document.getElementById("ingresorapido_producto_id").value;
+    var cantidad = document.getElementById("ingresorapido_cantidad").value;
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{producto_id:producto_id,cantidad:cantidad },
+        success:function(respuesta){         
+            //tablaresultados()();
+        },
+        error: function(respuesta){         
+        }        
+    });               
+    
+}
+
+
+
 //Tabla resultados de la busqueda
 function tablaresultados(opcion)
 {   
@@ -1211,7 +1243,7 @@ function tablaresultados(opcion)
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
                         
-                        html += "<button class='btn btn-facebook btn-xs' type='text' id='button"+registros[i]["producto_id"]+"' onclick='ingreso_rapido("+registros[i]["producto_id"]+")'>[+]</button>";
+                        html += "<button class='btn btn-facebook btn-xs' type='text' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+JSON.stringify(registros[i])+")'>[+]</button>";
                         
                        if(! esMobil()){
                         html += "</td>";
@@ -2899,6 +2931,13 @@ function focus_efectivo(){
     });
 }
 
+function focus_ingreso_rapido(){
+    
+        $('#modalingreso').on('shown.bs.modal', function() {
+        $('#ingresorapido_cantidad').focus();
+        $('#ingresorapido_cantidad').select();
+    });
+}
 function pedidos_pendientes()
 {    
     var base_url = document.getElementById('base_url').value;
