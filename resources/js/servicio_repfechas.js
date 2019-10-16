@@ -68,6 +68,8 @@ function reportedetservicio(){
            success:function(resul){     
               
                 $("#resdetserv").val("- 0 -");
+                /*$("#esdesde").html(fecha_desde);
+                $("#eshasta").html(fecha_hasta);*/
                var registros =  JSON.parse(resul);
            
                if (registros != null){
@@ -82,7 +84,7 @@ function reportedetservicio(){
                     }
                     $('#esteestado').html(estado);
                     
-                    var tecnico = "<b>TECNICO: </b>"+$('#busresponsable_id option:selected').text();
+                    var tecnico = "<b>TÉCNICO: </b>"+$('#busresponsable_id option:selected').text();
                     if(buscar_cliente !=0){
                         buscar_cliente = "<br><b>CLIENTE: </b>"+buscar_cliente;
                     }
@@ -93,15 +95,18 @@ function reportedetservicio(){
                    
                     html = "";
                     
-                    var totaltotal   = 0;
-                    var totalacuenta = 0;
-                    var totalsaldo   = 0;
+                    var totaltotal    = 0;
+                    var totalinsumo   = 0;
+                    var totalacuenta  = 0;
+                    var totalsaldo    = 0;
+                    var totalutilidad = 0;
 
                     for (var i = 0; i < n ; i++){
-
-                        totaltotal   = Number(totaltotal)  + Number(registros[i]['detalleserv_total']);
-                        totalacuenta = Number(totalacuenta)   + Number(registros[i]['detalleserv_acuenta']);
-                        totalsaldo   = Number(totalsaldo) + Number(registros[i]['detalleserv_saldo']);
+                        totaltotal    = Number(totaltotal)  + Number(registros[i]['detalleserv_total']);
+                        totalinsumo   = Number(totalinsumo)  + Number(registros[i]['total_insumo']);
+                        totalacuenta  = Number(totalacuenta)   + Number(registros[i]['detalleserv_acuenta']);
+                        totalsaldo    = Number(totalsaldo) + Number(registros[i]['detalleserv_saldo']);
+                        totalutilidad = Number(totalutilidad) + (Number(registros[i]['detalleserv_total'])-Number(registros[i]['total_insumo']));
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -110,34 +115,38 @@ function reportedetservicio(){
                         html += registros[i]["cliente_nombre"];
                         html += "</td>";
                         html += "<td>"+registros[i]["servicio_id"]+"</td>";
-                        html += "<td class='alinearcentro'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
+                        html += "<td class='text-center maspeque'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
                         var fechater = "";
                         if(registros[i]['detalleserv_fechaterminado'] !=null){
                             fechater = convertDateFormat(registros[i]["detalleserv_fechaterminado"])+" "+registros[i]["detalleserv_horaterminado"]
                         }
-                        html += "<td class='alinearcentro'>"+fechater+"</td>";
+                        html += "<td class='text-center maspeque'>"+fechater+"</td>";
                         var fechaentreg = "";
                         if(registros[i]['detalleserv_fechaentregado'] !=null){
                             fechaentreg = convertDateFormat(registros[i]["detalleserv_fechaentregado"])+" "+registros[i]["detalleserv_horaentregado"]
                         }
-                        html += "<td class='alinearcentro'>"+fechaentreg+"</td>";
-                        html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                        html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
-                        html += "<td class='alinearder'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
-                        
-                        html += "<td class='alinearder'></td>";
-                        html += "<td  class='alinearcentro' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
-                        html += "<td class='alinearcentro'>"+registros[i]["tiposerv_descripcion"]+"</td>";
-                        html += "<td>"+registros[i]["detalleserv_descripcion"]+"</td>";
-                        html += "<td>"+registros[i]["respusuario_nombre"]+"</td>";
+                        html += "<td class='text-center maspeque'>"+fechaentreg+"</td>";
+                        html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
+                        html += "<td class='text-right'>"+numberFormat(Number(registros[i]["total_insumo"]).toFixed(2))+"</td>";
+                        html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
+                        html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
+                        var resutilidad = Number(registros[i]["detalleserv_total"])-Number(registros[i]["total_insumo"]);
+                        html += "<td class='text-right'>"+numberFormat(Number(resutilidad).toFixed(2))+"</td>";
+                        //html += "<td class='text-right'></td>";
+                        html += "<td  class='text-center' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
+                        html += "<td class='text-center'>"+registros[i]["tiposerv_descripcion"]+"</td>";
+                        html += "<td class='conmenospacio'>"+registros[i]["detalleserv_descripcion"]+"</td>";
+                        html += "<td class='maspeque'>"+registros[i]["respusuario_nombre"]+"</td>";
                         
                         html += "</tr>";
                        
                    }
                  
                     $('#eltotal').html(numberFormat(Number(totaltotal).toFixed(2)));
+                    $('#elinsumo').html(numberFormat(Number(totalinsumo).toFixed(2)));
                     $('#elacuenta').html(numberFormat(Number(totalacuenta).toFixed(2)));
                     $('#elsaldo').html(numberFormat(Number(totalsaldo).toFixed(2)));
+                    $('#lautilidad').html(numberFormat(Number(totalutilidad).toFixed(2)));
                     //$("#tablaresultados").html(htmlc+html+htmls+"</table>");
                     $("#tablaresultados").html(html);
                    

@@ -53,6 +53,24 @@
         });
     });
 </script>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+      $(".oculto2").hide();              
+        $(".inf2").click(function(){
+              var nodo = $(this).attr("href");  
+
+              if ($(nodo).is(":visible")){
+                   $(nodo).hide();
+                   return false;
+              }else{
+            $(".oculto2").hide();
+            //$(".oculto").hide("slow");                             
+            $(nodo).fadeToggle("fast");
+            return false;
+              }
+        });
+    });
+</script>
 <script>
       function verificar_precio(){
               var venta = $("#producto_precio").val();
@@ -412,8 +430,9 @@
                     </div>
                     
                     <?php } ?>
-                    
-                        
+                    <div class="col-md-12">
+                    <a href="#info2" class="btn btn-facebook btn-sm inf2" title="Envases retornables"><fa class="fa fa-exchange"></fa> Envases Retornables</a>
+                        <div id="info2" class="oculto2">
                     <div class="col-md-2">
                         <label for="producto_envase" class="control-label">Envase Retornable</label>
                         <div class="form-group">
@@ -467,6 +486,8 @@
                             <input type="number" step="any" min="0" name="producto_cantidadenvase" value="<?php echo ($this->input->post('producto_cantidadenvase')) ? $this->input->post('producto_cantidadenvase') : $producto['producto_cantidadenvase']; ?>" class="form-control" id="producto_cantidadenvase"  onclick="this.select();"/>
                         </div>
                     </div>
+                    </div>
+                        </div>
             
 <!--                    <div class="col-md-5">
                         <label for="producto_principioact" class="control-label">Principio Activo</label>
