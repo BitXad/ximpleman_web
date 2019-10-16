@@ -59,27 +59,25 @@ class Proceso_orden extends CI_Controller{
     {
         if($this->acceso(155)){
             $estado = $this->input->post('estado');
+            
             $estado_id = 25;
             $datos = $this->Proceso_orden_model->get_en_proceso($estado,$estado_id);
     
                         echo json_encode($datos);
+                    
         }
     }
     function  buscarterminados()
     {
         if($this->acceso(155)){
             $estado = $this->input->post('estado');
-            if ($estado==17) {
-                $datos = $this->Proceso_orden_model->get_en_recepcion($estado);
-    
-                        echo json_encode($datos); 
-            }else{
+            
                 $estado_id = 26;
                 $estadoante=$estado-1;
                 $datos = $this->Proceso_orden_model->get_en_terminado($estadoante,$estado_id);
     
                         echo json_encode($datos); 
-            }
+            
            
         }
     }
@@ -258,5 +256,20 @@ class Proceso_orden extends CI_Controller{
                 show_error('The proceso_orden you are trying to delete does not exist.');
         }
     }
+
+    function elestado()
+    {
+        if($this->acceso(155)){
+            
+             $estado = $this->input->post('estado');
+            
+                $datos = $this->Estado_model->get_estado($estado);
+    
+                        echo json_encode($datos); 
+            
+            
+        }
+    }
+
     
 }

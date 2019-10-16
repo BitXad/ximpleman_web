@@ -193,6 +193,7 @@ class Producto extends CI_Controller{
                 'destino_id' => $this->input->post('destino_id'),
                 'producto_principioact' => $this->input->post('producto_principioact'),
                 'producto_accionterap' => $this->input->post('producto_accionterap'),
+                'producto_cantidadenvase' => $this->input->post('producto_cantidadenvase'),
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
