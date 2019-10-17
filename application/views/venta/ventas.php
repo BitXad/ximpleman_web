@@ -709,6 +709,11 @@ window.onkeydown = compruebaTecla;
                         <td style="padding: 0">Descuento Bs</td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
+                            <select id="tipo_descuento" onchange="calculardesc()">
+                                <option value="1">Bs</option>
+                                <option value="2">%</option>
+                                
+                            </select>
                         </td>
                 </tr>
 
