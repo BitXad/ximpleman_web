@@ -14,8 +14,18 @@ function calculardesc(){
 
    var venta_subtotal = document.getElementById('venta_subtotal').value;
    var venta_descuento = document.getElementById('venta_descuento').value;      
-   var subtotal = Number(venta_subtotal) - Number(venta_descuento);
+   var tipo_descuento = document.getElementById('tipo_descuento').value;      
+   var subtotal = 0;
+   
+   if (tipo_descuento==2)
+   {   
+       venta_descuento = venta_descuento * venta_subtotal /100;        
+       $("#venta_descuento").val(venta_descuento);
+       $("#tipo_descuento").val(1);
+    }
 
+       subtotal = Number(venta_subtotal) - Number(venta_descuento); 
+    
    $("#venta_totalfinal").val(subtotal);
    $("#venta_efectivo").val(subtotal);
    
@@ -1243,7 +1253,7 @@ function tablaresultados(opcion)
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
                         
-                        html += "<button class='btn btn-facebook btn-xs' type='text' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+JSON.stringify(registros[i])+")'>[+]</button>";
+                        html += "<button class='btn btn-danger btn-xs' type='text' title='Compra rápida' id='button"+registros[i]["producto_id"]+"' onclick='registrar_ingreso_rapido("+JSON.stringify(registros[i])+")'><fa class='fa fa-bolt'></fa></button>";
                         
                        if(! esMobil()){
                         html += "</td>";
@@ -2024,14 +2034,76 @@ function ventas_por_fecha()
 
 }
 
+function cargar_factura(factura){
+    //alert(factura.cliente_nombre);
+    
+    $("#generar_nit").val(factura.cliente_nit);
+    $("#generar_razon").val(factura.cliente_razon);
+    $("#generar_detalle").val("PRODUCTOS VARIOS");
+    $("#generar_venta_id").val(factura.venta_id);
+    $("#generar_monto").val(Number(factura.venta_total).toFixed(2));
+    $("#boton_modal_factura").click();
+    
+}
+
+function registrar_factura(){
+            
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"venta/generar_factura";
+     
+    var nit = document.getElementById("generar_nit").value;
+    var razon_social = document.getElementById("generar_razon").value;
+    var fecha_venta = fecha();
+    var detalle_factura = document.getElementById("generar_detalle").value;
+    var detalle_unidad = "UNIDAD";
+    var detalle_cantidad = "1";
+    var detalle_precio = document.getElementById("generar_monto").value;
+    var venta_id = document.getElementById("generar_venta_id").value;
+     
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_factura:detalle_factura,
+            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id}, 
+            success:function(resultado){
+                //alert("Factura registrada con éxito...!");
+                ventas_por_fecha();
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    }) 
+    
+//    
+//    
+//    $.ajax({url: controlador,
+//            type:"POST",
+//            data:{nit:nit,razon:razon,telefono:telefono},
+//            success:function(respuesta){  
+//            
+//                var registro = JSON.parse(respuesta);
+//                
+//                cliente_id = registro[0]["cliente_id"];
+//                //registrarventa(cliente_id);
+//                modificar_venta(cliente_id);
+//                
+//            },
+//            error: function(respuesta){
+//                cliente_id = 0;            
+//            }
+//        });
+//    }
+//            
+//            
+            
+}
+
+
 function ventas_por_parametro()
 {
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/mostrar_ventas_parametro";
     var parametro = document.getElementById('filtrar').value;
-//    var estado_id = document.getElementById('estado_id').value;
-//    var usuario_id = document.getElementById('usuario_id').value;
-//    
+
     if (parametro!=''){
         
         if (Number(parametro)>0)        
@@ -2139,7 +2211,10 @@ function tabla_ventas(filtro)
                     html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
                 }
                     if (v[i]['venta_tipodoc']==1){
-                        html += "                                   <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                        html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                    }
+                    else{                        
+                        html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
                     }
                     
                     html += "<br><br>";

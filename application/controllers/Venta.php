@@ -631,7 +631,7 @@ class Venta extends CI_Controller{
             
             $nit_factura = $this->input->post('nit');
             $razon_social = $this->input->post('razon_social');
-            $fecha_venta = $this->input->post('fecha_venta');            
+            $fecha_venta = $this->input->post('fecha_venta');
             $detallefact_descripcion = $this->input->post('detalle_factura');
             $unidad = $this->input->post('detalle_unidad');
             $cantidad = $this->input->post('detalle_cantidad');
@@ -659,7 +659,7 @@ class Venta extends CI_Controller{
                         
             $numero_factura = $dosificacion["dosificacion_numfact"]+1;
             $estado_id = 1;
-            $venta_id = 0;
+            $venta_id = $this->input->post('venta_id');
             $factura_fechaventa = $fecha_venta;
             $factura_fecha = "date(now())";
             $factura_hora = "time(now())";
@@ -749,7 +749,11 @@ class Venta extends CI_Controller{
 
             $this->Venta_model->ejecutar($sql);           
             
-
+            
+            if($venta_id>0){
+                $sql = "update venta set venta_tipodoc = 1 where venta_id = ".$venta_id;
+                $factura_id = $this->Venta_model->ejecutar($sql);
+            }
       
         //**************** fin contenido ***************
         }
