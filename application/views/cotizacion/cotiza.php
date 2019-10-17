@@ -11,18 +11,50 @@
  <input type="hidden" name="fecha_cotizacion" id="fecha_cotizacion" value="<?php echo $cotizacion['cotizacion_fecha']; ?>">
  <input type="hidden" name="cotizacion_id" id="cotizacion_id" value="<?php echo $cotizacion_id; ?>">
  
- <br>
- <br>
- <br>
+ <table class="table" style="width: 20cm; padding: 0;" >
+    <tr>
+        <td style="width: 6cm; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                  
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
+
+            </center>                      
+        </td>
+                   
+        <td style="width: 6cm; padding: 0" > 
+            
+        </td>
+        <td style="width: 4cm; padding: 0" >
+<!--                ______________________________                
+                   
+                                
+                <div id="datos_recorrido">
+                    
+                </div>
+                
+                ______________________________-->
+        </td>
+    </tr>
+     
+    
+    
+</table>  
+<br>
 <div id="fechacotizacion" style="text-align: right"></div>
 
 <div style="text-align: left">
-    <?php $mimagen = $empresa[0]['empresa_imagen'];
-    echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" height="80px" width="25%"/>'; ?>
-    <br><br>
+   
     Señores:
     <br>
-    <?php echo $cotizacion['cotizacion_cliente']; ?>
+    <?php if ($cotizacion['cotizacion_cliente']==''){ echo "A QUIEN CORRESPONDA"; }else{ echo $cotizacion['cotizacion_cliente']; }?>
     <br>Presente.-
     <br>
 </div>
@@ -34,7 +66,6 @@
     Mediante la presente me dirijo a su distinguida institución a tiempo de saludarle y desearle éxito
     en las funciones que desempeña.
 </div>
-<br>
 <div style="text-align: justify">
     El motivo de la misma es cotizar el(los) siguiente(s) producto(s).
 </div>
@@ -75,16 +106,14 @@
                 <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
                     Marca: <b><?php echo $d['producto_marca']; ?></b>
                     <!--Industria: <b><?php //echo $d['producto_industria']; ?></b>-->
-                    <?php if($d['detallecot_caracteristica'] != "" || $d['detallecot_caracteristica'] != null){ echo " / ".$d['detallecot_caracteristica'];} ?>
+                    <?php if($d['detallecot_caracteristica'] == "null"){ echo " "; }else{ echo $d['detallecot_caracteristica'];} ?>
                 </td>
                 <td class="text-center">
                     <?php echo $d['producto_industria']; ?>
                 </td>
 
                 <td  style="text-align: right;">
-                    <!--<input id="cotizacion_id"  name="cotizacion_id" type="hidden" class="form-control" value="<?php echo $cotizacion_id; ?>">
-                    <input id="detallecot_descripcion"  name="descripcion" type="hidden" class="form-control" value="<?php echo $d['producto_nombre'], $d['producto_marca'], $d['producto_industria'];  ?>">
-                    <input id="producto_id"  name="producto_id" type="hidden" class="form-control" value="<?php echo $d['producto_id']; ?>">-->
+                   
                     <?php echo number_format($d['detallecot_precio'],2,".",","); ?>
                 </td>  
 
@@ -189,82 +218,23 @@
                 </td>
             </tr>
         </table>
-                    <!--<table class="table table-striped table-condensed" id="mitabla">
-   <td>
-                    	 <center>  
-                    	 <b>LITERAL: <?php /*echo num_to_letras($totalfinal); ?></b></center>
-                    	 <div class="col-md-12" style="text-align: right;">
-                    	 <b>Toltal Desc. <span class="badge badge-success"><font size="3"><b><?php echo number_format($descuento,2,".",","); ?></b></font></span></b><br>
-                    	 <b>TOTAL
-                            	<span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,2,".",",");*/ ?></b></font></span>
-                            
-                        </div>    
-                   </td>
-                    
-                    
-                </table>-->
+                 
               
             </div>
     
-<div class="col-md-12" style="text-align: right;">
-
+<div class="col-md-12">
+<div class="col-md-6" >
+  <font size="2">Nota: <?php echo  $cotizacion['cotizacion_glosa']; ?></font>
+</div>
+<div class="col-md-6" style="text-align: right;">
     <font size="1"><?php echo date("d/m/Y   H:i:s"); ?></font>
-
+</div>
 </div>
 					
 
         </div>
 
-            		 <form action="<?php echo base_url('cotizacion/finalizar/'.$cotizacion_id); ?>"  method="POST" class="form">
-            		 	<div class="row clearfix">
-
-                           <div class="col-md-3" hidden>
-						<label for="cotizacion_fecha" class="control-label"> Fecha</label>
-						<div class="form-group">
-							<input type="text" name="cotizacion_fecha" value="<?php echo implode("/", array_reverse(explode("-", ($this->input->post('cotizacion_fecha') ? $this->input->post('cotizacion_fecha') : $cotizacion['cotizacion_fecha'])))); ?>" class="has-datepicker form-control" id="cotizacion_fecha" />
-						</div>
-					</div>
-					<div class="col-md-3" hidden>
-						<label for="cotizacion_validez" class="control-label">Validez</label>
-						<div class="form-group">
-							<input type="text" name="cotizacion_validez"  value="<?php echo ($this->input->post('cotizacion_validez') ? $this->input->post('cotizacion_validez') : $cotizacion['cotizacion_validez']); ?>" class="form-control" id="cotizacion_validez" />
-						</div>
-					</div>
-					<div class="col-md-3" hidden>
-						<label for="cotizacion_formapago" class="control-label">Forma Pago</label>
-						<div class="form-group">
-							<input type="text" name="cotizacion_formapago"  value="<?php echo ($this->input->post('cotizacion_formapago') ? $this->input->post('cotizacion_formapago') : $cotizacion['cotizacion_formapago']); ?>" class="form-control" id="cotizacion_formapago" />
-						</div>
-					</div>
-					<div class="col-md-3" hidden>
-						<label for="cotizacion_tiempoentrega" class="control-label">Tiempo de Entrega</label>
-						<div class="form-group">
-							<input type="text" name="cotizacion_tiempoentrega"  value="<?php echo ($this->input->post('cotizacion_tiempoentrega') ? $this->input->post('cotizacion_tiempoentrega') : $cotizacion['cotizacion_tiempoentrega']); ?>" class="form-control" id="cotizacion_tiempoentrega" />
-						</div>
-					</div>
-					<div class="col-md-6" hidden>
-						<label for="cotizacion_total" class="control-label">Cotizacion Total</label>
-						<div class="form-group">
-							<input type="text" name="cotizacion_total" value="<?php echo $totalfinal; ?>" class="form-control" id="cotizacion_total" />
-						</div>
-					</div>
-					 <div class="col-md-6">
-						<label for="cotizacion_glosa" class="control-label">Nota: </label>
-						<div class="form-group">
-							<input type="text" name="cotizacion_glosa"  value="<?php echo ($this->input->post('cotizacion_glosa') ? $this->input->post('cotizacion_glosa') : $cotizacion['cotizacion_glosa']); ?>" class="form-control" id="cotizacion_glosa" />
-						</div>
-					</div>
-					
-       
-            
-    </div>
-    <!--<center style="padding-top: 5%;">
-              
-                <?php /*echo "---------------------------------"; ?><br>
-                <?php echo  $usuario['usuario_nombre'];*/ ?>    
-               
- </center>-->
-</div>
+          
 
 <!--</div>-->
 

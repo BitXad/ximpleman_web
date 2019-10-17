@@ -1,7 +1,19 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/cotizacion.js'); ?>" type="text/javascript"></script>
-
+<script>
+function enviar_formulario(cotizacion_id){
+  var base_url    = document.getElementById('base_url').value;
+   document.fincotiza.submit(cotizacion_id);
+    window.open(base_url+'cotizacion/recibo/'+cotizacion_id,'_blank');
+}
+</script>
+<script>
+function imprime(cotizacion_id){
+  var base_url    = document.getElementById('base_url').value;
+    window.open(base_url+'cotizacion/recibo/'+cotizacion_id,'_blank');
+}
+</script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -84,7 +96,7 @@ input[type=number] { -moz-appearance:textfield; }
             <div class="box-header with-border">
               	<h3 class="box-title">Cotizacion</h3>
             </div>
-            <form action="<?php echo base_url('cotizacion/finalizar/'.$cotizacion_id); ?>"  method="POST" class="form">
+            <form action="<?php echo base_url('cotizacion/finalizar/'.$cotizacion_id); ?>" id="fincotiza" name="fincotiza" method="POST" class="form">
           
 
       		<div class="box-body">
@@ -103,32 +115,32 @@ input[type=number] { -moz-appearance:textfield; }
 					<div class="col-md-3">
 						<label for="cotizacion_validez" class="control-label">Validez</label>
 						<div class="form-group">
-							<input type="text" name="cotizacion_validez"  value="<?php echo ($this->input->post('cotizacion_validez') ? $this->input->post('cotizacion_validez') : $cotizacion['cotizacion_validez']); ?>" class="form-control" id="cotizacion_validez" />
+							<input type="text" name="cotizacion_validez"  value="<?php echo ($this->input->post('cotizacion_validez') ? $this->input->post('cotizacion_validez') : $cotizacion['cotizacion_validez']); ?>" class="form-control" id="cotizacion_validez" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-3">
 						<label for="cotizacion_formapago" class="control-label">Forma Pago</label>
 						<div class="form-group">
-							<input type="text" name="cotizacion_formapago"  value="<?php echo ($this->input->post('cotizacion_formapago') ? $this->input->post('cotizacion_formapago') : $cotizacion['cotizacion_formapago']); ?>" class="form-control" id="cotizacion_formapago" />
+							<input type="text" name="cotizacion_formapago"  value="<?php echo ($this->input->post('cotizacion_formapago') ? $this->input->post('cotizacion_formapago') : $cotizacion['cotizacion_formapago']); ?>" class="form-control" id="cotizacion_formapago" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
 					<div class="col-md-3">
 						<label for="cotizacion_tiempoentrega" class="control-label">Tiempo de Entrega</label>
 						<div class="form-group">
-							<input type="text" name="cotizacion_tiempoentrega"  value="<?php echo ($this->input->post('cotizacion_tiempoentrega') ? $this->input->post('cotizacion_tiempoentrega') : $cotizacion['cotizacion_tiempoentrega']); ?>" class="form-control" id="cotizacion_tiempoentrega" />
+							<input type="text" name="cotizacion_tiempoentrega"  value="<?php echo ($this->input->post('cotizacion_tiempoentrega') ? $this->input->post('cotizacion_tiempoentrega') : $cotizacion['cotizacion_tiempoentrega']); ?>" class="form-control" id="cotizacion_tiempoentrega" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
            <div class="col-md-4" >
             <label for="cotizacion_lugarentrega" class="control-label">Lugar de Entrega</label>
             <div class="form-group">
-              <input type="text" id="cotizacion_lugarentrega" name="cotizacion_lugarentrega" value="<?php echo ($this->input->post('cotizacion_lugarentrega') ? $this->input->post('cotizacion_lugarentrega') : $cotizacion['cotizacion_lugarentrega']); ?>" class="form-control"  />
+              <input type="text" id="cotizacion_lugarentrega" name="cotizacion_lugarentrega" value="<?php echo ($this->input->post('cotizacion_lugarentrega') ? $this->input->post('cotizacion_lugarentrega') : $cotizacion['cotizacion_lugarentrega']); ?>" class="form-control"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
       
             </div>
           </div>
           <div class="col-md-4" >
-            <label for="cotizacion_chequenombre" class="control-label">Cheque a Favor de: </label>
+            <label for="cotizacion_chequenombre" class="control-label">Cheque a Favor de </label>
             <div class="form-group">
-              <input type="text" id="cotizacion_chequenombre" name="cotizacion_chequenombre" value="<?php echo ($this->input->post('cotizacion_chequenombre') ? $this->input->post('cotizacion_chequenombre') : $cotizacion['cotizacion_chequenombre']); ?>" class="form-control"  />
+              <input type="text" id="cotizacion_chequenombre" name="cotizacion_chequenombre" value="<?php echo ($this->input->post('cotizacion_chequenombre') ? $this->input->post('cotizacion_chequenombre') : $cotizacion['cotizacion_chequenombre']); ?>" class="form-control"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
       
             </div>
           </div>
@@ -160,23 +172,24 @@ input[type=number] { -moz-appearance:textfield; }
            <div class="col-md-4">
             <label for="cotizacion_glosa" class="control-label">Glosa</label>
             <div class="form-group">
-              <input type="text" name="cotizacion_glosa"  value="<?php echo ($this->input->post('cotizacion_glosa') ? $this->input->post('cotizacion_glosa') : $cotizacion['cotizacion_glosa']); ?>" class="form-control" id="cotizacion_glosa" />
+              <input type="text" name="cotizacion_glosa"  value="<?php echo ($this->input->post('cotizacion_glosa') ? $this->input->post('cotizacion_glosa') : $cotizacion['cotizacion_glosa']); ?>" class="form-control" id="cotizacion_glosa" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
             </div>
           </div>
-							<div class="col-md-4">
-            <button  type="submit"  class="btn btn-success">
+                  </div>
+         </div>
+    
+</div>
+							<div class="col-md-4" style="float: right;">
+            <button   onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-xs btn-success">
                 <i class="fa fa-check"></i>Finalizar Cotizacion
               </button></form>
-              <a href="javascript:history.back()"><button type="button" class="btn btn-danger">
+              <a href="<?php echo site_url('cotizacion/index'); ?>"><button type="button" class="btn btn-xs btn-danger">
                 <i class="fa fa-times"></i> Cancelar
               </button></a>
             </div>
           	</form>
           			     
-          </div>
-         </div>
-    
-</div>
+  
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
 <div class="col-md-12">
    <div class="col-md-4" style="padding-left:0px;">
@@ -233,12 +246,7 @@ input[type=number] { -moz-appearance:textfield; }
                    
                                             
                       
-        </div>
-            
-        
-     
-                            
-                    </tr>
+       
                    
 
                     
@@ -256,6 +264,21 @@ input[type=number] { -moz-appearance:textfield; }
 					
 
     </div>
+ <div class="col-md-12" align="right"> 
+  <center>
+            <a type="button" onclick="enviar_formulario(<?php echo $cotizacion_id; ?>)" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-money fa-4x"></i><br>
+               Finalizar<br>Cotización<br>
+            </a>
+
+            
+            <a  href="<?php echo site_url('cotizacion/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-sign-out fa-4x"></i><br><br>
+               Cancelar<br>
+            </a>    
+              
+            </center>
+ </div>   
 </div>
 
 <!---------------------------------------FIN TABLA DE DETALLE VENTAAA------------------------------------>
