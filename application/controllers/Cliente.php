@@ -597,20 +597,21 @@ class Cliente extends CI_Controller{
     /*
      * Se Añade un nuevo Cliente desde Detalle - Servicios por MEV
      */
-    function add_new($servicio_id)
+    function add_new()
     {
         if($this->acceso(69)){
             $this->load->model('Servicio_model');
+            $servicio_id = $this->input->post('servicio_id');
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 
             if(isset($data['servicio']['servicio_id']))
             {
                 $this->load->library('form_validation');
-                $this->form_validation->set_rules('cliente_nombre','Cliente telefono','required');
-                $this->form_validation->set_rules('cliente_codigo','Cliente telefono','required');
-                $this->form_validation->set_rules('cliente_telefono','Cliente telefono','required');
+                $this->form_validation->set_rules('cliente_nombre','Cliente Nombre','required');
+                $this->form_validation->set_rules('cliente_codigo','Cliente Código','required');
+                //$this->form_validation->set_rules('cliente_telefono','Cliente telefono','required');
 
-                if($this->form_validation->run())     
+                if($this->form_validation->run())
                 {
                     $nombre = $this->input->post('cliente_nombre');
                     $resultado = $this->Cliente_model->es_cliente_registrado($nombre);
@@ -620,27 +621,33 @@ class Cliente extends CI_Controller{
                         $tipocliente_id = 1;
                         $categoria_clie = 1;
 
-                        $estado_id = 1; //$this->Estado_model->get_id_estado($estado_descripcion);
-                        $mifecha = $this->Cliente_model->normalize_date($this->input->post('cliente_aniversario'));
+                        $estado_id = 1;
+                        $mifecha = date("Y-m-d");
+                        $mifecha1 = date("Y-m-d-H-i-s");
+                        $resmifecha    = explode('-', $mifecha1);
+                        $esresult = implode("", $resmifecha);
+                        $ci = substr($esresult, 2);
+                        
                         $params = array(
                                     'estado_id' => $estado_id,
                                     'tipocliente_id' => $tipocliente_id,
                                     'categoriaclie_id' => $categoria_clie,
                                     'cliente_codigo' => $this->input->post('cliente_codigo'),
                                     'cliente_nombre' => $this->input->post('cliente_nombre'),
-                                    'cliente_ci' => $this->input->post('cliente_ci'),
-                                    'cliente_direccion' => $this->input->post('cliente_direccion'),
+                                    'cliente_ci' => $ci,
+                                    'cliente_direccion' => "",
                                     'cliente_telefono' => $this->input->post('cliente_telefono'),
                                     'cliente_celular' => $this->input->post('cliente_celular'),
-                                    'cliente_foto' => $this->input->post('cliente_foto'),
-                                    'cliente_email' => $this->input->post('cliente_email'),
-                                    'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                                    'cliente_foto' => "",
+                                    'cliente_email' => "",
+                                    'cliente_nombrenegocio' => "",
                                     'cliente_aniversario' => $mifecha,
-                                    'cliente_latitud' => $this->input->post('cliente_latitud'),
-                                    'cliente_longitud' => $this->input->post('cliente_longitud'),
-                                    'cliente_nit' => $this->input->post('cliente_nit'),
+                                    'cliente_latitud' => "",
+                                    'cliente_longitud' => "",
+                                    'cliente_nit' => $ci,
                                     'cliente_razon' => $this->input->post('cliente_nombre'),
-                                    'usuario_id' => $this->input->post('usuario_id'),
+                                    'usuario_id' => 0,
+                                    'cliente_departamento' => "",
                                 );
                             $cliente_id = $this->Cliente_model->add_cliente($params);
 

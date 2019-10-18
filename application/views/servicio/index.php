@@ -74,17 +74,30 @@
     </div>
     <!---------------- BOTONES --------->
     <div class="col-md-6 no-print">
-        <div class="box-tools text-center">
-            <a class="btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Reg. Servicio</small></a>
+        <!--<div class="box-tools text-center" style="display: flex;">-->
+            <!--<div class="col-md-1">-->
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="col-md-1 btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar un nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Registrar Serv.</small></a>
+            <!--</div>&nbsp;-->
             <?php
             if($rol[72-1]['rolusuario_asignado'] == 1){ ?>
-            <a class="btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Todos los servicios" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Ver Todos</small></a>
+            <!--<div style="width: 16.66%;">-->
+            <!--<div class="col-md-1">-->
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="col-md-1 btn btn-info btn-foursquarexs" onclick="fechadeservicio('')" title="Muestra todos los servicios" ><font size="5"><span class="fa fa-eye"></span></font><br><small>Ver Todos</small></a>
+            <!--</div>&nbsp;-->
             <?php } ?>
-            <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="Buscar servicio por codigo" onclick="codigoservfocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Servicio</small></a>
-            <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Busqueda del historial de productos" onclick="kardexdetallefocus()"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Historial Producto</small></a>
-            <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="Buscar historial de un cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Historial Cliente</small></a>
-            <a href="<?php echo base_url('servicio/repserviciodiario'); ?>" class="btn btn-danger btn-foursquarexs" target="_blank" title="Movimiento economico diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Reporte Diario</small></a>           
-        </div>
+            <!--<div class="col-sm-1" style="width: 100%;">-->
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="col-md-1 btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" title="Buscar servicios por su codigo" onclick="codigoservfocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Serv.</small></a>
+            <!--</div>&nbsp;-->
+            <!--<div class="col-sm-1" style="width: 100%;">-->
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="col-md-1 btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" title="Buscar el historial de un determinado producto" onclick="kardexdetallefocus()"><font size="5"><span class="fa fa-binoculars"></span></font><br><small>Historial Prod.</small></a>
+            <!--</div>&nbsp;-->
+            <!--<div class="col-sm-1" style="width: 100%;">-->
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="col-md-1 btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscarkardexcli" title="Buscar el historial de un cliente" onclick="estefocus()" ><font size="5"><span class="fa fa-address-card-o"></span></font><br><small>Historial Cliente</small></a>
+            <!--</div>&nbsp;-->
+            <!--<div class="col-sm-1" style="width: 100%;">-->
+                <a style="width: 96px;" class="col-md-1 btn btn-danger btn-foursquarexs" href="<?php echo base_url('servicio/repserviciodiario'); ?>" target="_blank" title="Muestra el movimiento economico diario"><font size="5"><span class="fa fa-print"></span></font><br><small>Reporte Diario</small></a>           
+            <!--</div>-->
+        <!--</div>-->
     </div>
     <!---------------- FIN BOTONES --------->
 </div>

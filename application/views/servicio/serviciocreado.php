@@ -1,6 +1,7 @@
 <script src="<?php echo base_url('resources/js/servicio_creado.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="concliente" id="concliente" value="<?php echo $servicio['cliente_id']; ?>" />
+<input type="hidden" name="tienedetalle" id="tienedetalle" value="no" />
 <script>
     $(document).ready(function() {
 
@@ -176,7 +177,7 @@ $(document).ready(function(){
             <h5>
                 <b>Cliente: </b><span id="cliente-nombre"><?php if(is_null($servicio['cliente_id'])|| ($servicio['cliente_id'] ==0)){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_nombre']; ?>
                     </span><br>
-                <b>Telef.: </b><span id="cliente-telefono"><?php echo $cliente['cliente_telefono']; } ?>
+                <b>Telef.: </b><span id="cliente-telefono"><?php echo $cliente['cliente_telefono']." - ".$cliente['cliente_celular']; } ?>
                     </span><br>
                 <b>Código Cliente: </b><span id="cliente-codigo"><?php if(is_null($cliente['cliente_codigo'])){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_codigo']; } ?>
                     </span><br>
@@ -190,14 +191,12 @@ $(document).ready(function(){
                 </span>
             </h5>
         </div>
-        <div class="box-tools">
-            <center>
-                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Servicio</small></a>
-                <a class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" onclick="clientefocus()" ><font size="5"><span class="fa fa-user"></span></font><br><small>Cliente</small></a>
-                <a class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#myModal" onclick="ponerfocus();"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo</small></a>
-                <a class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" onclick="buscardetallefocus()" ><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar</small></a>
-                <a class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv.</small></a>
-            </center>
+        <div class="box-tools text-center">
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modaldetalle" title="Registrar nuevo detalle de servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Nuevo Detalle</small></a>
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#modalbuscar" onclick="clientefocus()" title="Asignar cliente al servicio"><font size="5"><span class="fa fa-user"></span></font><br><small>Asignar Cliente</small></a>
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="btn btn-primary btn-foursquarexs" data-toggle="modal" data-target="#myModal" onclick="ponerfocus();" title="Registrar nuevo cliente para el servicio"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Nuevo Cliente</small></a>
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="btn btn-info btn-foursquarexs" data-toggle="modal" data-target="#modalbuscardetalle" onclick="buscardetallefocus()" title="Buscar el detalle por su código"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Detalle</small></a>
+                <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="btn btn-soundcloud btn-foursquarexs" data-toggle="modal" data-target="#modaltiposervicio" title="Servicio normal o a domicilio"><font size="5"><span class="fa fa-home"></span></font><br><small>Tipo Serv.</small></a>
         </div>
     </div>
 </div>
@@ -352,38 +351,43 @@ $(document).ready(function(){
                                           <div class="modal-body">
                                               
                                            <!------------------------------------------------------------------->
-                                           
+                                           <span class="text-danger" id="campocliente"></span>
                                            <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
-                                                    <input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                                    <input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autocomplete="off" />
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
 					  </div>
                                         <div class="col-md-6">
 						<label for="cliente_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
-							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" required />
+							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" required autocomplete="off" />
 						</div>
 					  </div>
-                                          <div class="col-md-6">
+                                          <!--<div class="col-md-6">
 						<label for="cliente_ci" class="control-label">C.I.</label>
 						<div class="form-group">
-							<input type="text" name="cliente_ci" value="<?php if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
+							<input type="text" name="cliente_ci" value="<?php /*if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
 						</div>
 					  </div>
                                           <div class="col-md-6">
 						<label for="cliente_nit" class="control-label">Nit</label>
 						<div class="form-group">
-                                                    <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} ?>" class="form-control" id="cliente_nit" onclick="this.select();" />
+                                                    <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} */ ?>" class="form-control" id="cliente_nit" onclick="this.select();" />
 						</div>
-					  </div>
-                                          <div class="col-md-6">
-						<label for="cliente_telefono" class="control-label"><span class="text-danger">*</span>Teléfono</label>
-						<div class="form-group">
-							<input type="text" name="cliente_telefono" value="<?php echo $this->input->post('cliente_telefono'); ?>" class="form-control" id="cliente_telefono" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                                                        <span class="text-danger"><?php echo form_error('cliente_telefono');?></span>
-						</div>
+					  </div>-->
+                                        <div class="col-md-6">
+                                            <label for="cliente_telefono" class="control-label">Teléfono</label>
+                                            <div class="form-group">
+                                                <input type="text" name="cliente_telefono" value="<?php if($this->input->post('cliente_telefono') >0){ echo $this->input->post('cliente_telefono');}else{ echo 0;} ?>" class="form-control" id="cliente_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
+                                            </div>
+					</div>
+                                        <div class="col-md-6">
+                                            <label for="cliente_celular" class="control-label">Celular</label>
+                                            <div class="form-group">
+                                                <input type="text" name="cliente_celular" value="<?php if($this->input->post('cliente_celular') >0){ echo $this->input->post('cliente_celular');}else{ echo 0;} ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
+                                            </div>
 					</div>
                                            <!------------------------------------------------------------------->
                                           </div>
@@ -449,8 +453,8 @@ $(document).ready(function(){
         }
         ?>
         
-        <a href="<?php echo site_url('servicio');  ?>" id="salir" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Salir</a>
-        <a id="boton_cobrar" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-dollar fa-4x"></span><br>Cobrar</a>
+        <a onclick="salirdeservicio()" id="salir" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Salir</a>
+        <!--<a id="boton_cobrar" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-dollar fa-4x"></span><br>Cobrar</a>-->
         <?php
         if($a == 3){
             if(is_null($servicio['servicio_codseguimiento'])){ ?>

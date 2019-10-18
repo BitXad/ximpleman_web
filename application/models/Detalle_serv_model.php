@@ -748,12 +748,14 @@ class Detalle_serv_model extends CI_Model
                 ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
-                c.cliente_telefono, cliente_celular
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id,
+                c.cliente_telefono, cliente_celular, e.estado_color
 
             FROM
                 detalle_serv ds
             LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN estado e on ds.estado_id = e.estado_id
             WHERE
                 ds.servicio_id = ".$servicio_id."
                
