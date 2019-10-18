@@ -588,6 +588,17 @@ class Compra extends CI_Controller{
 
             $this->Compra_model->ejecutar($sql);
 
+            $stc = "UPDATE detalle_compra
+            SET
+            detallecomp_cantidad = 0,               
+            detallecomp_descuento = 0,
+            detallecomp_subtotal = 0,
+            detallecomp_total = 0                       
+            WHERE compra_id = ".$compra_id."
+            ";
+
+            $this->Compra_model->ejecutar($stc);
+
 
             $comp = "UPDATE compra
             SET

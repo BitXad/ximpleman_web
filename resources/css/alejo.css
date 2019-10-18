@@ -14,6 +14,21 @@
     
 }
 
+/*@media print {
+    #mitabla th {
+        background-color: green !important;
+        color: white !important;
+       /* -webkit-print-color-adjust: exact; */
+   /* }
+}
+
+@media print {
+    #mitabla td {
+        background-color: red !important;
+        color: yellow !important;
+    }
+}*/
+
 #mitabla tr:nth-child(even){background-color: #f2f2f2;}
 
 #mitabla tr:hover {background-color: #ddd;}
@@ -38,7 +53,7 @@
     background-color:lightgray;
 }    
 /*Estilo de reportes---------------------------------*/
-.row {
+/*.row {
         font-family: arial;
         font-size: 11px;
 
@@ -78,7 +93,7 @@
         font-size: 11px;
     }
 
-
+*/
 /*---------------cuadros----------*/
     .box1 {
    font-family: arial;

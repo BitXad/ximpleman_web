@@ -36,7 +36,8 @@ class Cotizacion extends CI_Controller{
             $data['page_title'] = "Cotización";
             $data['rol'] = $this->session_data['rol'];
             $data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
-
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'cotizacion/index';
             $this->load->view('layouts/main',$data);
         }
@@ -68,6 +69,21 @@ class Cotizacion extends CI_Controller{
             $this->load->view('layouts/main',$data);
        
         }
+    }
+
+    function buscar_cotizacion()
+    {
+       if ($this->input->is_ajax_request()) {  
+        $parametro = $this->input->post('parametro');
+        $datos = $this->Cotizacion_model->get_fechas_cotizacion($parametro);
+       if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
     }
 
     function cotizarecibo($cotizacion_id)
@@ -155,8 +171,8 @@ class Cotizacion extends CI_Controller{
                 ".$producto_precio.",
                 ".$nuevacan.",
                 ".$descuento.",
-                ".$cantidad." * ".$producto_precio." * ".$nuevacan.",
-                (".$cantidad." * ".$producto_precio." - ".$descuento.") * ".$nuevacan.",
+                ".$nuevacan." * ".$producto_precio.",
+                (".$nuevacan." * ".$producto_precio." - ".$descuento."),
                 ".$cotizacion_id."
                 
                 from producto where producto_id = ".$producto_id."

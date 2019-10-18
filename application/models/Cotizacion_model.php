@@ -37,7 +37,28 @@ class Cotizacion_model extends CI_Model
             WHERE
                 c.usuario_id = u.usuario_id
                
-            ORDER BY `cotizacion_id` DESC limit 500
+            ORDER BY `cotizacion_id` DESC limit 100
+
+        ")->result_array();
+
+        return $cotizacion;
+    }
+
+    function get_fechas_cotizacion($parametro)
+    {
+         
+        $cotizacion = $this->db->query("
+            SELECT
+                c.*, u.*
+
+            FROM
+                cotizacion c, usuario u
+            WHERE
+                c.usuario_id = u.usuario_id
+
+                ".$parametro."
+               
+            ORDER BY `cotizacion_id` DESC
 
         ")->result_array();
 

@@ -45,15 +45,15 @@ function detallecoti(){
                         html += "Marca: <b>"+registros[i]["producto_marca"]+"</b><br>";
                         html += "Industria: <b>"+registros[i]["producto_industria"]+"</b><br>"; 
                         //html += "<form action='"+base_url+"cotizacion/updateDetallecot/"+cotizacion_id+"/"+registros[i]["producto_id"]+"'  method='POST' class='form'>";
-                        html += "<input id='detallecot_caracteristica"+registros[i]["producto_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' value='"+registros[i]["detallecot_caracteristica"]+"' placeholder='caracteristica'> </td>";
+                        html += "<input id='detallecot_caracteristica"+registros[i]["producto_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["detallecot_caracteristica"]+"' placeholder='caracteristica'> </td>";
                         html += "<td> <input id='cotizacion_id'  name='cotizacion_id' type='hidden' class='form-control' value='"+cotizacion_id+"'>";
                         html += "<input id='detallecot_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
-                        html += "<input id='detallecot_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["detallecot_precio"]+"' ></td> ";
-                        html += "<td><input id='detallecot_cantidad"+registros[i]["producto_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detallecot_cantidad"]+"' >";
+                        html += "<input id='detallecot_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")'  value='"+Number(registros[i]["detallecot_precio"]).toFixed(2)+"' ></td> ";
+                        html += "<td><input id='detallecot_cantidad"+registros[i]["producto_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["detallecot_cantidad"]+"' >";
                         html += "<input id='detallecot_id'  name='detallecot_id' type='hidden' class='form-control' value='"+registros[i]["detallecot_id"]+"'></td>";
-                        html += "<td><input id='detallecot_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["detallecot_descuento"]+"' ></td>";
-                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+registros[i]["detallecot_total"]+"</b></font> <br></span>";
+                        html += "<td><input id='detallecot_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+Number(registros[i]["detallecot_descuento"]).toFixed(2)+"' ></td>";
+                        html += "<td><center><font size='3'> <b>"+Number(registros[i]["detallecot_total"]).toFixed(2)+"</b></font> <br>";
                         html += "</center></td>";
                         html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
                         html += "<button type='button' onclick='quitardetallec("+registros[i]["detallecot_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
@@ -67,8 +67,8 @@ function detallecoti(){
                        html += "<td></td>";
                        html += "<td></td>";
                        html += "<td><font size='3'>TOTAL</td>";
-                       html += "<td><font size='3'><b>"+descuento+"</td>";
-                       html += "<td><font size='3'><b>"+total_detalle+"</td>";
+                       html += "<td><font size='3'><b>"+Number(descuento).toFixed(2)+"</td>";
+                       html += "<td><font size='3'><b>"+Number(total_detalle).toFixed(2)+"</td>";
                        html += "</tr>";
                         //$('#cotizacion_total').value(total_detalle.toFixed(2));
                        $("#detallecotiza").html(html);
@@ -83,6 +83,18 @@ function detallecoti(){
     });
 
 }
+
+function actualizadetalle(e,detalle_id,producto_id,cotizacion_id) {
+
+  tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){ 
+             
+            actualizarDetalle(detalle_id,producto_id,cotizacion_id);            
+
+        }
+}
+
 function totality(total_detalle){
   var totalfinal = Number(total_detalle);
   $("#cotizacion_total").val(totalfinal.toFixed(2));
@@ -313,200 +325,6 @@ function buscarcliente(){
 
 
 
-//muestra la tabla de productos disponibles para la venta
-
-function tablaproductos()
-
-{   
-
-    var base_url = document.getElementById('base_url').value;
-
-    var controlador = base_url+'venta/detalleventa';
-
-    
-
-    $.ajax({url: controlador,
-
-           type:"POST",
-
-           data:{datos:1},
-
-           success:function(respuesta){     
-
-               
-
-               var registros = JSON.parse(respuesta);
-
-                
-
-               if (registros != null){
-
-
-
-                       var subtotal = 0;
-
-                       var descuento = 0;
-
-                       var descgral = 0;
-
-                       var totalfinal = 0;
-
-                        html = "";
-
-                        html += "<table class='table table-striped table-condensed' id='mitablaventas'>";
-
-                        html += "                    <tr>";
-
-                        html += "                            <th>Nº</th>";
-
-                        html += "                            <th>Descripción</th>";                            
-
-                        html += "                            <th>Código</th>";
-
-                        html += "                            <th>Cant</th>";
-
-                        html += "                            <th>Precio</th>";
-
-//                        html += "                            <th>Sub <br> Total</th>";
-
-//                        html += "                            <th>Moneda</th>";
-
-//                        html += "                            <th>Foto</th>";
-
-                        html += "                            <th>Precio<br>Total</th>";
-
-                        html += "                            <th> </th>";
-
-                        html += "                    </tr>";                
-
-                        html += "                    <tbody class='buscar2'>";
-
-
-
-                    var cont = 0;
-
-                    var cant_total = 0;
-
-                    var total_detalle = 0;
-
-                    var x = registros.length; //tamaño del arreglo de la consulta
-
-                      
-
-                    for (var i = 0; i < x ; i++){
-
-
-
-
-
-                           cont = cont+1;
-
-                           cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
-
-                           total_detalle+= parseFloat(registros[i]["detalleven_total"]);
-
-                                 
-
-                        html += "                    <tr>";
-
-                        html += "			<td>"+cont+"</td>";
-
-                        html += "                       <td><b><font size=2>"+registros[i]["producto_nombre"]+"</font></b>";
-
-                        html += "                           <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"];
-
-                        html += "                       </td>";
-
-                        html += "                       <td align='center'>";
-
-                        html += "                           <b><font size=2>"+registros[i]["producto_codigo"]+"</font></b><br>";
-
-                        html += "                           "+registros[i]["producto_codigobarra"];
-
-                        html += "                       </td>";
-
-                        html += "			<td align='center'> <button onclick='reducir(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-minus'></span></a></button>";
-
-                        html += "        <input size='5' name='cantidad' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
-
-                        html += "        <button onclick='incrementar(1,"+registros[i]["detalleven_id"]+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button></td>";
-
-                        html += "			<td align='right'><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
-
-                        html += "                       <td align='right'><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font></td>";
-
-//                        html += "			<td>"+registros[i]["producto_foto"]+"</td>";
-
-//                        html += "			<td>"+registros[i]["detalleven_comision"]+"</td>";
-
-//                        html += "			<td>"+registros[i]["detalleven_tipocambio"]+"</td>";
-
-                        html += "			<td>";
-
-//                        html += "                            <a href='"+base_url+"producto/edit"+registros[i]["producto_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a> ";
-
-//                        html += "                            <a href='"+base_url+"venta/eliminaritem/"+registros[i]["detalleven_id"]+"' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a>";
-
-//                        html += "                            <a href='"+base_url+"producto/edit"+registros[i]["producto_id"]+"' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a> ";
-
-                        html += "                            <button onclick='quitarproducto("+registros[i]["detalleven_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></a></button> ";
-
-                        html += "                        </td>";
-
-                        html += "                    </tr>";  
-
-                   }
-
-                 
-
-                   html += "                    </tbody>";
-
-                   html += "                    <tr>";
-
-                   html += "                            <th><button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></a> Quitar Todo</button> </th>";
-
-                   html += "                            <th></th>";
-
-                   html += "                            <th></th>";
-
-                   html += "                            <th><font size='3'>"+cant_total.toFixed(2)+"</font></th>";
-
-                   html += "                            <th></th>"; 
-
-                   html += "                            <th><font size='3'>"+total_detalle.toFixed(2)+"</font></th>";
-
-                   html += "                            <th></th> ";                                       
-
-                   html += "                    </tr>   ";                 
-
-                   html += "                </table>";
-
-                   
-
-                   $("#tablaproductos").html(html);                 
-
-                   tabladetalle(total_detalle,0,total_detalle);
-
-            }
-
-                
-
-        },
-
-        error:function(respuesta){
-
-           // alert("Algo salio mal...!!!");
-
-        }
-
-        
-
-    });
-
-}
-
-
-
 //muestra la tabla detalle de venta auxiliar
 
 function tabladetalle(subtotal,descuento,totalfinal)
@@ -700,121 +518,6 @@ function quitartodo()
 
 
 
-//esta funcion incrementar una cantidad determinada de productos
-
-function incrementar(cantidad,detalleven_id)
-
-{    
-
-    var base_url = document.getElementById('base_url').value;
-
-    var controlador = base_url+"venta/incrementar/";
-
-   
-
-    $.ajax({url: controlador,
-
-            type:"POST",
-
-            data:{cantidad:cantidad,detalleven_id:detalleven_id},
-
-            success:function(respuesta){
-
-                tablaproductos();
-
-                tabladetalle();                
-
-            }
-
-        
-
-    });
-
-}
-
-
-
-//esta funcion incrementar una cantidad determinada de productos
-
-function reducir(cantidad,detalleven_id)
-
-{    
-
-    var base_url = document.getElementById('base_url').value;
-
-    var controlador = base_url+"venta/reducir/";
-
-   
-
-    $.ajax({url: controlador,
-
-            type:"POST",
-
-            data:{cantidad:cantidad,detalleven_id:detalleven_id},
-
-            success:function(respuesta){
-
-                tablaproductos();
-
-                tabladetalle();                
-
-            }
-
-        
-
-    });
-
-}
-
-
-
-////funcion para actualizar el precio y cantidad de 
-
-////la tabla de venta
-
-function actualizarprecios(e,detalleven_id)
-
-{
-
-    tecla = (document.all) ? e.keyCode : e.which;
-
-    if (tecla==13){
-
-    
-
-        var base_url =  document.getElementById('base_url').value;
-
-        var precio = document.getElementById('precio'+detalleven_id).value;
-
-        var cantidad = document.getElementById('cantidad'+detalleven_id).value; 
-
-        var controlador =  base_url+"venta/actualizarprecio";
-
-       // alert("cantidad:"+cantidad+" precio:"+precio);
-
-        $.ajax({url: controlador,
-
-                type:"POST",
-
-                data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id},
-
-                success:function(respuesta){
-
-                    tablaproductos();
-
-                    tabladetalle();
-
-
-
-                }        
-
-        });
-
-    }
-
-}
-
-
 
 //Tabla resultados de la busqueda
 
@@ -930,7 +633,7 @@ function tablaresultados(opcion)
 
 
 
-                        html += "<b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += "<b>"+registros[i]["producto_nombre"]+"("+registros[i]["producto_codigo"]+")</b>  <span class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;'>"+Number(registros[i]["existencia"]).toFixed(2)+"</span>";
                         html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo(this,"+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1' id='"+registros[i]["producto_precio"]+"' >";
                         precio_unidad = registros[i]["producto_precio"];
@@ -985,35 +688,27 @@ function tablaresultados(opcion)
                         
                         html += "   </select><br>";
 
-                        html += "<div class='col-md-2'  >";
+                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
 
-                        html += "Precio_V: <input class='input-sm' id='producto_precio"+registros[i]["producto_id"]+"'  style='background-color: lightgrey' name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
+                        html += "Precio <input class='input-sm' id='producto_precio"+registros[i]["producto_id"]+"' style='width:70px'  name='producto_precio' type='number' class='form-control' value='"+registros[i]["producto_precio"]+"' ></div>";
 
-                        html += "<div class='col-md-2'  >";
+                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
 
-                        html += "Costo: <input class='input-sm' id='producto_costo"+registros[i]["producto_id"]+"'  style='background-color: lightgrey' name='producto_costo' type='number' class='form-control' value='"+registros[i]["producto_costo"]+"' > </div>";
+                        html += "Costo <input class='input-sm' id='producto_costo"+registros[i]["producto_id"]+"'   style='width:70px' name='producto_costo' type='number' class='form-control' value='"+registros[i]["producto_costo"]+"' readonly> </div>";
 
-                        html += "<div class='col-md-2'  >";
+                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
 
-                        html += "Desc.: <input class='input-sm' id='descuento"+registros[i]["producto_id"]+"'  style='background-color: lightgrey' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
+                        html += "Desc. <input class='input-sm' id='descuento"+registros[i]["producto_id"]+"'   style='width:70px' name='descuento' type='number' class='form-control' value='0.00' step='.01' required ></div>";
 
-                        html += "<div class='col-md-2'  >";
+                        html += "<div class='col-md-3'  style='padding-left: 0px;' >";
 
-                        html += "Cant.: <input class='input-sm ' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad' type='number' class='form-control' placeholder='cantidad' required value='1'> </div>";
-
-                        html += "<div class='col-md-2'  >";
-
-                        html += "Anadir";
-
+                        html += "Cant. <input class='input-sm ' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px' name='cantidad' type='number' class='form-control' placeholder='cantidad' required value='1'> </div></td>";
+                        html += "<td>Anadir";
 
 
                         html += "<button type='button' onclick='detallecota("+cotizacion_id+","+registros[i]["producto_id"]+")'  class='btn btn-success'><i class='fa fa-cart-arrow-down'></i></button>";
 
-                        //html += "<a href=''  onclick='submit()' class='btn btn-danger'><span class='fa fa-cart-arrow-down'></span></a>";
-
-                        
-
-                        html += "</div>";
+                      
 
                         html += "</div>";
 
@@ -1072,4 +767,154 @@ function mostrar_saldo(s,producto_id)
   //alert(s[s.selectedIndex].id);// get id
   $("#producto_precio"+producto_id).val(s[s.selectedIndex].id);
 }
+
+function busqueda_cotizacion()
+{
+    var base_url    = document.getElementById('base_url').value;
+    var opcion      = document.getElementById('select_fecha').value;
+ 
+    if (opcion == 1)
+    {
+        filtro = " and date(cotizacion_fecha) = date(now())";
+        mostrar_ocultar_buscador("ocultar");
+        $("#busquedaavanzada").html('Del Dia');
+               
+    }//compras de hoy
+    
+    if (opcion == 2)
+    {
+       
+        filtro = " and date(cotizacion_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
+        mostrar_ocultar_buscador("ocultar");
+        $("#busquedaavanzada").html('De Ayer');
+    }//compras de ayer
+    
+    if (opcion == 3) 
+    {
+    
+        filtro = " and date(cotizacion_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
+        mostrar_ocultar_buscador("ocultar");
+        $("#busquedaavanzada").html('De la Semana');
+            }
+
+    
+    if (opcion == 4) 
+    {   filtro = " ";//todos los compras
+        mostrar_ocultar_buscador("ocultar");
+
+    }
+    
+    if (opcion == 5) {
+
+        mostrar_ocultar_buscador("mostrar");
+        //filtro = null;
+    }
+
+    fechacotizacion(filtro);
+}
+
+
+function mostrar_ocultar_buscador(parametro){
+       
+    if (parametro == "mostrar"){
+        document.getElementById('buscador_oculto').style.display = 'block';}
+    else{
+        document.getElementById('buscador_oculto').style.display = 'none';}
+    
+}
+
+
+function fechacotizacion(parametro){
+  var base_url    = document.getElementById('base_url').value;
+  var controlador = base_url+"cotizacion/buscar_cotizacion";
+   
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+          
+           success:function(resul){     
+              
+                            
+                
+               var registros =  JSON.parse(resul);
+           
+               if (registros != null){
+                   
+                    
+                    var cont = 0;
+                    var total = Number(0);
+                    var total_detalle = 0;
+                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
+                   
+                    html = "";
+                 
+                    
+                    for (var i = 0; i < n ; i++){
+                        
+                        
+                        
+                        
+                        html += "<tr>";
+                      
+                        html += "<td>"+(i+1)+"</td>";
+                        if (registros[i]["cotizacion_cliente"]=='') {
+                        html += "<td>A QUIEN CORRESPONDA</td>";
+                        }else{
+                        html += "<td>"+registros[i]["cotizacion_cliente"]+"</td>";  
+                        }
+                        
+                        html += "<td>"+moment(registros[i]["cotizacion_fecha"]).format('DD/MM/YYYY')+"</td>";
+                        html += "<td>"+registros[i]["cotizacion_validez"]+"</td>";
+                        html += "<td>"+registros[i]["cotizacion_formapago"]+"</td>";
+                        html += "<td>"+registros[i]["cotizacion_tiempoentrega"]+"</td>";
+                        html += "<td>"+moment(registros[i]["cotizacion_fechahora"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
+                        html += "<td align='right'>"+Number(registros[i]["cotizacion_total"]).toFixed(2)+"</td>";
+                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
+                        
+                        html += "<td class='no-print'><a href='"+base_url+"cotizacion/add/"+registros[i]["cotizacion_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
+                        
+                        html += " <a href='"+base_url+"cotizacion/cotizarecibo/"+registros[i]["cotizacion_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
+                        html += " <a href='"+base_url+"cotizacion/recibo/"+registros[i]["cotizacion_id"]+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
+                        
+                        html += "</td>";
+                        html += "</tr>";
+                       
+                   }
+                        
+                   
+                   $("#fechadecotizacion").html(html);
+                   
+            }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           html = "";
+           $("#fechadecotizacion").html(html);
+        }
+        
+    });   
+
+} 
+
+function buscar_por_fecha()
+{
+    var base_url    = document.getElementById('base_url').value;
+    
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+  
+
+   var fecha1 = "Desde: "+moment(fecha_desde).format('DD/MM/YYYY');
+   var fecha2 = "Hasta: "+moment(fecha_hasta).format('DD/MM/YYYY');
+   
+   
+         filtro = " and date(cotizacion_fecha) >= '"+fecha_desde+"'  and  date(cotizacion_fecha) <='"+fecha_hasta+"' ";
+         $("#busquedaavanzada").html(fecha1+" "+fecha2);
+    
+    fechacotizacion(filtro);
+}
+
 
