@@ -1383,14 +1383,16 @@ function registrarnuevocliente(servicio_id){
     var base_url = document.getElementById('base_url').value;
     var cliente_nombre = document.getElementById('cliente_nombre').value;
     var cliente_codigo = document.getElementById('cliente_codigo').value;
-    var cliente_ci = document.getElementById('cliente_ci').value;
-    var cliente_nit = document.getElementById('cliente_nit').value;
+    /*var cliente_ci = document.getElementById('cliente_ci').value;
+    var cliente_nit = document.getElementById('cliente_nit').value;*/
     var cliente_telefono = document.getElementById('cliente_telefono').value;
+    var cliente_celular  = document.getElementById('cliente_celular').value;
     //var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
-    var controlador = base_url+'cliente/add_new/'+servicio_id;
+    var controlador = base_url+'cliente/add_new/';
     $.ajax({url: controlador,
            type:"POST",
-           data:{cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo, cliente_ci:cliente_ci, cliente_nit:cliente_nit, cliente_telefono:cliente_telefono},
+           data:{servicio_id:servicio_id, cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo,
+                 cliente_telefono:cliente_telefono, cliente_celular:cliente_celular},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
@@ -1555,8 +1557,9 @@ function registrarnuevodetalleservicio(servicio_id){
 
 function resultadodetalleservicionew(servicio_id){
       
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"servicio/getdetalleservicio/"+servicio_id;
+    var base_url     = document.getElementById('base_url').value;
+    var tienedetalle = document.getElementById('tienedetalle').value;
+    var controlador  = base_url+"servicio/getdetalleservicio/"+servicio_id;
      
     $.ajax({url: controlador,
            type:"POST",
@@ -1703,11 +1706,13 @@ function resultadodetalleservicionew(servicio_id){
                         html += "</td>";
                         
                         html += "<tr>";
-                      
+                    $("#tienedetalle").val("si");  
                    }
 
                     $("#detalleservicio").html(html);
-                   
+                    
+            }else{
+                $("#tienedetalle").val("no");
             }
                 
         },
@@ -1869,15 +1874,17 @@ function resetearcamposdeinputcliente(){
         $('#mensajenew_cliente').html('');
         $('#cliente_nombre').val('');
         $('#cliente_codigo').val('');
-        $('#cliente_ci').val('');
-        $('#cliente_nit').val('');
+        /*$('#cliente_ci').val('');
+        $('#cliente_nit').val('');*/
         $('#cliente_telefono').val('');
+        $('#cliente_celular').val('');
     });
 }
 /* Funcion que registra hora de finalizacion(REGISTRO) de servicio y manda su comprobante */
 function finalizarservicio(servicio_id, num, direccion){
     var base_url   = document.getElementById('base_url').value;
     var concliente = document.getElementById('concliente').value;
+    var tienedetalle = document.getElementById('tienedetalle').value;
     if(concliente != 0){
     var controlador = base_url+"servicio/modificarservicio";
     $.ajax({url: controlador,
@@ -1900,14 +1907,18 @@ function finalizarservicio(servicio_id, num, direccion){
         }
         
     });
-        if(num == 2){
-            location.href = base_url+'servicio';
-            window.open(direccion,'_blank');
-            //window.location.href='../../../servicio';
+        if(tienedetalle == "si"){
+            if(num == 2){
+                location.href = base_url+'servicio';
+                window.open(direccion,'_blank');
+                //window.location.href='../../../servicio';
+            }else{
+                window.open(direccion,'_blank');
+                location.href = base_url+'servicio';
+                //window.location.href='../../servicio';
+            }
         }else{
-            window.open(direccion,'_blank');
-            location.href = base_url+'servicio';
-            //window.location.href='../../servicio';
+            alert("El Servicio no tiene Registrado detalles, debe ingresar productos");
         }
     }else{
         if(num ==2){
@@ -1923,11 +1934,16 @@ function finalizarservicio(servicio_id, num, direccion){
 function finalizarservicio2(num, direccion){
     var base_url   = document.getElementById('base_url').value;
     var concliente = document.getElementById('concliente').value;
+    var tienedetalle = document.getElementById('tienedetalle').value;
     if(concliente != 0){
+        if(tienedetalle == "si"){
         if(num == 2){
             window.open(direccion,'_blank');
             location.href = base_url+'servicio';
             //window.location.href='../../../servicio';
+        }
+        }else{
+            alert("El Servicio no tiene Registrado detalles, debe ingresar productos");
         }
     }else{
         alert("El Servicio no tiene Cliente, debe asignar un cliente");
@@ -2064,7 +2080,6 @@ function seleccionar(opcion) {
 }
 
 function calcularcambio(e){
-   
    tecla = (document.all) ? e.keyCode : e.which; 
    var venta_efectivo = document.getElementById('venta_efectivo').value;
    var venta_totalfinal = document.getElementById('venta_totalfinal').value;
@@ -2076,4 +2091,19 @@ function calcularcambio(e){
    if (tecla==13){ 
         $("#boton_finalizar").click();
    }
+}
+/* Funcion que se sale del servicio previa verificacion de que haya cliente.*/
+function salirdeservicio(){
+    var base_url     = document.getElementById('base_url').value;
+    var concliente   = document.getElementById('concliente').value;
+    var tienedetalle = document.getElementById('tienedetalle').value;
+    if(concliente != 0){
+        if(tienedetalle == "si"){
+            location.href = base_url+'servicio';
+        }else{
+            alert("El Servicio no tiene Registrado detalles, debe ingresar productos");
+        }
+    }else{
+        alert("El Servicio no tiene Cliente, debe asignar un cliente");
+    }
 }
