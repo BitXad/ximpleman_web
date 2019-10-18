@@ -817,6 +817,8 @@ class Servicio extends CI_Controller{
                }
             $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
             
+            $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
+            
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
             
@@ -883,6 +885,8 @@ class Servicio extends CI_Controller{
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_servinf($detalleserv_id);
             
             $data['servicio'] = $this->Servicio_model->get_servicio($data['detalle_serv']['servicio_id']);
+            
+            $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
             
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
