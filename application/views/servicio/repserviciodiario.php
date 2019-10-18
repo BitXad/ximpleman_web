@@ -150,6 +150,7 @@
     
 </div>
 <style type="text/css">
+    @page {size: landscape; }
     #mitabla {
         font-family: Arial Narrow;
         font-size: 9px;
@@ -159,6 +160,16 @@
         padding-bottom: 1px;
     }
 </style>
+<style type="text/css">
+    /*@media print{@page {size: landscape; }}*/
+</style>
+<style type="text/css" media="print">
+/*div.page {
+writing-mode: tb-rl;
+height: 80%;
+margin: 10% 0%;
+}*/
+</style>
 <div class="row col-md-12" >
        
         
@@ -166,7 +177,7 @@
         <!--<div class="box">-->
             
             <!--<div class="box-body table-responsive">-->
-                <table class="table table-striped table-condensed" id="mitabla">
+            <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
                         <th style="width: 4.5cm">CLIENTE</th>
@@ -242,10 +253,10 @@
         <!--</div>-->
         <br><br>
         
-        <div class="col-md-12 text-center">
-            <div>__________________________</div>
+        <div class="col-md-12 text-center" style="font-family: Arial">
+            <div style="line-height: 10px">__________________________</div>
             <div>Responsable</div>
-            <div>Firma - Sello</div>
+            <div style="line-height: 10px">Firma - Sello</div>
         </div>
     </div>
 

@@ -2,7 +2,7 @@
     display: flex;
     max-width: 100%;
     max-height: 5%;
-    font-family: "Arial", Arial Narrow;
+    font-family: Arial;
     text-align: center;
     
     /*font-family: "Arial", arial narrow;
@@ -16,7 +16,7 @@
     display: flex;
     max-width: 100%;
     max-height: 5%;
-    font-family: "Arial", Arial Narrow;
+    font-family: Arial;
     text-align: center;
 }
 .micontenidoInforme{
@@ -26,7 +26,7 @@
     display: flex;
     max-width: 100%;
     max-height: 5%;
-    font-family: "Arial", Arial Narrow;
+    font-family: Arial;
     text-align: center;
 }
 .micontenedorlineas hr{
@@ -55,7 +55,7 @@
 
 #titulo{
     text-align: center;
-    font-family: "Arial", arial narrow;
+    font-family: Arial;
     font-size: 12pt;
     font-weight: bold;
     line-height: 12px;
@@ -87,19 +87,19 @@
 .paramtrosbusqueda{
     max-width: 100%;
     width: 100%;
-    font-family: "Arial", arial narrow;
+    font-family: Arial;
     font-size: 10pt;
 }
 
 div center b{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
 }
 div center div{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
     font-size: 10pt;
 }
 div b{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
     font-size: 10pt;
     margin: 0;
     padding: 0;
@@ -112,7 +112,7 @@ div b{
     max-width: 100%;
     width: 100%;
     max-height: 5%;
-    font-family: "Arial", Arial Narrow;
+    font-family: Arial;
     text-align: center;
 }
 #cabizquierdafirmas{
@@ -141,12 +141,12 @@ div b{
 
 
 #mitablaimpresion {
-    font-family: "Arial", Arial Narrow;
+    font-family: Arial;
     border-collapse: collapse;
     width: 100%;
 }
 #leyenda{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
     font-size: 8pt;
 }
 #mitablaimpresion td, #mitablaimpresion th {

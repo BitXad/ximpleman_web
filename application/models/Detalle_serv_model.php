@@ -748,8 +748,8 @@ class Detalle_serv_model extends CI_Model
                 ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
-                ds.detalleserv_codigo, ds.estado_id as detallestado_id,
-                c.cliente_telefono, cliente_celular, e.estado_color
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id,
+                c.cliente_telefono, cliente_celular, e.estado_color, e.estado_descripcion
 
             FROM
                 detalle_serv ds

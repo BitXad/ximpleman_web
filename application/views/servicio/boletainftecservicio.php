@@ -65,8 +65,8 @@ if(isset($sintitulo)){
     </div>
 </div>
 <div class="row micontenedorlineas" style="margin-right: 0px; margin-left: 0px; <?php echo $mostrar1; ?>" >
-    <hr />
-    <hr style="margin-top: 2px;" />
+    
+    <hr style="margin-top: 2px; height: 2px !important; background-color: #000;" />
 </div>
 <div class="row micontenidoInforme" style="float: right; margin-top: 1cm;" id="nombrecliente">
     <div style=" text-align: right; font-size: 10pt;">
@@ -89,8 +89,8 @@ if(isset($sintitulo)){
     </div>
 </div>
 <div class="row micontenidoInforme" style="margin-top: 0px;">
-    <div style="text-align: center; width: 100%; font-weight: bolder; font-size: 15pt; font-family: 'arial',arial; ">
-        Ref.: INFORME TÉCNICO
+    <div style="text-align: center; width: 100%; font-weight: bolder; font-size: 12pt; font-family: 'arial',arial; ">
+        Ref.: INFORME TÉCNICO ORDEN N° <?php echo $servicio['cliente_id']; ?>
     </div>
 </div>
 <div class="row micontenidoInforme" style="margin-top: 4px;">
@@ -113,30 +113,32 @@ if(isset($sintitulo)){
         $acuenta = $acuenta + $d['detalleserv_acuenta'];
         $saldo   = $saldo + $d['detalleserv_saldo'];
 ?>
-<div style="margin-left: 5.5cm; margin-right: 0cm;">
-    <div class="negrita micontenedorlineas" style="width: 100%; display: flex; font-size: 10pt;">
-        <div style="width: 45%">DETALLE/FECHA ING.:</div>
-        <div style="width: 10%"><?php echo "No. ".$i;?></div>
+<div style="margin-left: 5.5cm; margin-right: 0cm; font-family: Arial !important;">
+    <div class="negrita micontenedorlineas" style="width: 100%; display: flex; font-size: 9pt !important;">
+        <div style="width: 45%">DETALLE/FECHA ING.:
+            <?php echo date("d/m/Y", strtotime($servicio['servicio_fecharecepcion'])); ?>
+        </div>
+        <div style="width: 10%"><?php //echo "No. ".$i;?></div>
         <div style="width: 45%; text-align: center">
-        <?php echo date("d/m/Y", strtotime($servicio['servicio_fecharecepcion'])); ?>
+        
         </div>
     </div>
     <div class="micontenedorlineas" style="width: 100%;">
         <hr style="margin-left: 0px; border-top: 1px solid;">
     </div>
-    <div class="micontenedorlineas" style="text-align: justify; margin-left: 2cm; ">
+    <div class="micontenedorlineas" style="text-align: justify; margin-left: 2cm; font-size: 9pt !important;">
         <?php echo $d['detalleserv_descripcion'] ?>
     </div><!--<br>-->
-    <div class="negrita micontenedorlineas" style="width: 100%;">DIAGNOSTICO:
+    <div class="negrita micontenedorlineas" style="width: 100%; font-size: 9pt !important;">DIAGNOSTICO:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style=" text-align: justify; font-family: Arial, 'Arial Narrow'; margin-left: 2cm; margin-right: 0cm; font-size: 6pt;">
+    <div class="micontenedorlineas" style=" text-align: justify; font-family: Arial; margin-left: 2cm; margin-right: 0cm; font-size: 6pt;">
         <?php echo $d['detalleserv_diagnostico'] ?>
     </div><!--<br>-->
-    <div class="negrita micontenedorlineas" style="width: 100%;">SOLUCIÓN:
+    <div class="negrita micontenedorlineas" style="width: 100%; font-size: 9pt !important;">SOLUCIÓN:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style="text-align: justify; font-family: Arial, 'Arial Narrow'; margin-left: 2cm; margin-right: 2cm; font-size: 6pt;">
+    <div class="micontenedorlineas" style="text-align: justify; font-family: Arial; margin-left: 2cm; margin-right: 2cm; font-size: 6pt;">
         <?php echo $d['detalleserv_solucion'] ?>
         <?php if(!empty($d['detalleserv_glosa'])){
                 echo "<br>".$d['detalleserv_glosa'];
@@ -145,23 +147,25 @@ if(isset($sintitulo)){
 
 
     </div><!--<br>-->
-    <div class="negrita micontenedorlineas" style="width: 100%; font-size: 10pt;">RESPONSABLE TÉCNICO:
+    <div class="negrita micontenedorlineas" style="width: 100%; font-size: 9pt;">RESPONSABLE TÉCNICO:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 10pt;">
+    <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 9pt !important;">
         <?php echo $d['respusuario_nombre']; ?>
     </div><!--<br>-->
-    <div class="negrita micontenedorlineas" style="width: 100%;">COSTO PARCIAL:
+    <div class="negrita micontenedorlineas" style="width: 100%; font-size: 9pt !important;">COSTO PARCIAL:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 10pt;">
+    <div class="micontenedorlineas" style="margin-left: 2cm; font-size: 9pt;">
         <?php echo "Bs. ".number_format($d['detalleserv_total'], 2); ?>
     </div>
 </div><!--<br>-->
-
+<div class="micontenedorlineas" style="margin-left: 1.5cm; font-size: 9pt;">
+        <hr style="margin-top: 2px; height: 2px !important; background-color: #000;" />
+    </div>
 <?php $i++; } ?>
 <br>
-<div style="margin-left: 5.5cm; margin-right: 0cm; font-size: 10pt;">
+<div style="margin-left: 5.5cm; margin-right: 0cm; font-family: Arial; font-size: 9pt !important;">
     <div class="negrita micontenedorlineas" style="width: 100%;">COSTO TOTAL:
         <hr style="margin-left: 0px;">
     </div>
