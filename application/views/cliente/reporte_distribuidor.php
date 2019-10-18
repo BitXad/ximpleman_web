@@ -46,35 +46,55 @@
     REPORTE DE ENTREGAS
 </div>
 <div class="row cabeceraprint" style="display: none" id="contenedortitulo">
-    <div id="cabizquierda">
-        <?php
-        echo $empresa[0]['empresa_nombre']."<br>";
-        echo $empresa[0]['empresa_direccion']."<br>";
-        echo $empresa[0]['empresa_telefono'];
-        ?>
-        </div>
-    <div id="cabcentro">
-            <div id="titulo">
-                <u>REPORTE DE ENTREGAS</u><br><br>
-                <!--<span style="font-size: 9pt">INGRESOS DIARIOS</span><br>-->
-                <span class="lahora" id="fhimpresion"></span><br>
-                <span style="font-size: 8pt;" id="busquedacategoria"></span>
-                <!--<span style="font-size: 8pt;">PRECIOS EXPRESADOS EN MONEDA BOLIVIANA (Bs.)</span>-->
-            </div>
-        </div>
-    <div id="cabderecha">
-            <?php
+ <table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
 
-            $mimagen = "thumb_".$empresa[0]['empresa_imagen'];
+            </center>                      
+        </td>
+                   
+        <td style="width: 35%; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font size="3" face="arial"><b>REPORTE DE ENTREGAS</b></font> <br>
+                
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
-            echo '<img src="'.site_url('/resources/images/empresas/'.$mimagen).'" />';
-
-            ?>
-
-        </div>
-        
+            </center>
+        </td>
+        <td style="width: 20%; padding: 0" >
+                <center>
+                         
+                             
+                            
+                         
+                        
+                    </center>
+        </td>
+    </tr>
+     
+    
+    
+</table>  <br> 
+   
 </div>
-<br>
+<br>  <input type="hidden" id="usu" name="">
+Desde:<span id="fechade"><font size="1" face="Arial"></font></span>        
+Hasta:<span id="fechaha"><font size="1" face="Arial"></font></span>   <br>     
+Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>  
 <div class="row no-print">
     
     <div class="col-md-12">
@@ -88,10 +108,10 @@
         <?php if($tipousuario_id == 1){ ?>
         <div class="col-md-2">
             Usuarios:             
-            <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" required>
+            <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" onchange="pasarnombre(this)" required>
                 <option value="0">TODOS</option>
                 <?php foreach($all_usuario as $usuario){?>
-                <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                <option value="<?php echo $usuario['usuario_id']; ?>" id="<?php echo $usuario['usuario_nombre']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
                 <?php } ?>
             </select>
         </div>
@@ -104,7 +124,7 @@
         <?php } ?>
         <div class="col-md-2">
             <br>
-            <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscarventasdist(2)" style="height: 34px;">
+            <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscarventasdist()" style="height: 34px;">
                 <span class="fa fa-search"></span> Buscar
           </button>
             <br>

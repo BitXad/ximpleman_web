@@ -1,5 +1,52 @@
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
 
+            </center>                      
+        </td>
+                   
+        <td style="width: 25%; padding: 0" > 
+            <center>
+            
+                
+                <font size="3" face="arial"><b>Orden de Trabajo</b></font> <br>
+                <font size="3" face="arial"><b>Nº 00<?php echo $Orden_trabajo['orden_id']; ?></b></font> <br>
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+
+            </center>
+        </td>
+        <td style="width: 25%; padding: 0; line-height:10px;" >
+                
+                         <br><br>
+                              <br><font size="1" face="Arial"><b>CLIENTE: </b><?php echo $Orden_trabajo['cliente_nombre'];?><br>
+                          <b>TELEFONOS: </b><?php echo $Orden_trabajo['cliente_telefono'];?><br>
+                          <b>NOTA: </b><?php echo $Orden_trabajo['orden_observacion'];?><br>
+                          <b>FECHA PEDIDO: </b><?php echo date('d/m/Y',strtotime($Orden_trabajo['orden_fecha'])) ; ?><br>
+                          <b>FECHA ENTREGA: </b><?php echo date('d/m/Y',strtotime($Orden_trabajo['orden_fechaentrega'])) ; ?></font>
+                         
+                            
+                         
+                    
+        </td>
+    </tr>
+     
+    
+    
+</table>       
+<div class="hidden">
 <center><h1>ORDEN DE TRABAJO</h1></center>
 
 <table>
@@ -40,7 +87,7 @@
 	<th><?php echo $Orden_trabajo["usuario_nombre"] ?></th>	
 	</tr>
 </table>
-
+</div>
 <div class="box-body table-responsive">
 <table class="table table-striped table-condensed" id="mitabla">
 <tr>
@@ -69,7 +116,7 @@
                       <td align="center"><?php echo $d['producto_nombre']; ?></td>
                       <td align="center"><?php echo $d['detalleorden_ancho']; ?></td>
                       <td align="center"><?php echo $d['detalleorden_largo']; ?></td>
-                      <td align="center"><?php echo number_format($d['detalleorden_total'], 2, ".", ","); ?></td>
+                      <td align="center"><b><?php echo number_format($d['detalleorden_total'], 2, ".", ","); ?></b></td>
                       <td align="center"><?php echo $d['tipoorden_nombre']; ?></td>
 					  </tr>
                       <?php }?>
