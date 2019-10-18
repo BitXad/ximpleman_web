@@ -161,11 +161,12 @@ input[type=number] { -moz-appearance:textfield; }
                     <table class="table table-striped table-condensed" id="mitabla">
    <td>
                     	 <center>  
-                    	 <b>LITERAL: <?php echo num_to_letras($totalfinal); ?></b></center>
+                    	 <b>LITERAL: <?php echo num_to_letras($totalfinal-$descuento); ?></b></center>
                     	 <div class="col-md-12" style="text-align: right;">
-                    	 <b>Toltal Desc. <font size="3"><b><?php echo number_format($descuento,2,".",","); ?></b></font></b><br>
+                    	 <b>Sub Total <font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font></b><br>
+                       <b>Toltal Desc. <font size="3"><b><?php echo number_format($descuento,2,".",","); ?></b></font></b><br>
                     	 <b>TOTAL
-                            	<font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font>
+                            	<font size="3"><b><?php echo number_format($totalfinal-$descuento,2,".",","); ?></b></font>
                         </div>    
                    </td>
                     
@@ -189,7 +190,7 @@ input[type=number] { -moz-appearance:textfield; }
         
     <center style="padding-top: 5%;">
               
-                <?php echo "---------------------------------"; ?><br>
+                <?php echo "________________________________"; ?><br>
                 <?php echo  $usuario['usuario_nombre']; ?>    
                
  </center>

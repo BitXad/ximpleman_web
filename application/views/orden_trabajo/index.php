@@ -1,9 +1,10 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/ordentrabajo.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
-                $('#filtrar').keyup(function () {
+                $('#orden_cli').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar tr').hide();
                     $('.buscar tr').filter(function () {
@@ -14,21 +15,89 @@
         });
 </script>  
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
-
+<!-------------------------------------------------------->
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<!-------------------------------------------------------->
 <div class="row">
     <div class="col-md-12">
-        <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre del cliente">
-                  </div>
-            <!--------------------- fin parametro de buscador --------------------->
-        <div class="box">
-            <div class="box-header">
-                <h3 class="box-title">Orden de Trabajo OT</h3>
-            	<div class="box-tools">
-                    <a href="<?php echo site_url('orden_trabajo/nuevo'); ?>" class="btn btn-success btn-sm">+ Nueva Orden de Trabajo</a> 
-                </div>
+<div class="row">
+  <div class="col-md-6">
+
+
+        <!--este es INICIO del BREADCRUMB buscador-->
+        <div class="box-header">
+                <font size='4' face='Arial'><b>Orden Trabajo</b></font>
+                <br><font size='2' face='Arial' id="pillados">Registros Encontrados: <?php echo sizeof($orden_trabajo); ?></font>
+        </div>
+        <!--este es FIN del BREADCRUMB buscador-->
+ 
+        <!--este es INICIO de input buscador-->
+        <div class="col-md-8 no-print">
+            <div class="input-group">
+                      <span class="input-group-addon"> 
+                        Buscar 
+                      </span>           
+                <input id="orden_cli" type="text" class="form-control" placeholder="Ingresa el nombre de cliente" onkeypress="buscar_porcliente(event)" >
+            </div></div>
+            <div class="col-md-4 no-print">
+                
+                <select  class="btn btn-primary btn-sm"  id="select_fecha" onchange="busqueda_ot()">
+                    <option>Ultimas O.T.</option>
+                    <option value="1">O.T. de Hoy</option>
+                    <option value="2">O.T. de Ayer</option>
+                    <option value="3">O.T. de la semana</option>
+                    <option value="5">O.T. por fecha</option>
+                </select>
+                
             </div>
+            
+        <!--este es FIN de input buscador-->
+
+        <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
+         <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
+        <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
+      </div>
+     <div class="col-md-6 no-print">
+        
+    <div class="box-tools">
+        <center>    
+            <a href="<?php echo site_url('orden_trabajo/nuevo'); ?>" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-cart-plus"></span></font><br><small>Registrar OT</small></a>
+            
+            <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="fechaorden('and 1')" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
+            
+            <a href="#" onclick="imprimir()" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+             
+        </center>            
+    </div>
+    </div>   
+        
+    </div>
+    <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='font-family: Arial; display:none; padding-bottom: 10px;'>
+                <br>
+                <center>            
+                    <div class="col-md-4">
+                        Desde: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%;"  id="fecha_desde" name="fecha_desde" required="true">
+                    </div>
+                    <div class="col-md-4">
+                        Hasta: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%; "  id="fecha_hasta" name="fecha_hasta" required="true">
+                    </div>
+
+                   
+                    <div class="col-md-4">
+                        <button class="btn btn-primary btn-sm form-control" face='Arial' tyle='font-family: Arial;' onclick="buscar_por_fecha()"><span class="fa fa-search"> Buscar</span></button>
+                        
+                    </div>
+                    <br>
+
+
+                </center>    
+                <br>    
+            </div>
+            <div class="col-md-12">
+        <div class="box">
+          
             <div class="box-body table-responsive">
                 <table class="table table-striped" id="mitabla">
                     <tr>
@@ -42,7 +111,7 @@
             <th>Usuario</th>
 						
                     </tr>
-                    <tbody class="buscar">
+                    <tbody class="buscar" id="fechadeorden">
                     <?php $cont=0;
                     $i = 1;  
                     foreach($orden_trabajo as $c){ 
@@ -62,41 +131,7 @@
                         <td><?php echo $c['usuario_nombre']; ?></td>
                         <td><a href="<?php echo site_url('orden_trabajo/editar/'.$c['orden_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                         <a href="<?php echo site_url('orden_trabajo/ordenrecibo/'.$c['orden_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a></td>
-                        <!--<td>
-                            <?php if($rol[38-1]['rolusuario_asignado'] == 1){ ?>
-                            <a href="<?php echo site_url('cotizacion/add/'.$c['cotizacion_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <?php }
-                            if($rol[39-1]['rolusuario_asignado'] == 1){ ?>
-                            <a href="<?php echo site_url('cotizacion/cotizarecibo/'.$c['cotizacion_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
-                            <a href="<?php echo site_url('cotizacion/recibo/'.$c['cotizacion_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
-                            <?php }
-                            if($rol[40-1]['rolusuario_asignado'] == 1){ ?>
-                           <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
-                            <?php }?>-->
-                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
-                                    <!--<div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                          </div>
-                                          <div class="modal-body">-->
-                                           <!------------------------------------------------------------------->
-                                           <!--<h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la cotizacion <b> <?php echo $c['cotizacion_id']; ?></b>?
-                                           </h3>-->
-                                           <!------------------------------------------------------------------->
-                                          <!--</div>
-                                          <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('cotizacion/remove/'.$c['cotizacion_id']); ?>" class="btn btn-danger"><span class="fa fa-pencil"></span> Si </a>
-                                                      <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>-->
-                        <!------------------------ FIN modal para confirmar eliminación ------------------->
-                        <!--</td>----->
+                        
                     </tr>
                     <?php $i++; }?>
                 </table>

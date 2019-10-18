@@ -45,7 +45,7 @@ class Orden_trabajo_model extends CI_Model
         return $orden_trabajo;
     }
 
-    function get_all_orden_trabajo()
+    function get_all_orden_trabajo_100()
     {
          
         $orden_trabajo = $this->db->query("
@@ -58,7 +58,29 @@ class Orden_trabajo_model extends CI_Model
                 c.usuario_id = u.usuario_id and 
                 c.cliente_id = cli.cliente_id
                
-            ORDER BY `orden_id` DESC limit 1000
+            ORDER BY `orden_id` DESC limit 100
+
+        ")->result_array();
+
+        return $orden_trabajo;
+    }
+
+    function buscar_orden_trabajo($parametro)
+    {
+         
+        $orden_trabajo = $this->db->query("
+            SELECT
+                c.*, u.*, cli.cliente_nombre
+
+            FROM
+                orden_trabajo c, usuario u, cliente cli
+            WHERE
+                c.usuario_id = u.usuario_id and 
+                c.cliente_id = cli.cliente_id
+
+                ".$parametro."
+               
+            ORDER BY `orden_id` DESC 
 
         ")->result_array();
 

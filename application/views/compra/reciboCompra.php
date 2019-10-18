@@ -156,6 +156,7 @@ border-bottom:1px solid black;
 }
 
 
+
          </style>
 <table class="table" style="width: 100%; padding: 0;" >
     <tr>
@@ -181,22 +182,20 @@ border-bottom:1px solid black;
             
                 <br><br>
                 <font size="3" face="arial"><b>COMPRA</b></font> <br>
-                <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
+                <font size="3" face="arial"><b>Nº 00<?php echo $compra[0]['compra_id']; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
             </center>
         </td>
-        <td style="width: 25%; padding: 0" >
-                <center>
+        <td style="width: 25%; padding: 0; text-align: left" >
+                
                          
-                              <br><br><br><font size="2" face="Arial"> Proveedor: <b><?php echo $compra[0]['proveedor_nombre'];?></b><br>
-                          Forma de Pago: <b><?php echo $compra[0]['tipotrans_nombre'];?></b><br>
-                          Fecha: <b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></b></font>
+        <br><br><br><font size="2" face="Arial"> <b>PROVEEDOR: </b><?php echo $compra[0]['proveedor_nombre'];?><br>
+        <b>FORMA DE PAGO: </b><?php echo $compra[0]['tipotrans_nombre'];?><br>
+        <b>FECHA: </b><?php echo date('d/m/Y',strtotime($compra[0]['compra_fecha'])) ; ?> <?php echo $compra[0]['compra_hora'];?></font>
                          
-                            
-                         
-                        
-                    </center>
+         
+                   
         </td>
     </tr>
      
@@ -285,8 +284,7 @@ border-bottom:1px solid black;
 <center>
                     <div class="col-md-12" style="margin-top: 50px; ">
 
-                    <?php echo "-----------------------------------------------------"; ?><br>
+                    <?php echo "________________________________"; ?><br>
                     <?php echo "RESPONSABLE"; ?><br>
                     <?php echo $compra[0]['usuario_nombre']; ?>
                     </div></center>
-</div></div>

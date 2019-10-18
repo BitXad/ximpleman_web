@@ -62,7 +62,7 @@ function ventas_dia($estado)
   {
         $detalle_venta = $this->db->query("
             SELECT
-                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, es.estado_descripcion
+                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon,c.cliente_telefono,c.cliente_direccion, es.estado_descripcion
             FROM
                 venta v 
             /*LEFT JOIN detalle_venta dv on v.venta_id=dv.venta_id*/

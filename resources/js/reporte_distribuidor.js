@@ -7,8 +7,17 @@ function imprimir_reporte(){
     var estafh = new Date();
     $('#fhimpresion').html(formatofecha_hora_ampm(estafh));
     $(".cabeceraprint").css("display", "");
+    var fecha_desde    = document.getElementById('fecha_desde').value;
+    var fecha_hasta    = document.getElementById('fecha_hasta').value;
+    var usuario    = document.getElementById('usu').value;
+    $('#fechade').html(moment(fecha_desde).format('DD/MM/YYYY'));
+    $('#fechaha').html(moment(fecha_hasta).format('DD/MM/YYYY'));
+    $('#usuru').html(usuario);
     window.print();
     $(".cabeceraprint").css("display", "none");
+}
+function pasarnombre(s){
+    $("#usu").val(s[s.selectedIndex].id);
 }
 /*aumenta un cero a un digito; es para las horas*/
 function aumentar_cero(num){
@@ -77,15 +86,16 @@ function buscarventasdist(){
                         html += "<tr style='background-color: "+color+"'>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["cliente_nombre"]+"</b></td>";
+                        html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>";
+                        html += "<b>Telf.:</b>"+registros[i]["cliente_telefono"]+"<b>Dir.:"+registros[i]["cliente_direccion"]+"</b>";
                         html += "<td align='center'>"+registros[i]["venta_id"]+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"]+"</td>"; 
-                        html += "<td align='center'>"+registros[i]["entrega_nombre"]+"</br>"; 
-                        //html += "<b>"+registros[i]["estado_nombre"]+"</b></td>"; 
-                         
-                       // html += "<td><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
-                        //html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
-                        //html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-primary btn-xs'><span class='fa fa-pencil'></a>";
+                        if (registros[i]["entrega_id"]==null) {
+                        html += "<td align='center'></br>";
+                        }else{
+                        html += "<td align='center'>"+registros[i]["entrega_nombre"]+"</br>";
+                        }
+                        
                        if (registros[i]["entrega_id"]==1) {
                             //registros[i]["estado_nombre"]
                         html += "<a class='btn btn-warning btn-xs no-print' data-toggle='modal' data-target='#myModal"+i+"' title=''><span class='fa fa-exclamation-circle'></span> ENTREGADO</a>";
