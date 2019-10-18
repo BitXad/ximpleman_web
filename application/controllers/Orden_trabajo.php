@@ -36,11 +36,27 @@ class Orden_trabajo extends CI_Controller{
         if($this->acceso(36)){
             $data['page_title'] = "Orden de Trabajo";
             $data['rol'] = $this->session_data['rol'];
-            $data['orden_trabajo'] = $this->Orden_trabajo_model->get_all_orden_trabajo();
-
+            $data['orden_trabajo'] = $this->Orden_trabajo_model->get_all_orden_trabajo_100();
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'orden_trabajo/index';
             $this->load->view('layouts/main',$data);
         }
+    }
+
+    function buscar_ot()
+    {
+       if ($this->input->is_ajax_request()) {  
+        $parametro = $this->input->post('parametro');
+        $datos = $this->Orden_trabajo_model->buscar_orden_trabajo($parametro);
+       if(isset($datos)){
+                        echo json_encode($datos);
+                    }else echo json_encode(null);
+    }
+        else
+        {                 
+                    show_404();
+        }          
     }
 
     

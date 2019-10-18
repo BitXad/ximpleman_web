@@ -4,7 +4,6 @@ function inicio(){
     
         detalleordeni();
        
-
 }
 
 function detalleordeni(){
@@ -585,200 +584,6 @@ function tabladetalle(subtotal,descuento,totalfinal)
 }
 
 
-
-//esta funcion busca un producto en el inventario mediante su codigo de barras
-
-// y la ingresa a la tabla detalle de venta
-
-function buscarporcodigo()
-
-{
-
-   var base_url = document.getElementById('base_url').value;
-
-   var controlador = base_url+'venta/buscarcodigo';
-
-   var codigo = document.getElementById('codigo').value;
-
-   //alert(codigo);
-
-    $.ajax({url: controlador,
-
-           type:"POST",
-
-           data:{codigo:codigo},
-
-           success:function(respuesta){     
-
-               tablaproductos();
-
-               $("#codigo").select();
-
-           },
-
-           error:function(respuesta){
-
-               alert('ERROR: no existe el producto con el codigo seleccionado o no tiene existencia en inventario...!!');
-
-               tablaproductos();
-
-               $("#codigo").select();
-
-           }
-
-      
-
-           });
-
-    
-
-}
-
-
-
-//se encarga de ingresar una cantidad determinada de productos al detalle de la venta en base de id de producto
-
-// la cantidad debe estar registrada en el modal asignada para esta operacion
-
-
-
-
-//esta funcion elimina un item de la tabla detalle de venta
-
-function quitarproducto(producto_id)
-
-{
-
-    //alert(producto_id);
-
-    var base_url = document.getElementById('base_url').value;
-
-    var controlador = base_url+"venta/eliminaritem/"+producto_id;
-
-   // alert(controlador);
-
-    $.ajax({url: controlador,
-
-            type:"POST",
-
-            data:{},
-
-            success:function(respuesta){
-
-                tablaproductos();
-
-            }
-
-        
-
-    });
-
-}
-
-//esta funcion elimina un item de la tabla detalle de venta
-
-function quitartodo()
-
-{
-
-    //alert(producto_id);
-
-    var base_url = document.getElementById('base_url').value;
-
-    var controlador = base_url+"venta/eliminartodo/";
-
-   // alert(controlador);
-
-    $.ajax({url: controlador,
-
-            type:"POST",
-
-            data:{},
-
-            success:function(respuesta){
-
-                tablaproductos();
-
-            }
-
-        
-
-    });
-
-}
-
-
-
-//esta funcion incrementar una cantidad determinada de productos
-
-function incrementar(cantidad,detalleven_id)
-
-{    
-
-    var base_url = document.getElementById('base_url').value;
-
-    var controlador = base_url+"venta/incrementar/";
-
-   
-
-    $.ajax({url: controlador,
-
-            type:"POST",
-
-            data:{cantidad:cantidad,detalleven_id:detalleven_id},
-
-            success:function(respuesta){
-
-                tablaproductos();
-
-                tabladetalle();                
-
-            }
-
-        
-
-    });
-
-}
-
-
-
-//esta funcion incrementar una cantidad determinada de productos
-
-function reducir(cantidad,detalleven_id)
-
-{    
-
-    var base_url = document.getElementById('base_url').value;
-
-    var controlador = base_url+"venta/reducir/";
-
-   
-
-    $.ajax({url: controlador,
-
-            type:"POST",
-
-            data:{cantidad:cantidad,detalleven_id:detalleven_id},
-
-            success:function(respuesta){
-
-                tablaproductos();
-
-                tabladetalle();                
-
-            }
-
-        
-
-    });
-
-}
-
-
-
-////funcion para actualizar el precio y cantidad de 
-
 ////la tabla de venta
 
 function actualizarprecios(e,detalleven_id)
@@ -1104,3 +909,162 @@ function saldar()
   $("#saldo").val(Number(total-cuenta).toFixed(2));
 }
 
+
+
+function busqueda_ot()
+{
+    var base_url    = document.getElementById('base_url').value;
+    var opcion      = document.getElementById('select_fecha').value;
+ 
+    if (opcion == 1)
+    {
+        filtro = " and date(orden_fecha) = date(now())";
+        mostrar_ocultar_buscador("ocultar");
+        $("#busquedaavanzada").html('Del Dia');
+               
+    }//compras de hoy
+    
+    if (opcion == 2)
+    {
+       
+        filtro = " and date(orden_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
+        mostrar_ocultar_buscador("ocultar");
+        $("#busquedaavanzada").html('De Ayer');
+    }//compras de ayer
+    
+    if (opcion == 3) 
+    {
+    
+        filtro = " and date(orden_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
+        mostrar_ocultar_buscador("ocultar");
+        $("#busquedaavanzada").html('De la Semana');
+            }
+
+    
+    if (opcion == 4) 
+    {   filtro = " ";//todos los compras
+        mostrar_ocultar_buscador("ocultar");
+
+    }
+    
+    if (opcion == 5) {
+
+        mostrar_ocultar_buscador("mostrar");
+        //filtro = null;
+    }
+
+    fechaorden(filtro);
+}
+
+
+function mostrar_ocultar_buscador(parametro){
+       
+    if (parametro == "mostrar"){
+        document.getElementById('buscador_oculto').style.display = 'block';}
+    else{
+        document.getElementById('buscador_oculto').style.display = 'none';}
+    
+}
+
+function buscar_porcliente(e)
+{
+   tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){
+
+    
+  var cliente    = document.getElementById('orden_cli').value; 
+  var parametro = " and cli.cliente_nombre like '%"+cliente+"%' ";
+  fechaorden(parametro);
+    }
+
+}
+
+
+function fechaorden(parametro){
+  var base_url    = document.getElementById('base_url').value;
+  var controlador = base_url+"orden_trabajo/buscar_ot";
+   
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+          
+           success:function(resul){     
+              
+                            
+                
+               var registros =  JSON.parse(resul);
+           
+               if (registros != null){
+                   
+                    
+                    var cont = 0;
+                    var total = Number(0);
+                    var total_detalle = 0;
+                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
+                   
+                    html = "";
+                 
+                    
+                    for (var i = 0; i < n ; i++){
+                        
+                        
+                        
+                        
+                        html += "<tr>";
+                      
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td>"+registros[i]["cliente_nombre"]+"</td>";  
+                        html += "<td align='center'>"+moment(registros[i]["orden_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["orden_hora"]+"</td>";
+                        html += "<td align='center'>"+moment(registros[i]["orden_fechaentrega"]).format('DD/MM/YYYY')+"</td>";
+                        html += "<td align='right'>"+Number(registros[i]["orden_total"]).toFixed(2)+"</td>";
+                        html += "<td align='right'>"+Number(registros[i]["orden_acuenta"]).toFixed(2)+"</td>";
+                        html += "<td align='right'>"+Number(registros[i]["orden_saldo"]).toFixed(2)+"</td>";
+                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
+                        
+                        html += "<td class='no-print'>";
+                        
+                        html += " <a href='"+base_url+"orden_trabajo/editar/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
+                        html += " <a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
+                        
+                        html += "</td>";
+                        html += "</tr>";
+                       
+                   }
+                        
+                   
+                   $("#fechadeorden").html(html);
+                   
+            }
+                
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           html = "";
+           $("#fechadeorden").html(html);
+        }
+        
+    });   
+
+} 
+
+
+function buscar_por_fecha()
+{
+    var base_url    = document.getElementById('base_url').value;
+    
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+  
+
+   var fecha1 = "Desde: "+moment(fecha_desde).format('DD/MM/YYYY');
+   var fecha2 = "Hasta: "+moment(fecha_hasta).format('DD/MM/YYYY');
+   
+   
+         filtro = " and date(orden_fecha) >= '"+fecha_desde+"'  and  date(orden_fecha) <='"+fecha_hasta+"' ";
+         $("#busquedaavanzada").html(fecha1+" "+fecha2);
+    
+    fechaorden(filtro);
+}

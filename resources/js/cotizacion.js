@@ -917,4 +917,18 @@ function buscar_por_fecha()
     fechacotizacion(filtro);
 }
 
+function buscar_porcliente(e)
+{
+   tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){
+
+    
+  var cliente    = document.getElementById('cotizar_cli').value; 
+  var parametro = " and cotizacion_cliente like '%"+cliente+"%' ";
+  fechacotizacion(parametro);
+    }
+
+}
+
 

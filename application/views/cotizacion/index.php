@@ -4,7 +4,7 @@
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
-                $('#cotizar').keyup(function () {
+                $('#cotizar_cli').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar tr').hide();
                     $('.buscar tr').filter(function () {
@@ -88,11 +88,12 @@
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                <input id="cotizar" type="text" class="form-control" placeholder="Ingresa el nombre de cliente" onkeypress="validacompra(event,4)" >
+                <input id="cotizar_cli" type="text" class="form-control" placeholder="Ingresa el nombre de cliente" onkeypress="buscar_porcliente(event)" >
             </div></div>
             <div class="col-md-4 no-print">
                 
                 <select  class="btn btn-primary btn-sm"  id="select_fecha" onchange="busqueda_cotizacion()">
+                    <option>Ultimas Cotizaciones</option>
                     <option value="1">Cotizaciones de Hoy</option>
                     <option value="2">Cotizaciones de Ayer</option>
                     <option value="3">Cotizaciones de la semana</option>

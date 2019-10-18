@@ -187,7 +187,7 @@ border-bottom:1px solid black;
 
             </center>
         </td>
-        <td style="width: 25%; padding: 0; text-align: left">
+        <td style="width: 25%; padding: 0; text-align: left" >
                 
                          
         <br><br><br><font size="2" face="Arial"> <b>PROVEEDOR: </b><?php echo $compra[0]['proveedor_nombre'];?><br>
@@ -284,8 +284,7 @@ border-bottom:1px solid black;
 <center>
                     <div class="col-md-12" style="margin-top: 50px; ">
 
-                    <?php echo "-----------------------------------------------------"; ?><br>
+                    <?php echo "________________________________"; ?><br>
                     <?php echo "RESPONSABLE"; ?><br>
                     <?php echo $compra[0]['usuario_nombre']; ?>
                     </div></center>
-</div></div>

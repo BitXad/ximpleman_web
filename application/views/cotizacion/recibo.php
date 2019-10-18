@@ -190,7 +190,7 @@ input[type=number] { -moz-appearance:textfield; }
         
     <center style="padding-top: 5%;">
               
-                <?php echo "---------------------------------"; ?><br>
+                <?php echo "________________________________"; ?><br>
                 <?php echo  $usuario['usuario_nombre']; ?>    
                
  </center>
