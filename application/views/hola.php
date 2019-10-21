@@ -1,6 +1,7 @@
+<body onload="mostrar_grafica()">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | Dashboard</title>
+  <title>Ximpleman | Sistema Integral de Ventas</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -34,21 +35,7 @@
 <button onclick="mostrar_grafica()">
  graficos    
 </button>-->
-<body onload="mostrar_grafica()">
-    
-
-
-    <!-- Main content -->
-    <section class="content">
-      <!-- Small boxes (Stat box) -->
-      <div class="row">
-          
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-aqua">
-              <div class="inner" >
-                
-                <script type="text/javascript">
+<!--                <script type="text/javascript">
                     function esMobilx(){
     
                     var isMobile = {
@@ -82,6 +69,22 @@
 //                }
 //                    
                 </script>
+                -->
+    
+
+<?php $visual = 2;
+    if ($visual == 1){ ?>
+    
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+          
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+              <div class="inner" >
+                
                 
                 <?php 
                     
@@ -226,6 +229,185 @@
       
       
  </section>      
+    
+<?php }else{ ?>
+
+    
+    <!-- Main content -->
+    <section class="content">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+          
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-aqua">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-cart-plus"></fa></b></h3>
+                <h5><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-cart-plus"></i>              
+            </div>
+            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer"><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+          
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-green">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-bar-chart"></fa></b></h3>
+                <h5><b><?php echo number_format($pedidos[0]['total_pedidos'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-bar-chart"></i>              
+            </div>
+                <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer"><?php echo "En ".$pedidos[0]['cantidad_pedidos']." pedidos"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+
+
+
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-yellow">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-users"></fa></b></h3>
+                <h5><b><?php echo number_format($clientes[0]['total_clientes'],0,'.',','); ?> Datos<sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-users"></i>              
+            </div>
+                <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer"><?php echo "En ventas/servicios"; //$clientes[0]['total_clientes']." Clientes"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+       
+        
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-red">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-pie-chart"></fa></b></h3>
+                <h5><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-pie-chart"></i>              
+            </div>
+                <a href="<?php echo base_url('compra'); ?>" class="small-box-footer"><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-fuchsia">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-cube"></fa></b></h3>
+                <h5><b><?php echo number_format($productos['cantidad'],0,'.',',')." Productos"; ?><sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-cube"></i>              
+            </div>
+                <a href="<?php echo base_url('producto'); ?>" class="small-box-footer"><?php echo "En Inventario"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-blue-active">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-cubes"></fa></b></h3>
+                <h5><b><?php echo number_format($productos['total_inventario'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-cubes"></i>              
+            </div>
+                <a href="<?php echo base_url('inventario'); ?>" class="small-box-footer"><?php echo "Inventario valorado"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-purple">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-wrench"></fa></b></h3>
+                <h5><b><?php echo number_format($servicios['cantidad_servicios'],0,'.',',')." Registros"; ?><sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-wrench"></i>              
+            </div>
+                <a href="<?php echo base_url('servicio'); ?>" class="small-box-footer"><?php echo "En servicios"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-lime-active">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-question-circle"></fa></b></h3>
+                <h5><b>Soporte Técnico<sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-question-circle"></i>              
+            </div>
+                <a href="<?php echo base_url('soporte_tecnico'); ?>" class="small-box-footer">Opciones de ayuda<i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+
+        
+<!--        
+      
+
+         ./col 
+        <div class="col-lg-3 col-xs-6">
+           small box 
+          <div class="small-box bg-lime-active">
+            <div class="inner">
+                <h4><b><?php echo number_format($ventas[0]['total_ventas'],2,'.',',')." Bs"; ?></b></h4>
+
+              <p><?php echo "Movimiento Diario"; ?></p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-money"></i>
+            </div>
+            <a href="<?php echo base_url('reportes'); ?>" class="small-box-footer">Movimiento Diario <i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+         ./col 
+      </div>
+       /.row 
+      
+      -->
+ </section>      
+        
+    
+<?php }?>
+    
+    
+    
  
  <section class="col-lg-12 connectedSortable">
           <div class="box box-info">

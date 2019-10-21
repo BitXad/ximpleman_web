@@ -128,6 +128,10 @@ function validar(e,opcion) {
            
         }  
         
+        if (opcion==11){ //si el evento proviene del ingreso rapido
+            $("#boton_ingreso_rapido").click();
+        }
+                
     } 
  
 }
