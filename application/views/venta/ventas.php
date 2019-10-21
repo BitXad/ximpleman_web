@@ -133,6 +133,45 @@ window.onkeydown = compruebaTecla;
     
 </div>
 
+<!------------------------------------------------------------->
+
+                <script type="text/javascript">
+                    function esMobilx(){
+    
+                    var isMobile = {
+                        Android: function() {
+                            return navigator.userAgent.match(/Android/i);
+                        },
+                        BlackBerry: function() {
+                            return navigator.userAgent.match(/BlackBerry/i);
+                        },
+                        iOS: function() {
+                            return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+                        },
+                        Opera: function() {
+                            return navigator.userAgent.match(/Opera Mini/i);
+                        },
+                        Windows: function() {
+                            return navigator.userAgent.match(/IEMobile/i);
+                        },
+                        any: function() {
+                            return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+                        }
+                    };    
+
+                    return isMobile.any()
+
+                }
+                var esmovil = "0";
+                if(esMobilx()){
+                    //document.write("<h1 style='line-height: 0px;'><fa class='fa fa-money'></fa> </h1>");
+                    esmovil = "1";
+                }
+                    
+                </script>
+                
+ 
+
 <!--------------------- CABECERA -------------------------->
 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
@@ -196,8 +235,15 @@ window.onkeydown = compruebaTecla;
                 
             </div>
         </div>
+<?php
+    $es_movil = "0";
+    $es_movil = "<script>document.write(esmovil);</script>";         
 
-        
+   
+?>   
+
+<?php //if($es_movil == 0){ ?> 
+
         <div class="col-md-2">
             <label for="telefono" class="control-label">TELEFONO</label>
             <div class="form-group">
@@ -222,7 +268,9 @@ window.onkeydown = compruebaTecla;
               
             </div>
         </div>        
-        
+<?php //} ?>        
+
+
       <h4 class="panel-title">
         <?php if(sizeof($dosificacion)>0){ ?>
           <input type="checkbox" id="facturado" value="1" name="facturado">
@@ -239,6 +287,8 @@ window.onkeydown = compruebaTecla;
 <!--      <ul class="list-group">-->
         <div class="container">
             
+       
+
             <div class="col-md-3">
             <label for="nombre" class="control-label">CLIENTE</label>
             <div class="form-group">
@@ -522,16 +572,19 @@ window.onkeydown = compruebaTecla;
             <br>
         </div>    
         <!----------------------------------- fin Botones ---------------------------------->
-        
+        <font face="Arial" size="1">
         <b>
             
         TECLAS DE ACCESO DIRECTO <br>
         </b>
+        <p>
+            
         [F2] Busqueda por código de barras <br>
         [F4] Busqueda por nombre/descripción <br>
         [F8] Finalizar venta<br>
         [F10] Registrar NIT
-
+        </p>
+        </font>
     </div>
 </div>
 
@@ -1166,14 +1219,14 @@ window.onkeydown = compruebaTecla;
                                         <div class="col-md-6">
                                             <label for="usuario_idx" class="control-label">Cantidad:</label>
                                             
-                                            <input type="text" id="ingresorapido_producto_id" value="0.00" hidden >
-                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning">
+                                            <input type="text" id="ingresorapido_producto_id" value="0.00" hidden />
+                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning" onkeyup="validar(event,11)" />
 					</div>
                                         <div class="col-md-6" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
 						<div class="form-group">
                                                         
-                                                    <button class="btn btn-facebook" id="boton_asignar" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
+                                                    <button class="btn btn-facebook" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
                                                             <span class="fa fa-floppy-o"></span> Registrar
                                                     </button>
                                                     

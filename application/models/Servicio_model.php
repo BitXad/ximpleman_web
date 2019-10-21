@@ -419,4 +419,14 @@ class Servicio_model extends CI_Model
         return $servicio;
     }
     
+    /* Cantid sdde servicios */
+    function get_servicios_hoy()
+    {
+        $servicio = $this->db->query("select if(count(*)>0,count(*),0) as cantidad_servicios
+                    from servicio s
+                    where s.servicio_fecharecepcion = DATE(now())")->row_array();
+
+        return $servicio;
+    }
+    
 }

@@ -101,7 +101,7 @@ function fechadeegreso(filtro)
                     var total = Number(0);
                     
                     var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#pillados").val("- "+n+" -");
+                    $("#pillados").html("Registros Encontrados: "+n+"");
                    
                     html = "";
                    if (n <= limite) x = n; 
@@ -123,7 +123,7 @@ function fechadeegreso(filtro)
                         html += "<td align='right'>"+registros[i]["egreso_monto"]+"</td>"; 
                         html += "<td>"+registros[i]["egreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
-                        html += "<td><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
+                        html += "<td clsss='no-print'><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                         html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
                         html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-primary btn-xs'><span class='fa fa-pencil'></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";

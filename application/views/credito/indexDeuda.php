@@ -32,30 +32,28 @@
                 <?php } ?>
             </form>
              
-                 <div class="panel panel-primary col-md-12"  >
+                 <div class="panel panel-primary col-md-12">
                     <br>
-                 <div class="col-md-4"style="padding-left: -30px;"  >
-            
-              
-        
-           <div class="row">
-            Desde: <input type="date" class="btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="">
-       
-            Hasta: <input type="date" class="btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="">
-        </div> 
-        
-          
+                 <div class="col-md-2"style="padding-left: -30px;"  >
+            <label for="fecha_desde" class="control-label">Desde</label>
+              <input type="date" class="form-control btn btn-primary btn-sm " id="fecha_desde" name="fecha_desde" required="true" value="">
+        </div>
+            <div class="col-md-2"style="padding-left: -30px;">
+                <label for="fecha_desde" class="control-label">Hasta</label>
+           <input type="date" class="form-control btn btn-primary btn-sm" id="fecha_hasta" name="fecha_hasta" required="true"  value="">
+    
        </div> 
         <div class="col-md-3">
         <!--------------------- parametro de buscador --------------------->
-                
+                <label for="fecha_desde" class="control-label">Proveedor</label>
                <input id="proveedor_id" type="text" style="width: 100%;"  class="form-control" placeholder="Ingrese el Proveedor">
                   
         <!--------------------- fin parametro de buscador --------------------->
     </div>
     <div class="col-md-2">
+        <label for="estado_id" class="control-label">Estado</label>
         <!--------------------- parametro de buscador --------------------->
-                   Estado: <select  class="btn btn-primary "  id="estado_id" >
+                    <select  class="form-control btn btn-primary "  id="estado_id" >
                         <option value="8">Pendiente</option>
                         <option value="9">Cancelado</option>
                         <option value="">Todos</option>
@@ -66,9 +64,8 @@
     </div>
     <div class="col-md-2" style="padding-left: 0px;">
                         
-
-                <div class="row">             
-                            Usuario: <select  name="usuario_id" id="usuario_id"  class="btn btn-primary btn-sm "  >
+                <label for="usuario_id" class="control-label">Usuario</label>           
+                            <select  name="usuario_id" id="usuario_id"  class="form-control btn btn-primary btn-sm "  >
                                 <option value="">-TODOS-</option>
                                 <?php 
                                 foreach($all_usuario as $usuario)
@@ -79,11 +76,11 @@
                                 } 
                                 ?>
                             </select>
-                      </div>
+                  
   
     </div>
-         <div class="col-md-1" style="padding-bottom: 20px;">
-      
+         <div class="col-md-1" style="padding-bottom: 20px;padding-top: 5px;">
+      <br>
      <button class="btn btn-primary no-print" onclick="buscar_fecha_deuda()">
              
                 <span class="fa fa-search"></span>   Busqueda  
