@@ -185,8 +185,8 @@ class Inventario extends CI_Controller{
 		
         //**************** fin contenido ***************
 			}
-			
-        
-    }  
+
+    }
+    
     
 }
