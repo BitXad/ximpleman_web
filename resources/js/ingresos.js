@@ -102,7 +102,7 @@ function fechadeingreso(filtro)
                     var total = Number(0);
                     
                     var n = registros.length; //tama単o del arreglo de la consulta
-                    $("#pillados").val("- "+n+" -");
+                    $("#pillados").html("Registros encontrados: "+n+"");
                    
                     html = "";
                    if (n <= limite) x = n; 
@@ -124,7 +124,7 @@ function fechadeingreso(filtro)
                         html += "<td align='right'>"+registros[i]["ingreso_monto"]+"</td>"; 
                         html += "<td>"+registros[i]["ingreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
-                        html += "<td><a href='"+base_url+"ingreso/pdf/"+registros[i]["ingreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
+                        html += "<tdno-print class-''><a href='"+base_url+"ingreso/pdf/"+registros[i]["ingreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                         html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["ingreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
                         html += "<a href='"+base_url+"ingreso/edit/"+registros[i]["ingreso_id"]+"'  class='btn btn-primary btn-xs'><span class='fa fa-pencil'></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
