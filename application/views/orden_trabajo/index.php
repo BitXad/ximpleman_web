@@ -13,11 +13,63 @@
                 })
             }(jQuery));
         });
+
+        function imprimir()
+        {
+           $("#cabeceraprint").css("display", "");
+             window.print(); 
+        }
 </script>  
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <!-------------------------------------------------------->
+<div class="row micontenedorep" style="display: none" id="cabeceraprint">
+    <table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
+
+            </center>                      
+        </td>
+                   
+        <td style="width: 35%; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font size="3" face="arial"><b>ORDEN DE TRABAJO</b></font> <br>
+                
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+
+            </center>
+        </td>
+        <td style="width: 20%; padding: 0" >
+                <center>
+                         
+                             
+                            
+                         
+                        
+                    </center>
+        </td>
+    </tr>
+     
+    
+    
+</table>       
+        
+</div>
 <div class="row">
     <div class="col-md-12">
 <div class="row">
@@ -109,6 +161,7 @@
             <th>A Cuenta Bs.</th>
             <th>Saldo Bs.</th>
             <th>Usuario</th>
+            <th class="no-print"></th>
 						
                     </tr>
                     <tbody class="buscar" id="fechadeorden">
@@ -129,7 +182,7 @@
                         <td align="right"><?php echo number_format($c['orden_saldo'], 2, ".", ","); ?></td>
                         
                         <td><?php echo $c['usuario_nombre']; ?></td>
-                        <td><a href="<?php echo site_url('orden_trabajo/editar/'.$c['orden_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                        <td class="no-print"><a href="<?php echo site_url('orden_trabajo/editar/'.$c['orden_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
                         <a href="<?php echo site_url('orden_trabajo/ordenrecibo/'.$c['orden_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a></td>
                         
                     </tr>
