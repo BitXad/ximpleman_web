@@ -131,7 +131,7 @@ function reportedetservicio(){
                             }
                             html += nombrecliente;
                             html += "</td>";
-                            html += "<td>"+registros[i]["servicio_id"]+"</td>";
+                            html += "<td class='text-center'>"+registros[i]["servicio_id"]+"</td>";
                             html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
                             var fechater = "";
                             if(registros[i]['detalleserv_fechaterminado'] !=null){
@@ -198,7 +198,7 @@ function reportedetservicio(){
                             }
                             html += nombrecliente;
                             html += "</td>";
-                            html += "<td>"+registros[i]["servicio_id"]+"</td>";
+                            html += "<td class='text-center'>"+registros[i]["servicio_id"]+"</td>";
                             html += "<td style='font-size: 8px !important; padding-left: 1px; padding-right: 1px;' class='text-center'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
                             var fechater = "";
                             if(registros[i]['detalleserv_fechaterminado'] !=null){

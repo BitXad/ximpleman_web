@@ -114,7 +114,7 @@ function reportedetservicio(){
                         html += "<td id='horizontal'>";
                         html += registros[i]["cliente_nombre"];
                         html += "</td>";
-                        html += "<td>"+registros[i]["servicio_id"]+"</td>";
+                        html += "<td class='text-center'>"+registros[i]["servicio_id"]+"</td>";
                         html += "<td class='text-center maspeque'>"+convertDateFormat(registros[i]["servicio_fecharecepcion"])+" "+registros[i]["servicio_horarecepcion"]+"</td>";
                         var fechater = "";
                         if(registros[i]['detalleserv_fechaterminado'] !=null){

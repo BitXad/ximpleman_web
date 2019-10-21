@@ -218,7 +218,7 @@
                     <tr>
                         <td><?php echo $cont ?></td>
                         <td><?php echo $s['cliente_nombre']; ?></td>
-                        <td><?php echo $s['servicio_id']; ?></td>
+                        <td class="text-center"><?php echo $s['servicio_id']; ?></td>
                         <td class='text-center maspeque'><?php
                             echo date('d/m/Y', strtotime($s['servicio_fecharecepcion']));
                             echo " ".$s['servicio_horarecepcion'];
@@ -273,13 +273,11 @@
             </div>
         </div>-->
         </div>
-        
-            <div class="col-md-12 text-center">
-                --------------------------<br>
-                Responsable<br>
-                Firma - Sello
-            </div>
-        
+        <div class="col-md-12 text-center" style="font-family: Arial">
+            <div style="line-height: 10px">__________________________</div>
+            <div>Responsable</div>
+            <div style="line-height: 10px">Firma - Sello</div>
+        </div>
     </div>
 <div class="no-print">
 <a href="<?php echo site_url('reportes/servicioreportes'); ?>" class="btn btn-danger">
