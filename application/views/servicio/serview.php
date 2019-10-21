@@ -6,6 +6,7 @@
 <input type="hidden" name="eliminardetalle" id="eliminardetalle" value="<?php echo $eliminardetalle; ?>" />
 <input type="hidden" name="cobrardetalle" id="cobrardetalle" value="<?php echo $cobrardetalle; ?>" />
 <input type="hidden" name="pasaracreditodeta" id="pasaracreditodeta" value="<?php echo $pasaracreditodeta; ?>" />
+<input type="hidden" name="estecliente" id="estecliente" value="<?php echo $cliente["cliente_nombre"]; ?>" />
 <style type="text/css">
 /*    #tamtex{ font-size: 0.1em; }*/
     #recepcion{ background-color: #FFFF33; font-size: small; }
