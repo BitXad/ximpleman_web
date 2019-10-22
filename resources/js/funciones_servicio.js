@@ -1792,7 +1792,7 @@ function buscar_verificarenter(e, detalleserv_id){
         buscarinsumosproductos(detalleserv_id);
     }
 }
-    
+
 function buscarinsumosproductos(detalleserv_id){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"producto/buscar_insumos";

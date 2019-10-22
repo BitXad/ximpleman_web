@@ -510,22 +510,33 @@
   <div class="modal-dialog" role="document">
         <br><br>
     <div class="modal-content">
-        <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+        <div class="modal-header text-center"  style="font-size:12pt;">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            <label>ENTREGA DE SERVICIO</label>
+            <br>N° <?php echo $servicio['servicio_id']; ?>
         </div>
         <?php
         //echo form_open('detalle_serv/registrarcobrototal/'.$servicio['servicio_id']);
         ?>
       <div class="modal-body">
        <!------------------------------------------------------------------->
-       <label for="fecha_cobro" class="control-label">FECHA DE COBRO</label>
-                    <?php
-                    $fecha = date('Y-m-d');
-                    $hora = date('H:i:s');
-                    ?>
-               
-                    <input type="datetime-local" name="fecha_cobro" value="<?php echo $fecha."T".$hora; ?>" class="form-control" id="fecha_cobro" required />
-           <div class="box-body">
+       <div class='text-center text-bold'><span style='font-size: 12pt'><?php echo $cliente['cliente_nombre']; ?></span></div>
+       <label for="fecha_cobro" class="control-label">Fecha de Cobro</label>
+            <?php
+            $fecha = date('Y-m-d');
+            $hora = date('H:i:s');
+            ?>
+       
+        <input type="datetime-local" name="fecha_cobro" value="<?php echo $fecha."T".$hora; ?>" class="form-control" id="fecha_cobro" required />
+        <!--<div class="col-md-12">-->
+        <br>
+        <label for="categoriaclie_porcdesc" class="control-label">Entregado a</label>
+        <div class="form-group">
+            <input type="text" name="detalleserv_entregadoa" value="<?php echo $cliente['cliente_nombre']; ?>" class="form-control" id="detalleserv_entregadoa" required onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+            <span class="text-danger"><?php echo form_error('detalleserv_entregadoa');?></span>
+        </div>
+        <!--</div>-->
+        <div class="box-body">
                
        <table class="table-striped table-condensed" id="cobrototal">
            <tr>
