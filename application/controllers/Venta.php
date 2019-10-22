@@ -1683,12 +1683,13 @@ function anular_venta($venta_id){
             ,cuota_cancelado = 0
             ,cuota_numercibo = 0
             ,cuota_saldo = 0
+            ,estado_id = 27
             ,cuota_saldocredito = 0
              where credito_id = (select credito_id from credito where venta_id = ".$venta_id." ) ";
     $this->Venta_model->ejecutar($sql);
         
     $sql =  "update credito set
-            estado_id = 9
+            estado_id = 27
             ,credito_monto = 0
             ,credito_cuotainicial = 0
             ,credito_interesproc = 0

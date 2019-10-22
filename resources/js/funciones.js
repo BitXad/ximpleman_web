@@ -1144,7 +1144,7 @@ function tablaresultados(opcion)
     
     var controlador = "";
     var parametro = "";
-    var limite = 50;
+    var limite = 500;
     var precio_unidad = 0;
     var precio_factor = 0;
     var precio_factorcant = 0;
@@ -1228,6 +1228,8 @@ function tablaresultados(opcion)
          
                     sql = ""; 
                     comilla = "'";
+                    
+                    
                    if (n <= limite) x = n; 
                    else x = limite;
                     
@@ -1378,7 +1380,7 @@ function tablaresultados(opcion)
                         html += "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
                     
                         if (parseFloat(registros[i]["existencia"])>0){
-                             html += "<button type='button' class='btn btn-warning btn-xl btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' ><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
+                             html += "<button type='button' class='btn btn-warning btn-xl btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")' ><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
                         }
                         
                             
@@ -1434,7 +1436,7 @@ function tablaresultados(opcion)
                      
                        html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
-                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
+                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"' onkeyup='' ></b>";
                         
                         html += "               </td>";
                         html += "          </tr>";
@@ -1448,7 +1450,7 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+                        html += "     <a href='#' data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 
                         html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
@@ -3017,6 +3019,18 @@ function focus_ingreso_rapido(){
         $('#ingresorapido_cantidad').select();
     });
 }
+
+function focus_cantidad(producto_id){
+    
+//    alert(producto_id);
+        var campo = "cantidad"+producto_id;
+    
+        $('#myModal'+producto_id).on('shown.bs.modal', function() {
+        $('#'+campo).focus();
+        $('#'+campo).select();
+    });
+}
+
 function pedidos_pendientes()
 {    
     var base_url = document.getElementById('base_url').value;
