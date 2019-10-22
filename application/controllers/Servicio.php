@@ -1313,4 +1313,70 @@ class Servicio extends CI_Controller{
         //}
     }
    
+    /* registrar servicio entegado */
+    function registrar_detalleservicioentregado()
+    {
+        //if($this->acceso(69)){
+            if ($this->input->is_ajax_request()){
+                
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('detalleserv_entregadoa','Entregado a','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('detalleserv_saldo','Saldo','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
+                {
+                    $servicio_id = $this->input->post('servicio_id');
+                    $detalleserv_id = $this->input->post('detalleserv_id');
+                    $estado_id = 7; // 7 ---> ENTREGADO
+                    $fecha_entregado = date('Y-m-d');
+                    $hora_entregado  = date('H:i:s');
+                    
+                    $params = array(
+                        'detalleserv_fechaentregado' => $fecha_entregado,
+                        'detalleserv_horaentregado' => $hora_entregado,
+                        'estado_id' => $estado_id,
+                        'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
+                        'detalleserv_entregadoa'  => $this->input->post('detalleserv_entregadoa'),
+                    );
+                    $this->load->model('Detalle_serv_model');
+                    $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
+                    /* **************Suma los montos de los detalles y actualiza servicio************* */
+                    $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                    
+                    $total = $data['resultado']['total'];
+                    $acuenta = $data['resultado']['acuenta'];
+                    $saldo = $data['resultado']['saldo'];
+                    $sumparams = array(
+                            'servicio_total' => $total,
+                            'servicio_acuenta' => $acuenta,
+                            'servicio_saldo' => $saldo,
+                    );
+                    $this->Servicio_model->update_servicio($servicio_id,$sumparams);
+                    /* **********Cambia el estado del servicio segun el estado de los detalles*********** */
+                    $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                    
+                    echo json_encode("ok");
+                }else{
+                    echo json_encode("faltainf");
+                }
+            }
+            else
+            {
+                show_404();
+            }
+        //}
+    }
 }
