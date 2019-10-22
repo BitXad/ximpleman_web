@@ -613,6 +613,17 @@ class Orden_trabajo extends CI_Controller{
         }
     }
 
+    function anular($orden_trabajo)
+    {
+        if($this->acceso(170)){
+          $orden= "UPDATE orden_trabajo set estado_id=27, orden_total=0, orden_acuenta=0, orden_saldo=0 WHERE orden_id=".$orden_trabajo." ";
+          $this->Orden_trabajo_model->ejecutar($orden);
+          $detalle= "UPDATE detalle_orden set detalleorden_total=0,detalleorden_cantidad=0,detalleorden_ancho=0,detalleorden_largo=0,detalleorden_precio=0,detalleorden_preciototal=0 WHERE orden_id=".$orden_trabajo." ";
+          $this->Orden_trabajo_model->ejecutar($detalle);
+          redirect('orden_trabajo/index');
+    }
+    }
+
     /*
      * Ordenes de trabajo pendientes
      */

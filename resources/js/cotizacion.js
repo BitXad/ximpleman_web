@@ -3,7 +3,8 @@ $(document).on("ready",inicio);
 function inicio(){
     
         detallecoti();
-       
+         filtro = " and date(cotizacion_fecha) = date(now())";
+    fechacotizacion(filtro);
 
 }
 
@@ -877,7 +878,45 @@ function fechacotizacion(parametro){
                         
                         html += " <a href='"+base_url+"cotizacion/cotizarecibo/"+registros[i]["cotizacion_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"cotizacion/recibo/"+registros[i]["cotizacion_id"]+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
-                        
+                        html += "  <a href='#' data-toggle='modal'  data-target='#modalanular"+registros[i]["cotizacion_id"]+"' class='btn btn-xs btn-danger' style=''><i class='fa fa-ban'></i></a>";
+                        html += "                       <!------------------------ modal para eliminar el producto ------------------->";
+                        html += " <div class='modal fade' id='modalanular"+registros[i]['cotizacion_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+registros[i]['orden_id']+"'>";
+                        html += "   <div class='modal-dialog' role='document'>";
+                        html += "  <br><br>";
+                        html += "   <div class='modal-content'>";
+                        html += "   <div class='modal-header'>";
+                        html += "   <h1 class='modal-title' id='myModalLabel'>ADVERTENCIA</h1>";
+                        html += "  </div>";
+                        html += "  <div class='modal-body'>";
+                        html += "  <div class='panel panel-primary'>";
+                        html += "   ";
+                        html += "  <center>";
+                        html += "   <!------------------------------------------------------------------->";
+                        html += "   <h1 style='font-size: 80px'> <b> <em class='fa fa-trash'></em></b></h1> ";
+                        html += "  <h4>";
+                        html += "  ";
+                        html += "  ¿Desea eliminar la Cotizacion? <b> <br>";
+                        html += " No.: "+registros[i]['cotizacion_id']+"<br>";
+    //                    
+                        html += " </h4>";
+                        html += "                                      <!------------------------------------------------------------------->";
+                        html += " ";
+                        html += "   </center>";
+                        html += "   </div>";
+                        html += "   </div>";
+                        html += "    <div class='modal-footer aligncenter'>";
+                        html += "   <center>";                                        
+                        html += "  <a href='"+base_url+"cotizacion/remove/"+registros[i]['cotizacion_id']+"' class='btn btn-danger  btn-sm'><em class='fa fa-pencil'></em> Si </a>";
+
+                        html += "  <a href='#' class='btn btn-success btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
+                        html += "  </center>";
+
+                        html += "   </div>";
+                        html += "   </div>";
+                        html += "   </div>";
+                        html += "   </div>";
+
+                        html += " <!------------------------ fin modal --------------------------------->   ";  
                         html += "</td>";
                         html += "</tr>";
                        

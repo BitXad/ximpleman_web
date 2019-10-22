@@ -4,6 +4,8 @@ function inicio(){
     
         detalleordeni();
        
+       filtro = " and date(orden_fecha) = date(now())";
+    fechaorden(filtro);
 }
 
 function detalleordeni(){
@@ -1092,7 +1094,9 @@ function fechaorden(parametro){
                     
                     var cont = 0;
                     var total = Number(0);
-                    var total_detalle = 0;
+                    var total_acuenta = Number(0);
+                    var total_saldo = Number(0);
+                    
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
                     $("#pillados").html("Registros Encontrados: "+n+" ");
                    
@@ -1100,9 +1104,10 @@ function fechaorden(parametro){
                  
                     
                     for (var i = 0; i < n ; i++){
-                        
-                        
-                        
+
+                        total += Number(registros[i]["orden_total"]);
+                        total_acuenta += Number(registros[i]["orden_acuenta"]);
+                        total_saldo += Number(registros[i]["orden_saldo"]);
                         
                         html += "<tr>";
                       
@@ -1119,12 +1124,60 @@ function fechaorden(parametro){
                         
                         html += " <a href='"+base_url+"orden_trabajo/editar/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
                         html += " <a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
-                        
+                        html += "  <a href='#' data-toggle='modal'  data-target='#modalanular"+registros[i]["orden_id"]+"' class='btn btn-xs btn-danger' style=''><i class='fa fa-ban'></i></a>";
+                        html += "                       <!------------------------ modal para eliminar el producto ------------------->";
+                        html += " <div class='modal fade' id='modalanular"+registros[i]['orden_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+registros[i]['orden_id']+"'>";
+                        html += "   <div class='modal-dialog' role='document'>";
+                        html += "  <br><br>";
+                        html += "   <div class='modal-content'>";
+                        html += "   <div class='modal-header'>";
+                        html += "   <h1 class='modal-title' id='myModalLabel'>ADVERTENCIA</h1>";
+                        html += "  </div>";
+                        html += "  <div class='modal-body'>";
+                        html += "  <div class='panel panel-primary'>";
+                        html += "   ";
+                        html += "  <center>";
+                        html += "   <!------------------------------------------------------------------->";
+                        html += "   <h1 style='font-size: 80px'> <b> <em class='fa fa-trash'></em></b></h1> ";
+                        html += "  <h4>";
+                        html += "  ";
+                        html += "  ¿Desea anular la OT? <b> <br>";
+                        html += " Orden de  Trabajo: "+registros[i]['orden_id']+"<br>";
+    //                    
+                        html += " </h4>";
+                        html += "                                      <!------------------------------------------------------------------->";
+                        html += " ";
+                        html += "   </center>";
+                        html += "   </div>";
+                        html += "   </div>";
+                        html += "    <div class='modal-footer aligncenter'>";
+                        html += "   <center>";                                        
+                        html += "  <a href='"+base_url+"orden_trabajo/anular/"+registros[i]['orden_id']+"' class='btn btn-danger  btn-sm'><em class='fa fa-pencil'></em> Si </a>";
+
+                        html += "  <a href='#' class='btn btn-success btn-sm' data-dismiss='modal'><em class='fa fa-times'></em> No </a>";
+                        html += "  </center>";
+
+                        html += "   </div>";
+                        html += "   </div>";
+                        html += "   </div>";
+                        html += "   </div>";
+
+                        html += " <!------------------------ fin modal --------------------------------->   ";      
                         html += "</td>";
                         html += "</tr>";
-                       
-                   }
-                        
+                           
+                       }
+                       html += "<tr>";
+                       html += "<th colspan='2'>TOTAL</th>";
+                       html += "<th></th>";
+                       html += "<th></th>";
+                       html += "<th align='right'>"+Number(total).toFixed(2)+"</th>";
+                       html += "<th align='right'>"+Number(total_acuenta).toFixed(2)+"</th>";
+                       html += "<th align='right'>"+Number(total_saldo).toFixed(2)+"</th>";
+                       html += "<th></th>";
+                       html += "<th></th>";
+                       html += "</tr>";
+                            
                    
                    $("#fechadeorden").html(html);
                    
