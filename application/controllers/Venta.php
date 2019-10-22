@@ -936,8 +936,9 @@ function edit($venta_id)
         
         if($this->acceso(20)){
         //**************** inicio contenido ***************      
+        $data['rolusuario'] = $this->session_data['rol'];
         $usuario_id = $this->session_data['usuario_id'];
-        $tipousuario_id = $this->session_data['tipousuario_id'];
+        $tipousuario_id = $this->session_data['tipousuario_id']; 
         
                 // check if the venta exists before trying to edit it
         $venta = $this->Venta_model->get_venta($venta_id);
@@ -947,17 +948,20 @@ function edit($venta_id)
         
         $data['page_title'] = "Modificar Venta";
         
+        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
+        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;  
-        $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
-                
+        $data['tipousuario_id'] = $tipousuario_id;
+        
                 
         //**************** inicio contenido ***************     
                 
