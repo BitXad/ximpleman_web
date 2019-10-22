@@ -130,10 +130,10 @@
                 <br>
                 <center>            
                     <div class="col-md-4">
-                        Desde: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%;"  id="fecha_desde" name="fecha_desde" required="true">
+                        Desde: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%;"  id="fecha_desde" name="fecha_desde" value="<?php echo date('Y-m-d') ?>" required="true">
                     </div>
                     <div class="col-md-4">
-                        Hasta: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%; "  id="fecha_hasta" name="fecha_hasta" required="true">
+                        Hasta: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%; "  id="fecha_hasta" name="fecha_hasta" value="<?php echo date('Y-m-d') ?>" required="true">
                     </div>
 
                    
@@ -155,9 +155,9 @@
                     <tr>
 						<th>#</th>
             <th>Cliente</th>
-						<th>Fecha</th>
-						<th>Fecha de Entrega</th>
-						<th>Total Bs.</th>
+			<th>Fecha</th>
+			<th>Fecha de Entrega</th>
+			<th>Total Bs.</th>
             <th>A Cuenta Bs.</th>
             <th>Saldo Bs.</th>
             <th>Usuario</th>
@@ -183,7 +183,8 @@
                         
                         <td><?php echo $c['usuario_nombre']; ?></td>
                         <td class="no-print"><a href="<?php echo site_url('orden_trabajo/editar/'.$c['orden_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
-                        <a href="<?php echo site_url('orden_trabajo/ordenrecibo/'.$c['orden_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a></td>
+                        <a href="<?php echo site_url('orden_trabajo/ordenrecibo/'.$c['orden_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
+                        <a href="<?php echo site_url('orden_trabajo/anular/'.$c['orden_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-stop"></span></a></td>
                         
                     </tr>
                     <?php $i++; }?>

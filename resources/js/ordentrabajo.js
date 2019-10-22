@@ -53,9 +53,9 @@ function detalleordeni(){
                         html += "<td><input id='detalleorden_precio"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_precio"]+"' ></td>";
                         html += "<td><input id='ancho"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_ancho"]+"' ></td>";
                         html += "<td><input id='largo"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_largo"]+"' ></td>";
-                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["detalleorden_total"]).toFixed(2)+"</b></font> <br></span>";
+                        html += "<td><center><font size='3'> <b>"+Number(registros[i]["detalleorden_total"]).toFixed(2)+"</b></font>";
                         html += "</center></td>";
-                        html += "<td><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["detalleorden_preciototal"]).toFixed(2)+"</b></font> <br></span>";
+                        html += "<td><center><span class='badge badge-success'><font size='3'> <b>"+Number(registros[i]["detalleorden_preciototal"]).toFixed(2)+"</b></font> <br></span>";
                         html += "</center></td>";
                         html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detalleorden_id"]+","+usuario_id+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
                         html += "<button type='button' onclick='quitardetallec("+registros[i]["detalleorden_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
@@ -65,14 +65,14 @@ function detalleordeni(){
                        }
                        html += "<tr>";
                       // html += "<td><input id='total'  name='total' type='text' class='form-control' value='"+total_detalle+"'></td>";
-                       html += "<td><font size='3'>TOTAL</td>";
-                       html += "<td></td>";
-                       html += "<td></td>";
-                       html += "<td></td>";
-                       html += "<td></td>";
-                       html += "<td><font size='3'></td>";
-                       html += "<td><font size='3'><b>"+Number(total_detalle).toFixed(2)+" M2</td>";
-                       html += "<td><font size='3'><b>"+Number(total_preciodetalle).toFixed(2)+" Bs.</td>";
+                       html += "<th colspan='2'><font size='3'>TOTAL</th>";
+                       
+                       html += "<th></th>";
+                       html += "<th></th>";
+                       html += "<th></th>";
+                       html += "<th><font size='3'></th>";
+                       html += "<th><font size='3'><b>"+Number(total_detalle).toFixed(2)+" M2</th>";
+                       html += "<th><font size='3'><b>"+Number(total_preciodetalle).toFixed(2)+" Bs.</th>";
                        html += "</tr>";
                         //$('#orden_trabajo_total').value(total_detalle.toFixed(2));
                        $("#detalleordeniza").html(html);
@@ -195,13 +195,28 @@ function cotivalidar(e,opcion) {
 
         if (opcion==3){   //si la tecla proviene del input codigo de barras
 
-            buscarporcodigo();           
-
+           var nit = document.getElementById('nit').value;
+           if (nit=='' || nit==0){
+                buscar_clientes();        
+              }else{
+                 document.getElementById('telefono').focus();   
+              }
         } 
 
         if (opcion==4){   //si la tecla proviene del 
 
             tablaresultados(1);           
+
+        } 
+
+        if (opcion==5){   //si la tecla proviene del telefono
+
+            document.getElementById('orden_numero').focus();           
+
+        } 
+        if (opcion==6){   //si la tecla proviene del numero de orden
+
+            document.getElementById('cotizar').focus();        
 
         } 
 
@@ -285,7 +300,7 @@ function buscarcliente(){
 
                 {
 
-                    alert("Cliente Nuevo");
+                   
 
                     document.getElementById('razon_social').focus();
 
@@ -317,6 +332,82 @@ function buscarcliente(){
 
 
 
+}
+
+function buscar_clientes()
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/buscar_clientes";
+    var parametro = document.getElementById('razon_social').value;
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro:parametro},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                fin = resultado.length;
+                html = "";
+                
+                for(var i = 0; i<fin; i++)
+                {
+                    html += "<option value='" +resultado[i]["cliente_id"]+"' label='"+resultado[i]["cliente_nombre"];
+                    if (resultado[i]["cliente_nombrenegocio"]!=null)
+                    {    html += " ("+resultado[i]["cliente_nombrenegocio"]+")"; }
+                    html += "'>"+resultado[i]["cliente_razon"]+"</option>";
+                }    
+                $("#listaclientes").html(html);
+
+            },
+            error: function(respuesta){
+            }
+        });
+}
+
+function seleccionar_cliente(){
+    var cliente_id = document.getElementById('razon_social').value;
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"orden_trabajo/seleccionar_cliente/"+cliente_id;
+    //alert(controlador);
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                tam = resultado.length;
+                
+//                alert(resultado[0]["cliente_nit"]);
+                
+                if (tam>=1){
+                    $("#cliente_id").val(resultado[0]["cliente_id"]);
+                    $("#nit").val(resultado[0]["cliente_nit"]);
+                    $("#razon_social").val(resultado[0]["cliente_razon"]);
+                    $("#telefono").val(resultado[0]["cliente_telefono"]);
+                    $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
+                    $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
+                 
+                }
+       
+
+            },
+            error: function(respuesta){
+            }
+        });    
+    
+}
+
+function seleccionar(opcion) {
+    
+        if (opcion==1){             
+            document.getElementById('nit').select();
+        }
+        
+        if (opcion==2){
+            document.getElementById('razon_social').select();
+        }
+        
+     
 }
 
 
@@ -732,7 +823,7 @@ function tablaresultados(opcion)
 
 
 
-                        html += "<b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += "<b>"+registros[i]["producto_nombre"]+"</b><br>";
                         html += "   <select class='btn btn-facebook btn-xs' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo(this,"+registros[i]["producto_id"]+")'>";
                         html += "       <option value='1' id='"+registros[i]["producto_precio"]+"' >";
                         precio_unidad = registros[i]["producto_precio"];
@@ -784,7 +875,7 @@ function tablaresultados(opcion)
                         }
                         
                         html += "   </select>";
-                        html += "   <select class='btn btn-primary btn-xs' style='font-size:10px; face=arial narrow;' id='selec_tipo"+registros[i]["producto_id"]+"' >";
+                        html += "   <select class='btn btn-warning btn-xs' style='font-size:10px; face=arial narrow;' id='selec_tipo"+registros[i]["producto_id"]+"' >";
                         var w = tipo_orden.length;
                        
                         for (var x=0; x<w; x++) {

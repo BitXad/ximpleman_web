@@ -11,6 +11,7 @@ class Orden_trabajo extends CI_Controller{
         parent::__construct();
         $this->load->model('Orden_trabajo_model');
         $this->load->model('Cliente_model');
+        $this->load->model('Venta_model');
         $this->load->helper('numeros');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -183,6 +184,26 @@ class Orden_trabajo extends CI_Controller{
         }
        
         }
+    }
+
+    function seleccionar_cliente($cliente_id){
+        
+               //**************** inicio contenido ***************       
+
+               $usuario_id = $this->session_data['usuario_id'];
+               
+               
+               $sql =  "select * from cliente where ".
+                       " cliente_id = ".$cliente_id;
+               
+               $resultado = $this->Venta_model->consultar($sql);
+               echo json_encode($resultado);
+
+
+               //**************** fin contenido ***************
+                                       
+                                        
+        
     }
 
     function editar($orden_trabajo)
