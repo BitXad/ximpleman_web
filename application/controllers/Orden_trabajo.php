@@ -33,7 +33,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(36)){
+        if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $data['rol'] = $this->session_data['rol'];
             $data['orden_trabajo'] = $this->Orden_trabajo_model->get_all_orden_trabajo_100();
@@ -65,7 +65,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function nuevo()
     {
-        if($this->acceso(37)){
+        if($this->acceso(167)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
             $data['tipo_orden'] = $this->Orden_trabajo_model->get_all_tipo_orden(); 
@@ -80,7 +80,7 @@ class Orden_trabajo extends CI_Controller{
 
     function add()
     {
-        if($this->acceso(37)){
+        if($this->acceso(167)){
             
         $usuario_id = $this->session_data['usuario_id'];
         $data['usuario_id'] = $this->session_data['usuario_id'];
@@ -151,7 +151,7 @@ class Orden_trabajo extends CI_Controller{
 
     function edit($orden_trabajo)
     {
-        if($this->acceso(37)){
+        if($this->acceso(167)){
             
         $usuario_id = $this->session_data['usuario_id'];
         $data['usuario_id'] = $this->session_data['usuario_id'];
@@ -187,7 +187,7 @@ class Orden_trabajo extends CI_Controller{
 
     function editar($orden_trabajo)
     {
-        if($this->acceso(37)){
+        if($this->acceso(167)){
             $data['page_title'] = "Orden de Trabajo";
             $data['usuario_id'] = $this->session_data['usuario_id'];
             $data['tipo_orden'] = $this->Orden_trabajo_model->get_all_tipo_orden();
@@ -200,7 +200,7 @@ class Orden_trabajo extends CI_Controller{
 
     function ordenrecibo($orden_trabajo)
     {
-        if($this->acceso(36)){
+        if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
@@ -213,7 +213,7 @@ class Orden_trabajo extends CI_Controller{
     }
     function recibo($orden_trabajo)
     {
-        if($this->acceso(36)){
+        if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $usuario_id = $this->session_data['usuario_id'];
             $data['Orden_trabajo_id'] = $orden_trabajo;
@@ -231,7 +231,7 @@ class Orden_trabajo extends CI_Controller{
 
     function buscarcliente()
     {
-        if($this->acceso(12)){
+        if($this->acceso(166)){
         //**************** inicio contenido ***************
         
                 if ($this->input->is_ajax_request()) {       
@@ -473,7 +473,7 @@ class Orden_trabajo extends CI_Controller{
 
     function quitar($detalleorden_id)
     {
-        if($this->acceso(40)){
+        if($this->acceso(166)){
         //**************** inicio contenido ***************        
         
         $sql = "delete from detalle_orden where detalleorden_id = ".$detalleorden_id;
@@ -489,7 +489,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function editaaa($orden_trabajo)
     {
-        if($this->acceso(38)){
+        if($this->acceso(167)){
             $data['page_title'] = "Orden de Trabajo";
             $usuario_id = $this->session_data['usuario_id'];
             $data['Orden_trabajo'] = $this->Orden_trabajo_model->get_Orden_trabajo($orden_trabajo);
@@ -532,7 +532,7 @@ class Orden_trabajo extends CI_Controller{
 
     function finalizar($orden_trabajo)
     {   
-        if($this->acceso(36)){
+        if($this->acceso(166)){
             $data['page_title'] = "Orden de Trabajo";
             $usuario_id = $this->session_data['usuario_id'];
             // check if the Orden_trabajo exists before trying to edit it
@@ -578,7 +578,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function remove($orden_trabajo)
     {
-        if($this->acceso(40)){
+        if($this->acceso(170)){
             $Orden_trabajo = $this->Orden_trabajo_model->get_Orden_trabajo($orden_trabajo);
 
             // check if the Orden_trabajo exists before trying to delete it
@@ -597,7 +597,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function ordenes_pendientes()
     {
-        if($this->acceso(40)){
+        if($this->acceso(166)){
             
             $condicion = $this->input->post('filtro');
             
@@ -614,7 +614,7 @@ class Orden_trabajo extends CI_Controller{
      */
     function pasaraventas($orden_id,$cliente_id)
     {
-        if($this->acceso(40)) {
+        if($this->acceso(168)) {
         //**************** inicio contenido ***************    
         $usuario_id = $this->session_data['usuario_id'];
                 
