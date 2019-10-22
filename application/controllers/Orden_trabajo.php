@@ -11,6 +11,7 @@ class Orden_trabajo extends CI_Controller{
         parent::__construct();
         $this->load->model('Orden_trabajo_model');
         $this->load->model('Cliente_model');
+        $this->load->model('Venta_model');
         $this->load->helper('numeros');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -183,6 +184,26 @@ class Orden_trabajo extends CI_Controller{
         }
        
         }
+    }
+
+    function seleccionar_cliente($cliente_id){
+        
+               //**************** inicio contenido ***************       
+
+               $usuario_id = $this->session_data['usuario_id'];
+               
+               
+               $sql =  "select * from cliente where ".
+                       " cliente_id = ".$cliente_id;
+               
+               $resultado = $this->Venta_model->consultar($sql);
+               echo json_encode($resultado);
+
+
+               //**************** fin contenido ***************
+                                       
+                                        
+        
     }
 
     function editar($orden_trabajo)
@@ -590,6 +611,17 @@ class Orden_trabajo extends CI_Controller{
             else
                 show_error('The Orden_trabajo you are trying to delete does not exist.');
         }
+    }
+
+    function anular($orden_trabajo)
+    {
+        if($this->acceso(170)){
+          $orden= "UPDATE orden_trabajo set estado_id=27, orden_total=0, orden_acuenta=0, orden_saldo=0 WHERE orden_id=".$orden_trabajo." ";
+          $this->Orden_trabajo_model->ejecutar($orden);
+          $detalle= "UPDATE detalle_orden set detalleorden_total=0,detalleorden_cantidad=0,detalleorden_ancho=0,detalleorden_largo=0,detalleorden_precio=0,detalleorden_preciototal=0 WHERE orden_id=".$orden_trabajo." ";
+          $this->Orden_trabajo_model->ejecutar($detalle);
+          redirect('orden_trabajo/index');
+    }
     }
 
     /*

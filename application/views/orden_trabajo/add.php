@@ -44,12 +44,13 @@
           
 
   function myFunction() {
-     /*var cliente_id = document.getElementById('cliente_id').value;
-     if (cliente_id=='' || cliente_id==0) {
-      alert("Cliente no existe");
-     } else {*/
+     var nit = document.getElementById('nit').value;
+     var razon = document.getElementById('razon_social').value;
+     if (nit=='' || nit==0 || razon=='' || razon==0) {
+      alert("Debe agregar un cliente");
+     } else {
        $("#exampleModal").modal("show");
-    /* } */
+     } 
    
       
       }
@@ -71,19 +72,12 @@ input[type=number] { -moz-appearance:textfield; }
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>">
  <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php echo json_encode($tipo_orden); ?>' />
+ <div class="row" style="padding-left: 10px;margin-top: -20px;margin-bottom: -7px;">
+                <h4 class="box-title">Orden de Trabajo</h4>
+ </div>     
 
-<div class="row">
-    <div class="col-md-12">
-      	<div class="box box-info" >
-            <div class="box-header with-border">
-              	<h3 class="box-title">Orden de Trabajo</h3>
-            </div>
-            
-          
-
-      		<div class="box-body">
-          		<div class="row clearfix">
-                <div class="col-md-12">
+     
+    <div class="panel panel-default" style="padding:0;">        
             <div class="col-md-3">
             <label for="nit" class="control-label">NIT</label>
             <div class="form-group">
@@ -91,48 +85,43 @@ input[type=number] { -moz-appearance:textfield; }
             </div>
           </div>      
             <div class="col-md-3">
-            <label for="razon_social" class="control-label">Cliente</label>
+            <label for="razon_social" class="control-label">CLIENTE</label>
             <div class="form-group">
-              <input type="text" name="razon_social" value=""  class="form-control" id="razon_social" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+              <input type="search" name="razon_social" list="listaclientes" class="form-control" id="razon_social" onkeypress="cotivalidar(event,3)"  onchange="seleccionar_cliente()" onclick="seleccionar(2)" onKeyUp="this.value = this.value.toUpperCase();" autocomplete="off" />
+                <datalist id="listaclientes">
+
+                </datalist>
             </div>  
             </div>
             
             <div class="col-md-3">
-            <label for="telefono" class="control-label">Telefono</label>
+            <label for="telefono" class="control-label">TELEFONO</label>
             <div class="form-group">
-              <input type="text" name="telefono" value="" class="form-control" id="telefono" />
+              <input type="text" name="telefono" value="" class="form-control" id="telefono" onkeypress="cotivalidar(event,5)" />
             </div>
           </div>
 						<div class="col-md-3">
-            <label for="orden_numero" class="control-label">No.Orden</label>
+            <label for="orden_numero" class="control-label">No.ORDEN</label>
             <div class="form-group">
-              <input type="text" name="orden_numero" value="" class="form-control" id="orden_numero" required/>
+              <input type="text" name="orden_numero" value="" class="form-control" id="orden_numero" required onkeypress="cotivalidar(event,6)"/>
             </div>
-          </div>
-           
-          
-<div class="col-md-3">
+            </div>
 </div>
+ 
 <div class="col-md-3"></div>
 <div class="col-md-3"></div>
-				
+        
                   
          
-							<div class="col-md-3">
+              <div class="col-md-3">
            
-            <button type="button" class="btn btn-success" onclick="myFunction()">
+            <button type="button" class="btn btn-success btn-xs" onclick="myFunction()">
                 <i class="fa fa-check"></i> Finalizar OT
               </button>
-              <a href="javascript:history.back()"><button type="button" class="btn btn-danger">
+              <a href="javascript:history.back()"><button type="button" class="btn btn-danger btn-xs">
                 <i class="fa fa-times"></i> Cancelar
               </button></a>
             </div>
-          	
-          			     
-          </div>
-         </div>
-    
-</div>
 <!---------------------------------------TABLA DE DETALLE orden_trabajo------------------------------------>
 <div class="col-md-12">
    <div class="col-md-4" style="padding-left:0px;">
@@ -160,7 +149,7 @@ input[type=number] { -moz-appearance:textfield; }
                                                 <th>#</th>
                                                 <th>Producto</th>
                     </tr>
-                    <tbody class="buscar3" id="tablaresultados">
+                    <tbody class="buscar" id="tablaresultados">
                     
                         <!------ aqui se vacia los resultados de la busqueda mediante JS --->
                     
@@ -215,11 +204,24 @@ input[type=number] { -moz-appearance:textfield; }
 
     </div>
 </div>
+<div class="col-md-8" align="right">
+    <a type="button" onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-money fa-4x"></i><br>
+               Finalizar<br>OT<br>
+            </a>
 
+            
+            <a  href="<?php echo site_url('orden_trabajo/index'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-sign-out fa-4x"></i><br><br>
+               Cancelar<br>
+            </a>    
+</div>
 <!---------------------------------------FIN TABLA DE DETALLE VENTAAA------------------------------------>
 </div>
+
 <!---------------modal  producto--------------->
 </div>
+
 
 <!---------------------- fin modal productos --------------------------------------------------->
 
@@ -229,7 +231,7 @@ input[type=number] { -moz-appearance:textfield; }
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Finalizar OT</h5>
+        <h3 class="modal-title" id="exampleModalLabel">Finalizar OT</h3>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -272,7 +274,7 @@ input[type=number] { -moz-appearance:textfield; }
           <div class="col-md-8">
             <label for="nota" class="control-label">Nota</label>
             <div class="form-group">
-              <input type="text" name="nota" value="" class="form-control" id="nota" required/>
+              <input type="text" name="nota" value="" class="form-control" id="nota" />
             </div>
           </div>
         </div>
