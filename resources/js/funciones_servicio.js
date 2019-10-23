@@ -757,32 +757,31 @@ function buscar_servicioporfechas()
     {
         filtro = " s.estado_id = 5 ";
         mostrar_ocultar_buscador("ocultar");
-    }
-    
-    if (opcion == 1)
+    }else if (opcion == 7)
     {
+        filtro = " s.estado_id = 6 ";
+        mostrar_ocultar_buscador("ocultar");
+    }else if (opcion == 1)
+    {
+        //servicios de hoy
         filtro = " date(servicio_fecharecepcion) = date(now())";
         mostrar_ocultar_buscador("ocultar");
-    }//servicios de hoy
-    
-    if (opcion == 2)
+    }else if (opcion == 2)
     {
+        //servicios de ayer
         filtro = " date(servicio_fecharecepcion) = date_add(date(now()), INTERVAL -1 DAY)";
         mostrar_ocultar_buscador("ocultar");
-    }//servicios de ayer
-    
-    if (opcion == 3) 
+    }else if (opcion == 3) 
     {
+        //servicios de la semana
         filtro = " date(servicio_fecharecepcion) >= date_add(date(now()), INTERVAL -1 WEEK)";
         mostrar_ocultar_buscador("ocultar");
-    }//servicios de la semana
-
-    if (opcion == 4) 
-    {   filtro = "";
+    }else if (opcion == 4) 
+    {
+        //todos los servicios
+        filtro = "";
         mostrar_ocultar_buscador("ocultar");
-    }//todos los servicios
-    
-    if (opcion == 5)
+    }else if (opcion == 5)
     {
         mostrar_ocultar_buscador("mostrar");
         filtro = null;
@@ -1913,6 +1912,7 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
     var controlador = base_url+"servicio/registrar_servicioentregado";
     var detalleserv_entregadoa = document.getElementById('detalleserv_entregadoa'+detalleserv_id).value;
     var detalleserv_saldo = document.getElementById('detalleserv_saldo'+detalleserv_id).value;
+    var tipoimpresora = document.getElementById('tipoimpresora').value;
     $('#modalregistrarentregaserv'+detalleserv_id).modal('hide');
         $.ajax({url: controlador,
             type:"POST",
@@ -1926,6 +1926,13 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
                 if(resultado == "faltainf"){
                     $('#mensajeregistrarserentregado').html("<br>Los campos: Saldo y Entregado a; no debes estar vacios");
                 }else if(resultado == "ok"){
+                    var dir_url = "";
+                    if(tipoimpresora == "FACTURADORA"){
+                        dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+detalleserv_id;
+                    }else{
+                        dir_url = base_url+"detalle_serv/compdetalle_pago/"+detalleserv_id;
+                    }
+                    window.open(dir_url, '_blank');
                     //$('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
                     fechadeservicio(null, 2);
                 }
