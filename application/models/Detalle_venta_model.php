@@ -230,7 +230,7 @@ function ventas_dia($estado)
           i.producto_unidad, 
           i.producto_marca, 
           i.categoria_id, 
-          i.producto_codigobarra              
+          i.producto_codigobarra
         FROM
           detalle_venta d, inventario i
         WHERE           

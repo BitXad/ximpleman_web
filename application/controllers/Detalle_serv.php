@@ -1249,11 +1249,12 @@ class Detalle_serv extends CI_Controller{
      * *************Registra el cobro total (DE TODOS LOS DETALLES QUE ESTEN EN TERMINADO(estado_id = 6)) de un servicio *********************
      * *************y recalcula los valores de los detalles y cambia todos los estados a ENTREGADO(estado_id = 7)***********
      */
-    function registrarcobroTotal($servicio_id)
+    function registrarcobrototal($servicio_id)
     {
         if($this->acceso(84)){
             $usuario_id = $this->session_data['usuario_id'];
             $fecha_cobro =  $this->input->post('fecha_cobro');
+            $detalleserv_entregadoa =  $this->input->post('detalleserv_entregadoa');
             $fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
             $hora_finalizacion = date("H:i:s", strtotime($fecha_cobro));
             $fechahora = date("Y-m-d H:i:s", strtotime($fecha_cobro));
@@ -1271,6 +1272,7 @@ class Detalle_serv extends CI_Controller{
                         'detalleserv_horaentregado' => $hora_finalizacion,
                         'detalleserv_fpagosaldo' => $fechahora,
                         'usuariopsaldo_id' => $usuario_id,
+                        'detalleserv_entregadoa' => $detalleserv_entregadoa,
                 );
                 $this->Detalle_serv_model->update_detalle_serv($det_serv['detalleserv_id'],$cad);
             }
