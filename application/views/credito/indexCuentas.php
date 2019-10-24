@@ -20,19 +20,23 @@
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
-                <h3 class="box-title">Cuentas por Cobrar</h3>
-       
-                 <form action="<?php echo site_url('credito/repoCuentas'); ?>"  target="_blank" method="POST">
+    <div class="col-md-6 no-print">
+               <font size='4' face='Arial'><b>Cuentas por Cobrar</b></font>
+               <br><font size='2' face='Arial' id="pillados">Registros Econtrados: <?php echo sizeof($credito) ?></font>
+        </div>
+        <div class="col-md-6 no-print">
+            <form action="<?php echo site_url('credito/repoCuentas'); ?>"  target="_blank" method="POST">
                 <input type="hidden" name="usu" id="usu">
                 <input type="hidden" name="feini" id="feini">
                 <input type="hidden" name="fefin" id="fefin">
                 <input type="hidden" name="esti" id="esti" value="">
                  <input type="hidden" name="vendedor" id="vendedor" value="">
               <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
-              <button class="btn btn-success btn-sm"><span class="fa fa-clipboard"></span> Reportes</button>
+              <button class="btn btn-success btn-foursquarexs" style="float: right;"><font size="5"><span class="fa fa-clipboard"></span></font><br><small>Reportes</small></button>
+          
               <?php } ?>
             </form>
-                
+        </div>
                  <div class="panel panel-primary col-md-12">
                     <br>
                      <div class="col-md-2" style="padding-left: -30px;"  >

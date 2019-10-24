@@ -51,7 +51,7 @@ function buscar_fecha_deuda()
 function tabladeudas(filtro)
 {
      var controlador = "";
-     var limite = 1500;
+     
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarDeuda/';
@@ -68,15 +68,15 @@ function tabladeudas(filtro)
                if (registros != null){                   
                    
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
                     //var total_detalle = Number(0);
                     //var suma = Number(0);
                     //var subtotal = Number(0);
                     //var descuento = Number(0);
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                  
                         total = 0;
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                         
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
@@ -155,7 +155,6 @@ function buscar_fecha_cuenta()
 function tablacuentas(filtro)
 {
      var controlador = "";
-     var limite = 1500;
      var base_url = document.getElementById('base_url').value;
      
      controlador = base_url+'credito/buscarCuenta/';
@@ -172,15 +171,16 @@ function tablacuentas(filtro)
                if (registros != null){                   
                    
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
+
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
                     //var total_detalle = Number(0);
                     //var suma = Number(0);
                     //var subtotal = Number(0);
                     //var descuento = Number(0);
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
+                
                     total=0;
-                    for (var i = 0; i < x ; i++){
+                    for (var i = 0; i < n ; i++){
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                          total += Number(registros[i]["credito_monto"]);
