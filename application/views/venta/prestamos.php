@@ -49,7 +49,7 @@
             <center>
             
                 <br><br>
-                <font size="3" face="arial"><b>PRESTAMOS DE ENVASES</b></font> <br>
+                <font size="3" face="arial"><b>PRESTAMO DE ENVASES</b></font> <br>
                 <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 

@@ -449,10 +449,14 @@
                         if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
+                            <a href="<?php echo site_url('venta');?>"><i class="fa fa-paste"></i>Ventas del dia</a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
                         </li>
                         <?php
                         }
+                        
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>

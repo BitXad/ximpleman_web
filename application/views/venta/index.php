@@ -244,7 +244,7 @@
 
 
 
-<div>
+<div hidden>
     
 <button type="button" id="boton_modal_factura" class="btn btn-primary" data-toggle="modal" data-target="#modalfactura" >
     modal factura
