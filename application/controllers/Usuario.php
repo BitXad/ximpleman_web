@@ -33,7 +33,7 @@ private function acceso($id_rol){
     /*
      * Listing of usuario
      */
-    function index()
+    function index($a = null)
     {
         if($this->acceso(148)){
 
@@ -52,9 +52,12 @@ private function acceso($id_rol){
                 
                 $config = $this->config->item('pagination');
                 $config['base_url'] = site_url('usuario/index?');
+                $data['mensaje'] = $a;
                 $config['total_rows'] = $this->Usuario_model->get_all_usuario_count();
                 $this->pagination->initialize($config);
                 $data['page_title'] = "Usuario";
+                
+                $data['tipo_usuario_id'] = $this->session_data['tipousuario_id'];
                 $data['usuario'] = $this->Usuario_model->get_all_usuario();
                 //$data['rol_usuario'] = $this->Rol_usuario_model->get_all_rol_usuario($params);
                 //$data['tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario($params);
@@ -581,5 +584,56 @@ private function acceso($id_rol){
             return TRUE;
         }
     }
+    
+    function nueva_clave($usuario_id)
+    {
+        if($this->acceso(148)){
+        $data['usuario'] = $this->Usuario_model->get_usuario($usuario_id);
 
+        if(isset($data['usuario']['usuario_id'])){
+            
+            /*$this->load->library('form_validation');
+            $this->form_validation->set_rules("nuevo_pass.$usuario_id", 'clave nueva'.'nuevo_pass'.$usuario_id, 'required');
+            $this->form_validation->set_rules('repita_pass'.$usuario_id, 'confirma clave', 'required');
+
+            if($this->form_validation->run()){*/
+                $new_password = md5($this->input->post('nuevo_pass'.$usuario_id));
+                $conf_password = md5($this->input->post('repita_pass'.$usuario_id));
+
+                if($new_password === $conf_password){
+                    $params = array(
+                        'usuario_clave' => $new_password,
+                    );
+
+                    $this->Usuario_model->Update_usuario($usuario_id, $params);
+                    redirect('usuario/index/a');
+                }else{
+                    redirect('usuario/index/b');
+                }
+                
+                 /*   if($new_password == $conf_password){
+                        if($this->Usuario_model->password($usuario_id, $new_password)) {
+                            redirect('usuario/index');
+                        }else{
+                            $data['mensaje'] = 'No se pudo cambiar la contraseña, vuelva a intentarlo';
+                            $data['_view'] = 'usuario/index';
+                            $this->load->view('layouts/main', $data);
+                            echo 'fallaste';
+                        }
+                    }else{
+                        $data['mensaje'] = 'Las claves nuevas ingresadas no coinciden.';
+                        $data['_view'] = 'usuario/index';
+                        $this->load->view('layouts/main', $data);
+                    }*/
+           /* }else{
+                echo validation_errors();
+                $data['mensaje'] = 'QQQ';
+                $data['page_title'] = "Usuario";
+                $data['_view'] = 'usuario/index';
+                $this->load->view('layouts/main', $data);
+            }*/
+        }else
+            show_error('The usuario you are trying to edit does not exist.');
+        }
+    }
 }
