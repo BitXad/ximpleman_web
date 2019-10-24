@@ -324,14 +324,14 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
           <div class="modal-dialog" role="document">
             <div class="modal-content">
-              <div class="modal-header">
+              <div class="modal-header"><b>ADVERTENCIA</b>
                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="form">   
-               <h2><b> Desea Salir de esta Compra sin Guardar Cambios? 
-              </b></h2>
+               <center><H4> Desea Salir de esta Compra sin Guardar Cambios? 
+              </H4></center>
           </div>
               <div class="modal-footer" >
         

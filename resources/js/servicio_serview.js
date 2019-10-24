@@ -643,7 +643,7 @@ function resultadodetalleservicioview(servicio_id){
                                 dir_url = base_url+"detalle_serv/compdetalle_pago/"+registros[i]["detalleserv_id"];
                                 titprint = "Normal";
                             }
-                            html += "<a href='"+dir_url+"' class='btn btn-success btn-xs'  title='imprimir detalle serv. "+titprint+"' target='_blank' ><span class='fa fa-print'></span><br></a>";
+                            html += "<a href='"+dir_url+"' class='btn btn-success btn-xs'  title='Imprimir detalle servicio "+titprint+"' target='_blank' ><span class='fa fa-print'></span><br></a>";
                         }
                         
                         
@@ -897,6 +897,8 @@ function cobrototalservicio(servicio_id){
     
     var base_url = document.getElementById('base_url').value;
     var fecha_cobro = document.getElementById('fecha_cobro').value;
+    var fecha_cobro = document.getElementById('fecha_cobro').value;
+    var tipoimpresora = document.getElementById('tipoimpresora').value;
     var detalleserv_entregadoa = document.getElementById('detalleserv_entregadoa').value;
     var controlador = base_url+'detalle_serv/registrarcobrototal/'+servicio_id;
     $.ajax({url: controlador,
@@ -911,6 +913,14 @@ function cobrototalservicio(servicio_id){
                        $('#mensajeponercredito_detalleserv'+detalleserv_id).html("<br>Ocurrio un error, por favor refresque la pagina e intente nuevamente.");
                    }else*/ if("ok"){
                        //$('#'+nombremodal).modal('hide');
+                       
+                       /*var dir_url = "";
+                        if(tipoimpresora == "FACTURADORA"){
+                            dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+detalleserv_id;
+                        }else{
+                            dir_url = base_url+"detalle_serv/compdetalle_pago/"+detalleserv_id;
+                        }
+                        window.open(dir_url, '_blank');*/
                        resultadodetalleservicioview(servicio_id);
                    }
                }
@@ -965,6 +975,7 @@ function anulartotalservicio(servicio_id){
 
 function registrardetalleservicio_entregado(servicio_id, detalleserv_id){
     var base_url = document.getElementById('base_url').value;
+    var tipo_impresora = document.getElementById('tipoimpresora').value;
     var controlador = base_url+"servicio/registrar_detalleservicioentregado";
     var detalleserv_entregadoa = document.getElementById('detalleserv_entregadoa'+detalleserv_id).value;
     var detalleserv_saldo = document.getElementById('detalleserv_saldo'+detalleserv_id).value;
@@ -981,6 +992,13 @@ function registrardetalleservicio_entregado(servicio_id, detalleserv_id){
                 if(resultado == "faltainf"){
                     $('#mensajeregistrarserentregado').html("<br>Los campos: Saldo y Entregado a; no debes estar vacios");
                 }else if(resultado == "ok"){
+                    var dir_url = "";
+                    if(tipo_impresora == "FACTURADORA"){
+                        dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+detalleserv_id;
+                    }else{
+                        dir_url = base_url+"detalle_serv/compdetalle_pago/"+detalleserv_id;
+                    }
+                    window.open(dir_url, '_blank');
                     resultadodetalleservicioview(servicio_id);
                 }
 

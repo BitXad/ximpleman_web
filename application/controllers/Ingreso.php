@@ -41,6 +41,7 @@ class Ingreso extends CI_Controller{
          if($this->acceso(53)){
             $usuario_id = $this->session_data['usuario_id'];
             $data['rol'] = $this->session_data['rol'];
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
         $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
         $data['page_title'] = "Ingreso";

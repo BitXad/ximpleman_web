@@ -168,9 +168,9 @@ class Servicio extends CI_Controller{
     function serviciocreado($servicio_id, $a = null)
     {
         if($this->acceso(70)){
-        $data = array(
+        /*$data = array(
             'page_title' => 'Admin >> Mi Cuenta'
-        );
+        );*/
         $data['a'] = $a;
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 	if(count($data['servicio']) >0)
