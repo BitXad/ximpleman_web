@@ -2722,6 +2722,13 @@ function registrarcliente_modificado()
     var cliente_nombre = document.getElementById('cliente_nombre').value; 
     var cliente_id = document.getElementById('cliente_id').value;
     var tipocliente_id = document.getElementById('tipocliente_id').value;
+    var cliente_ci = document.getElementById('cliente_ci').value;
+    var cliente_nombrenegocio = document.getElementById('cliente_nombrenegocio').value;    
+    var cliente_codigo = document.getElementById('cliente_codigo').value;    
+    var cliente_direccion = document.getElementById('cliente_direccion').value;
+    var cliente_departamento = document.getElementById('cliente_departamento').value;
+    var cliente_celular = document.getElementById('cliente_celular').value;    
+    
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
         //alert("nit:"+nit+",razon:"+razon+",telefono:"+telefono+",cliente_id:"+cliente_id+", cliente_nombre:"+cliente_nombre)
@@ -2730,7 +2737,9 @@ function registrarcliente_modificado()
         
         $.ajax({url: controlador,
                 type:"POST",
-                data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id},
+                data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                        cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
                 success:function(respuesta){ 
                     var datos = JSON.parse(respuesta)
                     cliente_id = datos[0]["cliente_id"];

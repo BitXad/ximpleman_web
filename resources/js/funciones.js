@@ -1136,6 +1136,14 @@ function guardar_ingreso_rapido(){
     
 }
 
+function registrar_cantidad(e,producto_id){
+    tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){
+       $("#boton_cantidad"+producto_id).click();
+    }
+    
+}
 
 
 //Tabla resultados de la busqueda
@@ -1436,7 +1444,7 @@ function tablaresultados(opcion)
                      
                        html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
-                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"' onkeyup='' ></b>";
+                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")' ></b>";
                         
                         html += "               </td>";
                         html += "          </tr>";
@@ -2805,15 +2813,25 @@ function registrarcliente_modificado()
     var cliente_nombre = document.getElementById('cliente_nombre').value; 
     var cliente_id = document.getElementById('cliente_id').value;
     var tipocliente_id = document.getElementById('tipocliente_id').value;
+    var cliente_ci = document.getElementById('cliente_ci').value;
+    var cliente_nombrenegocio = document.getElementById('cliente_nombrenegocio').value;    
+    var cliente_codigo = document.getElementById('cliente_codigo').value;    
+    var cliente_direccion = document.getElementById('cliente_direccion').value;
+    var cliente_departamento = document.getElementById('cliente_departamento').value;
+    var cliente_celular = document.getElementById('cliente_celular').value;    
+    
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
         //alert("nit:"+nit+",razon:"+razon+",telefono:"+telefono+",cliente_id:"+cliente_id+", cliente_nombre:"+cliente_nombre)
         // alert(cliente_id+" * "+nit);
         var controlador = base_url+'venta/modificarcliente';
+        //alert("Por aqui..."+controlador);
         
         $.ajax({url: controlador,
                 type:"POST",
-                data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id},
+                data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                        cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
                 success:function(respuesta){ 
                     var datos = JSON.parse(respuesta)
                     cliente_id = datos[0]["cliente_id"];
@@ -2832,7 +2850,6 @@ function registrarcliente_modificado()
         
     }
     else{ //Si el cliente es nuevo debe primero registrar al cliente
-    
     
     $.ajax({url: controlador,
             type:"POST",
