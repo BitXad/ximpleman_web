@@ -204,8 +204,9 @@ function tablacuentas(filtro)
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
                         if (registros[i]['venta_id']>0) {
-                        html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
-                        html += "<a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
+                        html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs' title='VER CUOTAS'><span class='fa fa-eye'></span></a>";
+                        html += " <a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs' title='PLAN DE PAGOS'><span class='fa fa-print'></span></a>";
+                        html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";
                         if (registros[i]["estado_id"]==9){
                         //html += "<a href='"+base_url+"credito/factura/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></span></a></td>";
                         }

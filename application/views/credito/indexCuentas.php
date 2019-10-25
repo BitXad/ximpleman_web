@@ -60,9 +60,10 @@
         <!--------------------- parametro de buscador --------------------->
                     <select  class="form-control btn btn-primary"  id="estado_id" >
                         
-                        <option value="8">Pendiente</option>
-                        <option value="9">Cancelado</option>
-                        <option value="">Todos</option>
+                        <option value="8">PENDIENTE</option>
+                        <option value="9">CANCELADO</option>
+                        <option value="27">ANULADO</option>
+                        <option value="">TODOS</option>
                        
                     </select>
         <!--------------------- fin parametro de buscador --------------------->
@@ -157,6 +158,7 @@
                             <?php } else { ?>
                             <a href="<?php echo site_url('cuotum/cuentas/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
                             <a href="<?php echo site_url('cuotum/planCuenta/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title="PLAN DE PAGOS"><span class="fa fa-print"></span></a>
+                            <a href="<?php echo site_url('factura/imprimir_recibo/'.$c['venta_id']); ?>" target="_blank" class="btn btn-warning btn-xs"><span class="fa fa-file" title="VER DETALLE VENTA"></span></a>
                             <?php } ?>
                             
                             
