@@ -595,7 +595,7 @@ function mostrar_ocultar(){
                 <tr>                      
                         <td>Descuento Bs</td>
                         <td align="right">
-                            <input class="btn btn-info" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
+                            <input class="btn btn-default " id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)" readonly="true">
                         </td>
                 </tr>
 
@@ -611,7 +611,7 @@ function mostrar_ocultar(){
                 <tr>                      
                         <td>Efectivo Bs</td>
                         <td align="right">
-                            <input class="btn btn-info" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio()"  onclick="seleccionar(5)">
+                            <input class="btn btn-default" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio()"  onclick="seleccionar(5)" readonly="true">
                 
                         </td>
                 </tr>

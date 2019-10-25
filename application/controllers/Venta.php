@@ -950,7 +950,7 @@ function edit($venta_id)
         
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();

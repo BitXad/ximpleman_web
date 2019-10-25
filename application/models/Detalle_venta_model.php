@@ -135,7 +135,17 @@ function ventas_dia($estado)
 //        $sql = "select *  from venta v, cliente c, usuario u, tipo_transaccion t where v.cliente_id = c.cliente_id and "
 //                . " v.usuario_id = u.usuario_id and v.tipotrans_id = t.tipotrans_id and v.venta_id = ".$venta_id;
         
-        $sql = "select * from venta v
+        $sql = "select v.*,
+                c.tipocliente_id,c.categoriaclie_id,c.usuario_id,c.cliente_codigo,c.cliente_nombre,c.cliente_ci,
+                c.cliente_direccion,c.cliente_telefono,c.cliente_celular,c.cliente_foto,c.cliente_email,
+                c.cliente_nombrenegocio,c.cliente_aniversario,c.cliente_latitud,c.cliente_longitud,c.cliente_nit,
+                c.cliente_razon,c.cliente_departamento,c.zona_id,c.lun,c.mar,c.mie,c.jue,c.vie,c.sab,c.dom,
+                u.usuario_nombre,t.tipotrans_nombre,z.zona_nombre,r.credito_id,r.compra_id,r.credito_monto,
+                r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
+                r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id
+
+
+                from venta v
                 left join cliente c on c.cliente_id = v.cliente_id
                 left join usuario u on u.usuario_id = v.usuario_id
                 left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
