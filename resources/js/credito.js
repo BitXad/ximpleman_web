@@ -229,3 +229,50 @@ function tablacuentas(filtro)
         
     });
 }
+
+//***** inicio  funciones  para emitir factura ******
+
+/*function cargar_factura(factura){
+    //alert(factura.cliente_nombre);
+    
+    $("#generar_nit").val(factura.cliente_nit);
+    $("#generar_razon").val(factura.cliente_razon);
+    $("#generar_detalle").val("PRODUCTOS VARIOS");
+    $("#generar_venta_id").val(factura.venta_id);
+    $("#generar_monto").val(Number(factura.venta_total).toFixed(2));
+    $("#boton_modal_factura").click();
+    
+}
+
+function registrar_factura(){
+            
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"venta/generar_factura";
+     
+    var nit = document.getElementById("generar_nit").value;
+    var razon_social = document.getElementById("generar_razon").value;
+    var fecha_venta = fecha();
+    var detalle_factura = document.getElementById("generar_detalle").value;
+    var detalle_unidad = "UNIDAD";
+    var detalle_cantidad = "1";
+    var detalle_precio = document.getElementById("generar_monto").value;
+    var venta_id = document.getElementById("generar_venta_id").value;
+     
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_factura:detalle_factura,
+            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id}, 
+            success:function(resultado){
+
+                ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
+                                    /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    }) 
+            
+}*/
+//***** inicio  fin  para emitir factura ******

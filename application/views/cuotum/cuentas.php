@@ -254,7 +254,7 @@ $(document).ready(function(){
                 </button>
               </div>
               <div class="modal-body" align="center">
-                <form action="<?php echo base_url('cuotum/cobrar/'.$c['cuota_id']); ?>"  method="POST" class="form" id="saldar">
+                <form action="<?php echo base_url('cuotum/cobrar/'.$c['cuota_id']); ?>"  method="POST" class="form" name="finpagar" id="finpagar">
 
          
                <h1><b> <span class="btn-success" >Cuota Bs: 
@@ -305,7 +305,7 @@ $(document).ready(function(){
                 </div>
               <div class="modal-footer" align="right">
 
-            <button class="btn btn-lg btn-success"  type="submit" onclick="facturarcuota(<?php echo $c['cuota_id']; ?>)">
+            <button class="btn btn-lg btn-success"  type="button"  onclick="enviar_formulario(<?php echo $c['cuota_id']; ?>),facturarcuota(<?php echo $c['cuota_id']; ?>)">
                 <h4>
                 <span class="fa fa-money"></span>   Cobrar  
                 </h4>
@@ -355,3 +355,5 @@ $(document).ready(function(){
               </button></a>
     </div>
 </div>
+
+
