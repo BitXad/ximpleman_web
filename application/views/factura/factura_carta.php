@@ -138,7 +138,7 @@ border-bottom : 1px solid #aaa;
                   </p>
               </div>
               <div class="modal-footer">
-                  <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id'].'/'.$venta[0]['venta_id']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>
+                  <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id']."/".$factura[0]['factura_numero']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>
                   <button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
               </div>
             </div>
@@ -194,8 +194,7 @@ border-bottom : 1px solid #aaa;
                             <br>
                             <br>
                             <br>
-                            <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
-                                 else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>    
+                            <?php $titulo1 = "FACTURA"; $subtitulo=" ORIGINAL " ?>
                             <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
                             <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>                    
                         </center>
@@ -265,7 +264,7 @@ border-bottom : 1px solid #aaa;
                              $total_final = 0;
 
                             if ($factura[0]['estado_id']<>3){ 
-                             foreach($detalle_venta as $d){;
+                             foreach($detalle_factura as $d){;
                                     $cont = $cont+1;
                                     $cantidad += $d['detallefact_cantidad'];
                                     $total_descuento += $d['detallefact_descuento']; 
@@ -303,12 +302,15 @@ border-bottom : 1px solid #aaa;
                               ?>    
                             LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
 
-                            USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
-                            <?php if (isset($venta[0]['venta_id'])){ ?>
-                            <br>TRANS: <b><?php echo $venta[0]['venta_id']; ?></b>
-                            <?php } ?>
-                            </font>
-                        
+                            USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b> / TRANS: 
+                            <b><?php 
+                                 if ($factura[0]['venta_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['venta_id']."V"; 
+                                 if ($factura[0]['credito_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['credito_id']."C"; 
+                                 if ($factura[0]['ingreso_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['ingreso_id']."C"; 
+                                 if ($factura[0]['servicio_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['servicio_id']."C"; 
+                                 if ($factura[0]['cuota_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['cuota_id']."C"; 
+                            ?></b>
+
                         
                         <center>
                                 <?php echo $factura[0]['factura_leyenda1'];?> <br>
@@ -337,12 +339,12 @@ border-bottom : 1px solid #aaa;
                         <font size="1" face="arial narrow">
                             <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
                         </font>
-                        <?php if(isset($venta[0]['venta_efectivo'])){ ?>
+                        
                         <font size="1" face="Arial">
-                            <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                            <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
+                            <?php echo "EFECTIVO Bs ".number_format($factura[0]['factura_efectivo'],2,'.',','); ?><br>
+                            <?php echo "CAMBIO Bs ".number_format($factura[0]['factura_cambio'],2,'.',','); ?>
                         </font>
-                        <?php } ?>
+                        
                     </td>          
                 </tr>
 

@@ -109,7 +109,8 @@ function mostrar_facturas() {
                         html += "   <td>"+Number(factura[i]["factura_total"]*0.13).toFixed(2)+"</td>";
                         html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
                         html += "   <td>"+factura[i]["venta_id"]+"</td>";
-                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
+//                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
+                        html += "   <td><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
                         html += "  <button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button></td>";
                         html += "</tr>";
                         

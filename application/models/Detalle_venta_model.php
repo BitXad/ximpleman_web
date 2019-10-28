@@ -156,6 +156,24 @@ function ventas_dia($estado)
         $venta = $this->db->query($sql)->result_array();        
         return $venta;
     }
+
+    function get_venta_id($venta_id)
+    {
+        
+        $sql = "select v.*,                
+                r.credito_cuotainicial,r.credito_interesproc,r.credito_interesmonto,r.credito_numpagos,
+                u.usuario_nombre,t.tipotrans_nombre,r.credito_id,r.compra_id,r.credito_monto,
+                r.credito_fechalimite,r.credito_fecha,r.credito_hora,r.credito_tipo,r.credito_tipointeres,r.servicio_id
+                
+                from venta v
+                left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+                left join usuario u on u.usuario_id = v.usuario_id
+                left join credito r on r.venta_id = v.venta_id
+                where v.venta_id = ".$venta_id;
+        
+        $venta = $this->db->query($sql)->result_array();        
+        return $venta;
+    }
     
     function get_venta_comanda($venta_id)
     {
