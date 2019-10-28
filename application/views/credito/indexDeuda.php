@@ -59,10 +59,10 @@
         <label for="estado_id" class="control-label">Estado</label>
         <!--------------------- parametro de buscador --------------------->
                     <select  class="form-control btn btn-primary "  id="estado_id" >
-                        <option value="8">Pendiente</option>
-                        <option value="9">Cancelado</option>
-                        <option value="">Todos</option>
-                   
+                        <option value="8">PENDIENTE</option>
+                        <option value="9">CANCELADO</option>
+                        <option value="27">ANULADO</option>
+                        <option value="">TODOS</option>
                        
                     </select>
         <!--------------------- fin parametro de buscador --------------------->

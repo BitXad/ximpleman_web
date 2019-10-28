@@ -31,6 +31,14 @@ function facturar(cuota){
     });
 }
 
+function enviar_formulario(cuota_id){
+  var base_url    = document.getElementById('base_url').value;
+   document.finpagar.submit(cuota_id);
+}
+
+
+
+
 function facturarcuota(cuota_id){
    var base_url = document.getElementById('base_url').value;
    var controlador = base_url+'venta/generar_factura/';
@@ -46,18 +54,18 @@ function facturarcuota(cuota_id){
    //var cuota_numcuota = document.getElementById('cuota_numcuota').value;
   // var credito_id = document.getElementById('credito_id').value;
   // var cuota_numercibo = document.getElementById('cuota_numercibo').value;
-  // var cuota_glosa = document.getElementById('cuota_glosa').value;
-  
+   var venta_id = cuota_id;
    var detalle_cantidad = 1;
    var detalle_unidad= 'CUOTA';
    $.ajax({url: controlador,
            type:"POST",
-           data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_cantidad:detalle_cantidad,detalle_precio:detalle_precio,detalle_unidad:detalle_unidad,detalle_factura:detalle_factura},
+           data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_cantidad:detalle_cantidad,detalle_precio:detalle_precio,
+             detalle_unidad:detalle_unidad,detalle_factura:detalle_factura,venta_id:venta_id},
            success:function(respuesta){     
                               
                var registros =  JSON.parse(respuesta);
                 
-           
+            
         },
         error:function(respuesta){
           
