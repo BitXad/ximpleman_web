@@ -87,13 +87,14 @@ class Servicio_model extends CI_Model
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
                 u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
-                c.cliente_nit, c.cliente_razon
+                c.cliente_nit, c.cliente_razon, f.factura_id
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
             LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
             LEFT JOIN usuario u on s.usuario_id = u.usuario_id
+            LEFT JOIN factura f on s.servicio_id = f.servicio_id
             WHERE
                (c.cliente_nombre like '%".$parametro."%' or s.servicio_id like '%".$parametro."%'
                    or e.estado_descripcion like '%".$parametro."%')
@@ -134,13 +135,14 @@ class Servicio_model extends CI_Model
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
                 u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
-                c.cliente_nit, c.cliente_razon
+                c.cliente_nit, c.cliente_razon, f.factura_id
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
             LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
             LEFT JOIN usuario u on s.usuario_id = u.usuario_id
+            LEFT JOIN factura f on s.servicio_id = f.servicio_id
                 ".$where." ".$filtro."
 
             ORDER BY s.servicio_id desc            
@@ -201,13 +203,14 @@ class Servicio_model extends CI_Model
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
                 i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
-                c.cliente_nit, c.cliente_razon
+                c.cliente_nit, c.cliente_razon, f.factura_id
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
             LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
             LEFT JOIN usuario i on s.usuario_id = i.usuario_id
+            LEFT JOIN factura f on s.servicio_id = f.servicio_id
             WHERE
                 s.estado_id = 5
 
