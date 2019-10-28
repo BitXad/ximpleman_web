@@ -86,7 +86,8 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
-                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular
+                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
+                c.cliente_nit, c.cliente_razon
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -132,7 +133,8 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, e.estado_id, ts.tiposerv_descripcion,
-                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular
+                u.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
+                c.cliente_nit, c.cliente_razon
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -198,7 +200,8 @@ class Servicio_model extends CI_Model
         $servicio = $this->db->query("
             SELECT
                 s.*, e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion,
-                i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular
+                i.usuario_nombre, c.cliente_nombre, c.cliente_telefono, c.cliente_celular,
+                c.cliente_nit, c.cliente_razon
             FROM
                 servicio s
             LEFT JOIN estado e on s.estado_id = e.estado_id
@@ -428,5 +431,20 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
-    
+    /* ******* PARA FACTURAR CON DOSIFICACION.. ******* */
+    function update_dosificacion($dosificacion_id,$params)
+    {
+        $this->db->where('dosificacion_id',$dosificacion_id);
+        return $this->db->update('dosificacion',$params);
+    }
+    function add_factura($params)
+    {
+        $this->db->insert('factura',$params);
+        return $this->db->insert_id();
+    }
+    function add_detallefact($params)
+    {
+        $this->db->insert('detalle_factura',$params);
+        return $this->db->insert_id();
+    }
 }

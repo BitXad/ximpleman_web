@@ -927,17 +927,17 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
                         var servtotal = "";
                         if(registros[i]["servicio_total"] != null){
-                            servtotal = Number(registros[i]["servicio_total"]).toFixed(2);
+                            servtotal = numberFormat(Number(registros[i]["servicio_total"]).toFixed(2));
                         }
                         html += "<td class='text-bold text-right'><span style='font-size: 10pt;'>"+servtotal+"</span></td>";
                         var servacuenta = "";
                         if(registros[i]["servicio_acuenta"] != null){
-                            servacuenta = Number(registros[i]["servicio_acuenta"]).toFixed(2);
+                            servacuenta = numberFormat(Number(registros[i]["servicio_acuenta"]).toFixed(2));
                         }
                         html += "<td class='text-right'>"+servacuenta+"</td>";
                         var servsaldo = "";
                         if(registros[i]["servicio_saldo"] != null){
-                            servsaldo = Number(registros[i]["servicio_saldo"]).toFixed(2);
+                            servsaldo = numberFormat(Number(registros[i]["servicio_saldo"]).toFixed(2));
                         }
                         html += "<td class='text-bold text-right'><span style='font-size: 10pt;'>"+servsaldo+"</span></td>";
                         html += "<td>";
@@ -992,6 +992,9 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
+                        if(registros[i]["estado_id"] == 6){
+                            html += "<a data-toggle='modal' data-target='#boton_modal_factura"+i+"' class='btn btn-success btn-xs' title='Cobrar servicio'><span class='fa fa-money'></span></a>";
+                        }
                         if(registros[i]["estado_id"] != 4){
                             html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
                         }
@@ -1011,6 +1014,7 @@ function fechadeservicio(elfiltro, busquedade){
                         }
                         html += "<a href='"+dir_url+"' id='imprimir' class='btn btn-facebook btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span></a>";
                         html += "<a data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+")' class='btn btn-primary btn-xs' title='Informe técnico'><span class='fa fa-file-text'></span></a>";
+                        
                         html += "<!------------------------ INICIO modal para imprimir reporte Técnico ------------------->";
                         html += "<div class='modal fade' id='modalinformetecnico"+i+"' tabindex='-1' role='dialog' aria-labelledby='modalinformetecnicoLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
@@ -1044,6 +1048,114 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</div>";
                         html += "<!------------------------ FIN modal para imprimir reporte Técnico ------------------->";
                         
+                        /*html += "<a id='boton_modal_factura"+i+"' class='btn btn-primary' data-toggle='modal' data-target='#boton_modal_factura' >";
+                        html += "modal factura";
+                        html += "</a>";
+                        html += "</div>";*/
+                        html += "<!----------------- modal factura ---------------------------------------------->";
+                        html += "<div class='modal fade' id='boton_modal_factura"+i+"' tabindex='-1' role='dialog' aria-labelledby='boton_modal_facturalabel' aria-hidden='true'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>";
+                        html += "<span aria-hidden='true'>&times;</span>";
+                        html += "</button>";
+                        //html += "<center>";
+                        html += "<h4 class='modal-title text-center' id='boton_modal_facturaLabel'><b>EMITIR FACTURA</b></h4>";
+                        //html += "</center>";
+                        var estenit = 0;
+                        if(registros[i]['cliente_nit'] != 0 && registros[i]['cliente_nit'] != '' && registros[i]['cliente_nit'] != null){
+                            estenit = registros[i]['cliente_nit'];
+                        }
+                        var estarazon = registros[i]['cliente_razon'];
+                        if(registros[i]['cliente_razon'] != '' && registros[i]['cliente_razon'] != null){
+                            estarazon = registros[i]['cliente_razon'];
+                        }
+                        html += "<div class='col-md-12'>";
+                        html += "<label for='generar_nit"+registros[i]['servicio_id']+"' class='control-label'><span class='text-danger'>*</span>NIT:</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='text' name='generar_nit"+registros[i]['servicio_id']+"' value='"+estenit+"' class='form-control btn btn-xs btn-warning' id='generar_nit"+registros[i]['servicio_id']+"' style='text-align: left;' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
+                        html += "<span class='text-danger' id='error_generar_nit"+registros[i]['servicio_id']+"'></span>";
+                        html += "</div>";
+                        html += "</div>";
+                        
+                        html += "<div class='col-md-12'>";
+                        html += "<label for='generar_razon"+registros[i]['servicio_id']+"' class='control-label'><span class='text-danger'>*</span>RAZON SOCIAL:</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='text' name='generar_razon"+registros[i]['servicio_id']+"' value='"+estarazon+"' class='form-control btn btn-xs btn-warning' id='generar_razon"+registros[i]['servicio_id']+"' style='text-align: left;' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
+                        html += "<span class='text-danger' id='error_generar_razon"+registros[i]['servicio_id']+"'></span>";
+                        html += "</div>";
+                        html += "</div>";
+                        
+                        //html += "<br><b>NIT:</b><input type='text' id='generar_nit' value='0' class='form-control btn btn-xs btn-warning' style='text-align: left;'>";
+                        //html += "<br><b>RAZON SOCIAL:</b><input type='text' id='generar_razon' value'SIN NOMBRE class='form-control btn btn-xs btn-warning' style='text-align: left;'>";
+                        
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!--------------------- TABLA---------------------------------------------------->";
+
+                        html += "<div class='box-body table-responsive'>";
+                        
+                        html += "<div class='col-md-12'>";
+                        html += "<label for='generar_detalle"+registros[i]['servicio_id']+"' class='control-label'>DETALLE:</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='text' name='generar_detalle"+registros[i]['servicio_id']+"' value='-' class='form-control btn btn-xs btn-default' id='generar_detalle"+registros[i]['servicio_id']+"' style='text-align: left;' required onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
+                        html += "<span class='text-danger' id='error_generar_detalle"+registros[i]['servicio_id']+"'></span>";
+                        html += "</div>";
+                        html += "</div>";
+
+                        //html += "<b>DETALLE:</b><input type='text' id='generar_detalle' value='-' class='form-control btn btn-xs btn-default' style='text-align: left;'>";
+
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='generar_monto"+registros[i]['servicio_id']+"' class='control-label'><span class='text-danger'>*</span>TOTAL Bs</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='text' id=generar_venta_id"+registros[i]['servicio_id']+"' value='0.00' hidden >";
+                        html += "<input type='text' name='generar_monto"+registros[i]['servicio_id']+"' value='"+numberFormat(Number(registros[i]['servicio_total']).toFixed(2))+"' class='form-control btn btn-xs btn-default' id='generar_monto"+registros[i]['servicio_id']+"' style='text-align: left;' />";
+                        html += "<span class='text-danger' id='error_generar_monto"+registros[i]['servicio_id']+"'></span>";
+                        html += "</div>";
+                        html += "</div>";
+                        
+                        /*
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='usuario_idx' class='control-label'>TOTAL Bs</label>";
+
+                        html += "<input type='text' id=generar_venta_id' value='0.00' hidden >";
+                        html += "<input type='text' id=generar_monto' value='0.00' class='form-control btn btn-xs btn-default' style='text-align: left;'>";
+                        html += "</div>";*/
+
+                        html += "<div class='col-md-6' id='botones'  style='display:block;'>";
+                        html += "<label for='opciones' class='control-label'>&nbsp;</label>";
+                        html += "<div class='form-group'>";
+
+                        html += "<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+registros[i]['servicio_id']+")' data-dismiss='modal' >";
+                        html += "<span class='fa fa-floppy-o'></span> Generar Factura";
+                        html += "</button>&nbsp;";
+
+                        html += "<button class='btn btn-danger' id='cancelar_preferencia' data-dismiss='modal' >";
+                        html += "<span class='fa fa-close'></span>   Cancelar";
+                        html += "</button>";
+                        html += "</div>";
+                        html += "</div>";
+
+                        html += "<!--------------------- inicio loader ------------------------->";
+                        html += "<div class='col-md-6' id='loaderinventario'  style='display: none;'>";
+                        html += "<center>";
+                        html += "<img src='"+base_url+"resources/images/loader.gif' >";
+                        html += "</center>";
+                        html += "</div>";
+                        html += "<!--------------------- fin inicio loader ------------------------->";
+
+
+                        html += "</div>";
+
+                        html += "<!----------------------FIN TABLA--------------------------------------------------->";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+
+
+                        html += "<!----------------- fin modal factura ---------------------------------------------->";
                         
                         /*
                         html += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
@@ -1941,4 +2053,54 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
             error: function(respuesta){
             }
         });
+}
+/***** Registra facturas en servicio ****/
+function registrar_factura(servicio_id){
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"servicio/generar_factura";
+     
+    var nit = document.getElementById("generar_nit"+servicio_id).value;
+    var razon_social = document.getElementById("generar_razon"+servicio_id).value;
+    var fecha_venta = fecha();
+    var detalle_factura = document.getElementById("generar_detalle"+servicio_id).value;
+    var detalle_unidad = "UNIDAD";
+    var detalle_cantidad = "1";
+    var detalle_precio = document.getElementById("generar_monto"+servicio_id).value;
+    //var venta_id = document.getElementById("generar_venta_id").value;
+     
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{nit:nit, razon_social:razon_social, detalle_factura:detalle_factura,
+                 detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad,
+                 fecha_venta:fecha_venta, detalle_precio:detalle_precio, servicio_id:servicio_id}, 
+            success:function(respuesta){
+                resultado = JSON.parse(respuesta);
+                var factura_id = resultado;
+                window.open(base_url+"factura/imprimir_factura_id/"+factura_id, '_blank');
+                fechadeservicio(null, 2);
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            }, 
+    })            
+}
+
+function fecha(){
+    var hoy = new Date();
+        var dd = hoy.getDate();
+        var mm = hoy.getMonth()+1;
+        var yyyy = hoy.getFullYear();
+        
+        dd = addZero(dd);
+        mm = addZero(mm);
+ 
+       // return dd+'/'+mm+'/'+yyyy;
+        return yyyy+'-'+mm+'-'+dd;
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = '0' + i;
+    }
+    return i;
 }
