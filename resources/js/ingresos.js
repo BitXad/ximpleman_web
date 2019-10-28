@@ -145,7 +145,7 @@ function fechadeingreso(filtro)
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
                         html += "<a href='"+base_url+"ingreso/remove/"+registros[i]["ingreso_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
-                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";

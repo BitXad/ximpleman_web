@@ -122,7 +122,7 @@ function recepcion(estado)
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
                         html += "<button type='button' onclick='despachar("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
-                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
@@ -149,7 +149,7 @@ function recepcion(estado)
                         html += "</div>";
                         html += "<div class='modal-footer aligncenter'>";
                         html += "<button type='button' onclick='restablecer("+ventas[i]["venta_id"]+")' class='btn btn-success' data-dismiss='modal'><span class='fa fa-check'></span> Si </button>";
-                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += " <a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
