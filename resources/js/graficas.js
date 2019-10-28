@@ -20,7 +20,7 @@ function cambiar_fecha_grafica(){
 
 function mostrar_grafica(){
 
-        var hoy = new Date();
+    var hoy = new Date();
         
     var anio_sel = hoy.getFullYear();
     var mes_sel = hoy.getMonth()+1;
@@ -239,30 +239,30 @@ var options={
                 colorByPoint: true,
                 data: []
             }]
-     
-}
+        }
 
-$("#div_grafica_pie").html( $("#cargador_empresa").html() );
-var base_url    = document.getElementById('base_url').value;
-var controlador = base_url+"reportes/torta/"+anio+"/"+mes+"";
-$.ajax({url: controlador,
-           type:"POST",
-           data:{},
-           success:function(respuesta){
-var datos= JSON.parse(respuesta);
-var tippos=datos.tipos;
-var totattipos=datos.totaltipos;
-var numeropublicaciones=datos.numerodepubli;
+    $("#div_grafica_pie").html( $("#cargador_empresa").html() );
+    
+    var base_url    = document.getElementById('base_url').value;
+    var controlador = base_url+"reportes/torta/"+anio+"/"+mes+"";
+    $.ajax({url: controlador,
+               type:"POST",
+               data:{},
+               success:function(respuesta){
+    var datos= JSON.parse(respuesta);
+    var tippos=datos.tipos;
+    var totattipos=datos.totaltipos;
+    var numeropublicaciones=datos.numerodepubli;
 
-    for(i=0;i<=totattipos-1;i++){  
-    var idTP=tippos[i].usuario_id;
-    var objeto= {name: tippos[i].usuario_nombre, y:numeropublicaciones[idTP] };     
-    options.series[0].data.push( objeto );  
+        for(i=0;i<=totattipos-1;i++){  
+        var idTP=tippos[i].usuario_id;
+        var objeto= {name: tippos[i].usuario_nombre, y:numeropublicaciones[idTP] };     
+        options.series[0].data.push( objeto );  
+        }
+     //options.title.text="aqui e podria cambiar el titulo dinamicamente";
+     chart = new Highcharts.Chart(options);
     }
- //options.title.text="aqui e podria cambiar el titulo dinamicamente";
- chart = new Highcharts.Chart(options);
-}
-})
+    })
 
 
 

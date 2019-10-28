@@ -427,7 +427,7 @@
                   
                   <div class="box-body" id="div_grafica_barras">
 		
-                </div>
+                    </div>
               </div>
               </div>
  </section>
