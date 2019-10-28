@@ -992,14 +992,18 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
-                        if(registros[i]["estado_id"] == 6){
-                            html += "<a data-toggle='modal' data-target='#boton_modal_factura"+i+"' class='btn btn-success btn-xs' title='Cobrar servicio'><span class='fa fa-money'></span></a>";
+                        if(registros[i]["estado_id"] != 4 && registros[i]['factura_id'] != null && registros[i]['factura_id'] >0){
+                            html += "<a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura servicio'><span class='fa fa-list-alt'></span></a>";
+                            //window.open(base_url+"factura/imprimir_factura_id/"+factura_id, '_blank');
+                        }else{
+                            html += "<a style='background: #000;' data-toggle='modal' data-target='#boton_modal_factura"+i+"' class='btn btn-warning btn-xs' title='Generar Factura'><span class='fa fa-modx'></span></a>";
+                            
                         }
                         if(registros[i]["estado_id"] != 4){
                             html += "<a href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
                         }
                         if(registros[i]["estado_id"] != 6 && registros[i]["estado_id"] != 7 && registros[i]["estado_id"] != 4){
-                            html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-warning btn-xs' title='Anular servicio'><span class='fa fa-minus-circle'></span></a>";
+                            html += "<a data-toggle='modal' data-target='#modalanulado"+i+"' class='btn btn-soundcloud btn-xs' title='Anular servicio'><span class='fa fa-minus-circle'></span></a>";
                             html += "<a data-toggle='modal' data-target='#modaleliminar"+i+"' class='btn btn-danger btn-xs' title='Eliminar servicio'><span class='fa fa-trash'></span></a>";
                         }
                         html += "<a href='"+base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"]+"' id='imprimir' class='btn btn-success btn-xs'  target='_blank' title='Imprimir comprobante' ><span class='fa fa-print'></span></a>";
@@ -1144,17 +1148,12 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</center>";
                         html += "</div>";
                         html += "<!--------------------- fin inicio loader ------------------------->";
-
-
                         html += "</div>";
-
                         html += "<!----------------------FIN TABLA--------------------------------------------------->";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
-
-
                         html += "<!----------------- fin modal factura ---------------------------------------------->";
                         
                         /*
@@ -2061,7 +2060,9 @@ function registrar_factura(servicio_id){
      
     var nit = document.getElementById("generar_nit"+servicio_id).value;
     var razon_social = document.getElementById("generar_razon"+servicio_id).value;
-    var fecha_venta = fecha();
+    var fecha = new Date();
+    var fecha_venta = moment(fecha).format("YYYY-MM-DD");
+    //var fecha_venta = fecha();
     var detalle_factura = document.getElementById("generar_detalle"+servicio_id).value;
     var detalle_unidad = "UNIDAD";
     var detalle_cantidad = "1";
@@ -2084,7 +2085,7 @@ function registrar_factura(servicio_id){
             }, 
     })            
 }
-
+/*
 function fecha(){
     var hoy = new Date();
         var dd = hoy.getDate();
@@ -2103,4 +2104,4 @@ function addZero(i) {
         i = '0' + i;
     }
     return i;
-}
+}*/
