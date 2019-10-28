@@ -4,7 +4,7 @@
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
-                $('#filtrar').keyup(function () {
+                $('#proveedor_id').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar tr').hide();
                     $('.buscar tr').filter(function () {

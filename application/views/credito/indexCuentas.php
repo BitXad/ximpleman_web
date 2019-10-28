@@ -4,7 +4,7 @@
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
-                $('#filtrar').keyup(function () {
+                $('#cliente_id').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
                     $('.buscar tr').hide();
                     $('.buscar tr').filter(function () {
@@ -159,7 +159,7 @@
                             <a href="<?php echo site_url('cuotum/cuentas/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
                             <a href="<?php echo site_url('cuotum/planCuenta/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title="PLAN DE PAGOS"><span class="fa fa-print"></span></a>
                             <a href="<?php echo site_url('factura/imprimir_recibo/'.$c['venta_id']); ?>" target="_blank" class="btn btn-warning btn-xs"><span class="fa fa-file" title="VER DETALLE VENTA"></span></a>
-                            <button class="btn btn-facebook btn-xs" style="background-color:#000;" title="Generar factura" onclick="cargar_factura(<?php echo $c["venta_id"] ?>);"><span class="fa fa-modx"></span></button>
+                            <button class="btn btn-facebook btn-xs" style="background-color:#000;" title="Generar factura" onclick="cargar_factura(<?php echo $c["venta_id"] ?>,<?php echo $c["credito_id"] ?>)"><span class="fa fa-modx"></span></button>
                             <?php } ?>
                             
                             
@@ -225,6 +225,7 @@
                                 <label for="usuario_idx" class="control-label">TOTAL Bs</label>
 
                                 <input type="text" id="generar_venta_id" value="0.00" hidden >
+                                <input type="text" id="generar_credito" value="" hidden >
                                 <input type="text" id="generar_monto" value="0.00" class="form-control btn btn-xs btn-default" style="text-align: left;">
                             </div>
                                 

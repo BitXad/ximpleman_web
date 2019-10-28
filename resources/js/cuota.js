@@ -58,10 +58,17 @@ function facturarcuota(cuota_id){
    //var venta_id = cuota_id;
    var detalle_cantidad = 1;
    var detalle_unidad= 'CUOTA';
+   var factura_efectivo  = detalle_precio;
+   var llave_foranea  = 'cuota_id';
+   var llave_valor = cuota_id;
+   var factura_cambio = 0;
+   var factura_cambio = 0;
+   var tipotrans_id = 1;
    $.ajax({url: controlador,
            type:"POST",
            data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_cantidad:detalle_cantidad,detalle_precio:detalle_precio,
-             detalle_unidad:detalle_unidad,detalle_factura:detalle_factura,venta_id:venta_id},
+             detalle_unidad:detalle_unidad,detalle_factura:detalle_factura,factura_efectivo:factura_efectivo,
+             factura_cambio:factura_cambio,tipotrans_id:tipotrans_id,llave_foranea:llave_foranea,llave_valor:llave_valor},
            success:function(respuesta){     
                               
                var registros =  JSON.parse(respuesta);

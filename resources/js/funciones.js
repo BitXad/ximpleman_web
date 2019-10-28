@@ -2077,11 +2077,16 @@ function registrar_factura(){
     var detalle_cantidad = "1";
     var detalle_precio = document.getElementById("generar_monto").value;
     var venta_id = document.getElementById("generar_venta_id").value;
+    var llave_foranea = "venta_id";
+    var llave_valor = venta_id;
+    
+    
      
     $.ajax({url: controlador,
             type: "POST",
             data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_factura:detalle_factura,
-            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id}, 
+            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id,
+            llave_foranea:llave_foranea, llave_valor:llave_valor}, 
             success:function(resultado){
 
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
