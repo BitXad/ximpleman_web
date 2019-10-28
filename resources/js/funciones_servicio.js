@@ -1754,8 +1754,8 @@ function mostrardetalleserv(serv_id){
                         res += "<br><br>";
                         res += "<div class='modal-content'>";
                         res += "<div class='modal-header text-center' style='font-size:12pt;'>";
-                        res += "ENTREGA DE SERVICIO N° "+registros[i]['servicio_id'];
                         res += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        res += "ENTREGA DE: "+registros[i]['detalleserv_descripcion']+"<br> DEL SERVICIO N° "+registros[i]['servicio_id'];
                         res += "</div>";
                         //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         res += "<div class='modal-body'>";
@@ -2056,7 +2056,7 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
 /***** Registra facturas en servicio ****/
 function registrar_factura(servicio_id){
     var base_url = document.getElementById("base_url").value;
-    var controlador = base_url+"servicio/generar_factura";
+    var controlador = base_url+"venta/generar_factura";
      
     var nit = document.getElementById("generar_nit"+servicio_id).value;
     var razon_social = document.getElementById("generar_razon"+servicio_id).value;
@@ -2067,13 +2067,16 @@ function registrar_factura(servicio_id){
     var detalle_unidad = "UNIDAD";
     var detalle_cantidad = "1";
     var detalle_precio = document.getElementById("generar_monto"+servicio_id).value;
+    var llave_valor   = servicio_id;
+    var llave_foranea = "servicio_id";
     //var venta_id = document.getElementById("generar_venta_id").value;
      
     $.ajax({url: controlador,
             type: "POST",
             data:{nit:nit, razon_social:razon_social, detalle_factura:detalle_factura,
                  detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad,
-                 fecha_venta:fecha_venta, detalle_precio:detalle_precio, servicio_id:servicio_id}, 
+                 fecha_venta:fecha_venta, detalle_precio:detalle_precio, llave_valor:llave_valor,
+                 llave_foranea:llave_foranea}, 
             success:function(respuesta){
                 resultado = JSON.parse(respuesta);
                 var factura_id = resultado;
@@ -2085,23 +2088,3 @@ function registrar_factura(servicio_id){
             }, 
     })            
 }
-/*
-function fecha(){
-    var hoy = new Date();
-        var dd = hoy.getDate();
-        var mm = hoy.getMonth()+1;
-        var yyyy = hoy.getFullYear();
-        
-        dd = addZero(dd);
-        mm = addZero(mm);
- 
-       // return dd+'/'+mm+'/'+yyyy;
-        return yyyy+'-'+mm+'-'+dd;
-}
-
-function addZero(i) {
-    if (i < 10) {
-        i = '0' + i;
-    }
-    return i;
-}*/
