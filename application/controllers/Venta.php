@@ -262,6 +262,8 @@ class Venta extends CI_Controller{
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
         $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
+        $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
+        $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
         
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
@@ -508,18 +510,19 @@ class Venta extends CI_Controller{
                     factura_ice, factura_exento, factura_descuento, factura_total, 
                     factura_numero, factura_autorizacion, factura_llave, 
                     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad) value(".
+                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
+                    usuario_id, tipotrans_id, factura_efectivo, factura_cambio) value(".
                     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."')";
+                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
+                    $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.")";
 
-                    $factura_id = $this->Venta_model->ejecutar($sql);
+                $factura_id = $this->Venta_model->ejecutar($sql);
                
-    
             
                 $sql =  "insert into detalle_factura(
                  producto_id,
@@ -636,7 +639,19 @@ class Venta extends CI_Controller{
             $unidad = $this->input->post('detalle_unidad');
             $cantidad = $this->input->post('detalle_cantidad');
             $precio = $this->input->post('detalle_precio');            
-
+            
+            $llave_foranea = $this->input->post('llave_foranea');            
+            $llave_valor = $this->input->post('llave_valor');            
+            
+            $tipotrans_id = 1;            
+            
+            if ($llave_foranea="venta_id"){
+                
+                $venta_id = $llave_valor;
+            }
+            
+            
+            
 //            $nit_factura = "5152377019";
 //            $razon_social = "LOZANO SRL";
 //            $fecha_venta = "2019-05-22";            
@@ -659,7 +674,9 @@ class Venta extends CI_Controller{
                         
             $numero_factura = $dosificacion["dosificacion_numfact"]+1;
             $estado_id = 1;
-            $venta_id = $this->input->post('venta_id');
+            
+            //$venta_id = $this->input->post('venta_id');
+            
             $factura_fechaventa = $fecha_venta;
             $factura_fecha = "date(now())";
             $factura_hora = "time(now())";
@@ -676,33 +693,34 @@ class Venta extends CI_Controller{
             $factura_leyenda2 = $dosificacion["dosificacion_leyenda2"];
             $factura_nit = $nit_factura;
             $factura_razonsocial = $razon_social;
-            $factura_nitemisor = $dosificacion["dosificacion_leyenda2"];
-            $factura_sucursal = $dosificacion["dosificacion_nitemisor"];
+            $factura_nitemisor = $dosificacion["dosificacion_nitemisor"];
+            $factura_sucursal = $dosificacion["dosificacion_sucursal"];
             $factura_sfc = $dosificacion["dosificacion_sfc"];
             $factura_actividad = $dosificacion["dosificacion_actividad"];
             
+            $factura_efectivo = $factura_total;
+            $factura_cambio = 0;
+          
             $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
-            $cuota_id = 0;
-            $credito_id = 0;
-            $ingreso_id = 0;
-            $servicio_id = 0;
             
             $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
             $this->Venta_model->ejecutar($sql);
             
-            $sql = "insert into factura(estado_id, venta_id, factura_fechaventa, 
+            $sql = "insert into factura(estado_id, factura_fechaventa, 
                     factura_fecha, factura_hora, factura_subtotal, 
                     factura_ice, factura_exento, factura_descuento, factura_total, 
                     factura_numero, factura_autorizacion, factura_llave, 
                     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id) value(".
-                    $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
+                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad, usuario_id,".$llave_foranea.",
+                    factura_efectivo, factura_cambio, tipotrans_id) value(".
+                    $estado_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.")";
+                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".$usuario_id.",".$llave_valor.",".
+                    $factura_efectivo.",".$factura_cambio.",".$tipotrans_id.")";
 
             $factura_id = $this->Venta_model->ejecutar($sql);
 

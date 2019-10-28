@@ -48,8 +48,7 @@ class Estadistica extends CI_Controller{
         $data['_view'] = 'reportes/estadistica';
         $this->load->view('layouts/main',$data);
         
-		
-		
+				
         //**************** fin contenido ***************
 		}
         

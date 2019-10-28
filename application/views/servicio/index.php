@@ -48,7 +48,6 @@
         <div class="box-header">
             <font size='4' face='Arial'><b>Servicios</b></font>
             <br><font size='2' face='Arial'>Registros Encontrados: <span id="regencontrados"></span></font>
-            
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
         <div class="col-md-8">

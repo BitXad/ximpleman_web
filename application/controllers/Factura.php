@@ -112,7 +112,7 @@ class Factura extends CI_Controller{
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
+        $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Factura";
         $factura = $this->Factura_model->get_factura_venta($venta_id);
@@ -172,8 +172,9 @@ class Factura extends CI_Controller{
         $usuario_id = $this->session_data['usuario_id'];
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
+        //$data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+       // $data['venta'] = $this->Detalle_venta_model->get_venta_id($venta_id);
+        $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura($venta_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
         $data['page_title'] = "Factura";
         $factura = $this->Factura_model->get_factura_venta($venta_id);
@@ -239,7 +240,7 @@ class Factura extends CI_Controller{
 //        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
 //        
         // se usa detalle_venta para no modifcar el detalle de factura que ya estaba echo
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+        $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['page_title'] = "Factura";
         $factura = $this->Factura_model->get_factura_id($factura_id);
@@ -302,12 +303,12 @@ class Factura extends CI_Controller{
         
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         
-        $data['venta'] = array(array('venta_id'  => 0,'venta_tipodoc' => 1));
+        //$data['venta'] = array(array('venta_id'  => 0,'venta_tipodoc' => 1));
         
 //        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
 //        
         // se usa detalle_venta para no modifcar el detalle de factura que ya estaba echo
-        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
+        $data['detalle_factura'] = $this->Detalle_venta_model->get_detalle_factura_id($factura_id);
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['page_title'] = "Factura";
         $factura = $this->Factura_model->get_factura_id($factura_id);
@@ -867,7 +868,7 @@ class Factura extends CI_Controller{
 //        			else{ redirect('alerta'); }
 //        } else { redirect('', 'refresh'); }
 
-    function anular_factura($factura_id, $venta_id){
+    function anular_factura($factura_id,$factura_numero){
         if($this->acceso(154)){
         //**************** inicio contenido ***************   
                 
@@ -890,7 +891,7 @@ class Factura extends CI_Controller{
         // check if the factura exists before trying to delete it
         $this->Factura_model->ejecutar($sql);
             
-            redirect('factura/mensaje/'.$factura_id.'/'.$venta_id);
+            redirect('factura/mensaje/'.$factura_id."/".$factura_numero);
 //        }
 //        else
 //            show_error('The factura you are trying to delete does not exist.');
@@ -903,15 +904,15 @@ class Factura extends CI_Controller{
      * Realizado por: Roberto Carlos Soto Sierra
      * Fecha: 05.03.2019
      */
-    function mensaje($factura_id, $venta_id)
+    function mensaje($factura_id,$factura_numero)
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************            
         
 
             $data['factura_id'] = $factura_id;
-            $data['venta_id'] = $venta_id;
-            $data['page_title'] = "Mensaje";
+            $data['factura_numero'] = $factura_numero;
+            $data['page_title'] = "Facturada Anulada";
             $data['_view'] = 'factura/mensaje';
 
             $data['page_title'] = "Verificador";            

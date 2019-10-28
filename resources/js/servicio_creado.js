@@ -1700,9 +1700,9 @@ function resultadodetalleservicionew(servicio_id){
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
                         
-                        html += "<a href='"+base_url+"detalle_serv/modificardetalle/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-info btn-xs' title='modificar detalle serv..'><span class='fa fa-pencil'></span> </a>";
-                        html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalanulado"+i+"' title='anular detalle serv..'><span class='fa fa-minus-circle'></span></a>";
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modaleliminar"+i+"' title='eliminar detalle serv..' ><span class='fa fa-trash'></span></a>";
+                        html += "<a href='"+base_url+"detalle_serv/modificardetalle/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-info btn-xs' title='Modificar detalle servicio'><span class='fa fa-pencil'></span> </a>";
+                        html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalanulado"+i+"' title='Anular detalle servicio'><span class='fa fa-minus-circle'></span></a>";
+                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modaleliminar"+i+"' title='Eliminar detalle servicio' ><span class='fa fa-trash'></span></a>";
                         html += "</td>";
                         
                         html += "<tr>";

@@ -1886,7 +1886,8 @@ function registrarventa(cliente_id)
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
-                venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id },
+                venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
+                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
             success:function(respuesta){ 
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
@@ -1904,7 +1905,8 @@ function registrarventa(cliente_id)
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
                 facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
-                venta_descuento:venta_descuento,orden_id:orden_id},
+                venta_descuento:venta_descuento,orden_id:orden_id,
+                venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
             success:function(respuesta){ 
                 eliminardetalleventa();
                 //if (pedido_id>0){ pedidos_pendientes(); }
@@ -2075,11 +2077,16 @@ function registrar_factura(){
     var detalle_cantidad = "1";
     var detalle_precio = document.getElementById("generar_monto").value;
     var venta_id = document.getElementById("generar_venta_id").value;
+    var llave_foranea = "venta_id";
+    var llave_valor = venta_id;
+    
+    
      
     $.ajax({url: controlador,
             type: "POST",
             data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_factura:detalle_factura,
-            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id}, 
+            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id,
+            llave_foranea:llave_foranea, llave_valor:llave_valor}, 
             success:function(resultado){
 
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 

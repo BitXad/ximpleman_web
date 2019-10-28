@@ -69,19 +69,17 @@ class Servicio extends CI_Controller{
     function remove($servicio_id)
     {
         if($this->acceso(69)){
-        
-        $servicio = $this->Servicio_model->get_servicio($servicio_id);
-
-        // check if the servicio exists before trying to delete it
-        if(isset($servicio['servicio_id']))
-        {
-            $this->Servicio_model->delete_servicio($servicio_id);
-            redirect('servicio/index');
+            $servicio = $this->Servicio_model->get_servicio($servicio_id);
+            // check if the servicio exists before trying to delete it
+            if(isset($servicio['servicio_id']))
+            {
+                $this->Servicio_model->delete_servicio($servicio_id);
+                redirect('servicio/index');
+            }
+            else
+                show_error('The servicio you are trying to delete does not exist.');
         }
-        else
-            show_error('The servicio you are trying to delete does not exist.');
     }
-}
     
     /*
      * Añadir nuevo servicio y un cliente nuevo
@@ -89,9 +87,7 @@ class Servicio extends CI_Controller{
     function nuevo_servicio_cliente($cliente_id)
     {
         if($this->acceso(69)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
+        
         // verifica si existe este cliente con el id ingresado antes de registrar un nuevo servicio
         $this->load->model('Cliente_model');
         $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
@@ -109,16 +105,15 @@ class Servicio extends CI_Controller{
             $fecha_res = date('Y-m-d');
             $hora_res = date('H:i:s');
             $params = array(
-				'estado_id' => $this->input->post('estado_id'),
-                                'tiposerv_id' => $this->input->post('tiposerv_id'),
-				'cliente_id' => $this->input->post('cliente_id'),
-				'usuario_id' => $usuario_id,
-				'servicio_fecharecepcion' => $fecha_res,
-				'servicio_horarecepcion' => $hora_res,
-				'servicio_total' => $this->input->post('servicio_total'),
-				'servicio_acuenta' => $this->input->post('servicio_acuenta'),
-				'servicio_saldo' => $this->input->post('servicio_saldo'),
-				
+                'estado_id' => $this->input->post('estado_id'),
+                'tiposerv_id' => $this->input->post('tiposerv_id'),
+                'cliente_id' => $this->input->post('cliente_id'),
+                'usuario_id' => $usuario_id,
+                'servicio_fecharecepcion' => $fecha_res,
+                'servicio_horarecepcion' => $hora_res,
+                'servicio_total' => $this->input->post('servicio_total'),
+                'servicio_acuenta' => $this->input->post('servicio_acuenta'),
+                'servicio_saldo' => $this->input->post('servicio_saldo'),
             );
             
             $servicio_id = $this->Servicio_model->add_servicio($params);
@@ -126,8 +121,8 @@ class Servicio extends CI_Controller{
         }
         else
         {
-                        $this->load->model('Tipo_servicio_model');
-			$data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
+            $this->load->model('Tipo_servicio_model');
+            $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
             $data['page_title'] = "Servicio";            
             $data['_view'] = 'servicio/nuevo_servicio_cliente';
             $this->load->view('layouts/main',$data);
@@ -150,11 +145,11 @@ class Servicio extends CI_Controller{
         $fecha_res = date('Y-m-d');
         $hora_res = date('H:i:s');
         $params = array(
-                        'estado_id' => $estado_id,
-                        'usuario_id' => $usuario_id,
-                        'tiposerv_id' => $tiposerv_id,
-                        'servicio_fecharecepcion' => $fecha_res,
-                        'servicio_horarecepcion' => $hora_res,
+            'estado_id' => $estado_id,
+            'usuario_id' => $usuario_id,
+            'tiposerv_id' => $tiposerv_id,
+            'servicio_fecharecepcion' => $fecha_res,
+            'servicio_horarecepcion' => $hora_res,
         );
         
         $servicio_id = $this->Servicio_model->add_servicio($params);
@@ -346,16 +341,16 @@ class Servicio extends CI_Controller{
 //        $hora_res = date('H:i:s');
         
         $params = array(
-                        'servicio_total' => 0,
-                        'servicio_acuenta' => 0,
-                        'servicio_saldo' => 0,
-                        'estado_id' => $estado_id,
+            'servicio_total' => 0,
+            'servicio_acuenta' => 0,
+            'servicio_saldo' => 0,
+            'estado_id' => $estado_id,
         );
         $detparams = array(
-                        'detalleserv_total' => 0,
-                        'detalleserv_acuenta' => 0,
-                        'detalleserv_saldo' => 0,
-                        'estado_id' => $estado_id,
+            'detalleserv_total' => 0,
+            'detalleserv_acuenta' => 0,
+            'detalleserv_saldo' => 0,
+            'estado_id' => $estado_id,
         );
         
         $this->load->model('Detalle_serv_model');
@@ -370,9 +365,6 @@ class Servicio extends CI_Controller{
     function serview($servicio_id, $a = null)
     {
         if($this->acceso(71)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
         $data['a'] = $a;
         
         $thisrolusuario = $this->session_data['rol'];
@@ -424,16 +416,16 @@ class Servicio extends CI_Controller{
         
 
         $params = array(
-                        'servicio_total' => 0,
-                        'servicio_acuenta' => 0,
-                        'servicio_saldo' => 0,
-                        'estado_id' => $estado_id,
+            'servicio_total' => 0,
+            'servicio_acuenta' => 0,
+            'servicio_saldo' => 0,
+            'estado_id' => $estado_id,
         );
         $detparams = array(
-                        'detalleserv_total' => 0,
-                        'detalleserv_acuenta' => 0,
-                        'detalleserv_saldo' => 0,
-                        'estado_id' => $estado_id,
+            'detalleserv_total' => 0,
+            'detalleserv_acuenta' => 0,
+            'detalleserv_saldo' => 0,
+            'estado_id' => $estado_id,
         );
         
         $this->load->model('Detalle_serv_model');
@@ -462,9 +454,6 @@ class Servicio extends CI_Controller{
     function buscarporcod()
     {
         if($this->acceso(73)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
         if(isset($_POST) && count($_POST) > 0)     
         {
             $servicio_id = $this->input->post('servicio_id');
@@ -490,10 +479,10 @@ class Servicio extends CI_Controller{
         $estado_id = 4; // este valor esta definido en la tabla Estado = ANULADO
         $this->load->model('Detalle_serv_model');
         $detparams = array(
-                        'detalleserv_total' => 0,
-                        'detalleserv_acuenta' => 0,
-                        'detalleserv_saldo' => 0,
-                        'estado_id' => $estado_id,
+            'detalleserv_total' => 0,
+            'detalleserv_acuenta' => 0,
+            'detalleserv_saldo' => 0,
+            'estado_id' => $estado_id,
         );
 	$this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
         
@@ -517,9 +506,9 @@ class Servicio extends CI_Controller{
         $acuenta = $data['resultado']['acuenta'];
         $saldo = $data['resultado']['saldo'];
         $sumparams = array(
-                            'servicio_total' => $total,
-                            'servicio_acuenta' => $acuenta,
-                            'servicio_saldo' => $saldo,
+            'servicio_total' => $total,
+            'servicio_acuenta' => $acuenta,
+            'servicio_saldo' => $saldo,
         );
 
         $this->Servicio_model->update_servicio($servicio_id,$sumparams);
@@ -653,7 +642,7 @@ class Servicio extends CI_Controller{
 
 
             $this->load->model('Estado_model');
-			$data['all_estado'] = $this->Estado_model->get_all_estado();
+            $data['all_estado'] = $this->Estado_model->get_all_estado();
 
         $data['page_title'] = "Servicio";    
         $data['_view'] = 'servicio/verservdet';
@@ -808,9 +797,7 @@ class Servicio extends CI_Controller{
     function boletainftecservicio($servicio_id)
     {
         if($this->acceso(142)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
+        
                $contitulo = $this->input->post('contitulo'.$servicio_id);
                if(isset($contitulo)){
                    $data['sintitulo']= 1;
@@ -840,9 +827,7 @@ class Servicio extends CI_Controller{
     function repinftecdetalleserv($es = null)
     {
         if($this->acceso(142)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
+        
         $data['servicio'] = $this->Servicio_model->get_all_repservicios();
         $data['a']=$es;
         
@@ -874,9 +859,6 @@ class Servicio extends CI_Controller{
     function boletainftecdetalleserv($detalleserv_id)
     {
         if($this->acceso(142)){
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
                 $contitulo = $this->input->post('contitulo'.$detalleserv_id);
                if(isset($contitulo)){
                    $data['sintitulo']= 1;
@@ -907,9 +889,7 @@ class Servicio extends CI_Controller{
     function boletacomprobanteserv($servicio_id)
     {
         if($this->acceso(69)){ 
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
+        
                $contitulo = $this->input->post('contitulo'.$servicio_id);
                if(isset($contitulo)){
                    $data['sintitulo']= 1;
@@ -1052,7 +1032,7 @@ class Servicio extends CI_Controller{
         $dosificacion   = $this->Dosificacion_model->get_dosificacion_activa();
         $autorizacion   = $dosificacion[0]['dosificacion_autorizacion'];
         $llave          = $dosificacion[0]['dosificacion_llave'];
-        $codseguimiento = $this->codigo_control($llave, $autorizacion, $servicio_id, $servicio_id,$fecha_reg, $minseg);
+        $codseguimiento = $this->codigo_control1($llave, $autorizacion, $servicio_id, $servicio_id,$fecha_reg, $minseg);
         
             $params = array(
                 'servicio_fecharecepcion' => $fecha_reg,
@@ -1070,7 +1050,7 @@ class Servicio extends CI_Controller{
     }
 }
     
-    function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
+    function codigo_control1($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
     {
 
         //include 'ControlCode.php';
@@ -1398,15 +1378,16 @@ class Servicio extends CI_Controller{
             $unidad = $this->input->post('detalle_unidad');
             $cantidad = $this->input->post('detalle_cantidad');
             $precio = $this->input->post('detalle_precio');
-            
+            $fecha_hoy = date("Y-m-d");
+            $hora_hoy  = date("H:i:s");
             $monto_factura = $cantidad * $precio;
             
             $numero_factura = $dosificacion["dosificacion_numfact"]+1;
             $estado_id = 1;
             $venta_id = 0;
             $factura_fechaventa = $fecha_venta;
-            $factura_fecha = "date(now())";
-            $factura_hora = "time(now())";
+            $factura_fecha = $fecha_hoy;
+            $factura_hora  = $hora_hoy;
             $factura_subtotal = $monto_factura;
             $factura_ice = 0;
             $factura_exento = 0;
@@ -1420,8 +1401,8 @@ class Servicio extends CI_Controller{
             $factura_leyenda2 = $dosificacion["dosificacion_leyenda2"];
             $factura_nit = $nit_factura;
             $factura_razonsocial = $razon_social;
-            $factura_nitemisor = $dosificacion["dosificacion_leyenda2"];
-            $factura_sucursal = $dosificacion["dosificacion_nitemisor"];
+            $factura_nitemisor = $dosificacion["dosificacion_nitemisor"];
+            $factura_sucursal = $dosificacion["dosificacion_sucursal"];
             $factura_sfc = $dosificacion["dosificacion_sfc"];
             $factura_actividad = $dosificacion["dosificacion_actividad"];
             
@@ -1460,6 +1441,7 @@ class Servicio extends CI_Controller{
                 'factura_sucursal' => $factura_sucursal,
                 'factura_sfc' => $factura_sfc,
                 'factura_actividad' => $factura_actividad,
+                'servicio_id' => $servicio_id,
                 'usuario_id' => $usuario_id,
             );
             $factura_id = $this->Servicio_model->add_factura($paramsf);
@@ -1503,5 +1485,20 @@ class Servicio extends CI_Controller{
         }else{
             show_404();
         }
+    }
+    
+    function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
+    {
+
+        //include 'ControlCode.php';
+
+        $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
+                                                   $dosificacion_numfact,//Numero de factura
+                                                   $nit,//Número de Identificación Tributaria o Carnet de Identidad
+                                                   str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
+                                                   $monto,//Monto de la transacción
+                                                   $dosificacion_llave//Llave de dosificación
+                        );        
+         return $code;
     }
 }
