@@ -1,9 +1,9 @@
-<!--<script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
     });
-</script>-->
+</script>
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
@@ -91,7 +91,7 @@ border-bottom : 1px solid #aaa;*/
                   </p>
               </div>
               <div class="modal-footer">
-                  <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id']."/".$factura[0]['factura_numero']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>
+                  <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id'].'/'.$factura[0]['venta_id']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>
                   <button type="button" class="btn btn-danger" data-dismiss="modal">Salir</button>
               </div>
             </div>
@@ -127,10 +127,9 @@ border-bottom : 1px solid #aaa;*/
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
                 
                     <br>
-                    <?php //if($factura[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
-                         //else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>
-                    <?php $titulo1 = "FACTURA"; $subtitulo=" ORIGINAL " ?>
-                    
+                    <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
+                         else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>
+
                 <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>
                 
@@ -162,10 +161,10 @@ border-bottom : 1px solid #aaa;*/
     <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
         <td colspan="4" style="padding: 0;  font-size: 9pt;">
             
-                <?php $fecha = new DateTime($factura[0]['factura_fechaventa']); 
+                <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$factura[0]['factura_hora']; ?> <br>
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a." ".$venta[0]['venta_hora']; ?> <br>
                     <b>NIT/CI: </b><?php echo $factura[0]['factura_nit']; ?> <br>
                     <b>SEÑOR(ES): </b><?php echo $factura[0]['factura_razonsocial'].""; ?>            
         </td>
@@ -186,7 +185,7 @@ border-bottom : 1px solid #aaa;*/
                  $total_final = 0;
 
                 if ($factura[0]['estado_id']<>3){ 
-                 foreach($detalle_factura as $d){;
+                 foreach($detalle_venta as $d){;
                         $cont = $cont+1;
                         $cantidad += $d['detallefact_cantidad'];
                         $total_descuento += $d['detallefact_descuento']; 
@@ -228,8 +227,8 @@ border-bottom : 1px solid #aaa;*/
             </font>
             
             <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($factura[0]['factura_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($factura[0]['factura_cambio'],2,'.',','); ?>
+                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
+                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
             </font>
             
         </td>          
@@ -258,14 +257,7 @@ border-bottom : 1px solid #aaa;*/
     </tr>    
     <tr >
         <td style="padding: 0;  line-height: 12px;" colspan="4">
-               USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b> / TRANS: 
-               <b><?php 
-                    if ($factura[0]['venta_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['venta_id']."V"; 
-                    if ($factura[0]['credito_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['credito_id']."C"; 
-                    if ($factura[0]['ingreso_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['ingreso_id']."C"; 
-                    if ($factura[0]['servicio_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['servicio_id']."C"; 
-                    if ($factura[0]['cuota_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['cuota_id']."C"; 
-               ?></b>
+               USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b> / TRANS: <b><?php echo "00".$factura[0]['venta_id']; ?></b>
             <center>
                     <?php echo $factura[0]['factura_leyenda1'];?> <br>
             <font size="1">

@@ -262,6 +262,8 @@ class Venta extends CI_Controller{
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
         $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
+        $venta_efectivo = $this->input->post('venta_efectivo'); // efectivo cancelado
+        $venta_cambio = $this->input->post('venta_cambio'); // Cambio devuelto  
         
         $facturado = $this->input->post('facturado'); // si la venta es facturada
         
@@ -508,18 +510,19 @@ class Venta extends CI_Controller{
                     factura_ice, factura_exento, factura_descuento, factura_total, 
                     factura_numero, factura_autorizacion, factura_llave, 
                     factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
-                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad) value(".
+                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
+                    usuario_id, tipotrans_id, factura_efectivo, factura_cambio) value(".
                     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
                     $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
                     $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
-                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."')";
+                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
+                    $usuario_id.",".$tipo_transaccion.",".$venta_efectivo.",".$venta_cambio.")";
 
-                    $factura_id = $this->Venta_model->ejecutar($sql);
+                $factura_id = $this->Venta_model->ejecutar($sql);
                
-    
             
                 $sql =  "insert into detalle_factura(
                  producto_id,

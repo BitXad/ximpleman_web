@@ -273,6 +273,7 @@ $(document).ready(function(){
                             <input type="number" step="any" name="cuota_cancelado" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_cancelado<?php echo $c['cuota_id']; ?>" max="<?php echo $c['cuota_total']; ?>" />
                             <input type="hidden"  name="cuota_total" value="<?php echo $c['cuota_total']; ?>" class="form-control" id="cuota_total<?php echo $c['cuota_id']; ?>" />
                             <input type="hidden"  name="credito_id" value="<?php echo $c['credito_id']; ?>" class="form-control" id="credito_id" />
+                            <input type="hidden"  name="ventita" value="<?php echo $c['venta_id']; ?>" class="form-control" id="ventita" />
                         </div>
                     </div>
                      <div class="col-md-6">

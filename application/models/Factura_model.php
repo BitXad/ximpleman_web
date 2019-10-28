@@ -35,7 +35,10 @@ class Factura_model extends CI_Model
      */
     function get_factura_venta($venta_id)
     {
-        $sql = "select * from factura where venta_id = ".$venta_id;
+        $sql = "select f.*,t.tipotrans_nombre, u.usuario_nombre from factura f
+                left join tipo_transaccion t on t.tipotrans_id = f.tipotrans_id
+                left join usuario u on u.usuario_id = f.usuario_id
+                where f.venta_id = ".$venta_id;
         $factura = $this->db->query($sql)->result_array();
         return $factura;
         

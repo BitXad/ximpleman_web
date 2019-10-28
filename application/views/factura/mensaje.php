@@ -2,7 +2,7 @@
 <div class="box-header">
     <center>
         <font size="3" face="Arial"><b>ANULADA</b></font><br>
-        <font size="3" face="Arial"><b>Factura/Trans. Nº: <?php echo $venta_id; ?></b></font>
+        <font size="3" face="Arial"><b>Factura Nº: <?php echo $factura_numero; ?></b></font>
 
         <!--<h3 class="box-title">La Factura con ID Nº: <?php echo $factura; ?> fue anulada</h3>-->
     <!--            	<div class="box-tools">
@@ -19,7 +19,7 @@
             <div class="col-md-3">
                 <!--<label for="factura_fecha" class="control-label">Fecha</label>-->
                 <div class="form-group">
-                    <a href="<?php echo base_url('factura/factura_boucher/'.$venta_id); ?>" class="btn btn-facebook form-control">
+                    <a href="<?php echo base_url('factura/factura_boucher/'.$factura_id); ?>" class="btn btn-facebook form-control">
                         <i class="fa fa-address-card"></i>
                         Imprimir Factura
                     </a>                                 

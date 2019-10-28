@@ -322,5 +322,13 @@ class Credito extends CI_Controller{
                 show_error('The credito you are trying to delete does not exist.');
         }
     }
+
+    function cargar_factura()
+    {
+        $venta_id = $this->input->post('venta_id');
+         
+        $datos = $this->Credito_model->get_ventas($venta_id);
+        echo json_encode($datos);
+    }
     
 }
