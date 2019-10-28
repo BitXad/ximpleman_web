@@ -2048,6 +2048,8 @@ function ventas_por_fecha()
 
 }
 
+//************* inicio  funciones  para emitir factura **************
+
 function cargar_factura(factura){
     //alert(factura.cliente_nombre);
     
@@ -2079,8 +2081,9 @@ function registrar_factura(){
             data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_factura:detalle_factura,
             detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id}, 
             success:function(resultado){
-                //alert("Factura registrada con éxito...!");
-                ventas_por_fecha();
+
+                ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
+                                    /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada
             },
             error:function(resultado){
                 alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
@@ -2088,30 +2091,9 @@ function registrar_factura(){
         
         
     }) 
-    
-//    
-//    
-//    $.ajax({url: controlador,
-//            type:"POST",
-//            data:{nit:nit,razon:razon,telefono:telefono},
-//            success:function(respuesta){  
-//            
-//                var registro = JSON.parse(respuesta);
-//                
-//                cliente_id = registro[0]["cliente_id"];
-//                //registrarventa(cliente_id);
-//                modificar_venta(cliente_id);
-//                
-//            },
-//            error: function(respuesta){
-//                cliente_id = 0;            
-//            }
-//        });
-//    }
-//            
-//            
             
 }
+//************* inicio  fin  para emitir factura **************
 
 
 function ventas_por_parametro()
