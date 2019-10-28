@@ -159,6 +159,7 @@
                             <a href="<?php echo site_url('cuotum/cuentas/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
                             <a href="<?php echo site_url('cuotum/planCuenta/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title="PLAN DE PAGOS"><span class="fa fa-print"></span></a>
                             <a href="<?php echo site_url('factura/imprimir_recibo/'.$c['venta_id']); ?>" target="_blank" class="btn btn-warning btn-xs"><span class="fa fa-file" title="VER DETALLE VENTA"></span></a>
+                            <button class="btn btn-facebook btn-xs" style="background-color:#000;" title="Generar factura" onclick="cargar_factura(<?php echo $c["venta_id"] ?>);"><span class="fa fa-modx"></span></button>
                             <?php } ?>
                             
                             

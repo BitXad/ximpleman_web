@@ -47,6 +47,7 @@ function facturarcuota(cuota_id){
    var detalle_factura = document.getElementById('detalle').value;
   if(factura!=null && detalle!=null){
    
+   var venta_id = document.getElementById('ventita').value;
    var fecha_venta = document.getElementById('cuota_fecha').value;
    var detalle_precio = document.getElementById('cuota_cancelado'+cuota_id).value;
    var nit = document.getElementById('cuota_nit'+cuota_id).value;
@@ -54,7 +55,7 @@ function facturarcuota(cuota_id){
    //var cuota_numcuota = document.getElementById('cuota_numcuota').value;
   // var credito_id = document.getElementById('credito_id').value;
   // var cuota_numercibo = document.getElementById('cuota_numercibo').value;
-   var venta_id = cuota_id;
+   //var venta_id = cuota_id;
    var detalle_cantidad = 1;
    var detalle_unidad= 'CUOTA';
    $.ajax({url: controlador,

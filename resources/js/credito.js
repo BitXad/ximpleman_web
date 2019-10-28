@@ -207,6 +207,8 @@ function tablacuentas(filtro)
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs' title='VER CUOTAS'><span class='fa fa-eye'></span></a>";
                         html += " <a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs' title='PLAN DE PAGOS'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";
+                        html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+registros[i]['ventita']+");'><span class='fa fa-modx'></span></button> ";
+
                         if (registros[i]["estado_id"]==9){
                         //html += "<a href='"+base_url+"credito/factura/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></span></a></td>";
                         }
@@ -232,15 +234,32 @@ function tablacuentas(filtro)
 
 //***** inicio  funciones  para emitir factura ******
 
-/*function cargar_factura(factura){
+function cargar_factura(venta_id){
     //alert(factura.cliente_nombre);
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"credito/cargar_factura";
     
-    $("#generar_nit").val(factura.cliente_nit);
-    $("#generar_razon").val(factura.cliente_razon);
-    $("#generar_detalle").val("PRODUCTOS VARIOS");
-    $("#generar_venta_id").val(factura.venta_id);
-    $("#generar_monto").val(Number(factura.venta_total).toFixed(2));
-    $("#boton_modal_factura").click();
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{venta_id:venta_id}, 
+            success:function(resultado){
+
+              var registros =  JSON.parse(resultado);
+                $("#generar_nit").val(registros["cliente_nit"]);
+                $("#generar_razon").val(registros["cliente_razon"]);
+                $("#generar_detalle").val("PRODUCTOS VARIOS");
+                $("#generar_venta_id").val(registros["venta_id"]);
+                $("#generar_monto").val(Number(registros["venta_total"]).toFixed(2));
+          
+                $("#boton_modal_factura").click();
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    }) 
+    
     
 }
 
@@ -251,7 +270,8 @@ function registrar_factura(){
      
     var nit = document.getElementById("generar_nit").value;
     var razon_social = document.getElementById("generar_razon").value;
-    var fecha_venta = fecha();
+    var fecha = new Date();
+    var fecha_venta = moment(fecha).format("YYYY-MM-DD");
     var detalle_factura = document.getElementById("generar_detalle").value;
     var detalle_unidad = "UNIDAD";
     var detalle_cantidad = "1";
@@ -264,7 +284,7 @@ function registrar_factura(){
             detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id}, 
             success:function(resultado){
 
-                ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
+                buscar_fecha_cuenta(); //funcion para volver a mostrar la lista de ventas 
                                     /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada
             },
             error:function(resultado){
@@ -274,5 +294,5 @@ function registrar_factura(){
         
     }) 
             
-}*/
+}
 //***** inicio  fin  para emitir factura ******
