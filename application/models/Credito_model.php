@@ -352,4 +352,25 @@ LEFT JOIN usuario u on ve.usuario_id = u.usuario_id
     {
         return $this->db->delete('credito',array('credito_id'=>$credito_id));
     }
+
+    function get_ventas($venta_id)
+    {
+        
+        $credito = $this->db->query("
+              SELECT
+                ve.*, p.*
+
+            FROM
+                credito c
+
+            LEFT JOIN venta ve on c.venta_id = ve.venta_id
+            LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
+
+            WHERE
+                ve.venta_id=".$venta_id."
+      
+           
+        ",array($venta_id))->row_array();
+        return $credito;
+       }
 }
