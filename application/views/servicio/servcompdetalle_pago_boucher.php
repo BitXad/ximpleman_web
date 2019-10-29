@@ -5,7 +5,7 @@
 <script type="text/javascript">
     $(document).ready(function()
     {
-        //window.onload = window.print();
+        window.onload = window.print();
         /*function imprimir()
         {
             /*$('#paraboucher').css('max-width','7cm !important');*/
