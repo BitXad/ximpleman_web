@@ -206,8 +206,13 @@ function tablacuentas(filtro)
                         if (registros[i]['venta_id']>0) {
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs' title='VER CUOTAS'><span class='fa fa-eye'></span></a>";
                         html += " <a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs' title='PLAN DE PAGOS'><span class='fa fa-print'></span></a>";
-                        html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";
+                        html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-primary btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";
+                        
+                        if (registros[i]['factura_id']>0) {
+                        html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='IMPRIMIR FACTURA'><span class='fa fa-list'></span></a>";
+                      }else{
                         html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+registros[i]['venta_id']+","+registros[i]['credito_id']+");'><span class='fa fa-modx'></span></button> ";
+                      }
 
                         if (registros[i]["estado_id"]==9){
                         //html += "<a href='"+base_url+"credito/factura/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></span></a></td>";

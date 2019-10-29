@@ -117,7 +117,7 @@ class Credito_model extends CI_Model
         $deuda = $this->db->query("
 
            SELECT
-                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, f.factura_id
 
             FROM
                 credito c
@@ -128,6 +128,7 @@ LEFT JOIN estado e on c.estado_id = e.estado_id
 LEFT JOIN servicio s on c.servicio_id = s.servicio_id
 LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
 LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
+LEFT JOIN factura f on c.credito_id = f.credito_id
 
 
 
@@ -277,7 +278,7 @@ LEFT JOIN usuario u on ve.usuario_id = u.usuario_id
         
         $credito = $this->db->query("
               SELECT
-                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id as ususer, ve.usuario_id, u.usuario_nombre
+                c.*, ve.*, e.*, p.*,  s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id as ususer, ve.usuario_id, u.usuario_nombre, f.factura_id
 
 
             FROM
@@ -289,6 +290,7 @@ LEFT JOIN estado e on c.estado_id = e.estado_id
 LEFT JOIN servicio s on c.servicio_id = s.servicio_id
 LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
 LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
+LEFT JOIN factura f on c.credito_id = f.credito_id
 
             WHERE
                  c.estado_id = 8

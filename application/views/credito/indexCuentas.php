@@ -158,9 +158,12 @@
                             <?php } else { ?>
                             <a href="<?php echo site_url('cuotum/cuentas/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
                             <a href="<?php echo site_url('cuotum/planCuenta/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title="PLAN DE PAGOS"><span class="fa fa-print"></span></a>
-                            <a href="<?php echo site_url('factura/imprimir_recibo/'.$c['venta_id']); ?>" target="_blank" class="btn btn-warning btn-xs"><span class="fa fa-file" title="VER DETALLE VENTA"></span></a>
+                            <a href="<?php echo site_url('factura/imprimir_recibo/'.$c['venta_id']); ?>" target="_blank" class="btn btn-primary btn-xs"><span class="fa fa-file" title="VER DETALLE VENTA"></span></a>
+                            <?php if ($c['factura_id']>0) { ?>
+                            <a href="<?php echo site_url('factura/imprimir_factura_id/'.$c['factura_id']); ?>" target="_blank" class="btn btn-warning btn-xs"><span class="fa fa-list" title="IMPRIMIR FACTURA"></span></a> 
+                            <?php }else{ ?>
                             <button class="btn btn-facebook btn-xs" style="background-color:#000;" title="Generar factura" onclick="cargar_factura(<?php echo $c["venta_id"] ?>,<?php echo $c["credito_id"] ?>)"><span class="fa fa-modx"></span></button>
-                            <?php } ?>
+                            <?php } } ?>
                             
                             
 

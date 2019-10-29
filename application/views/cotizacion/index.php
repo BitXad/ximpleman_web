@@ -130,10 +130,10 @@
                 <br>
                 <center>            
                     <div class="col-md-4">
-                        Desde: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%;"  id="fecha_desde" name="fecha_desde" required="true">
+                        Desde: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%;"  id="fecha_desde" value="<?php echo date('Y-m-d') ?>" name="fecha_desde" required="true">
                     </div>
                     <div class="col-md-4">
-                        Hasta: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%; "  id="fecha_hasta" name="fecha_hasta" required="true">
+                        Hasta: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 80%; "  id="fecha_hasta" value="<?php echo date('Y-m-d') ?>" name="fecha_hasta" required="true">
                     </div>
 
                    
