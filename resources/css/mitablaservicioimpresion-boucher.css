@@ -1,5 +1,5 @@
 .micontenedor{
-    font-family: "Arial", arial narrow;
+    font-family: Arial;
     max-width: 6cm;
     width: 6.8cm;
     margin-left: 0em;
@@ -7,8 +7,8 @@
 }
 #titulo{
     text-align: center;
-    font-family: "Arial", arial narrow;
-    font-size: 11pt;
+    font-family: Arial;
+    font-size: 14px;
     font-weight: bold;
     line-height: 12px;
 }
@@ -23,8 +23,8 @@
 }
 .escliente{
     text-align: left;
-    font-family: "Arial", arial narrow;
-    font-size: 11pt;
+    font-family: Arial;
+    font-size: 14px;
     font-weight: bold;
     line-height: 12px;
 }
@@ -45,14 +45,14 @@
     padding-bottom: 8px;
 }
 div center b{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
 }
 div center div{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
     font-size: 8pt;
 }
 div b{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
     font-size: 8pt;
     margin: 0;
     padding: 0;
@@ -60,7 +60,7 @@ div b{
 
 /* ********************************** */
 .micontenedorfirmas{
-    font-family: "Arial", arial narrow;
+    font-family: Arial;
     max-width: 6cm;
     width: 6.8cm;
     margin-left: 0em;
@@ -76,12 +76,12 @@ div b{
 
 
 #mitablaimpresion {
-    font-family: "Arial", Arial Narrow;
+    font-family: Arial;
     border-collapse: collapse;
     width: 100%;
 }
 #leyenda{
-    font-family: "Arial",arial Narrow;
+    font-family: Arial;
     font-size: 6pt;
 }
 #mitablaimpresion td, #mitablaimpresion th {
