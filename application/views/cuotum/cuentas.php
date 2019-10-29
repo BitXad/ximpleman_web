@@ -193,7 +193,11 @@ $(document).ready(function(){
                         <td <?php echo $color; ?>><?php echo $c['cuota_glosa']; ?></td>
                         <td <?php echo $color; ?>><?php echo $c['estado_descripcion']; ?></td>
                         <td <?php echo $color; ?>><?php echo $c['usuario_nombre']; ?></td>
-                        <td <?php echo $color; ?>> <?php if ($c['estado_id']==8) { ?>
+                        <td <?php echo $color; ?>> 
+                        <?php if ($c['factura_id']>0) { ?>
+                            <a href="<?php echo site_url('factura/imprimir_factura_id/'.$c['factura_id']); ?>" target="_blank" title="IMPRIMIR FACTURA" class="btn btn-warning btn-xs"><span class="fa fa-list"></span></a>
+
+                        <?php  } if ($c['estado_id']==8) { ?>
                         <?php
                             if($rol[51-1]['rolusuario_asignado'] == 1){ ?>
                                 <a href="<?php echo site_url('cuotum/editar/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
@@ -231,7 +235,7 @@ $(document).ready(function(){
                                       </div>
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
-                          <?php }else { ?>
+                          <?php } else { ?>
                             <a href="<?php echo site_url("cuotum/pendiente1/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
                             <?php if ($cuota[0]['venta_id']>0) { ?>
                              <a href="<?php echo site_url('cuotum/recibocuentas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
@@ -260,7 +264,7 @@ $(document).ready(function(){
                <h1><b> <span class="btn-success" >Cuota Bs: 
                     <?php echo number_format($c['cuota_total'],2,".",","); ?></span>
               </b></h1>
-              <input type="checkbox" name="factura" id="factura" onclick="facturar(<?php echo $c['cuota_id']; ?>)"> Más
+              <input type="checkbox" name="factura" id="factura" onclick="facturar(<?php echo $c['cuota_id']; ?>)"> Emitir Factura
           </div>
           <div class="col-md-12">
             <input type="hidden" name="cuota_id" value="<?php echo $c['cuota_id']; ?>" class="form-control" id="cuota_id" />
