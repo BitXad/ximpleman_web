@@ -645,9 +645,11 @@ class Venta extends CI_Controller{
             
             $tipotrans_id = 1;            
             
-            if ($llave_foranea="venta_id"){
-                
+            if ($llave_foranea=="venta_id"){
                 $venta_id = $llave_valor;
+            }
+            else{
+                $venta_id = 0;
             }
             
             

@@ -1,9 +1,9 @@
-<!--<script type="text/javascript">
+<script type="text/javascript">
     $(document).ready(function()
     {
         window.onload = window.print();
     });
-</script>-->
+</script>
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
@@ -36,7 +36,7 @@ div {
 margin-top: 0px;
 margin-right: 0px;
 margin-bottom: 0px;
-margin-left: 10px;
+margin-left: 0px;
 margin: 0px;
 }
 
@@ -63,7 +63,7 @@ div#content {
 background : #ddd;
 font-size : 8px;
 margin : 0 0 0 0;
-padding : 0 5px 0 5px;
+padding : 0 0px 0 0px;
 /*border-left : 1px solid #aaa;
 border-right : 1px solid #aaa;
 border-bottom : 1px solid #aaa;*/
@@ -72,7 +72,7 @@ border-bottom : 1px solid #aaa;*/
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php $ancho = "7cm"; ?>
+<?php $ancho = "5cm"; ?>
 <!---------------------- Modal ---------------------------->
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
           <div class="modal-dialog">
