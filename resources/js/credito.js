@@ -207,7 +207,7 @@ function tablacuentas(filtro)
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs' title='VER CUOTAS'><span class='fa fa-eye'></span></a>";
                         html += " <a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs' title='PLAN DE PAGOS'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";
-                        html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+registros[i]['ventita']+");'><span class='fa fa-modx'></span></button> ";
+                        html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+registros[i]['venta_id']+","+registros[i]['credito_id']+");'><span class='fa fa-modx'></span></button> ";
 
                         if (registros[i]["estado_id"]==9){
                         //html += "<a href='"+base_url+"credito/factura/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></span></a></td>";
@@ -234,7 +234,7 @@ function tablacuentas(filtro)
 
 //***** inicio  funciones  para emitir factura ******
 
-function cargar_factura(venta_id){
+function cargar_factura(venta_id,credito_id){
     //alert(factura.cliente_nombre);
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"credito/cargar_factura";
@@ -250,6 +250,7 @@ function cargar_factura(venta_id){
                 $("#generar_detalle").val("PRODUCTOS VARIOS");
                 $("#generar_venta_id").val(registros["venta_id"]);
                 $("#generar_monto").val(Number(registros["venta_total"]).toFixed(2));
+                $("#generar_credito").val(credito_id);
           
                 $("#boton_modal_factura").click();
             },
@@ -276,12 +277,18 @@ function registrar_factura(){
     var detalle_unidad = "UNIDAD";
     var detalle_cantidad = "1";
     var detalle_precio = document.getElementById("generar_monto").value;
-    var venta_id = document.getElementById("generar_venta_id").value;
+    //var venta_id = document.getElementById("generar_venta_id").value;
+    var factura_efectivo  = detalle_precio;
+    var llave_foranea  = 'credito_id';
+    var llave_valor = document.getElementById("generar_credito").value;
+    var factura_cambio = 0;
+    var tipotrans_id = 1;
      
     $.ajax({url: controlador,
             type: "POST",
-            data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_factura:detalle_factura,
-            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id}, 
+            data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_cantidad:detalle_cantidad,detalle_precio:detalle_precio,
+             detalle_unidad:detalle_unidad,detalle_factura:detalle_factura,factura_efectivo:factura_efectivo,factura_cambio:factura_cambio,
+             tipotrans_id:tipotrans_id,llave_foranea:llave_foranea,llave_valor:llave_valor}, 
             success:function(resultado){
 
                 buscar_fecha_cuenta(); //funcion para volver a mostrar la lista de ventas 

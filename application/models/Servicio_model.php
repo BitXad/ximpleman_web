@@ -434,20 +434,4 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
-    /* ******* PARA FACTURAR CON DOSIFICACION.. ******* */
-    function update_dosificacion($dosificacion_id,$params)
-    {
-        $this->db->where('dosificacion_id',$dosificacion_id);
-        return $this->db->update('dosificacion',$params);
-    }
-    function add_factura($params)
-    {
-        $this->db->insert('factura',$params);
-        return $this->db->insert_id();
-    }
-    function add_detallefact($params)
-    {
-        $this->db->insert('detalle_factura',$params);
-        return $this->db->insert_id();
-    }
 }
