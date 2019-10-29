@@ -145,10 +145,10 @@
                 <br>
                 <center>            
                     <div class="col-md-2">
-                        Desde: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 75%; font-size: 11px;"  id="fecha_desde" name="fecha_desde" required="true">
+                        Desde: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 75%; font-size: 11px;"  id="fecha_desde" value="<?php echo date('Y-m-d') ?>" name="fecha_desde" required="true">
                     </div>
                     <div class="col-md-2">
-                        Hasta: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 75%; font-size: 11px;"  id="fecha_hasta" name="fecha_hasta" required="true">
+                        Hasta: <input type="date" class="btn btn-primary btn-sm form-control" style=" width: 75%; font-size: 11px;"  id="fecha_hasta" value="<?php echo date('Y-m-d') ?>" name="fecha_hasta" required="true">
                     </div>
 
                     <div class="col-md-4">
@@ -161,7 +161,7 @@
                         </select>
                     </div>
                     <div class="col-md-2">
-                        <button class="btn btn-primary btn-sm form-control" face='Arial' onclick="buscar_por_fecha()"><span class="fa fa-search"> Buscar</span></button>
+                        <button class="btn btn-primary btn-sm form-control" face='Arial' onclick="buscar_por_fecha()"><span class="fa fa-search"></span> Buscar</button>
                         
                     </div>
                     <br>

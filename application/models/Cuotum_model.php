@@ -88,19 +88,19 @@ class Cuotum_model extends CI_Model
         
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id
 
             FROM
-                credito c, cliente p, venta ve, cuota k, estado e, usuario u
-
+               cuota k
+            LEFT JOIN credito c on k.credito_id = c.credito_id 
+            LEFT JOIN venta ve on c.venta_id = ve.venta_id
+            LEFT JOIN cliente p on p.cliente_id = ve.cliente_id
+            LEFT JOIN estado e on k.estado_id = e.estado_id
+            LEFT JOIN usuario u on k.usuario_id = u.usuario_id
+            LEFT JOIN factura f on k.cuota_id=f.cuota_id
             WHERE
-                k.credito_id = c.credito_id 
-                and c.venta_id = ve.venta_id
-                and p.cliente_id = ve.cliente_id
-                and k.estado_id = e.estado_id
-                and k.estado_id = e.estado_id
-                and k.usuario_id = u.usuario_id
-                and ".$credito_id." = k.credito_id
+             
+                 ".$credito_id." = k.credito_id
 
             ORDER BY `cuota_numcuota` ASC
 
