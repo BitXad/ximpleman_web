@@ -1487,4 +1487,31 @@ class Servicio extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+    
+    
+    function seguimiento($cliente_id,$servicio_id){
+
+        if($this->acceso(69)){
+            $data['page_title'] = "Seguimiento de Servicios";
+            
+            $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
+            $data['servicio'] =  $servicios;
+            
+            if (sizeof($servicios)>0){
+                
+                $this->load->model('Detalle_serv_model');
+                $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+
+                $empresa_id = 1;
+                $this->load->model('Empresa_model');
+                $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+
+                $data['_view'] = 'servicio/seguimiento_servicio';
+                $this->load->view('layouts/main',$data);
+            } 
+        }
+        
+    }
+    
+    
 }
