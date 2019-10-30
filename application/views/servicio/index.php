@@ -73,7 +73,7 @@
         </div>
     </div>
     <!---------------- BOTONES --------->
-    <div class="col-md-6 no-print">
+    <div class="col-md-6 no-print text-center">
         <!--<div class="box-tools text-center" style="display: flex;">-->
             <!--<div class="col-md-1">-->
                 <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="col-md-1 btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar un nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Registrar Serv.</small></a>
