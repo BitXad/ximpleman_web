@@ -1776,7 +1776,7 @@ function mostrardetalleserv(serv_id){
                         res +="<input style='width: 100%' type='number' step='any' min='0' name='producto_precio"+registros[i]['detalleserv_id']+"' id='producto_precio"+registros[i]['detalleserv_id']+"' />";
                         res +="</td>";
                         res +="<td style='width: 60%'>";
-                        res +="<input style='width: 100%' type='text' name='nombre_insumo"+registros[i]['detalleserv_id']+"' id='nombre_insumo"+registros[i]['detalleserv_id']+"' />";
+                        res +="<input style='width: 100%' type='text' name='nombre_insumo"+registros[i]['detalleserv_id']+"' id='nombre_insumo"+registros[i]['detalleserv_id']+"' readonly />";
                         res +="</td>";
                         /*res +="<td>";
                         res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalasignarinsumos"+registros[i]['detalleserv_id']+"' title='Asignar Insumos'><span class='fa fa-plus'></span></a>";
@@ -1792,7 +1792,7 @@ function mostrardetalleserv(serv_id){
                         if(registros[i]['detalleserv_detalleexterno'] != "" && registros[i]['detalleserv_detalleexterno'] != null){
                             detalleexterno = registros[i]['detalleserv_detalleexterno'];
                         }
-                        res +="<input style='width: 100%' type='text' name='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' id='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' value='"+detalleexterno+"' />";
+                        res +="<input style='width: 100%' type='text' name='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' id='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' value='"+detalleexterno+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
                         res +="</td>";
                         res +="</tr>";
                         res +="</table>";
@@ -1888,10 +1888,10 @@ function mostrardetalleserv(serv_id){
                         res +="<tr style='width: 100%'>";
                         res +="<th style='width: 25%'><div class='text-right'>Insumo(s): </div></th>";
                         res +="<td style='width: 15%'>";
-                        res +="xx";
+                        res +=registros[i]['detalleven_total'];
                         res +="</td>";
                         res +="<td style='width: 60%'>";
-                        res +="detallexx";
+                        res +=registros[i]['producto_nombre'];
                         res +="</td>";
                         /*res +="<td>";
                         res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalasignarinsumos"+registros[i]['detalleserv_id']+"' title='Asignar Insumos'><span class='fa fa-plus'></span></a>";
