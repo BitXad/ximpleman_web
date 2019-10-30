@@ -1516,7 +1516,7 @@ class Servicio extends CI_Controller{
             if (sizeof($servicios)>0){
                 
                 $this->load->model('Detalle_serv_model');
-                $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+                $data['detalle_servicio'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
 
                 $empresa_id = 1;
                 $this->load->model('Empresa_model');
