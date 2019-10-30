@@ -29,6 +29,17 @@ class Servicio_model extends CI_Model
 
         return $servicio;
     }
+    
+    function get_servicio_id($cliente_id,$servicio_id)
+    {
+        $sql = "select s.*, c.* from servicio s
+                left join cliente c on c.cliente_id = s.cliente_id
+                where servicio_id = ".$servicio_id." and c.cliente_id=".$cliente_id;
+                    
+        $servicio = $this->db->query($sql,array($servicio_id))->row_array();
+
+        return $servicio;
+    }
 
         
     /*

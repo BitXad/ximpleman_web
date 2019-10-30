@@ -15,8 +15,6 @@
                 })
             }(jQuery));
         });
-        
-        
 
 </script>
 
@@ -93,7 +91,7 @@
             <select  class="btn btn-warning btn-sm form-control" id="select_anio">
                 
                 <?php                     
-                    for($i = 1990;$i<=2050;$i++){ ?>
+                    for($i = 2015;$i<=2050;$i++){ ?>
                 <option value="<?php echo $i; ?>" <?php if ($i == $anio_actual){ echo "selected";} ?>> <?php echo $i; ?></option>
                 <?php } ?>
             </select>
@@ -106,6 +104,7 @@
                 <option value="bar" selected> BARRAS</option>
                 <option value="column" selected> COLUMNAS</option>
                 <option value="area" selected> AREAS</option>
+                <option value="line" selected> LINEAS</option>
             </select>
         </div>
         
@@ -114,16 +113,18 @@
             Año: 
             <button class="btn btn-success  form-control" onclick="grafico_ventas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
         </div>
+        
+</div>
 <!------------------------------------------------------------------------------------------->
 
-  
+<div class="panel panel-primary col-md-12"  >  
 
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+<!--            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
                 <input id="filtrar" type="text" onkeypress="validar(event,10)" class="form-control" placeholder="Ingrese usuario, cliente, fecha">
-            </div>
+            </div>-->
         <!--------------------- fin parametro de buscador --------------------->
             
 <!--------------------- inicio loader ------------------------->
@@ -139,35 +140,36 @@
     </center>
 </div> 
 <!--------------------- fin inicio loader ------------------------->
+
+    </div>
+</div>
             
         <div class="box">
             
+            <div class="col-md-3">
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Cliente</th>
-						<th>Totales</th>						
-						<th>Trans.</th>
-						<th>Tipo</th>
-						<th>Fecha</th>
-						<th></th>
-
+                        <th style="padding:0;">Fecha</th>
+                        <th style="padding:0;">Ventas</th>
+                        <th style="padding:0;">Utilidades</th>						
                     </tr>
 
                     <tbody class="buscar" id="tabla_ventas">
-
                     </tbody>
                 </table>
-<!--                <div class="pull-right">
+            </div>
+            </div>
+
+            <div class="col-md-9">            
+                <div class="box-body" id="div_grafica_barras">
                     
+                </div>
+                <div id="tabla_estadistica">
                     
-                </div>                -->
+                </div>
             </div>
         </div>
-    </div>
-</div>
-
 
 <!----------------- modal Detalle ---------------------------------------------->
 
@@ -240,11 +242,11 @@
 	</div>
 </div>
 
-
+</div>
 <!----------------- fin modal Detalle ---------------------------------------------->
-<div class="box-body">
+<!--<div class="box-body">
 
     <div class="box-body" id="div_grafica_barras">
 
       </div>
-</div>
+</div>-->
