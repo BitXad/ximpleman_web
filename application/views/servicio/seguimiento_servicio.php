@@ -42,32 +42,20 @@
 <!-------------------------------------------------------->
 
 
-<?php if(sizeof($procesos)>0){  ?>
+<?php if(sizeof($servicio)>0){  ?>
 
 <div class="box-header">
     <!--<center>-->
         
-        <font face="Arial" size="3"><b>ORDEN DE TRABAJO Nº 00<?php echo $orden_id; ?>  </b></font>
-        <br><font face="Arial" size="2"><b>CLIENTE:</b><?php echo $procesos[0]['cliente_nombre']; ?></font>
+        <font face="Arial" size="3"><b>ORDEN Nº 00<?php echo $servicio['servicio_id']; ?>  </b></font>
+        <br><font face="Arial" size="2"><b>CLIENTE:</b><?php echo $servicio['cliente_nombre']; ?></font>
             	<div class="box-tools">
                     
                 </div>
     <!--</center>-->
 </div>
-<!--<div class="row">
-  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-    <div class="col-md-12">
-      <select name="estado" class="btn-primary btn-sm btn-block" id="estado" onchange="buscarorden()">
-                        <option value="" disabled selected >-- PROCESO --</option>
-                        <?php 
-                        foreach($estados as $estado)
-                        {
-                            echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
-                        } 
-                        ?>
-                    </select>
-    </div>
-</div>-->
+
+
 <div class="row">
     <div class="col-md-12">
         <div class="box">
@@ -77,68 +65,263 @@
                     <tr>
                         <th>RECEPCION</th>
                         <th></th>
-                        <th>CORTE</th>
+                        <th>PROCESO</th>
                         <th></th>
-                        <th>PULIDO</th>
-                        <th></th>
-                        <th>ENTRANTE</th>
-                        <th></th>
-                        <th>TEMPLADO</th>
+                        <th>TERMINADO</th>
                         <th></th>
                         <th>PARA<br>ENTREGA</th>
-                        <TH></TH>
+                        <th></th>
                         <th>ENTREGADO</th>
                         
                     </tr>
+                    
                     <tr style="font-family: Arial">
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     </tr>
                     <tr style="font-family: Arial">
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     </tr>
-                    <tr style="font-family: Arial" align="center">
 
                         <?php  
                             $cont = 0;
-                        foreach ($procesos as $p){ 
+                  
+
+                        foreach ($detalle_servicio as $p){ ?>
                             
-                            if ($cont > 0){ ?>                        
-                        <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
-                            <?php } $cont++;  ?>
-                        <td style="padding: 0; line-height: 10px;" >
-                            <!--<button class="btn btn-success btn-block" style="background-color: <?php echo "#".$p['estado_color']; ?>;">-->
-                            <div class="boton">
-                                
-                            <button class="button button5" style="background-color: <?php echo "#".$p['estado_color']; ?>;">
-                                <?php 
+                            <tr style="font-family: Arial" align="center">
+                        
+                                <!---------------------- RECEPCION ------------------------------->
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                        
+                                    <?php 
+                                        if($p['estado_id']<5){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = "PENDIENTE";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==5){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //naranaja
+                                            $estado = "PROCESANDO";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        
+                                        if($p['estado_id']>5){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //naranaja
+                                            $estado = "TERMINADO";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                                                                   
+                                    ?>
 
-                                    $dt = new DateTime($p['proceso_fechaproceso']);
-                                    $df = new DateTime($p['proceso_fechaterminado']);
-                                    //print $dt->format('d/m/Y'); // imprime 29/03/2018
-                                    //print $dt->format('H:i:s'); // imprime 15:20:40
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>                                         
+                                <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+
+                                <!---------------------- EN PROCESO ------------------------------->
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                    <?php 
+                                        if($p['estado_id']==5){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = "PENDIENTE";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']>5){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //naranaja
+                                            $estado = "TERMINADO";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==28){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //verde
+                                            $estado = "PROCESANDO";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        
+                                                                                   
+                                    ?>
+                                        
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                        
+                                    </div>
+                                </td>                                                   
+                                <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+                                <?php
+                                     $color_estado = "#FFB52B"; //naranaja
                                 ?>
-                                
-                                
-                                <font size="1"><b><?php echo $p['estado_descripcion']; ?></b></font>
-                                <?php if ($p['estado_id']==26) { ?>
-                                <br><font size="1"><?php echo $df->format('d/m/Y'); ?>
-                                <br><?php echo $df->format('H:i:s'); ?></font>    
-                                <?php }else{ ?>
-                                <br><font size="1"><?php echo $dt->format('d/m/Y'); ?>
-                                <br><?php echo $dt->format('H:i:s'); ?></font>
-                                <?php } ?>                            
-                            </button> 
-                            </div>
-                        </td>                                                   
 
+                
+                                <!---------------------- TERMINADO ------------------------------->
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                    <?php 
+                                        
+                                        if($p['estado_id']<>6&&$p['estado_id']==28){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = "PENDIENTE";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+//                                        if($p['estado_id']==7){ //Si el estado es procesando
+//                                            $color_estado = "#2AA301"; //naranaja
+//                                            $estado = "PROCESANDO";
+//                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+//                                            $fecha = $dt->format('d/m/Y');
+//                                            $hora = $p['detalleserv_horaterminado'];
+//                                        }
+//                                        
+                                        if($p['estado_id']>=6 && $p['estado_id']!=28){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //naranaja
+                                            $estado = "TERMINADO";
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+//                                        if($p['estado_id']==28){ //Si el estado es terminado
+//                                            $color_estado = "#FFB52B"; //naranaja
+//                                            $estado = "PENDIENTE";
+//                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+//                                            $fecha = $dt->format('d/m/Y');
+//                                            $hora = $p['detalleserv_horaterminado'];
+//                                        }
+                                                                                   
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>  
+                                 <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+
+                                <!---------------------- PARA ENTREGA ------------------------------->
+                                
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                        
+                                    <?php 
+                                        
+                                        if($p['estado_id']<>6){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = "PENDIENTE";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==6){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //verde
+                                            $estado = "PENDIENTE";
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+                                        
+                                        if($p['estado_id']>6&&$p['estado_id']!=28){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //marron
+                                            $estado = "TERMINADO";
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+                                                                                   
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>
+                                 <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+
+
+                                  
+                                    <!---------------------- ENTREGADO ------------------------------->
+                                                                                      
+                               
+                              <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                        
+                                    <?php 
+                                        
+                                        if($p['estado_id']<>7){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = "PENDIENTE";
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==7){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //verde
+                                            $estado = "PENDIENTE";
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+                                        
+                                        if($p['estado_id']>6&&$p['estado_id']!=28){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //marron
+                                            $estado = "TERMINADO";
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+                                                                                   
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>
+                                
+                                
+                                
+                        </tr>
                         <?php } ?>   
                         
-                       
-                        
-                        
-                            
-                
-                    </tr>
                     <tr style="font-family: Arial">
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     </tr>
@@ -157,14 +340,14 @@
 
 
 
-<div class="row">
+<!--<div class="row">
     <div class="col-md-2">
         <div class="box">
             
             <div class="box-body table-responsive table-condensed">
                 <table class="table table-condensed "id="mitabla">
                     <tr style="padding: 0;">
-                        <!--<th> </th>-->
+                        <th> </th>
                         <th colspan="2" style="padding: 0;">ESTADOS</th>
                     </tr>
                     <tr>
@@ -195,7 +378,7 @@
         </div>
     </div>
     
-</div>
+</div>-->
 
 <div class="row">
     <div class="col-md-5">
