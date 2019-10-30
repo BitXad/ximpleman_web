@@ -2149,7 +2149,10 @@ function registrar_factura(servicio_id){
     var detalle_factura = document.getElementById("generar_detalle"+servicio_id).value;
     var detalle_unidad = "UNIDAD";
     var detalle_cantidad = "1";
-    var detalle_precio = document.getElementById("generar_monto"+servicio_id).value;
+    var detalle_prec   = document.getElementById("generar_monto"+servicio_id).value;
+    patron = /,/g;
+    nuevoValor    = "";
+    var detalle_precio = detalle_prec.replace(patron, nuevoValor);
     var llave_valor   = servicio_id;
     var llave_foranea = "servicio_id";
     //var venta_id = document.getElementById("generar_venta_id").value;
