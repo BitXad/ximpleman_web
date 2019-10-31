@@ -92,7 +92,7 @@ function tablaresultadosproducto(limite)
            success:function(respuesta){    
                
                                      
-                $("#encontrados").val("- 0 -");
+                //$("#encontrados").val("- 0 -");
                var registros =  JSON.parse(respuesta);
                 
                if (registros != null){
@@ -102,7 +102,7 @@ function tablaresultadosproducto(limite)
                     var cant_total = 0;
                     var total_detalle = 0; */
                     var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
+                    $("#encontrados").html("Registros Encontrados: "+n+" ");
                     html = "";
                     for (var i = 0; i < n ; i++){
 //                        html += "<td>";

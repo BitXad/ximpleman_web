@@ -58,7 +58,7 @@
 							<div class="col-md-4">
 								<label for="ingreso_nombre" class="control-label">NOMBRE</label>
 								<div class="form-group">
-									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" required/>
+									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus required/>
 								</div>
 							</div>
 							
@@ -111,7 +111,7 @@
 							<div class="col-md-4">
 								<label for="ingreso_concepto" class="control-label">CONCEPTO</label>
 								<div class="form-group">
-									<input type="text" name="ingreso_concepto" value="<?php echo $this->input->post('ingreso_concepto'); ?>" class="form-control" id="ingreso_concepto" required/>
+									<input type="text" name="ingreso_concepto" value="<?php echo $this->input->post('ingreso_concepto'); ?>" class="form-control" id="ingreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
 								</div>
 							</div>
 						
