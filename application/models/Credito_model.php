@@ -378,7 +378,7 @@ LEFT JOIN usuario u on ve.usuario_id = u.usuario_id
 
     function get_credito_id($venta_id)
     {
-        $sql = "select * from venta where venta_id =".$venta_id;
+        $sql = "select * from credito where venta_id =".$venta_id;
         $credito = $this->db->query($sql)->row_array();
         return $credito;
     }

@@ -539,9 +539,10 @@ function get_busqueda($condicion)
     function eliminar_credito($credito_id)
     {
         
-        $sql = "delete from credito where credito_id = ".$credito_id;
-        $this->db->query($sql);
         $sql = "delete from cuota where credito_id = ".$credito_id;
+        $this->db->query($sql);
+        
+        $sql = "delete from credito where credito_id = ".$credito_id;
         $this->db->query($sql);
         
         return $credito_id;
