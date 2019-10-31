@@ -1697,7 +1697,7 @@ function mostrardetalleserv(serv_id){
                             res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistrarentregaserv"+registros[i]['detalleserv_id']+"' title='Registrar entrega'><span class='fa fa-file-zip-o'></span><br></a>";
                         }
                         if(registros[i]['detallestado_id'] != 7){
-                            res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-success btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
+                            res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                         }
                         res += "-"+registros[i]['detalleserv_descripcion']+"</span>";
                         res += "["+registros[i]['detalleserv_codigo']+"]";

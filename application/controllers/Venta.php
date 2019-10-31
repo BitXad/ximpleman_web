@@ -26,6 +26,7 @@ class Venta extends CI_Controller{
         $this->load->model('Cliente_model');
         $this->load->model('Tipo_servicio_model');
         $this->load->model('Preferencia_model');
+        $this->load->model('Credito_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -849,7 +850,8 @@ function edit($venta_id)
     {   
         if($this->acceso(19)){
         //**************** inicio contenido ***************      
-      
+        
+        $usuario_id = $this->session_data['usuario_id'];
         // check if the venta exists before trying to edit it
         $venta = $this->Venta_model->get_venta($venta_id);
         
@@ -861,6 +863,7 @@ function edit($venta_id)
         {
             if(isset($_POST) && count($_POST) > 0)     
             {
+                $tipotrans_id = $this->input->post('tipotrans_id');
                 $venta_fecha = implode("-", array_reverse(explode("/", $this->input->post('venta_fecha'))));
                 $params = array(
                     'forma_id' => $this->input->post('forma_id'),
@@ -881,14 +884,16 @@ function edit($venta_id)
                     'venta_tipocambio' => $this->input->post('venta_tipocambio'),
                 );
 
-                if (tipotrans_id == 1)
+                if ($tipotrans_id == 1)
                 {
                     $credito = $this->Credito_model->get_credito_id($venta['venta_id']);
                     $this->Venta_model->eliminar_credito($credito['credito_id']);
                 }
-                if (tipotrans_id==2||tipotrans_id==3)
+                
+                if ($tipotrans_id == 2||tipotrans_id == 3)
                 {
 
+                        $fecha_inicio = $venta_fecha;
                         //$credito_id =  
                         $estado_id =  8; //8 pendiente 9 cancelado
                         $compra_id =  0;
@@ -903,10 +908,12 @@ function edit($venta_id)
                         $time = time();
                         $credito_hora =  date("H:i:s", $time);
                         $credito_tipo = 1; // 1- ventas 2 - compras
-
+                        $venta_total = $credito_monto;
+                        $cuota_inicial = 0;
+                        $credito_interes = 0;
 //                        $cuotas       = $this->input->post('cuotas');
 //                        $interes       = $this->input->post('interes');
-//                        $modalidad    = $this->input->post('modalidad');
+                        $modalidad    = "MENSUAL";//$this->input->post('modalidad');
 //                        $dia_pago     = $this->input->post('dia_pago');
 //                        $fecha_inicio = $this->input->post('fecha_inicio');
 
@@ -919,7 +926,7 @@ function edit($venta_id)
 
                         $estado_id =  8; //8 pendiente 9 cancelado
                         $cuota_numcuota = 1;
-                        $cuota_capital = $venta_total - $cuota_inicial;
+                        $cuota_capital = 0; //$venta_total - $cuota_inicial;
                         $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
                         $cuota_moradias = 0;
                         $cuota_multa = 0;
@@ -942,7 +949,8 @@ function edit($venta_id)
                         $descuento = 0;
                         $cancelado = 0;
                         $credito_monto = $venta_total - $cuota_inicial;
-                        $numcuota = $cuotas; //numero de cuotas
+                        
+                        $numcuota = 1;//$cuotas; //numero de cuotas
                         $patron = ($numcuota*0.5) + 0.5;
                         $cuota_capital = ($credito_monto)/$numcuota;   // bien         
                         $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
@@ -982,8 +990,7 @@ function edit($venta_id)
                     
                 }//fin de tipotrans
                 
-                
-                
+
                 $this->Venta_model->update_venta($venta_id,$params);            
                 redirect('venta/index');
             }
