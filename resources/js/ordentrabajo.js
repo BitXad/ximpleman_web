@@ -1122,30 +1122,33 @@ function fechaorden(parametro){
                         
                         html += "<td class='no-print'>";
                         
-                        html += " <a href='"+base_url+"orden_trabajo/editar/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
-                        html += " <a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
-                        html += "  <a href='#' data-toggle='modal'  data-target='#modalanular"+registros[i]["orden_id"]+"' class='btn btn-xs btn-danger' style=''><i class='fa fa-ban'></i></a>";
+                        html += " <a href='"+base_url+"orden_trabajo/editar/"+registros[i]["orden_id"]+"' target='_blank' title='Editar OT' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
+                        html += " <a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"' target='_blank' title='Nota OT' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
+                        if (registros[i]["venta_id"]>0) {
+                        html += " <a href='"+base_url+"seguimiento/seguimiento/"+registros[i]["orden_id"]+"/"+registros[i]["venta_id"]+"' target='_blank' title='Proceso OT' class='btn btn-warning btn-xs'><span class='fa fa-spinner'></span></a>";
+                        }
+                        html += " <a href='#' data-toggle='modal'  data-target='#modalanular"+registros[i]["orden_id"]+"' title='Anular OT' class='btn btn-xs btn-danger' style=''><i class='fa fa-ban'></i></a>";
                         html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                         html += " <div class='modal fade' id='modalanular"+registros[i]['orden_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+registros[i]['orden_id']+"'>";
-                        html += "   <div class='modal-dialog' role='document'>";
+                        html += " <div class='modal-dialog' role='document'>";
                         html += "  <br><br>";
-                        html += "   <div class='modal-content'>";
-                        html += "   <div class='modal-header'>";
-                        html += "   <h1 class='modal-title' id='myModalLabel'>ADVERTENCIA</h1>";
-                        html += "  </div>";
-                        html += "  <div class='modal-body'>";
-                        html += "  <div class='panel panel-primary'>";
-                        html += "   ";
-                        html += "  <center>";
-                        html += "   <!------------------------------------------------------------------->";
-                        html += "   <h1 style='font-size: 80px'> <b> <em class='fa fa-trash'></em></b></h1> ";
-                        html += "  <h4>";
-                        html += "  ";
-                        html += "  ¿Desea anular la OT? <b> <br>";
+                        html += " <div class='modal-content'>";
+                        html += " <div class='modal-header'>";
+                        html += " <h1 class='modal-title' id='myModalLabel'>ADVERTENCIA</h1>";
+                        html += " </div>";
+                        html += " <div class='modal-body'>";
+                        html += " <div class='panel panel-primary'>";
+                        html += " ";
+                        html += " <center>";
+                        html += " <!------------------------------------------------------------------->";
+                        html += " <h1 style='font-size: 80px'> <b> <em class='fa fa-trash'></em></b></h1> ";
+                        html += " <h4>";
+                        html += " ";
+                        html += " ¿Desea anular la OT? <b> <br>";
                         html += " Orden de  Trabajo: "+registros[i]['orden_id']+"<br>";
     //                    
                         html += " </h4>";
-                        html += "                                      <!------------------------------------------------------------------->";
+                        html += "     <!------------------------------------------------------------------->";
                         html += " ";
                         html += "   </center>";
                         html += "   </div>";
