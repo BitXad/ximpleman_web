@@ -1528,6 +1528,48 @@ class Servicio extends CI_Controller{
         }
         
     }
-    
+    /* registrar servicio en proceso */
+    function registrar_servicioenproceso()
+    {
+            if ($this->input->is_ajax_request()){
+                    $servicio_id = $this->input->post('servicio_id');
+                    $detalleserv_id = $this->input->post('detalleserv_id');
+                    $estado_id = 28; // 28 ---> EN PROCESO
+                    $fecha_enproceso = date('Y-m-d');
+                    $hora_enproceso  = date('H:i:s');
+                    $responsable_id = $this->session_data['usuario_id'];
+                    $params = array(
+                        'detalleserv_fechaproceso' => $fecha_enproceso,
+                        'detalleserv_horaproceso' => $hora_enproceso,
+                        'estado_id' => $estado_id,
+                        'responsable_id' => $responsable_id,
+                    );
+                    $this->load->model('Detalle_serv_model');
+                    $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
+                    
+                    /* **********Cambia el estado del servicio segun el estado de los detalles*********** */
+                    $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                    echo json_encode("ok");
+            }
+            else
+            {
+                show_404();
+            }
+        //}
+    }
     
 }
