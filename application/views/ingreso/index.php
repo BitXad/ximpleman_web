@@ -71,7 +71,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
  <div class="col-md-6">
              <div class="box-header">
-                <font size='4' face='Arial'><b>Igresos</b></font>
+                <font size='4' face='Arial'><b>Ingresos</b></font>
                 <br><font size='2' face='Arial' id="pillados"></font>
         </div>
         

@@ -51,34 +51,30 @@ class Imagen_producto extends CI_Controller{
     /*
      * Adding a new imagen_producto
      */
-    function add($producto_id)
+     function add($producto_id)
     {
-        if($this->acceso(109)){
-            $data['page_title'] = "Imagen Producto";
-        $this->load->library('form_validation');
-
-        $this->form_validation->set_rules('imagenprod_titulo','Imagen producto Titulo','required');
-		
-	if($this->form_validation->run())     
-        {
+        if($this->acceso(69)){
+            //$this->load->library('form_validation');
             /* *********************INICIO imagen***************************** */
             $foto="";
-            if (!empty($_FILES['imagenprod_archivo']['name'])){
+            if (!empty($_FILES['file']['name'])){
+		
                         $this->load->library('image_lib');
                         $config['upload_path'] = './resources/images/productos/';
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 200000;
-                        $config['max_width'] = 2900;
-                        $config['max_height'] = 2900;
+                        $config['image_library'] = 'gd2';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 9900;
+                        $config['max_height'] = 9900;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
                         $config['file_ext_tolower'] = TRUE;
 
                         $this->load->library('upload', $config);
-                        $this->upload->do_upload('imagenprod_archivo');
+                        $this->upload->do_upload('file');
 
                         $img_data = $this->upload->data();
                         $extension = $img_data['file_ext'];
@@ -115,27 +111,19 @@ class Imagen_producto extends CI_Controller{
             /* *********************FIN imagen***************************** */
             $estado_id = 1;
             $params = array(
-				'producto_id' => $producto_id,
-				'estado_id' => $estado_id,
-				'imagenprod_titulo' => $this->input->post('imagenprod_titulo'),
-				'imagenprod_archivo' => $foto,
-				'imagenprod_descripcion' => $this->input->post('imagenprod_descripcion'),
+                'producto_id' => $producto_id,
+                'estado_id' => $estado_id,
+                'imagenprod_titulo' => $foto,
+                'imagenprod_archivo' => $foto,
+                'imagenprod_descripcion' => $foto,
             );
             
             $imagenprod_id = $this->Imagen_producto_model->add_imagen_producto($params);
+            sleep(1);
             redirect('imagen_producto/catalogoprod/'.$producto_id);
+            
         }
-        else
-        {
-            $this->load->model('Estado_model');
-            $data['all_estado'] = $this->Estado_model->get_all_estado();
-            $data['producto_id'] = $producto_id;
-
-            $data['_view'] = 'imagen_producto/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-    }  
+    }
 
     /*
      * Editing a imagen_producto
@@ -257,8 +245,8 @@ class Imagen_producto extends CI_Controller{
         // check if the imagen_producto exists before trying to delete it
         if(isset($imagen_producto['imagenprod_id']))
         {
-            $this->Imagen_producto_model->delete_imagen_producto($imagenprod_id);
-            redirect('imagen_producto/index');
+            $this->Imagen_producto_model->delete_imagen($imagenprod_id);
+            redirect('imagen_producto/catalogoprod/'.$imagen_producto['producto_id']);
         }
         else
             show_error('The imagen_producto you are trying to delete does not exist.');

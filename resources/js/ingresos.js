@@ -102,7 +102,7 @@ function fechadeingreso(filtro)
                     var total = Number(0);
                     
                     var n = registros.length; //tama単o del arreglo de la consulta
-                    $("#pillados").html("Registros encontrados: "+n+"");
+                    $("#pillados").html("Registros Encontrados: "+n+"");
                    
                     html = "";
                    if (n <= limite) x = n; 

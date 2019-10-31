@@ -1,5 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/dropzone.js'); ?>" type="text/javascript"></script>
+<link href="<?php echo base_url('resources/css/dropzone.css'); ?>" rel="stylesheet">
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -39,8 +40,7 @@
         <div class="container">
                 <h3 class="box-title">Imagenes del Producto <b><?php echo $producto_nombre; ?></b></h3>
             <div class="box-tools">
-
-                <a href="<?php echo site_url('imagen_producto/add/'.$producto_id); ?>" class="btn btn-success btn-foursquarexs" ><font size="5"><span class="fa fa-image "></span></font><br><small> Añadir Img..</small></a>
+                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria"><font size="5"><span class="fa fa-image "></span></font><br><small> Añadir Img..</small></a>
                 <a href="<?php echo site_url('imagen_producto/galeriaproducto/'.$producto_id); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
 
             </div>
@@ -139,3 +139,52 @@
     </center>
 </div>
 </div>
+
+
+<div class="modal fade" id="modalgaleria" tabindex="-1" role="dialog" aria-labelledby="modalgaleriaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <a class="btn close" onclick="refrescar()" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </a>
+        <h5 class="modal-title text-center text-bold">Añadir Imagen a Galeria</h5>
+        </div>
+        <div class="modal-body">
+            <?php echo form_open_multipart('imagen_producto/add/'.$producto_id,'class="dropzone" id="my-awesome-dropzone"'); ?>
+            
+                <!--div class="row clearfix">
+                    <div class="col-md-6">
+                        <label for="galeria_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <div class="form-group">
+                            <input type="text" name="galeria_nombre" value="<?php /*echo $this->input->post('galeria_nombre'); ?>" class="form-control" id="galeria_nombre" onKeyUp="this.value = this.value.toUpperCase();" required/>
+                    </div></div>
+                    <div class="col-md-6">
+                        <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Imagen</label>
+                        <div class="form-group">
+                            <input type="file" name="galeria_imagen[]" value="<?php echo $this->input->post('galeria_imagen');*/ ?>" multiple class="form-control" id="galeria_imagen" required/>
+                        </div>
+                    </div>
+                </div>-->
+        
+        </div>
+        <div class="modal-footer">
+            <!--<button type="submit" class="btn btn-success">Guardar</button>-->
+            <a onclick="refrescar()" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Guardar</a>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    function refrescar(){
+        location.reload();
+    }
+    
+    $(document).ready(function(){
+        $("#modalgaleria").on('hidden.bs.modal', function () {
+            location.reload();
+        });
+    });
+</script>
