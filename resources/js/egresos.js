@@ -120,7 +120,7 @@ function fechadeegreso(filtro)
                         html += "<td align='center'>"+moment(registros[i]["egreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
                         html += "<td>"+registros[i]["egreso_categoria"]+"</br>"; 
                         html += "<b>"+registros[i]["egreso_concepto"]+"</b></td>"; 
-                        html += "<td align='right'>"+registros[i]["egreso_monto"]+"</td>"; 
+                        html += "<td align='right'>"+Number(registros[i]["egreso_monto"]).toFixed(2)+"</td>"; 
                         html += "<td>"+registros[i]["egreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td clsss='no-print'><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
