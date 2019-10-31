@@ -19,7 +19,7 @@
                 })
             }(jQuery));
         });
-</script> 
+</script>
 
 <style type="text/css">
 
@@ -72,7 +72,7 @@ border-bottom : 1px solid #aaa;*/
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php $ancho = "5cm"; ?>
+<?php $ancho = "7cm"; ?>
 <!---------------------- Modal ---------------------------->
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
           <div class="modal-dialog">

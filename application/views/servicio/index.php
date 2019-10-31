@@ -59,7 +59,7 @@
         </div>
         <div class="col-md-4">
             <div  class="box-tools" >
-                <select  class="btn btn-primary btn-sm" id="select_servicio" onchange="buscar_servicioporfechas()">
+                <select  class="btn btn-primary btn-sm" name=""select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
                     <!--<option value="">- ELEGIR -</option>-->
                     <option value="6">Servicios Pendientes</option>
                     <option value="7">Servicios Terminados</option>
@@ -73,7 +73,7 @@
         </div>
     </div>
     <!---------------- BOTONES --------->
-    <div class="col-md-6 no-print">
+    <div class="col-md-6 no-print text-center">
         <!--<div class="box-tools text-center" style="display: flex;">-->
             <!--<div class="col-md-1">-->
                 <a style="width: 96px; margin-right: 1px; margin-top: 1px" class="col-md-1 btn btn-success btn-foursquarexs" href="<?php echo site_url('servicio/crearservicio'); ?>" title="Registrar un nuevo servicio" ><font size="5"><span class="fa fa-wrench"></span></font><br><small>Registrar Serv.</small></a>
@@ -149,9 +149,7 @@
                         <th>Detalle</th>
                         <th>Estado</th>
                         <th>Tipo Serv.</th>
-
                         <th>Recepcionado</th>
-
                         <th>Total</th>
                         <th>A Cuenta</th>
                         <th>Saldo</th>

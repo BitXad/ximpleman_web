@@ -888,13 +888,14 @@ class Servicio extends CI_Controller{
      */
     function boletacomprobanteserv($servicio_id)
     {
-        if($this->acceso(69)){ 
-        
-               $contitulo = $this->input->post('contitulo'.$servicio_id);
-               if(isset($contitulo)){
-                   $data['sintitulo']= 1;
-               }
-               $data['usuario'] = $this->session_data['usuario_nombre'];
+        if($this->acceso(69)){
+            $contitulo = $this->input->post('contitulo'.$servicio_id);
+            if(isset($contitulo)){
+                $data['sintitulo']= 1;
+            }
+            $usuario_id = $this->session_data['usuario_id'];
+            
+            $data['usuario'] = $this->session_data['usuario_nombre'];
             $data['servicio'] = $this->Servicio_model->get_serviciorden_reptec($servicio_id);
             
             $this->load->model('Cliente_model');
@@ -914,6 +915,21 @@ class Servicio extends CI_Controller{
             $this->load->model('Empresa_model');
 	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             $data['page_title'] = "Servicio";
+            
+            /* ***** para generar cadena QR ***** */
+            $cadenaQR = base_url()."servicio/seguimiento/".$data['cliente']['cliente_id']."/".$servicio_id;
+            $this->load->library('ciqrcode');
+            //configuarnado
+            $params['data'] = $cadenaQR;//$this->random(30);
+            $params['level'] = 'H';
+            $params['size'] = 5;
+            //decimos el directorio a guardar el codigo qr, en este 
+            //caso una carpeta en la raíz llamada qr_code
+            $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+            //generamos el código qr
+            $this->ciqrcode->generate($params);
+            $data['codigoqr'] = base_url('resources/images  /qrcode'.$usuario_id.'.png');
+            
             $data['_view'] = 'servicio/boletacomprobanteserv';
             $this->load->view('layouts/main',$data);
     }
@@ -1359,5 +1375,159 @@ class Servicio extends CI_Controller{
             }
         //}
     }
+    
+    /*
+     * *************Registra el cobro total (DE TODOS LOS DETALLES QUE ESTEN EN TERMINADO(estado_id = 6)) de un servicio *********************
+     * *************y recalcula los valores de los detalles y cambia todos los estados a ENTREGADO(estado_id = 7)***********
+     */
+    function registrarcobrototalservicio()
+    {
+        if($this->acceso(84)){
+            if ($this->input->is_ajax_request()){
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('servicio_saldo','Saldo','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('detalleserv_entregadoa','Entregado a','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
+                {
+                    $usuario_id = $this->session_data['usuario_id'];
+                    $servicio_id =  $this->input->post('servicio_id');
+                    $detalleserv_entregadoa =  $this->input->post('detalleserv_entregadoa');
+                    //$fecha_finalizacion = date("Y-m-d", strtotime($fecha_cobro));
+                    //$hora_finalizacion = date("H:i:s", strtotime($fecha_cobro));
+                    //$fechahora = date("Y-m-d H:i:s", strtotime($fecha_cobro));
+                    $fecha_finalizacion = date("Y-m-d");
+                    $hora_finalizacion  = date("H:i:s");
+                    $fechahora = date("Y-m-d H:i:s");
+
+                    $this->load->model('Detalle_serv_model');
+                    //recupera a todos los detalles de servicio que su estado sean 6= TERMINADO
+                    $res_detalle_serv = $this->Detalle_serv_model->get_detalle_serv_all_terminado($servicio_id);
+                    $estado_id = 7; //es el estado ENTREGADO
+                    $estado_creditoid = 16; //es el estado CREDITO
+                    foreach ($res_detalle_serv as $det_serv)
+                    {
+                        $cad = array(
+                                'estado_id' => $estado_id,
+                                'detalleserv_fechaentregado' => $fecha_finalizacion,
+                                'detalleserv_horaentregado' => $hora_finalizacion,
+                                'detalleserv_fpagosaldo' => $fechahora,
+                                'usuariopsaldo_id' => $usuario_id,
+                                'detalleserv_entregadoa' => $detalleserv_entregadoa,
+                        );
+                        $this->Detalle_serv_model->update_detalle_serv($det_serv['detalleserv_id'],$cad);
+                    }
+
+                    $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id || $ids['estado_id'] == $estado_creditoid){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                                    'servicio_fechafinalizacion' => $fecha_finalizacion,
+                                    'servicio_horafinalizacion' => $hora_finalizacion,
+                                    'entregausuario_id' => $usuario_id,
+                        );
+
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                   echo json_encode("ok");
+               }else{
+                    echo json_encode("faltainf");
+                }
+               //redirect('servicio/serview/'.$servicio_id);
+            }else{ show_404(); }
+        }
+    }
+    
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño carta********** */
+    function servcompdetalle_pago($servicio_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Comprobante de Servicio";
+            
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Categoria_clientezona_model');
+	    $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($data['cliente']['zona_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['entregausuario_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/servcompdetalle_pago';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* ***********Imprime comprobante de pago de un detalle de servicio, tamaño boucher********** */
+    function servcompdetalle_pago_boucher($servicio_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Comprobante de Servicio";
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            
+            $this->load->model('Detalle_serv_model');
+	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+            
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+	    $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Cliente_model');
+	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
+            
+            $this->load->model('Usuario_model');
+	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['entregausuario_id']);
+            
+            $this->load->model('Dosificacion_model');
+	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            $data['_view'] = 'servicio/servcompdetalle_pago_boucher';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    
+    
+    function seguimiento($cliente_id,$servicio_id){
+
+        if($this->acceso(69)){
+            $data['page_title'] = "Seguimiento de Servicios";
+            
+            $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
+            $data['servicio'] =  $servicios;
+            
+            if (sizeof($servicios)>0){
+                
+                $this->load->model('Detalle_serv_model');
+                $data['detalle_servicio'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+
+                $empresa_id = 1;
+                $this->load->model('Empresa_model');
+                $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+
+                $data['_view'] = 'servicio/seguimiento_servicio';
+                $this->load->view('layouts/main',$data);
+            } 
+        }
+        
+    }
+    
     
 }

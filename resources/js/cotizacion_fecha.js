@@ -43,7 +43,7 @@ function mes_literal(mes){
 }
 function fechacotizacion(){
     var fecha = document.getElementById('fecha_cotizacion').value;
-    var fcot = new Date(fecha);
+    var fcot = new Date(fecha+"T12:00:00-06:00");
     var info = "";
     if(fecha != null){
        info = "Cochabamba, "+aumentar_cero(fcot.getDate())+" de "+mes_literal((fcot.getMonth()+1))+" de "+fcot.getFullYear();
