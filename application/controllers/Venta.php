@@ -881,6 +881,109 @@ function edit($venta_id)
                     'venta_tipocambio' => $this->input->post('venta_tipocambio'),
                 );
 
+                if (tipotrans_id == 1)
+                {
+                    $credito = $this->Credito_model->get_credito_id($venta['venta_id']);
+                    $this->Venta_model->eliminar_credito($credito['credito_id']);
+                }
+                if (tipotrans_id==2||tipotrans_id==3)
+                {
+
+                        //$credito_id =  
+                        $estado_id =  8; //8 pendiente 9 cancelado
+                        $compra_id =  0;
+                        //$venta_id =  $venta_id;
+                        $credito_monto =  $venta['venta_total'];
+                        $credito_cuotainicial =  0;
+                        $credito_interesproc =  0;
+                        $credito_interesmonto =  0; //revisar
+                        $credito_numpagos =  1;
+                        $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                        $credito_fecha = $venta['venta_fecha'];
+                        $time = time();
+                        $credito_hora =  date("H:i:s", $time);
+                        $credito_tipo = 1; // 1- ventas 2 - compras
+
+//                        $cuotas       = $this->input->post('cuotas');
+//                        $interes       = $this->input->post('interes');
+//                        $modalidad    = $this->input->post('modalidad');
+//                        $dia_pago     = $this->input->post('dia_pago');
+//                        $fecha_inicio = $this->input->post('fecha_inicio');
+
+
+                        $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
+                                $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".
+                                $credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
+                        $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+
+
+                        $estado_id =  8; //8 pendiente 9 cancelado
+                        $cuota_numcuota = 1;
+                        $cuota_capital = $venta_total - $cuota_inicial;
+                        $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
+                        $cuota_moradias = 0;
+                        $cuota_multa = 0;
+                        $cuota_subtotal =  $venta_total - $cuota_inicial;
+                        $cuota_descuento = 0;
+                        $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
+
+                        $cuota_cancelado = 0;
+                        $cuota_fecha = "'1900-01-01'";
+                        $cuota_hora = "'00:00'";
+                        $cuota_numercibo =  0;
+                        $cuota_saldo = $venta_total - $cuota_inicial;
+                        $cuota_glosa = "''";
+                        $cuota_saldocredito = $venta_total - $cuota_inicial;
+
+                        $credito_id = $this->db->insert_id();
+
+                        $dias_mora = 0;
+                        $multa = 0;
+                        $descuento = 0;
+                        $cancelado = 0;
+                        $credito_monto = $venta_total - $cuota_inicial;
+                        $numcuota = $cuotas; //numero de cuotas
+                        $patron = ($numcuota*0.5) + 0.5;
+                        $cuota_capital = ($credito_monto)/$numcuota;   // bien         
+                        $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
+                        $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+                        $total = $cuota_subtotal - $descuento;
+                        $saldo_deudor = $credito_monto;
+
+                        $siguiente= 0;
+                        $cuota_fechalimite = $fecha_inicio;
+
+                        $cuota_fechalimite = $fecha_inicio;
+
+
+                        if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
+                        else $intervalo = 7; //si los pagos son semanales
+
+
+                        for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                            $cuota_numcuota = $i;
+
+//                            $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+//                            if ($modalidad == "MENSUAL") 
+//                                $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+//                            else 
+//                                $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+                            $cuota_fechalimite = $credito_fechalimite; 
+
+                            $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
+                                    $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
+                                    $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
+
+                            $this->Venta_model->ejecutar($cuota);
+                            $saldo_deudor = $saldo_deudor - $cuota_capital;
+                        }
+                    
+                    
+                    
+                }//fin de tipotrans
+                
+                
+                
                 $this->Venta_model->update_venta($venta_id,$params);            
                 redirect('venta/index');
             }

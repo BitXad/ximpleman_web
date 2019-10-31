@@ -315,5 +315,123 @@ class Imagen_producto extends CI_Controller{
         $this->load->view('layouts/main',$data);
         }
     }
+    /* ***** Funcion que muestra las imagenes de DETALLES DE SERVICIO ***** */
+    function catalogodet($detalleserv_id)
+    {
+        if($this->acceso(69)){
+            $data['page_title'] = "Imagenen Producto";
+            
+            $this->load->model('Detalle_serv_model');
+            $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            $data['detalleserv_id'] = $detalleserv_id;
+            $data['detalleserv_descripcion'] = $detalle_serv['detalleserv_descripcion'];
+            $data['all_imagen_detalle_serv'] = $this->Imagen_producto_model->get_all_imagen_mi_det($detalleserv_id);
+
+            $data['_view'] = 'imagen_producto/catalogodet';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    function addimg_det($detalleserv_id)
+    {
+        if($this->acceso(69)){
+            //$this->load->library('form_validation');
+            /* *********************INICIO imagen***************************** */
+            $foto="";
+            if (!empty($_FILES['file']['name'])){
+		
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/images/productos/';
+                        $img_full_path = $config['upload_path'];
+
+                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['image_library'] = 'gd2';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 9900;
+                        $config['max_height'] = 9900;
+                        
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('file');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/productos/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 600;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/images/productos/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/productos/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 50;
+                        $confi['height'] = 50;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+
+                        $foto = $new_name.$extension;
+                    }
+            /* *********************FIN imagen***************************** */
+            $estado_id = 1;
+            $params = array(
+                'detalleserv_id' => $detalleserv_id,
+                'estado_id' => $estado_id,
+                'imagenprod_titulo' => $foto,
+                'imagenprod_archivo' => $foto,
+                'imagenprod_descripcion' => $foto,
+            );
+            
+            $imagenprod_id = $this->Imagen_producto_model->add_imagen_producto($params);
+            sleep(1);
+            redirect('imagen_producto/catalogodet/'.$detalleserv_id);
+            
+        }
+    }
     
+    function eliminar($imagenprod_id)
+    {
+        if($this->acceso(69)){
+        $imagen_producto = $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
+
+        // check if the imagen_producto exists before trying to delete it
+        if(isset($imagen_producto['imagenprod_id']))
+        {
+            $this->Imagen_producto_model->delete_imagen($imagenprod_id);
+            redirect('imagen_producto/catalogodet/'.$imagen_producto['detalleserv_id']);
+        }
+        else
+            show_error('The imagen_producto you are trying to delete does not exist.');
+        }
+    }
+    
+    function galeriadetalle($detalleserv_id)
+    {
+        if($this->acceso(69)){
+        $this->load->model('Detalle_serv_model');
+	$detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+        $data['detalleserv_descripcion'] = $detalle_serv['detalleserv_descripcion'];
+        $data['detalleserv_id'] = $detalleserv_id;
+        $data['all_imagen_detalle_serv'] = $this->Imagen_producto_model->get_all_imagen_mi_det($detalleserv_id);
+        
+        $data['_view'] = 'imagen_producto/galeriadetalle';
+        $this->load->view('layouts/main',$data);
+        }
+    }
 }
