@@ -158,7 +158,7 @@
     </div>
     <div style="float: right">
     <center>
-        <a href="<?php echo site_url('producto'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
+        <a href="<?php echo site_url('servicio'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
     </center>
 </div>
 </div>
