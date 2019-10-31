@@ -87,9 +87,9 @@ function tabladeudas(filtro)
                         html += "<td>"+registros[i]['proveedor_nombre']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['compra_id']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
-                        html += "<td style='text-align: right'>"+registros[i]['credito_monto']+"</td>";
-                        html += "<td style='text-align: right'>"+registros[i]['credito_cuotainicial']+"</td>";
-                        html += "<td style='text-align: right'>"+registros[i]['credito_interesmonto']+"("+registros[i]['credito_interesproc']+")</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_monto']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_cuotainicial']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_interesmonto']).toFixed(2)+"("+registros[i]['credito_interesproc']+")</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
@@ -196,9 +196,9 @@ function tablacuentas(filtro)
                         html += "<td style='text-align: center'>Servicio: "+registros[i]['servicio_id']+"</td>";
                         }
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
-                        html += "<td style='text-align: right'>"+registros[i]['credito_monto']+"</td>";
-                        html += "<td style='text-align: right'>"+registros[i]['credito_cuotainicial']+"</td>";
-                        html += "<td style='text-align: right'>"+registros[i]['credito_interesmonto']+"("+registros[i]['credito_interesproc']+")</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_monto']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_cuotainicial']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['credito_interesmonto']).toFixed(2)+"("+registros[i]['credito_interesproc']+")</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";

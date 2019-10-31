@@ -1,36 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
 
-</script>
-<!--<script>
-    function calcularSaldo(cuota_saldox,cuota_canceladox,cuota_totalx){
-    caja=document.forms["saldar"].elements;
-    var cuota_saldo = Number(caja[cuota_saldox].value);
-    var cuota_cancelado = Number(caja[cuota_canceladox].value);
-    var cuota_total = Number(caja[cuota_totalx].value);
-    
-    //compra_totalfinal = compra_subtotal - compra_descuento;
-    cuota_saldo = cuota_total - cuota_cancelado;
-    if(!isNaN(cuota_saldo)){
-            //caja[compra_totalfinalx].value = compra_subtotal - compra_descuento; 
-            //caja[compra_efectivox].value = compra_totalfinal;
-            caja[cuota_saldox].value = cuota_total - cuota_cancelado;       
-    }
-}
-
-</script>-->
 <script src="http://code.jquery.com/jquery-1.0.4.js"></script>
 
 <style type="text/css">
@@ -59,21 +29,30 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-
 <div class="box-header">
-                <h3 class="box-title">Proveedor: <b><?php echo $credito[0]['proveedor_nombre']; ?></b></h3><br>
-                <h3 class="box-title">Compra N: <b>00<?php echo $credito[0]['compra_id']; ?></b></h3><br>
-                <h3 class="box-title">Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($credito[0]['compra_fecha'])); ?>  <?php echo $credito[0]['compra_hora']; ?></b></h3><br>
-                <h3 class="box-title">Monto Credito: <b><?php echo $credito[0]['compra_totalfinal']; ?></b></h3><br>
-                <h3 class="box-title">Nro. Credito: <b><?php echo $credito[0]['credito_id']; ?></b></h3>
+    <center>
+        <h3 class="box-title"><b>PLAN DE PAGOS</b></h3>
+    </center>
 </div>
+<table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; " >
+<font size="2" face="Arial">
+                Proveedor: <b><?php echo $credito[0]['proveedor_nombre']; ?></b><br>
+                Compra Nro.: <b>00<?php echo $credito[0]['compra_id']; ?></b><br>
+                Credito Nro.: <b><?php echo $credito[0]['credito_id']; ?></b>
+                
+               
+</font></td>
+<td style="width: 25%; padding: 0" > 
+  <font size="2" face="Arial">
+  Fecha y Hora: <b><?php echo date('d/m/Y',strtotime($credito[0]['compra_fecha'])); ?>  <?php echo $credito[0]['compra_hora']; ?></b><br>
+                Monto Credito: <b><?php echo $credito[0]['compra_totalfinal']; ?></b><br>
+                Numero de Pagos: <b><?php echo $credito[0]['credito_numpagos']; ?></b> </font>
+  </td></tr></table>
 <div class="row">
     <div class="col-md-12">
-        <!--------------------- parametro de buscador 
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el credito, num. cuota, fecha limite">
-                  </div>
-            fin parametro de buscador --------------------->
+    
         <div class="box">
             
             <div class="box-body table-responsive">
@@ -129,7 +108,7 @@ $(document).ready(function(){
       tres = $("#cuota_saldo<?php echo $c['cuota_id']; ?>");
       
       operacion = parseFloat(uno.val()) - parseFloat(dos.val());
-      tres.val(operacion);
+      tres.val(Number(operacion).toFixed(2));
     
   }
   
@@ -159,15 +138,15 @@ $(document).ready(function(){
                         <td><?php echo $cont ?></td>
                                             
                         <td>Cuota <?php echo $c['cuota_numcuota']; ?></td>
-                        <td><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_subtotal'], 2, ".", ","); ?></td>
-                        <td><?php echo number_format($c['cuota_descuento'], 2, ".", ","); ?></td>
-                        <td><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
+                        <td align="right"><?php echo number_format($c['cuota_capital'], 2, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_interes'], 2, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_moradias'], 2, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_multa'], 2, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_subtotal'], 2, ".", ","); ?></td>
+                        <td align="right"><?php echo number_format($c['cuota_descuento'], 2, ".", ","); ?></td>
+                        <td align="right"><b><?php echo number_format($c['cuota_total'], 2, ".", ","); ?></b></td>
                         <td><?php echo date('d/m/Y',strtotime($c['cuota_fechalimite'])); ?></td>
-                        <td><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
+                        <td align="right"><b><?php echo number_format($c['cuota_cancelado'], 2, ".", ","); ?></b></td>
                         <?php if($c['cuota_fecha']=='0000-00-00' || $c['cuota_fecha']==null) { ?>
                         <td></td> 
                         <td></td>
@@ -176,24 +155,25 @@ $(document).ready(function(){
                         <td><?php echo $c['cuota_hora']; ?></td>
                         <?php } ?>
                         <td><?php echo $c['cuota_numercibo']; ?></td>
-                        <td><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
+                        <td align="right"><b><?php echo number_format($c['cuota_saldo'], 2, ".", ","); ?></b></td>
                         <td><?php echo $c['cuota_glosa']; ?></td>
                         <td><?php echo $c['estado_descripcion']; ?></td>
                         <td><?php echo $c['usuario_nombre']; ?></td>
-                        <td> <?php  if ($c['estado_id']==8) { ?>
-                            <?php
-                            if($rol[45-1]['rolusuario_asignado'] == 1){ ?>
-                            <a href="<?php echo site_url('cuotum/edit/'.$c['cuota_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <?php }
-                            if($rol[46-1]['rolusuario_asignado'] == 1){ ?>
-                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
-                            <?php }
-                            if ($bandera==0) { ?>
+                        <td> <?php  if ($c['estado_id']==8) { 
+                          if ($bandera==0) { ?>
                              <?php
                             if($rol[43-1]['rolusuario_asignado'] == 1){ ?>
-                            <a href="#" data-toggle="modal" data-target="#pagar<?php echo $i; ?>" class="btn btn-success btn-xs"><span class="fa fa-dollar"></span></a>
+                            <a href="#" data-toggle="modal" data-target="#pagar<?php echo $i; ?>" title="PAGAR" class="btn btn-success btn-xs"><span class="fa fa-dollar"></span></a>
                             <?php }
                             $bandera = 1;} ?>
+                            <?php
+                            if($rol[45-1]['rolusuario_asignado'] == 1){ ?>
+                            <a href="<?php echo site_url('cuotum/edit/'.$c['cuota_id']); ?>" title="EDITAR" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                            <?php }
+                            if($rol[46-1]['rolusuario_asignado'] == 1){ ?>
+                             <a class="btn btn-danger btn-xs" data-toggle="modal" title="ELIMINAR" data-target="#myModal<?php echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <?php } ?>
+                            
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                                       <div class="modal-dialog" role="document">
@@ -219,9 +199,9 @@ $(document).ready(function(){
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
 
                           <?php } else { ?>
-                             <a href="<?php echo site_url("cuotum/pendiente/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
-                             <a href="<?php echo site_url('cuotum/recibodeudas/'.$c['cuota_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
-                             <a href="<?php echo site_url("cuotum/comprobantedeudas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs"><span class="fa fa-print">2</span></a>
+                             <a href="<?php echo site_url("cuotum/pendiente/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" title="REESTABLECER"class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
+                             <a href="<?php echo site_url('cuotum/recibodeudas/'.$c['cuota_id']); ?>" title="RECIBO" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
+                             <a href="<?php echo site_url("cuotum/comprobantedeudas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
 
                         </td>  
                        <?php } ?>

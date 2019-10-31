@@ -82,9 +82,7 @@ class Cuotum_model extends CI_Model
         
     function get_all_cuentas($credito_id)
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
         
         $credito = $this->db->query("
             SELECT
@@ -102,9 +100,9 @@ class Cuotum_model extends CI_Model
              
                  ".$credito_id." = k.credito_id
 
-            ORDER BY `cuota_numcuota` ASC
+            ORDER BY `cuota_id` ASC
 
-            " . $limit_condition . "
+          
         ")->result_array();
 
         return $credito;
