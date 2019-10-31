@@ -22,7 +22,7 @@
 <div class="box-header">
     <div class="col-md-6 no-print">
                <font size='4' face='Arial'><b>Cuentas por Cobrar</b></font>
-               <br><font size='2' face='Arial' id="pillados">Registros Econtrados: <?php echo sizeof($credito) ?></font>
+               <br><font size='2' face='Arial' id="pillados">Registros Econtrados: </font>
         </div>
         <div class="col-md-6 no-print">
             <form action="<?php echo site_url('credito/repoCuentas'); ?>"  target="_blank" method="POST">
@@ -47,11 +47,11 @@
     </div>
                      <div class="col-md-2" style="padding-left: -30px;"  >
             <label for="fecha_desde" class="control-label">Desde</label>
-              <input type="date" class="form-control btn btn-primary" id="fecha_desde" name="fecha_desde" required="true" value="">
+              <input type="date" class="form-control btn btn-primary" id="fecha_desde" name="fecha_desde" required="true"value="<?php echo date('Y-m-d') ?>">
         </div>
             <div class="col-md-2" style="padding-left: -30px;"  >
                 <label for="fecha_desde" class="control-label">Hasta</label>
-           <input type="date" class="form-control btn btn-primary" id="fecha_hasta" name="fecha_hasta" required="true"  value="">
+           <input type="date" class="form-control btn btn-primary" id="fecha_hasta" name="fecha_hasta" required="true" value="<?php echo date('Y-m-d') ?>">
     
        </div> 
        
@@ -122,65 +122,7 @@
 						<th></th>
                     </tr>
                     <tbody class="buscar" id="tablacuentas">
-                    <?php $cont = 0;
-                    $totalCreditos=0;
-                    $totalCancelados=0;
-                    $totalSaldos=0;
-                          foreach($credito as $c){;
-                                 $cont = $cont+1;
-                                  $totalCreditos+=$c['credito_monto']; ?>
-                    <tr>
-						<td><?php echo $cont ?></td>
-                        <?php if ($c['servicio_id']!=0) { ?>                       
-						<td><?php echo $c['perro']; ?></td>
-                        <td style="text-align: center">Servicio: <?php echo $c['servicio_id']; ?></td>
-                        <?php } else { ?>
-                        <td><?php echo $c['cliente_nombre']; ?></td>
-                        <td style="text-align: center">Venta: <?php echo $c['venta_id']; ?></td>    
-                        <?php } ?>
-						<td style="text-align: center"><?php echo $c['estado_descripcion']; ?></td>
-                        <td style="text-align: right"><?php echo number_format($c['credito_monto'], 2, ".", ","); ?></td>
-                        <td style="text-align: right"><?php echo number_format($c['credito_cuotainicial'], 2, ".", ","); ?></td>
-                        <td style="text-align: right"><?php echo number_format($c['credito_interesmonto'], 2, ".", ","); ?> (<?php echo $c['credito_interesproc']; ?>)</td>
-                       <!-- <td style="text-align: right;"><?php $cancelado=0; foreach($cuota as $k){ if($c['credito_id']==$k['credito_id']){ 
-                        $cancelado+=$k['cuota_cancelado'];  }  } echo  number_format($cancelado, 2, ".", ",");  $totalCancelados+=$cancelado; ?></td>
-                        <td style="text-align: right;"><?php  $saldo=$c['credito_monto']-$cancelado; echo number_format($saldo, 2, ".", ","); $totalSaldos+=$saldo; ?></td>-->
-                        <td style="text-align: center"><?php echo $c['credito_numpagos']; ?></td>
-                        <td style="text-align: center"><?php echo date('d/m/Y', strtotime($c['credito_fecha'])); ?></td>
-                        <td style="text-align: center"><?php echo $c['credito_hora']; ?></td>
-                        <td style="text-align: center"><?php echo $c['usuario_nombre']; ?></td>
-						<td>
-                            <!--<a href="<?php echo site_url('credito/edit/'.$c['credito_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
-                            <a href="<?php echo site_url('credito/remove/'.$c['credito_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
-                            <?php if ($c['servicio_id']!=0) { ?>
-                                <a href="<?php echo site_url('cuotum/cuenta_serv/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
-                                <a href="<?php echo site_url('cuotum/planCuentaServ/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title="PLAN DE PAGOS"><span class="fa fa-print"></span></a>
-                            <?php } else { ?>
-                            <a href="<?php echo site_url('cuotum/cuentas/'.$c['credito_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-eye" title="VER CUOTAS"></span></a>
-                            <a href="<?php echo site_url('cuotum/planCuenta/'.$c['credito_id']); ?>" target="_blank" class="btn btn-facebook btn-xs" title="PLAN DE PAGOS"><span class="fa fa-print"></span></a>
-                            <a href="<?php echo site_url('factura/imprimir_recibo/'.$c['venta_id']); ?>" target="_blank" class="btn btn-primary btn-xs"><span class="fa fa-file" title="VER DETALLE VENTA"></span></a>
-                            <?php if ($c['factura_id']>0) { ?>
-                            <a href="<?php echo site_url('factura/imprimir_factura_id/'.$c['factura_id']); ?>" target="_blank" class="btn btn-warning btn-xs"><span class="fa fa-list" title="IMPRIMIR FACTURA"></span></a> 
-                            <?php }else{ ?>
-                            <button class="btn btn-facebook btn-xs" style="background-color:#000;" title="GENERAR FACTURA" onclick="cargar_factura(<?php echo $c["venta_id"] ?>,<?php echo $c["credito_id"] ?>)"><span class="fa fa-modx"></span></button>
-                            <?php } } ?>
-                            
-                            
-
-                        </td>
-                    </tr>
-                    <?php } ?>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td> 
-                        <td></td>
-                        <td style="text-align: right; font-size: 12px;"><b><?php echo number_format($totalCreditos, 2, ".", ","); ?></td>
-                        <td></td>
-                        <td></td>
-                        
-                        <td></td>
-                    </tr>
+                  
                 </table>
                 
             </div>
