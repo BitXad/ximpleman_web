@@ -4,10 +4,10 @@
                     </b>
                 </h3>
             </div>
-<div class="row">
+<!--<div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
-			<?php echo form_open('venta/edit/'.$venta['venta_id']); ?>
+			<?php //echo form_open('venta/edit/'.$venta['venta_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
 					<div class="col-md-4">
@@ -31,13 +31,13 @@
                                         </div>	   
       
      
-<!--					<div class="col-md-2">
+					<div class="col-md-2">
                                             <label for="venta_id" class="control-label"> </label>
                                             <br>
                                             <a href="<?php echo site_url('modificar_venta'); ?>" class="btn btn-danger">
                                                 <i class="fa fa-times"></i> Cancelar</a>
                                         </div>	   
-      -->
+      
                                     
                                 </div>	
                     </div>	
@@ -45,14 +45,14 @@
                     
         </div>
     </div>
-</div>
+</div>-->
                                     
                                     
 
 <div class="row">
     <div class="col-md-12">
       	<div class="box box-info">
-			<?php //echo form_open('venta/edit/'.$venta['venta_id']); ?>
+			<?php echo form_open('venta/edit/'.$venta['venta_id']); ?>
 			<div class="box-body">
 				<div class="row clearfix">
                                         
