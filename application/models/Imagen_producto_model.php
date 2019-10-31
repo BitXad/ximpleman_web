@@ -146,5 +146,22 @@ class Imagen_producto_model extends CI_Model
 
         return $imagen;
     }
-    
+    /*
+     * Get all imagen de DETALLES de SERVICIO
+     */
+    function get_all_imagen_mi_det($detalleserv_id)
+    {
+        $imagen = $this->db->query("
+            SELECT
+                i.*, e.estado_descripcion, e.estado_color
+            FROM
+                imagen_producto i
+            LEFT JOIN estado e on i.estado_id = e.estado_id
+            WHERE
+                i.detalleserv_id = $detalleserv_id
+            ORDER BY `imagenprod_id` DESC
+        ")->result_array();
+
+        return $imagen;
+    }
 }
