@@ -32,7 +32,7 @@
 							<div class="col-md-4">
 								<label for="egreso_nombre" class="control-label">Nombre</label>
 								<div class="form-group">
-									<input type="text" name="egreso_nombre" value="<?php echo ($this->input->post('egreso_nombre') ? $this->input->post('egreso_nombre') : $egreso['egreso_nombre']); ?>" class="form-control" id="egreso_nombre" required/>
+									<input type="text" name="egreso_nombre" value="<?php echo ($this->input->post('egreso_nombre') ? $this->input->post('egreso_nombre') : $egreso['egreso_nombre']); ?>" class="form-control" id="egreso_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  required/>
 								</div>
 							</div>
 							<div class="col-md-4">
@@ -65,7 +65,7 @@
 							<div class="col-md-4">
 								<label for="egreso_concepto" class="control-label">Concepto</label>
 								<div class="form-group">
-									<input type="text" name="egreso_concepto" value="<?php echo ($this->input->post('egreso_concepto') ? $this->input->post('egreso_concepto') : $egreso['egreso_concepto']); ?>" class="form-control" id="egreso_concepto"  />
+									<input type="text" name="egreso_concepto" value="<?php echo ($this->input->post('egreso_concepto') ? $this->input->post('egreso_concepto') : $egreso['egreso_concepto']); ?>" class="form-control" id="egreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  />
 								</div>
 							</div>
 							

@@ -89,7 +89,7 @@
         </div>-->
         <div class="box-header">
             <font size='4' face='Arial'><b>Proveedores</b></font>
-            <br><font size='2' face='Arial'>Registros Encontrados: <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5" value="0" readonly="true"></font> 
+            <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($proveedor); ?></font> 
         </div>
 
         <!--este es FIN del BREADCRUMB buscador-->
