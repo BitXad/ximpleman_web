@@ -64,7 +64,6 @@ class Credito extends CI_Controller{
             $condicion = " and co.usuario_id=".$usuario_id."";
             $data['page_title'] = "Deudas x Pagar";
             $data['rol'] = $this->session_data['rol'];
-            $data['credito'] = $this->Credito_model->get_all_deuda($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
             $data['_view'] = 'credito/indexDeuda';
@@ -74,7 +73,6 @@ class Credito extends CI_Controller{
             $condicion = "";
             $data['page_title'] = "Deudas x Pagar";
             $data['rol'] = $this->session_data['rol'];
-            $data['credito'] = $this->Credito_model->get_all_deuda($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
             $data['_view'] = 'credito/indexDeuda';
@@ -131,7 +129,6 @@ class Credito extends CI_Controller{
             $data['page_title'] = "Cuentas x Cobrar";
             $data['rol'] = $this->session_data['rol'];
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-            $data['credito'] = $this->Credito_model->get_all_cuentas($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexCuentas';
             $this->load->view('layouts/main',$data);
@@ -142,7 +139,6 @@ class Credito extends CI_Controller{
             $data['page_title'] = "Cuentas x Cobrar";
             $data['rol'] = $this->session_data['rol'];
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-            $data['credito'] = $this->Credito_model->get_all_cuentas($condicion);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/indexCuentas';
             $this->load->view('layouts/main',$data); 

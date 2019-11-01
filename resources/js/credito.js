@@ -1,3 +1,10 @@
+ $(document).on("ready",inicio);
+function inicio(){
+     filtro = " and date(credito_fecha) = date(now())";           
+        tablacuentas(filtro);
+        tabladeudas(filtro);
+} 
+
 
 
 function buscar_fecha_deuda()

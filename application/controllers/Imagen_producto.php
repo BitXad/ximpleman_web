@@ -259,6 +259,8 @@ class Imagen_producto extends CI_Controller{
     {
         if($this->acceso(109)){
             $data['page_title'] = "Imagenen Producto";
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         
@@ -308,7 +310,7 @@ class Imagen_producto extends CI_Controller{
     {
         if($this->acceso(69)){
             $data['page_title'] = "Imagenen Producto";
-            
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Detalle_serv_model');
             $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             $data['detalleserv_id'] = $detalleserv_id;
@@ -328,7 +330,7 @@ class Imagen_producto extends CI_Controller{
             if (!empty($_FILES['file']['name'])){
 		
                         $this->load->library('image_lib');
-                        $config['upload_path'] = './resources/images/productos/';
+                        $config['upload_path'] = './resources/images/servicios/';
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
@@ -350,7 +352,7 @@ class Imagen_producto extends CI_Controller{
                         if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                             $conf['image_library'] = 'gd2';
                             $conf['source_image'] = $img_data['full_path'];
-                            $conf['new_image'] = './resources/images/productos/';
+                            $conf['new_image'] = './resources/images/servicios/';
                             $conf['maintain_ratio'] = TRUE;
                             $conf['create_thumb'] = FALSE;
                             $conf['width'] = 800;
@@ -363,8 +365,8 @@ class Imagen_producto extends CI_Controller{
                         }
                         /* ********************F I N  para resize***************************** */
                         $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/productos/'.$new_name.$extension;
-                        $confi['new_image'] = './resources/images/productos/'."thumb_".$new_name.$extension;
+                        $confi['source_image'] = './resources/images/servicios/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/servicios/'."thumb_".$new_name.$extension;
                         $confi['create_thumb'] = FALSE;
                         $confi['maintain_ratio'] = TRUE;
                         $confi['width'] = 50;
@@ -401,6 +403,19 @@ class Imagen_producto extends CI_Controller{
         // check if the imagen_producto exists before trying to delete it
         if(isset($imagen_producto['imagenprod_id']))
         {
+            $imagen= $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
+            $base_url = explode('/', base_url());
+            //$directorio = FCPATH.'resources\images\clientes\\';
+            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/servicios/';
+            //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
+            $foto1 = $imagen['imagenprod_archivo'];
+            if(isset($foto1) && !empty($foto1)){
+              if(file_exists($directorio.$foto1)){
+                  unlink($directorio.$foto1);
+                  $mimagenthumb = "thumb_".$foto1;
+                  unlink($directorio.$mimagenthumb);
+                }
+            }
             $this->Imagen_producto_model->delete_imagen($imagenprod_id);
             redirect('imagen_producto/catalogodet/'.$imagen_producto['detalleserv_id']);
         }
