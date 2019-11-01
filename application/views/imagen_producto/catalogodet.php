@@ -30,21 +30,33 @@
         font-size: 12px;
     }
 </style>
-
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-
-    <div class="box-header">
-        <div class="container">
-            <h3 class="box-title">Imagenes del Detalle de Servicio: <b><?php echo $detalleserv_descripcion; ?></b></h3>
-            <div class="box-tools">
-                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria"><font size="5"><span class="fa fa-image "></span></font><br><small> Añadir Img..</small></a>
-                <a href="<?php echo site_url('imagen_producto/galeriadetalle/'.$detalleserv_id); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
-            </div>
+<div class="box-header">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <font size='4' face='Arial'><b>Imagenes del Detalle de Servicio: <?php echo $detalleserv_descripcion; ?></b></font>
+            <br><font size='2' face='Arial'>Imagenes Encontradas: <?php echo sizeof($all_imagen_detalle_serv); ?></font>
+        </div>
+        <br>
+        <div class="col-md-6 box-tools no-print text-center">
+            <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria"><font size="5"><span class="fa fa-image "></span></font><br><small> Añadir Img..</small></a>
+            <a href="<?php echo site_url('imagen_producto/galeriadetalle/'.$detalleserv_id); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
         </div>
     </div>
+</div>
+
+    <!--<div class="box-header">
+        <div class="container">
+            <h3 class="box-title">Imagenes del Detalle de Servicio: <b><?php //echo $detalleserv_descripcion; ?></b></h3>
+            <div class="box-tools text-center">
+                <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria"><font size="5"><span class="fa fa-image "></span></font><br><small> Añadir Img..</small></a>
+                <a href="<?php //echo site_url('imagen_producto/galeriadetalle/'.$detalleserv_id); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
+            </div>
+        </div>
+    </div>-->
 
 
 <div class="row">
@@ -86,7 +98,7 @@
                                                     <div>
                                                         <a class="btn btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $imagen['imagenprod_id']; ?>" style="padding: 0px;">
                                                             <?php
-                                                            echo '<img class="imgcuadrado" src="'.site_url('/resources/images/productos/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
+                                                            echo '<img class="imgcuadrado" src="'.site_url('/resources/images/servicios/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
                                                         </a>
                                                    <?php
                                                    
@@ -102,7 +114,9 @@
                                                 <td style="background-color: #<?php echo $imagen['estado_color']; ?>"><?php echo $imagen['estado_descripcion']; ?></td>
 						<td>
                             <!--<a href="<?php //echo site_url('imagen_producto/edit/'.$producto_id.'/'.$imagen['imagenprod_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>-->
-                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <?php if($tipousuario_id == 1){ ?>
+                                <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <?php } ?>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $cont; ?>">
                                       <div class="modal-dialog" role="document">
@@ -137,7 +151,7 @@
                                           </div>
                                             <div class="modal-body">
                                            <!------------------------------------------------------------------->
-                                           <?php echo '<img style="max-height: 100%; max-width: 100%" src="'.site_url('/resources/images/productos/'.$imagen['imagenprod_archivo']).'" />'; ?>
+                                           <?php echo '<img style="max-height: 100%; max-width: 100%" src="'.site_url('/resources/images/servicios/'.$imagen['imagenprod_archivo']).'" />'; ?>
                                            <!------------------------------------------------------------------->
                                           </div>
                                           
@@ -173,7 +187,7 @@
         <h5 class="modal-title text-center text-bold">Añadir Imagen a Galeria</h5>
         </div>
         <div class="modal-body">
-            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id,'class="dropzone" id="my-awesome-dropzone"'); ?>
+            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id,' class="dropzone" id="my-awesome-dropzone"'); ?>
             
                 <!--div class="row clearfix">
                     <div class="col-md-6">

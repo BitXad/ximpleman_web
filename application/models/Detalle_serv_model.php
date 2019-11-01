@@ -29,6 +29,8 @@ class Detalle_serv_model extends CI_Model
 
         return $detalle_serv;
     }
+
+
     
     /*
      * Get all detalle_serv count

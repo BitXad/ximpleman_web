@@ -1507,13 +1507,22 @@ class Servicio extends CI_Controller{
     
     function seguimiento($cliente_id,$servicio_id){
 
-        if($this->acceso(69)){
+//        if($this->acceso(69)){
             $data['page_title'] = "Seguimiento de Servicios";
             
             $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
             $data['servicio'] =  $servicios;
-            
-            if (sizeof($servicios)>0){
+//            
+//            if (sizeof($servicios)>0){
+                //Catalogo de imagenes
+                $this->load->model('Detalle_serv_model');
+                $this->load->model('Imagen_producto_model');
+//                $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+//                $data['detalleserv_descripcion'] = $detalle_serv['detalleserv_descripcion'];
+//                $data['detalleserv_id'] = $detalleserv_id;
+                $data['imagenes'] = $this->Imagen_producto_model->get_all_imagen_mi_serv($servicio_id);
+                //Catalogo de imagenes
+                
                 
                 $this->load->model('Detalle_serv_model');
                 $data['detalle_servicio'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
@@ -1523,11 +1532,53 @@ class Servicio extends CI_Controller{
                 $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
 
                 $data['_view'] = 'servicio/seguimiento_servicio';
-                $this->load->view('layouts/main',$data);
-            } 
-        }
+                $this->load->view('layouts/clientmain',$data);
+//            } 
+//        }
         
     }
-    
+    /* registrar servicio en proceso */
+    function registrar_servicioenproceso()
+    {
+            if ($this->input->is_ajax_request()){
+                    $servicio_id = $this->input->post('servicio_id');
+                    $detalleserv_id = $this->input->post('detalleserv_id');
+                    $estado_id = 28; // 28 ---> EN PROCESO
+                    $fecha_enproceso = date('Y-m-d');
+                    $hora_enproceso  = date('H:i:s');
+                    $responsable_id = $this->session_data['usuario_id'];
+                    $params = array(
+                        'detalleserv_fechaproceso' => $fecha_enproceso,
+                        'detalleserv_horaproceso' => $hora_enproceso,
+                        'estado_id' => $estado_id,
+                        'responsable_id' => $responsable_id,
+                    );
+                    $this->load->model('Detalle_serv_model');
+                    $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
+                    
+                    /* **********Cambia el estado del servicio segun el estado de los detalles*********** */
+                    $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                    echo json_encode("ok");
+            }
+            else
+            {
+                show_404();
+            }
+        //}
+    }
     
 }

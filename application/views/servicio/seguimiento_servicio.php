@@ -1,19 +1,35 @@
-<!----------------------------- script buscador --------------------------------------->
-<!--<script src="<?php echo base_url('resources/js/proceso_orden.js'); ?>" type="text/javascript"></script>-->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#filtrar').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-</script>   
+
+<!-- Add jQuery library -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery-1.10.2.min.js'); ?>"></script>
+
+<!-- Add mousewheel plugin (this is optional) -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.mousewheel.pack.js?v=3.1.3'); ?>"></script>
+
+<!-- Add fancyBox main JS and CSS files -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox.pack.js?v=2.1.5'); ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('resources/css/jquery.fancybox.css?v=2.1.5'); ?>" media="screen" />
+
+<!-- Add Button helper (this is optional) -->
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('resources/css/jquery.fancybox-buttons.css?v=1.0.5'); ?>" />
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox-buttons.js?v=1.0.5'); ?>"></script>
+
+<!-- Add Thumbnail helper (this is optional) -->
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('resources/css/jquery.fancybox-thumbs.css?v=1.0.7'); ?>" />
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox-thumbs.js?v=1.0.7'); ?>"></script>
+
+<!-- Add Media helper (this is optional) -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox-media.js?v=1.0.6'); ?>"></script>
+
+
+
+
+
+<!----------------------------- script buscador --------------------------------------->
+
+
+    
+    
 
 
 <style type="text/css">
@@ -36,24 +52,53 @@
 .button5 {border-radius: 50%;}
 </style>
 
+<style type="text/css">
+        img{
+            height: 50px;
+            width: 50px
+        }
+        
+		/*.fancybox-custom .fancybox-skin {
+			box-shadow: 0 0 50px #222;
+		}*/
+
+                /*
+		.box-body {
+			max-width: 700px;
+			margin: 0 auto;
+		}*/
+	</style>
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitablaproceso.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 
 
-<?php if(sizeof($servicio)>0){  ?>
+<?php 
+        $var_pendiente = "<font size='1'><fa class='fa fa-hourglass'></fa></font>" ;
+        $var_procesando = "<font size='1'><fa class='fa fa-cogs'></fa></font>" ;
+        $var_terminado = "<font size='1'><fa class='fa fa-check'></fa></font>";
+        $color_pendiente =  "#FFB52B";
+        $color_procesando =  "#2AA301";
+        $color_terminado =  "#731501";
+                            
+if(sizeof($servicio)>0){  ?>
 
 <div class="box-header">
-    <!--<center>-->
+    <center>
         
         <font face="Arial" size="3"><b>ORDEN Nº 00<?php echo $servicio['servicio_id']; ?>  </b></font>
-        <br><font face="Arial" size="2"><b>CLIENTE:</b><?php echo $servicio['cliente_nombre']; ?></font>
+        <br><font face="Arial" size="2"><b>CLIENTE: </b><?php echo $servicio['cliente_nombre']; ?></font>
             	<div class="box-tools">
-                    
                 </div>
-    <!--</center>-->
+    </center>
 </div>
+<center>
+    <button class='btn btn-facebook btn-xs' style="background-color:<?php echo $color_pendiente; ?>"><?php echo $var_pendiente; ?> </button> <b>Pendiente</b>
+    <button class='btn btn-facebook btn-xs' style="background-color:<?php echo $color_procesando; ?>"><?php echo $var_procesando; ?> </button> <b>Procensado</b>
+    <button class='btn btn-facebook btn-xs' style="background-color:<?php echo $color_terminado; ?>"><?php echo $var_terminado; ?> </button> <b>Terminado</b>
+</center>
 
 
 <div class="row">
@@ -80,15 +125,12 @@
 
                         <?php  
                             $cont = 0;
-                            $var_pendiente = "<font size='3'><fa class='fa fa-hourglass'></fa></font>" ;
-                            $var_procesando = "<font size='3'><fa class='fa fa-cogs'></fa></font>" ;
-                            $var_terminado = "<font size='3'><fa class='fa fa-check'></fa></font>";
-                            
-
                         foreach ($detalle_servicio as $p){ ?>
                             
                             <tr style="font-family: Arial; text-align: center;">
-                                <td colspan="9"><font size='2'><b><?php echo $p['detalleserv_descripcion']; ?></b></font></td>                                
+                                <td colspan="8"><font size='2'><b><?php echo $p['detalleserv_descripcion']; ?></b></font></td>                                
+                                <!--<td> <a href="<?php echo base_url("imagen_producto/catalogodet/").$p["detalleserv_id"]; ?>" class="btn btn-soundcloud btn-xs" title="Imagenes relacionadas" ><span class="fa fa-image"></span></a></td>-->                                
+                            
                             </tr>
                             <tr style="font-family: Arial" align="center">
                         
@@ -113,7 +155,7 @@
                                         }
                                         
                                         if($p['estado_id']>5){ //Si el estado es terminado
-                                            $color_estado = "#731501"; //naranaja
+                                            $color_estado = "#731501"; //marron
                                             $estado = $var_terminado;
                                             $dt = new DateTime($servicio['servicio_fecharecepcion']);
                                             $fecha = $dt->format('d/m/Y');
@@ -318,15 +360,114 @@
                                 </td>
                         </tr>
                         <tr>
-                            <td><?php  echo substr($p['detalleserv_falla'],0,15)."...";  //if (sizeof($p['detalleserv_falla'])>=15){ echo  substr($p['detalleserv_falla'],15)."...";}else{ echo $p['detalleserv_falla'];} ?></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="9">
+                            
+                            <!---------------------- SLIDER  ------------------------>
+
+
+                            <script type="text/javascript">
+                                        $(document).ready(function() {
+                                                /*
+                                                 *  Simple image gallery. Uses default settings
+                                                 */
+
+                                                $('.fancybox').fancybox();
+
+                                                $("#fancybox-manual-c").click(function() {
+                                                        $.fancybox.open([
+                                                                {
+                                                                        href : '1_b.jpg',
+                                                                        title : 'Primer Imagen'
+                                                                }, {
+                                                                        href : '2_b.jpg',
+                                                                        title : '2nd title'
+                                                                }, {
+                                                                        href : '3_b.jpg'
+                                                                }
+                                                        ], {
+                                                                helpers : {
+                                                                        thumbs : {
+                                                                                width: 75,
+                                                                                height: 50
+                                                                        }
+                                                                }
+                                                        });
+                                                });
+
+
+                                        });
+                                </script>
+                            <style type="text/css">
+                                img{
+                                    height: 50px;
+                                    width: 50px
+                                }
+
+                                        /*.fancybox-custom .fancybox-skin {
+                                                box-shadow: 0 0 50px #222;
+                                        }*/
+
+                                        /*
+                                        .box-body {
+                                                max-width: 700px;
+                                                margin: 0 auto;
+                                        }*/
+                                </style>
+
+          
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="box">
+              
+                                
+                                
+                                <div class="box-body table-responsive">
+                                    <center>
+                                        
+                                    <p>
+                                        <?php
+                                            $colum = 5;
+                                            $cont = 1;
+
+                                            foreach($imagenes as $imagen)
+                                            {
+                                                
+                                                if ($p['detalleserv_id']==$imagen['detalleserv_id']){
+                                                    
+                                                    if(($cont % $colum) == 0){
+                                                      // // echo "<div id ='otrafila'>";
+                                                    }
+                                                    $mimagen = "thumb_".$imagen['imagenprod_archivo'];
+
+                                                    /////echo "<div id='colum5'>";
+                                                    echo "<a class='fancybox' href='".site_url('/resources/images/productos/'.$imagen['imagenprod_archivo'])."' data-fancybox-group='gallery' title='".$imagen['imagenprod_titulo']."'>";
+                                                    echo " <img src='".site_url('/resources/images/productos/'.$mimagen)."' alt='' /></a>";
+                                                    /////echo "</div>";
+                                                    if(($cont % $colum) == 0){
+                                                        echo "<br>";
+                                                    }
+                                           
+                                                }
+                                                $cont++; 
+                                             
+                                            } 
+                                            ?>
+                                    </p>
+                                    </center>
+                                </div>
+                                <div class="pull-right">
+
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                            
+                                
+                                
+                            <!---------------------- SLIDER  ------------------------>
+                            </td>
+
                         </tr>
                         
                         <?php } ?>   
@@ -347,47 +488,6 @@
     </div>
 </div>
 
-
-
-<!--<div class="row">
-    <div class="col-md-2">
-        <div class="box">
-            
-            <div class="box-body table-responsive table-condensed">
-                <table class="table table-condensed "id="mitabla">
-                    <tr style="padding: 0;">
-                        <th> </th>
-                        <th colspan="2" style="padding: 0;">ESTADOS</th>
-                    </tr>
-                    <tr>
-                        <td colspan="2"></td>
-                    </tr>
-                    
-
-                        <?php  
-                            $cont = 0;
-                        foreach ($estados as $e){?>
-                        
-                        <tr style="font-family: Arial" align="center">
-                            <td  style="padding: 0;">
-                                <button class="btn btn-success" style="background-color: <?php echo "#".$e['estado_color'];?>; border: #0016b0"></button>
-                            </td>
-                       
-                            <td  style="padding: 0;" align="left">
-                                <?php echo $e['estado_descripcion'] ?>
-                            </td>
-                       
-                        </tr>
-                    
-                        <?php } ?>
-                    
-                </table>
-                                
-            </div>
-        </div>
-    </div>
-    
-</div>-->
 
 <div class="row">
     <div class="col-md-5">
