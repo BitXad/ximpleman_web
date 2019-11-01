@@ -1507,7 +1507,7 @@ class Servicio extends CI_Controller{
     
     function seguimiento($cliente_id,$servicio_id){
 
-        if($this->acceso(69)){
+//        if($this->acceso(69)){
             $data['page_title'] = "Seguimiento de Servicios";
             
             $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
@@ -1532,9 +1532,9 @@ class Servicio extends CI_Controller{
                 $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
 
                 $data['_view'] = 'servicio/seguimiento_servicio';
-                $this->load->view('layouts/main',$data);
+                $this->load->view('layouts/clientmain',$data);
 //            } 
-        }
+//        }
         
     }
     /* registrar servicio en proceso */
