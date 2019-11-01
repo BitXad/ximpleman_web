@@ -280,7 +280,7 @@
               <div class="inner" >
 
                 <h3><b><fa class="fa fa-users"></fa></b></h3>
-                <h5><b><?php echo number_format($clientes[0]['total_clientes'],0,'.',','); ?> Datos<sup style="font-size: 20px"></sup></b></h5>
+                <h5><b><?php echo number_format($clientes[0]['total_clientes'],0,'.',','); ?> Clientes<sup style="font-size: 20px"></sup></b></h5>
             </div>
               
             <div class="icon">

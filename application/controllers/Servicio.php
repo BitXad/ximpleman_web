@@ -1512,8 +1512,17 @@ class Servicio extends CI_Controller{
             
             $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
             $data['servicio'] =  $servicios;
-            
-            if (sizeof($servicios)>0){
+//            
+//            if (sizeof($servicios)>0){
+                //Catalogo de imagenes
+                $this->load->model('Detalle_serv_model');
+                $this->load->model('Imagen_producto_model');
+//                $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+//                $data['detalleserv_descripcion'] = $detalle_serv['detalleserv_descripcion'];
+//                $data['detalleserv_id'] = $detalleserv_id;
+                $data['imagenes'] = $this->Imagen_producto_model->get_all_imagen_mi_serv($servicio_id);
+                //Catalogo de imagenes
+                
                 
                 $this->load->model('Detalle_serv_model');
                 $data['detalle_servicio'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
@@ -1524,7 +1533,7 @@ class Servicio extends CI_Controller{
 
                 $data['_view'] = 'servicio/seguimiento_servicio';
                 $this->load->view('layouts/main',$data);
-            } 
+//            } 
         }
         
     }

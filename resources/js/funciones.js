@@ -267,12 +267,18 @@ function tablaproductos()
                            cant_total+= parseFloat(registros[i]["detalleven_cantidad"]);
                            total_detalle+= parseFloat(registros[i]["detalleven_total"]);
                            
-                            if (i == 0) color = "style='background-color: GoldenRod; padding:0;'"
-                            else color = "style='padding:0'";
+                            if (i == 0){
+                                color = "style='background-color: brown; padding:0; color: white;'"
+                                fuente = "2";
+                            }
+                            else {
+                                color = "style='padding:0'";
+                                fuente = '1';
+                            }
                             
                         html += "                    <tr>";
                         html += "			<td "+color+">"+cont+"</td>";
-                        html += "                       <td "+color+"><b><font size=1>"+registros[i]["producto_nombre"]+"</font></b>";
+                        html += "                       <td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"]+"</font></b>";
                         html += "                           <small><br>"+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************

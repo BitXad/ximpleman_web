@@ -164,4 +164,16 @@ class Imagen_producto_model extends CI_Model
 
         return $imagen;
     }
+
+    function get_all_imagen_mi_serv($servicio_id)
+    {
+        $sql = "select * 
+                from imagen_producto i, detalle_serv d
+                where 
+                i.detalleserv_id =  d.detalleserv_id and
+                d.servicio_id = ".$servicio_id;
+        
+        $imagen = $this->db->query($sql)->result_array();
+        return $imagen;
+    }
 }
