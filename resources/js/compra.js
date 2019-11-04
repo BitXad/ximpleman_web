@@ -363,7 +363,9 @@ function cambiarproveedores(compra_id,proveedor_id) {
                      $("#provedorcodigo").html(html);
                   
                      html = "<a  href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-xs btn-success' ><i class='fa fa-money'></i>Finalizar compra</a>";
+                     var html5 = "<a href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-sq-lg btn-success' style='width: 120px !important; height: 120px !important;'><i class='fa fa-money fa-4x'></i><br>Finalizar<br>Compra<br></a>";
                     $("#provedorboton").html(html);
+                    $("#provedorboton2").html(html5);
 
                     html2 += registros[p]['proveedor_autorizacion'];
                     var html3 = registros[p]['proveedor_nit'];
@@ -375,7 +377,9 @@ function cambiarproveedores(compra_id,proveedor_id) {
 
             } else{
                     html = "<a  onclick='myFunction()' href='#' class='btn btn-xs btn-success' ></i>Finalizar compra </a>";
+                    var html5 = "<a onclick='myFunction()' class='btn btn-sq-lg btn-success' style='width: 120px !important; height: 120px !important;'><i class='fa fa-money fa-4x'></i><br>Finalizar<br>Compra<br></a>";
                         $("#provedorboton").html(html);
+                        $("#provedorboton2").html(html5);
                         }
              },
             error:function(respuesta){
@@ -430,13 +434,16 @@ function crearproveedor(compra_id) {
                   
                      html = "<a  href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-xs btn-success' ><i class='fa fa-money'></i>Finalizar compra</a>";
                     $("#provedorboton").html(html);
-
+                    var html5 = "<a href='#' data-toggle='modal' data-target='#modalcobrar' class='btn btn-sq-lg btn-success' style='width: 120px !important; height: 120px !important;'><i class='fa fa-money fa-4x'></i><br>Finalizar<br>Compra<br></a>";
+                     $("#provedorboton2").html(html5);
                      $("#modalproveedor").modal('hide');
             } else{
                     
                     html = "<a onclick='myFunction()' href='#' class='btn btn-xs btn-success' ></i>Finalizar compra </a>";
                         $("#provedorboton").html(html);
+                    var html5 = "<a onclick='myFunction()' class='btn btn-sq-lg btn-success' style='width: 120px !important; height: 120px !important;'><i class='fa fa-money fa-4x'></i><br>Finalizar<br>Compra<br></a>";
 
+                        $("#provedorboton2").html(html5);
                         $("#mensaje").html("<br> Debe llenar el campo Nombre");
 
                         }

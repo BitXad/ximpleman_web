@@ -13,22 +13,7 @@
 				<div class="box-body">
           		<div class="row clearfix">
 						
-							<div class="col-md-4">
-									<label for="egreso_categoria" class="control-label">CATEGORIA</label>
-									<div class="form-group">
-									<select name="egreso_categoria" class="form-control" >
-                <option value="">Selecciona categoria egreso</option>
-                <?php 
-                foreach($all_categoria_egreso as $categoria_egreso)
-                {
-                  $selected = ($categoria_egreso['categoria_categr'] == $egreso['egreso_categoria']) ? ' selected="selected"' : "";
-
-                  echo '<option value="'.$categoria_egreso['categoria_categr'].'" '.$selected.'>'.$categoria_egreso['categoria_categr'].'</option>';
-                } 
-                ?>
-              </select>
-									</div>
-								</div>
+							
 							<div class="col-md-4">
 								<label for="egreso_nombre" class="control-label">Nombre</label>
 								<div class="form-group">
@@ -60,6 +45,22 @@
 											} 
 											?>
 										</select>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<label for="egreso_categoria" class="control-label">Categoria</label>
+									<div class="form-group">
+									<select name="egreso_categoria" class="form-control" >
+                <option value="">Selecciona categoria egreso</option>
+                <?php 
+                foreach($all_categoria_egreso as $categoria_egreso)
+                {
+                  $selected = ($categoria_egreso['categoria_categr'] == $egreso['egreso_categoria']) ? ' selected="selected"' : "";
+
+                  echo '<option value="'.$categoria_egreso['categoria_categr'].'" '.$selected.'>'.$categoria_egreso['categoria_categr'].'</option>';
+                } 
+                ?>
+              </select>
 									</div>
 								</div>
 							<div class="col-md-4">

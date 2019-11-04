@@ -11,22 +11,7 @@
 						<div class="box-body">
           		<div class="row clearfix">
 						
-							<div class="col-md-4">
-									<label for="ingreso_categoria" class="control-label">Categoria</label>
-									<div class="form-group">
-									<select name="ingreso_categoria" class="form-control" >
-                <option value="">- CATEGORIA INGRESO -</option>
-                <?php 
-                foreach($all_categoria_ingreso as $categoria_ingreso)
-                {
-                  $selected = ($categoria_ingreso['categoria_cating'] == $ingreso['ingreso_categoria']) ? ' selected="selected"' : "";
-
-                  echo '<option value="'.$categoria_ingreso['categoria_cating'].'" '.$selected.'>'.$categoria_ingreso['categoria_cating'].'</option>';
-                } 
-                ?>
-              </select>
-									</div>
-								</div>
+							
 							<div class="col-md-4">
 								<label for="ingreso_nombre" class="control-label">Nombre</label>
 								<div class="form-group">
@@ -58,6 +43,23 @@
 											} 
 											?>
 										</select>
+									</div>
+								</div>
+
+								<div class="col-md-4">
+									<label for="ingreso_categoria" class="control-label">Categoria</label>
+									<div class="form-group">
+									<select name="ingreso_categoria" class="form-control" >
+                <option value="">- CATEGORIA INGRESO -</option>
+                <?php 
+                foreach($all_categoria_ingreso as $categoria_ingreso)
+                {
+                  $selected = ($categoria_ingreso['categoria_cating'] == $ingreso['ingreso_categoria']) ? ' selected="selected"' : "";
+
+                  echo '<option value="'.$categoria_ingreso['categoria_cating'].'" '.$selected.'>'.$categoria_ingreso['categoria_cating'].'</option>';
+                } 
+                ?>
+              </select>
 									</div>
 								</div>
 							<div class="col-md-4">
