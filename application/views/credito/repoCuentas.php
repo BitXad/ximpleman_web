@@ -109,7 +109,7 @@
                         <th>USUARIO</th>
 						
                     </tr>
-                    <tbody class="buscar" id="tabladeudas">
+                    <tbody class="buscar" >
                     <?php $cont = 0;
                         $totalCreditos=0;
                         $totalCancelados=0;

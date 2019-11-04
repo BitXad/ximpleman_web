@@ -73,6 +73,14 @@ class Detalle_venta extends CI_Controller{
         $data['all_destino'] = $this->Destino_producto_model->get_all_destino_producto();
         $this->load->view('layouts/main',$data);
     }
+
+    function reporte_generalventa()
+    {
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);             
+        $data['page_title'] = "Reporte Ventas";        
+        $data['_view'] = 'venta/reporte_venta';
+        $this->load->view('layouts/main',$data);
+    }
     function recepcionhoy()
     {
         $usuario_id = $this->session_data['usuario_id'];
@@ -111,6 +119,16 @@ class Detalle_venta extends CI_Controller{
         
         $filtro = $this->input->post('filtro');
         $datos = $this->Detalle_venta_model->reporte_ventas($filtro);
+       
+        echo json_encode($datos);
+              
+    }
+
+    function busca_simple()
+    {
+        
+        $filtro = $this->input->post('filtro');
+        $datos = $this->Detalle_venta_model->reporte_simple($filtro);
        
         echo json_encode($datos);
               
