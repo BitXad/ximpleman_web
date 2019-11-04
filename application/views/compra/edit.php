@@ -435,16 +435,16 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 
             <center>
 
-            <?php if($provi==0) { ?>  
-            <a onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <?php  $provien = $compra[0]['proveedor_id'];  if($provien==0) { ?>  
+            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Compra<br>
-            </a>
+            </a></label>
           <?php }else{ ?>
-            <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
                Finalizar<br>Compra<br>
-            </a>
+            </a></label>
           <?php } ?>
 
             
