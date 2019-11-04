@@ -119,16 +119,16 @@ if(sizeof($servicio)>0){  ?>
                         <th style="padding: 0;">ENTREGADO</th>
                     </tr>
                     
-                    <tr style="font-family: Arial">
+<!--                    <tr style="font-family: Arial">
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
-                    </tr>
+                    </tr>-->
 
                         <?php  
                             $cont = 0;
                         foreach ($detalle_servicio as $p){ ?>
                             
-                            <tr style="font-family: Arial; text-align: center;">
-                                <td colspan="8"><font size='2'><b><?php echo $p['detalleserv_descripcion']; ?></b></font></td>                                
+                            <tr style="font-family: Arial; text-align: center; padding: 0;">
+                                <td colspan="9" style=" padding: 0;"><font size='2'><b><?php echo $p['detalleserv_descripcion']; ?></b></font></td>                                
                                 <!--<td> <a href="<?php echo base_url("imagen_producto/catalogodet/").$p["detalleserv_id"]; ?>" class="btn btn-soundcloud btn-xs" title="Imagenes relacionadas" ><span class="fa fa-image"></span></a></td>-->                                
                             
                             </tr>
@@ -196,9 +196,9 @@ if(sizeof($servicio)>0){  ?>
                                         if($p['estado_id']==28){ //Si el estado es procesando
                                             $color_estado = "#2AA301"; //verde
                                             $estado = $var_procesando;
-                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $dt = new DateTime($servicio['detalleserv_fechaproceso']);
                                             $fecha = $dt->format('d/m/Y');
-                                            $hora = $servicio['servicio_horarecepcion'];
+                                            $hora = $servicio['detalleserv_horaproceso'];
                                         }
                                         
                                                                                    
@@ -334,9 +334,9 @@ if(sizeof($servicio)>0){  ?>
                                         if($p['estado_id']==7){ //Si el estado es procesando
                                             $color_estado = "#2AA301"; //verde
                                             $estado = $var_pendiente;
-                                            $dt = new DateTime($p['detalleserv_fechaentrega']);
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
                                             $fecha = $dt->format('d/m/Y');
-                                            $hora = $p['detalleserv_horaentrega'];
+                                            $hora = $p['detalleserv_horaterminado'];
                                         }
                                         
                                         if($p['estado_id']>6&&$p['estado_id']!=28){ //Si el estado es terminado

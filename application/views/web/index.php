@@ -81,7 +81,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <br><br>
                             <div class="modal-content text-left">
                           <div class="modal-header">
-                              <label>Ingresar Codigo de Servicio</label>
+                              <label>Seguimiento a Servicios:</label>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                           </div>
                             <?php
@@ -89,19 +89,27 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             ?>
                           <div class="modal-body">
                            <!-- --------------------------------------------------------------- -->
-                            <div class="col-md-9">
-                                <div class="form-group">
-                                    <input type="text" name="codigo" id="codigo" class="form-control" required placeholder="Codigo del Servicio" autocomplete="off" />
+                           <div class="row">
+                                <div class="col-md-6">
+                                    <label for="usuario" class="control-label"><span class="text-danger">*</span>Usuario</label>
+                                    <div class="form-group">
+                                        <input type="text" name="usuario" id="usuario" class="form-control" required  autocomplete="off" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-2">
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fa fa-binoculars"></i> Seguimiento
-                                </button>
+                                <div class="col-md-6">
+                                    <label for="contrasen" class="control-label"><span class="text-danger">*</span>Contrase&ntilde;a</label>
+                                    <div class="form-group">
+                                        <input type="text" name="contrasen" id="contrasen" class="form-control" required autocomplete="off" />
+                                    </div>
+                                </div>
                             </div>
                            <!------------------------------------------------------------------->
                           </div>
-                          <div class="modal-footer"></div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa fa-binoculars"></i> Seguimiento
+                                    </button>
+                                </div>
                             <?php echo form_close(); ?>
                         </div>
                       </div>

@@ -174,11 +174,13 @@ border-bottom : 1px solid #aaa;*/
 <!--</table>
 
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
-           <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
+           <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-style: solid; border-left: #000" >
+               
                 <td align="center" style="padding: 0;"><b>CN</b></td>
                 <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
-                <td align="center" style="padding: 0;"><b>TOTAL</b></td>               
+                <td align="center" style="padding: 0;"><b>TOTAL</b></td>
+                
            </tr>
            <?php $cont = 0;
                  $cantidad = 0;
