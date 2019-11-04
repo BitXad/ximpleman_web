@@ -1,107 +1,528 @@
+<!-- Bootstrap 3.3.6 -->
+    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
-<html>
-    <head>
-        <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-    </head>
-    <body onload="inicio()">
-<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<link href="<?php echo base_url('resources/css/lineatime.css'); ?>" rel="stylesheet">
-<div>
-<section class="section intro">
-  <div class="container">
-    <h1>SEGUIMIENTO DEL SERVICIO DE
-        <?php if(!is_null($servicio[0]['cliente_nombre'])){ echo ' "'.$servicio[0]['cliente_nombre'].'"'; } ?></h1>
-  </div>
-</section>
+    <!-- Datetimepicker -->
+    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/bootstrap-datetimepicker.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/AdminLTE.min.css">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/_all-skins.min.css">
 
-<section class="timeline">
-        <?php
-        $estado = "";
-        foreach ($servicio as $s){
-            $estado = 1;
-            ?>
-        <ol>
-            <li>
-                <div id="color1">
-                    <time>RECEPCIONADO: <?php echo date("d/m/Y", strtotime($s['servicio_fecharecepcion']))." ".$s['servicio_horarecepcion']; ?>
-                        <br>Resp. Tec.: <?php echo $s['usuario_nombre'] ?>
-                    </time>
-                </div>
-            </li>
-            <?php /*if($s['responsable_id'] != null){ ?>
-            <li>
-                <div class="pendiente">
-                    <time>Responsable Tec.: <?php echo $s['usuario_nombre'] ?></time>
-                </div>
-            </li>
-            <?php }*/ ?>
-            <?php if($s['detalleserv_diagnostico'] != "" && $s['detalleserv_diagnostico'] != "" && $s['detalleserv_diagnostico'] != ""){ ?>
-            <li>
-                <div id="color2">
-                    <time>PROCESO: <?php echo $s['detalleserv_diagnostico']; $estado = 2; ?></time>
-                </div>
-            </li>
-            <?php } ?>
-            <?php if($s['detalleserv_fechaterminado'] != null){ ?>
-            <li>
-                <div id="color3">
-                    <time>FINALIZADO: <?php echo date("d/m/Y", strtotime($s['detalleserv_fechaterminado']))." ".$s['detalleserv_horaterminado']; echo " ".$s['detalleserv_solucion']; echo " ".$s['detalleserv_glosa']; $estado = 3; ?></time>
-                </div>
-            </li>
-            <?php } ?>
-            <?php if($s['detalleserv_fechaentregado'] != null){ ?>
-            <li>
-                <div id="color4">
-                    <time>ENTREGADO: <?php echo date("d/m/Y", strtotime($s['detalleserv_fechaentregado']))." ".$s['detalleserv_horaentregado']; $estado = 4; ?></time>
-                </div>
-            </li>
-            <?php } ?>
-            <li></li>
-        </ol>
+    <!-- jQuery 2.2.3 -->
+    <script src="http://localhost/ximpleman_web/resources/js/jquery-2.2.3.min.js"></script>
+    <link rel="shortcut icon" href="http://localhost/ximpleman_web/resources/images/icono.png" />
+
+
+
+
+<!-- Add mousewheel plugin (this is optional) -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.mousewheel.pack.js?v=3.1.3'); ?>"></script>
+
+<!-- Add fancyBox main JS and CSS files -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox.pack.js?v=2.1.5'); ?>"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('resources/css/jquery.fancybox.css?v=2.1.5'); ?>" media="screen" />
+
+<!-- Add Button helper (this is optional) -->
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('resources/css/jquery.fancybox-buttons.css?v=1.0.5'); ?>" />
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox-buttons.js?v=1.0.5'); ?>"></script>
+
+<!-- Add Thumbnail helper (this is optional) -->
+<link rel="stylesheet" type="text/css" href="<?php echo base_url('resources/css/jquery.fancybox-thumbs.css?v=1.0.7'); ?>" />
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox-thumbs.js?v=1.0.7'); ?>"></script>
+
+<!-- Add Media helper (this is optional) -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox-media.js?v=1.0.6'); ?>"></script>
+
+
+
+
+
+<!----------------------------- script buscador --------------------------------------->
+
+
     
-        <?php
+    
+
+
+<style type="text/css">
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+}
+
+.button1 {border-radius: 2px;}
+.button2 {border-radius: 4px;}
+.button3 {border-radius: 8px;}
+.button4 {border-radius: 12px;}
+.button5 {border-radius: 50%;}
+</style>
+
+<style type="text/css">
+        img{
+            height: 50px;
+            width: 50px
         }
-        ?>
-    <input type="hidden" name="estestado" id="estestado" value="<?php echo $estado; ?>" />
-    <script type="text/javascript">
-        function inicio(){
-            var res = $('#estestado').val();
-            if(res == 1){
-                var rescss1 = { "background": '#ed632d', "timeline ol li:nth-child(odd) div::before" : 'border-color: #ed632d transparent transparent transparent' };
-                $('#color1').css(rescss1)
-            }else if(res == 2){
-                var rescss2 = { "background": '#ed632d', "timeline ol li:nth-child(even) div::before" : "transparent transparent transparent #ed632d  !important" };
-                //var rescss2 = { "background": '#ed632d', "timeline ol li:nth-child(even) div::before" : 'transparent transparent transparent #ed632d' };
-                $('#color2').css(rescss2)
-            }else if(res == 3){
-                //$('#color3').addClass('colorabajo');
-                //var rescss3 = { "background": '#ed632d', "border-color": "#ed632d transparent transparent transparent" };
-                $('#color3').css({
-                    "background": '#ed632d',
-                    
-                });
-                
-                /*$('#color3').addClass('colorabajo');*/
-                /*$('.colorabajo').css({
-                    "border-color": "#ed632d transparent transparent transparent"
-                })*/
+        
+		/*.fancybox-custom .fancybox-skin {
+			box-shadow: 0 0 50px #222;
+		}*/
+
                 /*
-                $('.colorabajo').css({
-                    "top": "100%",
-                    "border-width": "8px 8px 0 0",
-                    "border-color": "#ed632d transparent transparent transparent"
-                })*/
-                
-            }else if(res == 4){
-                var rescss4 = { "background": '#ed632d', "timeline ol li:nth-child(even) div::before" : "top: -8px; border-width: 8px 0 0 8px; transparent transparent transparent #ed632d" };
-                $('#color4').css(rescss4)
-            }
-        }
-    </script>
-  <div class="arrows">
-      <a href="<?php echo site_url(''); ?>" class="btn btn-danger"><span class="fa fa-times"></span> Salir</a>
-  </div>
-</section>
+		.box-body {
+			max-width: 700px;
+			margin: 0 auto;
+		}*/
+	</style>
+
+<!----------------------------- fin script buscador --------------------------------------->
+<!------------------ ESTILO DE LAS TABLAS ----------------->
+<link href="<?php echo base_url('resources/css/mitablaproceso.css'); ?>" rel="stylesheet">
+<!-------------------------------------------------------->
+
+
+<?php 
+        $var_pendiente = "<font size='1'><fa class='fa fa-hourglass'></fa></font>" ;
+        $var_procesando = "<font size='1'><fa class='fa fa-cogs'></fa></font>" ;
+        $var_terminado = "<font size='1'><fa class='fa fa-check'></fa></font>";
+        $color_pendiente =  "#FFB52B";
+        $color_procesando =  "#2AA301";
+        $color_terminado =  "#731501";
+                            
+//if(sizeof($servicio)>0){  ?>
+<div style="padding-left: 15px; padding-right: 15px;">
+<div class="box-header">
+    <center>
+        
+        <font face="Arial" size="3"><b>ORDEN Nº 00<?php echo $servicio['servicio_id']; ?>  </b></font>
+        <br><font face="Arial" size="2"><b>CLIENTE: </b><?php echo $servicio['cliente_nombre']; ?></font>
+            	<div class="box-tools">
+                </div>
+    </center>
 </div>
-</body>
-</html>
+<center>
+    <button class='btn btn-facebook' style="background-color:<?php echo $color_pendiente; ?>"><?php echo $var_pendiente; ?> </button> <b>Pendiente</b>
+    <button class='btn btn-facebook' style="background-color:<?php echo $color_procesando; ?>"><?php echo $var_procesando; ?> </button> <b>Procensado</b>
+    <button class='btn btn-facebook' style="background-color:<?php echo $color_terminado; ?>"><?php echo $var_terminado; ?> </button> <b>Terminado</b>
+</center>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="box">
+            
+            <div class="box-body table-responsive table-condensed">
+                <table class="table table-condensed "id="mitabla">
+                    <tr style="padding: 0;">
+                        <th style="padding: 0;">RECEPCION</th>
+                        <th style="padding: 0;"></th>
+                        <th style="padding: 0;">PROCESO</th>
+                        <th style="padding: 0;"></th>
+                        <th style="padding: 0;">TERMINADO</th>
+                        <th style="padding: 0;"></th>
+                        <th style="padding: 0;">PARA<br>ENTREGA</th>
+                        <th style="padding: 0;"></th>
+                        <th style="padding: 0;">ENTREGADO</th>
+                    </tr>
+                    
+                    <tr style="font-family: Arial">
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+
+                        <?php  
+                            $cont = 0;
+                        foreach ($detalle_servicio as $p){ ?>
+                            
+                            <tr style="font-family: Arial; text-align: center;">
+                                <td colspan="8"><font size='2'><b><?php echo $p['detalleserv_descripcion']; ?></b></font></td>                                
+                                <!--<td> <a href="<?php echo base_url("imagen_producto/catalogodet/").$p["detalleserv_id"]; ?>" class="btn btn-soundcloud btn-xs" title="Imagenes relacionadas" ><span class="fa fa-image"></span></a></td>-->                                
+                            
+                            </tr>
+                            <tr style="font-family: Arial" align="center">
+                        
+                                <!---------------------- RECEPCION ------------------------------->
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                        
+                                    <?php 
+                                        if($p['estado_id']<5){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = $var_pendiente;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==5){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //naranaja
+                                            $estado = $var_procesando;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        
+                                        if($p['estado_id']>5){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //marron
+                                            $estado = $var_terminado;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>                                         
+                                <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+
+                                <!---------------------- EN PROCESO ------------------------------->
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                    <?php 
+                                        if($p['estado_id']==5){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = $var_pendiente;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']>5){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //naranaja
+                                            $estado = $var_terminado;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==28){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //verde
+                                            $estado = $var_procesando;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        
+                                                                                   
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                        
+                                    </div>
+                                </td>                                                   
+                                <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+                                <?php
+                                     $color_estado = "#FFB52B"; //naranaja
+                                ?>
+
+                
+                                <!---------------------- TERMINADO ------------------------------->
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                    <?php 
+                                        
+                                        if($p['estado_id']<>6&&$p['estado_id']==28){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = $var_pendiente;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+//                                        if($p['estado_id']==7){ //Si el estado es procesando
+//                                            $color_estado = "#2AA301"; //naranaja
+//                                            $estado = $var_procesando;
+//                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+//                                            $fecha = $dt->format('d/m/Y');
+//                                            $hora = $p['detalleserv_horaterminado'];
+//                                        }
+//                                        
+                                        if($p['estado_id']>=6 && $p['estado_id']!=28){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //naranaja
+                                            $estado = $var_terminado;
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+//                                        if($p['estado_id']==28){ //Si el estado es terminado
+//                                            $color_estado = "#FFB52B"; //naranaja
+//                                            $estado = $var_pendiente;
+//                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+//                                            $fecha = $dt->format('d/m/Y');
+//                                            $hora = $p['detalleserv_horaterminado'];
+//                                        }
+                                                                                   
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>  
+                                 <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+
+                                <!---------------------- PARA ENTREGA ------------------------------->
+                                
+                                <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                        
+                                    <?php 
+                                        
+                                        if($p['estado_id']<>6){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = $var_pendiente;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==6){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //verde
+                                            $estado = $var_procesando;
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+                                        
+                                        if($p['estado_id']>6&&$p['estado_id']!=28){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //marron
+                                            $estado = $var_terminado;
+                                            $dt = new DateTime($p['detalleserv_fechaterminado']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaterminado'];
+                                        }
+                                                                                   
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>
+                                 <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
+
+
+
+                                  
+                                    <!---------------------- ENTREGADO ------------------------------->
+                                                                                      
+                               
+                              <td style="padding: 0; line-height: 10px;" >
+                                    <div class="boton">
+                                        
+                                    <?php 
+                                        
+                                        if($p['estado_id']<>7){ //Si el estado es pendiente
+                                            $color_estado = "#FFB52B"; //naranaja
+                                            $estado = $var_pendiente;
+                                            $dt = new DateTime($servicio['servicio_fecharecepcion']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $servicio['servicio_horarecepcion'];
+                                        }
+                                        if($p['estado_id']==7){ //Si el estado es procesando
+                                            $color_estado = "#2AA301"; //verde
+                                            $estado = $var_pendiente;
+                                            $dt = new DateTime($p['detalleserv_fechaentrega']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaentrega'];
+                                        }
+                                        
+                                        if($p['estado_id']>6&&$p['estado_id']!=28){ //Si el estado es terminado
+                                            $color_estado = "#731501"; //marron
+                                            $estado = $var_terminado;
+                                            $dt = new DateTime($p['detalleserv_fechaentrega']);
+                                            $fecha = $dt->format('d/m/Y');
+                                            $hora = $p['detalleserv_horaentrega'];
+                                        }
+                                                                                   
+                                    ?>
+
+                                    <button class="button button5" style="background-color:<?php echo $color_estado; ?>">
+                                        <font size="1"><b><?php echo $estado ?></b>
+                                                <br><?php echo $fecha; ?>
+                                                <br><?php echo $hora; ?>                                        
+                                        </font>
+                                        
+                                    </button> 
+                                    </div>
+                                </td>
+                        </tr>
+                        <tr>
+                            <td colspan="9">
+                            
+                            <!---------------------- SLIDER  ------------------------>
+
+
+                            <script type="text/javascript">
+                                        $(document).ready(function() {
+                                                /*
+                                                 *  Simple image gallery. Uses default settings
+                                                 */
+
+                                                $('.fancybox').fancybox();
+
+                                                $("#fancybox-manual-c").click(function() {
+                                                        $.fancybox.open([
+                                                                {
+                                                                        href : '1_b.jpg',
+                                                                        title : 'Primer Imagen'
+                                                                }, {
+                                                                        href : '2_b.jpg',
+                                                                        title : '2nd title'
+                                                                }, {
+                                                                        href : '3_b.jpg'
+                                                                }
+                                                        ], {
+                                                                helpers : {
+                                                                        thumbs : {
+                                                                                width: 75,
+                                                                                height: 50
+                                                                        }
+                                                                }
+                                                        });
+                                                });
+
+
+                                        });
+                                </script>
+                            <style type="text/css">
+                                img{
+                                    height: 50px;
+                                    width: 50px
+                                }
+
+                                        /*.fancybox-custom .fancybox-skin {
+                                                box-shadow: 0 0 50px #222;
+                                        }*/
+
+                                        /*
+                                        .box-body {
+                                                max-width: 700px;
+                                                margin: 0 auto;
+                                        }*/
+                                </style>
+
+          
+                            <div class="row">
+                                <div class="col-md-12">
+
+                                    <div class="box">
+              
+                                
+                                
+                                <div class="box-body table-responsive">
+                                    <center>
+                                        
+                                    <p>
+                                        <?php
+                                            $colum = 5;
+                                            $cont = 1;
+
+                                            foreach($imagenes as $imagen)
+                                            {
+                                                
+                                                if ($p['detalleserv_id']==$imagen['detalleserv_id']){
+                                                    
+                                                    if(($cont % $colum) == 0){
+                                                      // // echo "<div id ='otrafila'>";
+                                                    }
+                                                    $mimagen = "thumb_".$imagen['imagenprod_archivo'];
+
+                                                    /////echo "<div id='colum5'>";
+                                                    echo "<a class='fancybox' href='".site_url('/resources/images/productos/'.$imagen['imagenprod_archivo'])."' data-fancybox-group='gallery' title='".$imagen['imagenprod_titulo']."'>";
+                                                    echo " <img src='".site_url('/resources/images/productos/'.$mimagen)."' alt='' /></a>";
+                                                    /////echo "</div>";
+                                                    if(($cont % $colum) == 0){
+                                                        echo "<br>";
+                                                    }
+                                           
+                                                }
+                                                $cont++; 
+                                             
+                                            } 
+                                            ?>
+                                    </p>
+                                    </center>
+                                </div>
+                                <div class="pull-right">
+
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                            
+                                
+                                
+                            <!---------------------- SLIDER  ------------------------>
+                            </td>
+
+                        </tr>
+                        
+                        <?php } ?>   
+                        
+                    <tr style="font-family: Arial">
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    <tr style="font-family: Arial">
+                        <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    </tr>
+                    
+                
+                    
+                </table>
+                                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-5">
+    </div>
+    <div class="col-md-2">        
+        <a href="<?php echo base_url(''); ?>" class="btn btn-success btn-block"><fa class="fa fa-close"></fa> SALIR</a>            
+        
+    </div>
+    <div class="col-md-5">
+    </div>
+    
+</div>
+<?php /*} else{ ?>
+<center>    
+    <h2><b>LA ORDEN DE TRABAJO NO EXISTE..!!</b></h2>
+    <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3>    
+    <a href='<?php echo base_url(); ?>' class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
+</center>
+    
+<?php }*/ ?>
+</div>

@@ -917,7 +917,7 @@ class Servicio extends CI_Controller{
             $data['page_title'] = "Servicio";
             
             /* ***** para generar cadena QR ***** */
-            $cadenaQR = base_url()."servicio/seguimiento/".$data['cliente']['cliente_id']."/".$servicio_id;
+            $cadenaQR = base_url()."seguimiento/consultar/".$data['cliente']['cliente_id']."/".$servicio_id;
             $this->load->library('ciqrcode');
             //configuarnado
             $params['data'] = $cadenaQR;//$this->random(30);
