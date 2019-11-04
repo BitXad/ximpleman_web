@@ -106,6 +106,15 @@ function ventas_dia($estado)
         return $reporte;
     }
 
+    function reporte_simple($filtro)
+    {
+        
+        $reporte = $this->db->query(
+        "SELECT vs.*, c.cliente_nombre, tt.tipotrans_nombre FROM venta vs LEFT JOIN cliente c on vs.cliente_id = c.cliente_id LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id WHERE  ".$filtro." ORDER BY venta_fecha DESC, venta_hora DESC
+        ")->result_array();
+        return $reporte;
+    }
+
     function get_cliente($filtro)
     {
         
