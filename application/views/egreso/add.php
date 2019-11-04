@@ -14,19 +14,19 @@
 					
 							
 							<div class="col-md-4">
-								<label for="egreso_nombre" class="control-label">NOMBRE</label>
+								<label for="egreso_nombre" class="control-label">Nombre</label>
 								<div class="form-group">
 									<input type="text" name="egreso_nombre" value="<?php echo $this->input->post('egreso_nombre'); ?>" class="form-control" id="egreso_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus required/>
 								</div>
 							</div>
 							<div class="col-md-4">
-								<label for="egreso_monto" class="control-label">MONTO</label>
+								<label for="egreso_monto" class="control-label">Monto</label>
 								<div class="form-group">
 									<input type="number" step="any" min="0" name="egreso_monto" value="<?php echo $this->input->post('egreso_monto'); ?>" class="form-control" id="egreso_monto" required/>
 								</div>
 							</div>
 							<div class="col-md-4">
-									<label for="egreso_moneda" class="control-label">MONEDA</label>
+									<label for="egreso_moneda" class="control-label">Moneda</label>
 									<div class="form-group">
 										<select name="egreso_moneda" class="form-control" required>
 											<option value="">- MONEDA -</option>
@@ -47,7 +47,7 @@
 									</div>
 								</div>
 							<div class="col-md-4">
-									<label for="egreso_categoria" class="control-label">CATEGORIA</label>
+									<label for="egreso_categoria" class="control-label">Categoria</label>
 									<div class="form-group">
 										
 										<select name="egreso_categoria" class="form-control">
@@ -64,7 +64,7 @@
 									</div>
 								</div>
 							<div class="col-md-4">
-								<label for="egreso_concepto" class="control-label">CONCEPTO</label>
+								<label for="egreso_concepto" class="control-label">Concepto</label>
 								<div class="form-group">
 									<input type="text" name="egreso_concepto" value="<?php echo $this->input->post('egreso_concepto'); ?>" class="form-control" id="egreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
 								</div>

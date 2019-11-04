@@ -56,13 +56,43 @@
 				<div class="box-body">
           		<div class="row clearfix">
 							<div class="col-md-4">
-								<label for="ingreso_nombre" class="control-label">NOMBRE</label>
+								<label for="ingreso_nombre" class="control-label">Nombre</label>
 								<div class="form-group">
 									<input type="text" name="ingreso_nombre" value="<?php echo $this->input->post('ingreso_nombre'); ?>" class="form-control" id="ingreso_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus required/>
 								</div>
 							</div>
 							
+							
+							
 							<div class="col-md-4">
+								<label for="ingreso_monto" class="control-label">Monto</label>
+								<div class="form-group">
+									<input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
+								</div>
+							</div>
+							<div class="col-md-4">
+									<label for="ingreso_moneda" class="control-label">Moneda</label>
+									<div class="form-group">
+										<select name="ingreso_moneda" class="form-control" required>
+											<option value="">- MONEDA -</option>
+											<?php 
+											$ingreso_moneda_values = array(
+						'Bs'=>'Bs',
+						'USD'=>'USD',
+					);
+
+											foreach($ingreso_moneda_values as $value => $display_text)
+											{
+												$selected = ($value == $this->input->post('ingreso_moneda')) ? ' selected="selected"' : "";
+
+												echo '<option value="'.$value.'" '.$selected.'>'.$display_text.'</option>';
+											} 
+											?>
+										</select>
+									</div>
+								</div>
+
+								<div class="col-md-4">
 									<label for="ingreso_categoria" class="control-label">Categoria</label>
 									<div class="form-group">
 										
@@ -81,35 +111,7 @@
 								</div>
 							
 							<div class="col-md-4">
-								<label for="ingreso_monto" class="control-label">MONTO</label>
-								<div class="form-group">
-									<input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
-								</div>
-							</div>
-							<div class="col-md-4">
-									<label for="ingreso_moneda" class="control-label">- MONEDA -</label>
-									<div class="form-group">
-										<select name="ingreso_moneda" class="form-control" required>
-											<option value="">-- MONEDA --</option>
-											<?php 
-											$ingreso_moneda_values = array(
-						'Bs'=>'Bs',
-						'USD'=>'USD',
-					);
-
-											foreach($ingreso_moneda_values as $value => $display_text)
-											{
-												$selected = ($value == $this->input->post('ingreso_moneda')) ? ' selected="selected"' : "";
-
-												echo '<option value="'.$value.'" '.$selected.'>'.$display_text.'</option>';
-											} 
-											?>
-										</select>
-									</div>
-								</div>
-							
-							<div class="col-md-4">
-								<label for="ingreso_concepto" class="control-label">CONCEPTO</label>
+								<label for="ingreso_concepto" class="control-label">Concepto</label>
 								<div class="form-group">
 									<input type="text" name="ingreso_concepto" value="<?php echo $this->input->post('ingreso_concepto'); ?>" class="form-control" id="ingreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
 								</div>

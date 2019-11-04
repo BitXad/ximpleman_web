@@ -35,6 +35,28 @@
 								</SELECT>
 						</div>
 					</div>
+					<div class="col-md-3">
+						<label for="parametro_anchofactura" class="control-label">ANCHO FACTURA</label>
+						<div class="form-group">
+							<input type="number" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : $parametro['parametro_anchofactura']); ?>" class="form-control" id="parametro_anchofactura" />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<label for="parametro_altofactura" class="control-label">ALTO FACTURA</label>
+						<div class="form-group">
+							<input type="number" name="parametro_altofactura" value="<?php echo ($this->input->post('parametro_altofactura') ? $this->input->post('parametro_altofactura') : $parametro['parametro_altofactura']); ?>" class="form-control" id="parametro_altofactura" />
+						</div>
+					</div>
+					<div class="col-md-3">
+						<label for="parametro_margenfactura" class="control-label">MARGEN FACTURA</label>
+						<div class="form-group">
+							<SELECT  name="parametro_margenfactura" value="<?php echo ($this->input->post('parametro_margenfactura') ? $this->input->post('parametro_margenfactura') : $parametro['parametro_margenfactura']); ?>" class="form-control" id="parametro_margenfactura" >
+											 <option value="1">1</option>
+
+								            <option value="2" <?php if($parametro['parametro_permisocredito']=='2'){ ?> selected <?php } ?> >2</option>
+								</SELECT>
+						</div>
+					</div>
 				<div class="col-md-3">
 						<label for="parametro_permisocredito" class="control-label">PERMISO CLIENTES</label>
 						<div class="form-group">

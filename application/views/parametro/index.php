@@ -21,6 +21,9 @@
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. INGRESO</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No.COPIAS FACTURAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE IMPRESORA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">ANCHO FACTURA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">ALTO FACTURA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">MARGEN FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">PERMISO CLIENTES</th>
                     </tr>
                     <tr>
@@ -28,6 +31,9 @@
                         <td><?php echo $p['parametro_numrecing']; ?></td>
                         <td><?php echo $p['parametro_copiasfact']; ?></td>
                         <td><?php echo $p['parametro_tipoimpresora']; ?></td>
+                        <td><?php echo $p['parametro_anchofactura']; ?></td>
+                        <td><?php echo $p['parametro_altofactura']; ?></td>
+                        <td><?php echo $p['parametro_margenfactura']; ?></td>
                         <!--<th style="font-size: 11px;color:black;">TITULO DOC.</th>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>-->
                         <td><?php  if ($p['parametro_permisocredito']==1){ echo 'TODOS'; }else{ echo'INDIVIDUAL'; } ?></td>

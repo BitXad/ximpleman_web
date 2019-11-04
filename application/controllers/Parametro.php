@@ -74,6 +74,9 @@ class Parametro extends CI_Controller{
                 'parametro_altoimagen' => $this->input->post('parametro_altoimagen'),
                 'parametro_formaimagen' => $this->input->post('parametro_formaimagen'),
                 'parametro_modulorestaurante' => $this->input->post('parametro_modulorestaurante'),
+                'parametro_anchofactura' => $this->input->post('parametro_anchofactura'),
+                'parametro_altofactura' => $this->input->post('parametro_altofactura'),
+                'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
                
             );
             
@@ -132,6 +135,9 @@ class Parametro extends CI_Controller{
                     'parametro_permisocredito' => $this->input->post('parametro_permisocredito'),
                     'parametro_agruparitems' => $this->input->post('parametro_agruparitems'),
                     'parametro_diasvenc' => $this->input->post('parametro_diasvenc'),
+                    'parametro_anchofactura' => $this->input->post('parametro_anchofactura'),
+                    'parametro_altofactura' => $this->input->post('parametro_altofactura'),
+                    'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            

@@ -151,7 +151,7 @@ body {
             
             <table>
                 <tr>
-                    <td style="font-size: 10px; width: 13.5cm">
+                    <td style="font-size: 10px; width: 12cm">
                         <?php
                         $cant = 0;
                         $separador = "|";
@@ -187,8 +187,9 @@ body {
                         <b>RESPONSABLE TÉCNICO: </b><?php echo $responsable; ?><br>
                         <b>ESTADO: <?php echo $servicio['estado_descripcion']; ?></b>
                     </td>
-                    <td style="vertical-align: top; text-align: right; width: 2.5cm" >
-                        <span><img src="<?php echo $codigoqr; ?>" width="100" height="100"></span>
+                    <td style="width: 4cm">
+                        <div style="text-align: right !important;"><img style="vertical-align: top;" src="<?php echo $codigoqr; ?>" width="100px" height="100px"></div>
+                        <div style="font-size: 9px; text-align: right"><span class="text-bold">Usuario:</span> <?php echo $servicio['servicio_id']; ?> &nbsp; <span class="text-bold">Clave:</span> <?php echo $cliente['cliente_id']; ?></div>
                     </td>
                 </tr>
             </table>

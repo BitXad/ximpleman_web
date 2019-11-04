@@ -8,19 +8,32 @@ Class Seguimiento extends CI_Controller
         $this->load->model('Proceso_orden_model');
         $this->load->model('Estado_model');
     }
+    
+    public function index(){
+        $servicio_id   = $this->input->post('usuario');
+        $cliente_id = $this->input->post('contrasen');
+        if(is_numeric($servicio_id) && is_numeric($cliente_id)){
+            $this->load->model('Servicio_model');
+            $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
+            $data['servicio'] =  $servicios;
 
-    public function index() {
-        $codigo = $this->input->post('codigo');
-        $this->load->model('Servicio_model');
-        $data['servicio'] = $this->Servicio_model->get_servicio_fromcodigo($codigo);
-        if(isset($data['servicio'][0]['servicio_codseguimiento']) and $data['servicio'][0]['servicio_codseguimiento'] == $codigo){
+            $this->load->model('Detalle_serv_model');
+            $this->load->model('Imagen_producto_model');
+
+            $data['imagenes'] = $this->Imagen_producto_model->get_all_imagen_mi_serv($servicio_id);
+            $this->load->model('Detalle_serv_model');
+            $data['detalle_servicio'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+
+            $empresa_id = 1;
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
             if(count($data['servicio']) > 0){
                 $this->load->view('seguimiento/index', $data);
             }else{
-                redirect();
+                $this->load->view('seguimiento/nohay');
             }
         }else{
-            redirect();
+            $this->load->view('seguimiento/nohay');
         }
     }
 
@@ -51,6 +64,30 @@ Class Seguimiento extends CI_Controller
             
             $this->load->view('layouts/clientmain',$data);
         
+    }
+    
+    public function consultar($cliente_id, $servicio_id){
+        
+        $this->load->model('Servicio_model');
+        $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
+        $data['servicio'] =  $servicios;
+        
+        $this->load->model('Detalle_serv_model');
+        $this->load->model('Imagen_producto_model');
+
+        $data['imagenes'] = $this->Imagen_producto_model->get_all_imagen_mi_serv($servicio_id);
+        $this->load->model('Detalle_serv_model');
+        $data['detalle_servicio'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
+
+        $empresa_id = 1;
+        $this->load->model('Empresa_model');
+        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+        
+        if(count($data['servicio']) > 0){
+            $this->load->view('seguimiento/index', $data);
+        }else{
+            $this->load->view('seguimiento/nohay');
+        }
     }
     
 }

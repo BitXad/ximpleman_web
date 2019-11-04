@@ -58,7 +58,7 @@
       var prove = $('#prove_id').val();
       if(prove == 0){
           
-   alert("Debe sleccionar un Proveedor");
+   alert("Debe seleccionar un Proveedor");
       
       }
 }
@@ -434,10 +434,18 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <div class="col-md-12">
 
             <center>
-            <a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+
+            <?php  $provien = $compra[0]['proveedor_id'];  if($provien==0) { ?>  
+            <label id="provedorboton2"><a onclick="myFunction()" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
                 <i class="fa fa-money fa-4x"></i><br>
-               Finalizar<br>Cambios<br>
-            </a>
+               Finalizar<br>Compra<br>
+            </a></label>
+          <?php }else{ ?>
+            <label id="provedorboton2"><a href="#" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;">
+                <i class="fa fa-money fa-4x"></i><br>
+               Finalizar<br>Compra<br>
+            </a></label>
+          <?php } ?>
 
             
             <a  href="#" data-toggle="modal" data-target="#aviso" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;">
