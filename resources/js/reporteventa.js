@@ -156,7 +156,7 @@ function tablarecliente()
                     html += "<tr>"
                     html += "<th>N</th>";
                     html += "<th>ID</th>";
-                    html += "<th>Producto</th>";
+                    html += "<th>Cliente</th>";
                     html += "<th></th>";
                     html += "</tr>";
                     html += "<tbody class='buscar' id='tablarecliente'>";
@@ -312,7 +312,7 @@ if (proveedor=="") {
 if (cliente=="") {
 	elcliente = "";
 } else {
-	elcliente = "and cliente_id="+cliente+" "; 
+	elcliente = "and vs.cliente_id="+cliente+" "; 
 }
 if (producto=="") {
 	elproducto = "";
@@ -326,7 +326,7 @@ if (tipo==0) {
 } 
 	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" "+elprove+" ";
 
-
+  simplemente(filtro);
      
     $.ajax({url: controlador,
            type:"POST",
@@ -401,7 +401,7 @@ if (tipo==0) {
                         html += "<td></td>";
                         html += "<th style='text-align:right'>"+Number(cuotas).toFixed(2)+"</th>";
                         html += "<td></td>";
-                        html += "<th>"+cantidades+"</td>";
+                        html += "<th>"+Number(cantidades).toFixed(2)+"</td>";
                         html += "<td></td>";
                         html += "<th style='text-align:right'>"+Number(descuentos).toFixed(2)+"</th>";
                         html += "<th style='text-align:right'>"+Number(total).toFixed(2)+"</th>";
@@ -579,3 +579,77 @@ if (desde=='' && hasta=='') {
     });   
 
 } 
+
+
+function simplemente(filtro)
+{
+var base_url    = document.getElementById('base_url').value;
+var controlador = base_url+"detalle_venta/busca_simple";
+
+   
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{filtro:filtro},
+          
+           success:function(report){     
+              
+                            
+                $("#enco").val("- 0 -");
+               var registros =  JSON.parse(report);
+           
+               if (registros != null){
+                   
+                    
+                    var totales = Number(0);
+                    
+                    var n = registros.length; //tama«Ðo del arreglo de la consulta
+                    
+                   
+                    html = "";
+                 
+                    for (var i = 0; i < n ; i++){
+                        
+                         totales += Number(registros[i]["venta_total"]);
+                    
+                        
+                        
+                        html += "<tr>";
+                      
+                        
+                        html += "<td align='center'> "+(i+1)+" </td>";     
+                        html += "<td> "+registros[i]["cliente_nombre"]+" </td>";     
+                        html += "<td align='center'> "+registros[i]["venta_id"]+" </td>";     
+                        html += "<td align='right'> "+Number(registros[i]["venta_total"]).toFixed(2)+" </td>";     
+                        html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";     
+                        html += "<td align='center'> "+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" </td>";     
+      
+                        html += "</tr>";
+                       
+                   }
+                        html += "<tr>";
+                       
+                        html += "<th></th>";
+                        html += "<th></th>";
+                        html += "<th></th>";
+                        html += "<th style='text-align:right'>"+Number(totales).toFixed(2)+"</th>";
+                        html += "<th></th>";
+                        html += "<th></th>";
+                        html += "</tr>";
+                   /*desde1 = "<b>Desde: "+moment(desde).format('DD/MM/YYYY')+"</b>";
+                   hasta1 = "<b>Hasta: "+moment(hasta).format('DD/MM/YYYY')+"</b>";
+                   
+                   $("#desde").html(desde1);
+                   $("#hasta").html(hasta1);*/
+                   $("#simple").html(html);
+                   document.getElementById('loader').style.display = 'none';
+            }
+                
+        },
+        error:function(result){
+           alert("Algo salio mal...!!!");
+           html = "";
+           $("#simple").html(html);
+        }
+        
+    });   
+}

@@ -104,12 +104,8 @@ class Credito extends CI_Controller{
                 $filtro = " p.proveedor_nombre like '%".$usu."%' ".$estadosi." and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."'  ".$vendedor." ";
             }
 
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('credito/repoDeudas?');
-            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-            $this->pagination->initialize($config);
-
-            $data['page_title'] = "Comprobante"; 
+            
+           
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Credito_model->filtrodeudas($filtro);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
@@ -169,10 +165,7 @@ class Credito extends CI_Controller{
             } else {
                 $filtro = " (p.cliente_nombre like '%".$usu."%' or r.cliente_nombre  like '%".$usu."%')  and c.credito_fecha >= '".$feini."' and c.credito_fecha <= '".$fefin."' ".$estadosi." ".$vendedor." ";
             }
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('credito/repoCuentas?');
-            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-            $this->pagination->initialize($config);
+           
 
             $data['page_title'] = "Reporte"; 
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
