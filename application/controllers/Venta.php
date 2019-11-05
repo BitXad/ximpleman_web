@@ -890,7 +890,7 @@ function edit($venta_id)
                     $this->Venta_model->eliminar_credito($credito['credito_id']);
                 }
                 
-                if ($tipotrans_id == 2||tipotrans_id == 3)
+                if ($tipotrans_id == 2 || $tipotrans_id == 3)
                 {
 
                         $fecha_inicio = $venta_fecha;
