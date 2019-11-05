@@ -441,8 +441,8 @@ if(sizeof($servicio)>0){  ?>
                                                     $mimagen = "thumb_".$imagen['imagenprod_archivo'];
 
                                                     /////echo "<div id='colum5'>";
-                                                    echo "<a class='fancybox' href='".site_url('/resources/images/productos/'.$imagen['imagenprod_archivo'])."' data-fancybox-group='gallery' title='".$imagen['imagenprod_titulo']."'>";
-                                                    echo " <img src='".site_url('/resources/images/productos/'.$mimagen)."' alt='' /></a>";
+                                                    echo "<a class='fancybox' href='".site_url('/resources/images/servicios/'.$imagen['imagenprod_archivo'])."' data-fancybox-group='gallery' title='".$imagen['imagenprod_titulo']."'>";
+                                                    echo " <img src='".site_url('/resources/images/servicios/'.$mimagen)."' alt='' /></a>";
                                                     /////echo "</div>";
                                                     if(($cont % $colum) == 0){
                                                         echo "<br>";
@@ -493,7 +493,7 @@ if(sizeof($servicio)>0){  ?>
     <div class="col-md-5">
     </div>
     <div class="col-md-2">        
-        <a href="<?php echo base_url(''); ?>" class="btn btn-success btn-block"><fa class="fa fa-close"></fa> SALIR</a>            
+        <a href="<?php echo base_url('servicio/index'); ?>" class="btn btn-success btn-block"><fa class="fa fa-close"></fa> SALIR</a>            
         
     </div>
     <div class="col-md-5">
@@ -504,7 +504,7 @@ if(sizeof($servicio)>0){  ?>
 <center>    
     <h2><b>LA ORDEN DE TRABAJO NO EXISTE..!!</b></h2>
     <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3>    
-    <a href='<?php echo base_url(); ?>' class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
+    <a href='<?php echo base_url('servicio/index'); ?>' class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
 </center>
     
 <?php } ?>
