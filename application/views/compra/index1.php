@@ -283,15 +283,15 @@
                                 </button>
                             </div>
                             <div class="form">   
-                             <h1><b> Desea continuar con la compra no finalizada? 
-                             </b></h1>
+                             <center><H4> Desea continuar con la compra no finalizada? 
+                             </H4></center>
                          </div>
                          <div class="modal-footer" >       
-                          <a  href="<?php echo site_url('compra/edit/'.$c['compra_id'].'/1'); ?>" class="btn btn-lg btn-success" >
+                          <a  href="<?php echo site_url('compra/edit/'.$c['compra_id'].'/1'); ?>" class="btn btn-md btn-success" >
                             <i class="fa fa-sign-out "></i>
                             Si
                         </a> 
-                        <a  href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-lg btn-danger" >
+                        <a  href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-md btn-danger" >
                             <i class="fa fa-sign-in "></i>
                             No
                         </a>  

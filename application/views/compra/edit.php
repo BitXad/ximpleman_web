@@ -330,7 +330,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </button>
               </div>
               <div class="form">   
-               <center><H4> Desea Salir de esta Compra sin Guardar Cambios? 
+               <center><H4> Desea salir de esta Compra sin guardar cambios? 
               </H4></center>
           </div>
               <div class="modal-footer" >
