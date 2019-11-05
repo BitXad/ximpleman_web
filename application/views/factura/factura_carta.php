@@ -332,7 +332,9 @@ border-bottom : 1px solid #aaa;
                                     echo  $d['detallefact_preferencia']; }
                                 ?>
                                 <?php if(sizeof($d['detallefact_caracteristicas'])>0 && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
-                                    echo  "<br>".$d['detallefact_caracteristicas']; }
+                                    echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                                    //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
+                                    
                                 ?>
                                 
                                 
