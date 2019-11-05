@@ -118,7 +118,7 @@ function tabladetallecompra(){
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td style='font-size:10px; width:140px;'><b>"+registros[i]["producto_nombre"]+" /</b><br>";
+                        html += "<td style='font-size:10px; width:140px;'><a href='"+base_url+"producto/edit/"+registros[i]["producto_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Producto'><span class='fa fa-pencil'></span></a><b>"+registros[i]["producto_nombre"]+" / </b>";
                         
                         html += "<b>"+registros[i]["detallecomp_unidad"]+"</td>";                                            
                         html += "<td style='font-size:12px; text-align:center;'>"+registros[i]["detallecomp_codigo"]+"<br><font size='1'>";
@@ -149,7 +149,7 @@ function tabladetallecompra(){
                         ////////////////////////////formu////////////////
                         html += "<td style='padding-left:4px; padding-right:4px;'>";
                         if(modificar_detalle == 1){
-                            html += "<button type='button' onclick='editadetalle("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='btn btn-success btn-sm'><span class='fa fa-save'></span></button>";
+                            html += "<button type='button' onclick='editadetalle("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='btn btn-success btn-xs'><span class='fa fa-save'></span></button>";
                         }
                         html += "</td>";
                         ////////////////////////////////fin fotmu//////////////////////
@@ -158,7 +158,7 @@ function tabladetallecompra(){
                         //html += "<button type='submit' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button>";
                         html += "<td style='padding-left:4px; padding-right:4px;'>";
                         if(eliminar_detalle == 1){
-                            html += "<button type='button' onclick='quitardetalle("+registros[i]["detallecomp_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-times'></span></button>";
+                            html += "<button type='button' onclick='quitardetalle("+registros[i]["detallecomp_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-times'></span></button>";
                         }
                         //html += "</form></td>";
                         html += "</td>";
