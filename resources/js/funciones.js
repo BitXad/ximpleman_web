@@ -268,7 +268,7 @@ function tablaproductos()
                            total_detalle+= parseFloat(registros[i]["detalleven_total"]);
                            
                             if (i == 0){
-                                color = "style='background-color: brown; padding:0; color: white;'"
+                                color = "style='background-color: orange; padding:0; color: black;'"
                                 fuente = "2";
                             }
                             else {
