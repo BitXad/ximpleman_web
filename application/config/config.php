@@ -27,13 +27,8 @@ $config['base_url'] = 'http://192.168.1.100/ximpleman_web/';
 
 */
 
-<<<<<<< HEAD
 
 $config['base_url'] = 'http://localhost/ximpleman_web';
-
-=======
-$config['base_url'] = 'http://localhost/ximpleman_web';
->>>>>>> master
 
 /*
 |--------------------------------------------------------------------------
