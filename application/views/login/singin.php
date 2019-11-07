@@ -85,9 +85,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
         <div class="login-block">
             <!--                <form>-->
-            <?php echo form_open('verificar'); ?>
-            <input type="text" name="username" id="username" placeholder="Usuario" autocomplete="off" autofocus  required="" <?php if($diaslic['dias'] < 0){ ?> readonly <?php } ?> >
-            <input type="password" name="password" id="password" class="lock" placeholder="Contraseña" <?php if($diaslic['dias'] < 0){ ?> readonly <?php } ?> >
+              <?php if($diaslic['dias'] < 0){ ?>
+                <br><div class="info-box bg-red"><br>
+            <center><span class="info-box-text"><font size="4"><b>LA LICENCIA ESTA EXPIRADA </b></font></span></center><br>
+            <center><span class="progress-description">
+                    No podra ingresar al Sistema.  Consulte con el Proveedor
+                  </span></center><br></div>
+             <?php }else { ?>
+              <?php echo form_open('verificar'); ?>
+            <input type="text" name="username" id="username" placeholder="Usuario" autocomplete="off" autofocus  required=""  ?>  
+            <input type="password" name="password" id="password" class="lock" placeholder="Contraseña"  >
+            <input type="submit" name="Sign In" value="Ingresar">
+            <?php echo form_close(); ?>
+             <?php } ?>
             <!--<div class="forgot-top-grids">
                 <div class="forgot-grid">
                     <ul>
@@ -103,8 +113,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="clearfix"> </div>
             </div>-->
 
-            <input type="submit" name="Sign In" value="Ingresar">
-
+            
             <!--<h3>No estas registrado?<a href="#">  Registrate Ahora</a></h3>-->
 
             <!--                </form>-->
