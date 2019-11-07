@@ -110,6 +110,20 @@
             <!--este es FIN de input buscador-->
             <div class="col-md-3">
                 <div class="box-tools">
+                    <select name="tipo_id" class="btn-primary btn-sm btn-block" id="tipo_id" onchange="tablaresultadoscliente(2)">
+                        <option value="" disabled selected >-- TIPOS --</option>
+                        <option value="0"> Todos los Tipos </option>
+                        <?php 
+                        foreach($all_tipo_cliente as $tipocliente)
+                        {
+                            echo '<option value="'.$tipocliente['tipocliente_id'].'">'.$tipocliente['tipocliente_descripcion'].'</option>';
+                        } 
+                        ?>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="box-tools">
                     <select name="categoriaclie_id" class="btn-primary btn-sm btn-block" id="categoriaclie_id" onchange="tablaresultadoscliente(2)">
                         <option value="" disabled selected >-- CATEGORIAS --</option>
                         <option value="0"> Todas Las Categorias </option>
@@ -136,15 +150,15 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="box-tools">
-                    <select name="tipo_id" class="btn-primary btn-sm btn-block" id="tipo_id" onchange="tablaresultadoscliente(2)">
-                        <option value="" disabled selected >-- TIPOS --</option>
-                        <option value="0"> Todos los Tipos </option>
+                    <select name="estado_id" class="btn-primary btn-sm btn-block" id="estado_id" onchange="tablaresultadoscliente(2)">
+                        <option value="" disabled selected >-- ESTADOS --</option>
+                        <option value="0"> Todos los Estados </option>
                         <?php 
-                        foreach($all_tipo_cliente as $tipocliente)
+                        foreach($all_estado as $estado)
                         {
-                            echo '<option value="'.$tipocliente['tipocliente_id'].'">'.$tipocliente['tipocliente_descripcion'].'</option>';
+                            echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
                         } 
                         ?>
                     </select>
@@ -160,20 +174,6 @@
                         foreach($all_prevendedor as $prevendedor)
                         {
                             echo '<option value="'.$prevendedor['usuario_id'].'">'.$prevendedor['usuario_nombre'].'</option>';
-                        } 
-                        ?>
-                    </select>
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="box-tools">
-                    <select name="estado_id" class="btn-primary btn-sm btn-block" id="estado_id" onchange="tablaresultadoscliente(2)">
-                        <option value="" disabled selected >-- ESTADOS --</option>
-                        <option value="0"> Todos los Estados </option>
-                        <?php 
-                        foreach($all_estado as $estado)
-                        {
-                            echo '<option value="'.$estado['estado_id'].'">'.$estado['estado_descripcion'].'</option>';
                         } 
                         ?>
                     </select>
