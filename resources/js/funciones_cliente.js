@@ -212,7 +212,7 @@ function tablaresultadoscliente(limite)
                         html += "<div><b>EMPRESA: </b>"+neg+"<br></div>";
                         html += "<b>ZONA: </b>"+escategoria_clientezona+" <b>DPTO: </b>"+registros[i]["cliente_departamento"];                        
                         
-                        html += "<div><b>TIPO: </b>"+registros[i]["categoriaclie_descripcion"]+"<br></div>";
+                        html += "<div><b>TIPO: </b>"+registros[i]["tipocliente_descripcion"]+" <b>CATEG.: </b>"+registros[i]["categoriaclie_descripcion"]+"<br></div>";
                         html += "<b>DIREC.: </b>"+dir+"<br>";
                         html += "<b>TELF.: </b>"+telef+linea+celular;                        
                        

@@ -142,11 +142,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     <div class="col-md-4">
     <div class="box-tools">
         <center>            
-            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Proveedor</small></a>
-            <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar</small></a>
-            <!--<a href="#" data-toggle="modal" data-target="#modalbuscarprod" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->
-            <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->  
+            <a href="#" data-toggle="modal" data-target="#modalproveedor"class="btn btn-success btn-foursquarexs" title="Registrar nuevo Proveedor"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Proveedor</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" title="Buscar Proveedores"><font size="5"><span class="fa fa-search"></span></font><br><small>Buscar Prov.</small></a>
+            <a href="#" data-toggle="modal" data-target="#modalproducto" class="btn btn-primary btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-plus-circle"></span></font><br><small>Nuevo Prod</small></a> 
        
         </center>  
 

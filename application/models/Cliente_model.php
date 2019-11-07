@@ -98,7 +98,7 @@ class Cliente_model extends CI_Model
             ".$condicion."
             GROUP BY
                 c.cliente_id
-            ORDER By c.cliente_id DESC LIMIT 50";
+            ORDER By c.cliente_nombre LIMIT 50";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
@@ -292,7 +292,7 @@ class Cliente_model extends CI_Model
                 
             GROUP BY
                 c.cliente_id
-              ORDER By c.cliente_id DESC";
+              ORDER By c.cliente_nombre";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
@@ -422,7 +422,7 @@ class Cliente_model extends CI_Model
             ".$condicion."
             GROUP BY
                 c.cliente_id
-            ORDER By c.cliente_id DESC";
+            ORDER By c.cliente_nombre";
 
         $cliente = $this->db->query($sql)->result_array();
         return $cliente;
