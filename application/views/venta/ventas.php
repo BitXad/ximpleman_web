@@ -508,6 +508,9 @@ window.onkeydown = compruebaTecla;
             <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
             <?php } ?>
             </center>
+            
+            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Plan de Pagos</b></a> 
+            
             <!--------------- fin botones ---------------------->
             
             <!--------------------- fin parametro de buscador ---------------------> 
