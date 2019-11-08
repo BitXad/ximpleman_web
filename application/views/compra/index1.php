@@ -264,11 +264,11 @@
 
                   <td align="center"><?php echo date('d/m/Y',strtotime($c['compra_fecha'])) ; ?><br>
                     <?php echo $c['compra_hora']; ?></td>
-                    <td align="center"><?php echo $c['estado_descripcion']; ?> <br> <?php if($c['compra_placamovil']==1) { ?><span class="btn-danger btn-xs">NO FINALIZADO</span> <?php } ?></td>
+                    <td align="center" style='background: #<?php echo $c['estado_color']; ?>'><?php echo $c['estado_descripcion']; ?> <br> <?php if($c['compra_placamovil']==1) { ?><span class="btn-danger btn-xs">NO FINALIZADO</span> <?php } ?></td>
                     <td align="center"> <?php echo $c['usuario_nombre']; ?></td>
                     <td class="no-print">
                         <?php if($c['compra_placamovil']==1) { ?>
-                         <a href="#" data-toggle="modal" data-target="#cambi<?php echo $c['compra_id']; ?>" class="btn btn-info btn-xs" >
+                         <a href="#" data-toggle="modal" data-target="#cambi<?php echo $c['compra_id']; ?>" class="btn btn-info btn-xs" title='Modificar Compra'>
                            <i class="fa fa-pencil "></i>
 
                        </a>
@@ -297,10 +297,56 @@
                         </a>  
                     </div> </div></div></div></div>
                 <?php } else { ?>
-                    <a href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>
+                    <a href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-info btn-xs" title='Modificar Compra'><span class="fa fa-pencil"></span></a>
                 <?php } ?>
-                <a href="<?php echo site_url('compra/nota/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>  
-                <!--<a href="<?php echo site_url('compra/remove/'.$c['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                <a href="<?php echo site_url('compra/nota/'.$c['compra_id']); ?>" target="_blank" class="btn btn-success btn-xs" title='Nota de Compra'><span class="fa fa-print"></span></a>  
+                 <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1 && $c['elestado']==1){ ?> 
+                <a href="#" data-toggle="modal" data-target="#anularmodal<?php echo $c['compra_id'] ?>" class="btn btn-xs btn-warning" title="Anular Compra" >
+                <i class="fa fa-minus-circle "></i>
+            </a>
+            <?php } ?>
+
+
+ <!---------------------------------MODAL DE ANULAR COMPRA------------------------->
+
+  <div class="modal fade" id="anularmodal<?php echo $c['compra_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4><b> <em class="fa fa-minus-circle"></em> Desea anular la compra No.: <?php echo $c['compra_id']; ?>? 
+              </b></h4>
+              </div>
+              <div class="modal-body" align="center">
+                <
+
+         <h4>
+               Esta compra puede tener una orden de Pago, tomar en cuenta.
+           </h4>
+          </div>
+              <div class="modal-footer" align="right">
+
+            <a href="<?php echo site_url('compra/anular/'.$c['compra_id']); ?>" class="btn btn-xs btn-warning"  type="submit">
+                <h5>
+                <span class="fa fa-check"></span>   Anular  
+                </h5>
+            </a>
+            
+            <button class="btn btn-xs btn-danger" data-dismiss="modal">
+                <h5>
+                <span class="fa fa-close"></span>   Cancelar  
+                </h5>
+            </button>
+                         
+        </div>
+
+            </div>
+          </div>
+        </div>
+        <!---------------------------------FIN MODAL DE ANULAR COMPRA------------------------->
             </td>
         </tr>
 
