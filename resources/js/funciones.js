@@ -934,32 +934,64 @@ function ingresorapido(producto_id,cantidad)
 
 function ingresorapidojs(cantidad,producto)
 {       
-    var factor = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+    var factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
     var indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
-    cantidad = cantidad * factor;
+    var factor = 0;    
     var precio = 0;  
     
-    //if (Number(factor)>1){
-    if (indice>0){
     
-        if (factor == producto.producto_factor)
-            precio = producto.producto_preciofactor;    
+    if (Number(indice)>0){
     
-        if (factor == producto.producto_factor1)
-            precio = producto.producto_preciofactor1;    
+        if (factor_nombre == "producto_factor"){
+            precio = producto.producto_preciofactor;
+            factor = producto.producto_factor;
+        }    
     
-        if (factor == producto.producto_factor2)
-            precio = producto.producto_preciofactor2;    
     
-        if (factor == producto.producto_factor3)
-            precio = producto.producto_preciofactor3;    
+        if (factor_nombre == "producto_factor1"){
+            precio = producto.producto_preciofactor1;
+            factor = producto.producto_factor;
+        }    
     
-        if (factor == producto.producto_factor4)
-            precio = producto.producto_preciofactor4;    
+        if (factor_nombre == "producto_factor2"){
+            precio = producto.producto_preciofactor2;
+            factor = producto.producto_factor;
+        }    
+    
+        if (factor_nombre == "producto_factor3"){
+            precio = producto.producto_preciofactor3;
+            factor = producto.producto_factor;
+        }    
+    
+        if (factor_nombre == "producto_factor4"){
+            precio = producto.producto_preciofactor4;
+            factor = producto.producto_factor;
+        }    
+//    
+//        if (factor == producto.producto_factor && indice == 1)
+//            precio = producto.producto_preciofactor;    
+//    
+//        if (factor == producto.producto_factor1 && indice == 2)
+//            precio = producto.producto_preciofactor1;    
+//    
+//        if (factor == producto.producto_factor2 && indice == 3)
+//            precio = producto.producto_preciofactor2;    
+//    
+//        if (factor == producto.producto_factor3  && indice == 4)
+//            precio = producto.producto_preciofactor3;    
+//    
+//        if (factor == producto.producto_factor4 && indice == 5)
+//            precio = producto.producto_preciofactor4;    
     }
     else 
-    {    precio = producto.producto_precio;}
+    {   factor = 1; 
+        precio = producto.producto_precio;
+    }
 
+    var cantidad = cantidad * factor;
+    
+
+    //alert(producto.producto_nombre+", cantidad: "+cantidad+", factor:"+factor+", indice:"+indice+", precio: "+precio);
     
     var base_url = document.getElementById('base_url').value;   
     var controlador = base_url+"venta/ingresar_detalle";
@@ -1123,6 +1155,7 @@ function ingreso_rapido(producto_id){
 function registrar_ingreso_rapido(producto){
     
     $("#ingresorapido_producto").val(producto.producto_nombre);
+    $("#filtrar").val(producto.producto_nombre);
     $("#ingresorapido_producto_id").val(producto.producto_id);
     $("#ingresorapido_cantidad").val("0.00");
     $("#boton_modal_ingreso").click();
@@ -1137,11 +1170,14 @@ function guardar_ingreso_rapido(){
     var controlador = base_url+"compra/compra_rapida";
     var producto_id = document.getElementById("ingresorapido_producto_id").value;
     var cantidad = document.getElementById("ingresorapido_cantidad").value;
-    
+   
     $.ajax({url: controlador,
         type:"POST",
         data:{producto_id:producto_id,cantidad:cantidad },
-        success:function(respuesta){         
+        success:function(respuesta){     
+                        
+            tablaresultados(1);
+            
             //tablaresultados()();
         },
         error: function(respuesta){         
@@ -1179,16 +1215,16 @@ function tablaresultados(opcion)
     var ancho_boton = document.getElementById('parametro_anchoboton').value; //base 115
     var alto_boton = document.getElementById('parametro_altoboton').value;
     var color_boton = document.getElementById('parametro_colorboton').value;
-    var ancho_imagen = document.getElementById('parametro_anchoimagen').value;;//document.getElementById('parametro_anchoimagen').value;
-    var alto_imagen = document.getElementById('parametro_altoimagen').value;; //document.getElementById('parametro_altoimagen').value;
-    var forma_imagen = document.getElementById('parametro_formaimagen').value;; //document.getElementById('parametro_altoimagen').value;
+    var ancho_imagen = document.getElementById('parametro_anchoimagen').value;//document.getElementById('parametro_anchoimagen').value;
+    var alto_imagen = document.getElementById('parametro_altoimagen').value; //document.getElementById('parametro_altoimagen').value;
+    var forma_imagen = document.getElementById('parametro_formaimagen').value; //document.getElementById('parametro_altoimagen').value;
     
-    var rol_precioventa = document.getElementById('rol_precioventa').value;; //document.getElementById('parametro_altoimagen').value;
-    var rol_factor = document.getElementById('rol_factor').value;; //document.getElementById('parametro_altoimagen').value;
-    var rol_factor1 = document.getElementById('rol_factor1').value;; //document.getElementById('parametro_altoimagen').value;
-    var rol_factor2 = document.getElementById('rol_factor2').value;; //document.getElementById('parametro_altoimagen').value;
-    var rol_factor3 = document.getElementById('rol_factor3').value;; //document.getElementById('parametro_altoimagen').value;
-    var rol_factor4 = document.getElementById('rol_factor4').value;; //document.getElementById('parametro_altoimagen').value;
+    var rol_precioventa = document.getElementById('rol_precioventa').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor = document.getElementById('rol_factor').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor1 = document.getElementById('rol_factor1').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor2 = document.getElementById('rol_factor2').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor3 = document.getElementById('rol_factor3').value; //document.getElementById('parametro_altoimagen').value;
+    var rol_factor4 = document.getElementById('rol_factor4').value; //document.getElementById('parametro_altoimagen').value;
     
 
     if(esMobil()) { tamanio = 1; }
@@ -1243,7 +1279,6 @@ function tablaresultados(opcion)
                         mensajeboton = " Añadir al detalle"; //mensaje para el boton del carrito
                         
                     }
-                        
                     
                    html += "                </tr>";
                    html += "                <tbody class='buscar' >";
@@ -1294,7 +1329,7 @@ function tablaresultados(opcion)
                         
                         if (rol_precioventa==1){
                             
-                            html += "       <option value='1'>";
+                            html += "       <option value='precio_normal'>";
                             precio_unidad = registros[i]["producto_precio"];
                             html += "           "+registros[i]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
                             html += "       </option>";
@@ -1306,7 +1341,7 @@ function tablaresultados(opcion)
                                 precio_factor = parseFloat(registros[i]["producto_preciofactor"]);
                                 precio_factorcant = parseFloat(registros[i]["producto_preciofactor"]) * parseFloat(registros[i]["producto_factor"]);
 
-                                html += "       <option value='"+registros[i]["producto_factor"]+"'>";
+                                html += "       <option value='producto_factor'>";
                                 html += "           "+registros[i]["producto_unidadfactor"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                                 html += "       </option>";
                             }
@@ -1318,7 +1353,7 @@ function tablaresultados(opcion)
                                 precio_factor = parseFloat(registros[i]["producto_preciofactor1"]);
                                 precio_factorcant = parseFloat(registros[i]["producto_preciofactor1"]) * parseFloat(registros[i]["producto_factor1"]);
 
-                                html += "       <option value='"+registros[i]["producto_factor1"]+"'>";
+                                html += "       <option value='producto_factor1'>";
                                 html += "           "+registros[i]["producto_unidadfactor1"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                                 html += "       </option>";
                             }
@@ -1329,7 +1364,7 @@ function tablaresultados(opcion)
                                 precio_factor = parseFloat(registros[i]["producto_preciofactor2"]);
                                 precio_factorcant = parseFloat(registros[i]["producto_preciofactor2"]) * parseFloat(registros[i]["producto_factor2"]);
 
-                                html += "       <option value='"+registros[i]["producto_factor2"]+"'>";
+                                html += "       <option value='producto_factor2'>";
                                 html += "           "+registros[i]["producto_unidadfactor2"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                                 html += "       </option>";
                             }
@@ -1340,7 +1375,7 @@ function tablaresultados(opcion)
                                 precio_factor = parseFloat(registros[i]["producto_preciofactor3"]);
                                 precio_factorcant = parseFloat(registros[i]["producto_preciofactor3"]) * parseFloat(registros[i]["producto_factor3"]);
 
-                                html += "       <option value='"+registros[i]["producto_factor3"]+"'>";
+                                html += "       <option value='producto_factor3'>";
                                 html += "           "+registros[i]["producto_unidadfactor3"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                                 html += "       </option>";
                             }
@@ -1351,7 +1386,7 @@ function tablaresultados(opcion)
                                 precio_factor = parseFloat(registros[i]["producto_preciofactor4"]);
                                 precio_factorcant = parseFloat(registros[i]["producto_preciofactor4"]) * parseFloat(registros[i]["producto_factor4"]);
 
-                                html += "       <option value='"+registros[i]["producto_factor4"]+"'>";
+                                html += "       <option value='producto_factor4'>";
                                 html += "           "+registros[i]["producto_unidadfactor4"]+" Bs: "+precio_factor.toFixed(2)+"/"+precio_factorcant.toFixed(2);
                                 html += "       </option>";
                             }
