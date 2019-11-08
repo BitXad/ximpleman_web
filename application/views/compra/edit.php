@@ -225,12 +225,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
         <span style="margin-right: 40%">Buscar Productos</span>  
          <label class="btn btn-info btn-xs" > <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" checked> Agrupar</label>  
                 <?php if($bandera==1) { ?>
-                <?php if($rolusuario[8-1]['rolusuario_asignado'] == 1){ ?> 
-                <a href="#" data-toggle="modal" data-target="#anularmodal" class="btn btn-xs btn-warning" >
-                <i class="fa fa-minus-circle "></i>
-               Anular Compra 
-            </a>
-            <?php } ?>
+               
             <?php if($rolusuario[9-1]['rolusuario_asignado'] == 1){ ?> 
             <a href="#" data-toggle="modal" data-target="#cambiarfecha" class="btn btn-xs btn-facebook" >
                 <i class="fa fa-calendar "></i>
@@ -1261,46 +1256,6 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
 </div>
 
 
- <!---------------------------------MODAL DE ANULAR COMPRA------------------------->
-
-  <div class="modal fade" id="anularmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h2><b> <em class="fa fa-minus-circle"></em> Desea Anular la Venta? 
-              </b></h2>
-              </div>
-              <div class="modal-body" align="center">
-                <form action="<?php echo base_url('compra/anular'); ?>"  method="POST" class="form">
-<input id="compra_id"  name="compra_id" type="hidden" class="form-control" value="<?php echo $compra_id; ?>">
-
-         
-               Esta compra puede tener una orden de Pago, tomar en cuenta.
-          </div>
-              <div class="modal-footer" align="right">
-
-            <button class="btn btn-xs btn-warning"  type="submit">
-                <h5>
-                <span class="fa fa-check"></span>   Anular  
-                </h5>
-            </button>
-            </form>
-            <button class="btn btn-xs btn-danger" data-dismiss="modal">
-                <h5>
-                <span class="fa fa-close"></span>   Cancelar  
-                </h5>
-            </button>
-                         
-        </div>
-
-            </div>
-          </div>
-        </div>
-        <!---------------------------------FIN MODAL DE ANULAR COMPRA------------------------->
        
 
     </div>
