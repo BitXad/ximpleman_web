@@ -151,7 +151,7 @@ class Ingreso extends CI_Controller{
         'ingreso_monto' => $this->input->post('ingreso_monto'),
         'ingreso_moneda' => $this->input->post('ingreso_moneda'),
         'ingreso_concepto' => $this->input->post('ingreso_concepto'),
-        'ingreso_fecha' => $this->input->post('ingreso_fecha'),
+        //'ingreso_fecha' => $this->input->post('ingreso_fecha'),
 				
                 );
 
