@@ -928,7 +928,7 @@ class Servicio extends CI_Controller{
             $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
             //generamos el código qr
             $this->ciqrcode->generate($params);
-            $data['codigoqr'] = base_url('resources/images  /qrcode'.$usuario_id.'.png');
+            $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
             
             $data['_view'] = 'servicio/boletacomprobanteserv';
             $this->load->view('layouts/main',$data);
