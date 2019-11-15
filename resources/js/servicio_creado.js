@@ -737,7 +737,7 @@ function tablaresultadosclienteservicio(tabla_id){
         var parametro = "";
         var servicio_id = tabla_id;
 
-        var limite = 10;
+        //var limite = 10;
         var base_url = document.getElementById('base_url').value;
 
 
@@ -780,7 +780,8 @@ function tablaresultadosclienteservicio(tabla_id){
                             html += "<div class='col-md-9'>";
                             //html += "<form action='"+base_url+"servicio/asignarcliente/"+servicio_id+"'  method='POST' class='form'>";
                             html += "<b>"+registros[i]["cliente_nombre"]+"</b><br>";
-                            html += "C.I.: "+registros[i]["cliente_ci"]+" | Telf.: "+registros[i]["cliente_telefono"]+"<br>";
+                            //html += "C.I.: "+registros[i]["cliente_ci"]+" | Telf.: "+registros[i]["cliente_telefono"]+"<br>";
+                            html += "Telf.: "+registros[i]["cliente_telefono"]+" - Cel.: "+registros[i]["cliente_celular"]+"<br>";
                             //html += "<input type='hidden' id='servicio_id'  name='servicio_id' class='form-control' value='"+servicio_id+"' />";
                             //html += "<input type='hidden' id='cliente_id'  name='cliente_id' class='form-control' value='"+registros[i]["cliente_id"]+"' />";
                             html += "<button class='btn btn-success btn-xs' onclick='asignarclienteregistrado("+servicio_id+", "+registros[i]["cliente_id"]+")' >";
