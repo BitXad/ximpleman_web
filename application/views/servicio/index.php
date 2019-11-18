@@ -59,7 +59,7 @@
         </div>
         <div class="col-md-4">
             <div  class="box-tools" >
-                <select  class="btn btn-primary btn-sm" name=""select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
+                <select  class="btn btn-primary btn-sm form-control" name="" select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
                     <!--<option value="">- ELEGIR -</option>-->
                     <option value="6">Servicios Pendientes</option>
                     <option value="7">Servicios Terminados</option>
