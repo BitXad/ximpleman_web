@@ -55,6 +55,7 @@
         <div class="input-group">
             <span class="input-group-addon">Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)" autofocus autocomplete="off">
+            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="fechadeservicio('', 1)"><span class="fa fa-search"></span></div>
         </div>
         </div>
         <div class="col-md-4">
