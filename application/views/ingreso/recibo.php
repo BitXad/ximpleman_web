@@ -17,7 +17,7 @@ border-right: 0px;
 margin:2% 15%;
 padding:5px;
 border:2px solid black;
-}
+} 
 
 .box3 {
 width:100%;
@@ -39,10 +39,10 @@ border-top: 0px;
     }
 
     .content {
-        font-size: 15px;
+        font-size: 13px;
         line-height: 20px;
         padding: 0 20px;
-        text-align: justify;
+        /*text-align: justify;*/
     }
 
     .left {
@@ -78,37 +78,57 @@ border-top: 0px;
          <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-<div class="cuerpo">
-                    <div class="columna_derecha">
-                        <center> 
-                        <img src="<?php echo base_url('resources/images/empresas/'.$empresa[0]["empresa_imagen"].''); ?>"  style="width:90px;height:90px">
-                    </center>
-                    </div>
-                    <div class="columna_izquierda">
-                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
-                        <?php echo $empresa[0]['empresa_zona']; ?><br>
-                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                        <?php echo $empresa[0]['empresa_telefono']; ?>
-                    </div> </center>
-                    <div class="columna_central">
-                        <center>      <h3 class="box-title"><u>RECIBO DE INGRESO</u></h3>
-                           Numero: <b><?php echo $ingresos[0]['ingreso_id'];?></b>  <br>
-                          Numero transaccion: <b><?php echo$ingresos[0]['ingreso_numero'];?></b>
-               
-                </center>
-                    </div>
+<table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; line-height:10px;" >
+                
+            <center>
+                               
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                
 
-          
+            </center>                      
+        </td>
+                   
+        <td style="width: 25%; padding: 0" > 
+            <center>
+            
+                <br>
+                <font size="3" face="arial"><b>RECIBO DE INGRESO</b></font> <br>
+                <font size="2" face="arial"><b>Numero: <?php echo $ingresos[0]['ingreso_id']; ?></b></font> <br>
+                <font size="2" face="arial"><b>Numero transacción: <?php echo $ingresos[0]['ingreso_numero']; ?></b></font> <br>
+                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
-            </div>       
+            </center>
+        </td>
+        <td style="width: 25%; padding: 0; text-align: left" >
+                
+                         
+       
+                         
+         
+                   
+        </td>
+    </tr>
+     
+    
+    
+</table>       
            <div class="row" style="padding-left: 17%;">
-                       <div class="left">
+                       <div class="left"><font size="2" face="Arial">
                 Fecha y Hora: 
-                            <b><?php echo date('d/m/Y  H:i:s',strtotime($ingresos[0]['ingreso_fecha']));?></b>            
+                            <b><?php echo date('d/m/Y  H:i:s',strtotime($ingresos[0]['ingreso_fecha']));?></b></font>        
                  
             </div>
             <div class="right">
-                Apellidos y Nombre(s): <b><?php echo$ingresos[0]['ingreso_nombre'];?></b>  
+                <font size="2" face="Arial">Apellidos y Nombre(s): <b><?php echo$ingresos[0]['ingreso_nombre'];?></b>  </font>
             </div>
         </div>
       
@@ -119,7 +139,7 @@ border-top: 0px;
                         
                         <th>MONTO:  </th>
                             
-                            <td><?php echo$ingresos[0]['ingreso_monto'];?><?php echo$ingresos[0]['ingreso_moneda'];?></td>                      
+                            <td><?php echo number_format($ingresos[0]['ingreso_monto'],'2','.',',');?> <?php echo$ingresos[0]['ingreso_moneda'];?></td>                      
     </div>
 
               <div class="box2">

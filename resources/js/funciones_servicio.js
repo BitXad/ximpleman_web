@@ -892,11 +892,11 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<td><span class='text-bold' style='font-size: 12pt;'>"+cliente_nombre;
                         html += "<br>"+nomtelef+cliente_telef+guion+cliente_celu+"</td>";
                         html += "<td class='text-center'>";
-                        if(registros[i]["estado_id"] == 5){
+                        //if(registros[i]["estado_id"] == 5){
                             html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3' class='btn btn-info btn-xs' title='Añadir, modificar servicio creado'>"+registros[i]["servicio_id"]+"</a>";
-                        }else{
+                       /* }else{
                             html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
-                        }
+                        }*/
                         html += "</td>";
                         html += "<td>";
                         var fechamos = "";

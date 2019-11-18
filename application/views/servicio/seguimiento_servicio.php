@@ -196,9 +196,9 @@ if(sizeof($servicio)>0){  ?>
                                         if($p['estado_id']==28){ //Si el estado es procesando
                                             $color_estado = "#2AA301"; //verde
                                             $estado = $var_procesando;
-                                            $dt = new DateTime($servicio['detalleserv_fechaproceso']);
+                                            $dt = new DateTime($p['detalleserv_fechaproceso']);
                                             $fecha = $dt->format('d/m/Y');
-                                            $hora = $servicio['detalleserv_horaproceso'];
+                                            $hora = $p['detalleserv_horaproceso'];
                                         }
                                         
                                                                                    

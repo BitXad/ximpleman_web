@@ -91,7 +91,7 @@ class Compra_model extends CI_Model
     {
         $compra = $this->db->query("
             SELECT
-                *
+                *, c.estado_id as 'elestado'
 
             FROM
                 compra c, estado e, proveedor p, tipo_transaccion t, usuario u
@@ -152,7 +152,7 @@ class Compra_model extends CI_Model
         $hoje ="'".$hoy."'";
         $compra = $this->db->query("
             SELECT
-                *
+                *, c.estado_id as 'elestado'
 
             FROM
                 compra c, estado e, proveedor p, tipo_transaccion t, usuario u
@@ -172,7 +172,7 @@ class Compra_model extends CI_Model
     {
        $compra = $this->db->query("
             SELECT
-                *
+                *, c.estado_id as 'elestado'
             FROM
                 compra c, estado e, proveedor p, tipo_transaccion t, usuario u
 

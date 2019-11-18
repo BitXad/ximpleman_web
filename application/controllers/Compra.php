@@ -565,12 +565,12 @@ class Compra extends CI_Controller{
         }
     }
 
-    function anular()
+    function anular($compra_id)
     {
 
         if($this->acceso(1)){
             $usuario_id = $this->session_data['usuario_id']; 
-            $compra_id = $this->input->post('compra_id');
+            //$compra_id = $this->input->post('compra_id');
             $vaciar =    "UPDATE inventario i, detalle_compra_aux d
             SET i.existencia =  i.existencia-d.detallecomp_cantidad 
             WHERE  d.compra_id = ".$compra_id." 

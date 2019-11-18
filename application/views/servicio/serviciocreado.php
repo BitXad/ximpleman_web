@@ -350,21 +350,21 @@ $(document).ready(function(){
                                             ?>
                                           <div class="modal-body">
                                               
-                                           <!------------------------------------------------------------------->
-                                           <span class="text-danger" id="campocliente"></span>
-                                           <div class="col-md-6">
+                                            <!------------------------------------------------------------------->
+                                            <span class="text-danger" id="campocliente"></span>
+                                            <div class="col-md-6">
 						<label for="cliente_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
 						<div class="form-group">
                                                     <input type="text" name="cliente_nombre" value="<?php echo $this->input->post('cliente_nombre'); ?>" class="form-control" id="cliente_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autocomplete="off" />
 							<span class="text-danger"><?php echo form_error('cliente_nombre');?></span>
 						</div>
-					  </div>
-                                        <div class="col-md-6">
+					    </div>
+                                            <div class="col-md-6">
 						<label for="cliente_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
 						<div class="form-group">
 							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" required autocomplete="off" />
 						</div>
-					  </div>
+					    </div>
                                           <!--<div class="col-md-6">
 						<label for="cliente_ci" class="control-label">C.I.</label>
 						<div class="form-group">

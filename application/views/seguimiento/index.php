@@ -1,21 +1,21 @@
 <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
 
     <!-- Datetimepicker -->
-    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/bootstrap-datetimepicker.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/bootstrap-datetimepicker.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/_all-skins.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/_all-skins.min.css">
 
     <!-- jQuery 2.2.3 -->
-    <script src="http://localhost/ximpleman_web/resources/js/jquery-2.2.3.min.js"></script>
-    <link rel="shortcut icon" href="http://localhost/ximpleman_web/resources/images/icono.png" />
+    <script src="<?php echo base_url(); ?>resources/js/jquery-2.2.3.min.js"></script>
+    <link rel="shortcut icon" href="<?php echo base_url(); ?>resources/images/icono.png" />
 
 
 
