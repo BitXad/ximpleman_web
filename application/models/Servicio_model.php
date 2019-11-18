@@ -107,7 +107,7 @@ class Servicio_model extends CI_Model
             LEFT JOIN usuario u on s.usuario_id = u.usuario_id
             LEFT JOIN factura f on s.servicio_id = f.servicio_id
             WHERE
-               (c.cliente_nombre like '%".$parametro."%' or s.servicio_id like '%".$parametro."%'
+               (c.cliente_nombre like '%".$parametro."%' or s.servicio_id = '".$parametro."'
                    or e.estado_descripcion like '%".$parametro."%')
 
             ORDER BY s.servicio_id desc 
