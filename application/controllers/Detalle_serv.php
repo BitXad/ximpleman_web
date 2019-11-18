@@ -2193,4 +2193,326 @@ class Detalle_serv extends CI_Controller{
                         );        
          return str_replace('-','',$code);
     }
+    /*
+     *  *********************Modifica el detalle de un servicio, no modifica el codigo*******************************
+     */
+    function modificareldetalle($servicio_id, $detalleserv_id)
+    {
+        if($this->acceso(86)){
+            $data['page_title'] = "Detalle de Servicio";
+        $this->load->model('Servicio_model');
+        $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+        
+        if(isset($_POST) && count($_POST) > 0)     
+        {
+            $this->load->library('form_validation');
+
+	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
+	    //$this->form_validation->set_rules('detalleserv_codigo','Detalle Servicio Codigo','required');
+	    $this->form_validation->set_rules('detalleserv_falla','Detalle Servicio Falla','required');
+            
+	    if($this->form_validation->run())     
+            {
+                $estado_id = $this->input->post('estado_id');
+                //$fecha_entrega = $this->Detalle_serv_model->normalize_date($this->input->post('detalleserv_fechaentrega'));
+                $hora_entrega = date("H:i:s", strtotime($this->input->post('detalleserv_horaentrega')));
+            
+                $usuario_id = $this->session_data['usuario_id'];
+                $inputacuenta = $this->input->post('detalleserv_acuenta');
+                $inputsaldo = $this->input->post('detalleserv_saldo');
+                $catserv_id = $this->input->post('catserv_id');
+                $subcatserv_id = $this->input->post('subcatserv_id');
+                $params = array(
+                                    //'estado_id' => $estado_id,
+                                    'responsable_id' => $this->input->post('responsable_id'),
+                                    'usuario_id' => $usuario_id,
+                                    //'servicio_id' => $servicio_id,
+                                    'catserv_id' => $catserv_id,
+                                    'subcatserv_id' => $subcatserv_id,
+                                    'cattrab_id' => $this->input->post('cattrab_id'),
+                                    'tiempouso_id' => $this->input->post('tiempouso_id'),
+                                    'procedencia_id' => $this->input->post('procedencia_id'),
+                                    //'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
+                                    'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_falla' => $this->input->post('detalleserv_falla'),
+                                    'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                                    'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
+                                    'detalleserv_pesoentrada' => $this->input->post('detalleserv_pesoentrada'),
+                                    'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
+                                    'detalleserv_total' => $this->input->post('detalleserv_total'),
+                                    'detalleserv_acuenta' => $inputacuenta,
+                                    'detalleserv_saldo' => $inputsaldo,
+//                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
+//                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
+                                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
+                                    'detalleserv_horaentrega' => $hora_entrega,
+                                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
+                );
+
+                $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
+                
+                $this->load->model('Servicio_model');
+                
+                $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                // 4 es el estado de ANULADO
+                if($estado_id == 4)
+                {
+                    $detparams = array(
+                                    'estado_id' => $estado_id,
+                    );
+                    $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
+                    
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+
+                    $detparams = array(
+                                    'detalleserv_total' => 0,
+                                    'detalleserv_acuenta' => 0,
+                                    'detalleserv_saldo' => 0,
+                    );
+
+                    $this->Detalle_serv_model->anular_detalle_serv($detalleserv_id, $detparams);
+
+                    $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                    $total = $data['resultado']['total'];
+                    $acuenta = $data['resultado']['acuenta'];
+                    $saldo = $data['resultado']['saldo'];
+                    $sumparams = array(
+                                        'servicio_total' => $total,
+                                        'servicio_acuenta' => $acuenta,
+                                        'servicio_saldo' => $saldo,
+                    );
+
+                    $this->Servicio_model->update_servicio($servicio_id,$sumparams);
+                    redirect('servicio');
+                    
+                }elseif($estado_id == 7){ //el 7 representa a ENTREGADO
+                    $estado_credid = 16;
+                    $fecha_finalizacion = date('Y-m-d');
+                    $hora_finalizacion = date('H:i:s');
+                    $fechahora = date('Y-m-d H:i:s');
+                    if($inputacuenta > 0)
+                    {
+                        $detparams = array(
+                                'detalleserv_fpagoacuenta' => $fechahora,
+                                'usuariopacuenta_id' => $usuario_id,
+                        );
+                        $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
+
+                    }
+                    $detparams = array(
+                            'estado_id' => $estado_id,
+                            'detalleserv_fechaentregado' => $fecha_finalizacion,
+                            'detalleserv_horaentregado' => $hora_finalizacion,
+                    );
+                    $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
+                    
+                    if($inputsaldo > 0)
+                    {
+                        $salparams = array(
+                                'detalleserv_fpagosaldo' => $fechahora,
+                                'usuariopsaldo_id' => $usuario_id,
+                        );
+                        $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $salparams);
+                    }
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id || $ids['estado_id'] == $estado_credid){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                                    'servicio_fechafinalizacion' => $fecha_finalizacion,
+                                    'servicio_horafinalizacion' => $hora_finalizacion,
+                        );
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                    $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                    
+                    $total = $data['resultado']['total'];
+                    $acuenta = $data['resultado']['acuenta'];
+                    $saldo = $data['resultado']['saldo'];
+                    $sumparams = array(
+                                    'servicio_total' => $total,
+                                    'servicio_acuenta' => $acuenta,
+                                    'servicio_saldo' => $saldo,
+                    );
+
+                    $this->Servicio_model->update_servicio($servicio_id,$sumparams);
+                    
+                    redirect('servicio');
+                    
+                }elseif($estado_id == 6 || $estado_id == 5)
+                { //5 --> PENDIENTE; 6-->TERMINADO
+                    $detparams = array(
+                                    'estado_id' => $estado_id,
+                    );
+                    $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
+                    
+                    $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                    if($estado_id == 6 ){
+                        $fecha_terminado = date('Y-m-d');
+                        $hora_terminado = date('H:i:s');
+                        $paramsdet = array(
+                                    'detalleserv_fechaterminado' => $fecha_terminado,
+                                    'detalleserv_horaterminado' => $hora_terminado,
+                        );
+                        $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$paramsdet);
+                    }
+                    $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                    $total = $data['resultado']['total'];
+                    $acuenta = $data['resultado']['acuenta'];
+                    $saldo = $data['resultado']['saldo'];
+                    $sumparams = array(
+                                    'servicio_total' => $total,
+                                    'servicio_acuenta' => $acuenta,
+                                    'servicio_saldo' => $saldo,
+                    );
+
+                    $this->Servicio_model->update_servicio($servicio_id,$sumparams);
+                    redirect('servicio');
+                }elseif($estado_id == 16){
+                    //este estado es CREDITO
+        $estado_terminadoid = 7; // estado ENTREGADO
+        $credito_monto = $inputsaldo;
+        
+            /* **********INICIO  poner en credito************* */
+            //8 = pendiente de Creditos
+            $estadocredito_id = 8;
+            $una_semana = time() + (7 * 24 * 60 * 60);
+            $credito_fechalimite = date('Y-m-d', $una_semana);
+            $credito_fecha = date("Y-m-d");
+            $credito_hora = date("H:i:s");
+            $cadcredito = array(
+                'estado_id' => $estadocredito_id,
+                'compra_id' => 0,
+                'venta_id' => 0,
+                'servicio_id' => $servicio_id,
+                'credito_monto' => $credito_monto,
+                'credito_cuotainicial' => 0,
+                'credito_interesproc' => 0,
+                'credito_interesmonto' => 0,
+                'credito_numpagos' => 1,
+                'credito_fechalimite' => $credito_fechalimite,
+                'credito_fecha' => $credito_fecha,
+                'credito_hora' => $credito_hora,
+                'credito_tipo' => 1,
+            );
+            $this->load->model('Credito_model');
+            $credito_id = $this->Credito_model->add_credito($cadcredito);
+            $usuario_id = $this->session_data['usuario_id'];
+            $cadcuota = array(
+                'credito_id' => $credito_id,
+                'usuario_id' => $usuario_id,
+                'estado_id' => $estadocredito_id,
+                'cuota_numcuota' => 1,
+                'cuota_capital' => $credito_monto,
+                'cuota_interes' => 0,
+                'cuota_moradias' => 0,
+                'cuota_multa' => 0,
+                'cuota_subtotal' => $credito_monto,
+                'cuota_descuento' => 0,
+                'cuota_total' => $credito_monto,
+                'cuota_fechalimite' => $credito_fechalimite,
+                'cuota_cancelado' => 0,
+                'cuota_saldo' => $credito_monto,
+                
+            );
+            $this->load->model('Cuotum_model');
+            $cuota_id = $this->Cuotum_model->add_cuotum($cadcuota);
+            /* **********F I N  poner en credito************* */
+            $cad = array(
+                    'estado_id' => $estado_id,
+                );
+            $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$cad);
+            
+            $res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+            $cont = 0;
+            foreach ($res_ids as $ids)
+            {
+                if($ids['estado_id'] == $estado_id || $ids['estado_id'] == $estado_terminadoid){
+                    $cont++;
+                }
+            }
+            if($cont == count($res_ids)){
+                $params = array(
+                            'estado_id' => $estado_terminadoid,
+                );
+                $this->load->model('Servicio_model');
+                $this->Servicio_model->update_servicio($servicio_id,$params);
+            }
+             redirect('servicio');
+            }
+            redirect('servicio');
+            }
+            else
+            {
+                redirect('servicio');
+            }
+        }else
+        {
+            $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+            
+            $this->load->model('Categoria_servicio_model');
+	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
+            
+            $this->load->model('Subcategoria_servicio_model');
+	    $data['all_subcategoria_servicio'] = $this->Subcategoria_servicio_model->get_all_subcategoria_servicio_id1();
+            /*
+            $this->load->model('Responsable_model');
+	    $data['all_responsable'] = $this->Responsable_model->get_all_responsable();
+            */
+            $this->load->model('Usuario_model');
+	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+            
+            $this->load->model('Tipo_servicio_model');
+	    $data['tipo_servicio'] = $this->Tipo_servicio_model->get_tipo_servicio($data['servicio']['tiposerv_id']);
+	    $data['all_tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio_id1();
+            
+            $this->load->model('Categoria_trabajo_model');
+	    $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo_id1();
+            
+            $this->load->model('Tiempo_uso_model');
+	    $data['all_tiempo_uso'] = $this->Tiempo_uso_model->get_all_tiempo_uso_id1();
+            
+            $this->load->model('Procedencia_model');
+	    $data['all_procedencia'] = $this->Procedencia_model->get_all_procedencia_id1();
+
+            $this->load->model('Estado_model');
+	    $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
+            
+            $data['_view'] = 'detalle_serv/modificareldetalle';
+            $this->load->view('layouts/main',$data);
+        }
+        }
+    }
 }

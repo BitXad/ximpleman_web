@@ -453,20 +453,21 @@ $(document).ready(function(){
         }
         ?>
         
-        <a onclick="salirdeservicio()" id="salir" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Salir</a>
+        
         <!--<a id="boton_cobrar" data-toggle="modal" data-target="#modalcobrar" class="btn btn-sq-lg btn-primary" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-dollar fa-4x"></span><br>Cobrar</a>-->
         <?php
         if($a == 3){
             if(is_null($servicio['servicio_codseguimiento'])){ ?>
-                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Guardar</a>
             <?php
             }else{ ?>
-                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio2(2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+                <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio2(2, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Guardar</a>
             <?php
             }
         }else{?>
-            <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Finalizar</a>
+            <a id="finalizar" class="btn btn-sq-lg btn-success" style="width: 120px !important; height: 120px !important;" onclick="finalizarservicio(<?php echo $servicio['servicio_id']; ?>, 0, <?php echo "'".$dir_url."'"; ?>)" ><span class="fa fa-sign-out fa-4x"></span><br>Guardar</a>
         <?php } ?>
+            <a onclick="salirdeservicio()" id="salir" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important;" ><span class="fa fa-times fa-4x"></span><br>Salir</a>
 </div>
 </div>
 
@@ -548,12 +549,6 @@ $(document).ready(function(){
            <!------------------------------------------------------------------->
            <div class="col-md-12">
                             <div class="col-md-3">
-                                <label for="detalleserv_reclamo" class="control-label">¿Reclamo?</label>
-                                    <div class="form-group">
-                                        <input type="checkbox" name="detalleserv_reclamo" id="detalleserv_reclamo" value="si" />
-                                    </div>
-                            </div>
-                            <div class="col-md-3">
                                 <label for="cattrab_id" class="control-label">Tipo de Trabajo</label>
                                     <div class="form-group">
                                         <select name="cattrab_id" class="form-control" id="cattrab_id">
@@ -601,7 +596,7 @@ $(document).ready(function(){
                                             </select>
                                     </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="catserv_id" class="control-label">Categoria Producto</label>
                                     <div class="form-group">
                                         <select name="catserv_id" class="form-control" onchange="fetch_select(this.value);" id="catserv_id">
@@ -617,7 +612,7 @@ $(document).ready(function(){
                                         </select>
                                     </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                     <div class="form-group" id="new_select">
                                         <input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="- MARCA/MODELO -" onkeypress="validar2(event,2)"  onchange="seleccionar_subcategoria()" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
@@ -635,7 +630,7 @@ $(document).ready(function(){
                                         <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control" id="detalleserv_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <label for="detalleserv_falla" class="control-label"><span class="text-danger">*</span>Problema/Falla Segun Cliente</label>
                                     <div class="form-group">
                                         <input type="text" name="detalleserv_falla" value="<?php echo $this->input->post('detalleserv_falla'); ?>" class="form-control" id="detalleserv_falla" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -647,7 +642,7 @@ $(document).ready(function(){
                                     <input type="text" name="detalleserv_diagnostico" value="<?php if($this->input->post('detalleserv_diagnostico')== null){ echo $parametro['parametro_diagnostico'];}else{ $this->input->post('detalleserv_diagnostico'); } ?>" class="form-control" id="detalleserv_diagnostico" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <label for="detalleserv_solucion" class="control-label">Solución</label>
                                 <div class="form-group">
                                     <input type="text" name="detalleserv_solucion" value="<?php if ($this->input->post('detalleserv_solucion') == null){ echo $parametro['parametro_solucion'];}else{ $this->input->post('detalleserv_solucion'); } ?>" class="form-control" id="detalleserv_solucion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
@@ -709,6 +704,12 @@ $(document).ready(function(){
                                         ?>
                                     </select>
                                 </div>
+                            </div>
+                           <div class="col-md-3">
+                                <label for="detalleserv_reclamo" class="control-label">¿Reclamo?</label>
+                                    <div class="form-group">
+                                        <input type="checkbox" name="detalleserv_reclamo" id="detalleserv_reclamo" value="si" />
+                                    </div>
                             </div>
                         </div>
                         <!--    <input type="hidden" name="servicio_id" value="<?php //echo $servicio['servicio_id'] ?>" class="form-control" id="servicio_id" /> -->

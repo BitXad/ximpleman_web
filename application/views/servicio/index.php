@@ -48,6 +48,8 @@
         <div class="box-header">
             <font size='4' face='Arial'><b>Servicios</b></font>
             <br><font size='2' face='Arial'>Registros Encontrados: <span id="regencontrados"></span></font>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <font size="2" face="Arial" title="Ir a reporte de servicios"><a class="btn btn-facebook btn-xs" href="<?php echo site_url('reportes/servicioreportes') ?>">Reporte de Servicios</a></font>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
         <div class="col-md-8">
@@ -63,7 +65,10 @@
                 <select  class="btn btn-primary btn-sm form-control" name="" select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
                     <!--<option value="">- ELEGIR -</option>-->
                     <option value="6">Servicios Pendientes</option>
-                    <option value="7">Servicios Terminados</option>
+                    <option value="28">Servicios en Proceso</option>
+                    <option value="66">Servicios Terminados</option>
+                    <option value="7">Servicios Entregados</option>
+                    <option value="44">Servicios Anulados</option>
                     <option value="1">Servicios de Hoy</option>
                     <option value="2">Servicios de Ayer</option>
                     <option value="3">Servicios de la semana</option>
