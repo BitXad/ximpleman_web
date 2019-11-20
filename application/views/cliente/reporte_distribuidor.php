@@ -167,6 +167,7 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
                         <th>#</th>
                         <th>Cliente</th>
                         <th>Venta</th>
+                        <th>Total</th>
                         <th>Fecha</th>
                         <th>Estado</th>
                     </tr>

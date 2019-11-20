@@ -89,6 +89,7 @@ function buscarventasdist(){
                         html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>";
                         html += "<b>Telf.:</b>"+registros[i]["cliente_telefono"]+"<b>Dir.:"+registros[i]["cliente_direccion"]+"</b>";
                         html += "<td align='center'>"+registros[i]["venta_id"]+"</td>"; 
+                        html += "<td align='right'>"+Number(registros[i]["venta_total"]).toFixed(2)+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"]+"</td>"; 
                         if (registros[i]["entrega_id"]==null) {
                         html += "<td align='center'></br>";
@@ -96,7 +97,7 @@ function buscarventasdist(){
                         html += "<td align='center'>"+registros[i]["entrega_nombre"]+"</br>";
                         }
                         
-                       if (registros[i]["entrega_id"]==1) {
+                        if (registros[i]["entrega_id"]==1) {
                             //registros[i]["estado_nombre"]
                         html += "<a class='btn btn-warning btn-xs no-print' data-toggle='modal' data-target='#myModal"+i+"' title=''><span class='fa fa-exclamation-circle'></span> ENTREGADO</a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
