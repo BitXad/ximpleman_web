@@ -48,6 +48,8 @@
         <div class="box-header">
             <font size='4' face='Arial'><b>Servicios</b></font>
             <br><font size='2' face='Arial'>Registros Encontrados: <span id="regencontrados"></span></font>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <font size="2" face="Arial" title="Ir a reporte de servicios"><a class="btn btn-facebook btn-xs" href="<?php echo site_url('reportes/servicioreportes') ?>">Reporte de Servicios</a></font>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
         <div class="col-md-8">
@@ -55,14 +57,18 @@
         <div class="input-group">
             <span class="input-group-addon">Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)" autofocus autocomplete="off">
+            <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="fechadeservicio('', 1)"><span class="fa fa-search"></span></div>
         </div>
         </div>
         <div class="col-md-4">
             <div  class="box-tools" >
-                <select  class="btn btn-primary btn-sm" name=""select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
+                <select  class="btn btn-primary btn-sm form-control" name="" select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
                     <!--<option value="">- ELEGIR -</option>-->
                     <option value="6">Servicios Pendientes</option>
-                    <option value="7">Servicios Terminados</option>
+                    <option value="28">Servicios en Proceso</option>
+                    <option value="66">Servicios Terminados</option>
+                    <option value="7">Servicios Entregados</option>
+                    <option value="44">Servicios Anulados</option>
                     <option value="1">Servicios de Hoy</option>
                     <option value="2">Servicios de Ayer</option>
                     <option value="3">Servicios de la semana</option>

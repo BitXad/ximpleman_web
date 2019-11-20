@@ -757,9 +757,21 @@ function buscar_servicioporfechas()
     {
         filtro = " s.estado_id = 5 ";
         mostrar_ocultar_buscador("ocultar");
-    }else if (opcion == 7)
+    }else if (opcion == 28)
+    {
+        filtro = " s.estado_id = 28 ";
+        mostrar_ocultar_buscador("ocultar");
+    }else if (opcion == 66)
     {
         filtro = " s.estado_id = 6 ";
+        mostrar_ocultar_buscador("ocultar");
+    }else if (opcion == 7)
+    {
+        filtro = " s.estado_id = 7 ";
+        mostrar_ocultar_buscador("ocultar");
+    }else if (opcion == 44)
+    {
+        filtro = " s.estado_id = 4 ";
         mostrar_ocultar_buscador("ocultar");
     }else if (opcion == 1)
     {
@@ -845,8 +857,10 @@ function fechadeservicio(elfiltro, busquedade){
                 $("#encontrados").val(" 0");
                var registros =  JSON.parse(resul);
            
-               if (registros != null){
-                   
+                if (registros != null){
+                    var total   = 0;
+                    var acuenta = 0;
+                    var saldo   = 0;
                     
                     /*var cont = 0;
                     var total = Number(0);
@@ -859,11 +873,14 @@ function fechadeservicio(elfiltro, busquedade){
                    else x = limite; */
                     
                     for (var i = 0; i < n ; i++){
+                        if(registros[i]["servicio_total"] >0){
+                            total = Number(total) +Number(registros[i]["servicio_total"]);
+                        }
+                        //total   += registros[i]["servicio_total"]+total;
+                        acuenta = Number(acuenta)  + Number(registros[i]["servicio_acuenta"]);
+                        saldo   = Number(saldo) + Number(registros[i]["servicio_saldo"]);
                         
-                        /*var suma = Number(registros[i]["compra_totalfinal"]);
-                        var total = Number(suma+total); */
-                        //var bandera = 1;
-                        html += "<tr style='background-color: "+registros[i]["estado_color"]+"'>";
+                        html += "<tr style='background-color: #"+registros[i]["estado_color"]+"'>";
                       
                         html += "<td>"+(i+1)+"</td>";
                         var cliente_nombre = "";
@@ -892,11 +909,11 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<td><span class='text-bold' style='font-size: 12pt;'>"+cliente_nombre;
                         html += "<br>"+nomtelef+cliente_telef+guion+cliente_celu+"</td>";
                         html += "<td class='text-center'>";
-                        if(registros[i]["estado_id"] == 5){
+                        //if(registros[i]["estado_id"] == 5){
                             html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3' class='btn btn-info btn-xs' title='Añadir, modificar servicio creado'>"+registros[i]["servicio_id"]+"</a>";
-                        }else{
+                       /* }else{
                             html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
-                        }
+                        }*/
                         html += "</td>";
                         html += "<td>";
                         var fechamos = "";
@@ -1089,17 +1106,18 @@ function fechadeservicio(elfiltro, busquedade){
                             html += "<br>";
                         }
                         
-                        html += "<a href='"+base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"]+"' id='imprimir' class='btn btn-success btn-xs'  target='_blank' title='Imprimir comprobante' ><span class='fa fa-print'></span></a>";
+                        //html += "<a href='"+base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"]+"' id='imprimir' class='btn btn-success btn-xs'  target='_blank' title='Imprimir comprobante' ><span class='fa fa-print'></span></a>";
                         var dir_url = "";
                         var titprint = "";
                         if(tipoimpresora == "FACTURADORA"){
                             dir_url = base_url+"servicio/boletarecepcion_boucher/"+registros[i]["servicio_id"];
                             titprint = "Impresion boucher";
                         }else{
-                            dir_url = base_url+"servicio/boletarecepcion/"+registros[i]["servicio_id"];
+                            //dir_url = base_url+"servicio/boletarecepcion/"+registros[i]["servicio_id"];
+                            dir_url = base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"];
                             titprint = "Impresion normal";
                         }
-                        html += "<a href='"+dir_url+"' id='imprimir' class='btn btn-facebook btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span></a>";
+                        html += "<a href='"+dir_url+"' id='imprimir' class='btn btn-success btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span></a>";
                         html += "<a data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+")' class='btn btn-primary btn-xs' title='Informe técnico'><span class='fa fa-file-text'></span></a>";
                         html += "<a style='background: #720e9e;' href='servicio/seguimiento/"+registros[i]["cliente_id"]+"/"+registros[i]["servicio_id"]+"' class='btn btn-primary btn-xs' title='Seguimiento'><span class='fa fa-user-secret'></span></a>";
                         
@@ -1248,6 +1266,13 @@ function fechadeservicio(elfiltro, busquedade){
                        
                         html += "</tr>";
                    }
+                   html += "<tr class='text-bold'>";
+                   html += "<td style='font-size: 10pt' class='text-right' colspan='8'>TOTAL:</td>";
+                   html += "<td style='font-size: 10pt'>"+Number(total).toFixed(2);+"</td>";
+                   html += "<td style='font-size: 10pt'>"+Number(acuenta).toFixed(2)+"</td>";
+                   html += "<td style='font-size: 10pt'>"+Number(saldo).toFixed(2)+"</td>";
+                   html += "</tr>";
+                   
                    $("#tablaresultados").html(html);
                    $("#regencontrados").html(n);
                    document.getElementById('loader').style.display = 'none';
@@ -1692,6 +1717,7 @@ function mostrardetalleserv(serv_id){
                     var n = registros.length; //tamaño del arreglo de la consulta
                     for (var i = 0; i < n ; i++){
                         res += "<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' title='Servicio "+registros[i]['estado_descripcion']+"'>";
+                        res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
                         if(registros[i]['detallestado_id'] == 5){
                             res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistrarprocesar"+registros[i]['detalleserv_id']+"' title='Procesar el servicio'><span class='fa fa-wrench'></span><br></a>";
                         }else if(registros[i]['detallestado_id'] == 28){
@@ -1702,7 +1728,7 @@ function mostrardetalleserv(serv_id){
                         if(registros[i]['detallestado_id'] != 7){
                             res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                         }
-                        res += "-"+registros[i]['detalleserv_descripcion']+"</span>";
+                        res += "-<span title='"+registros[i]['detalleserv_descripcion']+"'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span></span>";
                         res += "["+registros[i]['detalleserv_codigo']+"]";
                         
                         res += "<!------------------------ INICIO modal para registrar PROCESO DE SERVICIO ------------------->";
@@ -1803,13 +1829,13 @@ function mostrardetalleserv(serv_id){
                         res +="<tr>";
                         res +="<th><div class='text-right'>Diagnóstico: </div></th>";
                         res +="<td colspan='2' style='width: 70%'>";
-                        res +="<input style='width: 100%' type='text' name='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' id='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_diagnostico']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
+                        res +="<input style='width: 100%' type='text' name='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' id='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_diagnostico']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
                         res +="</td>";
                         res +="</tr>";
                         res +="<tr>";
                         res +="<th><div class='text-right'>Solución Aplicada: </div></th>";
                         res +="<td colspan='2'>";
-                        res +="<input style='width: 100%' type='text' name='detalleserv_solucion"+registros[i]['detalleserv_id']+"' id='detalleserv_solucion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_solucion']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />"; 
+                        res +="<input style='width: 100%' type='text' name='detalleserv_solucion"+registros[i]['detalleserv_id']+"' id='detalleserv_solucion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_solucion']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />"; 
                         res +="</td>";
                         res +="</tr>";
                         res +="<tr>";

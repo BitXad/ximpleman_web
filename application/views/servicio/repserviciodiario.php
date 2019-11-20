@@ -177,7 +177,7 @@ margin: 10% 0%;
         <!--<div class="box">-->
             
             <!--<div class="box-body table-responsive">-->
-            <table class="table table-striped table-condensed" id="mitabla">
+            <table class="table table-striped table-condensed table-responsive" id="mitabla">
                     <tr>
                         <th>#</th>
                         <th style="width: 4.5cm">CLIENTE</th>

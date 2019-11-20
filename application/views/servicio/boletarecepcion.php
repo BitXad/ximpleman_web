@@ -35,7 +35,7 @@
 
         <div id="cabcentro">
             <div id="titulo">
-                ORDEN DE SERVICIO N°: <?php echo $servicio['servicio_id']; ?><br>
+                ORDEN DE SERVICIO N°: <?php echo "00".$servicio['servicio_id']; ?><br>
                 <span class="lahora"><?php echo date("d/m/Y - H:i:s"); ?></span>
             </div>
 

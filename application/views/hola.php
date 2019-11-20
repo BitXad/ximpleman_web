@@ -257,6 +257,24 @@
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
           <!-- small box -->
+          <div class="small-box bg-red">
+              <div class="inner" >
+
+                <h3><b><fa class="fa fa-pie-chart"></fa></b></h3>
+                <h5><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-pie-chart"></i>              
+            </div>
+                <a href="<?php echo base_url('compra'); ?>" class="small-box-footer"><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        
+          
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
           <div class="small-box bg-green">
               <div class="inner" >
 
@@ -271,7 +289,23 @@
           </div>
         </div>
 
+        
+        <!-- ./col -->
+        <div class="col-lg-3 col-xs-6">
+          <!-- small box -->
+          <div class="small-box bg-purple">
+              <div class="inner" >
 
+                <h3><b><fa class="fa fa-wrench"></fa></b></h3>
+                <h5><b><?php echo number_format($servicios['cantidad_servicios'],0,'.',',')." Pendientes"; ?><sup style="font-size: 20px"></sup></b></h5>
+            </div>
+              
+            <div class="icon">
+              <i class="fa fa-wrench"></i>              
+            </div>
+                <a href="<?php echo base_url('servicio'); ?>" class="small-box-footer"><?php echo "En servicios"; ?><i class="fa fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
 
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
@@ -291,22 +325,6 @@
         </div>
        
         
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-red">
-              <div class="inner" >
-
-                <h3><b><fa class="fa fa-pie-chart"></fa></b></h3>
-                <h5><b><?php echo number_format($compras[0]['total_compras'],2,'.',',')." Bs"; ?><sup style="font-size: 20px"></sup></b></h5>
-            </div>
-              
-            <div class="icon">
-              <i class="fa fa-pie-chart"></i>              
-            </div>
-                <a href="<?php echo base_url('compra'); ?>" class="small-box-footer"><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?><i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
         
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
@@ -341,23 +359,7 @@
                 <a href="<?php echo base_url('inventario'); ?>" class="small-box-footer"><?php echo "Inventario valorado"; ?><i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
-        
-        <!-- ./col -->
-        <div class="col-lg-3 col-xs-6">
-          <!-- small box -->
-          <div class="small-box bg-purple">
-              <div class="inner" >
 
-                <h3><b><fa class="fa fa-wrench"></fa></b></h3>
-                <h5><b><?php echo number_format($servicios['cantidad_servicios'],0,'.',',')." Registros"; ?><sup style="font-size: 20px"></sup></b></h5>
-            </div>
-              
-            <div class="icon">
-              <i class="fa fa-wrench"></i>              
-            </div>
-                <a href="<?php echo base_url('servicio'); ?>" class="small-box-footer"><?php echo "En servicios"; ?><i class="fa fa-arrow-circle-right"></i></a>
-          </div>
-        </div>
         
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
