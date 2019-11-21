@@ -29,3 +29,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 application/config/*
 
 *.zip
+
+resources/images/qrcode1.png

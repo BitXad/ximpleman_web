@@ -23,7 +23,7 @@
             
                 
                 <font size="3" face="arial"><b>ORDEN DE TRABAJO</b></font> <br>
-                <font size="3" face="arial"><b>Nº 00<?php echo $Orden_trabajo['orden_id']; ?></b></font> <br>
+                <font size="3" face="arial"><b>Nº 00<?php echo $Orden_trabajo['orden_numero']; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
 
             </center>

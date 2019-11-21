@@ -1113,6 +1113,7 @@ function fechaorden(parametro){
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>"+registros[i]["cliente_nombre"]+"</td>";  
+                        html += "<td align='center'><b>"+registros[i]["orden_numero"]+"</b></td>";  
                         html += "<td align='center'>"+moment(registros[i]["orden_fecha"]).format('DD/MM/YYYY')+"<br>"+registros[i]["orden_hora"]+"</td>";
                         html += "<td align='center'>"+moment(registros[i]["orden_fechaentrega"]).format('DD/MM/YYYY')+"</td>";
                         html += "<td align='right'>"+Number(registros[i]["orden_total"]).toFixed(2)+"</td>";
@@ -1177,6 +1178,7 @@ function fechaorden(parametro){
                        html += "<th align='right'>"+Number(total).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_acuenta).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_saldo).toFixed(2)+"</th>";
+                       html += "<th></th>";
                        html += "<th></th>";
                        html += "<th></th>";
                        html += "</tr>";

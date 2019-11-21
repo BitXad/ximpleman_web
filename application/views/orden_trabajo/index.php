@@ -156,6 +156,7 @@
                     <tr>
 						<th>#</th>
             <th>Cliente</th>
+            <th>No.</th>
 			<th>Fecha</th>
 			<th>Fecha de Entrega</th>
 			<th>Total Bs.</th>
