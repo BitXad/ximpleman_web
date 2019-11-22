@@ -36,10 +36,8 @@ class Servicio extends CI_Controller{
         if($this->acceso(69)){
             $usuario_id  = $this->session_data['usuario_id'];
             
-            $data = array(
-                'page_title' => 'Admin >> Mi Cuenta'
-            );
             $data['rol'] = $this->session_data['rol'];
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         //$data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
         $data['a']=$es;
         
@@ -1265,6 +1263,8 @@ class Servicio extends CI_Controller{
                         'estado_id' => $estado_id,
                         'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
                         'detalleserv_entregadoa'  => $this->input->post('detalleserv_entregadoa'),
+                        'detalleserv_diagnostico'  => $this->input->post('detalleserv_diagnosticot'),
+                        'detalleserv_solucion'  => $this->input->post('detalleserv_soluciont'),
                     );
                     $this->load->model('Detalle_serv_model');
                     $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);

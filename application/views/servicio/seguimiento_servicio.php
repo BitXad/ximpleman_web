@@ -493,7 +493,7 @@ if(sizeof($servicio)>0){  ?>
     <div class="col-md-5">
     </div>
     <div class="col-md-2">        
-        <a href="<?php echo base_url('servicio/index'); ?>" class="btn btn-success btn-block"><fa class="fa fa-close"></fa> SALIR</a>            
+        <a href="javascript:window.close();" class="btn btn-danger btn-block"><fa class="fa fa-close"></fa> SALIR</a>            
         
     </div>
     <div class="col-md-5">
@@ -504,7 +504,7 @@ if(sizeof($servicio)>0){  ?>
 <center>    
     <h2><b>LA ORDEN DE TRABAJO NO EXISTE..!!</b></h2>
     <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3>    
-    <a href='<?php echo base_url('servicio/index'); ?>' class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
+    <a href="javascript:window.close();" class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
 </center>
     
 <?php } ?>
