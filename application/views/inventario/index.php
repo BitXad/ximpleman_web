@@ -88,6 +88,8 @@
                 <button class="btn btn-success btn-sm" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Actualizar</button>
                 <?php if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-primary btn-sm" onclick="tabla_inventario()"><span class="fa fa-list"></span> Mostrar todo</button>
+
+                <button class="btn btn-info btn-sm" onclick="tabla_inventario_existencia()"><span class="fa fa-list-ol" title="Ver Produtos con Existencia"></span> Con Existencia</button>
                 <?php } if($rolusuario[28-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-facebook btn-sm" onclick="mostrar_duplicados()"><span class="fa fa-copy"></span> Prod. Duplicados</button>
                 <?php } ?>

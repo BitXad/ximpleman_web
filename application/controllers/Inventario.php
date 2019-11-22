@@ -144,7 +144,27 @@ class Inventario extends CI_Controller{
         //**************** fin contenido ***************
 			}
 			
-    }  
+    }
+
+    function mostrar_inventario_existencia()
+    {      
+       
+
+        if($this->acceso(25)){
+        //**************** inicio contenido ***************
+        
+            $parametro = $this->input->post("parametro");
+            if ($parametro=="" || $parametro==null)
+                $resultado = $this->Inventario_model->get_inventario_existencia();                
+            else
+                $resultado = $this->Inventario_model->get_inventario_parametro_existencia($parametro);
+            
+            echo json_encode($resultado);            
+        
+        //**************** fin contenido ***************
+            }
+            
+    }    
     
     /*
      * Adding a new producto
