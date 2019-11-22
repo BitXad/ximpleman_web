@@ -30,7 +30,7 @@ function buscarorden(estado){
                         html += "<td align='center'>"+registros[i]["estado_orden"]+"</td>";
                         html += "<td align='center'>"+moment(registros[i]["proceso_fechaproceso"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
                         html += "<td align='center'>"+registros[i]["estado_proceso"]+"</td>";
-                        html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</button>";
+                        html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</a> ";
                         html += "<button class='btn btn-success btn-xs' onclick='terminar("+registros[i]["proceso_id"]+","+registros[i]["estado"]+")'>Terminado</button></td>";
                         html += "</tr>";
                        
@@ -83,7 +83,7 @@ function buscarterminados(estado){
                         html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
                         html += "<td align='center'>"+moment(registros[i]["inicio"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
                         html += "<td align='center'>"+moment(registros[i]["fin"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
-                        html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</button>";
+                        html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</a> ";
                         html += "<button class='btn btn-warning btn-xs' onclick='recibir("+registros[i]["orden_id"]+")'>Recibir</button></td>";
                         html += "</tr>";
                        

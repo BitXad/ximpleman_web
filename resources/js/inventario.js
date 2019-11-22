@@ -392,6 +392,318 @@ function tabla_inventario(){
     
 }
 
+
+
+function tabla_inventario_existencia(){
+    var base_url = document.getElementById("base_url").value;
+    var parametro = document.getElementById("filtrar").value;
+    var controlador = base_url+"inventario/mostrar_inventario_existencia";
+    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    
+    var tipo_reporte = 2;
+
+
+    if (tipo_reporte == 1){
+        $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{parametro:parametro},
+        success: function(resultado){
+            
+            var inv = JSON.parse(resultado);
+            var tamanio = inv.length;
+            //alert(tamanio);
+
+             html = "";            
+                    html += "<table class='table table-striped table-bordered' id='mitabla'>";
+                    html += "<tr>";
+                    html += "    <th>#</th>";
+                    html += "    <th>Imagen</th>";
+                    html += "    <th>Descripción</th>";
+                    html += "    <th>Código</th>";
+                    html += "    <th>Costo</th>";
+                    html += "    <th>Compras</th>";
+                    html += "    <th>Ventas</th>";
+                    html += "    <th>Pedidos</th>";
+                    html += "    <th>Existencia</th>";
+                    html += "    <th>Total</th>";
+                    html += "</tr>";
+                    html += "<tbody class='buscar'>";
+                           
+
+            if (inv != null){
+            
+                    
+                    var total = 0;
+                    var total_final = 0;
+                    var existencia = 0;
+                
+                for (var i = 0; i < tamanio ; i++){
+                   
+                    //alert('dentra aqui: '+i+"/"+tamanio);
+                    
+                                total = inv[i]["producto_costo"]*inv[i]["existencia"]; 
+                                total_final += total;
+                                existencia = parseFloat(inv[i]["existencia"]);
+                                
+                    html += "                 <td>"+(i+1)+"</td>";
+                    html += "                 <td><img src='"+ base_url+"resources/images/productos/thumb_"+inv[i]["producto_foto"]+"' width='50' height='50' class='img-circle'</td>";
+                    html += "                 <td><font size='3'><b>"+ inv[i]["producto_nombre"]+"</b></font> <sub>";
+                    
+                    html += "                 <a href='"+base_url+"producto/edit2/"+inv[i]["producto_id"]+"' target='_blank' class='no-print'>["+inv[i]["producto_id"]+"] </a></sub>";
+                    html += "    <br>";
+                    html += "    <small>" + inv[i]["producto_unidad"]+" | "+inv[i]["producto_marca"]+" | "+inv[i]["producto_industria"];
+                    
+                    html += "   <span class='badge span-alert no-print'> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank' class='no-print'> Kardex</a> </span></small>";
+                    
+                    //html += "     <button type='button' class='btn btn-info btn-xs' data-toggle='modal' data-target='#myModal"+inv[i]["producto_id"]+"'>Kardex</button>";
+                    
+                    html += "                 </td>";
+                    html += "                 <td><center><font size='2'><b>"+inv[i]["producto_codigobarra"]+"</b><br> </font>";
+                    html += "    "+ inv[i]["producto_codigo"]+"</center></td>";
+                    html += "    <td><center>"+ inv[i]["producto_costo"]+"</center></td>";
+
+                    html += "                 <td><center>"+ inv[i]["compras"]+"</center></td>";
+                    html += "    <td><center>"+ inv[i]["ventas"]+"</center></td>";
+                    html += "    <td><center>"+ inv[i]["pedidos"]+"</center></td>";
+                    
+                    html += "                 <td><center> <font size='3'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
+                    html += "                 <td><center> <font size='2'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+                    
+
+                    html += "</tr>";
+                } // end for (i = 0 ....)
+            } //end if (inv != null){
+                
+                html += "</tbody>";
+                html += "<tr>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th></th>";
+                html += "    <th></th>";
+                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+
+                html += "</tr>    ";
+                html += "</table>";            
+                $("#tabla_inventario").html(html);            
+                
+            }, // end succes: function(resultados){
+            error:function(resultado){
+                //alert('ocurrio un error..!!');
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader 
+            }
+            
+         }); // close ajax                 
+        
+    }
+    
+    
+   //*********************** tipo_reporte 2 ************************************** 
+    if (tipo_reporte == 2){
+        
+        
+    $.ajax({
+        url: controlador,
+        type:"POST",
+        data:{parametro:parametro},
+        success: function(resultado){
+            
+            var inv = JSON.parse(resultado);
+            var tamanio = inv.length;
+            //alert(tamanio);
+
+             html = "";            
+                    html += "<table class='table table-striped table-bordered' id='mitabla' >";
+                    html += "<tr>";
+                    html += "    <th>#</th>";
+//                    html += "    <th>Imagen</th>";
+                    html += "    <th>Descripción</th>";
+                    html += "    <th>Código</th>";
+                    html += "    <th>Categoría</th>";                    
+                    html += "    <th>Unidad</th>";
+                    html += "    <th>Costo</th>";
+//                    html += "    <th>Compras</th>";
+//                    html += "    <th>Ventas</th>";
+//                    html += "    <th>Pedidos</th>";
+                    html += "    <th>Saldo</th>";
+                    html += "    <th>Total</th>";
+                    html += "    <th colspan='6'>Saldos/Presentaciones</th>";
+                    html += "</tr>";
+                    html += "<tbody class='buscar'>";
+                           
+
+            if (inv != null){
+            
+                    
+                    var total = 0;
+                    var total_final = 0;
+                    var existencia = 0;
+                    var margen = " style='padding:0'";
+                    var categoria = "";
+                    
+                for (var i = 0; i < tamanio ; i++){
+                   
+                    //alert('dentra aqui: '+i+"/"+tamanio);
+                    if (categoria != inv[i]["categoria_nombre"]){                        
+                        html += "<tr><td colspan='13'><b>"+inv[i]["categoria_nombre"]+"<b></tr>";
+                    }   
+
+                        html += "<tr "+margen+">";
+
+                                    total = inv[i]["producto_costo"]*inv[i]["existencia"]; 
+                                    total_final += total;
+                                    existencia = parseFloat(inv[i]["existencia"]);                                                    
+                        html += "                 <td "+margen+">"+(i+1)+"</td>";
+                        html += "                 <td "+margen+"><font size='0.5'>"+ inv[i]["producto_nombre"]+"</font>";
+                        html += "                 <td "+margen+" style='background: red'><center><font size='1'>"+inv[i]["producto_codigo"]+"</font> </center></td>";
+                        html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["categoria_nombre"]+"</center></font> </td>";
+                        html += "                 <td "+margen+"><font size='0.5'><center>"+ inv[i]["producto_unidad"]+"</center></font> </td>";
+
+                        html += "    <td "+margen+"><center>"+ Number(inv[i]["producto_costo"]).toFixed(2)+"</center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ existencia.toFixed(2)+"</b></font></center></td>";
+                        html += "                 <td "+margen+"><center> <font size='1'><b>"+ total.toFixed(2)+"</b></font></center></td>";
+
+                        factor = 0;
+                        producto_factor = 0;
+                        unidadfactor = "";
+
+                        if (inv[i]["producto_factor"]>0){
+
+                            producto_factor = inv[i]["producto_factor"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor"]);
+                            html += "                 <td "+margen+" ><center style='line-height:80%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+" </sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+                        if (inv[i]["producto_factor1"]>0){
+
+                            producto_factor = inv[i]["producto_factor1"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor1"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor1"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor1"]);
+                            html += "                 <td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+                        if (inv[i]["producto_factor2"]>0){
+
+                            producto_factor = inv[i]["producto_factor2"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor2"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor2"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor2"]);
+                            html += "                 <td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+                        if (inv[i]["producto_factor3"]>0){
+
+                            producto_factor = inv[i]["producto_factor3"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor3"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor3"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor3"]);
+                            html += "                 <td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+
+                        if (inv[i]["producto_factor4"]>0){
+
+                            producto_factor = inv[i]["producto_factor4"];
+                            factor =  Math.floor(existencia / inv[i]["producto_factor4"]);
+                            unidadfactor =  inv[i]["producto_unidadfactor4"];
+                            saldo =  Math.floor(existencia % inv[i]["producto_factor4"]);
+                            html += "                 <td "+margen+" ><center style='line-height:70%'> <sub> "+ factor +" "+unidadfactor+" ["+producto_factor+"] ";
+                            html += "<br> "+saldo+" "+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        }
+                        else{
+
+                            html += "<td "+margen+" ></td>";
+                        }
+
+
+    //                    html += "                 <td "+margen+" ><center style='line-height:70%'> <sub> "+ existencia +"<br>"+inv[i]["producto_unidad"]+"</sub></center></td>";
+
+                        html += "<td> <a href='"+base_url+"inventario/kardex/"+inv[i]["producto_id"]+"' target='_blank' class='btn btn-warning btn-xs no-print'><fa class='fa fa-list'> </fa> Kardex</a></small> </td>";
+                        //html += "<td><a href='"+base_url++"'>kardex</a></td>";
+                        html += "</tr>";
+                   
+                 
+                     
+
+                   categoria = inv[i]["categoria_nombre"];     
+                } // end for (i = 0 ....)
+            } //end if (inv != null){
+                
+                html += "</tbody>";
+                html += "<tr>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+                html += "    <th> </th>";
+//                html += "    <th> </th>";
+//                html += "    <th></th>";
+//                html += "    <th></th>";
+                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "    <th></th>";
+                html += "    <th></th>";
+                html += "    <th></th>";
+                html += "    <th></th>";
+                html += "    <th></th>";
+                html += "</tr>    ";
+                html += "</table>";            
+                $("#tabla_inventario").html(html);            
+                
+            }, // end succes: function(resultados){
+            error:function(resultado){
+                //alert('ocurrio un error..!!');
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader 
+            }
+            
+         }); // close ajax                 
+        
+    }
+    
+    
+          
+    //  document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader         
+    
+}
 function actualizar_inventario()
 {
     var base_url = document.getElementById('base_url').value;

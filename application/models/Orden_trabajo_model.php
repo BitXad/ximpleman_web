@@ -74,7 +74,7 @@ class Orden_trabajo_model extends CI_Model
 
             FROM
                 orden_trabajo c
-            LEFT JOIN usuario U on c.usuario_id = u.usuario_id
+            LEFT JOIN usuario u on c.usuario_id = u.usuario_id
             LEFT JOIN cliente cli on c.cliente_id = cli.cliente_id 
             LEFT JOIN venta v on c.orden_id=v.orden_id
             LEFT JOIN estado e on c.estado_id=e.estado_id

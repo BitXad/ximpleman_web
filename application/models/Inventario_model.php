@@ -444,5 +444,31 @@ class Inventario_model extends CI_Model
         return $resultado;
 
     }
+
+    function get_inventario_existencia()
+    {
+        $sql = "select  p.*,c.categoria_nombre FROM inventario p
+                left join categoria_producto c on c.categoria_id = p.categoria_id
+                where p.estado_id = 1 and p.existencia>0
+                group by p.categoria_id, p.producto_id order by c.categoria_nombre, p.producto_nombre asc";
+
+        $producto = $this->db->query($sql)->result_array();
+        
+        //$producto = $this->db->query($sql,array('credito_id'))->row_array();
+        return $producto;
+    }
     
+    function get_inventario_parametro_existencia($parametro)
+    {
+        
+        $sql = "select  p.*,c.categoria_nombre FROM inventario p
+                left join categoria_producto c on c.categoria_id = p.categoria_id
+                WHERE p.estado_id=1 and p.existencia>0 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
+                GROUP BY p.categoria_id, p.producto_id
+                ORDER By c.categoria_nombre, p.producto_nombre asc";
+        
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
 }
