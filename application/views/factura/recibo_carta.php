@@ -167,7 +167,7 @@ border-bottom : 1px solid #aaa;
                         ?>
            <tr>
                 <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0"><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre'];?>
+                <td style="padding: 0"><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre'];?>  (<?php echo $d['detalleven_codigo']; ?>)
                         <?php
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];

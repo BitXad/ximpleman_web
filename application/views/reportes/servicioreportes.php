@@ -8,8 +8,8 @@
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>FECHAS</h3>
-                  <p>Por Estado, Tec. Responsable, Cliente</p>
+                  <h4><b>FECHAS</b></h4>
+                  <p>Por Cliente, Tec. Responsable</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-calendar"></i>
@@ -19,9 +19,9 @@
         </div>
         <div class="col-lg-3 col-xs-6">
               <!-- small box -->
-            <div class="small-box bg-yellow">
+            <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>INF. TECNICO</h3>
+                  <h4><b>INF. TECNICO</b></h4>
                   <p>Por Servicio</p>
                 </div>
                 <div class="icon">
@@ -34,7 +34,7 @@
               <!-- small box -->
             <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>INF. TECNICO</h3>
+                  <h4><b>INF. TECNICO</b></h4>
                   <p>Por Detalle de Servicio</p>
                 </div>
                 <div class="icon">
