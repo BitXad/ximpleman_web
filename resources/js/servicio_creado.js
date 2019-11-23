@@ -740,11 +740,8 @@ function tablaresultadosclienteservicio(tabla_id){
         //var limite = 10;
         var base_url = document.getElementById('base_url').value;
 
-
         controlador = base_url+'cliente/buscarclientesactivos/';
         parametro = document.getElementById('filtrar').value;        
-
-
 
         $.ajax({url: controlador,
                type:"POST",
@@ -776,19 +773,39 @@ function tablaresultadosclienteservicio(tabla_id){
                             html += "<div style='color: #0073b7'>";
                             html += "<i class='fa fa-user fa-3x'></i>";
                             html += "</div>";
-                            html += "</div>";
-                            html += "<div class='col-md-9'>";
-                            //html += "<form action='"+base_url+"servicio/asignarcliente/"+servicio_id+"'  method='POST' class='form'>";
                             html += "<b>"+registros[i]["cliente_nombre"]+"</b><br>";
-                            //html += "C.I.: "+registros[i]["cliente_ci"]+" | Telf.: "+registros[i]["cliente_telefono"]+"<br>";
-                            html += "Telf.: "+registros[i]["cliente_telefono"]+" - Cel.: "+registros[i]["cliente_celular"]+"<br>";
-                            //html += "<input type='hidden' id='servicio_id'  name='servicio_id' class='form-control' value='"+servicio_id+"' />";
-                            //html += "<input type='hidden' id='cliente_id'  name='cliente_id' class='form-control' value='"+registros[i]["cliente_id"]+"' />";
+                            html += "</div>";
+                            var fijo = "";
+                            var cel = "";
+                            if(registros[i]["cliente_celular"] != null){
+                                cel = registros[i]["cliente_celular"];
+                            }
+                            if(registros[i]["cliente_telefono"] != null){
+                                fijo = registros[i]["cliente_telefono"];
+                            }
+                            html += "<div class='col-md-3'>";
+                            html += "<label for='cliente_celular' class='control-label'>Celular</label>";
+                            html += "<div class='form-group'>";
+                            html += "<input type='text' name='cliente_celular"+registros[i]["cliente_id"]+"' value='"+cel+"' class='form-control' id='cliente_celular"+registros[i]["cliente_id"]+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' autocomplete='off' />";
+                            html += "</div>";
+                            html += "</div>";
+                            
+                            html += "<div class='col-md-3'>";
+                            html += "<label for='cliente_celular' class='control-label'>Teléfono</label>";
+                            html += "<div class='form-group'>";
+                            html += "<input type='text' name='cliente_telefono"+registros[i]["cliente_id"]+"' value='"+fijo+"' class='form-control' id='cliente_telefono"+registros[i]["cliente_id"]+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' autocomplete='off' />";
+                            html += "</div>";
+                            html += "</div>";
+                            
+                            html += "<div class='col-md-3 text-center'>";
+                            html += "<label for='esteboton' class='control-label'>&nbsp;</label>";
+                            html += "<div class='form-group'>";
                             html += "<button class='btn btn-success btn-xs' onclick='asignarclienteregistrado("+servicio_id+", "+registros[i]["cliente_id"]+")' >";
                             html += "<i class='fa fa-check'></i> Elegir Cliente";
                             html += "</button>";
-                            //html += "</form>";
                             html += "</div>";
+                            html += "</div>";
+                            
                             html += "</td>";
 
                             html += "</tr>";
@@ -1409,6 +1426,7 @@ function registrarnuevocliente(servicio_id){
                    var cliente_id = registros["cliente_id"];
                    var cliente_nombre = registros["cliente_nombre"];
                    var cliente_telefono = registros["cliente_telefono"];
+                   var cliente_celular = registros["cliente_celular"];
                    var cliente_codigo = registros["cliente_codigo"];
                
                 if(cliente_id == null || cliente_id == 0){
@@ -1427,7 +1445,7 @@ function registrarnuevocliente(servicio_id){
                     mirescod += cliente_codigo;
                 }
                $('#cliente-nombre').html(mires);
-               $('#cliente-telefono').html(mirestel);
+               $('#cliente-telefono').html(mirestel+" - "+cliente_celular);
                $('#cliente-codigo').html(mirescod);
                $('#'+nombremodal).modal('hide');
                resetearcamposdeinputcliente();
@@ -1447,14 +1465,15 @@ function asignarclienteregistrado(servicio_id, cliente_id){
     var cliente_nit = document.getElementById('cliente_nit').value;
     var cliente_telefono = document.getElementById('cliente_telefono').value;
 */
+    var cliente_celular  = document.getElementById('cliente_celular'+cliente_id).value;
+    var cliente_telefono = document.getElementById('cliente_telefono'+cliente_id).value;
     //var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
     
     var controlador = base_url+'servicio/asignarcliente/'+servicio_id;
     $.ajax({url: controlador,
            type:"POST",
-           data:{cliente_id:cliente_id},
+           data:{cliente_id:cliente_id, cliente_celular:cliente_celular, cliente_telefono:cliente_telefono},
            success:function(respuesta){
-               
                var registros =  JSON.parse(respuesta);
                if (registros != null){
                    if(registros == "noexiste"){
@@ -1469,6 +1488,7 @@ function asignarclienteregistrado(servicio_id, cliente_id){
                        var cliente_id = registros["cliente_id"];
                        var cliente_nombre = registros["cliente_nombre"];
                        var cliente_telefono = registros["cliente_telefono"];
+                       var cliente_celular = registros["cliente_celular"];
                        var cliente_codigo = registros["cliente_codigo"];
                   }
                }
@@ -1478,7 +1498,7 @@ function asignarclienteregistrado(servicio_id, cliente_id){
                 }else{
                     $('#concliente').val(cliente_id);
                     mires += cliente_nombre;
-                    mirestel += cliente_telefono;
+                    mirestel += cliente_telefono+" - "+cliente_celular;
                 }
                 if(tiposerv_id == 2){
                     mires += "<br><b>Dirección: </b>"+servicio_direccion;

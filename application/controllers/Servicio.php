@@ -233,14 +233,23 @@ class Servicio extends CI_Controller{
                     $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
                     if(isset($data['servicio']['servicio_id']))
                     {
+                        $this->load->model('Cliente_model');
                         $cliente_id = $this->input->post('cliente_id');
+                        $cliente_celular  = $this->input->post('cliente_celular');
+                        $cliente_telefono = $this->input->post('cliente_telefono');
+                        $paramsc = array(
+                            'cliente_celular'  => $cliente_celular,
+                            'cliente_telefono' => $cliente_telefono,
+                        );
+                        $this->Cliente_model->update_cliente($cliente_id,$paramsc);
                         $params = array(
 					'cliente_id' => $cliente_id,
                                         'servicio_codseguimiento' => $this->input->post('codigo_seg'),
                         );
                         $this->Servicio_model->update_servicio($servicio_id,$params);
-                        $this->load->model('Cliente_model');
+                        
 	                $datos = $this->Cliente_model->get_cliente($cliente_id);
+                        
                         echo json_encode($datos);
                     }else{
                         echo json_encode("noexiste");

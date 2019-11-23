@@ -19,10 +19,8 @@ class Cliente_model extends CI_Model
         $cliente = $this->db->query("
             SELECT
                 *
-
             FROM
                 `cliente`
-
             WHERE
                 `cliente_id` = ?
         ",array($cliente_id))->row_array();

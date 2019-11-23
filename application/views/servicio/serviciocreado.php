@@ -378,15 +378,15 @@ $(document).ready(function(){
 						</div>
 					  </div>-->
                                         <div class="col-md-6">
-                                            <label for="cliente_telefono" class="control-label">Teléfono</label>
-                                            <div class="form-group">
-                                                <input type="text" name="cliente_telefono" value="<?php if($this->input->post('cliente_telefono') >0){ echo $this->input->post('cliente_telefono');}else{ echo 0;} ?>" class="form-control" id="cliente_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
-                                            </div>
-					</div>
-                                        <div class="col-md-6">
                                             <label for="cliente_celular" class="control-label">Celular</label>
                                             <div class="form-group">
                                                 <input type="text" name="cliente_celular" value="<?php if($this->input->post('cliente_celular') >0){ echo $this->input->post('cliente_celular');}else{ echo 0;} ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
+                                            </div>
+					</div>
+                                        <div class="col-md-6">
+                                            <label for="cliente_telefono" class="control-label">Teléfono</label>
+                                            <div class="form-group">
+                                                <input type="text" name="cliente_telefono" value="<?php if($this->input->post('cliente_telefono') >0){ echo $this->input->post('cliente_telefono');}else{ echo 0;} ?>" class="form-control" id="cliente_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
                                             </div>
 					</div>
                                            <!------------------------------------------------------------------->
