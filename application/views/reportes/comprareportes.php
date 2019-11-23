@@ -8,39 +8,39 @@
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>FECHAS</h3>
+                  <h4><b>FECHAS</b></h4>
                   <p>-----------</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-calendar"></i>
                 </div>
-                <a href="../compra/reportes" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="../compra/reportes" class="small-box-footer">Ver Reportes <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
         <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
-                  <h3>PROVEEDOR</h3>
+                  <h4><b>PROVEEDOR</b></h4>
                   <p>-----------</p>
                 </div>
                 <div class="icon">
                   <i class="fa fa-truck"></i>
                 </div>
-                <a href="../compra/repoProveedor" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="../compra/repoProveedor" class="small-box-footer">Ver Reportes <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
         <div class="col-lg-3 col-xs-6">
               <!-- small box -->
               <div class="small-box bg-yellow">
                 <div class="inner">
-                  <h3>PRODUCTO</h3>
+                  <h4><b>PRODUCTO</b></h4>
                   <p>-----------</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-cube"></i>
                 </div>
-                <a href="../compra/repoProducto" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="../compra/repoProducto" class="small-box-footer">Ver Reportes <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div>
 </div>

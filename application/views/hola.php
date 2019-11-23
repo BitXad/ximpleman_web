@@ -250,7 +250,7 @@
             <div class="icon">
               <i class="fa fa-cart-plus"></i>              
             </div>
-            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer"><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?><i class="fa fa-arrow-circle-right"></i></a>
+            <a href="<?php echo base_url('venta/ventas'); ?>" class="small-box-footer"><?php echo "En ".$ventas[0]['cantidad_ventas']." ventas"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
           
@@ -267,7 +267,7 @@
             <div class="icon">
               <i class="fa fa-pie-chart"></i>              
             </div>
-                <a href="<?php echo base_url('compra'); ?>" class="small-box-footer"><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?><i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('compra'); ?>" class="small-box-footer"><?php echo "En ".$compras[0]['cantidad_compras']." compras"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         
@@ -285,7 +285,7 @@
             <div class="icon">
               <i class="fa fa-bar-chart"></i>              
             </div>
-                <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer"><?php echo "En ".$pedidos[0]['cantidad_pedidos']." pedidos"; ?><i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('pedido'); ?>" class="small-box-footer"><?php echo "En ".$pedidos[0]['cantidad_pedidos']." pedidos"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 
@@ -303,7 +303,7 @@
             <div class="icon">
               <i class="fa fa-wrench"></i>              
             </div>
-                <a href="<?php echo base_url('servicio'); ?>" class="small-box-footer"><?php echo "En servicios"; ?><i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('servicio'); ?>" class="small-box-footer"><?php echo "En servicios"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 
@@ -320,7 +320,7 @@
             <div class="icon">
               <i class="fa fa-users"></i>              
             </div>
-                <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer"><?php echo "En ventas/servicios"; //$clientes[0]['total_clientes']." Clientes"; ?><i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer"><?php echo "En ventas/servicios"; //$clientes[0]['total_clientes']." Clientes"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
        
@@ -339,7 +339,7 @@
             <div class="icon">
               <i class="fa fa-cube"></i>              
             </div>
-                <a href="<?php echo base_url('producto'); ?>" class="small-box-footer"><?php echo "En Inventario"; ?><i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('producto'); ?>" class="small-box-footer"><?php echo "En Inventario"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         
@@ -356,7 +356,7 @@
             <div class="icon">
               <i class="fa fa-cubes"></i>              
             </div>
-                <a href="<?php echo base_url('inventario'); ?>" class="small-box-footer"><?php echo "Inventario valorado"; ?><i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('inventario'); ?>" class="small-box-footer"><?php echo "Inventario valorado"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
 
@@ -374,7 +374,7 @@
             <div class="icon">
               <i class="fa fa-question-circle"></i>              
             </div>
-                <a href="<?php echo base_url('soporte_tecnico'); ?>" class="small-box-footer">Opciones de ayuda<i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('soporte_tecnico'); ?>" class="small-box-footer">Opciones de ayuda <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
         
