@@ -2220,13 +2220,13 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
                 if(resultado == "faltainf"){
                     $('#mensajeregistrarserentregado').html("<br>Los campos: Saldo y Entregado a; no debes estar vacios");
                 }else if(resultado == "ok"){
-                    var dir_url = "";
+                    /*var dir_url = "";
                     if(tipoimpresora == "FACTURADORA"){
                         dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+detalleserv_id;
                     }else{
                         dir_url = base_url+"detalle_serv/compdetalle_pago/"+detalleserv_id;
                     }
-                    window.open(dir_url, '_blank');
+                    window.open(dir_url, '_blank'); */
                     //$('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
                     $("#select_servicio option[value=6]").attr("selected",true);
                     fechadeservicio(null, 2);

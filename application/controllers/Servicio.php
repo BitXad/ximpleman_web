@@ -1300,7 +1300,9 @@ class Servicio extends CI_Controller{
                     }
                     if($cont == count($res_ids)){
                         $params = array(
-                                    'estado_id' => $estado_id,
+                            'estado_id' => $estado_id,
+                            'servicio_fechafinalizacion' => $fecha_entregado,
+                            'servicio_horafinalizacion' => $hora_entregado,
                         );
                         
                         $this->Servicio_model->update_servicio($servicio_id,$params);
