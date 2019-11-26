@@ -86,6 +86,36 @@ class Cotizacion extends CI_Controller{
         }          
     }
 
+    function actualizarcaracteristicas()
+    {
+       if ($this->input->is_ajax_request()) {  
+        $producto_id = $this->input->post('producto_id');
+        $nuevo = $this->input->post('nuevo');
+
+        $prod= "UPDATE
+                producto
+            SET
+                producto_caracteristicas='".$nuevo."'
+                
+            WHERE
+                producto_id = ".$producto_id."  ";
+        $this->Cotizacion_model->ejecutar($prod);        
+        
+        $inv= "UPDATE
+                inventario
+            SET
+                producto_caracteristicas='".$nuevo."'
+                
+            WHERE
+                producto_id = ".$producto_id."  ";
+        $this->Cotizacion_model->ejecutar($inv); 
+        echo json_encode(true);
+       }else
+        {                 
+                    show_404();
+        }          
+    }
+
     function cotizarecibo($cotizacion_id)
     {
         if($this->acceso(36)){

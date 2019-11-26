@@ -46,7 +46,7 @@ function detallecoti(){
                         html += "Marca: <b>"+registros[i]["producto_marca"]+"</b><br>";
                         html += "Industria: <b>"+registros[i]["producto_industria"]+"</b><br>"; 
                         //html += "<form action='"+base_url+"cotizacion/updateDetallecot/"+cotizacion_id+"/"+registros[i]["producto_id"]+"'  method='POST' class='form'>";
-                        html += "<input id='detallecot_caracteristica"+registros[i]["producto_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["detallecot_caracteristica"]+"' placeholder='caracteristica'> </td>";
+                        html += "<input id='detallecot_caracteristica"+registros[i]["producto_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizacaracteristicas(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["producto_caracteristicas"]+"' placeholder='caracteristica'> </td>";
                         html += "<td> <input id='cotizacion_id'  name='cotizacion_id' type='hidden' class='form-control' value='"+cotizacion_id+"'>";
                         html += "<input id='detallecot_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
@@ -92,6 +92,45 @@ function actualizadetalle(e,detalle_id,producto_id,cotizacion_id) {
     if (tecla==13){ 
              
             actualizarDetalle(detalle_id,producto_id,cotizacion_id);            
+
+        }
+}
+
+function pasardetalle(e,cotizacion_id,producto_id) {
+
+  tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){ 
+             
+            detallecota(cotizacion_id,producto_id);            
+
+        }
+}
+
+function actualizacaracteristicas(e,detalle_id,producto_id,cotizacion_id) {
+
+  tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){
+
+
+    var base_url = document.getElementById('base_url').value;
+    var nuevo = document.getElementById('detallecot_caracteristica'+producto_id).value;
+    
+    var controlador = base_url+'cotizacion/actualizarcaracteristicas/';
+   
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id,nuevo:nuevo},
+           success:function(respuesta){     
+              // alert ('bien');
+               actualizarDetalle(detalle_id,producto_id,cotizacion_id);                    
+            
+        }
+        
+    });
+                 
 
         }
 }
@@ -703,7 +742,7 @@ function tablaresultados(opcion)
 
                         html += "<div class='col-md-3'  style='padding-left: 0px;' >";
 
-                        html += "Cant. <input class='input-sm ' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px' name='cantidad' type='number' class='form-control' placeholder='cantidad' required value='1'> </div></td>";
+                        html += "Cant. <input class='input-sm ' id='cantidad"+registros[i]["producto_id"]+"' style='width:70px' name='cantidad' onkeypress='pasardetalle(event,"+cotizacion_id+","+registros[i]["producto_id"]+")' type='number' class='form-control' placeholder='cantidad' required value='1'> </div></td>";
                         html += "<td>Anadir";
 
 
