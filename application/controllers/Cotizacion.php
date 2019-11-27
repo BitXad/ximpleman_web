@@ -35,7 +35,7 @@ class Cotizacion extends CI_Controller{
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
             $data['rol'] = $this->session_data['rol'];
-            $data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
+            //$data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'cotizacion/index';

@@ -46,7 +46,7 @@ function detallecoti(){
                         html += "Marca: <b>"+registros[i]["producto_marca"]+"</b><br>";
                         html += "Industria: <b>"+registros[i]["producto_industria"]+"</b><br>"; 
                         //html += "<form action='"+base_url+"cotizacion/updateDetallecot/"+cotizacion_id+"/"+registros[i]["producto_id"]+"'  method='POST' class='form'>";
-                        html += "<input id='detallecot_caracteristica"+registros[i]["producto_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizacaracteristicas(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["producto_caracteristicas"]+"' placeholder='caracteristica'> </td>";
+                        html += "<textarea  id='detallecot_caracteristica"+registros[i]["producto_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizacaracteristicas(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' placeholder='caracteristica'>"+registros[i]["producto_caracteristicas"]+"</textarea> </td>";
                         html += "<td> <input id='cotizacion_id'  name='cotizacion_id' type='hidden' class='form-control' value='"+cotizacion_id+"'>";
                         html += "<input id='detallecot_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
