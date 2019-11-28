@@ -204,7 +204,7 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 ".$condicion." 
-            ORDER BY compra_fecha DESC limit 500
+            ORDER BY compra_fecha, compra_hora DESC 
         ")->result_array();
 
         return $compra;
