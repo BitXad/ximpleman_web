@@ -104,7 +104,6 @@ if(sizeof($servicio)>0){  ?>
 <div class="row">
     <div class="col-md-12">
         <div class="box">
-            
             <div class="box-body table-responsive table-condensed">
                 <table class="table table-condensed "id="mitabla">
                     <tr style="padding: 0;">
@@ -360,6 +359,9 @@ if(sizeof($servicio)>0){  ?>
                                 </td>
                         </tr>
                         <tr>
+                            <td><span class="text-bold" style="font-size: 10px">Tec. Responsable: </span><?php echo $p['respusuario_nombre'] ?></td>
+                        </tr>
+                        <tr>
                             <td colspan="9">
                             
                             <!---------------------- SLIDER  ------------------------>
@@ -470,7 +472,7 @@ if(sizeof($servicio)>0){  ?>
 
                         </tr>
                         
-                        <?php } ?>   
+                        <?php } ?>
                         
                     <tr style="font-family: Arial">
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
@@ -478,11 +480,7 @@ if(sizeof($servicio)>0){  ?>
                     <tr style="font-family: Arial">
                         <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
                     </tr>
-                    
-                
-                    
                 </table>
-                                
             </div>
         </div>
     </div>

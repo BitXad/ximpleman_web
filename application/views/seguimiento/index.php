@@ -377,6 +377,9 @@
                                 </td>
                         </tr>
                         <tr>
+                            <td colspan="5"><span class="text-bold" style="font-size: 10px">Tec. Responsable: </span><?php echo $p['respusuario_nombre'] ?></td>
+                        </tr>
+                        <tr>
                             <td colspan="9">
                             
                             <!---------------------- SLIDER  ------------------------>

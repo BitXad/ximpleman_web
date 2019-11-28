@@ -92,29 +92,31 @@
                           foreach($all_imagen_detalle_serv as $imagen){
                     ?>
                     <tr>
-						<td><?php echo $cont ?></td>
-                                                <td>
-                                                    <div id="horizontal">
-                                                    <div>
-                                                        <a class="btn btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $imagen['imagenprod_id']; ?>" style="padding: 0px;">
-                                                            <?php
-                                                            echo '<img class="imgcuadrado" src="'.site_url('/resources/images/servicios/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
-                                                        </a>
-                                                   <?php
-                                                   
-                                                       // $mimagen = str_replace(".", "_thumb.", $imagen['imagenprod_archivo']);
-                                                        //echo '<img src="'.site_url('/resources/images/productos/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
-                                                   </div>
-                                                   <div>
-                                                       <b id="masgrande"><?php echo $imagen['imagenprod_titulo']; ?></b>
-                                                    </div>
-                                                  </div>
-                                                </td>
-						<td><?php echo $imagen['imagenprod_descripcion']; ?></td>
-                                                <td style="background-color: #<?php echo $imagen['estado_color']; ?>"><?php echo $imagen['estado_descripcion']; ?></td>
-						<td>
+                        <td><?php echo $cont ?></td>
+                        <td>
+                            <div id="horizontal">
+                            <div>
+                                <a class="btn btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $imagen['imagenprod_id']; ?>" style="padding: 0px;">
+                                    <?php
+                                    echo '<img class="imgcuadrado" src="'.site_url('/resources/images/servicios/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
+                                </a>
+                           <?php
+
+                               // $mimagen = str_replace(".", "_thumb.", $imagen['imagenprod_archivo']);
+                                //echo '<img src="'.site_url('/resources/images/productos/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
+                           </div>
+                           <div>
+                               <b id="masgrande"><?php echo $imagen['imagenprod_titulo']; ?></b>
+                            </div>
+                          </div>
+                        </td>
+                        <td><?php echo $imagen['imagenprod_descripcion']; ?></td>
+                        <td style="background-color: #<?php echo $imagen['estado_color']; ?>"><?php echo $imagen['estado_descripcion']; ?></td>
+                        <td>
                             <!--<a href="<?php //echo site_url('imagen_producto/edit/'.$producto_id.'/'.$imagen['imagenprod_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a>-->
-                            <?php if($tipousuario_id == 1){ ?>
+                            <?php if(($detalleservestado_id ==5 || $detalleservestado_id == 6) || $detalleservestado_id == 28){ ?>
+                                <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <?php }elseif($tipousuario_id == 1){ ?>
                                 <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                             <?php } ?>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
@@ -187,26 +189,26 @@
         <h5 class="modal-title text-center text-bold">Añadir Imagen a Galeria</h5>
         </div>
         <div class="modal-body">
-            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id,' class="dropzone" id="my-awesome-dropzone"'); ?>
+            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id,' class="dropzonex" id="my-awesome-dropzone"'); ?>
             
-                <!--div class="row clearfix">
+                <div class="row clearfix">
                     <div class="col-md-6">
                         <label for="galeria_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="galeria_nombre" value="<?php /*echo $this->input->post('galeria_nombre'); ?>" class="form-control" id="galeria_nombre" onKeyUp="this.value = this.value.toUpperCase();" required/>
+                            <input type="text" name="galeria_nombre" value="<?php echo $this->input->post('galeria_nombre'); ?>" class="form-control" id="galeria_nombre" onKeyUp="this.value = this.value.toUpperCase();" required/>
                     </div></div>
                     <div class="col-md-6">
                         <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Imagen</label>
                         <div class="form-group">
-                            <input type="file" name="galeria_imagen[]" value="<?php echo $this->input->post('galeria_imagen');*/ ?>" multiple class="form-control" id="galeria_imagen" required/>
+                            <input type="file" name="galeria_imagen" value="<?php echo $this->input->post('galeria_imagen'); ?>" multiple class="form-control" id="galeria_imagen" required/>
                         </div>
                     </div>
-                </div>-->
+                </div>
         
         </div>
         <div class="modal-footer">
-            <!--<button type="submit" class="btn btn-success">Guardar</button>-->
-            <a onclick="refrescar()" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Guardar</a>
+            <button type="submit" class="btn btn-success">Guardar</button>
+            <!--<a onclick="refrescar()" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Guardar</a>-->
             <?php echo form_close(); ?>
         </div>
     </div>
