@@ -1384,7 +1384,7 @@ function reportefechadecompra(filtro)
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                                                                    
                         html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+""+registros[i]['compra_hora']+"</td>" ;                                          
                         html += "<td align='right'> "+registros[i]["detallecomp_cantidad"]+" </td>"; 
-                        html += "<td align='right'> "+Number(registros[i]["producto_costo"]).toFixed(2)+" </td>"; 
+                        html += "<td align='right'> "+Number(registros[i]["detallecomp_costo"]).toFixed(2)+" </td>"; 
                         html += "<td align='right'><b>"+Number(registros[i]["detallecomp_total"]).toFixed(2)+"</b></td>";
                         
                         

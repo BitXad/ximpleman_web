@@ -866,11 +866,19 @@ class Compra extends CI_Controller{
  
     $nuevo = $pr_ident['nuevo_total'];
   $cantidad = $pr_ident['nueva_cantidad'];
- 
-  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." ";
+
+  //sumatoria de ventas//
+//$existe = "SELECT   i.existencia as 'existencia' from inventario i WHERE  i.producto_id= ".$pr_ident['product']." ";
+  
+
+////
+
+  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." and i.compra_id <> ".$compra_id." ";
   $det_costo=$this->db->query($detalle_costo)->result_array(); 
 $viejos = 0;
 $cantiviejas = 0;
+$cantidades = 0;
+$sumas = 0;
   foreach ($det_costo as $costo_cantidad) {
       
       $viejo = $costo_cantidad['viejo_total'];
@@ -878,12 +886,13 @@ $cantiviejas = 0;
       $cantidades = $cantiviejas+$cantidad;
       $viejos = $viejos + $viejo;
       $sumas =  $nuevo+$viejos;
-      $costo_promedio = $sumas/$cantidades;
+        
+   }  
+   $costo_promedio = $sumas/$cantidades;
       $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$pr_ident['product']." and p.producto_id=".$pr_ident['product']." ";
 
         $this->db->query($sql);
-    
-   }    }  }
+  }  }
   
 
    $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo, dc.detallecomp_precio from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;

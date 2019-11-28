@@ -359,7 +359,7 @@ if (tipo==0) {
                          cuotas += Number(registros[i]["credito_cuotainicial"]);
                          descuentos += Number(registros[i]["detalleven_descuento"]);
                          costos += Number(registros[i]["producto_costo"]);
-                         var utilidad = Number((registros[i]["producto_precio"]-registros[i]["producto_costo"])*registros[i]["detalleven_cantidad"]);
+                         var utilidad = Number((registros[i]["detalleven_precio"]-registros[i]["producto_costo"])*registros[i]["detalleven_cantidad"]);
                          utilidades += Number(utilidad);
                         
                         html += "<tr>";
@@ -375,7 +375,7 @@ if (tipo==0) {
                         html += "<td align='right'>"+Number(registros[i]["credito_cuotainicial"]).toFixed(2)+"</td>" ;// CUOTA INICIAL
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
                         html += "<td align='center'> "+registros[i]["detalleven_cantidad"]+" </td>"; 
-                        html += "<td align='right'> "+Number(registros[i]["producto_precio"]).toFixed(2)+" </td>"; 
+                        html += "<td align='right'> "+Number(registros[i]["detalleven_precio"]).toFixed(2)+" </td>"; 
                         html += "<td align='right'> "+Number(registros[i]["detalleven_descuento"]).toFixed(2)+" </td>";
                         
                         html += "<td align='right'><b>"+Number(registros[i]["detalleven_total"]).toFixed(2)+"</b></td>";
