@@ -314,6 +314,7 @@ class Imagen_producto extends CI_Controller{
             $this->load->model('Detalle_serv_model');
             $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             $data['detalleserv_id'] = $detalleserv_id;
+            $data['servicio_id'] = $detalle_serv['servicio_id'];
             $data['detalleserv_descripcion'] = $detalle_serv['detalleserv_descripcion'];
             $data['detalleservestado_id'] = $detalle_serv['estado_id'];
             $data['all_imagen_detalle_serv'] = $this->Imagen_producto_model->get_all_imagen_mi_det($detalleserv_id);
@@ -346,8 +347,8 @@ class Imagen_producto extends CI_Controller{
 
                         $this->load->library('upload', $config);
                         $this->upload->do_upload('galeria_imagen');
-                        $band = true;
-                        if($band == false){
+                        /*$band = true;
+                        if($band == false){*/
                         $img_data = $this->upload->data();
                         $extension = $img_data['file_ext'];
                         /* ********************INICIO para resize***************************** */
@@ -380,7 +381,7 @@ class Imagen_producto extends CI_Controller{
                         $this->image_lib->resize();
 
                         $foto = $new_name.$extension;
-                        }else{
+                        /*}else{
                             $img_data = $this->upload->data();
                             $extension = $img_data['file_ext'];
                             
@@ -398,7 +399,7 @@ class Imagen_producto extends CI_Controller{
 
                             
                             $foto = $new_name.$extension;
-                        }
+                        }*/
                     }
             /* *********************FIN imagen***************************** */
             $estado_id = 1;
@@ -407,11 +408,11 @@ class Imagen_producto extends CI_Controller{
                 'estado_id' => $estado_id,
                 'imagenprod_titulo' => $foto,
                 'imagenprod_archivo' => $foto,
-                'imagenprod_descripcion' => $foto,
+                'imagenprod_descripcion' => $this->input->post('galeria_descripcion'),
             );
             
             $imagenprod_id = $this->Imagen_producto_model->add_imagen_producto($params);
-            sleep(1);
+            //sleep(1);
             redirect('imagen_producto/catalogodet/'.$detalleserv_id);
             
         }

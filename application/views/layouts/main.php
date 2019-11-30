@@ -426,7 +426,7 @@
                         if($rolusuario[127-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('subCategoria_servicio');?>"><i class="fa fa-list"></i>Sub Categoría Servicio</a>
+                            <a href="<?php echo site_url('subcategoria_servicio');?>"><i class="fa fa-list"></i>Sub Categoría Servicio</a>
                         </li>
                         <?php
                         }

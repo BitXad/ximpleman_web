@@ -224,7 +224,7 @@ function mostrarAlert(){
 					<div class="col-md-5">
 						<label for="detalleserv_solucion" class="control-label">Solución</label>
 						<div class="form-group">
-							<input type="text" name="detalleserv_solucion" value="<?php if($detalle_serv['detalleserv_solucion'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_solucion'];} ?>" class="form-control text-uppercase" id="detalleserv_solucion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
+							<input type="text" name="detalleserv_solucion" value="<?php if($detalle_serv['detalleserv_solucion'] == null){ echo 'REVISION'; }else{ echo $detalle_serv['detalleserv_solucion'];} ?>" class="form-control" id="detalleserv_solucion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
 						</div>
 					</div>
                                         <div class="col-md-2">

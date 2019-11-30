@@ -1531,6 +1531,13 @@ function registrarnuevodetalleservicio(servicio_id){
     var catserv_id = document.getElementById('catserv_id').value;
     //var subcatserv_id = document.getElementById('subcatserv_id').value;
     var subcatserv_id = document.getElementById('estesubcatserv_id').value;
+    
+    var textcatproducto = $('#catserv_id option:selected').text();
+    var textmarcadescripcion = "";
+    if($('#subcatserv_id').val() !=""){
+        textmarcadescripcion = $('#subcatserv_id').val();
+        //alert(textmarcadescripcion+"22q");
+    }
     var detalleserv_descripcion = document.getElementById('detalleserv_descripcion').value;
     var detalleserv_falla = document.getElementById('detalleserv_falla').value;
     var detalleserv_diagnostico = document.getElementById('detalleserv_diagnostico').value;
@@ -1553,7 +1560,8 @@ function registrarnuevodetalleservicio(servicio_id){
                detalleserv_pesoentrada:detalleserv_pesoentrada, detalleserv_glosa:detalleserv_glosa,
                detalleserv_total:detalleserv_total, detalleserv_acuenta:detalleserv_acuenta,
                detalleserv_saldo:detalleserv_saldo, detalleserv_fechaentrega:detalleserv_fechaentrega,
-               detalleserv_horaentrega:detalleserv_horaentrega, responsable_id:responsable_id},
+               detalleserv_horaentrega:detalleserv_horaentrega, responsable_id:responsable_id,
+               textcatproducto:textcatproducto, textmarcadescripcion:textmarcadescripcion},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
@@ -2034,6 +2042,7 @@ function seleccionar_subcategoria(){
     var subcatserv_id = document.getElementById('subcatserv_id').value;
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"subcategoria_servicio/seleccionar_subcategoria/";
+    if(subcatserv_id >0){
         $.ajax({url: controlador,
             type:"POST",
             data:{subcatserv_id:subcatserv_id},
@@ -2047,10 +2056,10 @@ function seleccionar_subcategoria(){
                 if (tam>=1){
                     $("#subcatserv_id").val(resultado[0]["subcatserv_descripcion"]);
                     $("#estesubcatserv_id").val(resultado[0]["subcatserv_id"]);
-                    var res = $("#detalleserv_descripcion").val();
+                    //var res = $("#detalleserv_descripcion").val();
                     $('#detalleserv_total').val(resultado[0]['subcatserv_precio']);
                     $('#detalleserv_saldo').val(resultado[0]['subcatserv_precio']);
-                    $("#detalleserv_descripcion").val(res+" "+resultado[0]["subcatserv_descripcion"]);
+                    //$("#detalleserv_descripcion").val(res+" "+resultado[0]["subcatserv_descripcion"]);
                     $('#detalleserv_descripcion').focus();
                     $('#detalleserv_descripcion').focus();
                 }
@@ -2058,7 +2067,8 @@ function seleccionar_subcategoria(){
             },
             error: function(respuesta){
             }
-        });    
+        });
+    }
     
 }
 
