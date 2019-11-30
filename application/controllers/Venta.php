@@ -2244,6 +2244,7 @@ function anular_venta($venta_id){
                $detalleven_id = $this->input->post('detalleven_id');
                $detalleven_preferencia = $this->input->post('preferencia');
                $detalleven_caracteristicas = $this->input->post('caracteristicas');
+               $costo = $this->input->post('costo');
                $check = $this->input->post('check');
                $cantidadenvase = $this->input->post('cantidadenvase');
                $garantia = $this->input->post('garantia');
@@ -2252,8 +2253,8 @@ function anular_venta($venta_id){
                $sql =  "update detalle_venta_aux set ".
                        " detalleven_preferencia = '".$detalleven_preferencia."'".
                        " ,detalleven_caracteristicas = '".$detalleven_caracteristicas."'".
-                       " ,detalleven_fechavenc = '".$fecha_vencimiento."'".
-                       
+                       " ,detalleven_fechavenc = '".$fecha_vencimiento."'".                       
+                       " ,detalleven_costo = ".$costo.                       
                        " ,detalleven_devueltoenvase = 0".
                        " ,detalleven_montodevolucion = 0".
                        " ,detalleven_cantidadenvase = if(".$check."=1,".$cantidadenvase.",0)".

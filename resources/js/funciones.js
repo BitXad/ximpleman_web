@@ -294,21 +294,29 @@ html += "    <div class='collapse multi-collapse' id='caracteristicas"+registros
 html += "      <div class='card card-body'>";
 
 html += "        <div class='row clearfix'> ";
-html += "           <div class='col-md-12'>";
+
+html += "           <div class='col-md-3'>";
+html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
+html += "               <div class='form-group'>"
+html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_costo']+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
+html += "               </div>";
+html += "           </div>";
+
+html += "           <div class='col-md-9'>";
 html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Preferencias/Características</label>";
 html += "               <div class='form-group'>"
-html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='form-control btn-xs' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
+html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='btn btn-xs btn-default form-control' style='text-align:left' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
 html += "               </div>";
 html += "           </div>";
 html += "           <div class='col-md-12'>";
 //html += "               <label for='estado_descripcion' class='control-label'>Descripcion</label>";
 html += "               <div class='form-group'>";
-if (registros[i]['detalleven_caracteristicas']==null){ caracteristicas = "";
-    html += "               <textarea name='detalleven_caracteristicas' class='form-control' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+caracteristicas;}
+if (registros[i]['detalleven_caracteristicas']=='null'){ caracteristicas = "";
+    html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+caracteristicas;}
 else
-{  html += "               <textarea name='detalleven_caracteristicas' class='form-control' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];}
+{  html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];}
 
-html += "               </textarea>";
+html += "</textarea>";
 
 if (registros[i]["detalleven_envase"] == 1){
     
@@ -334,7 +342,7 @@ if (registros[i]["detalleven_envase"] == 1){
         html += "<td style='padding: 0;'><center><input type='text' style='width:30px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_garantiaenvase"]+"' ></center></td>";
     html += "</tr>";
     
-    html += "</table>";    
+    html += "</table>";
 }else
 {
     html += "<input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
@@ -2750,6 +2758,7 @@ function actualizar_caracteristicas(detalleven_id)
     var preferencia = document.getElementById('detalleven_preferencia'+detalleven_id).value;
     //alert(preferencia);
     var caracteristicas = document.getElementById('detalleven_caracteristicas'+detalleven_id).value;
+    var costo = document.getElementById('detalleven_costo'+detalleven_id).value;
     
     var micheck = document.getElementById('check'+detalleven_id).checked;
     var cantidadenvase = document.getElementById('cantidadenvase'+detalleven_id).value;
@@ -2774,11 +2783,10 @@ function actualizar_caracteristicas(detalleven_id)
     $.ajax({url: controlador,
         type:"POST",
         data:{detalleven_id:detalleven_id, preferencia:preferencia, caracteristicas:caracteristicas, check:check,
-            cantidadenvase:cantidadenvase, garantia:garantia, fecha_vencimiento:fecha_vencimiento},
+            cantidadenvase:cantidadenvase, garantia:garantia, fecha_vencimiento:fecha_vencimiento, costo:costo},
         success:function(result){
             tablaproductos();
         }
-
     });
    
 }   
