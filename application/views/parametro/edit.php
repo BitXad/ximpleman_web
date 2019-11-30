@@ -124,7 +124,7 @@
 						</div>
 					</div>
 				</div><hr>
-					<div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 0, 0, 0.3);"><u><b>SERVICIOS</b></u><br>
+                                <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 0, 0, 0.3);"><u><b>SERVICIOS</b></u><br>
 				
                                     <div class="col-md-3">
                                         <label for="parametro_diagnostico" class="control-label">DIAGNOSTICO</label>
@@ -138,7 +138,17 @@
                                         <div class="form-group">
                                             <input type="text" name="parametro_solucion" value="<?php echo ($this->input->post('parametro_solucion') ? $this->input->post('parametro_solucion') : $parametro['parametro_solucion']); ?>" class="form-control" id="parametro_solucion" onKeyUp="this.value = this.value.toUpperCase();" />
                                         </div>
-                                    </div></div><hr>
+                                    </div>
+                                    <!--<div class="col-md-3">
+                                        <label for="parametro_imagenreal" class="control-label"> RESOLUCIÓN DE IMAGEN</label>
+                                        <div class="form-group">
+                                            <select  name="parametro_imagenreal" value="<?php /*echo ($this->input->post('parametro_imagenreal') ? $this->input->post('parametro_imagenreal') : $parametro['parametro_imagenreal']); ?>" class="form-control" id="parametro_tipoimpresora" >
+                                                 <option value="1">SUBIR IMAGENES S</option>
+                                                <option value="0" <?php if($parametro['parametro_tipoimpresora']=='NORMAL'){ ?> selected <?php }*/ ?> >NORMAL</option>
+                                            </select>
+                                        </div>
+                                    </div>-->
+                                </div><hr>
                             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 255, 0, 0.3);"><u><b>VENTAS</b></u><br>
 							<div class="row clearfix">
                                    

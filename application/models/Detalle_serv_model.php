@@ -752,7 +752,9 @@ class Detalle_serv_model extends CI_Model
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
                 ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id,
                 c.cliente_telefono, c.cliente_celular, e.estado_color, e.estado_descripcion,
-                dv.detalleven_total, p.producto_nombre
+                dv.detalleven_total, p.producto_nombre, s.servicio_fecharecepcion,
+                s.servicio_horarecepcion, s.servicio_fechafinalizacion, s.servicio_horafinalizacion,
+                ds.detalleserv_entregadoa, u.usuario_nombre
 
             FROM
                 detalle_serv ds
@@ -761,6 +763,7 @@ class Detalle_serv_model extends CI_Model
             LEFT JOIN estado e on ds.estado_id = e.estado_id
             LEFT JOIN detalle_venta dv on ds.detalleserv_id = dv.detalleserv_id
             LEFT JOIN producto p on dv.producto_id = p.producto_id
+            LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
             WHERE
                 ds.servicio_id = ".$servicio_id."
                

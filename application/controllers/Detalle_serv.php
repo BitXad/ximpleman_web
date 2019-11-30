@@ -187,6 +187,7 @@ class Detalle_serv extends CI_Controller{
                 $inputotal = $this->input->post('detalleserv_total'); 
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
+                $masdescripcion = $this->input->post('textcatproducto')." ".$this->input->post('textmarcadescripcion')." ".$this->input->post('detalleserv_descripcion');
                 $params = array(
                                     'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
@@ -197,7 +198,7 @@ class Detalle_serv extends CI_Controller{
                                     'cattrab_id' => $this->input->post('cattrab_id'),
                                     'tiempouso_id' => $this->input->post('tiempouso_id'),
                                     'procedencia_id' => $this->input->post('procedencia_id'),
-                                    'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                                    'detalleserv_descripcion' => $masdescripcion,
                                     'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
                                     'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                                     'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
@@ -856,7 +857,7 @@ class Detalle_serv extends CI_Controller{
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
                 $params = array(
-                                    //'estado_id' => $estado_id,
+                                    'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
                                     'usuario_id' => $usuario_id,
                                     'servicio_id' => $servicio_id,

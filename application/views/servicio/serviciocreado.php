@@ -8,7 +8,9 @@
     });
 
     function fetch_select(id_cat){
-        $('#detalleserv_descripcion').val($('#catserv_id option:selected').text());
+        //$('#detalleserv_descripcion').val($('#catserv_id option:selected').text());
+        $('#subcatserv_id').val("");
+        buscarsubcategorias();
 
         }
     function clientefocus(){
@@ -616,6 +618,7 @@ $(document).ready(function(){
                                 <label for="subcatserv_id" class="control-label">Marca/Modelo</label>
                                     <div class="form-group" id="new_select">
                                         <input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="- MARCA/MODELO -" onkeypress="validar2(event,2)"  onchange="seleccionar_subcategoria()" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />
+                                        <!--<input type="search" name="subcatserv_id" list="listasubcatserv" class="form-control" id="subcatserv_id" value="" onkeypress="validar2(event,2)"  onchange="seleccionar_subcategoria()" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" />-->
                                         <datalist id="listasubcatserv">
                                         </datalist>
                                             <!-- <select name="subcatserv_id" class="form-control" id="subcatserv_id" onchange="ponerdescripcion(this.value);">

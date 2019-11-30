@@ -37,8 +37,9 @@
 <div class="box-header">
     <div class="col-md-12">
         <div class="col-md-6">
-            <font size='4' face='Arial'><b>Imagenes del Detalle de Servicio: <?php echo $detalleserv_descripcion; ?></b></font>
-            <br><font size='2' face='Arial'>Imagenes Encontradas: <?php echo sizeof($all_imagen_detalle_serv); ?></font>
+            <font size='4' face='Arial'><b>Imágenes del Servicio N°: <?php echo $servicio_id; ?></b></font>
+            <br><font size='2' face='Arial'><?php echo $detalleserv_descripcion; ?></font>
+            <br><font size='2' face='Arial'>Imágenes Encontradas: <?php echo sizeof($all_imagen_detalle_serv); ?></font>
         </div>
         <br>
         <div class="col-md-6 box-tools no-print text-center">
@@ -94,21 +95,21 @@
                     <tr>
                         <td><?php echo $cont ?></td>
                         <td>
-                            <div id="horizontal">
+                            <!--<div id="horizontal">-->
                             <div>
                                 <a class="btn btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $imagen['imagenprod_id']; ?>" style="padding: 0px;">
                                     <?php
-                                    echo '<img class="imgcuadrado" src="'.site_url('/resources/images/servicios/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
+                                    echo '<img class="imgcuadrado" src="'.site_url('/resources/images/servicios/'."thumb_".$imagen['imagenprod_archivo']).'" title="'.$imagen["imagenprod_titulo"].'" />'; ?>
                                 </a>
                            <?php
 
                                // $mimagen = str_replace(".", "_thumb.", $imagen['imagenprod_archivo']);
                                 //echo '<img src="'.site_url('/resources/images/productos/'."thumb_".$imagen['imagenprod_archivo']).'" />'; ?>
                            </div>
-                           <div>
-                               <b id="masgrande"><?php echo $imagen['imagenprod_titulo']; ?></b>
-                            </div>
-                          </div>
+                           <!--<div>
+                               <b id="masgrande"><?php //echo $imagen['imagenprod_titulo']; ?></b>
+                            </div>-->
+                          <!--</div>-->
                         </td>
                         <td><?php echo $imagen['imagenprod_descripcion']; ?></td>
                         <td style="background-color: #<?php echo $imagen['estado_color']; ?>"><?php echo $imagen['estado_descripcion']; ?></td>
@@ -120,27 +121,28 @@
                                 <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $cont; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                             <?php } ?>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
-                                    <div class="modal fade" id="myModal<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $cont; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
+                            <div style="white-space: normal !important;" class="modal fade" id="myModal<?php echo $cont; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $cont; ?>">
+                                <div class="modal-dialog" role="document">
+                                    <br><br>
+                                    <div class="modal-content">
+                                        <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                          </div>
-                                          <div class="modal-body">
-                                           <!------------------------------------------------------------------->
-                                           <h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la Imagen <b> <?php echo $imagen['imagenprod_titulo']; ?></b> ?
-                                           </h3>
-                                           <!------------------------------------------------------------------->
-                                          </div>
-                                          <div class="modal-footer aligncenter">
-                                                <a href="<?php echo site_url('imagen_producto/eliminar/'.$imagen['imagenprod_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
-                                                    <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
-                                          </div>
+                                            <div class="text-center text-bold" style="font-size: 12px">Servicio N°: <?php echo $servicio_id ?></div>
                                         </div>
+                                        <div class="modal-body">
+                                       <!------------------------------------------------------------------->
+                                        <div><b> <span class="fa fa-trash"></span></b>
+                                            ¿Desea eliminar la Imagen <b> <?php echo $imagen['imagenprod_titulo']; ?></b> ?
+                                        </div>
+                                        <!------------------------------------------------------------------->
+                                        </div>
+                                        <div class="modal-footer" style="text-align: center">
+                                            <a href="<?php echo site_url('imagen_producto/eliminar/'.$imagen['imagenprod_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                       </div>
                                     </div>
+                                </div>
+                            </div>
                     <!------------------------ FIN modal para confirmar eliminación ------------------->
                     <!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->
                                     <div class="modal fade" id="mostrarimagen<?php echo $imagen['imagenprod_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="mostrarimagenlabel<?php echo $imagen['imagenprod_id']; ?>">
@@ -188,14 +190,18 @@
             </a>
         <h5 class="modal-title text-center text-bold">Añadir Imagen a Galeria</h5>
         </div>
+        <div class="row" id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
         <div class="modal-body">
-            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id,' class="dropzonex" id="my-awesome-dropzone"'); ?>
+            <?php //echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id,' class="dropzone" id="my-awesome-dropzone"'); ?>
+            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id); ?>
             
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <label for="galeria_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <label for="galeria_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="galeria_nombre" value="<?php echo $this->input->post('galeria_nombre'); ?>" class="form-control" id="galeria_nombre" onKeyUp="this.value = this.value.toUpperCase();" required/>
+                            <input type="text" name="galeria_descripcion" value="<?php echo $this->input->post('galeria_descripcion'); ?>" class="form-control" id="galeria_descripcion" onKeyUp="this.value = this.value.toUpperCase();" required/>
                     </div></div>
                     <div class="col-md-6">
                         <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Imagen</label>
@@ -207,7 +213,7 @@
         
         </div>
         <div class="modal-footer">
-            <button type="submit" class="btn btn-success">Guardar</button>
+            <button type="submit" onclick="mostrarloader()" class="btn btn-success">Guardar</button>
             <!--<a onclick="refrescar()" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Guardar</a>-->
             <?php echo form_close(); ?>
         </div>
@@ -222,7 +228,15 @@
     
     $(document).ready(function(){
         $("#modalgaleria").on('hidden.bs.modal', function () {
-            location.reload();
+            //location.reload();
+            $("#loader").css("display","none");
         });
     });
+    
+    function mostrarloader(){
+        $("#loader").css("display","block");
+    }
+    function ocultarloader(){
+        $("#loader").css("display","none");
+    }
 </script>

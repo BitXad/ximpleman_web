@@ -53,16 +53,13 @@
             <font size="2" face="Arial" title="Ir a reporte de servicios"><a class="btn btn-facebook btn-xs" href="<?php echo site_url('reportes/servicioreportes') ?>">Reporte de Servicios</a></font>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
-        <div class="col-md-7" style="padding-right: 0px">
+        <div class="col-md-8" style="padding-right: 0px">
         <!--este es INICIO de input buscador-->
         <div class="input-group">
             <span class="input-group-addon">Buscar</span>
             <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)" autofocus autocomplete="off">
             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="fechadeservicio('', 1)"><span class="fa fa-search"></span></div>
         </div>
-        </div>
-        <div class="col-md-1">
-            <div style="border-color: #16a085; background: #16a085 !important; color: white" class="btn" onclick="fechadeservicio('', 1)" title="Ver mis servicios asignados"><span class="fa fa-binoculars"></span></div>
         </div>
         <div class="col-md-4">
             <div  class="box-tools" >

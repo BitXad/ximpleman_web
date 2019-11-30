@@ -1205,7 +1205,7 @@ class Servicio extends CI_Controller{
                         
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
-                    
+                    /*
                     $producto_id = $this->input->post('producto_id');
                     if($producto_id >0){
                         $venta_id = 0; //obliga a ponerle un id de venta
@@ -1237,7 +1237,7 @@ class Servicio extends CI_Controller{
                         $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
 
                         $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
-                    }
+                    }*/
                     echo json_encode("ok");
                 }else{
                     echo json_encode("faltainf");
@@ -1270,10 +1270,13 @@ class Servicio extends CI_Controller{
                         'detalleserv_fechaentregado' => $fecha_entregado,
                         'detalleserv_horaentregado' => $hora_entregado,
                         'estado_id' => $estado_id,
+                        'detalleserv_total'       => $this->input->post('detalleserv_total'),
                         'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
                         'detalleserv_entregadoa'  => $this->input->post('detalleserv_entregadoa'),
                         'detalleserv_diagnostico'  => $this->input->post('detalleserv_diagnosticot'),
                         'detalleserv_solucion'  => $this->input->post('detalleserv_soluciont'),
+                        'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
+                        'detalleserv_detalleexterno'  => $this->input->post('detalleserv_detalleexterno'),
                     );
                     $this->load->model('Detalle_serv_model');
                     $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
@@ -1307,6 +1310,41 @@ class Servicio extends CI_Controller{
                         
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
+                    
+                    $producto_id = $this->input->post('producto_id');
+                    if($producto_id >0){
+                        $venta_id = 0; //obliga a ponerle un id de venta
+                        $usuario_id = $this->session_data['usuario_id'];
+                        $this->load->model('Detalle_venta_model');
+                        $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
+                        $this->load->model('Inventario_model');
+                        $inventario = $this->Inventario_model->get_productoinventario($producto_id);
+                        $cantidad = 1;
+                        $detalleparams = array(
+                            'producto_id' => $producto_id,
+                            'venta_id' => $venta_id,
+                            'moneda_id' => $inventario['moneda_id'],
+                            'detalleven_codigo' => $inventario['producto_codigo'],
+                            'detalleven_cantidad' => $cantidad,
+                            'detalleven_unidad' => $inventario['producto_unidad'],
+                            'detalleven_costo' => $inventario['producto_costo'],
+                            'detalleven_precio' => $this->input->post('producto_precio'),
+                            'detalleven_subtotal' => $this->input->post('producto_precio'),
+                            'detalleven_descuento' => 0,
+                            'detalleven_total' => $this->input->post('producto_precio'),
+                            'detalleven_preferencia' => "",
+                            'detalleven_caracteristicas' => "",
+                            'detalleven_comision' => $inventario['producto_comision'],
+                            'detalleven_tipocambio' => $inventario['producto_tipocambio'],
+                            'usuario_id' => $usuario_id,
+                            'detalleserv_id' => $detalleserv_id,
+                        );
+                        $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
+
+                        $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
+                    }
+                    
+                    
                     
                     echo json_encode("ok");
                 }else{
