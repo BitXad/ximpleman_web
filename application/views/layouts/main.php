@@ -711,7 +711,8 @@
     <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Main content -->
-                <section class="content" style='padding-left: 5px; padding-right: 0px; padding-bottom: 0px; padding-top: 0px;'>
+                <!--<section class="content" style='padding-left: 5px; padding-right: 0px; padding-bottom: 0px; padding-top: 0px;'>-->
+                <section class="content">
                     <?php                    
                     if(isset($_view) && $_view)
                         $this->load->view($_view);
