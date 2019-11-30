@@ -801,7 +801,7 @@ function tablaresultadosclienteservicio(tabla_id){
                             html += "<label for='esteboton' class='control-label'>&nbsp;</label>";
                             html += "<div class='form-group'>";
                             html += "<button class='btn btn-success btn-xs' onclick='asignarclienteregistrado("+servicio_id+", "+registros[i]["cliente_id"]+")' >";
-                            html += "<i class='fa fa-check'></i> Elegir Cliente";
+                            html += "<i class='fa fa-check'></i> Seleccionar";
                             html += "</button>";
                             html += "</div>";
                             html += "</div>";

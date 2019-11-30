@@ -6,6 +6,16 @@
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/cotizacion.css'); ?>" rel="stylesheet">
+<style type="text/css">
+    @media print {
+    #mitabla th {
+        background-color: rgba(127,127,127,0.5) !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+    }
+}
+
+</style>
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
  <input type="hidden" name="fecha_cotizacion" id="fecha_cotizacion" value="<?php echo $cotizacion['cotizacion_fecha']; ?>">
@@ -48,6 +58,7 @@
     
 </table>  
 <br>
+<font face="Arial" size="2">
 <div id="fechacotizacion" style="text-align: right"></div>
 
 <div style="text-align: left">
@@ -59,7 +70,7 @@
     <br>
 </div>
 <div style="text-align: center">
-    <b>Ref.: COTIZACION</b>
+    <b>Ref.: COTIZACION DE PRODUCTOS/SERVICIOS</b>
 </div>
 <br>
 <div style="text-align: justify">
@@ -69,7 +80,7 @@
 <div style="text-align: justify">
     El motivo de la misma es cotizar el(los) siguiente(s) producto(s).
 </div>
-
+</font>
  
  <!--<div class="box" >-->
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
@@ -140,11 +151,11 @@
                             
             </tbody>
             <tr>
-                <td rowspan="2" colspan="3" class="text-center" style="font-size: 13pt">TOTAL</td>
-                <td colspan="3" class="text-center">NUMERAL(Bs.)</td>
-                <td class="text-right">
+                <th rowspan="2" colspan="3" class="text-center" style="font-size: 13pt; padding: 3px">TOTAL</th>
+                <th colspan="3" class="text-center" style="font-size: 11px; padding: 3px">NUMERAL(Bs.)</th>
+                <th class="text-right" style=" padding: 3px">
                     <span class="badge badge-success"><font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font></span>
-                </td>
+                </th>
             </tr>
             <tr>
                 <td colspan="4" class="text-center">MONTO LITERAL</td>
@@ -155,21 +166,21 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="2" class="text-center text-bold" style="font-size: 9pt">CONDICIONES DE TRABAJO</td>
-                <td class="text-center text-bold" style="font-size: 9pt">RECIBI CONFORME</td>
+                <th colspan="2" class="text-center text-bold" style="font-size: 9pt;padding: 3px">CONDICIONES DE TRABAJO</th>
+                <th class="text-center text-bold" style="font-size: 9pt;padding: 3px">RECIBI CONFORME</th>
                 <td rowspan="4" colspan="4"></td>
             </tr>
             <tr>
                 <td colspan="3"><br></td>
             </tr>
             <tr>
-                <td colspan="3" class="text-bold">FIRMA</td>
+                <th colspan="3" class="text-bold" style="font-size: 9px;text-align: left; padding: 3px">FIRMA</th>
             </tr>
             <tr>
                 <td colspan="3">&nbsp;</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-bold">NOMBRE</td>
+                <th colspan="3" class="text-bold" style="font-size: 9px;text-align: left; padding: 3px">NOMBRE</th>
                 <!--<td class="text-center text-bold" style="font-size: 9pt">RECIBI CONFORME</td>-->
                 <td rowspan="5" colspan="4" class="text-center">
                     <?php echo $empresa[0]['empresa_propietario']; ?>
@@ -186,19 +197,19 @@
                 <td colspan="3" class="text-center">C.I.:</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-bold">VALIDEZ DE LA OFERTA <?php echo $cotizacion['cotizacion_validez']; ?> CALENDARIO</td>
+                <td colspan="3"><B>VALIDEZ DE LA OFERTA:</B> <?php echo $cotizacion['cotizacion_validez']; ?> CALENDARIO</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-bold">TIEMPO DE ENTREGA: <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> CALENDARIO</td>
+                <td colspan="3"><b>TIEMPO DE ENTREGA:</b> <?php echo $cotizacion['cotizacion_tiempoentrega']; ?> CALENDARIO</td>
             </tr>
             <tr>
-                <td colspan="3" class="text-bold">LUGAR DE ENTREGA: <?php echo $cotizacion['cotizacion_lugarentrega']; ?></td>
+                <td colspan="3"><b>LUGAR DE ENTREGA:</b> <?php echo $cotizacion['cotizacion_lugarentrega']; ?></td>
             </tr>
             <tr>
                 <td colspan="7" class="text-center">TODOS LOS PRECIOS INCLUYEN IMPUESTOS DE LEY</td>
             </tr>
             <tr>
-                <td colspan="7" class="text-center"><b>FAVOR EMITIR EL CHEQUE A NOMBRE DE:</b> <?php echo $cotizacion['cotizacion_chequenombre'] ?></td>
+                <th colspan="7" class="text-center" style="font-size: 9px; padding: 3px"><b>FAVOR EMITIR EL CHEQUE A NOMBRE DE:</b> <?php echo $cotizacion['cotizacion_chequenombre'] ?></th>
             </tr>
             <tr>
                 <td class="text-bold">CONSULTAS</td>

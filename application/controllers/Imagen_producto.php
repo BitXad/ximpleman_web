@@ -315,6 +315,7 @@ class Imagen_producto extends CI_Controller{
             $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
             $data['detalleserv_id'] = $detalleserv_id;
             $data['detalleserv_descripcion'] = $detalle_serv['detalleserv_descripcion'];
+            $data['detalleservestado_id'] = $detalle_serv['estado_id'];
             $data['all_imagen_detalle_serv'] = $this->Imagen_producto_model->get_all_imagen_mi_det($detalleserv_id);
 
             $data['_view'] = 'imagen_producto/catalogodet';
@@ -327,7 +328,7 @@ class Imagen_producto extends CI_Controller{
             //$this->load->library('form_validation');
             /* *********************INICIO imagen***************************** */
             $foto="";
-            if (!empty($_FILES['file']['name'])){
+            if (!empty($_FILES['galeria_imagen']['name'])){
 		
                         $this->load->library('image_lib');
                         $config['upload_path'] = './resources/images/servicios/';
@@ -336,20 +337,22 @@ class Imagen_producto extends CI_Controller{
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
                         $config['image_library'] = 'gd2';
                         $config['max_size'] = 0;
-                        $config['max_width'] = 9900;
-                        $config['max_height'] = 9900;
+                        /*$config['max_width'] = 9900;
+                        $config['max_height'] = 9900;*/
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
                         $config['file_ext_tolower'] = TRUE;
 
                         $this->load->library('upload', $config);
-                        $this->upload->do_upload('file');
-
+                        $this->upload->do_upload('galeria_imagen');
+                        $band = true;
+                        if($band == false){
                         $img_data = $this->upload->data();
                         $extension = $img_data['file_ext'];
                         /* ********************INICIO para resize***************************** */
-                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif")
+                        {
                             $conf['image_library'] = 'gd2';
                             $conf['source_image'] = $img_data['full_path'];
                             $conf['new_image'] = './resources/images/servicios/';
@@ -377,6 +380,25 @@ class Imagen_producto extends CI_Controller{
                         $this->image_lib->resize();
 
                         $foto = $new_name.$extension;
+                        }else{
+                            $img_data = $this->upload->data();
+                            $extension = $img_data['file_ext'];
+                            
+                            $confi['image_library'] = 'gd2';
+                            $confi['source_image'] = './resources/images/servicios/'.$new_name.$extension;
+                            $confi['new_image'] = './resources/images/servicios/'."thumb_".$new_name.$extension;
+                            $confi['create_thumb'] = FALSE;
+                            $confi['maintain_ratio'] = TRUE;
+                            $confi['width'] = 50;
+                            $confi['height'] = 50;
+
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($confi);
+                            $this->image_lib->resize();
+
+                            
+                            $foto = $new_name.$extension;
+                        }
                     }
             /* *********************FIN imagen***************************** */
             $estado_id = 1;

@@ -1,6 +1,11 @@
 $(document).on("ready",inicio);
 function inicio(){
-    fechadeservicio(null, 2);
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
+    if(tipousuario_id >1){
+        fechadeservicio(null, 3);
+    }else{
+        fechadeservicio(null, 2);
+    }
 }
 
 function imprimirdetalle(){
@@ -833,7 +838,11 @@ function fechadeservicio(elfiltro, busquedade){
     var base_url       = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var tipoimpresora = document.getElementById('tipoimpresora').value;
-    if(busquedade == 2){
+    if(busquedade == 3){
+        //controlador = base_url+'servicio/buscarserviciosporusuario/';
+        controlador = base_url+"servicio/buscarserviciosfecha";
+        filtro = "  ";
+    }else if(busquedade == 2){
         controlador = base_url+'servicio/buscarserviciospendientes/';
     }else if(busquedade == 1){
         
@@ -1131,25 +1140,30 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<div class='modal fade' id='modalinformetecnico"+i+"' tabindex='-1' role='dialog' aria-labelledby='modalinformetecnicoLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
                         html += "<br><br>";
-                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-content' style='text-align:center'>";
                         html += "<div class='modal-header'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<span class='text-bold' style='font-size: 14px'>INFORME TECNICO</span><br>";
+                        html += "<span class='text-bold' style='font-size: 12px'>SERVICIO N° "+registros[i]['servicio_id']+"</span>";
                         html += "</div>";
                         html += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
                         //html += "<h3>";
-                        html += "<label style='font-size: 12pt'>";
+                        html += "<span class='text-bold' style='font-size: 12px'>";
+                        html += "Cliente: "+registros[i]['cliente_nombre']+"<br>";
+                        html += "</span>";
+                        html += "<label style='font-size: 12px'>";
                         html += "<input type='checkbox' name='contitulo"+registros[i]['servicio_id']+"' id='contitulo"+registros[i]['servicio_id']+"' title='Imprimir sin encabezado'>";
-                        html += "&nbsp;&nbsp; Imprimir sin Encabezado el Informe Técnico del Servicio <b>"+registros[i]['servicio_id']+"</b>";
+                        html += "&nbsp;&nbsp; Sin Encabezado";
                         html += "</label>";
                         //html += "</h3>";
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
-                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<div class='modal-footer' style='text-align: center'>";
                         //html += "<a href='"+base_url+"servicio/remove/"+registros[i]["servicio_id"]+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
                         
-                        html += "<button class='btn btn-success' type='submit' title='Imprimir Informe Técnico' onclick='ocultarmodal("+i+")' ><span class='fa fa-check'></span> Imprimir</button>";
+                        html += "<button class='btn btn-success' type='submit' title='Imprimir Informe Técnico' onclick='ocultarmodal("+i+")' ><span class='fa fa-print'></span> Imprimir</button>";
                         
                         
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>";
@@ -2220,13 +2234,13 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
                 if(resultado == "faltainf"){
                     $('#mensajeregistrarserentregado').html("<br>Los campos: Saldo y Entregado a; no debes estar vacios");
                 }else if(resultado == "ok"){
-                    var dir_url = "";
+                    /*var dir_url = "";
                     if(tipoimpresora == "FACTURADORA"){
                         dir_url = base_url+"detalle_serv/compdetalle_pago_boucher/"+detalleserv_id;
                     }else{
                         dir_url = base_url+"detalle_serv/compdetalle_pago/"+detalleserv_id;
                     }
-                    window.open(dir_url, '_blank');
+                    window.open(dir_url, '_blank'); */
                     //$('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
                     $("#select_servicio option[value=6]").attr("selected",true);
                     fechadeservicio(null, 2);

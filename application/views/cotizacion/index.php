@@ -79,7 +79,7 @@
         <!--este es INICIO del BREADCRUMB buscador-->
         <div class="box-header">
                 <font size='4' face='Arial'><b>Cotizaciones</b></font>
-                <br><font size='2' face='Arial' id="pillados">Registros Encontrados: <?php echo sizeof($cotizacion); ?></font>
+                <br><font size='2' face='Arial' id="pillados">Registros Encontrados:</font>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
  

@@ -70,21 +70,23 @@ input[type=number] { -moz-appearance:textfield; }
     
     
 </table>       
-<table class="table" style="width: 20cm; padding: 0;" >
+<table class="table" style="width: 100%; padding: 0;" >
     <tr>
-        <td style="width: 10cm; padding: 0;line-height:4px;">
+        <td style="width: 5%; padding: 0;line-height:5px;">
                 
-          <font size="1" face="Arial"><b>CLIENTE: </b><?php if ($cotizacion['cotizacion_cliente']==''){ echo "A QUIEN CORRESPONDA"; }else{ echo $cotizacion['cotizacion_cliente']; }?><br><br>
-          <b>FECHA: </b><?php echo implode("/", array_reverse(explode("-", $cotizacion['cotizacion_fecha']))); ?><br><br>
-          <b>VALIDEZ: </b><?php echo  $cotizacion['cotizacion_validez']; ?> </font>                  
+                         
         </td>
                    
-        <td style="width: 10cm; padding: 0;line-height:10px;" > 
-            <font size="1" face="Arial"><b>FORMA DE PAGO: </b><?php echo $cotizacion['cotizacion_formapago']; ?> <br>
+        <td style="width: 40%; padding: 0;line-height:10px;" > 
+            <font size="1" face="Arial"><b>CLIENTE: </b><?php if ($cotizacion['cotizacion_cliente']==''){ echo "A QUIEN CORRESPONDA"; }else{ echo $cotizacion['cotizacion_cliente']; }?><br>
+          <b>FECHA: </b><?php echo implode("/", array_reverse(explode("-", $cotizacion['cotizacion_fecha']))); ?><br>
+          <b>VALIDEZ: </b><?php echo  $cotizacion['cotizacion_validez']; ?> </font>   
+        </td>
+        <td style="width: 40%; padding: 0;line-height:10px;" >
+
+           <font size="1" face="Arial"><b>FORMA DE PAGO: </b><?php echo $cotizacion['cotizacion_formapago']; ?> <br>
       
           <b>TIEMPO DE ENTREGA: </b><?php echo  $cotizacion['cotizacion_tiempoentrega']; ?> </font>
-        </td>
-        <td style="width: 4cm; padding: 0" >
 <!--                ______________________________                
                    
                                 
@@ -100,7 +102,7 @@ input[type=number] { -moz-appearance:textfield; }
     
 </table>       
 <!---------------------------------------TABLA DE DETALLE cotizacion------------------------------------>
-<div class="col-md-12" style="padding: 0px;"> 
+<div class="col-md-12" style="padding-top: 0px;margin-top: -10px"> 
 <div class="box" style="padding: 0px;">
             
             <div class="box-body table-responsive" style="padding: 0px;">
@@ -136,8 +138,8 @@ input[type=number] { -moz-appearance:textfield; }
                       <?php if ($d['producto_marca']!=''){ ?>
                         <br>Marca: <b><?php echo $d['producto_marca']; } ?></b>      
                       <?php if ($d['producto_industria']!=''){ ?>                            
-                        - Industria: <b><?php echo $d['producto_industria']; }?></b>
-                      <?php if ($d['detallecot_caracteristica']=="null"){ ?>  
+                        - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
+                      <?php if ($d['detallecot_caracteristica']==""){ ?>  
                          <?php }else{ echo "- ", $d['detallecot_caracteristica']; } ?></td>
                          <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
                          <td  style="text-align: right;"><?php echo number_format($d['detallecot_precio'],2,".",","); ?></td>  

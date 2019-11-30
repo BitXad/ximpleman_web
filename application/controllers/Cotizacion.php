@@ -35,7 +35,7 @@ class Cotizacion extends CI_Controller{
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
             $data['rol'] = $this->session_data['rol'];
-            $data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
+            //$data['cotizacion'] = $this->Cotizacion_model->get_all_cotizacion();
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'cotizacion/index';
@@ -81,6 +81,36 @@ class Cotizacion extends CI_Controller{
                     }else echo json_encode(null);
     }
         else
+        {                 
+                    show_404();
+        }          
+    }
+
+    function actualizarcaracteristicas()
+    {
+       if ($this->input->is_ajax_request()) {  
+        $producto_id = $this->input->post('producto_id');
+        $nuevo = $this->input->post('nuevo');
+
+        $prod= "UPDATE
+                producto
+            SET
+                producto_caracteristicas='".$nuevo."'
+                
+            WHERE
+                producto_id = ".$producto_id."  ";
+        $this->Cotizacion_model->ejecutar($prod);        
+        
+        $inv= "UPDATE
+                inventario
+            SET
+                producto_caracteristicas='".$nuevo."'
+                
+            WHERE
+                producto_id = ".$producto_id."  ";
+        $this->Cotizacion_model->ejecutar($inv); 
+        echo json_encode(true);
+       }else
         {                 
                     show_404();
         }          
@@ -148,12 +178,14 @@ class Cotizacion extends CI_Controller{
         $producto_precio = $this->input->post('producto_precio');
         $descripcion = "'".$descripcion."'";
         $factor = $this->input->post('producto_factor');
+        $caracteristicas = $this->input->post('caracteristicas');
         $nuevacan = $cantidad * $factor;
         //$nuevoprec = $
 
        $sql = "INSERT into detalle_cotizacion(
                 
                 producto_id,
+                detallecot_caracteristica,
                 detallecot_descripcion,
                 detallecot_precio,
                 detallecot_cantidad,
@@ -167,6 +199,7 @@ class Cotizacion extends CI_Controller{
                 SELECT
                 
                 producto_id,
+                '".$caracteristicas."',
                 ".$descripcion.",
                 ".$producto_precio.",
                 ".$nuevacan.",
