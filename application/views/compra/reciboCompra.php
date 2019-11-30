@@ -158,7 +158,7 @@ border-bottom:1px solid black;
 
 
          </style>
-<table class="table" style="width: 100%; padding: 0;" >
+<table class="table table-striped" style="width: 20cm; padding: 0;" >
     <tr>
         <td style="width: 25%; padding: 0; line-height:10px;" >
                 
@@ -202,9 +202,9 @@ border-bottom:1px solid black;
     
     
 </table>       
+<div class="box-body table-responsive"> 
 
-
-        <table class="table" border-bottom="1" id="mitabla" style="width: 100%; padding: 0;">                        
+        <table class="table table-striped " border-bottom="1" id="mitabla" style="width: 18cm; padding: 0;">                        
                         <tr>
 
                             
@@ -224,20 +224,20 @@ border-bottom:1px solid black;
                     
                          <?php
                                 $cont = 0;
-                             foreach($detalle_compra as $i[0]) {;
+                             foreach($detalle_compra as $dc) {;
                                  $cont = $cont+1; ?>
                             
              <tr>
                             <td><?php echo $cont;?></td>
-                            <td style="text-align: center;"><?php echo $i[0]['detallecomp_codigo'];?></td>
-                            <td style="text-align: left;"><?php echo $i[0]['producto_nombre'];?></td>                            
-                            <td><?php echo $i[0]['detallecomp_unidad'];?></td>
-                            <td><?php echo $i[0]['detallecomp_cantidad'];?></td>
-                            <td><?php echo number_format($i[0]['detallecomp_costo'],'2','.',',');?></td>
-                            <td><?php echo number_format($i[0]['detallecomp_subtotal'],'2','.',',');?></td>
-                            <td><?php echo number_format($i[0]['detallecomp_descuento'],'2','.',',');?></td>
-                            <td><?php echo number_format($i[0]['detallecomp_descglobal'],'2','.',',');?></td>
-                            <td><?php echo number_format($i[0]['detallecomp_total'],'2','.',',');?></td>
+                            <td style="text-align: center;"><?php echo $dc['detallecomp_codigo'];?></td>
+                            <td style="text-align: left;"><?php echo $dc['producto_nombre'];?></td>                            
+                            <td><?php echo $dc['detallecomp_unidad'];?></td>
+                            <td><?php echo $dc['detallecomp_cantidad'];?></td>
+                            <td><?php echo number_format($dc['detallecomp_costo'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_subtotal'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_descuento'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_descglobal'],'2','.',',');?></td>
+                            <td><?php echo number_format($dc['detallecomp_total'],'2','.',',');?></td>
                           
         </tr> 
                     
@@ -245,17 +245,15 @@ border-bottom:1px solid black;
 
 </table>
  
-
-   <hr style="border:1px solid black;">
-           <div class="left">
-                <div class="content">Nota.- 
-                            <b><?php echo $compra[0]['compra_glosa'];?> </b>
-          </div></div>
+</div>
+   <hr style="border:1px solid black;width: 18cm; margin: 0;padding: 0">
+   <font size="1" face="arial"><b>Nota.- </b><?php echo $compra[0]['compra_glosa'];?></font> 
+        
         
 
-<div class="box-body table-responsive"> 
+<div class="box-body "> 
 
-       <table class="table table-striped table-condensed" border-bottom="0" id="mitabla2"> 
+       <table class="table table-striped" border-bottom="0" id="mitabla2" style="width: 18cm; padding: 0;"> 
                     <tr>
                         <td>TOTAL COMPRA</td><td><?php echo number_format( $compra[0]['compra_subtotal'],'2','.',',');?></td>
                     </tr>                      
@@ -282,9 +280,9 @@ border-bottom:1px solid black;
 
 </div>
 <center>
-                    <div class="col-md-12" style="margin-top: 50px; ">
-
+                    <div class="col-md-12" style="margin-top: 50px; width: 20cm">
+                    <font size="1" face="arial">
                     <?php echo "________________________________"; ?><br>
                     <?php echo "RESPONSABLE"; ?><br>
                     <?php echo $compra[0]['usuario_nombre']; ?>
-                    </div></center>
+                    </font></div></center>

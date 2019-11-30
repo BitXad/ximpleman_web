@@ -70,7 +70,7 @@
     <br>
 </div>
 <div style="text-align: center">
-    <b>Ref.: COTIZACION</b>
+    <b>Ref.: COTIZACION DE PRODUCTOS/SERVICIOS</b>
 </div>
 <br>
 <div style="text-align: justify">

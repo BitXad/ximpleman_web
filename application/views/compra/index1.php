@@ -386,7 +386,12 @@
             <input id="filtrar2" type="text" class="form-control" placeholder="Ingrese la fecha, total">
         </div>
         <!--------------------- fin parametro de buscador --------------------->
-        <h4 class="box-title"> Compras sin Proveedor asignado</h4>
+        <font face="arial" size="2">
+            <b>
+            Compras sin Proveedor asignado            
+            </b>
+        </font>
+        
         <div class="box">
 
             <div class="box-body table-responsive">
@@ -419,7 +424,7 @@
                             
                             <td><?php echo $psn['estado_descripcion']; ?></td>
                             <td>
-                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar Esta Compra</a>
+                                <a href="<?php echo site_url('compra/edit/'.$psn['compra_id'].'/'.$bandera); ?>"  class="btn btn-facebook btn-xs"><span class="fa fa-check" ></span> Continuar Compra</a>
                            <!--<a href="<?php echo site_url('compra/edito/'.$psn['compra_id']); ?>" class="btn btn-success btn-xs"><span class="fa fa-asterisk"></span></a>  
                             <a href="<?php echo site_url('compra/remove/'.$psn['compra_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>

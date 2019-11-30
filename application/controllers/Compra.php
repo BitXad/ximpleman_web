@@ -860,33 +860,61 @@ class Compra extends CI_Controller{
    $this->db->query($vaciar_detalle);
 ///////////// actualiza y promediaa precios////////////////////////
   if($actualizarprecios==1){
-   $producto_ide = "SELECT dc.producto_id as 'product', dc.detallecomp_total as 'nuevo_total', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+    $producto_mana = "SELECT i.existencia as 'saldom', dc.producto_id as 'productm', dc.detallecomp_total as 'nuevo_totalm', dc.detallecomp_cantidad as 'nueva_cantidadm' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia <= 0";
+    $pr_mana = $this->db->query($producto_mana)->result_array();
+    foreach ($pr_mana as $pr_identmana) {
+     $nuevomana = $pr_identmana['nuevo_totalm'];
+     $cantidadmana = $pr_identmana['nueva_cantidadm'];
+    $costo_promediom = $nuevomana/$cantidadmana;
+      $sqlm = "update inventario i, producto p set i.producto_costo=".$costo_promediom.", p.producto_costo=".$costo_promediom." where i.producto_id=".$pr_identmana['productm']." and p.producto_id=".$pr_identmana['productm']." ";
+
+        $this->db->query($sqlm);
+    }
+
+   $producto_ide = "SELECT i.existencia as 'saldo', dc.producto_id as 'product', dc.detallecomp_total as 'nuevo_total', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia > 0";
     $pr_id = $this->db->query($producto_ide)->result_array(); 
+    $viejos = 0;
+$cantiviejas = 0;
+$cantidades = 0;
+$sumas = 0;
  foreach ($pr_id as $pr_ident) {
  
     $nuevo = $pr_ident['nuevo_total'];
   $cantidad = $pr_ident['nueva_cantidad'];
 
   //sumatoria de ventas//
-//$existe = "SELECT   i.existencia as 'existencia' from inventario i WHERE  i.producto_id= ".$pr_ident['product']." ";
-  
+$existe = "SELECT   i.existencia as 'existencia' from consinventario i WHERE  i.producto_id= ".$pr_ident['product']." ";
+$existir=$this->db->query($existe)->result_array();  
 
 ////
 
-  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." and i.compra_id <> ".$compra_id." ";
+  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." and i.compra_id <> ".$compra_id." order by i.detallecomp_id desc";
   $det_costo=$this->db->query($detalle_costo)->result_array(); 
-$viejos = 0;
-$cantiviejas = 0;
-$cantidades = 0;
-$sumas = 0;
+
+$almacen = $existir[0]["existencia"];
+//$almacen4 = $existir[0]["existencia"];
+
   foreach ($det_costo as $costo_cantidad) {
-      
-      $viejo = $costo_cantidad['viejo_total'];
-      $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
-      $cantidades = $cantiviejas+$cantidad;
-      $viejos = $viejos + $viejo;
-      $sumas =  $nuevo+$viejos;
-        
+  if ($almacen>0 ) {
+         if($almacen > $costo_cantidad['vieja_cantidad']){
+          $viejo = $costo_cantidad['viejo_total'];
+          $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
+          $cantidades = $cantiviejas+$cantidad;
+          $viejos = $viejos + $viejo;
+          $sumas =  $nuevo+$viejos;
+          $almacen =  $almacen-$cantidades;
+         }else{
+          $prom =  $costo_cantidad['viejo_total']/$costo_cantidad['vieja_cantidad'];
+          $viejo = $prom*$almacen;
+          $cantiviejas = $cantiviejas+$almacen;
+          $cantidades = $cantiviejas+$cantidad;
+          $viejos = $viejos + $viejo;
+          $sumas =  $nuevo+$viejos;
+          $almacen =  0;
+         }
+     
+     } 
+
    }  
    $costo_promedio = $sumas/$cantidades;
       $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$pr_ident['product']." and p.producto_id=".$pr_ident['product']." ";
