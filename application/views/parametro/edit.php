@@ -38,13 +38,13 @@
 					<div class="col-md-3">
 						<label for="parametro_anchofactura" class="control-label">ANCHO FACTURA</label>
 						<div class="form-group">
-							<input type="number" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : $parametro['parametro_anchofactura']); ?>" class="form-control" id="parametro_anchofactura" />
+							<input type="number" step="any" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : $parametro['parametro_anchofactura']); ?>" class="form-control" id="parametro_anchofactura" />
 						</div>
 					</div>
 					<div class="col-md-3">
 						<label for="parametro_altofactura" class="control-label">ALTO FACTURA</label>
 						<div class="form-group">
-							<input type="number" name="parametro_altofactura" value="<?php echo ($this->input->post('parametro_altofactura') ? $this->input->post('parametro_altofactura') : $parametro['parametro_altofactura']); ?>" class="form-control" id="parametro_altofactura" />
+							<input type="number" step="any" name="parametro_altofactura" value="<?php echo ($this->input->post('parametro_altofactura') ? $this->input->post('parametro_altofactura') : $parametro['parametro_altofactura']); ?>" class="form-control" id="parametro_altofactura" />
 						</div>
 					</div>
 					<div class="col-md-3">
