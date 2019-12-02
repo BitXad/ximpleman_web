@@ -1780,7 +1780,7 @@ function mostrardetalleserv(serv_id){
                         if(registros[i]['detallestado_id'] != 7){
                             res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                         }
-                        res += "-<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='Registrar entrega'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span></span>";
+                        res += "-<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='"+registros[i]['detalleserv_descripcion']+"'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span></span>";
                         res += "["+registros[i]['detalleserv_codigo']+"]";
                         
                         res += "<!------------------------ INICIO modal para registrar PROCESO DE SERVICIO ------------------->";
@@ -1921,9 +1921,7 @@ function mostrardetalleserv(serv_id){
                         res += "<div class='modal-footer'>";
                         res += "<div class='text-center' style='text-align: center !iportant'>";
                         
-                        res += "<button class='btn btn-success' onclick='registrarservicio_proceso("+serv_id+", "+registros[i]['detalleserv_id']+")' ><span class='fa fa-wrench'></span> Registrar Servicio en Proceso</button>";
-                        
-                        res += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>";
+                        res += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cerrar </a>";
                         res += "</div>";
                         res += "</div>";
                         //res += "</form>";
