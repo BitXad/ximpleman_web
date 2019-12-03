@@ -784,7 +784,7 @@ function compraproveedor(opcion)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><br>";
+                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><font size='1'>["+registros[i]["proveedor_id"]+"]</font><br>";
                         
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
                         if (caja==1) {  
@@ -920,7 +920,7 @@ function fechadecompra(filtro)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><br>";
+                        html += "<td><font size='3'><b>"+registros[i]["proveedor_nombre"]+"</b></font><font size='1'>["+registros[i]["proveedor_id"]+"]</font><br>";
                         
                         html += "<span class='btn-info btn-xs'>"+registros[i]["tipotrans_nombre"]+"</span></br>"; 
                         if (caja==1) {  

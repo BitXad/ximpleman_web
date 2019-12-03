@@ -253,7 +253,7 @@
           <tr>
               <td><?php echo $cont ?></td>
               <!--<td><?php //echo $p['compra_id']; ?></td>-->
-              <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['compra_id']; ?>]</font> <br>
+              <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['proveedor_id']; ?>]</font> <br>
                 <span class="btn-info btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
                 <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?><?php if ($c['compra_caja']==2){  ?><span class="btn-warning btn-xs">  <?php echo "Orden de Pago"; } ?></span></td>
                 <td><center><font size="4"><b><?php echo $c['compra_id']; ?></b></font></center></td>

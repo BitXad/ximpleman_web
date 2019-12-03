@@ -249,7 +249,7 @@ class Cotizacion extends CI_Controller{
                 detallecot_subtotal = ".$cantidad." * ".$producto_precio.",
                 detallecot_total = (".$cantidad." * ".$producto_precio.") - ".$descuento."
                         
-                WHERE producto_id = ".$producto_id." and detallecot_id = ".$detallecot_id."
+                WHERE  detallecot_id = ".$detallecot_id."
             ";
 
     
