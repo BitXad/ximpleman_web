@@ -110,6 +110,7 @@
 						<th>#</th>
                                              
 						<th>Cliente</th>
+                        <th>Credito</th>
                         <th>Transaccion</th>
 						<th>Estado</th>
 						<th>Monto</th>

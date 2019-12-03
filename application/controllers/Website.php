@@ -203,7 +203,7 @@ function sesioncliente(){
     $clave = $this->input->post('clave');
     $ipe = $this->input->post('ipe');
 
-    $resultado = "SELECT * from cliente WHERE cliente_ci='".$login."' AND cliente_telefono = '".$clave."' ";
+    $resultado = "SELECT * from cliente WHERE cliente_codigo='".$login."' AND cliente_codigo = '".$clave."' ";
     $result=$this->db->query($resultado)->row_array();
     if ($result){
     $clienteid=$result['cliente_id'];

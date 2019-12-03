@@ -109,6 +109,7 @@
 						<th>#</th>
                                              
 						<th>Proveedor</th>
+                        <th>Credito</th>
                         <th>Compra</th>
 						<th>Estado</th>
 						<th>Monto</th>
