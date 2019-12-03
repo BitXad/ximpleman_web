@@ -33,7 +33,7 @@
 						</div>
 					</div>
 					<div class="col-md-6">
-						<label for="empresa_imagen" class="control-label">Imagen</label>
+						<label for="empresa_imagen" class="control-label">Imagen (recomendado 4:3)</label>
 						<div class="form-group">
                                                     <input type="file" name="empresa_imagen" value="<?php echo $this->input->post('empresa_imagen'); ?>" class="form-control" id="empresa_imagen" accept="image/png, image/jpeg, image/jpg, image/gif" />
                                                     <input type="hidden" name="empresa_imagen1" value="<?php echo ($this->input->post('empresa_imagen') ? $this->input->post('empresa_imagen') : $empresas['empresa_imagen']); ?>" class="form-control" id="empresa_imagen1" />

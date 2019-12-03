@@ -91,7 +91,8 @@ function tabladeudas(filtro)
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>"; 
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+registros[i]['proveedor_nombre']+"</td>";
+                        html += "<td>"+registros[i]['proveedor_nombre']+"<small> ["+registros[i]['proveedor_id']+"]</small></td>";
+                        html += "<td style='text-align: center'>"+registros[i]['credito_id']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['compra_id']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
                         html += "<td style='text-align: right'>"+Number(registros[i]['credito_monto']).toFixed(2)+"</td>";
@@ -104,7 +105,7 @@ function tabladeudas(filtro)
                         html += "<td><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planDeuda/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
 }
-                   html += "<tr><td colspan=5 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
+                   html += "<tr><td colspan=6 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
                    $("#tabladeudas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
                    
@@ -196,10 +197,12 @@ function tablacuentas(filtro)
                         html += "<td>"+(i+1)+"</td>";
                         if (registros[i]['venta_id']>0) {
                         html += "<td>"+registros[i]['kay']+"</td>";
+                        html += "<td style='text-align: center'>"+registros[i]['credito_id']+"</td>";
                         html += "<td style='text-align: center'>Venta: "+registros[i]['ventita']+"</td>";
                         
                         } else {    
                         html += "<td>"+registros[i]['perro']+"</td>";
+                        tml += "<td style='text-align: center'>"+registros[i]['credito_id']+"</td>";
                         html += "<td style='text-align: center'>Servicio: "+registros[i]['servicio_id']+"</td>";
                         }
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
@@ -230,7 +233,7 @@ function tablacuentas(filtro)
                         }
                         
 }
-                    html += "<tr><td colspan=5 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
+                    html += "<tr><td colspan=6 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
                    

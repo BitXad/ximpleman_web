@@ -358,8 +358,8 @@ if (tipo==0) {
                          cantidades += Number(registros[i]["detalleven_cantidad"]);
                          cuotas += Number(registros[i]["credito_cuotainicial"]);
                          descuentos += Number(registros[i]["detalleven_descuento"]);
-                         costos += Number(registros[i]["producto_costo"]);
-                         var utilidad = Number((registros[i]["detalleven_precio"]-registros[i]["producto_costo"])*registros[i]["detalleven_cantidad"]);
+                         costos += Number(registros[i]["detalleven_costo"]);
+                         var utilidad = Number((registros[i]["detalleven_precio"]-registros[i]["detalleven_costo"])*registros[i]["detalleven_cantidad"]);
                          utilidades += Number(utilidad);
                         
                         html += "<tr>";
@@ -379,7 +379,7 @@ if (tipo==0) {
                         html += "<td align='right'> "+Number(registros[i]["detalleven_descuento"]).toFixed(2)+" </td>";
                         
                         html += "<td align='right'><b>"+Number(registros[i]["detalleven_total"]).toFixed(2)+"</b></td>";
-                        html += "<td align='right'> "+Number(registros[i]["producto_costo"]).toFixed(2)+" </td>";
+                        html += "<td align='right'> "+Number(registros[i]["detalleven_costo"]).toFixed(2)+" </td>";
                         html += "<td align='right'> "+Number(utilidad).toFixed(2)+" </td>"; 
                          
                         

@@ -1113,7 +1113,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 <tr>                      
                         <td>Descuento Global Bs</td>
                         <td>
-                         <input class="btn btn-warning" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo  $compra[0]['compra_descglobal']; ?>" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')">
+                         <input class="btn btn-warning" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo ($compra[0]['compra_descglobal'] ? $compra[0]['compra_descglobal'] : '0.00'); ?>" onclick="this.select();" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')"> 
                         </td>
                 </tr>
                 <tr>                      
