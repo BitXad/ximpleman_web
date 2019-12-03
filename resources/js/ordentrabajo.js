@@ -268,7 +268,7 @@ function buscarcliente(){
    var controlador = base_url+'orden_trabajo/buscarcliente';
 
  
-
+ 
     $.ajax({url:controlador,
 
             type:"POST",
@@ -293,7 +293,7 @@ function buscarcliente(){
                     //document.getElementById('telefono').focus();
 
                     $("#cliente_id").val(registros[0]["cliente_id"]);
-
+                    document.getElementById('orden_numero').focus();
                     
 
                 }
@@ -306,6 +306,7 @@ function buscarcliente(){
 
                     document.getElementById('razon_social').focus();
 
+                    $("#razon_social").val("");
                     $("#razon_social").val("");
 
                     $("#cliente_id").val(0);
@@ -320,9 +321,10 @@ function buscarcliente(){
 
             error:function(respuesta){			
 
-                $("#razon_social").val('SIN NOMBRE');
+                $("#razon_social").val('NOMBRE');
+                $("#nit").val(Date.now());
 
-                document.getElementById('telefono').focus();
+                document.getElementById('razon_social').select();
 
                 
 
@@ -388,7 +390,7 @@ function seleccionar_cliente(){
                     $("#telefono").val(resultado[0]["cliente_telefono"]);
                     $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
-                 
+                    document.getElementById('orden_numero').focus();
                 }
        
 
