@@ -1175,10 +1175,10 @@ function fechaorden(parametro){
                        html += "<th colspan='2'>TOTAL</th>";
                        html += "<th></th>";
                        html += "<th></th>";
+                       html += "<th></th>";
                        html += "<th align='right'>"+Number(total).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_acuenta).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_saldo).toFixed(2)+"</th>";
-                       html += "<th></th>";
                        html += "<th></th>";
                        html += "<th></th>";
                        html += "</tr>";
