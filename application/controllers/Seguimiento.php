@@ -27,8 +27,12 @@ Class Seguimiento extends CI_Controller
             $empresa_id = 1;
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $data['_view'] = 'seguimiento/index';
+            
             if(count($data['servicio']) > 0){
-                $this->load->view('seguimiento/index', $data);
+                //$this->load->view('seguimiento/index', $data);
+                $this->load->view('layouts/clientmain',$data);
             }else{
                 $this->load->view('seguimiento/nohay');
             }

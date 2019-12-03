@@ -51,6 +51,7 @@ function tablaresultadosproducto(limite)
     var categoriaestado = "";
     var base_url = document.getElementById('base_url').value;
     var parametro_modulo = document.getElementById('parametro_modulorestaurante').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
     //var lapresentacion = JSON.parse(document.getElementById('lapresentacion').value);
     //al inicar carga con los ultimos 50 productos
     if(limite == 1){
@@ -190,7 +191,10 @@ function tablaresultadosproducto(limite)
                             codbarras = registros[i]["producto_codigobarra"];
                         }
                         html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
-                        html += "<td><b>COMPRA: </b>"+registros[i]["producto_costo"]+"<br>";
+                        html += "<td>";
+                        if(tipousuario_id == 1){
+                            html += "<b>COMPRA: </b>"+registros[i]["producto_costo"]+"<br>";
+                        }
                             html += "<b>VENTA: </b>"+registros[i]["producto_precio"]+"<br>";
                             html += "<b>COMISION (%): </b>"+registros[i]["producto_comision"];
                             html += "</td>";

@@ -168,7 +168,7 @@ class Detalle_serv extends CI_Controller{
         {
             $this->load->library('form_validation');
 
-	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
+	    //$this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
 	    //$this->form_validation->set_rules('detalleserv_codigo','Detalle Servicio Codigo','required');
 	    $this->form_validation->set_rules('detalleserv_falla','Detalle Servicio Falla','required');
 	    $this->form_validation->set_rules('responsable_id','Responsable del Detalle','required');

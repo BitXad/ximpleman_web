@@ -115,7 +115,7 @@
 </div>
 <div class="row">
 </div>
-<div class="row" style="max-width: 50%; font-size: 8pt">
+<div class="row" style="max-width: 80%; font-size: 8pt">
     <!--<div class="col-md-6">-->
         <!--<div class="box">-->
             <div class="box-body table-responsive table-condensed" style="padding: 0px;">
@@ -127,7 +127,15 @@
                         </tr> -->
                         <tr>
                             <td>Total Final</td>
-                            <td id="alinear"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></td>
+                            <td colspan="2" id="alinear"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></td>
+                            <td rowspan="3">
+                                <div style="text-align: center !important">
+                                    <div style="width: 100%">
+                                        <div style="text-align: center !important;"><img style="vertical-align: top;" src="<?php echo $codigoqr; ?>" width="100px" height="100px"></div>
+                                        <div style="font-size: 9px; text-align: center"><span class="text-bold">Usuario:</span> <?php echo $servicio['servicio_id']; ?> &nbsp; <span class="text-bold">Clave:</span> <?php echo $cliente['cliente_id']; ?></div>
+                                    </div>
+                                </div>
+                            </td>
                         </tr>
                         <tr>
                             <td>A cuenta</td>
@@ -135,17 +143,26 @@
                         </tr>
                         <tr>
                             <td><b>Saldo</b></td>
-                            <td id="alinear"><b><?php echo number_format($servicio['servicio_saldo'],'2','.',','); ?></b>
+                            <td colspan="2" id="alinear"><b><?php echo number_format($servicio['servicio_saldo'],'2','.',','); ?></b>
                             <br>
                             <?php
                              //echo num_to_letras($servicio['servicio_saldo']);
                             ?>
                             </td>
+                            
+                        </tr>
+                        <tr>
+                            
                         </tr>
                     </tbody>
                     
                 </table>
+                
             </div>
+        
+                <div>
+                    <?php echo base_url(); ?>
+                </div>
         <!--</div>-->
         <div>
         Usuario: <?php echo $usuario['usuario_nombre']; ?>
