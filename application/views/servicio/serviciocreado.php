@@ -78,7 +78,15 @@
         var pararand = fecha.getFullYear()+fecha.getMonth()+fecha.getDay();
         var cad3 = Math.floor((Math.random(1001,9999) * pararand));
         var cad = cad1+cad2+cad3;
+        <?php
+        $mifecha1 = date("Y-m-d-H-i-s");
+        $resmifecha    = explode('-', $mifecha1);
+        $esresult = implode("", $resmifecha);
+        $nit = substr($esresult, 2);
+        ?>
         $('#cliente_codigo').val(cad);
+        $('#cliente_ci').val(<?php echo $nit; ?>);
+        $('#cliente_nit').val(<?php echo $nit; ?>);
   });
   });
     
@@ -367,18 +375,6 @@ $(document).ready(function(){
 							<input type="text" name="cliente_codigo" value="<?php echo $this->input->post('cliente_codigo'); ?>" class="form-control" id="cliente_codigo" required autocomplete="off" />
 						</div>
 					    </div>
-                                          <!--<div class="col-md-6">
-						<label for="cliente_ci" class="control-label">C.I.</label>
-						<div class="form-group">
-							<input type="text" name="cliente_ci" value="<?php /*if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
-						</div>
-					  </div>
-                                          <div class="col-md-6">
-						<label for="cliente_nit" class="control-label">Nit</label>
-						<div class="form-group">
-                                                    <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} */ ?>" class="form-control" id="cliente_nit" onclick="this.select();" />
-						</div>
-					  </div>-->
                                         <div class="col-md-6">
                                             <label for="cliente_celular" class="control-label">Celular</label>
                                             <div class="form-group">
@@ -391,6 +387,19 @@ $(document).ready(function(){
                                                 <input type="text" name="cliente_telefono" value="<?php if($this->input->post('cliente_telefono') >0){ echo $this->input->post('cliente_telefono');}else{ echo 0;} ?>" class="form-control" id="cliente_telefono" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" onclick="this.select();" autocomplete="off" />
                                             </div>
 					</div>
+                                        
+                                        <div class="col-md-6">
+						<label for="cliente_ci" class="control-label">C.I.</label>
+						<div class="form-group">
+							<input type="text" name="cliente_ci" value="<?php if($this->input->post('cliente_ci') >0){ echo $this->input->post('cliente_ci');}else{ echo 0;} ?>" class="form-control" id="cliente_ci" />
+						</div>
+					  </div>
+                                          <div class="col-md-6">
+						<label for="cliente_nit" class="control-label">Nit</label>
+						<div class="form-group">
+                                                    <input type="number" min="0" name="cliente_nit" value="<?php if($this->input->post('cliente_nit') >0){ echo $this->input->post('cliente_nit');}else{ echo 0;} ?>" class="form-control" id="cliente_nit" onclick="this.select();" />
+						</div>
+                                          </div>
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
@@ -420,10 +429,6 @@ $(document).ready(function(){
                             $descuento = 0;
                             $totalfinal = $total_detalle;
                         ?>
-                        <!--<tr>
-                            <th>Descripción</th>
-                            <th></th>
-                        </tr> -->
                         <tr>
                             <td>Total Final</td>
                             <td id="alinear"><span id="totalfinal"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></span></td>
@@ -628,7 +633,7 @@ $(document).ready(function(){
                                     </div>
                             </div>
                             <div class="col-md-4">
-                                    <label for="detalleserv_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
+                                    <label for="detalleserv_descripcion" class="control-label">Descripción</label>
                                     <div class="form-group">
                                         <input type="text" name="detalleserv_descripcion" value="<?php echo $this->input->post('detalleserv_descripcion'); ?>" class="form-control" id="detalleserv_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                     </div>
@@ -684,7 +689,8 @@ $(document).ready(function(){
                             <div class="col-md-4">
                                     <label for="detalleserv_fechaentrega" class="control-label">Fecha Entrega</label>
                                     <div class="form-group">
-                                        <input type="date" name="detalleserv_fechaentrega" value="<?php $maniana = time()+(24*60*60); echo date('Y-m-d', $maniana); ?>" class="form-control" id="detalleserv_fechaentrega" />
+                                        
+                                        <input type="date" name="detalleserv_fechaentrega" value="<?php $diasentrega = $parametro['parametro_diasentrega']*24; $maniana = time()+($diasentrega*60*60); echo date('Y-m-d', $maniana); ?>" class="form-control" id="detalleserv_fechaentrega" />
                                     </div>
                             </div>
                             <div class="col-md-4">

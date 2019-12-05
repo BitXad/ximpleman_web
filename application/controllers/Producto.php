@@ -33,9 +33,10 @@ class Producto extends CI_Controller{
     {
         if($this->acceso(102)) {
             $data['rol'] = $this->session_data['rol'];
-        $data['a'] = $a;
-        $this->load->model('Categoria_producto_model');
-        $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['a'] = $a;
+            $this->load->model('Categoria_producto_model');
+            $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_de_producto();
         /*
         $this->load->model('Presentacion_model');
         $data['all_presentacion'] = $this->Presentacion_model->get_alls_presentacion();

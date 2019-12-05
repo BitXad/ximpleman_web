@@ -47,36 +47,43 @@ class Parametro extends CI_Controller{
     function add()
     {   
         if($this->acceso(125)) {
+            $this->load->model('Categoria_producto_model');
+            $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+        
         if(isset($_POST) && count($_POST) > 0)     
-        {   
+        {
             $params = array(
-				'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
-				'parametro_numrecing' => $this->input->post('parametro_numrecing'),
-				'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
-                'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
-                'parametro_numcuotas' => $this->input->post('parametro_numcuotas'),
-                'parametro_montomax' => $this->input->post('parametro_montomax'),
-                'parametro_diasgracia' => $this->input->post('parametro_diasgracia'),
-                'parametro_diapago' => $this->input->post('parametro_diapago'),
-                'parametro_periododias' => $this->input->post('parametro_periododias'),
-                'parametro_interes' => $this->input->post('parametro_interes'),
-				'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
-                'parametro_mostrarcategoria' => $this->input->post('parametro_mostrarcategoria'),
-                'parametro_diagnostico' => $this->input->post('parametro_diagnostico'),
-                'parametro_solucion' => $this->input->post('parametro_solucion'),
-                'parametro_modoventas' => $this->input->post('parametro_modoventas'),
-                'parametro_imprimircomanda' => $this->input->post('parametro_imprimircomanda'),
-                'parametro_anchoboton' => $this->input->post('parametro_anchoboton'),
-                'parametro_altoboton' => $this->input->post('parametro_altoboton'),
-                'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
-                'parametro_colorboton' => $this->input->post('parametro_colorboton'),
-                'parametro_anchoimagen' => $this->input->post('parametro_anchoimagen'),
-                'parametro_altoimagen' => $this->input->post('parametro_altoimagen'),
-                'parametro_formaimagen' => $this->input->post('parametro_formaimagen'),
-                'parametro_modulorestaurante' => $this->input->post('parametro_modulorestaurante'),
-                'parametro_anchofactura' => $this->input->post('parametro_anchofactura'),
-                'parametro_altofactura' => $this->input->post('parametro_altofactura'),
-                'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
+                    'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
+                    'parametro_numrecing' => $this->input->post('parametro_numrecing'),
+                    'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
+                    'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
+                    'parametro_numcuotas' => $this->input->post('parametro_numcuotas'),
+                    'parametro_montomax' => $this->input->post('parametro_montomax'),
+                    'parametro_diasgracia' => $this->input->post('parametro_diasgracia'),
+                    'parametro_diapago' => $this->input->post('parametro_diapago'),
+                    'parametro_periododias' => $this->input->post('parametro_periododias'),
+                    'parametro_interes' => $this->input->post('parametro_interes'),
+                    'parametro_diagnostico' => $this->input->post('parametro_diagnostico'),
+                    'parametro_mostrarcategoria' => $this->input->post('parametro_mostrarcategoria'),
+                    'parametro_solucion' => $this->input->post('parametro_solucion'),
+                    'parametro_modoventas' => $this->input->post('parametro_modoventas'),
+                    'parametro_imprimircomanda' => $this->input->post('parametro_imprimircomanda'),
+                    'parametro_anchoboton' => $this->input->post('parametro_anchoboton'),
+                    'parametro_altoboton' => $this->input->post('parametro_altoboton'),
+                    //'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
+                    'parametro_colorboton' => $this->input->post('parametro_colorboton'),
+                    'parametro_anchoimagen' => $this->input->post('parametro_anchoimagen'),
+                    'parametro_altoimagen' => $this->input->post('parametro_altoimagen'),
+                    'parametro_formaimagen' => $this->input->post('parametro_formaimagen'),
+                    'parametro_modulorestaurante' => $this->input->post('parametro_modulorestaurante'),
+                    'parametro_permisocredito' => $this->input->post('parametro_permisocredito'),
+                    'parametro_agruparitems' => $this->input->post('parametro_agruparitems'),
+                    'parametro_diasvenc' => $this->input->post('parametro_diasvenc'),
+                    'parametro_anchofactura' => $this->input->post('parametro_anchofactura'),
+                    'parametro_altofactura' => $this->input->post('parametro_altofactura'),
+                    'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
+                    'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
+                    'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
                
             );
             
@@ -118,7 +125,6 @@ class Parametro extends CI_Controller{
                     'parametro_diapago' => $this->input->post('parametro_diapago'),
                     'parametro_periododias' => $this->input->post('parametro_periododias'),
                     'parametro_interes' => $this->input->post('parametro_interes'),
-                    'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
                     'parametro_diagnostico' => $this->input->post('parametro_diagnostico'),
                     'parametro_mostrarcategoria' => $this->input->post('parametro_mostrarcategoria'),
                     'parametro_solucion' => $this->input->post('parametro_solucion'),
@@ -138,6 +144,8 @@ class Parametro extends CI_Controller{
                     'parametro_anchofactura' => $this->input->post('parametro_anchofactura'),
                     'parametro_altofactura' => $this->input->post('parametro_altofactura'),
                     'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
+                    'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
+                    'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            

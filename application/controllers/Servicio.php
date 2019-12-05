@@ -558,6 +558,7 @@ class Servicio extends CI_Controller{
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
+            $usuario_id = $this->session_data['usuario_id'];
             
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
@@ -568,6 +569,20 @@ class Servicio extends CI_Controller{
 
             $this->load->model('Dosificacion_model');
 	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            /* ***** para generar cadena QR ***** */
+            $cadenaQR = base_url()."seguimiento/consultar/".$data['cliente']['cliente_id']."/".$servicio_id;
+            $this->load->library('ciqrcode');
+            //configuarnado
+            $params['data'] = $cadenaQR;//$this->random(30);
+            $params['level'] = 'H';
+            $params['size'] = 5;
+            //decimos el directorio a guardar el codigo qr, en este 
+            //caso una carpeta en la raíz llamada qr_code
+            $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+            //generamos el código qr
+            $this->ciqrcode->generate($params);
+            $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
+            
             $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/boletarecepcion_boucher';
             $this->load->view('layouts/main',$data);
@@ -589,6 +604,8 @@ class Servicio extends CI_Controller{
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
             
+            $usuario_id = $this->session_data['usuario_id'];
+            
             $this->load->model('Detalle_serv_model');
 	    $data['detalle_serv'] = $this->Detalle_serv_model->get_detalle_serv_all($servicio_id);
             
@@ -598,6 +615,22 @@ class Servicio extends CI_Controller{
 
             $this->load->model('Dosificacion_model');
 	    $data['all_dosificacion'] = $this->Dosificacion_model->get_all_dosificacion_servicio();
+            
+            /* ***** para generar cadena QR ***** */
+            $cadenaQR = base_url()."seguimiento/consultar/".$data['cliente']['cliente_id']."/".$servicio_id;
+            $this->load->library('ciqrcode');
+            //configuarnado
+            $params['data'] = $cadenaQR;//$this->random(30);
+            $params['level'] = 'H';
+            $params['size'] = 5;
+            //decimos el directorio a guardar el codigo qr, en este 
+            //caso una carpeta en la raíz llamada qr_code
+            $params['savename'] = FCPATH.'resources/images/qrcode'.$usuario_id.'.png'; //base_url('resources/images/qrcode.png'); //FCPATH.'resourcces\images\qrcode.png'; 
+            //generamos el código qr
+            $this->ciqrcode->generate($params);
+            $data['codigoqr'] = base_url('resources/images/qrcode'.$usuario_id.'.png');
+            
+            
             $data['page_title'] = "Servicio";
             $data['_view'] = 'servicio/boletarecepcion';
             $this->load->view('layouts/main',$data);

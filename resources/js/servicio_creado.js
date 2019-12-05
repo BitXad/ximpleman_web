@@ -1401,8 +1401,8 @@ function registrarnuevocliente(servicio_id){
     var base_url = document.getElementById('base_url').value;
     var cliente_nombre = document.getElementById('cliente_nombre').value;
     var cliente_codigo = document.getElementById('cliente_codigo').value;
-    /*var cliente_ci = document.getElementById('cliente_ci').value;
-    var cliente_nit = document.getElementById('cliente_nit').value;*/
+    var cliente_ci = document.getElementById('cliente_ci').value;
+    var cliente_nit = document.getElementById('cliente_nit').value;
     var cliente_telefono = document.getElementById('cliente_telefono').value;
     var cliente_celular  = document.getElementById('cliente_celular').value;
     //var codigo_seg = getgenerarsegservicio(servicio_id, cliente_nombre);
@@ -1410,7 +1410,8 @@ function registrarnuevocliente(servicio_id){
     $.ajax({url: controlador,
            type:"POST",
            data:{servicio_id:servicio_id, cliente_nombre:cliente_nombre, cliente_codigo:cliente_codigo,
-                 cliente_telefono:cliente_telefono, cliente_celular:cliente_celular},
+                 cliente_telefono:cliente_telefono, cliente_celular:cliente_celular,
+                 cliente_ci:cliente_ci, cliente_nit:cliente_nit},
            success:function(respuesta){
                
                var registros =  JSON.parse(respuesta);
@@ -1567,7 +1568,7 @@ function registrarnuevodetalleservicio(servicio_id){
                var registros =  JSON.parse(respuesta);
                if (registros != null){
                    if(registros == "faltadatos"){
-                       $('#mensajenew_detalleserv').html("<br>Debe llenar los campos: Descripción, Problema/Falla segun cliente y Responsable");
+                       $('#mensajenew_detalleserv').html("<br>Debe llenar los campos: Problema/Falla segun cliente y Responsable");
                    }else if("ok"){
                        resultadodetalleservicionew(servicio_id);
                        resultadomontoservicio(servicio_id);
@@ -1903,8 +1904,8 @@ function resetearcamposdeinputcliente(){
         $('#mensajenew_cliente').html('');
         $('#cliente_nombre').val('');
         $('#cliente_codigo').val('');
-        /*$('#cliente_ci').val('');
-        $('#cliente_nit').val('');*/
+        $('#cliente_ci').val('');
+        $('#cliente_nit').val('');
         $('#cliente_telefono').val('');
         $('#cliente_celular').val('');
     });

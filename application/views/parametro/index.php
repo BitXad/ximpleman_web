@@ -84,10 +84,14 @@ break;
                         <th style="font-size: 12px;color:black;background: rgba(255, 0, 0, 0.3);" rowspan="2" ><u>SERVICIOS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAGNOSTICO</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SOLUCION</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAS DE ENTREGA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">RESOLUCIÓN DE IMAGEN</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_diagnostico']; ?></td>
                         <td><?php echo $p['parametro_solucion']; ?></td>
+                        <td><?php echo $p['parametro_diasentrega']; ?></td>
+                        <td><?php if($p['parametro_imagenreal'] == 1){ echo "SUBIR IMAGENES EN TAMAÑO REAL"; }else{ echo "SUBIR IMAGENES COMPRIMIDOS"; } ?></td>
                     </tr>
                         
                     <tr>

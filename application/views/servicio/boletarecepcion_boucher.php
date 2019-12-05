@@ -127,9 +127,18 @@
                 </table>
             </div>
         <!--</div>-->
+        <div style="text-align: center !important">
+            <div style="width: 100%">
+                <div style="text-align: center !important;"><img style="vertical-align: top;" src="<?php echo $codigoqr; ?>" width="100px" height="100px"></div>
+                <div style="font-size: 9px; text-align: center"><span class="text-bold">Usuario:</span> <?php echo $servicio['servicio_id']; ?> &nbsp; <span class="text-bold">Clave:</span> <?php echo $cliente['cliente_id']; ?></div>
+            </div>
+        </div>
         <div>
-        Usuario: <?php echo $usuario['usuario_nombre']; ?>
-    </div>
+            <?php echo base_url(); ?>
+        </div>
+        <div>
+            Usuario: <?php echo $usuario['usuario_nombre']; ?>
+        </div>
     <br>
     <div style="text-align: justify; max-width: 7cm;" id="leyenda">
         <center>

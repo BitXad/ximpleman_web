@@ -1776,6 +1776,42 @@ function mostrardetalleserv(serv_id){
                             res += "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modalregistrarservtecnico"+registros[i]['detalleserv_id']+"' title='Registrar servicio tecnico finalizado'><span class='fa fa-file-text'></span><br></a>";
                         }else if(registros[i]['detallestado_id'] == 6){
                             res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistrarentregaserv"+registros[i]['detalleserv_id']+"' title='Registrar entrega'><span class='fa fa-file-zip-o'></span><br></a>";
+                        }else if(registros[i]['detallestado_id'] == 7){
+                            res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modaldetalleinformetecnico"+registros[i]['detalleserv_id']+"' title='Informe Técnico'><span class='fa fa-file-text'></span><br></a>";
+                            res += "<!------------------------ INICIO modal para imprimir detalle de INFORME TECNICO ------------------->";
+                            res += "<div class='modal fade' id='modaldetalleinformetecnico"+registros[i]['detalleserv_id']+"' tabindex='-1' role='dialog' aria-labelledby='modaldetalleinformetecnicoLabel"+i+"'>";
+                            res += "<div class='modal-dialog' role='document'>";
+                            res += "<br><br>";
+                            res += "<div class='modal-content' style='text-align:center'>";
+                            res += "<div class='modal-header'>";
+                            res += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                            res += "<span class='text-bold' style='font-size: 14px'>INFORME TECNICO</span>";
+                            res += "<br><span class='text-bold' style='font-size: 12px'>SERVICIO N° "+registros[i]['servicio_id']+"</span>";
+                            res += "<br><span class='text-bold' style='font-size: 10px'>DETALLE: "+registros[i]['detalleserv_descripcion']+"</span>";
+                            res += "</div>";
+                            res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecdetalleserv/"+registros[i]["detalleserv_id"]+"' method='post' target='_blank'>";
+                            res += "<div class='modal-body'>";
+                            res += "<!------------------------------------------------------------------->";
+                            res += "<span class='text-bold' style='font-size: 12px'>";
+                            res += "Cliente: "+registros[i]['cliente_nombre']+"<br>";
+                            res += "</span>";
+                            res += "<label style='font-size: 12px'>";
+                            res += "<input type='checkbox' name='contitulo"+registros[i]['detalleserv_id']+"' id='contitulo"+registros[i]['detalleserv_id']+"' title='Imprimir sin encabezado'>";
+                            res += "&nbsp;&nbsp; Sin Encabezado";
+                            res += "</label>";
+                            res += "<!------------------------------------------------------------------->";
+                            res += "</div>";
+                            res += "<div class='modal-footer' style='text-align: center'>";
+                            var nombremodal = '"modaldetalleinformetecnico"';
+                            res += "<button class='btn btn-success' type='submit' title='Imprimir Informe Técnico' onclick='ocultarmodalnombre("+nombremodal+", "+registros[i]['detalleserv_id']+")' ><span class='fa fa-print'></span> Imprimir</button>";
+                            res += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>";
+                            res += "</div>";
+                            res += "</form>";
+                            res += "</div>";
+                            res += "</div>";
+                            res += "</div>";
+                            res += "<!------------------------ FIN modal para imprimir detalle de INFORME TECNICO ------------------->";
+
                         }
                         if(registros[i]['detallestado_id'] != 7){
                             res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";

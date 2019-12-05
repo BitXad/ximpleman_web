@@ -623,10 +623,6 @@ class Cliente extends CI_Controller{
 
                         $estado_id = 1;
                         $mifecha = date("Y-m-d");
-                        $mifecha1 = date("Y-m-d-H-i-s");
-                        $resmifecha    = explode('-', $mifecha1);
-                        $esresult = implode("", $resmifecha);
-                        $ci = substr($esresult, 2);
                         
                         $params = array(
                                     'estado_id' => $estado_id,
@@ -634,7 +630,7 @@ class Cliente extends CI_Controller{
                                     'categoriaclie_id' => $categoria_clie,
                                     'cliente_codigo' => $this->input->post('cliente_codigo'),
                                     'cliente_nombre' => $this->input->post('cliente_nombre'),
-                                    'cliente_ci' => $ci,
+                                    'cliente_ci' => $this->input->post('cliente_ci'),
                                     'cliente_direccion' => "",
                                     'cliente_telefono' => $this->input->post('cliente_telefono'),
                                     'cliente_celular' => $this->input->post('cliente_celular'),
@@ -644,7 +640,7 @@ class Cliente extends CI_Controller{
                                     'cliente_aniversario' => $mifecha,
                                     'cliente_latitud' => "",
                                     'cliente_longitud' => "",
-                                    'cliente_nit' => $ci,
+                                    'cliente_nit' => $this->input->post('cliente_nit'),
                                     'cliente_razon' => $this->input->post('cliente_nombre'),
                                     'usuario_id' => 0,
                                     'cliente_departamento' => "",
