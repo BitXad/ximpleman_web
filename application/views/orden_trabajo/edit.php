@@ -167,6 +167,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                             <th>#</th>
+                            <th>C</th>
                             <th>Producto</th>
                             <th>Cant.</th>
                             <th>Precio</th>
@@ -256,7 +257,7 @@ input[type=number] { -moz-appearance:textfield; }
           <div class="col-md-8">
             <label for="nota" class="control-label">Nota</label>
             <div class="form-group">
-              <input type="text" name="nota" value="<?php echo $orden_trabajo['orden_observacion'] ?>" class="form-control" id="nota" required/>
+              <input type="text" name="nota" value="<?php echo $orden_trabajo['orden_observacion'] ?>" class="form-control" id="nota"/>
             </div>
           </div>
         </div>
