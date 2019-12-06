@@ -57,7 +57,7 @@ input[type=number] { -moz-appearance:textfield; }
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
- <input type="text" name="orden_id" id="orden_id" value="<?php echo $orden_trabajo['orden_id']; ?>">
+ <input type="hidden" name="orden_id" id="orden_id" value="<?php echo $orden_trabajo['orden_id']; ?>">
  <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php echo json_encode($tipo_orden); ?>' />
 
 <div class="row">
