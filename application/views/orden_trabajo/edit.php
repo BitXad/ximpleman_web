@@ -57,7 +57,7 @@ input[type=number] { -moz-appearance:textfield; }
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
  <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
- <input type="text" name="orden_id" id="orden_id" value="<?php echo $orden_trabajo['orden_id']; ?>">
+ <input type="hidden" name="orden_id" id="orden_id" value="<?php echo $orden_trabajo['orden_id']; ?>">
  <input type="hidden" name="tipo_orden" id="tipo_orden" value='<?php echo json_encode($tipo_orden); ?>' />
 
 <div class="row">
@@ -167,6 +167,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                             <th>#</th>
+                            <th>C</th>
                             <th>Producto</th>
                             <th>Cant.</th>
                             <th>Precio</th>
@@ -256,7 +257,7 @@ input[type=number] { -moz-appearance:textfield; }
           <div class="col-md-8">
             <label for="nota" class="control-label">Nota</label>
             <div class="form-group">
-              <input type="text" name="nota" value="<?php echo $orden_trabajo['orden_observacion'] ?>" class="form-control" id="nota" required/>
+              <input type="text" name="nota" value="<?php echo $orden_trabajo['orden_observacion'] ?>" class="form-control" id="nota"/>
             </div>
           </div>
         </div>
