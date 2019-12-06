@@ -338,14 +338,37 @@ class Servicio extends CI_Controller{
     {
         if($this->acceso(77)){
         $usuario_id = $this->session_data['usuario_id'];  
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
         $estado_id = 4; // este valor esta definido en la tabla Estado
         
-//        date_default_timezone_set('America/La_Paz');
-//        $fecha_res = date('Y-m-d');
-//        $hora_res = date('H:i:s');
+        $this->load->model('Detalle_serv_model');
+        $this->load->model('Categoria_insumo_model');
+        $this->load->model('Detalle_venta_model');
+        $losdetalles = $this->Detalle_serv_model->get_detalle_serv_menos_all($servicio_id);
+        foreach($losdetalles as $detalle){
+            $insumos_usados = $this->Categoria_insumo_model->get_all_insumos_usados($detalle['detalleserv_id']);
+            foreach($insumos_usados as $insumo){
+                $detalleventa = array(
+                    'detalleven_cantidad' => 0,
+                    'detalleven_unidad' => 0,
+                    'detalleven_costo' => 0,
+                    'detalleven_precio' => 0,
+                    'detalleven_descuento' => 0,
+                    'detalleven_total' => 0,
+                    'detalleven_preferencia' => "-",
+                    'detalleven_caracteristicas' => "",
+                    'detalleven_comision' => 0,
+                );
+                $this->Detalle_venta_model->update_detalle_venta($insumo['detalleven_id'], $detalleventa);
+            }
+        }
+        
+        $detparams = array(
+            'detalleserv_total' => 0,
+            'detalleserv_acuenta' => 0,
+            'detalleserv_saldo' => 0,
+            'estado_id' => $estado_id,
+        );
+	$this->Detalle_serv_model->anular_detalle_serv($servicio_id, $detparams);
         
         $params = array(
             'servicio_total' => 0,
@@ -353,16 +376,6 @@ class Servicio extends CI_Controller{
             'servicio_saldo' => 0,
             'estado_id' => $estado_id,
         );
-        $detparams = array(
-            'detalleserv_total' => 0,
-            'detalleserv_acuenta' => 0,
-            'detalleserv_saldo' => 0,
-            'estado_id' => $estado_id,
-        );
-        
-        $this->load->model('Detalle_serv_model');
-	$this->Detalle_serv_model->anular_detalle_serv($servicio_id, $detparams);
-        
         $this->Servicio_model->update_servicio($servicio_id,$params);
         echo json_encode("ok");
         //redirect('servicio/serview/'.$servicio_id);
@@ -416,28 +429,43 @@ class Servicio extends CI_Controller{
     {
         if($this->acceso(77)){
         $usuario_id = $this->session_data['usuario_id'];
-        $data = array(
-            'page_title' => 'Admin >> Mi Cuenta'
-        );
         $estado_id = 4; // este valor esta definido en la tabla Estado
         
-
-        $params = array(
-            'servicio_total' => 0,
-            'servicio_acuenta' => 0,
-            'servicio_saldo' => 0,
-            'estado_id' => $estado_id,
-        );
+        $this->load->model('Detalle_serv_model');
+        $this->load->model('Categoria_insumo_model');
+        $this->load->model('Detalle_venta_model');
+        $losdetalles = $this->Detalle_serv_model->get_detalle_serv_menos_all($servicio_id);
+        foreach($losdetalles as $detalle){
+            $insumos_usados = $this->Categoria_insumo_model->get_all_insumos_usados($detalle['detalleserv_id']);
+            foreach($insumos_usados as $insumo){
+                $detalleventa = array(
+                    'detalleven_cantidad' => 0,
+                    'detalleven_unidad' => 0,
+                    'detalleven_costo' => 0,
+                    'detalleven_precio' => 0,
+                    'detalleven_descuento' => 0,
+                    'detalleven_total' => 0,
+                    'detalleven_preferencia' => "-",
+                    'detalleven_caracteristicas' => "",
+                    'detalleven_comision' => 0,
+                );
+                $this->Detalle_venta_model->update_detalle_venta($insumo['detalleven_id'], $detalleventa);
+            }
+        }
         $detparams = array(
             'detalleserv_total' => 0,
             'detalleserv_acuenta' => 0,
             'detalleserv_saldo' => 0,
             'estado_id' => $estado_id,
         );
-        
-        $this->load->model('Detalle_serv_model');
 	$this->Detalle_serv_model->anular_detalle_serv($servicio_id, $detparams);
         
+        $params = array(
+            'servicio_total' => 0,
+            'servicio_acuenta' => 0,
+            'servicio_saldo' => 0,
+            'estado_id' => $estado_id,
+        );
         $this->Servicio_model->update_servicio($servicio_id,$params);
         echo json_encode("ok");
         //redirect('servicio');
@@ -484,7 +512,26 @@ class Servicio extends CI_Controller{
     {
         if($this->acceso(82)){
         $estado_id = 4; // este valor esta definido en la tabla Estado = ANULADO
+        
         $this->load->model('Detalle_serv_model');
+        $this->load->model('Categoria_insumo_model');
+        $this->load->model('Detalle_venta_model');
+        $insumos_usados = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
+        foreach($insumos_usados as $insumo){
+            $detalleventa = array(
+                'detalleven_cantidad' => 0,
+                'detalleven_unidad' => 0,
+                'detalleven_costo' => 0,
+                'detalleven_precio' => 0,
+                'detalleven_descuento' => 0,
+                'detalleven_total' => 0,
+                'detalleven_preferencia' => "-",
+                'detalleven_caracteristicas' => "",
+                'detalleven_comision' => 0,
+            );
+            $this->Detalle_venta_model->update_detalle_venta($insumo['detalleven_id'], $detalleventa);
+        }
+        
         $detparams = array(
             'detalleserv_total' => 0,
             'detalleserv_acuenta' => 0,
@@ -755,11 +802,16 @@ class Servicio extends CI_Controller{
     /* **********Obtiene todos los insumos usados en un determinado detalle de servicio*************** */
     function obtenerinsumosusados($detalleserv_id)
     {
-        if($this->acceso(69)){
-                $this->load->model('Detalle_venta_model');
-                $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
-                echo json_encode($datos);
-    }
+        //if($this->acceso(69)){
+        $this->load->model('Detalle_venta_model');
+        $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
+        if(sizeof($datos)>0){
+            echo json_encode($datos);
+        }else{
+            echo json_encode(null);
+        }
+        
+    //}
 }
     /*
      * Reporte de los servicios por fechas
@@ -1196,18 +1248,34 @@ class Servicio extends CI_Controller{
                     $estado_id = 6; // 6 ---> TERMINADO
                     $fecha_terminado = date('Y-m-d');
                     $hora_terminado = date('H:i:s');
-                    
-                    $params = array(
-                        'detalleserv_fechaterminado' => $fecha_terminado,
-                        'detalleserv_horaterminado' => $hora_terminado,
-                        'estado_id' => $estado_id,
-                        'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
-                        'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),
-                        'detalleserv_total'       => $this->input->post('detalleserv_total'),
-                        'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
-                        'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
-                        'detalleserv_detalleexterno' => $this->input->post('detalleserv_detalleexterno'),
-                    );
+                    $tipousuario_id = $this->session_data['tipousuario_id'];
+                    if($tipousuario_id == 1){
+                        $params = array(
+                            'detalleserv_fechaterminado' => $fecha_terminado,
+                            'detalleserv_horaterminado' => $hora_terminado,
+                            'estado_id' => $estado_id,
+                            'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                            'detalleserv_falla' => $this->input->post('detalleserv_falla'),
+                            'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                            'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),
+                            'detalleserv_total'       => $this->input->post('detalleserv_total'),
+                            'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
+                            'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
+                            'detalleserv_detalleexterno' => $this->input->post('detalleserv_detalleexterno'),
+                        );
+                    }else{
+                        $params = array(
+                            'detalleserv_fechaterminado' => $fecha_terminado,
+                            'detalleserv_horaterminado' => $hora_terminado,
+                            'estado_id' => $estado_id,
+                            'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                            'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),
+                            'detalleserv_total'       => $this->input->post('detalleserv_total'),
+                            'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
+                            'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
+                            'detalleserv_detalleexterno' => $this->input->post('detalleserv_detalleexterno'),
+                        );
+                    }
                     $this->load->model('Detalle_serv_model');
                     $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
                     /* **************Suma los montos de los detalles y actualiza servicio************* */
@@ -1238,39 +1306,6 @@ class Servicio extends CI_Controller{
                         
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
-                    /*
-                    $producto_id = $this->input->post('producto_id');
-                    if($producto_id >0){
-                        $venta_id = 0; //obliga a ponerle un id de venta
-                        $usuario_id = $this->session_data['usuario_id'];
-                        $this->load->model('Detalle_venta_model');
-                        $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
-                        $this->load->model('Inventario_model');
-                        $inventario = $this->Inventario_model->get_productoinventario($producto_id);
-                        $cantidad = 1;
-                        $detalleparams = array(
-                            'producto_id' => $producto_id,
-                            'venta_id' => $venta_id,
-                            'moneda_id' => $inventario['moneda_id'],
-                            'detalleven_codigo' => $inventario['producto_codigo'],
-                            'detalleven_cantidad' => $cantidad,
-                            'detalleven_unidad' => $inventario['producto_unidad'],
-                            'detalleven_costo' => $inventario['producto_costo'],
-                            'detalleven_precio' => $this->input->post('producto_precio'),
-                            'detalleven_subtotal' => $this->input->post('producto_precio'),
-                            'detalleven_descuento' => 0,
-                            'detalleven_total' => $this->input->post('producto_precio'),
-                            'detalleven_preferencia' => "",
-                            'detalleven_caracteristicas' => "",
-                            'detalleven_comision' => $inventario['producto_comision'],
-                            'detalleven_tipocambio' => $inventario['producto_tipocambio'],
-                            'usuario_id' => $usuario_id,
-                            'detalleserv_id' => $detalleserv_id,
-                        );
-                        $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
-
-                        $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
-                    }*/
                     echo json_encode("ok");
                 }else{
                     echo json_encode("faltainf");
@@ -1343,42 +1378,6 @@ class Servicio extends CI_Controller{
                         
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
-                    
-                    $producto_id = $this->input->post('producto_id');
-                    if($producto_id >0){
-                        $venta_id = 0; //obliga a ponerle un id de venta
-                        $usuario_id = $this->session_data['usuario_id'];
-                        $this->load->model('Detalle_venta_model');
-                        $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
-                        $this->load->model('Inventario_model');
-                        $inventario = $this->Inventario_model->get_productoinventario($producto_id);
-                        $cantidad = 1;
-                        $detalleparams = array(
-                            'producto_id' => $producto_id,
-                            'venta_id' => $venta_id,
-                            'moneda_id' => $inventario['moneda_id'],
-                            'detalleven_codigo' => $inventario['producto_codigo'],
-                            'detalleven_cantidad' => $cantidad,
-                            'detalleven_unidad' => $inventario['producto_unidad'],
-                            'detalleven_costo' => $inventario['producto_costo'],
-                            'detalleven_precio' => $this->input->post('producto_precio'),
-                            'detalleven_subtotal' => $this->input->post('producto_precio'),
-                            'detalleven_descuento' => 0,
-                            'detalleven_total' => $this->input->post('producto_precio'),
-                            'detalleven_preferencia' => "",
-                            'detalleven_caracteristicas' => "",
-                            'detalleven_comision' => $inventario['producto_comision'],
-                            'detalleven_tipocambio' => $inventario['producto_tipocambio'],
-                            'usuario_id' => $usuario_id,
-                            'detalleserv_id' => $detalleserv_id,
-                        );
-                        $detalleven_id = $this->Detalle_venta_model->add_detalle_venta($detalleparams);
-
-                        $this->Inventario_model->reducir_inventario($cantidad, $producto_id);
-                    }
-                    
-                    
-                    
                     echo json_encode("ok");
                 }else{
                     echo json_encode("faltainf");
@@ -1655,6 +1654,92 @@ class Servicio extends CI_Controller{
                         $this->Servicio_model->update_servicio($servicio_id,$params);
                     }
                     echo json_encode("ok");
+            }
+            else
+            {
+                show_404();
+            }
+        //}
+    }
+    /* registrar servicio tgerminado */
+    function registrarinformacion_detalleservicio()
+    {
+        //if($this->acceso(69)){
+            if ($this->input->is_ajax_request()){
+                
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('detalleserv_diagnostico','Diagnostico','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('detalleserv_solucion','Solución','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                $this->form_validation->set_rules('detalleserv_total','Total','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
+                {
+                    $servicio_id = $this->input->post('servicio_id');
+                    $detalleserv_id = $this->input->post('detalleserv_id');
+                    $estado_id = 6; // 6 ---> TERMINADO
+                    $fecha_terminado = date('Y-m-d');
+                    $hora_terminado = date('H:i:s');
+                    $tipousuario_id = $this->session_data['tipousuario_id'];
+                    if($tipousuario_id == 1){
+                        $params = array(
+                            'detalleserv_fechaterminado' => $fecha_terminado,
+                            'detalleserv_horaterminado' => $hora_terminado,
+                            //'estado_id' => $estado_id,
+                            'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                            'detalleserv_falla' => $this->input->post('detalleserv_falla'),
+                            'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                            'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),
+                            'detalleserv_total'       => $this->input->post('detalleserv_total'),
+                            'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
+                            'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
+                            'detalleserv_detalleexterno' => $this->input->post('detalleserv_detalleexterno'),
+                        );
+                    }else{
+                        $params = array(
+                            'detalleserv_fechaterminado' => $fecha_terminado,
+                            'detalleserv_horaterminado' => $hora_terminado,
+                            //'estado_id' => $estado_id,
+                            'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                            'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),
+                            'detalleserv_total'       => $this->input->post('detalleserv_total'),
+                            'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
+                            'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
+                            'detalleserv_detalleexterno' => $this->input->post('detalleserv_detalleexterno'),
+                        );
+                    }
+                    $this->load->model('Detalle_serv_model');
+                    $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
+                    /* **************Suma los montos de los detalles y actualiza servicio************* */
+                    $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                    
+                    $total = $data['resultado']['total'];
+                    $acuenta = $data['resultado']['acuenta'];
+                    $saldo = $data['resultado']['saldo'];
+                    $sumparams = array(
+                            'servicio_total' => $total,
+                            'servicio_acuenta' => $acuenta,
+                            'servicio_saldo' => $saldo,
+                    );
+                    $this->Servicio_model->update_servicio($servicio_id,$sumparams);
+                    /* **********Cambia el estado del servicio segun el estado de los detalles*********** */
+                    /*$res_ids = $this->Detalle_serv_model->get_ids_estado_detalle_serv($servicio_id);
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }*/
+                    echo json_encode("ok");
+                }else{
+                    echo json_encode("faltainf");
+                }
             }
             else
             {

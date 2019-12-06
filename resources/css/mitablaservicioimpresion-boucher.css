@@ -24,7 +24,7 @@
 .escliente{
     text-align: left;
     font-family: Arial;
-    font-size: 14px;
+    font-size: 10px;
     font-weight: bold;
     line-height: 12px;
 }
@@ -104,6 +104,6 @@ div b{
     padding: 2px;
 }
 #mitablaimpresion td {
-    font-size: 6pt;
-    padding: 2px;
+    font-size: 10px;
+    padding: 0.5px;
 }

@@ -94,7 +94,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 function mostrarAlert(){
     if($('#estado_id').val() == 4){
-        alert('Si elige este estado(ANULADO); Total, A cuenta y Saldo se volveran en cero.');
+        alert('Si elige este estado(ANULADO); Total, A cuenta, Saldo e insumos usados se volveran en cero.');
     }
 }
 </script>

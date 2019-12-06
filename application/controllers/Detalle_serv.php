@@ -465,6 +465,23 @@ class Detalle_serv extends CI_Controller{
         $estado_id = 4; // este valor esta definido en la tabla Estado
         $usuario_id = $this->session_data['usuario_id'];
         
+        $this->load->model('Categoria_insumo_model');
+        $this->load->model('Detalle_venta_model');
+        $insumos_usados = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
+        foreach($insumos_usados as $insumo){
+            $detalleventa = array(
+                'detalleven_cantidad' => 0,
+                'detalleven_unidad' => 0,
+                'detalleven_costo' => 0,
+                'detalleven_precio' => 0,
+                'detalleven_descuento' => 0,
+                'detalleven_total' => 0,
+                'detalleven_preferencia' => "-",
+                'detalleven_caracteristicas' => "",
+                'detalleven_comision' => 0,
+            );
+            $this->Detalle_venta_model->update_detalle_venta($insumo['detalleven_id'], $detalleventa);
+        }
         $detparams = array(
                         'detalleserv_total' => 0,
                         'detalleserv_acuenta' => 0,
@@ -537,7 +554,7 @@ class Detalle_serv extends CI_Controller{
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
                 $params = array(
-                                    //'estado_id' => $estado_id,
+                                    'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
                                     'usuario_id' => $usuario_id,
                                     'servicio_id' => $servicio_id,
@@ -572,6 +589,24 @@ class Detalle_serv extends CI_Controller{
                 // 4 es el estado de ANULADO
                 if($estado_id == 4)
                 {
+                    $this->load->model('Categoria_insumo_model');
+                    $this->load->model('Detalle_venta_model');
+                    $insumos_usados = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
+                    foreach($insumos_usados as $insumo){
+                        $detalleventa = array(
+                            'detalleven_cantidad' => 0,
+                            'detalleven_unidad' => 0,
+                            'detalleven_costo' => 0,
+                            'detalleven_precio' => 0,
+                            'detalleven_descuento' => 0,
+                            'detalleven_total' => 0,
+                            'detalleven_preferencia' => "-",
+                            'detalleven_caracteristicas' => "",
+                            'detalleven_comision' => 0,
+                        );
+                        $this->Detalle_venta_model->update_detalle_venta($insumo['detalleven_id'], $detalleventa);
+                    }
+                    
                     $detparams = array(
                                     'estado_id' => $estado_id,
                     );
@@ -784,6 +819,26 @@ class Detalle_serv extends CI_Controller{
                 $this->Servicio_model->update_servicio($servicio_id,$params);
             }
              redirect('servicio/serviciocreado/'.$servicio_id);
+                }elseif($estado_id == 28){
+                    $detparams = array(
+                                    'estado_id' => $estado_id,
+                    );
+                    $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
+
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                    redirect('servicio/serviciocreado/'.$servicio_id);
                 }
             }
             else
@@ -892,6 +947,23 @@ class Detalle_serv extends CI_Controller{
                 // 4 es el estado de ANULADO
                 if($estado_id == 4)
                 {
+                    $this->load->model('Categoria_insumo_model');
+                    $this->load->model('Detalle_venta_model');
+                    $insumos_usados = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
+                    foreach($insumos_usados as $insumo){
+                        $detalleventa = array(
+                            'detalleven_cantidad' => 0,
+                            'detalleven_unidad' => 0,
+                            'detalleven_costo' => 0,
+                            'detalleven_precio' => 0,
+                            'detalleven_descuento' => 0,
+                            'detalleven_total' => 0,
+                            'detalleven_preferencia' => "-",
+                            'detalleven_caracteristicas' => "",
+                            'detalleven_comision' => 0,
+                        );
+                        $this->Detalle_venta_model->update_detalle_venta($insumo['detalleven_id'], $detalleventa);
+                    }
                     $detparams = array(
                                     'estado_id' => $estado_id,
                     );
@@ -1105,7 +1177,27 @@ class Detalle_serv extends CI_Controller{
                 $this->Servicio_model->update_servicio($servicio_id,$params);
             }
              redirect('servicio/serview/'.$servicio_id);
-            }
+            }elseif($estado_id == 28){
+                    $detparams = array(
+                                    'estado_id' => $estado_id,
+                    );
+                    $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
+
+                    $cont = 0;
+                    foreach($res_ids as $ids)
+                    {
+                        if($ids['estado_id'] == $estado_id){
+                            $cont++;
+                        }
+                    }
+                    if($cont == count($res_ids)){
+                        $params = array(
+                                    'estado_id' => $estado_id,
+                        );
+                        $this->Servicio_model->update_servicio($servicio_id,$params);
+                    }
+                    redirect('servicio/serview/'.$servicio_id);
+                }
             redirect('servicio/serview/'.$servicio_id);
             }
             else
@@ -2224,7 +2316,7 @@ class Detalle_serv extends CI_Controller{
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
                 $params = array(
-                                    //'estado_id' => $estado_id,
+                                    'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
                                     'usuario_id' => $usuario_id,
                                     //'servicio_id' => $servicio_id,
@@ -2259,6 +2351,24 @@ class Detalle_serv extends CI_Controller{
                 // 4 es el estado de ANULADO
                 if($estado_id == 4)
                 {
+                    $this->load->model('Categoria_insumo_model');
+                    $this->load->model('Detalle_venta_model');
+                    $insumos_usados = $this->Categoria_insumo_model->get_all_insumos_usados($detalleserv_id);
+                    foreach($insumos_usados as $insumo){
+                        $detalleventa = array(
+                            'detalleven_cantidad' => 0,
+                            'detalleven_unidad' => 0,
+                            'detalleven_costo' => 0,
+                            'detalleven_precio' => 0,
+                            'detalleven_descuento' => 0,
+                            'detalleven_total' => 0,
+                            'detalleven_preferencia' => "-",
+                            'detalleven_caracteristicas' => "",
+                            'detalleven_comision' => 0,
+                        );
+                        $this->Detalle_venta_model->update_detalle_venta($insumo['detalleven_id'], $detalleventa);
+                    }
+                    
                     $detparams = array(
                                     'estado_id' => $estado_id,
                     );
@@ -2472,6 +2582,26 @@ class Detalle_serv extends CI_Controller{
                 $this->Servicio_model->update_servicio($servicio_id,$params);
             }
              redirect('servicio');
+            }elseif($estado_id == 28){
+                $detparams = array(
+                                'estado_id' => $estado_id,
+                );
+                $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
+
+                $cont = 0;
+                foreach($res_ids as $ids)
+                {
+                    if($ids['estado_id'] == $estado_id){
+                        $cont++;
+                    }
+                }
+                if($cont == count($res_ids)){
+                    $params = array(
+                                'estado_id' => $estado_id,
+                    );
+                    $this->Servicio_model->update_servicio($servicio_id,$params);
+                }
+                redirect('servicio');
             }
             redirect('servicio');
             }
