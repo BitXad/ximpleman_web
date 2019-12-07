@@ -365,6 +365,7 @@ class Servicio_model extends CI_Model
                 d.detalleserv_fechaterminado, d.detalleserv_horaterminado,
                 d.detalleserv_fechaentregado, d.detalleserv_horaentregado,
                 d.detalleserv_total, d.detalleserv_acuenta, d.detalleserv_saldo,
+                d.detalleserv_precioexterno,
                 e.estado_descripcion, t.tiposerv_descripcion, s.servicio_direccion,
                 d.detalleserv_descripcion, r.usuario_nombre as respnombre,
                 p.producto_nombre, dv.detalleven_total as precioinsumo

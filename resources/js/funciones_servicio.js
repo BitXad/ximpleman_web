@@ -1001,30 +1001,28 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<div class='modal-header'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
                         html += "<div style='font-family: Arial; font-size: 12px; text-align: center' class='text-bold'>";
-                        //html += "ANULAR<br>SERVICIO N° "+registros[i]['servicio_id'];
+                        html += "OPCIONES DEL SERVICIO<br> N° "+registros[i]['servicio_id'];
                         html += "</div>";
                         html += "</div>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
                         html += "<div class='col-md-12' style='text-align: center !important; float: none !important'>";
                         var nombremodal = '"modalbotones"';
-                        if(registros[i]["estado_id"] != 4 && registros[i]['factura_id'] != null && registros[i]['factura_id'] >0){
-                            html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"' target='_blank' class='col-md-1 btn btn-warning btn-xs' title='Ver/anular factura servicio'><font size='5'><span class='fa fa-list-alt'></span></font></a>";
-                            //window.open(base_url+"factura/imprimir_factura_id/"+factura_id, '_blank');
-                        }else{
-                            html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; background: #000; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#boton_modal_factura"+i+"' class='col-md-1 btn btn-facebook btn-xs' title='Generar Factura'><font size='5'><span class='fa fa-modx'></span></font></a>";
-                            
-                        }
                         if(registros[i]["estado_id"] != 4){
-                            html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='col-md-1 btn btn-info btn-xs' title='Ver, modificar detalle'><font size='5'><span class='fa fa-pencil'></span></font></a>";
+                            //html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='col-md-1 btn btn-info btn-xs' title='Ver, modificar servicio'><font size='5'><span class='fa fa-pencil'></span></font></a>";
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='Ver, modificar servicio'><span class='fa fa-pencil'></span> Modificar Servicio</a><br><br>";
                         }
                         if(registros[i]["estado_id"] != 6 && registros[i]["estado_id"] != 7 && registros[i]["estado_id"] != 4){
-                            html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalanulado"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='col-md-1 btn btn-soundcloud btn-xs' title='Anular servicio'><font size='5'><span class='fa fa-minus-circle'></span></font></a>";
-                            html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modaleliminar"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='col-md-1 btn btn-danger btn-xs' title='Eliminar servicio'><font size='5'><span class='fa fa-trash'></span></font></a>";
+                            //html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalanulado"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='col-md-1 btn btn-soundcloud btn-xs' title='Anular servicio'><font size='5'><span class='fa fa-minus-circle'></span></font></a>";
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalanulado"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-soundcloud btn-xs' title='Anular servicio'><span class='fa fa-minus-circle'></span> Anular Servicio</a><br><br>";
+                            ///html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modaleliminar"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='col-md-1 btn btn-danger btn-xs' title='Eliminar servicio'><font size='5'><span class='fa fa-trash'></span></font></a>";
+                            if(tipousuario_id == 1){
+                                html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modaleliminar"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-danger btn-xs' title='Eliminar servicio'><span class='fa fa-trash'></span> Eliminar servicio</a><br><br>";
+                            }
                         }
                         
                         if(registros[i]["estado_id"] == 6){
-                            html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' class='col-md-1 btn btn-success btn-xs' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#modalregistraresteservicio"+registros[i]['servicio_id']+"' title='Registrar entrega del servicio'><font size='5'><span class='fa fa-file-zip-o'></span></font></a>";
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' class='btn btn-success btn-xs' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#modalregistraresteservicio"+registros[i]['servicio_id']+"' title='Registrar entrega del servicio'><span class='fa fa-file-zip-o'></span> Entrega del servicio</a><br><br>";
                         }
                         
                         var dir_url = "";
@@ -1036,10 +1034,16 @@ function fechadeservicio(elfiltro, busquedade){
                             dir_url = base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"];
                             titprint = "Impresion normal";
                         }
-                        html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' href='"+dir_url+"' id='imprimir' class='col-md-1 btn btn-success btn-xs' target='_blank' title='"+titprint+"' ><font size='5'><span class='fa fa-print'></span></font></a>";
-                        html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+"), ocultarmodalnombre("+nombremodal+", "+i+")' class='col-md-1 btn btn-primary btn-xs' title='Informe técnico'><font size='5'><span class='fa fa-file-text'></span></font></a>";
-                        html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; background: #720e9e; float: none' href='"+base_url+"servicio/seguimiento/"+registros[i]["cliente_id"]+"/"+registros[i]["servicio_id"]+"' class='col-md-1 btn btn-primary btn-xs' title='Seguimiento' target='_blank'><font size='5'><span class='fa fa-user-secret'></span></font></a>";
-                        
+                        html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+dir_url+"' id='imprimir' class='btn btn-success btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span> Imprimir orden de servicio</a><br><br>";
+                        html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+"), ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-primary btn-xs' title='Informe técnico'><span class='fa fa-file-text'></span> Informe Técnico</a><br><br>";
+                        html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #720e9e; float: none' href='"+base_url+"servicio/seguimiento/"+registros[i]["cliente_id"]+"/"+registros[i]["servicio_id"]+"' class='btn btn-primary btn-xs' title='Seguimiento' target='_blank'><span class='fa fa-user-secret'></span> Seguimiento</a><br><br>";
+                        if(registros[i]["estado_id"] != 4 && registros[i]['factura_id'] != null && registros[i]['factura_id'] >0){
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura servicio'><span class='fa fa-list-alt'></span> Ver/Anular factura</a>";
+                            //window.open(base_url+"factura/imprimir_factura_id/"+factura_id, '_blank');
+                        }else{
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #000; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#boton_modal_factura"+i+"' class='btn btn-facebook btn-xs' title='Generar Factura'><span class='fa fa-modx'></span> Generar factura</a>";
+                            
+                        }
                         html += "</div>";
                         html += "<!------------------------------------------------------------------->";
                         html += "</div>";
