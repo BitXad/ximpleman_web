@@ -1321,9 +1321,9 @@ function fechadeservicio(elfiltro, busquedade){
                    }
                    html += "<tr class='text-bold'>";
                    html += "<td style='font-size: 10pt' class='text-right' colspan='8'>TOTAL:</td>";
-                   html += "<td style='font-size: 10pt'>"+Number(total).toFixed(2);+"</td>";
-                   html += "<td style='font-size: 10pt'>"+Number(acuenta).toFixed(2)+"</td>";
-                   html += "<td style='font-size: 10pt'>"+Number(saldo).toFixed(2)+"</td>";
+                   html += "<td style='font-size: 10pt'>"+numberFormat(Number(total).toFixed(2));+"</td>";
+                   html += "<td style='font-size: 10pt'>"+numberFormat(Number(acuenta).toFixed(2))+"</td>";
+                   html += "<td style='font-size: 10pt'>"+numberFormat(Number(saldo).toFixed(2))+"</td>";
                    html += "</tr>";
                    
                    $("#tablaresultados").html(html);

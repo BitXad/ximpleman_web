@@ -1681,8 +1681,8 @@ class Servicio extends CI_Controller{
                     $tipousuario_id = $this->session_data['tipousuario_id'];
                     if($tipousuario_id == 1){
                         $params = array(
-                            'detalleserv_fechaterminado' => $fecha_terminado,
-                            'detalleserv_horaterminado' => $hora_terminado,
+                            /*'detalleserv_fechaterminado' => $fecha_terminado,
+                            'detalleserv_horaterminado' => $hora_terminado,*/
                             //'estado_id' => $estado_id,
                             'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
                             'detalleserv_falla' => $this->input->post('detalleserv_falla'),
@@ -1695,8 +1695,8 @@ class Servicio extends CI_Controller{
                         );
                     }else{
                         $params = array(
-                            'detalleserv_fechaterminado' => $fecha_terminado,
-                            'detalleserv_horaterminado' => $hora_terminado,
+                            /*'detalleserv_fechaterminado' => $fecha_terminado,
+                            'detalleserv_horaterminado' => $hora_terminado,*/
                             //'estado_id' => $estado_id,
                             'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                             'detalleserv_solucion'    => $this->input->post('detalleserv_solucion'),

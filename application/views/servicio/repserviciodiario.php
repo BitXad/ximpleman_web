@@ -253,7 +253,7 @@ margin: 10% 0%;
         <!--</div>-->
         <br><br>
         
-        <div class="col-md-12 text-center" style="font-family: Arial">
+        <div class="col-md-12 text-center" style="font-size: 12px; font-family: Arial">
             <div style="line-height: 10px">__________________________</div>
             <div>Responsable</div>
             <div style="line-height: 10px">Firma - Sello</div>
