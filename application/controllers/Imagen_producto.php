@@ -327,6 +327,10 @@ class Imagen_producto extends CI_Controller{
     {
         if($this->acceso(69)){
             //$this->load->library('form_validation');
+            $this->load->model('Parametro_model');
+            $parametro = $this->Parametro_model->get_parametro(1);
+            
+            $tipousuario_id = $this->session_data['tipousuario_id'];
             /* *********************INICIO imagen***************************** */
             $foto="";
             if (!empty($_FILES['galeria_imagen']['name'])){
@@ -347,8 +351,8 @@ class Imagen_producto extends CI_Controller{
 
                         $this->load->library('upload', $config);
                         $this->upload->do_upload('galeria_imagen');
-                        /*$band = true;
-                        if($band == false){*/
+                        //si´parametro es 0 ---> imagen comprimido
+                        if($parametro['parametro_imagenreal'] == 0){
                         $img_data = $this->upload->data();
                         $extension = $img_data['file_ext'];
                         /* ********************INICIO para resize***************************** */
@@ -381,7 +385,7 @@ class Imagen_producto extends CI_Controller{
                         $this->image_lib->resize();
 
                         $foto = $new_name.$extension;
-                        /*}else{
+                        }else{
                             $img_data = $this->upload->data();
                             $extension = $img_data['file_ext'];
                             
@@ -399,7 +403,7 @@ class Imagen_producto extends CI_Controller{
 
                             
                             $foto = $new_name.$extension;
-                        }*/
+                        }
                     }
             /* *********************FIN imagen***************************** */
             $estado_id = 1;

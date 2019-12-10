@@ -1826,7 +1826,7 @@ function mostrardetalleserv(serv_id){
                         if(registros[i]['detallestado_id'] != 7){
                             res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                         }
-                        res += "-<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='"+registros[i]['detalleserv_descripcion']+"'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span></span>";
+                        res += "<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='"+registros[i]['detalleserv_descripcion']+"'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span></span>";
                         res += "["+registros[i]['detalleserv_codigo']+"]";
                         
                         res += "<!------------------------ INICIO modal para registrar PROCESO DE SERVICIO ------------------->";
