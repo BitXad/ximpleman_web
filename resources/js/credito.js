@@ -254,7 +254,7 @@ function tablacuentas(filtro)
                         
 }
                    html += "<tr><td colspan=3 align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
-                   html += "<td colspan=3 align=right><font size='2' face='Arial'><b>"+Number(total-inciales).toFixed(2)+"</b></font></td>"; 
+                   html += "<td colspan=3 align=right><font size='2' face='Arial'><b>"+Number(total).toFixed(2)+"</b></font></td>"; 
                    html += "<td colspan=7 align=right></td><tr>"; 
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
