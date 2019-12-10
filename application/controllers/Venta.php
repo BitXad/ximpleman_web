@@ -358,7 +358,7 @@ class Venta extends CI_Controller{
             $estado_id =  8; //8 pendiente 9 cancelado
             $compra_id =  0;
             $venta_id =  $venta_id;
-            $credito_monto =  $venta_total;
+            $credito_monto =  $venta_total - $cuota_inicial;
             $credito_cuotainicial =  $cuota_inicial;
             $credito_interesproc =  $credito_interes;
             $credito_interesmonto =  $venta_total * $venta_interes; //revisar

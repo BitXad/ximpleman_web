@@ -41,17 +41,17 @@
                      <div class="col-md-3">
         <!--------------------- parametro de buscador --------------------->
                 <label for="fecha_desde" class="control-label">Cliente</label>
-               <input id="cliente_id" type="text" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  style="width: 100%;"  class="form-control" placeholder="Ingrese el Cliente">
+               <input id="cliente_id" type="text" onkeypress="buscarcuenta(event)" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  style="width: 100%;"  class="form-control" placeholder="Ingrese el Cliente">
                   
         <!--------------------- fin parametro de buscador --------------------->
     </div>
                      <div class="col-md-2" style="padding-left: -30px;"  >
             <label for="fecha_desde" class="control-label">Desde</label>
-              <input type="date" class="form-control btn btn-primary" id="fecha_desde" name="fecha_desde" required="true"value="<?php echo date('Y-m-d') ?>">
+              <input type="date" class="form-control btn btn-primary" id="fecha_desde" name="fecha_desde" required="true"value="">
         </div>
             <div class="col-md-2" style="padding-left: -30px;"  >
                 <label for="fecha_desde" class="control-label">Hasta</label>
-           <input type="date" class="form-control btn btn-primary" id="fecha_hasta" name="fecha_hasta" required="true" value="<?php echo date('Y-m-d') ?>">
+           <input type="date" class="form-control btn btn-primary" id="fecha_hasta" name="fecha_hasta" required="true" value="">
     
        </div> 
        

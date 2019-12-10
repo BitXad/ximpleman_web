@@ -5,7 +5,21 @@ function inicio(){
         tabladeudas(filtro);
 } 
 
+function buscarcuenta(e) {
+  tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){
+        buscar_fecha_cuenta();
+    }
+}
 
+function buscardeuda(e) {
+  tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){
+        buscar_fecha_deuda();
+    }
+}
 
 function buscar_fecha_deuda()
 {
@@ -83,11 +97,13 @@ function tabladeudas(filtro)
                     html = "";
                   
                         total = 0;
+                        iniciales = 0;
                     for (var i = 0; i < n ; i++){
                         
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                         total += Number(registros[i]["credito_monto"]);
+                        iniciales += Number(registros[i]["credito_cuotainicial"]);
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>"; 
                         html += "<td>"+(i+1)+"</td>";
@@ -105,7 +121,9 @@ function tabladeudas(filtro)
                         html += "<td><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planDeuda/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
 }
-                   html += "<tr><td colspan=6 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
+                   html += "<tr><td colspan=3 align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
+                   html += "<td colspan=3 align=right><font size='2' face='Arial'><b>"+Number(total).toFixed(2)+"</b></font></td>"; 
+                   html += "<td colspan=7 align=right></td><tr>"; 
                    $("#tabladeudas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
                    
@@ -188,10 +206,12 @@ function tablacuentas(filtro)
                     html = "";
                 
                     total=0;
+                    inciales=0;
                     for (var i = 0; i < n ; i++){
                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                          total += Number(registros[i]["credito_monto"]);
+                         inciales += Number(registros[i]["credito_cuotainicial"]);
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
@@ -233,7 +253,9 @@ function tablacuentas(filtro)
                         }
                         
 }
-                    html += "<tr><td colspan=6 align=right>"+Number(total).toFixed(2)+"</td><tr>"; 
+                   html += "<tr><td colspan=3 align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
+                   html += "<td colspan=3 align=right><font size='2' face='Arial'><b>"+Number(total-inciales).toFixed(2)+"</b></font></td>"; 
+                   html += "<td colspan=7 align=right></td><tr>"; 
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
                    
