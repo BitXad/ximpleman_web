@@ -94,7 +94,7 @@ $(document).ready(function(){
 <script type="text/javascript">
 function mostrarAlert(){
     if($('#estado_id').val() == 4){
-        alert('Si elige este estado(ANULADO); Total, A cuenta y Saldo se volveran en cero.');
+        alert('Si elige este estado(ANULADO); Total, A cuenta, Saldo e insumos usados se volveran en cero.');
     }
 }
 </script>
@@ -241,13 +241,13 @@ function mostrarAlert(){
 					<div class="col-md-4">
 						<label for="detalleserv_total" class="control-label">Total</label>
 						<div class="form-group">
-							<input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo number_format($detalle_serv['detalleserv_total'],'2','.',','); ?>" class="form-control" id="detalleserv_total" />
+							<input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_total" value="<?php echo $detalle_serv['detalleserv_total']; //number_format($detalle_serv['detalleserv_total'],'2','.',','); ?>" class="form-control" id="detalleserv_total" />
 						</div>
 					</div>
 					<div class="col-md-4">
 						<label for="detalleserv_acuenta" class="control-label">A cuenta</label>
 						<div class="form-group">
-							<input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo number_format($detalle_serv['detalleserv_acuenta'],'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" />
+							<input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_acuenta" value="<?php echo $detalle_serv['detalleserv_acuenta']; //number_format($detalle_serv['detalleserv_acuenta'],'2','.',','); ?>" class="form-control" id="detalleserv_acuenta" />
 						</div>
                                                 <style type="text/css">
                                                 </style>
@@ -255,7 +255,7 @@ function mostrarAlert(){
 					<div class="col-md-4">
 						<label for="detalleserv_saldo" class="control-label">Saldo</label>
 						<div class="form-group">
-                                                    <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo number_format($detalle_serv['detalleserv_saldo'],'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly />
+                                                    <input style="background-color: #ffeebc;" type="number" step="any" min="0" name="detalleserv_saldo" value="<?php echo $detalle_serv['detalleserv_saldo']; //number_format($detalle_serv['detalleserv_saldo'],'2','.',','); ?>" class="form-control" id="detalleserv_saldo" readonly />
 						</div>
 					</div>
 					<div class="col-md-3">

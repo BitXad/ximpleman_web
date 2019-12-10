@@ -159,10 +159,6 @@
                 </table>
                 
             </div>
-        
-                <div>
-                    <?php echo base_url(); ?>
-                </div>
         <!--</div>-->
         <div>
         Usuario: <?php echo $usuario['usuario_nombre']; ?>

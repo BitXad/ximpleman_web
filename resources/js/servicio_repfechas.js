@@ -1,6 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-    //reportedetservicio();
+    reportedetservicio();
 }
 /*aumenta un cero a un digito; es para las horas*/
 function aumentar_cero(num){
@@ -103,10 +103,10 @@ function reportedetservicio(){
 
                     for (var i = 0; i < n ; i++){
                         totaltotal    = Number(totaltotal)  + Number(registros[i]['detalleserv_total']);
-                        totalinsumo   = Number(totalinsumo)  + Number(registros[i]['total_insumo']);
+                        totalinsumo   = Number(totalinsumo)  + Number(registros[i]['total_insumo']) +Number(registros[i]['detalleserv_precioexterno']);
                         totalacuenta  = Number(totalacuenta)   + Number(registros[i]['detalleserv_acuenta']);
                         totalsaldo    = Number(totalsaldo) + Number(registros[i]['detalleserv_saldo']);
-                        totalutilidad = Number(totalutilidad) + (Number(registros[i]['detalleserv_total'])-Number(registros[i]['total_insumo']));
+                        totalutilidad = Number(totalutilidad) + (Number(registros[i]['detalleserv_total'])-(Number(registros[i]['total_insumo'])+Number(registros[i]['detalleserv_precioexterno'])));
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -127,10 +127,10 @@ function reportedetservicio(){
                         }
                         html += "<td class='text-center maspeque'>"+fechaentreg+"</td>";
                         html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_total"]).toFixed(2))+"</td>";
-                        html += "<td class='text-right'>"+numberFormat(Number(registros[i]["total_insumo"]).toFixed(2))+"</td>";
+                        html += "<td class='text-right'>"+numberFormat(Number(Number(registros[i]["total_insumo"])+ Number(registros[i]['detalleserv_precioexterno'])).toFixed(2))+"</td>";
                         html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_acuenta"]).toFixed(2))+"</td>";
                         html += "<td class='text-right'>"+numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</td>";
-                        var resutilidad = Number(registros[i]["detalleserv_total"])-Number(registros[i]["total_insumo"]);
+                        var resutilidad = Number(registros[i]["detalleserv_total"])-(Number(Number(registros[i]["total_insumo"])+Number(registros[i]['detalleserv_precioexterno'])));
                         html += "<td class='text-right'>"+numberFormat(Number(resutilidad).toFixed(2))+"</td>";
                         //html += "<td class='text-right'></td>";
                         html += "<td  class='text-center' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";

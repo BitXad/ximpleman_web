@@ -145,7 +145,7 @@
 <div class="row col-md-12 no-print">
     <div class="col-md-2">
         <br>
-        <a class="btn btn-sq-lg btn-warning btn-block" onclick="reportedetservicio();" ><span class="fa fa-search"></span>&nbsp;buscar</a>
+        <a class="btn btn-sq-lg btn-warning btn-block" onclick="reportedetservicio();" ><span class="fa fa-search"></span>&nbsp;Buscar</a>
     </div>
     <div class="col-md-2">
         <br>
@@ -201,7 +201,7 @@
                         <th>TEC.<br>RESP.</th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
-                    <?php $i =1; $cont = 0;
+                    <?php /*$i =1; $cont = 0;
                           $total = 0;
                           $insumo = 0;
                           $acuenta = 0;
@@ -209,11 +209,18 @@
                           $utilidad = 0;
                           foreach($servicio as $s){
                               $cont = $cont+1;
+                              $precioexterno = 0;
+                              if($s['detalleserv_precioexterno'] != null){
+                                  if($s['detalleserv_precioexterno'] >0){
+                                      $precioexterno = $s['detalleserv_precioexterno'];
+                                  }
+                              }
+                              
                               $total += $s['detalleserv_total'];
-                              $insumo += $s['total_insumo'];
+                              $insumo += $s['total_insumo']+$precioexterno;
                               $acuenta += $s['detalleserv_acuenta'];
                               $saldo += $s['detalleserv_saldo'];
-                              $utilidad += $s['detalleserv_total']- $s['total_insumo'];
+                              $utilidad += $s['detalleserv_total']- ($s['total_insumo']+$precioexterno);
                     ?>
                     <tr>
                         <td><?php echo $cont ?></td>
@@ -239,25 +246,25 @@
                             ?>
                         </td>
                         <td class='text-right'><?php echo number_format($s['detalleserv_total'],2); ?></td>
-                        <td class='text-right'><?php echo number_format($s['total_insumo'],2); ?></td>
+                        <td class='text-right'><?php echo number_format($s['total_insumo']+$precioexterno,2); ?></td>
                         <td class='text-right'><?php echo number_format($s['detalleserv_acuenta'],2); ?></td>
                         <td class='text-right'><?php echo number_format($s['detalleserv_saldo'],2); ?></td>
-                        <td class='text-right'><?php echo number_format(($s['detalleserv_total']-$s['total_insumo']),2); ?></td>
+                        <td class='text-right'><?php echo number_format(($s['detalleserv_total']-($s['total_insumo']+$precioexterno)),2); ?></td>
                         <td class='text-center' style="background-color: #<?php echo $s['estado_color']; ?>"><?php echo $s['estado_descripcion']; ?></td>
                         <td class='text-center'><?php echo $s['tiposerv_descripcion']; ?></td>
                         <td class="conmenospacio"><?php echo $s['detalleserv_descripcion']; ?></td>
                         <td class="maspeque"><?php echo $s['respusuario_nombre']; ?></td>
                         
                     </tr>
-                    <?php $i++; }  ?>
+                    <?php $i++; } */ ?>
                     </tbody>
                     <tr>
                         <td class='text-right text-bold' style="font-size: 10pt;" colspan="6">Total</td>
-                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="eltotal"><?php echo number_format($total,2); ?></span></td>
-                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="elinsumo"><?php echo number_format($insumo,2); ?></span></td>
-                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="elacuenta"><?php echo number_format($acuenta,2); ?></span></td>
-                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="elsaldo"><?php echo number_format($saldo,2); ?></span></td>
-                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="lautilidad"><?php echo number_format($utilidad,2); ?></span></td>
+                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="eltotal"><?php //echo number_format($total,2); ?></span></td>
+                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="elinsumo"><?php //echo number_format($insumo,2); ?></span></td>
+                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="elacuenta"><?php //echo number_format($acuenta,2); ?></span></td>
+                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="elsaldo"><?php //echo number_format($saldo,2); ?></span></td>
+                        <td class='text-right text-bold' style="font-size: 10pt;"><span id="lautilidad"><?php //echo number_format($utilidad,2); ?></span></td>
                     </tr>
                 </table>
                                 
@@ -281,6 +288,6 @@
     </div>
 <div class="no-print">
 <a href="<?php echo site_url('reportes/servicioreportes'); ?>" class="btn btn-danger">
-    <i class="fa fa-arrow-left"></i> Atras
+    <i class="fa fa-times"></i> Cerrar
 </a>
 </div>

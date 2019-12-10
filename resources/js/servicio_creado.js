@@ -1678,7 +1678,7 @@ function resultadodetalleservicionew(servicio_id){
                         html += "<td id='alinear'><span style='font-weight: bold; font-size: 10pt;'>"+ numberFormat(Number(registros[i]["detalleserv_saldo"]).toFixed(2))+"</span></td>";
                         html += "<td>";
                         html += "<!------------------------ INICIO modal para confirmar Anulacion ------------------->";
-                        html += "<div class='modal fade' id='modalanulado"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
+                        html += "<div style='white-space: normal !important;' class='modal fade' id='modalanulado"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
                         html += "<br><br>";
                         html += "<div class='modal-content'>";

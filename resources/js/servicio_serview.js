@@ -609,14 +609,17 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
                         
                         html += "<a href='"+base_url+"detalle_serv/modificarmidetalle/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' class='btn btn-info btn-xs' title='Modificar detalle de servicio'><span class='fa fa-pencil'></span> </a>";
+                        if(registros[i]["esteestado"] != 7 && registros[i]["esteestado"] != 16){
+                            if(asignarinsumos == 1){
+                                html += "<a class='btn btn-info btn-xs' href='"+base_url+"categoria_insumo/verinsumosasignar/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' title='Ver, asignar insumos'><span class='fa fa-file-text-o'></span><br></a>";
+                            }
+                        }
                         if(registros[i]["esteestado"] != 6 && registros[i]["esteestado"] != 7 && registros[i]["esteestado"] != 16){
                             if(reginftecnico == 1){
                                 html += "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modalregistrardetservtecnico"+registros[i]['detalleserv_id']+"' title='Registrar servicio técnico finalizado'><span class='fa fa-file-text'></span><br></a>";
                                 //html += "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modaldst"+i+"' title='Registrar servicio técnico'><span class='fa fa-file-text'></span><br></a>";
                             }
-                            if(asignarinsumos == 1){
-                                html += "<a class='btn btn-info btn-xs' href='"+base_url+"categoria_insumo/verinsumosasignar/"+servicio_id+"/"+registros[i]["detalleserv_id"]+"' title='Ver, asignar insumos'><span class='fa fa-file-text-o'></span><br></a>";
-                            }
+                            
                             if(anulardetalle == 1){
                                 html += "<a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalanulardet"+i+"' title='Anular detalle servicio'><span class='fa fa-minus-circle'></span></a>";
                             }

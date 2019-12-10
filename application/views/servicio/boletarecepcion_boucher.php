@@ -13,7 +13,16 @@
         }*/
     });
 </script>
+<style type="text/css">
+    @media print {
+    hr {
+        background-color: #000 !important;
+        /*color: black !important;*/
+        -webkit-print-color-adjust: exact;
+    }
+}
 
+</style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitablaservicioimpresion-boucher.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
@@ -29,11 +38,11 @@
         ?>
     <br>
     <div id="titulo">
-        ORDEN DE SERVICIO N°: <?php echo "00".$servicio['servicio_id']; ?><br>
+        ORDEN DE SERVICIO<br>N°: <?php echo "00".$servicio['servicio_id']; ?><br>
         <span class="lahora"><?php echo date("d/m/Y - H:i:s"); ?></span>
     </div>
             <!-- aqui va el logo de la empresa -->
-    <div class="row"><b>Cliente: </b>
+    <div class="row" style="font-family: Arial; font-size: 11px !important"><b>Cliente: </b>
         <span><?php if(is_null($servicio['cliente_id'])|| ($servicio['cliente_id'] ==0))
               {
                  echo "NO DEFINIDO";
@@ -48,14 +57,12 @@
         
         <!--<div class="box" >-->
             <div class="box-body table-responsive" style="padding: 0px;">
+                <hr style="height: 2px; background-color: #000; margin: 0px; border: 0px">
                 <table class="table table-striped table-condensed" id="mitablaimpresion">
                     <tr>
-                        <th style="width: 7%;">N°</th>
-                        <th style="width: 43%;">Detalle</th>
-                        <th style="width: 20%;">Codigo</th>
-                        <th style="width: 10%;">Total</th>
-                        <th style="width: 10%;">A.C.</th>
-                        <th style="width: 10%;">Saldo</th>
+                        <th style="width: 0.5cm">N°</th>
+                        <th style="width: 4cm">Detalle</th>
+                        <th style="width: 2cm"></th>
                         
                     </tr>
                     <tbody class="buscar1">
@@ -75,15 +82,17 @@
                             if($d['cattrab_descripcion']){
                                 $tipotrabajo = " (".substr($d['cattrab_descripcion'], 0, 3).")";
                             }
-                              echo $d['detalleserv_descripcion']."".$tipotrabajo."<br>";
-                              echo "<div style='font-size: 5pt;'><span style='font-weight: bold'>Entregar:</span>".date("d/m/Y", strtotime($d['detalleserv_fechaentrega']));
+                              echo $d['detalleserv_descripcion']."".$tipotrabajo." (".$d['detalleserv_codigo'].")";
+                              echo "<div style='font-size: 10px;'><span style='font-weight: bold'>Entregar:</span>".date("d/m/Y", strtotime($d['detalleserv_fechaentrega']));
                               echo " - ".$d['detalleserv_horaentrega']."</div>";
                              ?>
                         </td>
-                        <td><?php echo $d['detalleserv_codigo']; ?></td>
-                        <td id="alinear"><?php echo number_format($d['detalleserv_total'],'2','.',',') ?></td>
-                        <td id="alinear"><?php echo number_format($d['detalleserv_acuenta'],'2','.',',') ?></td>
-                        <td id="alinear"><?php echo number_format($d['detalleserv_saldo'],'2','.',',') ?></td>
+                        <!--<td><?php //echo $d['detalleserv_codigo']; ?></td>-->
+                        <td id="alinear"><?php 
+                            echo "Tot.: ".number_format($d['detalleserv_total'],'2','.',',')."<br>";
+                            echo "A.C.: ".number_format($d['detalleserv_acuenta'],'2','.',',')."<br>";
+                            echo "SAL.: ".number_format($d['detalleserv_saldo'],'2','.',',') ?>
+                        </td>
 
                     </tr>
                     <?php $i++; } ?>
@@ -95,10 +104,11 @@
             
     <!--</div>-->
 </div>
-<div class="row" id="paraboucher" style="max-width: 7cm; font-size: 7pt">
+<div class="row" id="paraboucher" style="max-width: 7cm; font-size: 10px; font-family: Arial">
     <!--<div class="col-md-6">-->
         <!--<div class="box">-->
             <div class="box-body table-responsive table-condensed" style="padding: 0px;">
+                <hr style="height: 2px; background-color: #000; margin: 0px; border: 0px">
                 <table class="table table-striped table-condensed" id="mitablaimpresion">
                     <tbody>
                         <tr>
@@ -133,9 +143,9 @@
                 <div style="font-size: 9px; text-align: center"><span class="text-bold">Usuario:</span> <?php echo $servicio['servicio_id']; ?> &nbsp; <span class="text-bold">Clave:</span> <?php echo $cliente['cliente_id']; ?></div>
             </div>
         </div>
-        <div>
-            <?php echo base_url(); ?>
-        </div>
+        <!--<div>
+            <?php //echo base_url(); ?>
+        </div>-->
         <div>
             Usuario: <?php echo $usuario['usuario_nombre']; ?>
         </div>
