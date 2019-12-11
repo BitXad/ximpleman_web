@@ -485,8 +485,8 @@ window.onkeydown = compruebaTecla;
             <!--------------- botones ---------------------->
             <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes"><span class="fa fa-cubes"></span><b> </b></a> 
-            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-facebook btn-xs" style="background-color: black" onclick="ordenes_pendientes()" title="Ordenes de Trabajo"><span class="fa fa-book"></span><b> </b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-facebook btn-xs" style="background-color: black" onclick="ordenes_pendientes()" title="Ordenes de Trabajo"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
                 } ?>
                     
@@ -498,10 +498,10 @@ window.onkeydown = compruebaTecla;
             
             <?php 
             if($rolusuario[15-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0' title="Costo Cero"></span><b> </b></button> 
+            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0' title="Costo Cero"></span><b> - 0 -</b></button> 
             <?php }
             if($rolusuario[16-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money' title="Precio de costo"></span><b></b></button> 
+            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money' title="Precio de costo"></span><b> Costo</b></button> 
             
             <?php } ?>
             
