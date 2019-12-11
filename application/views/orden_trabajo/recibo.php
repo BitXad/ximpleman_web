@@ -5,7 +5,7 @@
                 
             <center>
                                
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80px" height="60px"><br>
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
@@ -107,19 +107,25 @@
                       $i=1;
                       $cont = 0;
                       $total=0;
+                      $cantis=0;
+                      $rango=1;
                       foreach($detalle_orden_trabajo as $d) {
                       $cont = $cont+1; 
                       $total += $d['detalleorden_total'] ?>
                       <tr>
-                      <td align="center"><?php echo $cont ?></td>
+                      <td align="center"><?php echo $rango ?> - <?php echo ($cantis+$d['detalleorden_cantidad']) ?></td>
                       <td align="center"><?php echo $d['detalleorden_cantidad']; ?></td>
                       <td align="center"><?php echo $d['producto_nombre']; ?></td>
                       <td align="center"><?php echo $d['detalleorden_ancho']; ?></td>
                       <td align="center"><?php echo $d['detalleorden_largo']; ?></td>
                       <td align="center"><b><?php echo number_format($d['detalleorden_total'], 2, ".", ","); ?></b></td>
                       <td align="center"><?php echo $d['tipoorden_nombre']; ?></td>
-					  </tr>
-                      <?php }?>
+					  </tr>     
+            <?php 
+                      $rango = $rango+$d['detalleorden_cantidad'];
+                      $cantis = $cantis+$d['detalleorden_cantidad'];
+                     
+                       }?>
                       <tr>
                       	<th colspan="5">TOTAL M2</th>
                       	<th ><?php echo number_format($total, 2, ".", ","); ?></th>

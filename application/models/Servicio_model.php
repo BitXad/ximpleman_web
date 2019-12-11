@@ -262,7 +262,8 @@ class Servicio_model extends CI_Model
                   ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
                   ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                   e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion, ds.detalleserv_descripcion,
-                  r.usuario_nombre as respusuario_nombre, ifnull(t1.total_insumo, 0) as total_insumo
+                  r.usuario_nombre as respusuario_nombre, ifnull(t1.total_insumo, 0) as total_insumo,
+                  ds.detalleserv_precioexterno
               FROM
                   detalle_serv ds
                   LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
@@ -313,7 +314,8 @@ class Servicio_model extends CI_Model
                   ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
                   ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
                   e.estado_color, e.estado_descripcion, ts.tiposerv_descripcion, ds.detalleserv_descripcion,
-                  r.usuario_nombre as respusuario_nombre, ifnull(t1.total_insumo, 0) as total_insumo
+                  r.usuario_nombre as respusuario_nombre, ifnull(t1.total_insumo, 0) as total_insumo,
+                  ds.detalleserv_precioexterno
               FROM
                   detalle_serv ds
                   LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
@@ -359,12 +361,13 @@ class Servicio_model extends CI_Model
     function get_all_servicios_dia()
     {
         $servicio = $this->db->query("
-            SELECT
+            /*SELECT
                 c.cliente_nombre, s.servicio_id, d.detalleserv_id, d.estado_id,
                 s.servicio_fecharecepcion, s.servicio_horarecepcion,
                 d.detalleserv_fechaterminado, d.detalleserv_horaterminado,
                 d.detalleserv_fechaentregado, d.detalleserv_horaentregado,
                 d.detalleserv_total, d.detalleserv_acuenta, d.detalleserv_saldo,
+                d.detalleserv_precioexterno,
                 e.estado_descripcion, t.tiposerv_descripcion, s.servicio_direccion,
                 d.detalleserv_descripcion, r.usuario_nombre as respnombre,
                 p.producto_nombre, dv.detalleven_total as precioinsumo
@@ -382,8 +385,33 @@ class Servicio_model extends CI_Model
                 
                  (date(s.servicio_fecharecepcion) = date(NOW())
                  or date(d.detalleserv_fechaentregado) = date(NOW()))
-                 and (d.estado_id = 5 or d.estado_id = 7)
+                 and (d.estado_id = 5 or d.estado_id = 7)*/
                  
+            SELECT
+                  c.cliente_nombre, s.servicio_id, ds.detalleserv_id, ds.estado_id,
+                s.servicio_fecharecepcion, s.servicio_horarecepcion,
+                ds.detalleserv_fechaterminado, ds.detalleserv_horaterminado,
+                ds.detalleserv_fechaentregado, ds.detalleserv_horaentregado,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                e.estado_descripcion, ts.tiposerv_descripcion, s.servicio_direccion,
+                ds.detalleserv_descripcion, r.usuario_nombre as respnombre,
+                ifnull(t1.total_insumo, 0) as total_insumo,
+                ds.detalleserv_precioexterno
+              FROM
+                  detalle_serv ds
+                  LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+                  LEFT JOIN estado e on ds.estado_id = e.estado_id
+                  LEFT JOIN usuario r on ds.responsable_id = r.usuario_id
+                  LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+                  LEFT JOIN usuario u on ds.usuario_id = u.usuario_id
+                  LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+                  LEFT JOIN 
+                  (SELECT sum(dv.detalleven_total) as total_insumo, dv.detalleserv_id as estedetalleserv_id
+                    FROM detalle_venta dv group by dv.detalleserv_id) as t1 on t1.estedetalleserv_id = ds.detalleserv_id
+                WHERE
+                 (date(s.servicio_fecharecepcion) = date(NOW())
+                 or date(ds.detalleserv_fechaentregado) = date(NOW()))
+                 and (ds.estado_id = 5 or ds.estado_id = 7)
         ")->result_array();
         
         return $servicio;

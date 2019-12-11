@@ -168,6 +168,7 @@ input[type=number] { -moz-appearance:textfield; }
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                             <th>#</th>
+                            <th>C</th>
                             <th>Producto</th>
                             <th>Cant.</th>
                             <th>Precio</th>

@@ -30,7 +30,8 @@ function detalleordeni(){
                     
                     var subtotal = Number(0);
                     var subpreciototal = Number(0);
-                    
+                    var rango = Number(1);
+                    var cantis = Number(0);
                     html = "";
                     
                     
@@ -44,6 +45,8 @@ function detalleordeni(){
 
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
+                        html += "<td>"+rango+"-"+Number(Number(cantis)+Number(registros[i]["detalleorden_cantidad"]))+"</td>";
+                       
                         html += "<td><b>"+registros[i]["producto_nombre"]+"</b><br>";
                         html += "Obs.: <b>"+registros[i]["tipoorden_nombre"]+"</b></td>"; 
                         //html += "<form action='"+base_url+"orden_trabajo/updatedetalleorden/"+usuario_id+"/"+registros[i]["producto_id"]+"'  method='POST' class='form'>";
@@ -51,24 +54,28 @@ function detalleordeni(){
                         html += "<td> <input id='usuario_id'  name='usuario_id' type='hidden' class='form-control' value='"+usuario_id+"'>";
                         //html += "<input id='detalleorden_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         
-                        html += "<input id='detalleorden_cantidad"+registros[i]["detalleorden_id"]+"' name='cantidad' type='text' size='3' class='form-control'  value='"+registros[i]["detalleorden_cantidad"]+"' ></td> ";
-                        html += "<td><input id='detalleorden_precio"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_precio"]+"' ></td>";
-                        html += "<td><input id='ancho"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_ancho"]+"' ></td>";
-                        html += "<td><input id='largo"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleorden_largo"]+"' ></td>";
+                        html += "<input id='detalleorden_cantidad"+registros[i]["detalleorden_id"]+"' name='cantidad' type='text' size='3' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_cantidad"]+"' ></td> ";
+                        html += "<td><input id='detalleorden_precio"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_precio"]+"' ></td>";
+                        html += "<td><input id='ancho"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_ancho"]+"' ></td>";
+                        html += "<td><input id='largo"+registros[i]["detalleorden_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detalleorden_id"]+","+usuario_id+")' value='"+registros[i]["detalleorden_largo"]+"' ></td>";
                         html += "<td><center><font size='3'> <b>"+Number(registros[i]["detalleorden_total"]).toFixed(2)+"</b></font>";
                         html += "</center></td>";
                         html += "<td><center><span class='badge badge-success'><font size='3'> <b>"+Number(registros[i]["detalleorden_preciototal"]).toFixed(2)+"</b></font> <br></span>";
                         html += "</center></td>";
-                        html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detalleorden_id"]+","+usuario_id+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
-                        html += "<button type='button' onclick='quitardetallec("+registros[i]["detalleorden_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
-
+                        html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detalleorden_id"]+","+usuario_id+")' class='btn btn-success btn-xs'><i class='fa fa-random'></i></button>";
+                        html += "<button type='button' onclick='quitardetallec("+registros[i]["detalleorden_id"]+")' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span></button></td>";
+                        rango = Number(Number(rango)+Number(registros[i]["detalleorden_cantidad"]));
+                        cantis = Number(Number(cantis)+Number(registros[i]["detalleorden_cantidad"]));
                       
                         //html += "";
                        }
                        html += "<tr>";
                       // html += "<td><input id='total'  name='total' type='text' class='form-control' value='"+total_detalle+"'></td>";
-                       html += "<th colspan='2'><font size='3'>TOTAL</th>";
+                       html += "<th'></th>";
                        
+                       html += "<th></th>";
+                       html += "<th></th>";
+                       html += "<th><font size='3'>TOTAL</th>";
                        html += "<th></th>";
                        html += "<th></th>";
                        html += "<th></th>";
@@ -93,6 +100,18 @@ function detalleordeni(){
 function totality(total_detalle){
   var totalfinal = Number(total_detalle);
   $("#orden_trabajo_total").val(totalfinal.toFixed(2));
+}
+
+
+function actualizadetalle(e,detalle_id,usuario_id) {
+
+  tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){ 
+             
+            actualizarDetalle(detalle_id,usuario_id);            
+
+        }
 }
 
 function detalleordena(usuario_id,producto_id){
@@ -132,7 +151,6 @@ function actualizarDetalle(detalleorden_id,usuario_id){
 
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'orden_trabajo/updatedetalleorden/';
-    
     var precio = document.getElementById('detalleorden_precio'+detalleorden_id).value;
     var cantidad = document.getElementById('detalleorden_cantidad'+detalleorden_id).value;
     var ancho = document.getElementById('ancho'+detalleorden_id).value;
@@ -268,7 +286,7 @@ function buscarcliente(){
    var controlador = base_url+'orden_trabajo/buscarcliente';
 
  
-
+ 
     $.ajax({url:controlador,
 
             type:"POST",
@@ -293,7 +311,7 @@ function buscarcliente(){
                     //document.getElementById('telefono').focus();
 
                     $("#cliente_id").val(registros[0]["cliente_id"]);
-
+                    document.getElementById('orden_numero').focus();
                     
 
                 }
@@ -306,6 +324,7 @@ function buscarcliente(){
 
                     document.getElementById('razon_social').focus();
 
+                    $("#razon_social").val("");
                     $("#razon_social").val("");
 
                     $("#cliente_id").val(0);
@@ -320,9 +339,10 @@ function buscarcliente(){
 
             error:function(respuesta){			
 
-                $("#razon_social").val('SIN NOMBRE');
+                $("#razon_social").val('NOMBRE');
+                $("#nit").val(Date.now());
 
-                document.getElementById('telefono').focus();
+                document.getElementById('razon_social').select();
 
                 
 
@@ -388,7 +408,7 @@ function seleccionar_cliente(){
                     $("#telefono").val(resultado[0]["cliente_telefono"]);
                     $("#cliente_nombre").val(resultado[0]["cliente_nombre"]);
                     $("#cliente_codigo").val(resultado[0]["cliente_codigo"]);  
-                 
+                    document.getElementById('orden_numero').focus();
                 }
        
 
@@ -1175,10 +1195,10 @@ function fechaorden(parametro){
                        html += "<th colspan='2'>TOTAL</th>";
                        html += "<th></th>";
                        html += "<th></th>";
+                       html += "<th></th>";
                        html += "<th align='right'>"+Number(total).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_acuenta).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_saldo).toFixed(2)+"</th>";
-                       html += "<th></th>";
                        html += "<th></th>";
                        html += "<th></th>";
                        html += "</tr>";

@@ -91,7 +91,7 @@ class Parametro_model extends CI_Model
     {
         $parametro = $this->db->query("
            SELECT
-                p.parametro_diagnostico, p.parametro_solucion
+                p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega
             FROM
                 parametros p
             WHERE

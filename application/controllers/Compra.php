@@ -546,10 +546,10 @@ class Compra extends CI_Controller{
                 $this->load->model('Detalle_compra_model');
                 $data['detalle_compra'] = $this->Compra_model->get_detalle_compra_aux($compra_id);
 
-                $this->load->model('Producto_model');
-                $data['inventario'] = $this->Producto_model->get_all_productos();
+               // $this->load->model('Producto_model');
+                //$data['inventario'] = $this->Producto_model->get_all_productos();
                 $data['unidades'] = $this->Producto_model->get_all_unidad();  
-                $this->load->model('Inventario_model');
+                //$this->load->model('Inventario_model');
                         //$data['inventario'] = $this->Inventario_model->get_all_inventario();
 
                 $this->load->model('Documento_respaldo_model');
@@ -965,6 +965,24 @@ $almacen = $existir[0]["existencia"];
            $this->Orden_pago_model->registrar_orden($orden);
 
          }
+   }
+   if ($_POST['tipotrans_id']==1 ) {
+    $borracuota  = "SELECT credito_id FROM credito WHERE credito.compra_id=".$compra_id;
+    $las_cuotas = $this->db->query($borracuota)->result_array();
+    if (sizeof($las_cuotas)>0) {
+    
+    $verificar = "SELECT cuota_id FROM cuota WHERE estado_id=9 AND credito_id=".$las_cuotas[0]["credito_id"];
+    $verif_cuota = $this->db->query($verificar)->result_array();
+    if (sizeof($verif_cuota)==0) {
+    $deleteccuotas = "DELETE FROM cuota WHERE credito_id=".$las_cuotas[0]["credito_id"];
+    $this->db->query($deleteccuotas);
+    $deletecredito  = "DELETE FROM credito WHERE credito.compra_id=".$compra_id;
+    $this->db->query($deletecredito);
+    } else {
+         $poner_glosa  = "UPDATE compra SET compra_glosa='El credito No. ".$las_cuotas[0]["credito_id"]." se mantiene porque se registraron pagos' WHERE compra_id=".$compra_id;
+         $this->db->query($poner_glosa);
+    }
+    }
    }
 
    

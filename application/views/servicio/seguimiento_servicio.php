@@ -85,18 +85,40 @@
                             
 if(sizeof($servicio)>0){  ?>
 
-<div class="box-header">
-    <center>
-        
-        <font face="Arial" size="3"><b>ORDEN Nº 00<?php echo $servicio['servicio_id']; ?>  </b></font>
+
+<div class="row micontenedorep">
+    <table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; line-height:10px; text-align: center" >
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+        </td>
+                   
+        <td style="width: 50%; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font face="Arial" size="3"><b>ORDEN Nº 00<?php echo $servicio['servicio_id']; ?>  </b></font>
         <br><font face="Arial" size="2"><b>CLIENTE: </b><?php echo $servicio['cliente_nombre']; ?></font>
-            	<div class="box-tools">
-                </div>
-    </center>
+                
+                <!--<br><font size="1" face="arial"><b><?php //echo date("d/m/Y H:i:s"); ?></b></font> <br>-->
+
+            </center>
+        </td>
+        <td style="width: 25%; padding: 0" >
+                <center>
+                    </center>
+        </td>
+    </tr>
+</table>       
+        
 </div>
+
 <center>
     <button class='btn btn-facebook btn-xs' style="background-color:<?php echo $color_pendiente; ?>"><?php echo $var_pendiente; ?> </button> <b>Pendiente</b>
-    <button class='btn btn-facebook btn-xs' style="background-color:<?php echo $color_procesando; ?>"><?php echo $var_procesando; ?> </button> <b>Procensado</b>
+    <button class='btn btn-facebook btn-xs' style="background-color:<?php echo $color_procesando; ?>"><?php echo $var_procesando; ?> </button> <b>Procesando</b>
     <button class='btn btn-facebook btn-xs' style="background-color:<?php echo $color_terminado; ?>"><?php echo $var_terminado; ?> </button> <b>Terminado</b>
 </center>
 

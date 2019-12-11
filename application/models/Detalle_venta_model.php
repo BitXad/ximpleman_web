@@ -401,8 +401,8 @@ function ventas_dia($estado)
     function get_all_insumo_usado($detalleserv_id)
     {
         $sql = "select
-                       dv.detalleven_cantidad, dv.detalleven_total, p.producto_nombre, p.producto_codigo, 
-                       p.producto_codigobarra
+                       dv.detalleven_id, p.producto_id, dv.detalleven_cantidad, dv.detalleven_total,
+                       p.producto_nombre, p.producto_codigo, p.producto_codigobarra
                   from
                        detalle_venta dv, producto p
                  where

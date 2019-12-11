@@ -752,6 +752,24 @@ class Detalle_serv_model extends CI_Model
                 ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
                 ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id,
                 c.cliente_telefono, c.cliente_celular, e.estado_color, e.estado_descripcion,
+                s.servicio_fecharecepcion,
+                s.servicio_horarecepcion, s.servicio_fechafinalizacion, s.servicio_horafinalizacion,
+                ds.detalleserv_entregadoa, u.usuario_nombre
+
+            FROM
+                detalle_serv ds
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN estado e on ds.estado_id = e.estado_id
+            LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
+            WHERE
+            /*SELECT
+                ds.detalleserv_id, ds.detalleserv_descripcion, c.cliente_nombre,
+                ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id,
+                c.cliente_telefono, c.cliente_celular, e.estado_color, e.estado_descripcion,
                 dv.detalleven_total, p.producto_nombre, s.servicio_fecharecepcion,
                 s.servicio_horarecepcion, s.servicio_fechafinalizacion, s.servicio_horafinalizacion,
                 ds.detalleserv_entregadoa, u.usuario_nombre
@@ -764,7 +782,7 @@ class Detalle_serv_model extends CI_Model
             LEFT JOIN detalle_venta dv on ds.detalleserv_id = dv.detalleserv_id
             LEFT JOIN producto p on dv.producto_id = p.producto_id
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
-            WHERE
+            WHERE*/
                 ds.servicio_id = ".$servicio_id."
                
             ORDER BY `detalleserv_id` DESC

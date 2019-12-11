@@ -46,14 +46,14 @@ function detallecoti(){
                         html += "Marca: <b>"+registros[i]["producto_marca"]+"</b><br>";
                         html += "Industria: <b>"+registros[i]["producto_industria"]+"</b><br>"; 
                         //html += "<form action='"+base_url+"cotizacion/updateDetallecot/"+cotizacion_id+"/"+registros[i]["producto_id"]+"'  method='POST' class='form'>";
-                        html += "<textarea  id='detallecot_caracteristica"+registros[i]["producto_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizacaracteristicas(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' placeholder='caracteristica'>"+registros[i]["detallecot_caracteristica"]+"</textarea> </td>";
+                        html += "<textarea  id='detallecot_caracteristica"+registros[i]["detallecot_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' placeholder='caracteristica'>"+registros[i]["detallecot_caracteristica"]+"</textarea> </td>";
                         html += "<td> <input id='cotizacion_id'  name='cotizacion_id' type='hidden' class='form-control' value='"+cotizacion_id+"'>";
                         html += "<input id='detallecot_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
-                        html += "<input id='detallecot_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")'  value='"+Number(registros[i]["detallecot_precio"]).toFixed(2)+"' ></td> ";
-                        html += "<td><input id='detallecot_cantidad"+registros[i]["producto_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["detallecot_cantidad"]+"' >";
+                        html += "<input id='detallecot_precio"+registros[i]["detallecot_id"]+"' name='producto_precio' type='text' size='3' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")'  value='"+Number(registros[i]["detallecot_precio"]).toFixed(2)+"' ></td> ";
+                        html += "<td><input id='detallecot_cantidad"+registros[i]["detallecot_id"]+"'  name='cantidad' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+registros[i]["detallecot_cantidad"]+"' >";
                         html += "<input id='detallecot_id'  name='detallecot_id' type='hidden' class='form-control' value='"+registros[i]["detallecot_id"]+"'></td>";
-                        html += "<td><input id='detallecot_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+Number(registros[i]["detallecot_descuento"]).toFixed(2)+"' ></td>";
+                        html += "<td><input id='detallecot_descuento"+registros[i]["detallecot_id"]+"' name='descuento' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+Number(registros[i]["detallecot_descuento"]).toFixed(2)+"' ></td>";
                         html += "<td><center><font size='3'> <b>"+Number(registros[i]["detallecot_total"]).toFixed(2)+"</b></font> <br>";
                         html += "</center></td>";
                         html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
@@ -177,10 +177,10 @@ function actualizarDetalle(detallecot_id,producto_id,cotizacion_id){
 
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'cotizacion/updateDetallecot/';
-    var caracteristica = document.getElementById('detallecot_caracteristica'+producto_id).value;
-    var precio = document.getElementById('detallecot_precio'+producto_id).value;
-    var cantidad = document.getElementById('detallecot_cantidad'+producto_id).value;
-    var descuento = document.getElementById('detallecot_descuento'+producto_id).value;
+    var caracteristica = document.getElementById('detallecot_caracteristica'+detallecot_id).value;
+    var precio = document.getElementById('detallecot_precio'+detallecot_id).value;
+    var cantidad = document.getElementById('detallecot_cantidad'+detallecot_id).value;
+    var descuento = document.getElementById('detallecot_descuento'+detallecot_id).value;
 
    
  $.ajax({url: controlador,

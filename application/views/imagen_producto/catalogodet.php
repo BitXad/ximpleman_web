@@ -175,10 +175,10 @@
         </div>
     </div>
     <div style="float: right">
-    <center>
-        <a href="<?php echo site_url('servicio'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
-    </center>
-</div>
+        <center>
+            <a href="<?php echo site_url('servicio'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
+        </center>
+    </div>
 </div>
 
 <div class="modal fade" id="modalgaleria" tabindex="-1" role="dialog" aria-labelledby="modalgaleriaLabel" aria-hidden="true">
@@ -199,10 +199,11 @@
             
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <label for="galeria_descripcion" class="control-label"><span class="text-danger">*</span>Descripción</label>
+                        <label for="galeria_descripcion" class="control-label">Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="galeria_descripcion" value="<?php echo $this->input->post('galeria_descripcion'); ?>" class="form-control" id="galeria_descripcion" onKeyUp="this.value = this.value.toUpperCase();" required/>
-                    </div></div>
+                            <input type="text" name="galeria_descripcion" value="<?php echo $this->input->post('galeria_descripcion'); ?>" class="form-control" id="galeria_descripcion" onKeyUp="this.value = this.value.toUpperCase();" />
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <label for="galeria_imagen" class="control-label"><span class="text-danger">*</span>Imagen</label>
                         <div class="form-group">

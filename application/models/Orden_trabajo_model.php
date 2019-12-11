@@ -111,7 +111,7 @@ function get_all_tipo_orden()
     {
         $sql = "SELECT d.*, p.*, t.* from detalle_orden d, inventario p, tipo_orden t
                where d.producto_id=p.producto_id and d.orden_id = ".$orden_id." and d.tipoorden_id=t.tipoorden_id 
-               order by d.detalleorden_id desc";
+               order by d.detalleorden_id ASC";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }       
@@ -122,7 +122,7 @@ function get_all_tipo_orden()
     {
         $sql = "SELECT d.*, p.*, t.* from detalle_orden d, inventario p, tipo_orden t
                where d.producto_id=p.producto_id and d.tipoorden_id=t.tipoorden_id and d.usuario_id = ".$usuario_id." and d.orden_id is null
-               order by d.detalleorden_id desc";
+               order by d.detalleorden_id ASC";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     } 

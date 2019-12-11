@@ -126,7 +126,7 @@
             </div>
         </div>
         <a href="<?php echo site_url('servicio/serview/'.$servicio_id); ?>" class="btn btn-danger">
-                <i class="fa fa-arrow-left"></i> Atras</a>
+                <i class="fa fa-times"></i> Salir</a>
     </div>
 </div>
 

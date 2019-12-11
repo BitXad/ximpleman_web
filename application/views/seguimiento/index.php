@@ -1,24 +1,7 @@
-<!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/bootstrap.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/font-awesome.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
-    <!-- Datetimepicker -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/bootstrap-datetimepicker.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="http://localhost/ximpleman_web/resources/css/AdminLTE.min.css">
-    <!-- AdminLTE Skins. Choose a skin from the css/skins
-         folder instead of downloading all of them to reduce the load. -->
-    <link rel="stylesheet" href="<?php echo base_url(); ?>resources/css/_all-skins.min.css">
-
-    <!-- jQuery 2.2.3 -->
-    <script src="<?php echo base_url(); ?>resources/js/jquery-2.2.3.min.js"></script>
-    <link rel="shortcut icon" href="<?php echo base_url(); ?>resources/images/icono.png" />
-
-
-
+<!-- Add jQuery library -->
+<script type="text/javascript" src="<?php echo base_url('resources/js/jquery-1.10.2.min.js'); ?>"></script>
 
 <!-- Add mousewheel plugin (this is optional) -->
 <script type="text/javascript" src="<?php echo base_url('resources/js/jquery.mousewheel.pack.js?v=3.1.3'); ?>"></script>
@@ -37,17 +20,6 @@
 
 <!-- Add Media helper (this is optional) -->
 <script type="text/javascript" src="<?php echo base_url('resources/js/jquery.fancybox-media.js?v=1.0.6'); ?>"></script>
-
-
-
-
-
-<!----------------------------- script buscador --------------------------------------->
-
-
-    
-    
-
 
 <style type="text/css">
 .button {
@@ -74,16 +46,6 @@
             height: 50px;
             width: 50px
         }
-        
-		/*.fancybox-custom .fancybox-skin {
-			box-shadow: 0 0 50px #222;
-		}*/
-
-                /*
-		.box-body {
-			max-width: 700px;
-			margin: 0 auto;
-		}*/
 	</style>
 
 <!----------------------------- fin script buscador --------------------------------------->
@@ -101,19 +63,41 @@
         $color_terminado =  "#731501";
                             
 //if(sizeof($servicio)>0){  ?>
-<div style="padding-left: 15px; padding-right: 15px;">
-<div class="box-header">
-    <center>
-        
-        <font face="Arial" size="3"><b>ORDEN Nº 00<?php echo $servicio['servicio_id']; ?>  </b></font>
+
+<div class="row micontenedorep">
+    <table class="table" style="width: 100%; padding: 0;" >
+    <tr>
+        <td style="width: 25%; padding: 0; line-height:10px; text-align: center" >
+                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+        </td>
+                   
+        <td style="width: 50%; padding: 0" > 
+            <center>
+            
+                <br><br>
+                <font face="Arial" size="3"><b>ORDEN Nº 00<?php echo $servicio['servicio_id']; ?>  </b></font>
         <br><font face="Arial" size="2"><b>CLIENTE: </b><?php echo $servicio['cliente_nombre']; ?></font>
-            	<div class="box-tools">
-                </div>
-    </center>
+                
+                <!--<br><font size="1" face="arial"><b><?php //echo date("d/m/Y H:i:s"); ?></b></font> <br>-->
+
+            </center>
+        </td>
+        <td style="width: 25%; padding: 0" >
+                <center>
+                    </center>
+        </td>
+    </tr>
+</table>       
+        
 </div>
+
+<div style="padding-left: 15px; padding-right: 15px;">
 <center>
     <button class='btn btn-facebook' style="background-color:<?php echo $color_pendiente; ?>"><?php echo $var_pendiente; ?> </button> <b>Pendiente</b>
-    <button class='btn btn-facebook' style="background-color:<?php echo $color_procesando; ?>"><?php echo $var_procesando; ?> </button> <b>Procensado</b>
+    <button class='btn btn-facebook' style="background-color:<?php echo $color_procesando; ?>"><?php echo $var_procesando; ?> </button> <b>Procesando</b>
     <button class='btn btn-facebook' style="background-color:<?php echo $color_terminado; ?>"><?php echo $var_terminado; ?> </button> <b>Terminado</b>
 </center>
 
@@ -422,19 +406,8 @@
                                     height: 50px;
                                     width: 50px
                                 }
+                            </style>
 
-                                        /*.fancybox-custom .fancybox-skin {
-                                                box-shadow: 0 0 50px #222;
-                                        }*/
-
-                                        /*
-                                        .box-body {
-                                                max-width: 700px;
-                                                margin: 0 auto;
-                                        }*/
-                                </style>
-
-          
                             <div class="row">
                                 <div class="col-md-12">
 

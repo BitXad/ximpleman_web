@@ -81,7 +81,7 @@
         <!--este es INICIO del BREADCRUMB buscador-->
         <div class="box-header">
                 <font size='4' face='Arial'><b>Orden Trabajo</b></font>
-                <br><font size='2' face='Arial' id="pillados">Registros Encontrados: <?php echo sizeof($orden_trabajo); ?></font>
+                <br><font size='2' face='Arial' id="pillados">Registros Encontrados: 
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
  

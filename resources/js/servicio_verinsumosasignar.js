@@ -332,7 +332,7 @@ function eliminarinsumo(servicio_id, detalleserv_id, detalleven_id, i){
     controlador = base_url+'categoria_insumo/eliminardetalleventa';
     $.ajax({url: controlador,
            type:"POST",
-           data:{servicio_id:servicio_id, detalleserv_id:detalleserv_id, detalleven_id:detalleven_id},
+           data:{detalleven_id:detalleven_id},
            success:function(respuesta){
                var registros =  JSON.parse(respuesta);
                if (registros != null){
