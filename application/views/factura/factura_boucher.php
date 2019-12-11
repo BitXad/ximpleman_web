@@ -72,7 +72,10 @@ border-bottom : 1px solid #aaa;*/
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
-<?php $ancho = "7cm"; ?>
+<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
+      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+?>
 <!---------------------- Modal ---------------------------->
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
           <div class="modal-dialog">
@@ -111,9 +114,9 @@ border-bottom : 1px solid #aaa;*/
                     
                     <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->                    
+                    <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <?php if (sizeof($empresa[0]['empresa_propietario'])>2){ ?>
+                    <?php if (sizeof($empresa[0]['empresa_propietario'])>0){ ?>
                     <font size="1" face="Arial"></b>
 
                         <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
@@ -174,7 +177,7 @@ border-bottom : 1px solid #aaa;*/
 <!--</table>
 
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
-           <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-style: solid; border-left: #000" >
+           <tr  style="border-top-style: solid; border-bottom-style: solid; " >
                
                 <td align="center" style="padding: 0;"><b>CN</b></td>
                 <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>

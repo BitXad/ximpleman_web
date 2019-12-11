@@ -25,12 +25,19 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-- ---------------------------------------------------- -->
 <div class="box-header">
-                <h3 class="box-title">Usuarios</h3>
+<!--                <h3 class="box-title">Usuarios</h3>
             	<div class="box-tools">
                     <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                </div>
-            </div>
+                </div>-->
+        <div class="box-header">
+            <font size='4' face='Arial'><b>Usuarios registrados</b></font>
+            <br><font size='2' face='Arial' id="encontrados">Encontrados: <?php echo sizeof($usuario);  ?> </font> 
+        </div>
+</div>
+
+
 <div class="row">
+    
     <!--<p style="margin-left: 20px;" class="text-danger">      <?php //echo $mensaje; ?></p>-->
     <div class="col-md-12">
         <!---- ----------------- parametro de buscador ------------------- -->
@@ -45,14 +52,15 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Nombre</th>
-						<th>Tipo</th>
+                        <th>#</th>
+                        <th></th>
+                        <th>Nombre/Usuario</th>
+                        <!--<th>Tipo</th>-->
                         <th>Email</th>
-						<th>Login</th>
-						<th>Imagen</th>
+                        <th>Login</th>
+                        <!--<th>Imagen</th>-->
                         <th>Estado</th>
-						<th></th>
+                        <th></th>
                     </tr>
                     <tbody class="buscar">
                   <?php
@@ -68,11 +76,13 @@
 
                     <tr>
 						<td><?php echo $cont ?></td>
-                        <td><?php echo $u['usuario_nombre']; ?></td>
-						<td><?php echo $u['tipousuario_descripcion']; ?></td>
+                                                <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."' width='40' height='40' class='img-circle'"; ?></center></td>
+                                                <td><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
+                                                    <br>
+                                                    <?php echo $u['tipousuario_descripcion']; ?></td>
                       	<td><?php echo $u['usuario_email']; ?></td>
 						<td><?php echo $u['usuario_login']; ?></td>
-                        <td><div id="contieneimg"><?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."'>"; ?></div></td>
+                        
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
 
                         <td>

@@ -343,7 +343,8 @@ class Inventario_model extends CI_Model
     function reducir_inventario_aux($usuario_id){
         $sql = "update inventario i, detalle_venta_aux d set".
                " i.existencia = i.existencia - d.detalleven_cantidad ".
-               " where i.producto_id = d.producto_id and d.usuario_id = ".$usuario_id;
+               " where i.producto_id = d.producto_id and d.usuario_id = ".$usuario_id.
+               "  ";
         $this->db->query($sql);
         return true;
     }    

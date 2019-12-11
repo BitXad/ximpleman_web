@@ -197,10 +197,21 @@
                         </li>
                         <?php
                         }
+                        
                         if($rolusuario[139-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        
+                        <?php 
+                        if($rolusuario[139-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('admin/pedidos');?>"><i class="fa fa-list"></i> Pedidos para compras</a>
                         </li>
                         <?php
                         }
@@ -548,14 +559,25 @@
                         if($rolusuario[157-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/graficas2');?>"><i class="fa fa-pie-chart"></i>Tortas</a>
+                            <a href="<?php echo site_url('estadistica/ventas');?>"><i class="fa fa-cart-plus fa-bars"></i>Ventas mensuales</a>
+                        </li>
+                        <?php
+                        }
+                        ?>
+                        
+                        <?php
+                        
+                        if($rolusuario[157-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('reportes/graficas2');?>"><i class="fa fa-pie-chart"></i>Clientes frecuentes</a>
                         </li>
                         <?php
                         }
                         if($rolusuario[157-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bar-chart"></i>Barras</a>
+                            <a href="<?php echo site_url('reportes/graficas');?>"><i class="fa fa-bar-chart"></i>Compras y ventas</a>
                         </li>
                         <?php
                         }
@@ -711,7 +733,8 @@
     <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Main content -->
-                <section class="content" style='padding-left: 5px; padding-right: 0px; padding-bottom: 0px; padding-top: 0px;'>
+                <!--<section class="content" style='padding-left: 5px; padding-right: 0px; padding-bottom: 0px; padding-top: 0px;'>-->
+                <section class="content">
                     <?php                    
                     if(isset($_view) && $_view)
                         $this->load->view($_view);
