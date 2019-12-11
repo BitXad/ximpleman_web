@@ -251,7 +251,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!------------------------ BUSCADOR --------------------------->     
     <div class="container"> 
     <div class="input-group input-group-lg">
-<input type="text" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
+<input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
 <span class="input-group-btn">
 <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
 </span> Buscar</button>
@@ -775,7 +775,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Tu Carrito<i class="fa fa-cart-arrow-down"></i></h4>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-cart-arrow-down"></i> Tu Carrito</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -877,7 +877,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Cliente<i class="fa fa-user"></i></h4>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-user"></i> Cliente</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -886,18 +886,16 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       <div class="modal-body">
         <div class="col-md-12"></div>
         <table class="table table-hover">
-         <div class="col-md-4">
-            <h3>Registrate</h3>
+         <div class="col-md-5">
+           <button class="btn btn-primary" style="width: 100%" onclick="registrarcli()" type="button" >Registrate</button>
          </div>
          <div class="col-md-2">
-            <h3>O</h3>
+           
          </div>   
-         <div class="col-md-6">
-            <br>
-            <b>INICIA SESION</b>
-            <button class="btn btn-primary" data-toggle="modal" data-target="#modalSesion" type="button" >Iniciar Sesion</button><BR><br>
+         <div class="col-md-5">
+            <button class="btn btn-primary" style="width: 100%" onclick="inisesion()" type="button" >Iniciar Sesion</button>
          </div>  
-        
+        <div style="display:none" id="registrarcli">
          <div class="col-md-6">
             NOMBRE:  <input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true">
         </div>
@@ -916,55 +914,37 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="col-md-6">
             DIRECCION: <input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true">
         </div>
-        
-        </table>
-
-      </div>
-      <!--Footer-->
-      <div class="modal-footer">
-        <div></div>
-        <button class="btn btn-primary">Registrarse</button>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- Modal: registro -->
-
-<!-- Modal: Sesion -->
-<div class="modal fade" id="modalSesion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <!--Header-->
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Iniciar Sesion<i class="fa fa-lock"></i></h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <!--Body-->
-      <div class="modal-body">
-        <div class="col-md-12"></div>
-        <table class="table table-hover">
-         
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <br>
+        <button class="btn btn-success" type="button" onclick="registrarcliente()">Registrarse</button>
+        </div>
+        </div>
+        <div style="display:none" id="inisesion">
          <div class="col-md-6">
             LOGIN:  <input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true">
         </div>
         <div class="col-md-6">
             CLAVE: <input type="text" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true">        
         </div>
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <br>
+        <button class="btn btn-success" type="button" onclick="sesion()">Ingresar</button>
+        </div>
+        
+        </div>
         </table>
 
       </div>
-      <!--Footer-->
-      <div class="modal-footer">
-        <div></div>
-        <button class="btn btn-primary" type="button" onclick="sesion()">Ingresar</button>
-      </div>
+     
     </div>
   </div>
 </div>
 <!-- Modal: registro -->
+
 
 <!-- //footer -->
 <div class="footer">

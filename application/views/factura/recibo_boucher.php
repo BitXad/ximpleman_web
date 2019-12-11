@@ -112,9 +112,13 @@ border-bottom : 1px solid #aaa;
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!-------------------------------------------------------->
+<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
+      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+?>
 
 
-<table class="table" style="width: 7cm;" >
+<table class="table" style="width: <?php echo $ancho; ?>;" >
     <tr>
         <td style="padding:0;">        
             <center>
@@ -148,7 +152,7 @@ border-bottom : 1px solid #aaa;
      
 </table>
 
-       <table class="table table-striped table-condensed"  style="width: 7cm;" >
+       <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >
            <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
                <td align="center"><b>CN</b></td>
                 <td align="center"><b>DESCRIPCIÓN</b></td>

@@ -1745,6 +1745,47 @@ function ultimaventa(){
             
 }
 
+/*************** funcion para mostrar la vista de la factura******************/
+function ultimorecibo(){
+    
+    if($this->acceso(12)||$this->acceso(30)){
+    //**************** inicio contenido ***************    
+    
+                
+    $venta = $this->Venta_model->ultima_venta();
+    $venta_tipodoc = $venta[0]['venta_tipodoc'];
+    $venta_id = $venta[0]['venta_id'];
+    
+
+     redirect('factura/imprimir_recibo/'.$venta_id);
+        //redirect('factura/recibo_boucher/'.$venta_id);        
+ 
+        
+       //**************** fin contenido ***************
+        }
+            
+}
+
+function ultimagarantia(){
+    
+    if($this->acceso(12)||$this->acceso(30)){
+    //**************** inicio contenido ***************    
+    
+                
+    $venta = $this->Venta_model->ultima_venta();
+    $venta_tipodoc = $venta[0]['venta_tipodoc'];
+    $venta_id = $venta[0]['venta_id'];
+    
+
+     redirect('factura/nota_garantia/'.$venta_id);
+        //redirect('factura/recibo_boucher/'.$venta_id);        
+ 
+        
+       //**************** fin contenido ***************
+        }
+            
+}
+
 function ultimacomanda(){
     
        if($this->acceso(12)){

@@ -20,6 +20,24 @@ $('#miip').val(losip);
 }
  
 
+function registrarcli(){
+document.getElementById('registrarcli').style.display = 'block';
+document.getElementById('inisesion').style.display = 'none';
+}
+
+function inisesion(){
+document.getElementById('inisesion').style.display = 'block';
+document.getElementById('registrarcli').style.display = 'none';
+}
+
+function buscarpro(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){
+        buscar_producto();
+    }
+}
+
 function buscar_producto()
 {
     var base_url = document.getElementById('base_url').value;

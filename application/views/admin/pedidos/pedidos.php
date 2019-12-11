@@ -205,15 +205,16 @@
             <table class="col-md-12 table-bordered table-striped table-condensed cf" id="table_pedidos">
                 <thead class="cf">
                 <tr>
-                    <th>nro.</th>
-                    <th>proveedor</th>
-                    <th>monto</th>
-                    <th>fecha</th>
-                    <th>resumen</th>
+                    <th>#</th>
+                    <th>Proveedor</th>
+                    <th>Monto</th>
+                    <th>Fecha</th>
+                    <th>Resumen</th>
                     <th>Opciones</th>
                 </tr>
                 </thead>
                 <tbody id="mis_pedis" >
+                <tr>
                 <?php
                 $cont =1;
                 $hoy = new DateTime();
@@ -222,6 +223,7 @@
                 $datetime_manana = new DateTime($cade_hoy);
                 $datetime_manana->modify('+1 day');
                 $tomorrow = $datetime_manana->format('Y-m-d');
+                $total = 0;
 
                 foreach ($pedidos as $row){
                     $tr = '<tr class="warning">';
@@ -243,6 +245,7 @@
                         <small ><?php echo $row->proveedor_nombre?></small>
                     </td>
                     <td data-title="Monto"><?php echo $row->pedidos_montototal?></td>
+                    <?php $total += $row->pedidos_montototal; ?>
                     <td data-title="Fecha"><?php echo $fecha?></td>
                     <td data-title="Resumen">
                         <p>
@@ -266,6 +269,17 @@
                     </td>
                     </tr>
                 <?php }?>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <?php echo $total; ?>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                    </tr>
                 </tbody>
             </table>
 
