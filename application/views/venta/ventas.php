@@ -485,28 +485,52 @@ window.onkeydown = compruebaTecla;
             <!--------------- botones ---------------------->
             <?php if($parametro[0]["parametro_modulorestaurante"]==0){ //1 es normal ?>
                 <?php if($rolusuario[13-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs" onclick="pedidos_pendientes()"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
-            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-facebook btn-xs" style="background-color: black" onclick="ordenes_pendientes()"><span class="fa fa-book"></span><b> O.T.s</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalpedidos" class="btn btn-facebook btn-xs" onclick="pedidos_pendientes()" title="Pedidos Pendientes"><span class="fa fa-cubes"></span><b> Pedidos</b></a> 
+            <a href="#" data-toggle="modal" data-target="#modalordenes" class="btn btn-facebook btn-xs" style="background-color: black" onclick="ordenes_pendientes()" title="Ordenes de Trabajo"><span class="fa fa-book"></span><b> OT's</b></a> 
                 <?php }
                 } ?>
                     
             <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
-                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
+                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda" title="Comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
             <?php } ?>            
            
 <!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
-            <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
-            <?php }
+            
+            <?php 
             if($rolusuario[15-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0'></span><b> - 0 -</b></button> 
+            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0' title="Costo Cero"></span><b> - 0 -</b></button> 
             <?php }
             if($rolusuario[16-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money'></span><b> costo</b></button> 
-            <?php }
-            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Imprimir</b></a> 
+            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money' title="Precio de costo"></span><b> Costo</b></button> 
+            
             <?php } ?>
+            
+            <?php            
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
+            <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-success btn-xs" id="imprimir"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> </b></a> 
+            
+            <?php } 
+            ?>
+            
+            <?php            
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
+            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir"><span class="fa fa-list-alt" title="Imprimir factura"></span><b> </b></a> 
+            
+            <?php } 
+            ?>
+            
+            <?php
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
+            
+            <a href="<?php echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> </b></a>
+            
+            <?php } ?>
+            
+            
+            <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
+            <a href="#" data-toggle="modal" data-target="#modalfinalizar" class="btn btn-success btn-xs"><span class="fa fa-cubes"></span><b> Finalizar</b></a> 
+            <?php } ?>
+
             </center>
             
             <!--<a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-primary btn-xs" id="imprimir"><span class="fa fa-print"></span><b> Plan de Pagos</b></a>--> 

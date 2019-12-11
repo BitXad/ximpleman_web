@@ -320,11 +320,10 @@
             <div class="icon">
               <i class="fa fa-users"></i>              
             </div>
-                <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer"><?php echo "En ventas/servicios"; //$clientes[0]['total_clientes']." Clientes"; ?> <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="<?php echo base_url('cliente'); ?>" class="small-box-footer"><?php echo "En ventas/serv.."; //$clientes[0]['total_clientes']." Clientes"; ?> <i class="fa fa-arrow-circle-right"></i></a>
           </div>
         </div>
        
-        
         
         <!-- ./col -->
         <div class="col-lg-3 col-xs-6">
