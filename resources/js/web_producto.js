@@ -382,7 +382,7 @@ function tablacarrito(){
                        html += "<td></td>";
                        html += "<td></td>";
                        html += "<td></td>";
-                       html += "<td><font size='3'>TOTAL</td>";
+                       html += "<td><font size='3'>TOTAL BS.</td>";
                        html += "<td></td>";
                        html += "<td align='right'><font size='3'><b>"+Number(suma).toFixed(2)+"</td>";
                        html += "</tr>";

@@ -791,8 +791,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
               <th>Producto</th>
               <th>Precio</th>
               <th>Cant.</th>
-              <th>Desc.U.</th>
-              <th>Total</th>
+              <th>Desc.</th>
+              <th>Total Bs.</th>
 
               <th></th>
             </tr>
