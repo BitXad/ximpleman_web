@@ -287,17 +287,17 @@
                                 </button>
                             </div>
                             <div class="form">   
-                             <center><H4> Desea continuar con la compra no finalizada? 
-                             </H4></center>
+                             <center><h4> Desea continuar con esta compra? 
+                             </h4></center>
                          </div>
                          <div class="modal-footer" >       
                           <a  href="<?php echo site_url('compra/edit/'.$c['compra_id'].'/1'); ?>" class="btn btn-md btn-success" >
                             <i class="fa fa-sign-out "></i>
-                            Si
+                            Si, continuar con la compra
                         </a> 
                         <a  href="<?php echo site_url('compra/borrarauxycopiar/'.$c['compra_id']); ?>" class="btn btn-md btn-danger" >
                             <i class="fa fa-sign-in "></i>
-                            No
+                            No, borrar datos y rehacer la compra
                         </a>  
                     </div> </div></div></div></div>
                 <?php } else { ?>

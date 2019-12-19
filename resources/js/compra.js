@@ -811,10 +811,10 @@ function compraproveedor(opcion)
                         html += "<div class='modal-content'>";
                         html += "<div class='modal-header'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-                        html += "<div class='form'><center><H4> Desea continuar con la compra no finalizada? </H4></center></div>";
+                        html += "<div class='form'><center><H4> Desea continuar con esta compra? </H4></center></div>";
                         html += "<div class='modal-footer'>";
-                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si</a>";
-                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i>No</a>";
+                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si, continuar con la compra</a>";
+                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
                         html += "</div> </div></div></div></div>";
                         } else {
                         html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
@@ -951,10 +951,10 @@ function fechadecompra(filtro)
                         html += "<div class='modal-content'>";
                         html += "<div class='modal-header'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>&times;</span></button></div>";
-                        html += "<div class='form'><center><H4> Desea continuar con la compra no finalizada? </H4></center></div>";
+                        html += "<div class='form'><center><H4> Desea continuar con esta compra? </H4></center></div>";
                         html += "<div class='modal-footer'>";
-                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si</a>";
-                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i>No</a>";
+                        html += "<a  href='"+base_url+"compra/edit/"+registros[i]["compra_id"]+"/1'  class='btn btn-md btn-success'><i class='fa fa-sign-out '></i> Si, continuar con la compra</a>";
+                        html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
                         html += "</div> </div></div></div></div>";
                         } else {
                         html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
