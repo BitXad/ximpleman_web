@@ -251,7 +251,7 @@ border-bottom:1px solid black;
         
         
 
-<div class="box-body "> 
+<div class="box-body table-responsive"> 
 
        <table class="table table-striped" border-bottom="0" id="mitabla2" style="width: 18cm; padding: 0;"> 
                     <tr>
