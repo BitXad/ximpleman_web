@@ -2125,8 +2125,6 @@ function ventas_por_fecha()
    // alert(filtro)
     tabla_ventas(filtro);
     
-   
-
 }
 
 //************* inicio  funciones  para emitir factura **************
@@ -2221,6 +2219,7 @@ function tabla_ventas(filtro)
             var cantidad_pedidos = 0;
             var total_pedido = 0;
             var v = JSON.parse(response);
+            var nombre_cliente =  "sin nombre";
                 
                 $("#parametro").val(filtro); // se enviar el parametro a un text para usarlo desde otro metodo despues
                 
@@ -2239,7 +2238,22 @@ function tabla_ventas(filtro)
                     html += "                       <tr>";
                     html += "                       <td "+margenes+">"+cont+"</td>";
                     
-                    html += "                       <td style='max-width: 5cm; padding:0'><font size='3'><b> "+v[i]['cliente_nombre']+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
+                    if (esMobil()){
+                        if ((v[i]['cliente_nombre']).length>15){
+                            nombre_cliente = v[i]['cliente_nombre'];
+                            nombre_cliente = nombre_cliente.substring(0,15)+"...";
+                        }
+                        else{
+                            nombre_cliente = v[i]['cliente_nombre'];
+                        }
+                    }
+                    else{
+                        nombre_cliente = v[i]['cliente_nombre'];
+                    }
+                        
+                        
+                
+                    html += "                       <td style='max-width: 5cm; padding:0;'><font size='3'><b> "+nombre_cliente+"</b></font><sub>  ["+v[i]['cliente_id']+"]</sub>";
                     html += "                           <br>Razón Soc.: "+v[i]['cliente_razon'];
                     html += "                           <br>NIT: "+v[i]['cliente_nit'];
                     html += "                           <br>Telefono(s): "+v[i]['cliente_telefono'];
@@ -2495,7 +2509,7 @@ function borrar_datos_cliente()
     
     
     if (facturado == 1){
-        var boton = document.getElementById("imprimir");
+        var boton = document.getElementById("imprimir_factura");
         boton.click();                    
     }
     

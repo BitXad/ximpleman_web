@@ -496,35 +496,24 @@ window.onkeydown = compruebaTecla;
            
 <!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
             
-            <?php 
-            if($rolusuario[15-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0' title="Costo Cero"></span><b> - 0 -</b></button> 
-            <?php }
-            if($rolusuario[16-1]['rolusuario_asignado'] == 1){ ?>
-            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money' title="Precio de costo"></span><b> Costo</b></button> 
+      
             
-            <?php } ?>
             
             <?php            
             if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-success btn-xs" id="imprimir"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> </b></a> 
+            <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: #761c19" id="imprimir"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> Recibo</b></a> 
             
             <?php } 
             ?>
             
             <?php            
             if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
-            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir"><span class="fa fa-list-alt" title="Imprimir factura"></span><b> </b></a> 
+            <a href="<?php echo base_url('venta/ultimaventa');?>" data-toggle="modal" target="_blank" class="btn btn-warning btn-xs" id="imprimir_factura"><span class="fa fa-list-alt" title="Imprimir factura"></span><b> Factura</b></a> 
             
             <?php } 
             ?>
             
-            <?php
-            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
-            
-            <a href="<?php echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-danger btn-xs" id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> </b></a>
-            
-            <?php } ?>
+
             
             
             <?php if($rolusuario[14-1]['rolusuario_asignado'] == 1){ ?>
@@ -565,8 +554,23 @@ window.onkeydown = compruebaTecla;
                     <!--------------- RESULTADO TABLA DE PRODUCTOS---------------------------->
                     
                 </div>
+          
+                        <?php 
+            if($rolusuario[15-1]['rolusuario_asignado'] == 1){ ?>
+            <button onclick='costo_cero()' class='btn btn-danger btn-xs'><span class='fa fa-battery-0' title="Costo Cero"></span><b> - 0 -</b></button> 
+            <?php }
+            if($rolusuario[16-1]['rolusuario_asignado'] == 1){ ?>
+            <button onclick='precio_costo()' class='btn btn-warning btn-xs'><span class='fa fa-money' title="Precio de costo"></span><b> Costo</b></button> 
+            
+            <?php } ?>
+            
+            <?php
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
+            
+            <a href="<?php echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>
+            
+            <?php } ?>      
             </div>
-                
         </div>
         
         <!----------------------------------- BOTONES ---------------------------------->
