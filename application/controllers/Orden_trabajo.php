@@ -232,6 +232,20 @@ class Orden_trabajo extends CI_Controller{
        
         }
     }
+
+    function ordendoc($orden_trabajo)
+    {
+        if($this->acceso(166)){
+            $data['page_title'] = "Orden de Trabajo";
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['detalle_orden_trabajo'] = $this->Orden_trabajo_model->detalle_ordentrabajo($orden_trabajo);
+            $data['Orden_trabajo'] = $this->Orden_trabajo_model->la_orden_trabajo($orden_trabajo);     
+            $data['_view'] = 'orden_trabajo/documento';
+            $this->load->view('layouts/main',$data);
+       
+        }
+    }
     function recibo($orden_trabajo)
     {
         if($this->acceso(166)){

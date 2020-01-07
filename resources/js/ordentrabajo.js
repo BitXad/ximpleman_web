@@ -1144,6 +1144,7 @@ function fechaorden(parametro){
                         html += "<td class='no-print'>";
                         
                         html += " <a href='"+base_url+"orden_trabajo/editar/"+registros[i]["orden_id"]+"' target='_blank' title='Editar OT' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
+                        html += " <a href='"+base_url+"orden_trabajo/ordendoc/"+registros[i]["orden_id"]+"' target='_blank' title='Imp. OT' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"' target='_blank' title='Nota OT' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
                         if (registros[i]["venta_id"]>0) {
                         html += " <a href='"+base_url+"seguimiento/seguimiento/"+registros[i]["orden_id"]+"/"+registros[i]["venta_id"]+"' target='_blank' title='Proceso OT' class='btn btn-warning btn-xs'><span class='fa fa-spinner'></span></a>";

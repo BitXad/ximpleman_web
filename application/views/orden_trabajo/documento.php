@@ -38,7 +38,9 @@
                           <b>FECHA ENTREGA: </b><?php echo date('d/m/Y',strtotime($Orden_trabajo['orden_fechaentrega'])) ; ?>
                           <br>
                           <b>VENDEDOR: </b><?php echo $Orden_trabajo['usuario_nombre'] ; ?>
-                          </font>
+                          <br>
+                          <b>A CUENTA: </b><?php echo number_format($Orden_trabajo['orden_acuenta'], 2, ".", ","); ?> <b>SALDO: </b> <?php echo number_format($Orden_trabajo['orden_saldo'], 2, ".", ","); ?>
+                        </font>
                          
                             
                          
@@ -97,6 +99,7 @@
 	<th colspan="3">DETALLE DE PEDIDO</th>
 	<th colspan="2">MEDIDAS</th>
 	<th rowspan="2">TOTAL M2</th>
+  <th rowspan="2">TOTAL Bs</th>
 	<th rowspan="2">OBSERVACIONES</th>
 </tr>
 <tr>
@@ -110,11 +113,13 @@
                       $i=1;
                       $cont = 0;
                       $total=0;
+                      $totalbs=0;
                       $cantis=0;
                       $rango=1;
                       foreach($detalle_orden_trabajo as $d) {
                       $cont = $cont+1; 
-                      $total += $d['detalleorden_total'] ?>
+                      $total += $d['detalleorden_total'];
+                      $totalbs += $d['detalleorden_preciototal'] ?>
                       <tr>
                       <td align="center"><?php echo $rango ?> - <?php echo ($cantis+$d['detalleorden_cantidad']) ?></td>
                       <td align="center"><?php echo $d['detalleorden_cantidad']; ?></td>
@@ -122,6 +127,7 @@
                       <td align="center"><?php echo $d['detalleorden_ancho']; ?></td>
                       <td align="center"><?php echo $d['detalleorden_largo']; ?></td>
                       <td align="center"><b><?php echo number_format($d['detalleorden_total'], 2, ".", ","); ?></b></td>
+                      <td align="right"><b><?php echo number_format($d['detalleorden_preciototal'], 2, ".", ","); ?></b></td>
                       <td align="center"><?php echo $d['tipoorden_nombre']; ?></td>
 					  </tr>     
             <?php 
@@ -132,8 +138,17 @@
                       <tr>
                       	<th colspan="5">TOTAL M2</th>
                       	<th ><?php echo number_format($total, 2, ".", ","); ?></th>
-                      	<th colspan="2"></th>
-                      </tr>  
+                      	<th></th>
+                        <th></th>
+                      </tr>
+                      <tr>
+                        <th colspan="5">TOTAL Bs</th>
+                        <th></th>
+                        <th style="text-align: right"><?php echo number_format($totalbs, 2, ".", ","); ?></th>
+                        <th></th>
+                        
+                      </tr>
+
 
 	
 </table>
