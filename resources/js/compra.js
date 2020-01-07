@@ -873,11 +873,12 @@ function compraproveedor(opcion)
                         html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
                         html += "</div> </div></div></div></div>";
                         } else {
-                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
+                        
                         }
                         html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Nota de Compra'><span class='fa fa-print'></span></a>";
 
                         if (Number(registros[i]["elestado"])==1) {
+                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
                         html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
                         }
                         /*****modal anula compra ***/
@@ -1013,10 +1014,11 @@ function fechadecompra(filtro)
                         html += " <a  href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-md btn-danger' ><i class='fa fa-sign-in '></i> No, borrar datos y rehacer la compra</a>";
                         html += "</div> </div></div></div></div>";
                         } else {
-                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
+                        
                         }
                         html += "<a href='"+base_url+"compra/nota/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Nota de Compra'><span class='fa fa-print'></span></a>";
                         if (Number(registros[i]["elestado"])==1) {
+                        html += "<a href='"+base_url+"compra/borrarauxycopiar/"+registros[i]["compra_id"]+"'  class='btn btn-info btn-xs' title='Modificar Compra'><span class='fa fa-pencil'></span></a>";
                         html += "<a href='#' data-toggle='modal' data-target='#anularmodal"+registros[i]["compra_id"]+"' class='btn btn-xs btn-warning' title='Anular Compra' ><i class='fa fa-minus-circle'></i></a>";
                         /*****modal anula compra ***/
                         }
