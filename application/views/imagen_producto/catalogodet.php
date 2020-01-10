@@ -201,7 +201,7 @@
                     <div class="col-md-6">
                         <label for="galeria_descripcion" class="control-label">Descripción</label>
                         <div class="form-group">
-                            <input type="text" name="galeria_descripcion" value="<?php echo $this->input->post('galeria_descripcion'); ?>" class="form-control" id="galeria_descripcion" onKeyUp="this.value = this.value.toUpperCase();" />
+                            <input type="text" name="galeria_descripcion" value="<?php echo ($this->input->post('galeria_descripcion') ? $this->input->post('galeria_descripcion') : "Servicio n° ".$servicio_id); ?>" class="form-control" id="galeria_descripcion" onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -214,7 +214,9 @@
         
         </div>
         <div class="modal-footer">
-            <button type="submit" onclick="mostrarloader()" class="btn btn-success">Guardar</button>
+            <button type="submit" onclick="mostrarloader()" class="btn btn-success"><i class="fa fa-check"></i> Guardar</button>
+            <a onclick="refrescar()" class="btn btn-danger">
+                <i class="fa fa-times"></i> Cancelar</a>
             <!--<a onclick="refrescar()" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Guardar</a>-->
             <?php echo form_close(); ?>
         </div>

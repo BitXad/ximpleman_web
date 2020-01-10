@@ -139,6 +139,15 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <label for="parametro_segservicio" class="control-label"> SEGUIMIENTO</label>
+                    <div class="form-group">
+                        <select  name="parametro_segservicio" class="form-control" id="parametro_segservicio" >
+                             <option value="1">ACTIVAR SEGUIMIENTO</option>
+                            <option value="0">DESACTIVAR SEGUIMIENTO</option>
+                        </select>
+                    </div>
+                </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(255, 255, 0, 0.3);"><u><b>VENTAS</b></u><br>
                 <div class="row clearfix">

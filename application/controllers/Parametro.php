@@ -84,6 +84,7 @@ class Parametro extends CI_Controller{
                     'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
                     'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
                     'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
+                    'parametro_segservicio' => $this->input->post('parametro_segservicio'),
                
             );
             
@@ -146,6 +147,7 @@ class Parametro extends CI_Controller{
                     'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
                     'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
                     'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
+                    'parametro_segservicio' => $this->input->post('parametro_segservicio'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            

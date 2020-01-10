@@ -82,7 +82,7 @@
         $color_pendiente =  "#FFB52B";
         $color_procesando =  "#2AA301";
         $color_terminado =  "#731501";
-                            
+        if($all_parametro[0]['parametro_segservicio'] == 1){                    
 if(sizeof($servicio)>0){  ?>
 
 
@@ -522,9 +522,19 @@ if(sizeof($servicio)>0){  ?>
 </div>
 <?php } else{ ?>
 <center>    
-    <h2><b>LA ORDEN DE TRABAJO NO EXISTE..!!</b></h2>
+    <h2><b>EL SERVICIO NO EXISTE..!!</b></h2>
     <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3>    
     <a href="javascript:window.close();" class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
 </center>
     
-<?php } ?>
+<?php }
+
+        }else{ ?>
+        <center>    
+            <h2><b>EL SEGUIMINETO A SERVICIO NO ESTA HABILITADO..!!</b></h2>
+            <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3>    
+            <a href="javascript:window.close();" class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
+        </center>
+<?php
+        }
+?>

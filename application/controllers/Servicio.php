@@ -51,6 +51,9 @@ class Servicio extends CI_Controller{
         /*$this->load->model('Categoria_trabajo_model');
         $data['all_categoria_trabajo'] = $this->Categoria_trabajo_model->get_all_categoria_trabajo();*/
         
+        $this->load->model('Usuario_model');
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuario_prev_activo();
+        
         $this->load->model('Categoria_servicio_model');
         $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_asc();
         
@@ -603,6 +606,9 @@ class Servicio extends CI_Controller{
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
 //	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
             
+            $this->load->model('Parametro_model');
+            $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
+            
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
             $usuario_id = $this->session_data['usuario_id'];
@@ -647,6 +653,9 @@ class Servicio extends CI_Controller{
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
 //	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
+            
+            $this->load->model('Parametro_model');
+            $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
@@ -989,6 +998,9 @@ class Servicio extends CI_Controller{
             
             $data['usuario'] = $this->session_data['usuario_nombre'];
             $data['servicio'] = $this->Servicio_model->get_serviciorden_reptec($servicio_id);
+            
+            $this->load->model('Parametro_model');
+            $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
             
             $this->load->model('Cliente_model');
 	    $data['cliente'] = $this->Cliente_model->get_cliente($data['servicio']['cliente_id']);
@@ -1593,6 +1605,9 @@ class Servicio extends CI_Controller{
             
             $servicios = $this->Servicio_model->get_servicio_id($cliente_id,$servicio_id);
             $data['servicio'] =  $servicios;
+            
+            $this->load->model('Parametro_model');
+            $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
 //            
 //            if (sizeof($servicios)>0){
                 //Catalogo de imagenes
@@ -1627,7 +1642,11 @@ class Servicio extends CI_Controller{
                     $estado_id = 28; // 28 ---> EN PROCESO
                     $fecha_enproceso = date('Y-m-d');
                     $hora_enproceso  = date('H:i:s');
-                    $responsable_id = $this->session_data['usuario_id'];
+                    if($this->session_data['tipousuario_id'] == 1){
+                        $responsable_id = $this->input->post('este_responsable');
+                    }else{
+                        $responsable_id = $this->session_data['usuario_id'];
+                    }
                     $params = array(
                         'detalleserv_fechaproceso' => $fecha_enproceso,
                         'detalleserv_horaproceso' => $hora_enproceso,

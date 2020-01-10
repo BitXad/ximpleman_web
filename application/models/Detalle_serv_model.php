@@ -746,6 +746,7 @@ class Detalle_serv_model extends CI_Model
     {
         $detalle_serv = $this->db->query("
             SELECT
+                ds.responsable_id,
                 ds.detalleserv_id, ds.detalleserv_descripcion, c.cliente_nombre,
                 ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
                 ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,

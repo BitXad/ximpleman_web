@@ -4,6 +4,8 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" />
 <input type="hidden" name="tipoimpresora" id="tipoimpresora" value="<?php echo $all_parametro[0]['parametro_tipoimpresora']; ?>" />
+<input type="hidden" name="parametro_segservicio" id="parametro_segservicio" value="<?php echo $all_parametro[0]['parametro_segservicio']; ?>" />
+<input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($all_usuario);  ?>' />
 
 <script type="text/javascript">
         $(document).ready(function () {

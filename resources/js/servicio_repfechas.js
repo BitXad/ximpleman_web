@@ -38,11 +38,35 @@ function reportedetservicio(){
     var usuario_id     = document.getElementById('bususuario_id').value;
     var responsable_id = document.getElementById('busresponsable_id').value;
     var buscar_clie    = document.getElementById('buscar_cliente').value;
-    var lasfechas     = " date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
-    
+    //var lasfechas     = " date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
+    var lasfechas      = "";
+    var lasfechasfin = "";
     var esteestado_id = "";
-    if(estado_id != 0){
+    if(estado_id == 0){
+        lasfechas     = " date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
+        lasfechasfin = "or (date(s.servicio_fechafinalizacion) >= '"+fecha_desde+"' and date(s.servicio_fechafinalizacion) <= '"+fecha_hasta+"') ";
+        lasfechasfin = lasfechasfin+" or (date(ds.detalleserv_fechaproceso) >= '"+fecha_desde+"' and date(ds.detalleserv_fechaproceso) <= '"+fecha_hasta+"') "
+        lasfechasfin = lasfechasfin+" or (date(ds.detalleserv_fechaterminado) >= '"+fecha_desde+"' and date(ds.detalleserv_fechaterminado) <= '"+fecha_hasta+"') "
+    }else{
         esteestado_id = "and ds.estado_id = "+estado_id+" ";
+    }
+    if(estado_id == 28){
+         lasfechas = " date(ds.detalleserv_fechaproceso) >= '"+fecha_desde+"'  and  date(ds.detalleserv_fechaproceso) <='"+fecha_hasta+"' ";
+    }
+    if(estado_id == 16){
+         lasfechas = " date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
+    }
+    if(estado_id == 7){
+         lasfechas = " date(ds.detalleserv_fechaentregado) >= '"+fecha_desde+"'  and  date(ds.detalleserv_fechaentregado) <='"+fecha_hasta+"' ";
+    }
+    if(estado_id == 6){
+         lasfechas = " date(ds.detalleserv_fechaterminado) >= '"+fecha_desde+"'  and  date(ds.detalleserv_fechaterminado) <='"+fecha_hasta+"' ";
+    }
+    if(estado_id == 5){
+         lasfechas = " date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
+    }
+    if(estado_id == 4){
+         lasfechas = " date(s.servicio_fecharecepcion) >= '"+fecha_desde+"'  and  date(s.servicio_fecharecepcion) <='"+fecha_hasta+"' ";
     }
     var esteusuario_id= "";
     if( usuario_id !=0){
@@ -60,7 +84,7 @@ function reportedetservicio(){
                              "c.cliente_ci like '%"+buscar_cliente+"%') "
     }
     //alert(estebuscar_cliente);
-    var filtro = lasfechas+esteestado_id+esteusuario_id+esteresponsable_id+estebuscar_cliente;
+    var filtro = lasfechas+lasfechasfin+esteestado_id+esteusuario_id+esteresponsable_id+estebuscar_cliente;
     $.ajax({url: controlador,
            type:"POST",
            data:{filtro:filtro},

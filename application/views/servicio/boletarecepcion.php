@@ -128,6 +128,7 @@
                         <tr>
                             <td>Total Final</td>
                             <td colspan="2" id="alinear"><?php echo number_format($servicio['servicio_total'],'2','.',','); ?></td>
+                            <?php if($all_parametro[0]['parametro_segservicio'] == 1){ ?>
                             <td rowspan="3">
                                 <div style="text-align: center !important">
                                     <div style="width: 100%">
@@ -136,6 +137,7 @@
                                     </div>
                                 </div>
                             </td>
+                            <?php } ?>
                         </tr>
                         <tr>
                             <td>A cuenta</td>
