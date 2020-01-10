@@ -88,6 +88,7 @@ class Credito extends CI_Controller{
             $feini = $this->input->post('feini');
             $fefin = $this->input->post('fefin');
             $vende = $this->input->post('vendedor');
+            $agrupar = $this->input->post('agrupar');
             if ($estado_id ==''){
                 $estadosi='';
             }else{
@@ -109,6 +110,7 @@ class Credito extends CI_Controller{
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Credito_model->filtrodeudas($filtro);
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['agrupar'] = $agrupar;
             $data['_view'] = 'credito/repoDeudas';
             $this->load->view('layouts/main',$data);
         }
@@ -150,6 +152,7 @@ class Credito extends CI_Controller{
             $feini = $this->input->post('feini');
             $fefin = $this->input->post('fefin');
             $vende = $this->input->post('vendedor');
+            $agrupar = $this->input->post('agrupar');
             if ($estado_id ==''){
                 $estadosi='';
             }else{
@@ -170,6 +173,7 @@ class Credito extends CI_Controller{
             $data['page_title'] = "Reporte"; 
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Credito_model->filtrocuentas($filtro);
+            $data['agrupar'] = $agrupar;
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
             $data['_view'] = 'credito/repoCuentas';
             $this->load->view('layouts/main',$data);

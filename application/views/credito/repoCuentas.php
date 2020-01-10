@@ -2,6 +2,10 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/credito.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
+    $(document).on("ready",inicio);
+function inicio(){
+        imprimir();     
+}
         $(document).ready(function () {
             (function ($) {
                 $('#filtrar').keyup(function () {
@@ -96,9 +100,76 @@
 
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
+                    
+                    <?php if ($agrupar==1) { ?>
                     <tr>
-						<th>Num.</th>                                             
-                        <th>PROVEEDOR</th>
+                        <th>Num.</th>                                             
+                        <th>CLIENTE</th>
+                        <th>TOTAL<br>CRED.</th>
+                        <th>CANCELADO<br>a CTTA</th>
+                        <th>SALDO<br>TOTAL</th>
+                        <th>TELEFONO(s)</th>
+                        
+                        
+                    </tr>
+                    <tbody class="buscar" >
+                    <?php 
+                          $result = array();
+                          $totalCancelados=0;
+                          $totalCreditos=0;
+                          $totalSaldos=0;
+                          
+                          foreach($credito as $t){
+                            $totalCreditos+=$t['credito_monto'];
+                            $cancelado=0; foreach($cuota as $k){ if($k['credito_id']==$t['credito_id']){
+                            $cancelado+=$k['cuota_cancelado'];
+                            }}
+                            $repeat=false;
+
+                           for($i=0;$i<count($result);$i++)
+    {
+
+        if($result[$i]['cliente_nombre']==$t['cliente_nombre'])
+        {
+            $result[$i]['credito_monto']+=$t['credito_monto']; 
+            $repeat=true;
+            
+            break;
+             
+        } 
+    }
+    if($repeat==false)
+        $result[] = array('cliente_nombre' => $t['cliente_nombre'], 'credito_monto' => $t['credito_monto']
+    , 'cliente_telefono' => $t['cliente_telefono'], 'cliente_celular' => $t['cliente_celular'], 'credito_cancelado' => $cancelado);
+                       
+                         } $cont = 0; foreach($result as $c){
+                            $cont = $cont+1; ?>
+                         <tr>
+                        <td style="text-align: center;"><?php echo $cont; ?></td>                                                
+                        <td style="text-align: center;"><?php echo $c['cliente_nombre']; ?></td>                                                
+                        <td style="text-align: right;"><?php echo number_format($c['credito_monto'], 2, ".", ","); ?></td>
+                        <td style="text-align: right;"><?php echo  number_format($c['credito_cancelado'], 2, ".", ",");  $totalCancelados+=$c['credito_cancelado']; ?></td>
+                        
+                        <td style="text-align: right;"><?php $saldo=$c['credito_monto']-$c['credito_cancelado']; echo number_format($saldo, 2, ".", ",");  ?></td>
+                        <td style="text-align: center;"><?php echo $c['cliente_telefono']; ?><?php if($c['cliente_celular']!=NULL && $c['cliente_telefono']!=NULL){ ?> - <?php echo $c['cliente_celular'];} else { echo $c['cliente_celular']; } ?></td>
+                        
+                        
+                    </tr>
+                    <?php } ?>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td style="text-align: right; font-size: 12px;"><b><?php echo number_format($totalCreditos, 2, ".", ","); ?></td>
+                        <td style="text-align: right; font-size: 12px;"><b><?php echo number_format($totalCancelados, 2, ".", ","); ?></td>
+                        <td style="text-align: right; font-size: 12px;"><b><?php echo number_format($totalCreditos-$totalCancelados, 2, ".", ","); ?></td>
+                        <td></td>
+                    </tr>
+                    
+                       
+                    <?php }else{ ?>
+                        <tr>
+                        <th>Num.</th>                                             
+                        <th>CLIENTE</th>
                         <th>VENTA</th>
                         <th>CREDITO</th>                        
                         <th>FECHA</th>                        
@@ -107,7 +178,7 @@
                         <th>SALDO<br>TOTAL</th>
                         <th>TELEFONO(s)</th>
                         <th>USUARIO</th>
-						
+                        
                     </tr>
                     <tbody class="buscar" >
                     <?php $cont = 0;
@@ -135,7 +206,7 @@
                         <td ><?php echo $c['usuario_nombre']; ?></td>
 						
                     </tr>
-                    <?php } ?>
+                    <?php }  ?>
                     <tr>
                         <td></td>
                         <td></td>
@@ -147,6 +218,7 @@
                         <td style="text-align: right; font-size: 12px;"><b><?php echo number_format($totalSaldos, 2, ".", ","); ?></td>
                         <td></td>
                     </tr>
+                <?php }  ?>
                 </table>
                 
             </div>
