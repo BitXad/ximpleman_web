@@ -3,6 +3,7 @@ function inicio(){
      filtro = " and date(credito_fecha) = date(now())";           
         tablacuentas(filtro);
         tabladeudas(filtro);
+        
 } 
 
 function buscarcuenta(e) {
@@ -30,6 +31,8 @@ function buscar_fecha_deuda()
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var proveedor = document.getElementById('proveedor_id').value;
     var usuario = document.getElementById('usuario_id').value;
+    var agrupar = document.getElementById('agrupar').checked;
+    
    // alert(usuario_id[0]['value']);
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
@@ -64,7 +67,12 @@ function buscar_fecha_deuda()
     
     }  
     
-    tabladeudas(filtro);
+    if (agrupar==true) {
+    tabladeudasagrupado(filtro);
+    }else{
+    tabladeudas(filtro);  
+    }
+    
     
 }
 
@@ -95,12 +103,29 @@ function tabladeudas(filtro)
                     //var subtotal = Number(0);
                     //var descuento = Number(0);
                     html = "";
-                  
+                    html2 = "";
+                    
+                    html2 += "<tr>";  
+                    html2 += "<th>#</th>";  
+                    html2 += "<th>Proveedor</th>";  
+                    html2 += "<th>Credito</th>";  
+                    html2 += "<th>Compra</th>";  
+                    html2 += "<th>Estado</th>";  
+                    html2 += "<th>Monto</th>";  
+                    html2 += "<th>Cuota Inicial</th>";  
+                    html2 += "<th>Interes (%)</th>";  
+                    html2 += "<th># Pagos</th>";  
+                    html2 += "<th>Fecha</th>";  
+                    html2 += "<th>Hora</th>";  
+                    html2 += "<th>Usuario</th>";  
+                    html2 += "<th></th>";  
+                    html2 += "</tr>";  
+                    $("#titulos").html(html2); 
                         total = 0;
                         iniciales = 0;
                     for (var i = 0; i < n ; i++){
                         
-                       // var suma = Number(registros[i]["detallecomp_total"]);
+                        // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                         total += Number(registros[i]["credito_monto"]);
                         iniciales += Number(registros[i]["credito_cuotainicial"]);
@@ -146,6 +171,7 @@ function buscar_fecha_cuenta()
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var cliente = document.getElementById('cliente_id').value;
     var usuario = document.getElementById('usuario_id').value;
+    var agrupar = document.getElementById('agrupar').checked;
    // alert(usuario_id[0]['value']);
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
@@ -173,7 +199,11 @@ function buscar_fecha_cuenta()
             "' and (p.cliente_nombre like '%"+cliente+"%' or r.cliente_nombre like '%"+cliente+"%') "+estadosi+" "+cadusuario+" ";
     }  
     
-    tablacuentas(filtro);
+     if (agrupar==true) {
+    tablacuentasagrupado(filtro);
+    }else{
+    tablacuentas(filtro);  
+    }
     
 }
 
@@ -204,7 +234,25 @@ function tablacuentas(filtro)
                     //var subtotal = Number(0);
                     //var descuento = Number(0);
                     html = "";
-                
+                    html2 = "";
+                    
+                    html2 += "<tr>";  
+                    html2 += "<th>#</th>";  
+                    html2 += "<th>Cliente</th>";  
+                    html2 += "<th>Credito</th>";  
+                    html2 += "<th>Transaccion</th>";  
+                    html2 += "<th>Estado</th>";  
+                    html2 += "<th>Monto</th>";  
+                    html2 += "<th>Cuota Inicial</th>";  
+                    html2 += "<th>Interes (%)</th>";  
+                    html2 += "<th># Pagos</th>";  
+                    html2 += "<th>Fecha</th>";  
+                    html2 += "<th>Hora</th>";  
+                    html2 += "<th>Usuario</th>";  
+                    html2 += "<th></th>";  
+                    html2 += "</tr>";  
+                    $("#titulos").html(html2); 
+                    
                     total=0;
                     inciales=0;
                     for (var i = 0; i < n ; i++){
@@ -268,6 +316,148 @@ function tablacuentas(filtro)
         
     });
 }
+
+
+function tabladeudasagrupado(filtro)
+{
+     var controlador = "";
+     
+     var base_url = document.getElementById('base_url').value;
+     
+     controlador = base_url+'credito/buscarDeudaAgrupado/';
+
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{filtro:filtro},
+           success:function(respuesta){     
+               
+                                     
+               
+               var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){                   
+                   
+                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
+                    //var total_detalle = Number(0);
+                    //var suma = Number(0);
+                    //var subtotal = Number(0);
+                    //var descuento = Number(0);
+                    html = "";
+                    html2 = "";
+                    
+                    html2 += "<tr>";  
+                    html2 += "<th>#</th>";  
+                    html2 += "<th>Proveedor</th>";  
+                    html2 += "<th>Monto</th>";  
+                    html2 += "</tr>";  
+                    $("#titulos").html(html2); 
+                    
+                    
+                  
+                        total = 0;
+                        iniciales = 0;
+                    for (var i = 0; i < n ; i++){
+                        
+                        // var suma = Number(registros[i]["detallecomp_total"]);
+                        //descuento += Number(registros[i]["detallecomp_descuento"]);
+                        total += Number(registros[i]["suma"]);
+                        //iniciales += Number(registros[i]["credito_cuotainicial"]);
+                        //total_detalle = Number(subtotal-descuento); 
+                        html += "<tr>"; 
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td>"+registros[i]['proveedor_nombre']+"<small> ["+registros[i]['proveedor_id']+"]</small></td>";
+                
+                        html += "<td style='text-align: right'>"+Number(registros[i]['suma']).toFixed(2)+"</td>";
+                      
+}
+                   html += "<tr><td align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
+                   html += "<td align=right></td>"; 
+                   html += "<td align=right><font size='2' face='Arial'><b>"+Number(total).toFixed(2)+"</b></font></td></tr>"; 
+                   
+                   $("#tabladeudas").html(html);
+                   //tablatotales(total_detalle,descuento,subtotal);
+                   
+                }
+
+        },
+        error:function(respuesta){
+          
+        }
+        
+    });
+}
+
+function tablacuentasagrupado(filtro)
+{
+     var controlador = "";
+     
+     var base_url = document.getElementById('base_url').value;
+     
+     controlador = base_url+'credito/buscarCuentaAgrupado/';
+
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{filtro:filtro},
+           success:function(respuesta){     
+               
+                                     
+               
+               var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){                   
+                   
+                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    $("#pillados").html("Registros Encontrados: "+n+" ");
+                    //var total_detalle = Number(0);
+                    //var suma = Number(0);
+                    //var subtotal = Number(0);
+                    //var descuento = Number(0);
+                    html = "";
+                    html2 = "";
+                    
+                    html2 += "<tr>";  
+                    html2 += "<th>#</th>";  
+                    html2 += "<th>Cliente</th>";  
+                    html2 += "<th>Monto</th>";  
+                    html2 += "</tr>";  
+                    $("#titulos").html(html2); 
+                    
+                    
+                  
+                        total = 0;
+                        iniciales = 0;
+                    for (var i = 0; i < n ; i++){
+                        
+                        // var suma = Number(registros[i]["detallecomp_total"]);
+                        //descuento += Number(registros[i]["detallecomp_descuento"]);
+                        total += Number(registros[i]["suma"]);
+                        //iniciales += Number(registros[i]["credito_cuotainicial"]);
+                        //total_detalle = Number(subtotal-descuento); 
+                        html += "<tr>"; 
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td>"+registros[i]['kay']+""+registros[i]['perro']+"]</td>";
+                
+                        html += "<td style='text-align: right'>"+Number(registros[i]['suma']).toFixed(2)+"</td>";
+                      
+}
+                   html += "<tr><td align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
+                   html += "<td align=right></td>"; 
+                   html += "<td align=right><font size='2' face='Arial'><b>"+Number(total).toFixed(2)+"</b></font></td></tr>"; 
+                   
+                   $("#tablacuentas").html(html);
+                   //tablatotales(total_detalle,descuento,subtotal);
+                   
+                }
+
+        },
+        error:function(respuesta){
+          
+        }
+        
+    });
+}
+
 
 //***** inicio  funciones  para emitir factura ******
 

@@ -32,7 +32,7 @@
                 <input type="hidden" name="esti" id="esti" value="">
                  <input type="hidden" name="vendedor" id="vendedor" value="">
               <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
-               <button class="btn btn-success btn-md" style="float: right;"><span class="fa fa-print"></span> Imprimir</button>
+               <button class="btn btn-success btn-md" style="float: right;margin-left: 10px"><span class="fa fa-print"></span> Imprimir</button>
           
               <?php } ?>
               <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" > Agrupar</label>
@@ -107,6 +107,7 @@
 
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
+                    <thead id="titulos">
                     <tr>
 						<th>#</th>
                                              
@@ -122,7 +123,7 @@
 						<th>Hora</th>
 						<th>Usuario</th>
 						<th></th>
-                    </tr>
+                    </tr></thead>
                     <tbody class="buscar" id="tablacuentas">
                   
                 </table>

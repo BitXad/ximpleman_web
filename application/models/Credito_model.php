@@ -89,6 +89,30 @@ class Credito_model extends CI_Model
 
         return $deuda;
     }
+
+    function get_deudasagrupado($filtro,$condicion)
+    {
+        $deuda = $this->db->query("
+            SELECT
+                c.*, p.*, co.*, e.*, u.*, sum(c.credito_monto) as suma
+
+            FROM
+                credito c, proveedor p, compra co, estado e, usuario u
+
+            WHERE
+                c.compra_id = co.compra_id
+                and p.proveedor_id = co.proveedor_id
+                and c.estado_id = e.estado_id
+                and co.usuario_id = u.usuario_id
+                ".$filtro."
+                ".$condicion." 
+
+           group by proveedor_nombre 
+            
+        ")->result_array();
+
+        return $deuda;
+    }
      function dato_deudas($filtro)
     {
         $deuda = $this->db->query("
@@ -138,6 +162,40 @@ LEFT JOIN factura f on c.credito_id = f.credito_id
                  ".$condicion."
 
             ORDER BY c.credito_fecha DESC
+
+
+            
+        ")->result_array();
+
+        return $deuda;
+    }
+
+    function get_cuentasagrupado($filtro,$condicion)
+    {
+        $deuda = $this->db->query("
+
+           SELECT
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, f.factura_id, sum(c.credito_monto) as suma
+
+            FROM
+                credito c
+
+LEFT JOIN venta ve on c.venta_id = ve.venta_id
+LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
+LEFT JOIN estado e on c.estado_id = e.estado_id
+LEFT JOIN servicio s on c.servicio_id = s.servicio_id
+LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
+LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
+LEFT JOIN factura f on c.credito_id = f.credito_id
+
+
+
+            WHERE
+                c.compra_id = 0
+                 ".$filtro." 
+                 ".$condicion."
+
+            group by kay 
 
 
             

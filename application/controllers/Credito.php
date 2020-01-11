@@ -201,6 +201,27 @@ class Credito extends CI_Controller{
          
     }
 
+    function buscarDeudaAgrupado()
+    {
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+        if ($tipo_usuario>1 && $permiso==2) {
+           $condicion = " and co.usuario_id=".$usuario_id."";
+        }else{
+           $condicion = "";
+        }
+        
+         if ($this->input->is_ajax_request()) {  
+        $filtro = $this->input->post('filtro');
+         
+        $datos = $this->Credito_model->get_deudasagrupado($filtro,$condicion);
+        echo json_encode($datos);
+        }     
+         
+    }
+
      function buscarCuenta()
     {
         $num = $this->Compra_model->numero();
@@ -215,6 +236,27 @@ class Credito extends CI_Controller{
          if ($this->input->is_ajax_request()) {  
         $filtro = $this->input->post('filtro'); 
         $datos = $this->Credito_model->get_cuentas($filtro,$condicion);
+     
+        echo json_encode($datos);
+                   
+        }
+        
+    }
+
+     function buscarCuentaAgrupado()
+    {
+        $num = $this->Compra_model->numero();
+        $permiso = $num[0]['parametro_permisocredito'];
+        $usuario_id = $this->session_data['usuario_id'];
+        $tipo_usuario = $this->session_data['tipousuario_id'];
+        if ($tipo_usuario>1 && $permiso==2) {
+           $condicion = " and ve.usuario_id=".$usuario_id." or s.usuario_id=".$usuario_id." ";
+        }else{
+           $condicion = "";
+        }
+         if ($this->input->is_ajax_request()) {  
+        $filtro = $this->input->post('filtro'); 
+        $datos = $this->Credito_model->get_cuentasagrupado($filtro,$condicion);
      
         echo json_encode($datos);
                    
