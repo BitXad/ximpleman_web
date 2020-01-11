@@ -86,12 +86,14 @@ break;
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SOLUCION</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAS DE ENTREGA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">RESOLUCIÓN DE IMAGEN</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SEGUIMIENTO</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_diagnostico']; ?></td>
                         <td><?php echo $p['parametro_solucion']; ?></td>
                         <td><?php echo $p['parametro_diasentrega']; ?></td>
                         <td><?php if($p['parametro_imagenreal'] == 1){ echo "SUBIR IMAGENES EN TAMAÑO REAL"; }else{ echo "SUBIR IMAGENES COMPRIMIDOS"; } ?></td>
+                        <td><?php if($p['parametro_segservicio'] == 1){ echo "ACTIVAR SEGUIMIENTO"; }else{ echo "DESACTIVAR SEGUIMIENTO"; } ?></td>
                     </tr>
                         
                     <tr>

@@ -187,10 +187,12 @@ body {
                         <b>RESPONSABLE TÉCNICO: </b><?php echo $responsable; ?><br>
                         <b>ESTADO: <?php echo $servicio['estado_descripcion']; ?></b>
                     </td>
+                    <?php if($all_parametro[0]['parametro_segservicio'] == 1){ ?>
                     <td style="width: 4cm">
                         <div style="text-align: right !important;"><img style="vertical-align: top;" src="<?php echo $codigoqr; ?>" width="100px" height="100px"></div>
                         <div style="font-size: 9px; text-align: right"><span class="text-bold">Usuario:</span> <?php echo $servicio['servicio_id']; ?> &nbsp; <span class="text-bold">Clave:</span> <?php echo $cliente['cliente_id']; ?></div>
                     </td>
+                    <?php } ?>
                 </tr>
             </table>
                 

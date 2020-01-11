@@ -99,7 +99,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <div class="col-md-6">
                                     <label for="contrasen" class="control-label"><span class="text-danger">*</span>Contrase&ntilde;a</label>
                                     <div class="form-group">
-                                        <input type="text" name="contrasen" id="contrasen" class="form-control" required autocomplete="off" />
+                                        <input type="password" name="contrasen" id="contrasen" class="form-control" required autocomplete="off" />
                                     </div>
                                 </div>
                             </div>
