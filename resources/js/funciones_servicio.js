@@ -833,6 +833,7 @@ function fechadeservicio(elfiltro, busquedade){
     var base_url       = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var tipoimpresora  = document.getElementById('tipoimpresora').value;
+    var parametro_segservicio  = document.getElementById('parametro_segservicio').value;
     if(busquedade == 2){
         controlador = base_url+'servicio/buscarserviciospendientes/';
     }else if(busquedade == 1){
@@ -932,21 +933,18 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<font size='1'><b>Recep.: </b>";
 
                         html += convertDateFormat(registros[i]["servicio_fecharecepcion"])+"|"+registros[i]["servicio_horarecepcion"]+"<br>";
+                        html += "<span style='font-size: 8px'>"+registros[i]["usuario_nombre"]+"</span><br>";
                         html += "<b>Salida: </b>"+fechamos+horamos+"</font>";
                         html += "</td>";
                         processData(registros[i]["servicio_id"]);
                         html += "<td>";
-                        html += "<span class='text-bold' style='font-size: 9pt;'><div id='mostrardetalleserv"+registros[i]["servicio_id"]+"'><div></span>";
+                        html += "<span class='text-bold' style='font-size: 9pt;' id='mostrardetalleserv"+registros[i]["servicio_id"]+"'></span>";
                         html += "</td>";
-                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'><span class='text-bold' style='font-size: 12px'>"+registros[i]["estado_descripcion"]+"</span></td>";
-                        html += "<td>";
-                        html += " <!-- Tipo de Servicio 1 esta definido como Servicio Normal -->";
-                        html += registros[i]["tiposerv_descripcion"]+"<br>";
-                        if(!(registros[i]["tiposerv_id"] == 1)){
-                            html += "<font size='1'><b>Dir.: </b>"+registros[i]["servicio_direccion"]+"</font>";
-                        }
+                        html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>";
+                        html += "<span class='text-bold' style='font-size: 12px'>"+registros[i]["estado_descripcion"]+"</span><br>";
+                        html += "<span style='font-size: 10px'><span class='text-bold'>Serv.:</span>"+registros[i]["tiposerv_descripcion"]+"</span>";
                         html += "</td>";
-                        html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
+                        
                         var servtotal = "";
                         if(registros[i]["servicio_total"] != null){
                             servtotal = numberFormat(Number(registros[i]["servicio_total"]).toFixed(2));
@@ -1322,7 +1320,7 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</tr>";
                    }
                    html += "<tr class='text-bold'>";
-                   html += "<td style='font-size: 10pt' class='text-right' colspan='8'>TOTAL:</td>";
+                   html += "<td style='font-size: 10pt' class='text-right' colspan='6'>TOTAL:</td>";
                    html += "<td style='font-size: 10pt'>"+numberFormat(Number(total).toFixed(2));+"</td>";
                    html += "<td style='font-size: 10pt'>"+numberFormat(Number(acuenta).toFixed(2))+"</td>";
                    html += "<td style='font-size: 10pt'>"+numberFormat(Number(saldo).toFixed(2))+"</td>";
@@ -1777,18 +1775,23 @@ function mostrardetalleserv(serv_id){
                    var cantus = all_usuario.length;
                     var n = registros.length; //tamaño del arreglo de la consulta
                     for (var i = 0; i < n ; i++){
-                        res += "<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' title='Servicio "+registros[i]['estado_descripcion']+"'>";
+                        res += "<tr>";
+                        res += "<span style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px; width: 100% !important' class='btn btn-xs' title='Servicio "+registros[i]['estado_descripcion']+"'>";
+                        res += "<td style='width: 70%; text-align: left'>";
                         res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        res += "<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='"+registros[i]['detalleserv_descripcion']+"'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span></span>";
+                        res += "["+registros[i]['detalleserv_codigo']+"]";
+                        res += "&nbsp;&nbsp;<span style='font-size: 10px'>Resp.:<span style='font-weight: normal'>"+registros[i]["usuario_nombre"]+"</span></span>";
+                        res += "</td>";
+                        res += "<td style='width: 70%; text-align: right'>";
                         if(registros[i]['detallestado_id'] == 28 || tipousuario_id == 1){
                             var eltitulo ="Registrar servicio tecnico finalizado";
                             if(tipousuario_id == 1){
                                 eltitulo = "Registrar información del servicio";
                             }
-                            res += "<a class='btn btn-primary btn-xs' data-toggle='modal' data-target='#modalregistrarservtecnico"+registros[i]['detalleserv_id']+"' title='"+eltitulo+"'><span class='fa fa-file-text-o'></span><br></a>";
+                            res += "<a style='background: #000' class='btn btn-xs' data-toggle='modal' data-target='#modalregistrarservtecnico"+registros[i]['detalleserv_id']+"' title='"+eltitulo+"'><span class='fa fa-cogs'></span><br></a>";
                         } 
-                        if(registros[i]['detallestado_id'] == 5){
-                            res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistrarprocesar"+registros[i]['detalleserv_id']+"' title='Procesar el servicio'><span class='fa fa-wrench'></span><br></a>";
-                        }else if(registros[i]['detallestado_id'] == 6){
+                        if(registros[i]['detallestado_id'] == 6){
                             res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistrarentregaserv"+registros[i]['detalleserv_id']+"' title='Registrar entrega'><span class='fa fa-file-zip-o'></span><br></a>";
                         }else if(registros[i]['detallestado_id'] == 7){
                             res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modaldetalleinformetecnico"+registros[i]['detalleserv_id']+"' title='Informe Técnico'><span class='fa fa-file-text'></span><br></a>";
@@ -1832,10 +1835,12 @@ function mostrardetalleserv(serv_id){
                                 res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                             }
                         }
-                        res += "<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='"+registros[i]['detalleserv_descripcion']+"'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span></span>";
-                        res += "["+registros[i]['detalleserv_codigo']+"]";
-                        res += "&nbsp;&nbsp;<span style='font-size: 10px'>Resp.:<span style='font-weight: normal'>"+registros[i]["usuario_nombre"]+"</span></span>";
+                        if(registros[i]['detallestado_id'] == 5){
+                            res += "<br><a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalregistrarprocesar"+registros[i]['detalleserv_id']+"' title='Procesar el servicio'><span class='fa fa-wrench'></span> PENDIENTE</a>";
+                        }
                         
+                        
+                        //res += "</table>";
                         res += "<!------------------------ INICIO modal para registrar PROCESO DE SERVICIO ------------------->";
                         res += "<div style='white-space: normal !important;' class='modal fade' id='modalregistrarprocesar"+registros[i]['detalleserv_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalinformetecnicoLabel"+registros[i]['detalleserv_id']+"'>";
                         res += "<div class='modal-dialog' role='document'>";
@@ -1941,10 +1946,19 @@ function mostrardetalleserv(serv_id){
                         res += "<span id='mensajeregistrarserterminado' class='text-danger'></span>";
                        
                        
-                        res += "<div class='col-md-6'>";
+                        res += "<div class='col-md-12'>";
                         res += "<label for='cliente_ci' class='control-label'>DETALLE:</label>";
                         res += "<div class='form-group' style='font-weight: normal'>";
                         res += registros[i]['detalleserv_descripcion'];
+                        res += "</div>";
+                        res += "</div>";
+                        res += "<div class='col-md-6'>";
+                        res += "<label for='tipo_servicio' class='control-label'>TIPO DE SERVICIO:</label>";
+                        res += "<div class='form-group' style='font-weight: normal'>";
+                        res += registros[i]["tiposerv_descripcion"]+"<br>";
+                        if(!(registros[i]["tiposerv_id"] == 1)){
+                            res += "<font size='1'><b>Dir.: </b>"+registros[i]["servicio_direccion"]+"</font>";
+                        }
                         res += "</div>";
                         res += "</div>";
                         res += "<div class='col-md-6'>";
@@ -2280,7 +2294,10 @@ function mostrardetalleserv(serv_id){
                         res += "</div>";
                         res += "</div>";
                         res += "<!------------------------ FIN modal para registrar ENTREGA DE SERVICIO ------------------->";
-                        res += "<br>";
+                        //res += "<br>";
+                        res += "</td>";
+                        res += "</span>";
+                        res += "</tr>";
                    }
                }
                resolve(res);
@@ -2299,7 +2316,8 @@ async function processData (serv_id) {
   try {
     const result = await mostrardetalleserv(serv_id);
     //alert(result);
-    $('#mostrardetalleserv'+serv_id).html(result);
+    var tabla = "<table style='width = 100%'>";
+    $('#mostrardetalleserv'+serv_id).html(tabla+result+"</table>");
     //console.log(result);
     return "";
   } catch (err) {
