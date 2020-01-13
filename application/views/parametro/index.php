@@ -6,7 +6,7 @@
                 <font size='4' face='Arial'><b>Parametros</b></font>
                 <a href="<?php echo site_url('parametro/edit/1'); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a>
             </div>
-            <div class="box-body" >
+            <div class="box-body table-responsive" >
                 
               
                 <table class="table table-striped table-condensed" id="mitabla" style="text-align: center; font-size: 11px;color:black;">

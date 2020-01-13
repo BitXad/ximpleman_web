@@ -532,7 +532,7 @@ if(sizeof($servicio)>0){  ?>
         }else{ ?>
         <center>    
             <h2><b>EL SEGUIMINETO A SERVICIO NO ESTA HABILITADO..!!</b></h2>
-            <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3>    
+            <h3>LE RECOMENDAMOS CONSULTAR CON LA EMPRESA</h3> 
             <a href="javascript:window.close();" class='btn btn-warning'><fa class='fa fa-close'></fa> Salir</a>
         </center>
 <?php

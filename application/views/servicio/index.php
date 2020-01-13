@@ -157,8 +157,6 @@
                         <th>Fechas</th>
                         <th>Detalle</th>
                         <th>Estado</th>
-                        <th>Tipo Serv.</th>
-                        <th>Recepcionado</th>
                         <th>Total</th>
                         <th>A Cuenta</th>
                         <th>Saldo</th>
