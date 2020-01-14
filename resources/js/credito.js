@@ -436,8 +436,12 @@ function tablacuentasagrupado(filtro)
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>"; 
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td>"+registros[i]['kay']+""+registros[i]['perro']+"]</td>";
-                
+                        if (registros[i]['kay']!=''&&registros[i]['kay']!=null) {
+                        html += "<td>"+registros[i]['kay']+"</td>";   
+                        }else{
+                        html += "<td>"+registros[i]['perro']+"</td>";     
+                        }
+
                         html += "<td style='text-align: right'>"+Number(registros[i]['suma']).toFixed(2)+"</td>";
                       
 }
