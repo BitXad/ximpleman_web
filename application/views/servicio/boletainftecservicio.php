@@ -29,6 +29,7 @@ if(isset($sintitulo)){
     $mostrar1 = "display: none;";
 }
 ?>
+<div style="width: 20cm">
 <div class="row micontenidoInforme" <?php echo $mostrar; ?> >
     <div id="cabizquierda" style="width: 40%; font-size: 8pt;">
 
@@ -170,14 +171,21 @@ if(isset($sintitulo)){
     <div class="negrita micontenedorlineas" style="width: 100%;">COSTO TOTAL:
         <hr style="margin-left: 0px;">
     </div>
-    <div class="micontenedorlineas" style="margin-left: 2cm;">
+    <div class="micontenedor" style="margin-left: 2cm;">
+        <div>
         <b><?php echo "Bs. ".number_format($total, 2); ?></b>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        LITERAL: <?php echo num_to_letras($total); ?>
+        </div>
+        <div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        LITERAL:&nbsp;
+        </div>
+        <div style="width: 245px; text-align: left">
+            <?php echo num_to_letras($total); ?>
+        </div>
     </div>
 </div>
-<div class="row micontenidoInforme" style="margin-top: 4px; font-size: 8pt;">
-    <div style="text-align: justify">
+<div class="row micontenidoInforme" style="text-justify: auto; margin-top: 4px; font-size: 8pt">
+    <div style="text-align: justify;">
         <br>
         Para veracidad de la misma firmamos al pie del documento tanto los responsables
         como el personal encargado de la supervisión y control de calidad de nuestra Empresa.
@@ -186,24 +194,34 @@ if(isset($sintitulo)){
         Atentamente,
     </div>
 </div>
-<div class="row micontenidoInforme">
-    <div id="cabizquierda" style="width: 40%; font-family: Arial; font-size: 8pt;">
-        <?php echo $usuario_nombre; ?><br>
-        DPTO. TECNICO
-    </div>
-    <div id="cabcentro" style="width: 20%;">
-        
-    </div>
-    <div id="cabderecha" style="width: 40%; font-family: Arial; font-size: 8pt;">
-        VoBo
-    </div>
+<div class="row micontenidoInforme" style="display: block; margin-top: 0px;">
+    <table style="width: 100%">
+    <tr>
+        <td style="width: 33%">&nbsp;</td>
+        <td style="width: 34%">&nbsp;</td>
+        <td rowspan="2" style=" width: 33%">
+            <div id="cabderecha" style="float: right; width: 4cm;">
+                <div style="text-align: right !important;"><img style="vertical-align: top;" src="<?php echo $codigoqr; ?>" width="100px" height="100px"></div>
+                <div style="font-size: 9px; text-align: right"><span class="text-bold">Usuario:</span> <?php echo $servicio['servicio_id']; ?> &nbsp; <span class="text-bold">Clave:</span> <?php echo $cliente['cliente_id']; ?></div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td style="vertical-align: bottom; font-size: 8pt;">
+            <?php echo $usuario_nombre; ?><br>
+            DPTO. TECNICO
+        </td>
+        <td style="vertical-align: bottom; font-size: 8pt;">VoBo</td>
+    </tr>
+</table>
 </div>
+
 <div class="row micontenidoInforme">
     <div id="cabizquierda" style="width: 100%; text-align: left; font-size: 7pt;">
         CCA: Sis.Inf.<?php echo $empresa[0]['empresa_nombre']; ?> | <?php echo Date('d/m/Y h:i:s a'); ?>
     </div>
 </div>
-
+</div>
 <div class="no-print">
     <a onclick="javascript:window.close();" class="btn btn-danger">
     <i class="fa fa-times"></i>Salir
