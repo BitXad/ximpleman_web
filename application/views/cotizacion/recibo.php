@@ -18,6 +18,17 @@ input[type=number]::-webkit-outer-spin-button {
   margin: 0; 
 }
 input[type=number] { -moz-appearance:textfield; }
+pre {
+  font-size:10px;
+  font-family: 'Arial', Arial, Arial, arial;
+  border: none;
+  background: none;
+  white-space: pre-wrap;       /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+  white-space: -pre-wrap;      /* Opera 4-6 */
+  white-space: -o-pre-wrap;    /* Opera 7 */
+  word-wrap: break-word;       /* Internet Explorer 5.5+ 
+}
 </style> 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -140,8 +151,9 @@ input[type=number] { -moz-appearance:textfield; }
                       <?php if ($d['producto_industria']!=''){ ?>                            
                         - Industria: <b><?php echo $d['producto_industria']; }?></b><br>
                       <?php if ($d['detallecot_caracteristica']==""){ ?>  
-                         <?php }else{ echo "- ", $d['detallecot_caracteristica']; } ?></td>
-                         <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?> </td>
+                         <?php }else{ ?>
+                          <pre><?php echo  $d['detallecot_caracteristica']; } ?></td>
+                         <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?></pre></td>
                          <td  style="text-align: right;"><?php echo number_format($d['detallecot_precio'],2,".",","); ?></td>  
                          <td  style="text-align: center;"> <?php echo $d['detallecot_cantidad']; ?></td>
                          <td  style="text-align: right;"> <?php echo number_format($d['detallecot_descuento'], 2, ".", ","); ?> </font></td>

@@ -46,7 +46,7 @@ function detallecoti(){
                         html += "Marca: <b>"+registros[i]["producto_marca"]+"</b><br>";
                         html += "Industria: <b>"+registros[i]["producto_industria"]+"</b><br>"; 
                         //html += "<form action='"+base_url+"cotizacion/updateDetallecot/"+cotizacion_id+"/"+registros[i]["producto_id"]+"'  method='POST' class='form'>";
-                        html += "<textarea  id='detallecot_caracteristica"+registros[i]["detallecot_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' placeholder='caracteristica'>"+registros[i]["detallecot_caracteristica"]+"</textarea> </td>";
+                        html += "<textarea  id='detallecot_caracteristica"+registros[i]["detallecot_id"]+"'  name='detallecot_caracteristica' type='text' class='form-control'  placeholder='caracteristica'>"+registros[i]["detallecot_caracteristica"]+"</textarea> </td>";
                         html += "<td> <input id='cotizacion_id'  name='cotizacion_id' type='hidden' class='form-control' value='"+cotizacion_id+"'>";
                         html += "<input id='detallecot_descripcion'  name='descripcion' type='hidden' class='form-control' value='"+registros[i]["producto_nombre"]+","+registros[i]["producto_marca"]+","+registros[i]["producto_industria"]+"'>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
@@ -56,8 +56,8 @@ function detallecoti(){
                         html += "<td><input id='detallecot_descuento"+registros[i]["detallecot_id"]+"' name='descuento' size='3' type='text' class='form-control' onkeypress='actualizadetalle(event,"+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' value='"+Number(registros[i]["detallecot_descuento"]).toFixed(2)+"' ></td>";
                         html += "<td><center><font size='3'> <b>"+Number(registros[i]["detallecot_total"]).toFixed(2)+"</b></font> <br>";
                         html += "</center></td>";
-                        html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' class='btn btn-success btn-sm'><i class='fa fa-random'></i></button>";
-                        html += "<button type='button' onclick='quitardetallec("+registros[i]["detallecot_id"]+")' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
+                        html += "<td><button type='button' onclick='actualizarDetalle("+registros[i]["detallecot_id"]+","+registros[i]["producto_id"]+","+cotizacion_id+")' title='Guardar' class='btn btn-success btn-sm'><i class='fa fa-floppy-o'></i></button>";
+                        html += "<button type='button' onclick='quitardetallec("+registros[i]["detallecot_id"]+")' title='Quitar' class='btn btn-danger btn-sm'><span class='fa fa-trash'></span></button></td>";
 
                       
                         //html += "";
