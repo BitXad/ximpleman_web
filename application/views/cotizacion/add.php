@@ -217,7 +217,7 @@ input[type=number] { -moz-appearance:textfield; }
                                                 <th>#</th>
                                                 <th>Producto</th>
                     </tr>
-                    <tbody class="buscar3" id="tablaresultados">
+                    <tbody class="buscar" id="tablaresultados">
                     
                         <!------ aqui se vacia los resultados de la busqueda mediante JS --->
                     
