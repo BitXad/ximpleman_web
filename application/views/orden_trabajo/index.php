@@ -163,6 +163,7 @@
             <th>A Cuenta Bs.</th>
             <th>Saldo Bs.</th>
             <th>Usuario</th>
+            <th>Seg.</th>
             <th class="no-print"></th>
 						
                     </tr>

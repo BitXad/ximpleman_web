@@ -266,7 +266,11 @@ function tablacuentas(filtro)
                         if (registros[i]['venta_id']>0) {
                         html += "<td>"+registros[i]['kay']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_id']+"</td>";
-                        html += "<td style='text-align: center'>Venta: "+registros[i]['ventita']+"</td>";
+                        html += "<td style='text-align: center'>Venta: "+registros[i]['ventita'];
+                        if (registros[i]['orden_id']>0) {
+                        html += " OT:"+registros[i]['orden_id'];  
+                        html += "</td>";  
+                        }
                         
                         } else {    
                         html += "<td>"+registros[i]['perro']+"</td>";

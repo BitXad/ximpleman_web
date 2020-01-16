@@ -1140,15 +1140,16 @@ function fechaorden(parametro){
                         html += "<td align='right'>"+Number(registros[i]["orden_acuenta"]).toFixed(2)+"</td>";
                         html += "<td align='right'>"+Number(registros[i]["orden_saldo"]).toFixed(2)+"</td>";
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>";
-                        
+                        if (registros[i]["venta_id"]>0) {
+                        html += "<td><a href='"+base_url+"seguimiento/seguimiento/"+registros[i]["orden_id"]+"/"+registros[i]["venta_id"]+"' target='_blank' title='Proceso OT' class='btn btn-warning btn-xs'><span class='fa fa-spinner'></span> ";  
+                        html += "OT: "+registros[i]['orden_id']+" Cod.: "+registros[i]['venta_id']+"</a></td>";
+                        }
                         html += "<td class='no-print'>";
                         
                         html += " <a href='"+base_url+"orden_trabajo/editar/"+registros[i]["orden_id"]+"' target='_blank' title='Editar OT' class='btn btn-info btn-xs'><span class='fa fa-pencil'></span></a>";
                         html += " <a href='"+base_url+"orden_trabajo/ordendoc/"+registros[i]["orden_id"]+"' target='_blank' title='Imp. OT' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"' target='_blank' title='Nota OT' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a>";
-                        if (registros[i]["venta_id"]>0) {
-                        html += " <a href='"+base_url+"seguimiento/seguimiento/"+registros[i]["orden_id"]+"/"+registros[i]["venta_id"]+"' target='_blank' title='Proceso OT' class='btn btn-warning btn-xs'><span class='fa fa-spinner'></span></a>";
-                        }
+                        
                         html += " <a href='#' data-toggle='modal'  data-target='#modalanular"+registros[i]["orden_id"]+"' title='Anular OT' class='btn btn-xs btn-danger' style=''><i class='fa fa-ban'></i></a>";
                         html += "                       <!------------------------ modal para eliminar el producto ------------------->";
                         html += " <div class='modal fade' id='modalanular"+registros[i]['orden_id']+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+registros[i]['orden_id']+"'>";
@@ -1200,6 +1201,7 @@ function fechaorden(parametro){
                        html += "<th align='right'>"+Number(total).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_acuenta).toFixed(2)+"</th>";
                        html += "<th align='right'>"+Number(total_saldo).toFixed(2)+"</th>";
+                       html += "<th></th>";
                        html += "<th></th>";
                        html += "<th></th>";
                        html += "</tr>";

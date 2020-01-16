@@ -141,7 +141,7 @@ class Credito_model extends CI_Model
         $deuda = $this->db->query("
 
            SELECT
-                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, f.factura_id
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, ve.orden_id, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, f.factura_id
 
             FROM
                 credito c
