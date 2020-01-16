@@ -201,8 +201,14 @@
                         if($rolusuario[139-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
+                            <a href="<?php echo site_url('proceso_orden');?>"><i class="fa fa-check-square-o"></i> Terminar Proceso</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('proceso_orden/terminados');?>"><i class="fa fa-indent"></i> Recepcionar Proceso</a>
+                        </li>
+                        <!--<li>
+                            <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
+                        </li>-->
                         <?php
                         }
                         ?>
@@ -210,9 +216,9 @@
                         <?php 
                         if($rolusuario[139-1]['rolusuario_asignado'] == 1){
                         ?>
-                        <li>
+                        <!--<li>
                             <a href="<?php echo site_url('admin/pedidos');?>"><i class="fa fa-list"></i> Pedidos para compras</a>
-                        </li>
+                        </li>-->
                         <?php
                         }
                         ?>
