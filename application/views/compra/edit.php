@@ -831,9 +831,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                     <div class="col-md-6" >
-                        <label for="proveedor_codigo" class="control-label">Código</label>
+                        <label for="proveedor_codigo1" class="control-label">Código</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_codigo" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_codigo1" />                            
+                            <input type="text" name="proveedor_codigo1" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_codigo1" />                            
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -938,7 +938,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                           <b> <?php echo $h['proveedor_nombre']; ?></b><br>
                                          Telf.:<?php echo $h['proveedor_telefono']; ?> <br>
                                        
-                                         <button  class="btn btn-success btn-xs" onclick="cambiarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
+                                         <button  class="btn btn-success btn-xs" onclick="modificarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
                                             <i class="fa fa-check"></i> Añadir
                                         </button>
 
@@ -950,7 +950,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
               </div>
               <div class="box-body" style="display: none;">
                                         <div class="container" hidden="true" >
-                                            <input id="proveedor_id"  name="proveedor_id" type="text" class="form-control" value="<?php echo $h['proveedor_id']; ?>" >
+                                            <input id="proveedor_id"  name="proveedor_id" type="text" class="form-control" value="" >
                                             <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
                                         </div>                                        
                                         NIT:
@@ -959,9 +959,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                         RAZON SOCIAL:
                                         <input type="text" id="proveedor_razon<?php echo $h['proveedor_id']; ?>" name="proveedor_razon" class="form-control" placeholder="Razón Social"  value="<?php echo $h['proveedor_razon']; ?>">
                                         COD. CONTROL:
-                                        <input type="text" id="proveedor_codigo<?php echo $h['proveedor_id']; ?>" name="proveedor_codigo" class="form-control" placeholder="Codigo"  value="<?php echo $h['proveedor_codigo']; ?>" readonly>
+                                        <input type="text" id="proveedor_codigo<?php echo $h['proveedor_id']; ?>" name="proveedor_codigo" class="form-control" placeholder="Codigo"  value="<?php echo $h['proveedor_codigo']; ?>" >
                                         AUTORIZACION:
-                                        <input type="text" id="proveedor_autorizacion<?php echo $h['proveedor_id']; ?>" name="proveedor_autorizacion" class="form-control" placeholder="AUTORIZACION"  value="<?php echo $h['proveedor_autorizacion']; ?>" readonly>
+                                        <input type="text" id="proveedor_autorizacion<?php echo $h['proveedor_id']; ?>" name="proveedor_autorizacion" class="form-control" placeholder="AUTORIZACION"  value="<?php echo $h['proveedor_autorizacion']; ?>" >
 
                                         
                                         <!--</div>-->

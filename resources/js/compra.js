@@ -384,7 +384,26 @@ function editadetalle(detallecomp_id,producto_id,compra_id){
 
 } 
       
+function modificarproveedores(compra_id,proveedor_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'compra/modificarproveedor/';
+    var nit = document.getElementById('proveedor_nit'+proveedor_id).value;
+    var razon = document.getElementById('proveedor_razon'+proveedor_id).value;
+    var codigo = document.getElementById('proveedor_codigo'+proveedor_id).value;
+    var autorizacion = document.getElementById('proveedor_autorizacion'+proveedor_id).value;
+    
+    
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{proveedor_id:proveedor_id,nit:nit,razon:razon,codigo:codigo,autorizacion:autorizacion},
+            success:function(respuesta){
+                //alert(detallecomp_id);
+                cambiarproveedores(compra_id,proveedor_id);
+            }        
+    });
 
+} 
 function cambiarproveedores(compra_id,proveedor_id) {
      
     var base_url    = document.getElementById('base_url').value;
