@@ -109,7 +109,7 @@ function tablaresultadosproducto(limite)
 //                        html += "<td>";
                         var caracteristica = "";
                         if(registros[i]["producto_caracteristicas"] != null){
-                            caracteristica = "<div style='word-wrap: break-word;'>"+registros[i]["producto_caracteristicas"]+"</div>";
+                            caracteristica = "<div style='word-wrap: break-word !important; max-width: 400px !important; white-space: normal'>"+registros[i]["producto_caracteristicas"]+"</div>";
                         }
 //                        html+= caracteristica+"</td>";                        
                        
