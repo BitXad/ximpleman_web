@@ -564,26 +564,26 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-8">
                         <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="producto_nombre" required/>
+                            <input type="text" name="producto_nombre" autocomplete="off" value="<?php echo $this->input->post('producto_nombre'); ?>" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="producto_nombre"  required/>
                             
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label for="producto_marca" class="control-label">Marca</label>
                         <div class="form-group">
-                            <input type="text" name="producto_marca" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
+                            <input type="text" name="producto_marca" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" value="<?php echo $this->input->post('producto_marca'); ?>" class="form-control" id="producto_marca" />
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Codigo Barra</label>
                         <div class="form-group">
-                            <input type="text" name="producto_codigobarra" onkeypress="return pulsar(event)" value="<?php echo $this->input->post('producto_codigobarra'); ?>" class="form-control" id="producto_codigobarra" required/>
+                            <input type="text" name="producto_codigobarra" autocomplete="off" onkeypress="return pulsar(event)" value="<?php echo $this->input->post('producto_codigobarra'); ?>" class="form-control" id="producto_codigobarra" required/>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código</label>
                         <div class="form-group">
-                            <input type="text" name="producto_codigo" value="<?php echo $this->input->post('producto_codigo'); ?>" class="form-control" id="producto_codigo" />
+                            <input type="text" name="producto_codigo" autocomplete="off" value="<?php echo $this->input->post('producto_codigo'); ?>" class="form-control" id="producto_codigo" />
                             <span class="text-danger"><?php echo form_error('producto_codigo');?></span>
                         </div>
                     </div>
@@ -639,7 +639,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                     <div class="col-md-4">
                         <label for="cantidad" class="control-label">Cantidad Compra</label>
                         <div class="form-group">
-                            <input type="number" min="0" step="any" name="cantidad" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
+                            <input type="number" min="0" step="any" name="cantidad" autocomplete="off" value="<?php echo $this->input->post('cantidad'); ?>" class="form-control" id="cantidad" required/>
                              <input type="hidden" name="descuento" value="0" class="form-control" id="descuento" />
                             <input id="banderanga" class="form-control" name="bandera" type="hidden" value="<?php echo $bandera; ?>" />
                         </div>
@@ -831,9 +831,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                         </div>
                     </div>
                     <div class="col-md-6" >
-                        <label for="proveedor_codigo" class="control-label">Código</label>
+                        <label for="proveedor_codigo1" class="control-label">Código</label>
                         <div class="form-group">
-                            <input type="text" name="proveedor_codigo" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_codigo1" />                            
+                            <input type="text" name="proveedor_codigo1" value="" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" class="form-control" id="proveedor_codigo1" />                            
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -938,7 +938,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                           <b> <?php echo $h['proveedor_nombre']; ?></b><br>
                                          Telf.:<?php echo $h['proveedor_telefono']; ?> <br>
                                        
-                                         <button  class="btn btn-success btn-xs" onclick="cambiarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
+                                         <button  class="btn btn-success btn-xs" onclick="modificarproveedores('<?php echo $compra_id; ?>','<?php echo $h['proveedor_id']; ?>')"   data-dismiss="modal">
                                             <i class="fa fa-check"></i> Añadir
                                         </button>
 
@@ -950,7 +950,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
               </div>
               <div class="box-body" style="display: none;">
                                         <div class="container" hidden="true" >
-                                            <input id="proveedor_id"  name="proveedor_id" type="text" class="form-control" value="<?php echo $h['proveedor_id']; ?>" >
+                                            <input id="proveedor_id"  name="proveedor_id" type="text" class="form-control" value="" >
                                             <input id="compra_id"  name="compra_id" type="text" class="form-control" value="<?php echo $compra_id; ?>">
                                         </div>                                        
                                         NIT:
@@ -959,9 +959,9 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                                         RAZON SOCIAL:
                                         <input type="text" id="proveedor_razon<?php echo $h['proveedor_id']; ?>" name="proveedor_razon" class="form-control" placeholder="Razón Social"  value="<?php echo $h['proveedor_razon']; ?>">
                                         COD. CONTROL:
-                                        <input type="text" id="proveedor_codigo<?php echo $h['proveedor_id']; ?>" name="proveedor_codigo" class="form-control" placeholder="Codigo"  value="<?php echo $h['proveedor_codigo']; ?>" readonly>
+                                        <input type="text" id="proveedor_codigo<?php echo $h['proveedor_id']; ?>" name="proveedor_codigo" class="form-control" placeholder="Codigo"  value="<?php echo $h['proveedor_codigo']; ?>" >
                                         AUTORIZACION:
-                                        <input type="text" id="proveedor_autorizacion<?php echo $h['proveedor_id']; ?>" name="proveedor_autorizacion" class="form-control" placeholder="AUTORIZACION"  value="<?php echo $h['proveedor_autorizacion']; ?>" readonly>
+                                        <input type="text" id="proveedor_autorizacion<?php echo $h['proveedor_id']; ?>" name="proveedor_autorizacion" class="form-control" placeholder="AUTORIZACION"  value="<?php echo $h['proveedor_autorizacion']; ?>" >
 
                                         
                                         <!--</div>-->

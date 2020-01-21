@@ -1504,6 +1504,32 @@ function pdf($compra_id){
         $this->load->view('layouts/main',$data);
     }
 }
+
+function modificarproveedor()
+{
+    if($this->acceso(1)){
+    $proveedor_id = $this->input->post('proveedor_id');
+    $nit = $this->input->post('nit');
+    $razon = $this->input->post('razon'); 
+    $codigo = $this->input->post('codigo'); 
+    $autorizacion = $this->input->post('autorizacion');
+
+    $sql = "UPDATE proveedor
+    SET
+    
+    
+    proveedor_nit = ".$nit.",
+    proveedor_razon = '".$razon."',
+    proveedor_codigo = '".$codigo."',
+    proveedor_autorizacion = '".$autorizacion."'       
+    WHERE proveedor_id = ".$proveedor_id."
+    ";
+    $this->Compra_model->ejecutar($sql);
+    
+    return true;
+    }
+}
+
 function ingreso_rapido($cantidad,$producto_id,$producto_costo){
         if($this->acceso(1)){
             $usuario_id = $this->session_data['usuario_id'];
