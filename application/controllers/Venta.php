@@ -887,7 +887,10 @@ function edit($venta_id)
                 if ($tipotrans_id == 1)
                 {
                     $credito = $this->Credito_model->get_credito_id($venta['venta_id']);
+                    if (isset($credito)) {
                     $this->Venta_model->eliminar_credito($credito['credito_id']);
+                    }
+                    
                 }
                 
                 if ($tipotrans_id == 2 || $tipotrans_id == 3)
