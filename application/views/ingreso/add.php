@@ -42,19 +42,56 @@
 }
 
 </style>
+<script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
+<script type="text/javascript">
+     $(document).ready(function () {
+          $("#razon").keyup(function () {
+              var value = $(this).val();
+              $("#ingreso_nombre").val(value);
+          });
+       
+      });
+</script>
+<script type="text/javascript">
+function facturar(mensualidad){
+	 
+     var factu = document.getElementById('factura').checked;
+                      
+     if (factu==true){
+      document.getElementById('clinit').style.display = 'block';
+    }else{
+      document.getElementById('clinit').style.display = 'none';
+    }            	
+                       
+        
+}	
+</script>
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4>REGISTRAR INGRESO</h4>
+                <?php echo form_open('ingreso/add/'); ?>
+                <button class="btn btn-info btn-xs" type="button">
+              <input type="checkbox" name="factura" id="factura"  onclick="facturar()"  />
+              <label for="factura"> Generar Factura</label></button>
             </div>
             <div class="panel-body">
-                
-                        
-						<?php echo form_open('ingreso/add/'); ?>
 
 				<div class="box-body">
           		<div class="row clearfix">
+          			<div id="clinit" style="display: none">
+                        <div class="col-md-3">
+                        <label for="nit" class="control-label">Nit</label>
+                        <input type="text" name="nit" value="" class="form-control" id="nit" />
+                       
+                    </div>
+                    <div class="col-md-3">
+                        <label for="razon" class="control-label">Razon</label>
+                        <input type="text" name="razon" value="" class="form-control" id="razon" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
+                       
+                    </div>
+                    </div>
 							<div class="col-md-4">
 								<label for="ingreso_nombre" class="control-label">Nombre</label>
 								<div class="form-group">
@@ -64,13 +101,13 @@
 							
 							
 							
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<label for="ingreso_monto" class="control-label">Monto</label>
 								<div class="form-group">
 									<input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo $this->input->post('ingreso_monto'); ?>" class="form-control" id="ingreso_monto" required/>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-2">
 									<label for="ingreso_moneda" class="control-label">Moneda</label>
 									<div class="form-group">
 										<select name="ingreso_moneda" class="form-control" required>
@@ -111,7 +148,7 @@
 								</div>
 							
 							<div class="col-md-4">
-								<label for="ingreso_concepto" class="control-label">Concepto</label>
+								<label for="ingreso_concepto" class="control-label">Concepto/Detalle</label>
 								<div class="form-group">
 									<input type="text" name="ingreso_concepto" value="<?php echo $this->input->post('ingreso_concepto'); ?>" class="form-control" id="ingreso_concepto" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
 								</div>

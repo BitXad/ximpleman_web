@@ -14,6 +14,9 @@ class Ingreso extends CI_Controller{
          $this->load->model('Usuario_model');
          $this->load->helper('numeros');
          $this->load->model('Parametro_model');
+         $this->load->model('Dosificacion_model');
+         $this->load->model('Factura_model');
+         $this->load->library('ControlCode'); 
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -97,8 +100,8 @@ class Ingreso extends CI_Controller{
             $params = array(
 				'usuario_id' => $usuario_id,
 				'ingreso_categoria' => $this->input->post('ingreso_categoria'),
-        'ingreso_numero' => $numero,
-        'ingreso_nombre' => $this->input->post('ingreso_nombre'),
+                'ingreso_numero' => $numero,
+                'ingreso_nombre' => $this->input->post('ingreso_nombre'),
 				'ingreso_monto' => $this->input->post('ingreso_monto'),
 				'ingreso_moneda' => $this->input->post('ingreso_moneda'),
 				'ingreso_concepto' => $this->input->post('ingreso_concepto'),
@@ -106,11 +109,111 @@ class Ingreso extends CI_Controller{
 				
             );
 
-            
-            
             $ingreso_id = $this->Ingreso_model->add_ingreso($params);
             $sql = "UPDATE parametros SET parametro_numrecing=parametro_numrecing+1 WHERE parametro_id = '1'"; 
             $this->db->query($sql);
+
+
+            $facturado = $this->input->post('factura');
+            if($facturado=="on"){ //si la venta es facturada
+
+            $dosificacion = $this->Dosificacion_model->get_dosificacion_activa();
+
+  //          if (sizeof($dosificacion)>0){ //si existe una dosificacion activa
+                //$fecha = $this->input->post('ingreso_fecha');
+                $estado_id = 1; 
+                
+                $venta_efectivo    = $this->input->post('ingreso_monto');
+                $factura_fechaventa    = date("Y-m-d");
+                $factura_fecha         = "date(now())";
+                $factura_hora          = "time(now())";
+                $factura_subtotal      = $this->input->post('ingreso_monto');
+                $factura_nit           = $this->input->post('nit');
+                $factura_razonsocial   = $this->input->post('razon');
+                $factura_ice           = 0;
+                $factura_exento        = 0;
+                $factura_descuento     = 0;
+                $factura_total         = $this->input->post('ingreso_monto');
+                $factura_numero        = $dosificacion[0]['dosificacion_numfact']+1;
+                $factura_autorizacion  = $dosificacion[0]['dosificacion_autorizacion'];
+                $factura_llave         = $dosificacion[0]['dosificacion_llave'];
+                $factura_fechalimite   = $dosificacion[0]['dosificacion_fechalimite'];
+                $factura_codigocontrol = $this->codigo_control($factura_llave, $factura_autorizacion, $factura_numero, $factura_nit, $factura_fechaventa, $factura_total);
+                $factura_leyenda1       = $dosificacion[0]['dosificacion_leyenda1'];
+                $factura_leyenda2       = $dosificacion[0]['dosificacion_leyenda2'];
+                $factura_nitemisor     = $dosificacion[0]['dosificacion_nitemisor'];
+                $factura_sucursal      = $dosificacion[0]['dosificacion_sucursal'];
+                $factura_sfc           = $dosificacion[0]['dosificacion_sfc'];
+                $factura_actividad     = $dosificacion[0]['dosificacion_actividad'];
+
+                $sql = "update dosificacion set dosificacion_numfact = ".$factura_numero;
+                $this->Ingreso_model->ejecutar($sql);
+                             
+                $sql = "insert into factura(estado_id, ingreso_id, factura_fechaventa, 
+                    factura_fecha, factura_hora, factura_subtotal, 
+                    factura_ice, factura_exento, factura_descuento, factura_total, 
+                    factura_numero, factura_autorizacion, factura_llave, 
+                    factura_fechalimite, factura_codigocontrol, factura_leyenda1, factura_leyenda2,
+                    factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
+                    usuario_id, tipotrans_id, factura_efectivo, factura_cambio) value(".
+                    $estado_id.",".$ingreso_id.",'".$factura_fechaventa."',".
+                    $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
+                    $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
+                    $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
+                    $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
+                    $factura_nit.",'".$factura_razonsocial."','".$factura_nitemisor."','".
+                    $factura_sucursal."','".$factura_sfc."','".$factura_actividad."',".
+                    $usuario_id.",1,".$venta_efectivo.",0)";
+
+                $factura_id = $this->Ingreso_model->ejecutar($sql);
+               
+            
+            $producto_id = 0;
+            $cantidad = 1;
+            $detallefact_codigo = "-";
+            $detallefact_cantidad = $cantidad;
+            $detallefact_descripcion = $this->input->post('ingreso_concepto');
+            $unidad = "";
+            
+            $precio = $this->input->post('ingreso_monto');
+            $detallefact_precio = $precio;
+            $detallefact_subtotal =  $precio;
+            $detallefact_descuento = 0;
+            $detallefact_total = $factura_subtotal;
+            $detallefact_preferencia =  "";
+            $detallefact_caracteristicas = "";
+            
+            $sql =  "insert into detalle_factura(
+            producto_id,
+            factura_id,
+            detallefact_codigo,
+            detallefact_unidad,
+            detallefact_cantidad,            
+            detallefact_descripcion,
+            detallefact_precio,
+            detallefact_subtotal,
+            detallefact_descuento,
+            detallefact_total,                
+            detallefact_preferencia,
+            detallefact_caracteristicas)
+            
+            value(
+            ".$producto_id.",
+            ".$factura_id.",
+            '".$detallefact_codigo."',
+            '".$unidad."',
+            ".$detallefact_cantidad.",            
+            '".$detallefact_descripcion."',
+            ".$detallefact_precio.",
+            ".$detallefact_subtotal.",
+            ".$detallefact_descuento.",
+            ".$detallefact_total.",                
+            '".$detallefact_preferencia."',
+            '".$detallefact_caracteristicas."')";
+
+            $this->Ingreso_model->ejecutar($sql);           
+       
+        }
             redirect('ingreso/index');
            
         }
@@ -126,6 +229,21 @@ class Ingreso extends CI_Controller{
         }
             }
             
+    }
+
+    function codigo_control($dosificacion_llave, $dosificacion_autorizacion, $dosificacion_numfact, $nit,$fecha_trans, $monto)
+    {
+
+        //include 'ControlCode.php';
+
+        $code = $this->controlcode->generate($dosificacion_autorizacion,//Numero de autorizacion
+                                                   $dosificacion_numfact,//Numero de factura
+                                                   $nit,//Número de Identificación Tributaria o Carnet de Identidad
+                                                   str_replace('-','',$fecha_trans),//fecha de transaccion de la forma AAAAMMDD
+                                                   $monto,//Monto de la transacción
+                                                   $dosificacion_llave//Llave de dosificación
+                        );        
+         return $code;
     }
 
     /*

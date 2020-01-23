@@ -51,15 +51,17 @@ class Ingreso_model extends CI_Model
         
         $ingresos = $this->db->query("
             SELECT
-                i.*, u.*
+                i.*, u.*, f.*
 
             FROM
-                ingresos i, usuario u
+                ingresos i
+            LEFT JOIN usuario u on i.usuario_id=u.usuario_id
+            LEFT JOIN  factura f on i.ingreso_id=f.ingreso_id
 
             WHERE
-                i.usuario_id = u.usuario_id
+                1=1
 
-            ORDER BY `ingreso_id` DESC
+            ORDER BY `ingreso_fecha` DESC
 
             " . $limit_condition . "
         ")->result_array();
@@ -101,16 +103,17 @@ class Ingreso_model extends CI_Model
 
        $ingreso = $this->db->query("
         SELECT
-               i.*, u.*
+               i.*, u.*, f.*
             FROM
-                ingresos i, usuario u
+                ingresos i
+            LEFT JOIN usuario u on i.usuario_id=u.usuario_id
+            LEFT JOIN  factura f on i.ingreso_id=f.ingreso_id
             WHERE
-                i.usuario_id = u.usuario_id
-                
+                1=1
                
                 ".$condicion." 
                 
-            ORDER BY i.ingreso_fecha DESC limit 100
+            ORDER BY i.ingreso_fecha DESC limit 1000
         "
         )->result_array();
 
@@ -156,5 +159,11 @@ class Ingreso_model extends CI_Model
         {
             return "Error occuring while deleting ingreso";
         }
+    }
+
+    function ejecutar($sql){
+         
+        $this->db->query($sql);
+        return $this->db->insert_id();
     }
 }
