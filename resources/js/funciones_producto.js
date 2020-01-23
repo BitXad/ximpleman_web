@@ -131,7 +131,11 @@ function tablaresultadosproducto(limite)
                         html += mimagen;
                         html += "</div>";
                         html += "<div style='padding-left: 4px'>";
-                        html += "<b id='masgrande'><font size='3' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
+                        var tamaniofont = 3;
+                        if(registros[i]["producto_nombre"].length >50){
+                            tamaniofont = 1;
+                        }
+                        html += "<b id='masgrande'><font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
                         html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
                         if(registros[i]["destino_id"] > 0){
                                 html +="<br><b>DESTINO:</b> "+registros[i]['destino_nombre'];
