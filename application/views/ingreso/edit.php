@@ -28,20 +28,8 @@
 									<label for="ingreso_moneda" class="control-label">Moneda</label>
 									<div class="form-group">
 										<select name="ingreso_moneda" class="form-control" required>
-											<option value="">- MONEDA -</option>
-											<?php 
-											$ingreso_moneda_values = array(
-						'Bs'=>'Bs',
-						'USD'=>'USD',
-					);
-
-											foreach($ingreso_moneda_values as $value => $display_text)
-											{
-												$selected = ($value == $ingreso['ingreso_moneda']) ? ' selected="selected"' : "";
-
-												echo '<option value="'.$value.'" '.$selected.'>'.$display_text.'</option>';
-											} 
-											?>
+											<option value="Bs">- Bs -</option>
+											
 										</select>
 									</div>
 								</div>
