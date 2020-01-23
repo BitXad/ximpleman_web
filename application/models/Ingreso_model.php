@@ -51,7 +51,7 @@ class Ingreso_model extends CI_Model
         
         $ingresos = $this->db->query("
             SELECT
-                i.*, u.*, f.*
+                i.*, u.*, f.ingreso_id as 'ingres', f.factura_id
 
             FROM
                 ingresos i
@@ -103,7 +103,7 @@ class Ingreso_model extends CI_Model
 
        $ingreso = $this->db->query("
         SELECT
-               i.*, u.*, f.*
+               i.*, u.*, f.ingreso_id as 'ingres', f.factura_id
             FROM
                 ingresos i
             LEFT JOIN usuario u on i.usuario_id=u.usuario_id

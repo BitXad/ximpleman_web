@@ -20,13 +20,13 @@
 									<input type="text" name="egreso_nombre" value="<?php echo ($this->input->post('egreso_nombre') ? $this->input->post('egreso_nombre') : $egreso['egreso_nombre']); ?>" class="form-control" id="egreso_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  required/>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<label for="egreso_monto" class="control-label">Monto</label>
 								<div class="form-group">
 									<input type="number" step="any" min="0" name="egreso_monto" value="<?php echo ($this->input->post('egreso_monto') ? $this->input->post('egreso_monto') : $egreso['egreso_monto']); ?>" class="form-control" id="egreso_monto" required/>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-2">
 									<label for="egreso_moneda" class="control-label">Moneda</label>
 									<div class="form-group">
 										<select name="egreso_moneda" class="form-control" required>
@@ -58,14 +58,14 @@
 								</div>
 							</div>
 							
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<label for="egreso_numero" class="control-label">Numero de egreso</label>
 								<div class="form-group">
 									<input type="text" readonly="readonly" name="egreso_numero" value="<?php echo ($this->input->post('egreso_numero') ? $this->input->post('egreso_numero') : $egreso['egreso_numero']); ?>" class="form-control" id="egreso_numero" required />
 								</div>
 							</div>
 							<?php  if ($tipousuario_id==1) { ?>
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<label for="egreso_fecha" class="control-label">Fecha</label>
 								<div class="form-group">
 									<input type="datetime" name="egreso_fecha" value="<?php echo ($this->input->post('egreso_fecha') ? $this->input->post('egreso_fecha') : $egreso['egreso_fecha']); ?>" class="form-control" id="egreso_fecha" required />

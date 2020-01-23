@@ -18,13 +18,13 @@
 									<input type="text" name="ingreso_nombre" value="<?php echo ($this->input->post('ingreso_nombre') ? $this->input->post('ingreso_nombre') : $ingreso['ingreso_nombre']); ?>" class="form-control" id="ingreso_nombre" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus required/>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<label for="ingreso_monto" class="control-label">Monto</label>
 								<div class="form-group">
 									<input type="number" step="any" min="0" name="ingreso_monto" value="<?php echo ($this->input->post('ingreso_monto') ? $this->input->post('ingreso_monto') : $ingreso['ingreso_monto']); ?>" class="form-control" id="ingreso_monto" required/>
 								</div>
 							</div>
-							<div class="col-md-4">
+							<div class="col-md-2">
 									<label for="ingreso_moneda" class="control-label">Moneda</label>
 									<div class="form-group">
 										<select name="ingreso_moneda" class="form-control" required>
@@ -57,7 +57,7 @@
 								</div>
 							</div>
 							
-							<div class="col-md-4">
+							<div class="col-md-2">
 								<label for="ingreso_numero" class="control-label">Numero de Ingreso</label>
 								<div class="form-group">
 									<input type="text" readonly="readonly" name="ingreso_numero" value="<?php echo ($this->input->post('ingreso_numero') ? $this->input->post('ingreso_numero') : $ingreso['ingreso_numero']); ?>" class="form-control" id="ingreso_numero" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  required />
