@@ -1,5 +1,5 @@
 <!----------------------------- script buscador --------------------------------------->
-<script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/cliente_print.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -33,12 +33,9 @@
     #masg{
         font-size: 12px;
     }
-    td div div{
-        
-    }
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/servicio_reportediax.css'); ?>" rel="stylesheet">
+<link href="<?php //echo base_url('resources/css/servicio_reportediax.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
@@ -164,7 +161,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2" hidden>
                 <div class="box-tools">
                     <select name="prevendedor_id" class="btn-primary btn-sm btn-block" id="prevendedor_id" onchange="tablaresultadoscliente(2)">
                         <option value="" disabled selected >-- USUARIOS --</option>
@@ -191,18 +188,13 @@
     
     <!---------------- BOTONES --------->
     <div class="col-md-4">
-        
-            <div class="box-tools text-center">
-                <a href="<?php echo base_url('cliente/add/'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Cliente"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
-                <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="mostrar_all_clientes()" title="Mostrar a todos los Clientes" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
-                <?php
-                if($rol[97-1]['rolusuario_asignado'] == 1){ ?>
-                <a onclick="imprimir_cliente()" class="btn btn-info btn-foursquarexs" title="Imprimir lista de Clientes"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
-                <a href="<?php echo base_url('cliente/clienteprint'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Imprimir lista de Clientes con detalle resumido"><font size="5"><span class="fa fa-print"></span></font><br><small>Resumen</small></a>
-                <a href="<?php echo base_url('cliente/mapa_cliente'); ?>" class="btn btn-facebook btn-foursquarexs" title="Mostrar mapa de clientes"><font size="5"><span class="fa fa-map"></span></font><br><small>&nbsp;&nbsp;Mapa&nbsp;&nbsp;&nbsp;</small></a>
-                <?php } ?>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
-    </div>
+        <div class="box-tools text-center">
+            <?php
+            if($rol[97-1]['rolusuario_asignado'] == 1){ ?>
+            <a onclick="imprimir_cliente()" class="btn btn-success btn-foursquarexs" title="Imprimir lista de Clientes"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+            <a onclick="window.close();" style="width: 70px; height: 68px" class="btn btn-danger btn-foursquarexs" title="Cerrar Pestaña"><font size="5"><span class="fa fa-close"></span></font><br><small></small></a>
+            <?php } ?>
+        </div>
     </div>
     <!---------------- FIN BOTONES --------->
     
@@ -224,17 +216,10 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
-                        <th>Nombre</th>
-                        <th>Negocio</th>
-                        <!--<th>Dirección</th>-->
-                        <th class="no-print">Map</th>
-<!--                        <th>Email</th>-->
-                        <!--<th>Aniversario</th>-->
-<!--                        <th>Tipo</th>-->
-                        <!--<th>Categoria</th>-->
-                        <th>Estado</th>
-                        <!--<th>Estado</th>-->
-                        <th class="no-print"></th>
+                        <th>NOMBRE</th>
+                        <th>CODIGO</th>
+                        <th>DIRECCION</th>
+                        <th>TELEFONO</th>
                     </tr>
                     <tbody class="buscar" id="tablaresultados">
                     
