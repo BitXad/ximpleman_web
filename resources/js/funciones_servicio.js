@@ -1919,7 +1919,7 @@ function mostrardetalleserv(serv_id){
                         res += "<div class='modal-content'>";
                         res += "<div class='modal-header text-center' style='font-size:14px;'>";
                         res += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        res += "INFORMACION DEL SERVICO N° "+registros[i]['servicio_id'];
+                        res += "INFORMACION DEL SERVICIO N° "+registros[i]['servicio_id'];
                         res += "<div class='text-center'><span style='font-size: 12px'> DE: "+registros[i]['cliente_nombre']+"</span>";
                         var cliente_telef = "";
                         var cliente_celu = "";
