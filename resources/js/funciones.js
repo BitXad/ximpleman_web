@@ -1931,13 +1931,13 @@ function registrarventa(cliente_id)
     var venta_numeroventa = 0;
     var venta_tipodoc = 0;
     var entrega_id = 1;
+    var entregaestado_id = 1;
 
 
     if (parametro_modulorestaurante==1){
         venta_numeroventa = numero_venta();
     }
     
-
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
     if( facturado == 1){     
@@ -1950,7 +1950,7 @@ function registrarventa(cliente_id)
                 +","+moneda_id+","+estado_id+",'"+venta_fecha+"','"+venta_hora+"',"+venta_subtotal
                 +","+venta_descuento+","+venta_total+","+venta_efectivo+","+venta_cambio+","+venta_glosa
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
-                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id;
+                +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id;
         
      //alert(sql); 
     if (tipo_transaccion==2){
@@ -3184,7 +3184,7 @@ function pedidos_pendientes()
 
                         html += "     <td>";
                         //html += "         <a href='<?php echo site_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>' class='btn btn-success btn-sm'><span class='fa fa-cubes' title='Ver detalle del pedido'></span></a>";
-                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuario_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
+                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuarioprev_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
                         html += "     </td>";
                         html += " </tr>";
                     

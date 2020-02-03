@@ -195,12 +195,14 @@ function asignar()
     var usuario = document.getElementById('inv_usu').value;
     var fecha = document.getElementById('fecha').value;
     var hora = document.getElementById('hora').value;
+    var tipousu = document.getElementById('tipousu').value;
  document.getElementById('asigloader').style.display = 'block';
  document.getElementById('botoness').style.display = 'none';
    // alert(usuario_id[0]['value']);
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);
-    for (var i=0; i<usuario_id.length; i++)
+    if (tipousu == 1) {
+  for (var i=0; i<usuario_id.length; i++)
     {
       if (i==0)
       {
@@ -213,6 +215,21 @@ function asignar()
       }
     }
     filtro +=")";
+   }else{
+      for (var i=0; i<usuario_id.length; i++)
+    {
+      if (i==0)
+      {
+        filtro = " and date(venta_fecha) >= '"+fecha_desde+"'  and  date(venta_fecha) <='"+fecha_hasta+
+            "' and (v.usuarioprev_id = "+usuario_id[i]['value'];
+      }
+      else
+      {
+        filtro += "  or v.usuarioprev_id = "+usuario_id[i]['value'];
+      }
+    }
+    filtro +=")";
+   }
 
     $.ajax({url: controlador,
            type:"POST",

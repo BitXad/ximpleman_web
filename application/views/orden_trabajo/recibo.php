@@ -1,4 +1,18 @@
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<style type="text/css">
+  @media print {
+     #mitabla th{
+    padding: 4px !important;
+    font-size: 14px !important;
+    border: 1px solid black !important;
+}
+   #mitabla td{
+    padding: 3px !important;
+    font-size: 12px !important;
+    border: 1px solid black !important;
+}
+}
+</style>
 <table class="table" style="width: 100%; padding: 0;" >
     <tr>
         <td style="width: 25%; padding: 0; line-height:10px;" >
@@ -22,16 +36,24 @@
             <center>
             
                 
-                <font size="3" face="arial"><b>ORDEN DE TRABAJO</b></font> <br>
-                <font size="3" face="arial"><b>Nº 00<?php echo $Orden_trabajo['orden_numero']; ?></b></font> <br>
+                <font size="4" face="arial"><b>ORDEN DE TRABAJO</b></font> <br>
+                <font size="5" face="arial"><b>Nº 00<?php echo $Orden_trabajo['orden_numero']; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> <br>
+                <select style="text-align: center;">
+                  <option></option>
+                  <option>CORTE</option>
+                  <option>PULIDO</option>
+                  <option>ENTRANTE</option>
+                  <option>TEMPLADO</option>
+                  <option>DESPACHO</option>
+                </select>
 
             </center>
         </td>
-        <td style="width: 25%; padding: 0; line-height:10px;" >
+        <td style="width: 25%; padding: 0; line-height:15px;" >
                 
-                         <br><br>
-                              <br><font size="1" face="Arial"><b>CLIENTE: </b><?php echo $Orden_trabajo['cliente_nombre'];?><br>
+                         
+                              <font size="3" face="Arial"><b>CLIENTE: </b><?php echo $Orden_trabajo['cliente_nombre'];?><br>
                           <b>TELEFONOS: </b><?php echo $Orden_trabajo['cliente_telefono'];?><br>
                           <b>NOTA: </b><?php echo $Orden_trabajo['orden_observacion'];?><br>
                           <b>FECHA PEDIDO: </b><?php echo date('d/m/Y',strtotime($Orden_trabajo['orden_fecha'])) ; ?><br>
@@ -91,7 +113,7 @@
 	</tr>
 </table>
 </div>
-<div class="box-body table-responsive">
+<div class="box-body table-responsive" style="padding-left: 10%">
 <table class="table table-striped table-condensed" id="mitabla">
 <tr>
 	<th colspan="3">DETALLE DE PEDIDO</th>
