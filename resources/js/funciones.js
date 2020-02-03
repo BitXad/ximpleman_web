@@ -1937,7 +1937,6 @@ function registrarventa(cliente_id)
         venta_numeroventa = numero_venta();
     }
     
-
     document.getElementById('boton_finalizar').style.display = 'none'; //mostrar el bloque del loader
    
     if( facturado == 1){     
@@ -3184,7 +3183,7 @@ function pedidos_pendientes()
 
                         html += "     <td>";
                         //html += "         <a href='<?php echo site_url('pedido/pedidoabierto/'.$p[i]['pedido_id']); ?>' class='btn btn-success btn-sm'><span class='fa fa-cubes' title='Ver detalle del pedido'></span></a>";
-                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuario_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
+                        html += "         <button  class='btn btn-warning btn-sm' data-dismiss='modal' onclick='pasaraventas("+p[i]['pedido_id']+","+p[i]['usuarioprev_id']+","+p[i]['cliente_id']+")'><span class='fa fa-arrow-down' title='Cargar pedido a ventas'></span> </button>";
                         html += "     </td>";
                         html += " </tr>";
                     

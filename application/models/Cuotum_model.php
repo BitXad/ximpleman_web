@@ -80,6 +80,27 @@ class Cuotum_model extends CI_Model
         return $credito;
     }
         
+    function get_pendientes($credito_id)
+    {
+        $credito = $this->db->query("
+            SELECT
+                k.*
+
+            FROM
+               cuota k
+            WHERE
+             
+                 k.credito_id = ".$credito_id." 
+                 and k.estado_id = 8
+
+            ORDER BY `cuota_id` ASC
+
+          
+        ")->result_array();
+
+        return $credito;
+    }
+
     function get_all_cuentas($credito_id)
     {
         

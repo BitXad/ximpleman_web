@@ -240,7 +240,7 @@ class Pedido_model extends CI_Model
         $sql = "select 
                 p.pedido_id,p.pedido_fecha,p.pedido_fechaentrega,p.pedido_glosa,
                 p.pedido_horaentrega, p.pedido_latitud, p.pedido_longitud, p.estado_id,
-                p.pedido_total, p.pedido_subtotal, p.pedido_descuento,
+                p.pedido_total, p.pedido_subtotal, p.pedido_descuento,p.usuario_id as usuarioprev_id,
                 c.cliente_id,c.tipocliente_id,c.categoriaclie_id,c.usuario_id,
                 c.cliente_codigo,c.cliente_nombre,c.cliente_ci,c.cliente_direccion,c.cliente_telefono,
                 c.cliente_celular,c.cliente_foto,c.cliente_email,c.cliente_nombrenegocio,
