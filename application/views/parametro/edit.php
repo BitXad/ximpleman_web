@@ -255,6 +255,15 @@
                             <input type="number" min="0" name="parametro_diasvenc" value="<?php echo ($this->input->post('parametro_diasvenc') ? $this->input->post('parametro_diasvenc') : $parametro['parametro_diasvenc']); ?>" class="form-control" id="parametro_diasvenc"  />
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_notaentrega" class="control-label">NOTA DE ENTREGA</label>
+                        <div class="form-group">
+                            <select  name="parametro_notaentrega" class="form-control" id="parametro_notaentrega">
+                                <option value="1" <?php if($parametro['parametro_notaentrega']=='1') echo 'selected'; ?> >NOTA DE ENTREGA N° 1</option>
+                                <option value="2" <?php if($parametro['parametro_notaentrega']=='2') echo 'selected'; ?> >NOTA DE ENTREGA N° 2</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer text-center">

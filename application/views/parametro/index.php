@@ -97,7 +97,7 @@ break;
                     </tr>
                         
                     <tr>
-                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="2" ><u>VENTAS</u></th>
+                        <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="4" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MODO VENTAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMPRIMIR COMANDA</th>
@@ -133,7 +133,19 @@ break;
                         <td><?php  if ($p['parametro_agruparitems']==0){ echo 'NO'; }else{ echo'SI'; } ?></td>
                         <td><?php echo $p['parametro_diasvenc']; ?></td>
                     </tr>
-                   
+                    <tr>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">NOTA DE ENTREGA</th>
+                    </tr>
+                    <tr>
+                        <td><?php
+                            if($p['parametro_notaentrega'] == 2){
+                                echo 'NOTA DE ENTREGA 2';
+                            }else{
+                                echo 'NOTA DE ENTREGA 1';
+                            }
+                            ?>
+                        </td>
+                    </tr>
                     
                   
                     <?php } ?>
