@@ -63,10 +63,10 @@ border-bottom : 1px solid #aaa;
     
 </div>
  
-<div class="col-xs-10" style="padding: 0;">
+<div style="padding: 0;">
 
 
-       <table class="table table-striped table-condensed"  style="width: <?php echo $ancho;?>cm;" >
+       <table class="table table-striped table-condensed"   style="height: 7.5cm;width: <?php echo $ancho;?>cm; margin-bottom: 0px">
            <?php $cont = 0;
                  $cantidad = 0;
                  $total_descuento = 0;
@@ -79,8 +79,11 @@ border-bottom : 1px solid #aaa;
                         $total_final += $d['detalleven_total']; 
                         ?>
            <tr>
-                <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0"><font style="size:5px; font-family: arial narrow;"> (<?php echo $d['detalleven_codigo']; ?>) <?php echo $d['producto_nombre'];?>
+                
+                <td style="padding: 0px; width: 2cm" ><font style="size:5px; font-family: arial narrow;"> <?php echo $d['detalleven_codigo']; ?></font></td>
+                <td style="padding: 0px; width: 1.5cm"><font style="size:5px; font-family: arial narrow;"> </font></td>
+                <td style="padding: 0px; width: 10cm" >
+                    <font style="size:5px; font-family: arial narrow; width: 10.4cm">  <?php echo $d['producto_nombre'];?>
                         <?php
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];
@@ -92,56 +95,44 @@ border-bottom : 1px solid #aaa;
                             echo  "<br>".$caracteristicas;
                         
                         ?>
-
+                    </font>
                 </td>
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td align="center" style="padding: 0px; width: 1.5cm"><?php echo $d['detalleven_cantidad']; ?></td>
+                <td align="right" style="padding: 0px; width: 1.5cm"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0px; width: 2.5cm"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                
+
            </tr>
            <?php } ?>
-           <tr>
-               <td></td>
-           </tr>
+           <?php $registros=sizeof($detalle_venta); 
+                      $filas=30-$registros;
+                 for ($i=1; $i < $filas; $i++) {  ?>
+                    <tr></tr>
+                <?php } ?> 
+           
        </table>
     
-<table class="table" style="max-width: <?php echo $ancho;?>cm;">
-    <tr style="border-top-style: solid; background-color: #aaa; border-color: black; ">
+<table class="table" style="width: <?php echo $ancho;?>cm;padding: 0px">
+    <tr style="padding: 0px">
         
-        <td align="left" style="background-color: #aaa !important; -webkit-print-color-adjust: exact; line-height: 10px;">
-                            
-                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
-                COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
-                TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
-                CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
-                SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>                
+        <td align="left" >
+                           
         </td>
-        <td align="right" style="background-color: #aaa !important; -webkit-print-color-adjust: exact;">
-
-                    <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
+        <td align="center" style="padding: 0px">
+            <font size="1" face="arial narrow">
+                <?php echo "".num_to_letras($venta[0]['venta_total']); ?><br>            
+            </font>
 
         </td>
-        <td align="right"  style="padding: 0;  line-height: 10px; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
+        <td align="right"  style="padding: 0px;">
             
-                
-            <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
-            </font>
-            
-
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
-            </font>
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
+                <?php echo "".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
             </b>
             </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
-            </font>
-            <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
-            </font>
+            
+            
             
             
         </td>          
@@ -155,23 +146,6 @@ border-bottom : 1px solid #aaa;
     
 </table>
 
-<table class="table" style="width: <?php echo $ancho;?>cm;">
-        <tr>
-            <td  style="padding: 0">
-                <center>
-                    __________________________<br>
-                            ENTREGE CONFORME
-                </center>  
-            </td>
-            <td style="padding: 0">
-            </td>
-            <td  style="padding: 0">
-                <center>
-                    __________________________<br>
-                            RECIBI CONFORME
-                </center>  
-            </td>
-        </tr>
-    </table>
+
 
 </div>
