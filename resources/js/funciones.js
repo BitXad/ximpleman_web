@@ -2130,14 +2130,28 @@ function ventas_por_fecha()
 //************* inicio  funciones  para emitir factura **************
 
 function cargar_factura(factura){
-    //alert(factura.cliente_nombre);
-    
-    $("#generar_nit").val(factura.cliente_nit);
-    $("#generar_razon").val(factura.cliente_razon);
-    $("#generar_detalle").val("PRODUCTOS VARIOS");
-    $("#generar_venta_id").val(factura.venta_id);
-    $("#generar_monto").val(Number(factura.venta_total).toFixed(2));
-    $("#boton_modal_factura").click();
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"venta/cargar_detalleventa";
+    var venta_id = factura.venta_id;
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{venta_id:venta_id}, 
+            success:function(resultado){
+                var registros =  JSON.parse(resultado);
+                
+                $("#generar_nit").val(factura.cliente_nit);
+                $("#generar_razon").val(factura.cliente_razon);
+                $("#generar_detalle").val("PRODUCTOS VARIOS");
+                $("#generar_venta_id").val(factura.venta_id);
+                $("#generar_monto").val(Number(factura.venta_total).toFixed(2));
+                $("#boton_modal_factura").click();
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    })
     
 }
 

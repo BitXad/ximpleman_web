@@ -274,7 +274,7 @@ function tablacuentas(filtro)
                         
                         } else {    
                         html += "<td>"+registros[i]['perro']+"</td>";
-                        tml += "<td style='text-align: center'>"+registros[i]['credito_id']+"</td>";
+                        html += "<td style='text-align: center'>"+registros[i]['credito_id']+"</td>";
                         html += "<td style='text-align: center'>Servicio: "+registros[i]['servicio_id']+"</td>";
                         }
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";

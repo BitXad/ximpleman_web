@@ -17,7 +17,7 @@
                     
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(0, 0, 255, 0.3);" rowspan="2" ><u>CONFIGURACION</u></th>
-						<th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. EGRESO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. EGRESO</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. INGRESO</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No.COPIAS FACTURAS</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TIPO DE IMPRESORA</th>
@@ -138,7 +138,9 @@ break;
                     </tr>
                     <tr>
                         <td><?php
-                            if($p['parametro_notaentrega'] == 2){
+                            if($p['parametro_notaentrega'] == 3){
+                                echo 'NOTA DE ENTREGA 3';
+                            }else if($p['parametro_notaentrega'] == 2){
                                 echo 'NOTA DE ENTREGA 2';
                             }else{
                                 echo 'NOTA DE ENTREGA 1';

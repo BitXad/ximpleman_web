@@ -52,7 +52,7 @@
 <h3 class="box-title">Ventas</h3>
             	<div class="box-tools">                    
                     <?php if($rolusuario[23-1]['rolusuario_asignado'] == 1){ ?>
-                    <select  class="btn btn-facebook btn-sm" id="select_ventas" onclick="buscar_ventas()">
+                    <select  class="btn btn-facebook btn-sm" id="select_ventas" onchange="buscar_ventas()">
 <!--                        <option value="1">-- SELECCIONE UNA OPCION --</option>-->
                         <option value="1">Ventas de Hoy</option>
                         <option value="2">Ventas de Ayer</option>

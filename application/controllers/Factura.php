@@ -1001,20 +1001,24 @@ class Factura extends CI_Controller{
     {
         if($this->acceso(21)){
         //**************** inicio contenido ***************            
-                
             $parametros = $this->Parametro_model->get_parametros();
-
             if (sizeof($parametros)>0){
-                
-                if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
-                    $this->recibo_boucher($venta_id);
-                else
-                    $this->recibo_carta($venta_id);
+                if ($parametros[0]['parametro_notaentrega']==1){
+                    if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                        $this->recibo_boucher($venta_id);
+                    else
+                        $this->recibo_carta($venta_id);
+                }elseif($parametros[0]['parametro_notaentrega']==2){
+                    if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                        $this->notae_boucher($venta_id);
+                    else
+                        $this->notae_carta($venta_id);
+                }else{
+                    $this->notapreimpreso_carta($venta_id);
+                }
             }
-
         //**************** fin contenido ***************
-        }   
-            
+        }
     }   
     
     /*
@@ -1067,7 +1071,64 @@ class Factura extends CI_Controller{
         }    
         
     }
-    
-    
-    
+    /* nota de entrega con logo empresa y direccion de cliente.. */
+    function notae_carta($venta_id)
+    {
+        if($this->acceso(21)){
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Recibo";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/notae_carta';
+        $this->load->view('layouts/main',$data);
+        }
+    }
+    /* nota de entrega con logo empresa y direccion de cliente.. */
+    function notae_boucher($venta_id)
+    {
+        if($this->acceso(21)){
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Recibo";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/notae_boucher';
+        $this->load->view('layouts/main',$data);
+        }
+    }
+    /* nota de entrega en hojas preimpresas.... */
+    function notapreimpreso_carta($venta_id)
+    {
+        if($this->acceso(21)){
+        $usuario_id = $this->session_data['usuario_id'];
+        
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
+        //$data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['page_title'] = "Recibo";
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+   
+        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+  
+        $data['_view'] = 'factura/notapreimpreso_carta';
+        $this->load->view('layouts/main',$data);
+        }
+    }
 }
