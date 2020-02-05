@@ -1518,7 +1518,7 @@ function modificarproveedor()
     SET
     
     
-    proveedor_nit = ".$nit.",
+    proveedor_nit = '".$nit."',
     proveedor_razon = '".$razon."',
     proveedor_codigo = '".$codigo."',
     proveedor_autorizacion = '".$autorizacion."'       
