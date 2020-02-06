@@ -124,7 +124,7 @@ function fechadeingreso(filtro)
                         html += "<td align='right'>"+Number(registros[i]["ingreso_monto"]).toFixed(2)+"</td>"; 
                         html += "<td>"+registros[i]["ingreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
-                        html += "<td no-print class-''><a href='"+base_url+"ingreso/pdf/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
+                        html += "<td  class='no-print'><a href='"+base_url+"ingreso/pdf/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                         html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["ingreso_id"]+"' title='Bouche' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
                         if (registros[i]["factura_id"]>0) {
                         html += "<a href='"+base_url+"factura/factura_boucher_id/"+registros[i]["factura_id"]+"' title='Factura' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></a>";

@@ -253,6 +253,24 @@ class Cuotum_model extends CI_Model
         $num = $this->db->query("SELECT * FROM parametros")->result_array();
         return $num;
     }  
+
+    function interes($credito_id)
+    {
+        
+     
+        $credito = $this->db->query("
+            SELECT
+                credito_interesproc
+
+            FROM
+                credito
+
+            WHERE
+                `credito_id` = ?
+        ",array($credito_id))->row_array();
+
+        return $credito;
+    } 
     
     /*
      * function to update cuotum

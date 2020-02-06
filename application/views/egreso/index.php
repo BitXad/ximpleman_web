@@ -69,7 +69,7 @@
         
 </div>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
- <div class="col-md-6">
+ <div class="col-md-6 no-print">
              <div class="box-header">
                 <font size='4' face='Arial'><b>Egresos</b></font>
                 <br><font size='2' face='Arial' id="pillados"></font>

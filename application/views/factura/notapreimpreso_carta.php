@@ -2,148 +2,137 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 
-<style type="text/css">
-
-p {
-    font-family: Arial;
-    font-size: 7pt;
-    line-height: 120%;   /*esta es la propiedad para el interlineado*/
-    color: #000;
-    padding: 10px;
-}
-
-div {
-margin-top: 0px;
-margin-right: 0px;
-margin-bottom: 0px;
-margin-left: 10px;
-margin: 0px;
-}
-
-
-table{
-width : 7cm;
-margin : 0 0 0px 0;
-padding : 0 0 0 0;
-border-spacing : 0 0;
-border-collapse : collapse;
-font-family: Arial;
-font-size: 8pt;  
-
-td {
-border:hidden;
-}
-}
-
-td#comentario {
-vertical-align : bottom;
-border-spacing : 0;
-}
-div#content {
-background : #ddd;
-font-size : 8px;
-margin : 0 0 0 0;
-padding : 0 5px 0 5px;
-border-left : 1px solid #aaa;
-border-right : 1px solid #aaa;
-border-bottom : 1px solid #aaa;
-}
-</style>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
+<!---<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">--->
 
 <!-------------------------------------------------------->
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"];
       $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
 ?>
+<style type="text/css">
+    #mitabla {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 9px;
+    border-collapse: collapse;
 
-<div style="padding-top: 5cm;">
+}
+
+#mitabla td {
+    border: 1px solid rgba(0,0,0,0);
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 4px;
+    padding-right: 4px;
     
+}
+</style>
+<div style="height: 3.2cm;">
+     <table id="mitabla" style="margin-bottom: 0px;">
+        <tr style="height: 0.8cm"></tr>
+        <tr style="padding-top: 0px">
+            <td style="width: 12.4cm;"></td>
+            <td align="center" style="width: 1.3cm;font-size: 11px"><?php echo date( "d", strtotime($venta[0]["venta_fecha"]) ); ?> </td>
+            <td align="center" style="width: 1.3cm;font-size: 11px"><?php echo date( "m", strtotime($venta[0]["venta_fecha"]) ); ?> </td>
+            <td align="center" style="width: 1.3cm;font-size: 11px"><?php echo date( "Y", strtotime($venta[0]["venta_fecha"]) ); ?> </td>
+            
+            
+        </tr>
+
+</table>
 </div>
- 
-<div class="col-xs-10" style="padding: 0;">
+<div style="height: 1.5cm;">
+    <div style="padding-left: 0.2cm">
+       <table   id="mitabla" style="margin-bottom: 0px">
+        <tr>
+            <td style="width: 1.8cm;"></td>
+            <td style="width: 12.3cm;font-size: 11px"><?php echo $venta[0]["cliente_razon"]; ?> </td>
+            <td style="width: 2.5cm;"></td>
+            <td style="width: 2.5cm;font-size: 11px"><?php echo $venta[0]["cliente_telefono"]; ?> <?php echo $venta[0]["cliente_celular"]; ?> </td>
+        </tr>
+
+</table>
+</div>
+</div>
 
 
-       <table class="table table-striped table-condensed"  style="width: <?php echo $ancho;?>cm;" >
+<div  style="height: 7.8cm;padding-left: 0.4cm">
+       <table   id="mitabla" style="margin-bottom: 0px">
            <?php $cont = 0;
                  $cantidad = 0;
                  $total_descuento = 0;
                  $total_final = 0;
+                 $total_cajas = 0;
 
                  foreach($detalle_venta as $d){;
                         $cont = $cont+1;
                         $cantidad += $d['detalleven_cantidad'];
                         $total_descuento += $d['detalleven_descuento']; 
-                        $total_final += $d['detalleven_total']; 
+                        $total_final += $d['detalleven_total'];
+                        $num = $d['detalleven_preferencia'];
+                        $int = (int)$num;
+                        $total_cajas += $int;
                         ?>
            <tr>
-                <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0"><font style="size:5px; font-family: arial narrow;"> (<?php echo $d['detalleven_codigo']; ?>) <?php echo $d['producto_nombre'];?>
-                        <?php
+                
+                <td style="width: 2cm" ><?php echo $d['detalleven_codigo']; ?></td>
+                <td align="center" style="width: 1cm">
+                    <?php
                         $preferencia = $d['detalleven_preferencia'];
-                        $caracteristicas = $d['detalleven_caracteristicas'];
                         
                         if ($preferencia !="null" && $preferencia!='-')
-                            echo  " /".$preferencia;
-                        
-                        if ($caracteristicas!="null" && $caracteristicas!='-')
-                            echo  "<br>".$caracteristicas;
+                            echo  " ".$preferencia;
+                       
                         
                         ?>
-
                 </td>
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
-                <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td style="width: 10.8cm" ><?php echo $d['producto_nombre'];?></td>
+                <td align="center" style="width: 1.6cm"><?php echo $d['detalleven_cantidad']; ?></td>
+                <td align="right" style="width: 1.6cm"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
+                <td align="right" style="width: 2.4cm"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                
+
            </tr>
            <?php } ?>
-           <tr>
-               <td></td>
-           </tr>
+           <?php $registros=sizeof($detalle_venta); 
+                      $filas=25-$registros;
+                 for ($i=1; $i < $filas; $i++) {  ?>
+                    <tr></tr>
+                <?php } ?> 
+           
        </table>
-    
-<table class="table" style="max-width: <?php echo $ancho;?>cm;">
-    <tr style="border-top-style: solid; background-color: #aaa; border-color: black; ">
+ </div>
+<div class="box-body table-responsive" style="padding-left: 0.4cm">   
+<table   id="mitabla" style="padding: 0px">
+    <tr style="padding: 0px">
         
-        <td align="left" style="background-color: #aaa !important; -webkit-print-color-adjust: exact; line-height: 10px;">
-                            
-                USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b><br>
-                COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
-                TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b><br>
-                CUOTA INIC. Bs: <b><?php echo number_format($venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>
-                SALDO Bs: <b><?php echo number_format($venta[0]['venta_total']-$venta[0]['credito_cuotainicial'],2,'.',','); ?></b><br>                
+        <td style="width: 2cm" >
+                           
         </td>
-        <td align="right" style="background-color: #aaa !important; -webkit-print-color-adjust: exact;">
-
-                    <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
+        <td align="center" style="width: 1cm" >
+                       <?php echo "".number_format($total_cajas); ?>    
+        </td>
+        <td style="width: 1.3cm" >
+                           
+        </td>
+        <td style="width: 11.2cm" >
+            <font size="1" face="arial narrow">
+                <?php echo "".num_to_letras($venta[0]['venta_total']); ?>           
+            </font>
 
         </td>
-        <td align="right"  style="padding: 0;  line-height: 10px; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
+        <td style="width: 1.6cm" >
+                           
+        </td>
+        <td align="right" style="width:2.4cm;text-align: right">
             
-                
-            <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
-            </font>
-            
-
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
-            </font>
-            <font size="2">
+            <font size="1" face="arial narrow">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
+                <?php echo "".number_format($venta[0]['venta_total'] ,2,'.',','); ?>
             </b>
             </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
-            </font>
-            <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
-            </font>
-            
-            
         </td>          
     </tr>
 <!--
@@ -154,24 +143,7 @@ border-bottom : 1px solid #aaa;
     </tr>    -->
     
 </table>
-
-<table class="table" style="width: <?php echo $ancho;?>cm;">
-        <tr>
-            <td  style="padding: 0">
-                <center>
-                    __________________________<br>
-                            ENTREGE CONFORME
-                </center>  
-            </td>
-            <td style="padding: 0">
-            </td>
-            <td  style="padding: 0">
-                <center>
-                    __________________________<br>
-                            RECIBI CONFORME
-                </center>  
-            </td>
-        </tr>
-    </table>
-
 </div>
+
+
+
