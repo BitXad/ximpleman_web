@@ -2131,20 +2131,74 @@ function ventas_por_fecha()
 
 function cargar_factura(factura){
     var base_url = document.getElementById("base_url").value;
-    var controlador = base_url+"venta/cargar_detalleventa";
+    var controlador = base_url+"detalle_venta/get_detalle_insertar";
     var venta_id = factura.venta_id;
     $.ajax({url: controlador,
             type: "POST",
             data:{venta_id:venta_id}, 
             success:function(resultado){
                 var registros =  JSON.parse(resultado);
-                
+                if (registros != null){
+                    $("#boton_modal_factura").click();
+                    cargar_factura2(venta_id);
+                    /*html = "";
+                    html += "<table>";
+                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT</b></td>";
+                    html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>TOTAL</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    html += "</tr>";
+                    var cont = 0;
+                    var cantidad = 0;
+                    var total_descuento = 0;
+                    var total_final = 0;
+                    for (var i=0; i< registros.length; i++){
+                        cont = cont+1;
+                        cantidad += registros[i]['detallefact_cantidad'];
+                        total_descuento += registros[i]['detallefact_descuento']; 
+                        total_final += registros[i]['detallefact_total'];
+                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
+                        html += "<td align='center' style='padding: 0;'>";
+                        html += "<font style='size:7px; font-family: arial'>";
+                        html += registros[i]['detallefact_cantidad'];
+                        html += "</font>";
+                        html += "</td>";
+                        html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
+                        html += "<font style='size:7px; font-family: arial;'> ";
+                        html += registros[i]['detallefact_descripcion'];
+                        if(registros[i]['detallefact_preferencia'].length>0 && registros[i]['detallefact_preferencia']!='null' && registros[i]['detallefact_preferencia']!='-' ){
+                            html += registros[i]['detallefact_preferencia']; }
+
+                        if(registros[i]['detallefact_caracteristicas'].length>0 && registros[i]['detallefact_caracteristicas']!='null' && registros[i]['detallefact_caracteristicas']!='-' ) {
+                            html += "<br>.nl2br("+registros[i]['detallefact_caracteristicas']+");"; }
+                        html += "</font>";
+                        html += "</td>";
+                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                        html += Number(registros[i]["detallefact_descuento"]).toFixed(2);
+                        html += "</font></td>";
+                        html += "<td></td>";
+                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                        html += Number(registros[i]["detallefact_subtotal"]).toFixed(2);
+                        html += "</font></td>";
+                        html += "<td></td>";
+                        html += "<td>&nbsp;";
+                        html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
+                        html += "</td>";
+                        html += "</tr>";
+                    }
+                    html += "</table>";
+                           
                 $("#generar_nit").val(factura.cliente_nit);
                 $("#generar_razon").val(factura.cliente_razon);
-                $("#generar_detalle").val("PRODUCTOS VARIOS");
+                $("#generar_detalle").html(html);
                 $("#generar_venta_id").val(factura.venta_id);
-                $("#generar_monto").val(Number(factura.venta_total).toFixed(2));
-                $("#boton_modal_factura").click();
+                $("#generar_monto").val(Number(factura.venta_total).toFixed(2));*/
+                //$("#boton_modal_factura").click();
+                }
             },
             error:function(resultado){
                 alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
@@ -2155,29 +2209,16 @@ function cargar_factura(factura){
     
 }
 
-function registrar_factura(){
+function registrar_factura(venta_id){
             
     var base_url = document.getElementById("base_url").value;
-    var controlador = base_url+"venta/generar_factura";
-     
-    var nit = document.getElementById("generar_nit").value;
-    var razon_social = document.getElementById("generar_razon").value;
-    var fecha_venta = fecha();
-    var detalle_factura = document.getElementById("generar_detalle").value;
-    var detalle_unidad = "UNIDAD";
-    var detalle_cantidad = "1";
-    var detalle_precio = document.getElementById("generar_monto").value;
-    var venta_id = document.getElementById("generar_venta_id").value;
-    var llave_foranea = "venta_id";
-    var llave_valor = venta_id;
-    
-    
-     
+    var nit   = document.getElementById("generar_nit").value;
+    var razon = document.getElementById("generar_razon").value;
+    var monto_factura = document.getElementById("generar_monto").value;
+    var controlador = base_url+"venta/generar_factura_detalle_aux";
     $.ajax({url: controlador,
             type: "POST",
-            data:{nit:nit,razon_social:razon_social,fecha_venta:fecha_venta,detalle_factura:detalle_factura,
-            detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad, detalle_precio:detalle_precio,venta_id:venta_id,
-            llave_foranea:llave_foranea, llave_valor:llave_valor}, 
+            data:{venta_id:venta_id, nit:nit, razon:razon, monto_factura:monto_factura}, 
             success:function(resultado){
 
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
@@ -3280,5 +3321,152 @@ function ordenes_pendientes()
         },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 
     });
+    
+}
+/* elimina un detalle de factura aux */
+function quitardetalle_aux(detallefact_id, venta_id){
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"detalle_venta/quitar_detalle_aux";
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{detallefact_id:detallefact_id}, 
+            success:function(resultado){
+                var registros =  JSON.parse(resultado);
+                if (registros != null){
+                    cargar_factura2(venta_id);
+                }
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    })
+    
+}
+function cargar_factura2(venta_id){
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"detalle_venta/get_detalle_factura_aux";
+    //$("#modalfactura").modal('hide');
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{venta_id:venta_id}, 
+            success:function(resultado){
+                var registros =  JSON.parse(resultado);
+                if (registros.length>0){
+                    html = "";
+                    html += "<table>";
+                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT</b></td>";
+                    html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>TOTAL</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    html += "</tr>";
+                    var cont = 0;
+                    var cantidad = 0;
+                    var total_descuento = 0;
+                    var total_final = 0;
+                    for (var i=0; i< registros.length; i++){
+                        cont = cont+1;
+                        cantidad += registros[i]['detallefact_cantidad'];
+                        total_descuento += registros[i]['detallefact_descuento']; 
+                        total_final += Number(registros[i]['detallefact_total']);
+                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
+                        html += "<td align='center' style='padding: 0;'>";
+                        html += "<font style='size:7px; font-family: arial'>";
+                        html += registros[i]['detallefact_cantidad'];
+                        html += "</font>";
+                        html += "</td>";
+                        html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
+                        html += "<font style='size:7px; font-family: arial;'> ";
+                        html += registros[i]['detallefact_descripcion'];
+                        if(registros[i]['detallefact_preferencia'].length>0 && registros[i]['detallefact_preferencia']!='null' && registros[i]['detallefact_preferencia']!='-' ){
+                            html += registros[i]['detallefact_preferencia']; }
+
+                        if(registros[i]['detallefact_caracteristicas'].length>0 && registros[i]['detallefact_caracteristicas']!='null' && registros[i]['detallefact_caracteristicas']!='-' ) {
+                            html += "<br>.nl2br("+registros[i]['detallefact_caracteristicas']+");"; }
+                        html += "</font>";
+                        html += "</td>";
+                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                        html += Number(registros[i]["detallefact_precio"]).toFixed(2);
+                        html += "</font></td>";
+                        html += "<td></td>";
+                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                        html += Number(registros[i]["detallefact_subtotal"]).toFixed(2);
+                        html += "</font></td>";
+                        html += "<td></td>";
+                        html += "<td>&nbsp;";
+                        html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
+                        html += "</td>";
+                        html += "</tr>";
+                    }
+                    html += "</table>";
+                           
+                    $("#generar_nit").val(registros[0]['cliente_nit']);
+                    $("#generar_razon").val(registros[0]['cliente_razon']);
+                    $("#generar_detalle").html(html);
+                    $("#generar_venta_id").val(registros[0]['venta_id']);
+                    $("#generar_monto").val(Number(total_final).toFixed(2));
+                    $("#botonaniadir").html("<a onclick='aniadirdetalleaux("+venta_id+")' class='btn btn-xs btn-success' class='form-control'><span class='fa fa-check-square-o'></span></a>");
+                    $("#registrar_factura").html("<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+venta_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
+                    
+                    /*if(click_show == 1){
+                        $("#boton_modal_factura").click();
+                    }else{
+                        $("#boton_modal_factura").modal('show');
+                    }*/
+                }else{
+                    $("#boton_modal_factura").click();
+                }
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    })
+    
+}
+
+function mostrarocultarcampos(){
+    obj = document.getElementById('mostrarocultar');
+    obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+    if(obj.style.visibility == 'hidden'){
+        $('#mostrarocultar').css({ 'width':'0px', 'height':'0px' });
+    }else{
+        $('#mostrarocultar').css({ 'width':'100%', 'height':'100%' });
+    }
+}
+
+function aniadirdetalleaux(venta_id){
+    var base_url = document.getElementById("base_url").value;
+    var cantidad = document.getElementById("cantidad_id").value;
+    var descripcion = document.getElementById("descripcion").value;
+    var precio_unitario = document.getElementById("precio_unitario").value;
+    
+    var controlador = base_url+"detalle_venta/insert_detalle_factura_aux";
+    //$("#modalfactura").modal('hide');
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{venta_id:venta_id, cantidad:cantidad, descripcion:descripcion, precio_unitario:precio_unitario}, 
+            success:function(resultado){
+                var registros =  JSON.parse(resultado);
+                if (registros != null){
+                    $("#cantidad_id").val("");
+                    $("#descripcion").val("");
+                    $("#precio_unitario").val("");
+                    $("#precio_subtotal").val("");
+                    cargar_factura2(venta_id);
+                }
+            },
+            error:function(resultado){
+                alert("Ocurrio un problema al generar la factura... Verifique los datos por favor");
+            },
+        
+        
+    })
     
 }

@@ -22,7 +22,18 @@
         
 
 </script>
-
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#precio_unitario").change(function(){
+            var cantidad = $("#cantidad_id").val();
+            var precio = $("#precio_unitario").val();
+            var res = 0;
+            res = cantidad * precio;
+            $('#precio_subtotal').val(res);
+        });
+  });
+    
+</script>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->    
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
@@ -252,7 +263,7 @@
 </div>
 <!----------------- modal factura ---------------------------------------------->
 
-<div class="modal fade" id="modalfactura" tabindex="-1" role="dialog" aria-labelledby="modalfactura" aria-hidden="true">
+<div class="modal fade" id="modalfactura" tabindex="-1" role="dialog" aria-labelledby="modalfactura">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -270,12 +281,46 @@
 
                             
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="padding-top: 0px">
                         <!--------------------- TABLA---------------------------------------------------->
                         
                         <div class="box-body table-responsive">
                             
-                            <b>DETALLE:</b><input type="text" id="generar_detalle" value="-" class="form-control btn btn-xs btn-default" style="text-align: left;">
+                            <b>DETALLE:</b><a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir detalle"><span class="fa fa-edit"></span></a>
+                            <div id="mostrarocultar" style="padding-left: 0px; visibility:hidden; width: 0px; height: 0px">
+                                <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
+                                    <label for="cantidad_id" class="control-label">CANT.</label>
+                                    <div class="form-group">
+                                        <input type="number" step="any" min="0" name="cantidad_id" class="form-control" id="cantidad_id" style="padding-left: 1px" />
+                                    </div>
+                                </div>
+                                <div class="col-md-5" style="padding-left: 0px; padding-right: 0px">
+                                    <label for="descripcion" class="control-label">DESCRIPCION</label>
+                                    <div class="form-group">
+                                        <input type="text" name="descripcion" class="form-control" id="descripcion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
+                                    <label for="precio_unitario" class="control-label">P. UNIT.</label>
+                                    <div class="form-group">
+                                        <input type="number" step="any" min="0" name="precio_unitario" class="form-control" id="precio_unitario" style="padding-left: 1px" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
+                                    <label for="precio_subtotal" class="control-label">TOT.</label>
+                                    <div class="form-group">
+                                        <input type="text" readonly name="precio_subtotal" class="form-control" id="precio_subtotal" style="padding-left: 1px" />
+                                    </div>
+                                </div>
+                                <div class="col-md-1" style="padding-left: 0px; padding-right: 0px">
+                                    <label for="boton_aniadir" class="control-label">&nbsp;</label>
+                                    <div class="form-group" style="padding-top: 6px">
+                                        <span id="botonaniadir"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="generar_detalle" name="generar_detalle"></div>
+                            <!--<input type="text" id="generar_detalle" value="-" class="form-control btn btn-xs btn-default" style="text-align: left;">-->
                                 
                             <div class="col-md-6">
                                 <label for="usuario_idx" class="control-label">TOTAL Bs</label>
@@ -287,11 +332,7 @@
                             <div class="col-md-6" id='botones'  style='display:block;'>
                                     <label for="opciones" class="control-label">Opciones</label>
                                     <div class="form-group">
-
-                                        <button class="btn btn-facebook" id="boton_asignar" onclick="registrar_factura()" data-dismiss="modal" >
-                                                <span class="fa fa-floppy-o"></span> Generar Factura
-                                        </button>
-
+                                        <span id="registrar_factura"></span>
                                         <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
                                             <span class="fa fa-close"></span>   Cancelar                                                          
                                         </button>
