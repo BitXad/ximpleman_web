@@ -393,5 +393,102 @@ class Detalle_venta extends CI_Controller{
             echo json_encode("null");
         }        
     }
+    /* obtiene el detalle de venta, borra otros detalles si hubiera,
+     * y despues carga el detalle de la venta a detalle_factura_aux */
+    function get_detalle_insertar()
+    {
+        if ($this->input->is_ajax_request()) {
+            $usuario_id = $this->session_data['usuario_id'];
+            $venta_id = $this->input->post('venta_id');
+            $this->load->model('Detalle_factura_aux_model');
+            $this->Detalle_factura_aux_model->delete_detalleventa_factura_aux($venta_id);
+
+            $all_venta = $this->Detalle_venta_model->get_detalle_venta($venta_id);
+            foreach ($all_venta as $detalle_venta){
+                $params = array(
+                    'producto_id' => $detalle_venta['producto_id'],
+                    'venta_id' => $detalle_venta['venta_id'],
+                    'detallefact_cantidad' => $detalle_venta['detalleven_cantidad'],
+                    'detallefact_codigo' => $detalle_venta['detalleven_codigo'],
+                    'detallefact_unidad' => $detalle_venta['detalleven_unidad'],
+                    'detallefact_descripcion' => $detalle_venta['producto_nombre'],
+                    'detallefact_precio' => $detalle_venta['detalleven_precio'],
+                    'detallefact_subtotal' => $detalle_venta['detalleven_subtotal'],
+                    'detallefact_descuento' => $detalle_venta['detalleven_descuento'],
+                    'detallefact_total' => $detalle_venta['detalleven_total'],
+                    'detallefact_preferencia' => $detalle_venta['detalleven_preferencia'],
+                    'detallefact_caracteristicas' => $detalle_venta['detalleven_caracteristicas'],
+                    'usuario_id' => $usuario_id,
+                );
+                $this->Detalle_factura_aux_model->add_detalleventa_factura_aux($params);
+            }
+            //$datos = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
+             echo json_encode("ok");
+        }
+        else{
+            echo json_encode(null);
+        }        
+    }
     
+    /* quita un detalle de detalle_factura_aux */
+    function quitar_detalle_aux()
+    {
+        if ($this->input->is_ajax_request()) {
+            $detallefact_id = $this->input->post('detallefact_id');
+            $this->load->model('Detalle_factura_aux_model');
+            $this->Detalle_factura_aux_model->delete_detalle_factura_aux($detallefact_id);
+             echo json_encode("ok");
+        }
+        else{
+            echo json_encode(null);
+        }        
+    }
+    /* obtiene el detalle de venta, borra otros detalles si hubiera,
+     * y despues carga el detalle de la venta a detalle_factura_aux */
+    function get_detalle_factura_aux()
+    {
+        if ($this->input->is_ajax_request()) {
+            $venta_id = $this->input->post('venta_id');
+            $this->load->model('Detalle_factura_aux_model');
+            $datos = $this->Detalle_factura_aux_model->get_detallefacturaaux_nit($venta_id);
+             echo json_encode($datos);
+        }
+        else{
+            echo json_encode(null);
+        }        
+    }
+    /* inserta el detalle generado desde generar factura a detalle_factura_aux */
+    function insert_detalle_factura_aux()
+    {
+        if ($this->input->is_ajax_request()) {
+            $usuario_id = $this->session_data['usuario_id'];
+            $venta_id = $this->input->post('venta_id');
+            $cantidad = $this->input->post('cantidad');
+            $descripcion = $this->input->post('descripcion');
+            $precio_unitario = $this->input->post('precio_unitario');
+            $total = $cantidad *$precio_unitario;
+            $this->load->model('Detalle_factura_aux_model');
+            $params = array(
+                'producto_id' => 0,
+                'venta_id' => $venta_id,
+                'detallefact_cantidad' => $cantidad,
+                'detallefact_codigo' => "-",
+                'detallefact_unidad' => "UNIDAD",
+                'detallefact_descripcion' => $descripcion,
+                'detallefact_precio' => $precio_unitario,
+                'detallefact_subtotal' => $total,
+                'detallefact_descuento' => 0,
+                'detallefact_total' => $total,
+                'detallefact_preferencia' => "",
+                'detallefact_caracteristicas' => "",
+                'usuario_id' => $usuario_id,
+            );
+            $this->Detalle_factura_aux_model->add_detalleventa_factura_aux($params);
+            //$datos = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
+             echo json_encode("ok");
+        }
+        else{
+            echo json_encode(null);
+        }        
+    }
 }

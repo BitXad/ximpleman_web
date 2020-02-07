@@ -343,6 +343,13 @@ window.onkeydown = compruebaTecla;
                 <input type="text" name="cliente_celular" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
             </div>
+
+            <div class="col-md-3">
+            <label for="cliente_zona" class="control-label">ZONA</label>
+            <div class="form-group">
+                <input type="text" name="cliente_zona" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['cliente_zona']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
         
         </div>
 <!--        <li class="list-group-item">Two</li>
