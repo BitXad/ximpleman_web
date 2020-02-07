@@ -73,7 +73,7 @@ body {
                         <?php echo $empresa[0]['empresa_zona']; ?><br>
                         <p style="font-size: 7px;margin: 0;"><?php echo $empresa[0]['empresa_direccion']; ?></p>
                         <?php echo $empresa[0]['empresa_telefono']; ?><br>
-                        <?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fecha'])); ?><br>
+                        <?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fechalimite'])); ?><br>
                         <font size="1"><b>CUOTA N: <?php echo $cuota[0]['cuota_numcuota']; ?> / <?php echo $cuota[0]['credito_numpagos']; ?></b></font>
                      </center>
                      
@@ -113,7 +113,7 @@ body {
  </center>
 </div>
 <div style="float:right; width:78%;">
-<div  style="padding-left: 35px;"><b>CLIENTE: </b><?php echo $cuota[0]['cliente_nombre'];?> <b style="margin-left: 100px;">FECHA: </b><?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fecha'])); ?>  </div>
+<div  style="padding-left: 35px;"><b>CLIENTE: </b><?php echo $cuota[0]['cliente_nombre'];?> <b style="margin-left: 100px;">FECHA: </b><?php echo date('d/m/Y',strtotime($cuota[0]['cuota_fechalimite'])); ?>  </div>
 </div></div>
  <hr style="border-color: black; margin: 5px;">
  <div style="width: 100%;overflow-x:hidden;overflow-y:auto;">
@@ -134,13 +134,14 @@ body {
                 <td style="text-align: right;"> <?php echo number_format($cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
             </tr>
             <tr>
+                <td>MONTO INTERES:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_interes'], 2, ".", ","); ?></td>
+            </tr>
+            <tr>
                 <td>MONTO CUOTA:</td><td style="width: 22px;"></td>
                 <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total'], 2, ".", ","); ?></td>
             </tr>
-            <tr>
-                <td>MONTO CANCELADO:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td>
-            </tr>
+            
             <tr>
                <td style="text-align: right;">_________________</td> 
                <td></td> 
@@ -177,12 +178,12 @@ body {
                 <td style="text-align: right;"> <?php echo number_format($cuota[0]['cuota_saldo'], 2, ".", ","); ?></td>
             </tr>
             <tr>
-                <td style="text-align: right;">MONTO CUOTA:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total'], 2, ".", ","); ?></td>
+                <td style="text-align: right;">MONTO INT.:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_interes'], 2, ".", ","); ?></td>
             </tr>
             <tr>
-                <td style="text-align: right;">MONTO CANCELADO:</td><td style="width: 22px;"></td>
-                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_cancelado'], 2, ".", ","); ?></td><td style="width: 40px;"></td>
+                <td style="text-align: right;">MONTO CUOTA:</td><td style="width: 22px;"></td>
+                <td style="text-align: right;"><?php echo number_format($cuota[0]['cuota_total'], 2, ".", ","); ?></td><td style="width: 40px;"></td>
                 <td style="text-align: right;">CANCELADO:....................</td>
             </tr>
             <tr>

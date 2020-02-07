@@ -547,9 +547,8 @@ class Producto extends CI_Controller{
         
      $this->load->model('Compra_model');
       $this->load->library('form_validation');
-
-   
-        $this->form_validation->set_rules('producto_nombre','Producto Nombre','required');
+      $this->form_validation->set_rules('producto_codigo','Producto Codigo','is_unique[producto.producto_codigo]');
+      $this->form_validation->set_rules('producto_nombre','Producto Nombre','is_unique[producto.producto_nombre]');
         
         if($this->form_validation->run())     
         {
@@ -674,20 +673,13 @@ class Producto extends CI_Controller{
         }
         else
         {
-            $this->load->model('Estado_model');
-            $data['all_estado'] = $this->Estado_model->get_all_estado();
 
-            $this->load->model('Categoria_producto_model');
-            $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
-            $this->load->model('Presentacion_model');
-            $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
-
-            $this->load->model('Moneda_model');
-            $data['all_moneda'] = $this->Moneda_model->get_all_moneda();
-            $data['page_title'] = "Producto";
-            $data['_view'] = 'producto/add';
-            $this->load->view('layouts/main',$data);
+   
+      echo'<script type="text/javascript">
+        alert("Este Nombre y/o Codigo  de Producto ya Existe");
+        window.location.href="../compra/edit/'.$compra_id.'/'.$bandera.'";
+        </script>';
+        
         }
         }
             

@@ -73,6 +73,23 @@ class Cuotum extends CI_Controller{
         if($this->acceso(48)){
             $data['page_title'] = "Plan de pagos";
             $data['rol'] = $this->session_data['rol'];
+            $cuotas_pendientes = $this->Cuotum_model->get_pendientes($credito_id);
+            if (isset($cuotas_pendientes)) {
+              foreach ($cuotas_pendientes as $cuota) {
+              $hoy = new DateTime('NOW');
+              $fechalimite = new DateTime($cuota['cuota_fechalimite']);
+              
+              if ($hoy>$fechalimite) {
+                $diff = $hoy->diff($fechalimite);
+                $dias =  $diff->days;
+                $multa = $dias*$cuota['cuota_interes']/30;
+                $sql = "UPDATE cuota SET cuota_moradias = ".$dias.", cuota_multa = ".$multa."  WHERE credito_id = ".$credito_id." and cuota_id = ".$cuota['cuota_id']." ";
+                $this->db->query($sql);
+              }
+            }
+            }
+            
+
             $data['cuota'] = $this->Cuotum_model->get_all_cuentas($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuentas($credito_id);
             $data['_view'] = 'cuotum/cuentas';
@@ -116,6 +133,7 @@ class Cuotum extends CI_Controller{
         if($this->acceso(41)){
             $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $data['_view'] = 'cuotum/reciboDeuda';
             $this->load->view('layouts/main',$data);
@@ -126,6 +144,7 @@ class Cuotum extends CI_Controller{
          if($this->acceso(47)){
             $data['page_title'] = "Comprobante";
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $data['_view'] = 'cuotum/reciboCuenta';
             $this->load->view('layouts/main',$data);
@@ -137,6 +156,7 @@ class Cuotum extends CI_Controller{
        if($this->acceso(47)){
            $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuentaServ($cuota_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
             $data['_view'] = 'cuotum/reciboCuenta';
             $this->load->view('layouts/main',$data);
@@ -394,9 +414,9 @@ class Cuotum extends CI_Controller{
         $cuota_id = $this->input->post('cuota_id');
          $num = $this->Cuotum_model->numero();
           $maximo = $num[0]['parametro_montomax'];
-          $interes = $num[0]['parametro_interes'];
         $credito_id = $this->input->post('credito_id');
         $credito_tipointeres = $this->input->post('credito_tipointeres');
+        $interes = $this->input->post('credito_interesproc');
         $cuota_capital = $this->input->post('cuota_capital');
 
         if($cuota_capital==0){

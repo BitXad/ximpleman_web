@@ -254,6 +254,16 @@
                             <input type="number" min="0" name="parametro_diasvenc" value="15" class="form-control" id="parametro_diasvenc"  />
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_notaentrega" class="control-label">NOTA DE ENTREGA</label>
+                        <div class="form-group">
+                            <select  name="parametro_notaentrega" class="form-control" id="parametro_notaentrega">
+                                <option value="1">NOTA DE ENTREGA N° 1</option>
+                                <option value="2">NOTA DE ENTREGA N° 2</option>
+                                <option value="3">NOTA DE ENTREGA N° 3</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer text-center">

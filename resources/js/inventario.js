@@ -178,7 +178,8 @@ function tabla_inventario(){
 
                 html += "</tr>    ";
                 html += "</table>";            
-                $("#tabla_inventario").html(html);            
+                $("#tabla_inventario").html(html);
+                              
                 
             }, // end succes: function(resultados){
             error:function(resultado){
@@ -372,7 +373,8 @@ function tabla_inventario(){
                 html += "	<th></th>";
                 html += "</tr>    ";
                 html += "</table>";            
-                $("#tabla_inventario").html(html);            
+                $("#tabla_inventario").html(html);   
+                             
                 
             }, // end succes: function(resultados){
             error:function(resultado){
@@ -491,7 +493,8 @@ function tabla_inventario_existencia(){
 
                 html += "</tr>    ";
                 html += "</table>";            
-                $("#tabla_inventario").html(html);            
+                $("#tabla_inventario").html(html); 
+                               
                 
             }, // end succes: function(resultados){
             error:function(resultado){
@@ -685,7 +688,8 @@ function tabla_inventario_existencia(){
                 html += "    <th></th>";
                 html += "</tr>    ";
                 html += "</table>";            
-                $("#tabla_inventario").html(html);            
+                $("#tabla_inventario").html(html);
+                                
                 
             }, // end succes: function(resultados){
             error:function(resultado){
@@ -847,7 +851,8 @@ function mostrar_duplicados()
                 html += "	<!--<th></th>-->";
                 html += "</tr>    ";
                 html += "</table>";            
-                $("#tabla_inventario").html(html);            
+                $("#tabla_inventario").html(html); 
+                               
                 
             }, // end succes: function(resultados){
             error:function(resultado){

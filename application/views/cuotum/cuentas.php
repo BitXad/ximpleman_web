@@ -260,6 +260,7 @@ $(document).ready(function(){
                         <label for="cuota_saldo" class="control-label">Saldo Bs</label>
                         <div class="form-group">
                             <input type="hidden"  name="cuota_interes" value="<?php echo $c['cuota_interes']; ?>" class="form-control" id="cuota_interes" />
+                            <input type="hidden"  name="credito_interesproc" value="<?php echo $c['credito_interesproc']; ?>" class="form-control" id="credito_interesproc" />
                             <input type="hidden"  name="credito_tipointeres" value="<?php echo $c['credito_tipointeres']; ?>" class="form-control" id="credito_tipointeres" />
                             <input type="text" name="cuota_capital" value="0" class="form-control" id="cuota_saldo<?php echo $c['cuota_id']; ?>" style="background-color: #C5C5C5" readonly/>
                             <input type="hidden" name="cuota_numcuota" value="<?php echo $c['cuota_numcuota']; ?>" class="form-control" id="cuota_numcuota" />

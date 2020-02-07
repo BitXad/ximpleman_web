@@ -1122,4 +1122,38 @@ class Cliente extends CI_Controller{
             }
         //}
     }
+    /*para impresion de cliente*/
+    function clienteprint($a = null)
+    {
+        if($this->acceso(94)){
+            $data['rol'] = $this->session_data['rol'];
+            $data['page_title'] = "Cliente";
+            $data['a'] = $a;
+            $data['err'] ="";
+
+            $this->load->model('Categoria_cliente_model');
+            $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_cat_cliente();
+
+            $this->load->model('Categoria_clientezona_model');
+            $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
+
+            $this->load->model('Tipo_cliente_model');
+            $data['all_tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente_asc();
+
+            $this->load->model('Usuario_model');
+            $data['all_prevendedor'] = $this->Usuario_model->get_all_usuario_prev_activo();
+
+            $this->load->model('Estado_model');
+            $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
+
+            $this->load->model('Empresa_model');
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+
+            $data['_view'] = 'cliente/clienteprint';
+            $this->load->view('layouts/main',$data);
+        }
+    }
 }

@@ -85,6 +85,7 @@ class Parametro extends CI_Controller{
                     'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
                     'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
                     'parametro_segservicio' => $this->input->post('parametro_segservicio'),
+                    'parametro_notaentrega' => $this->input->post('parametro_notaentrega'),
                
             );
             
@@ -148,6 +149,7 @@ class Parametro extends CI_Controller{
                     'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
                     'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
                     'parametro_segservicio' => $this->input->post('parametro_segservicio'),
+                    'parametro_notaentrega' => $this->input->post('parametro_notaentrega'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
