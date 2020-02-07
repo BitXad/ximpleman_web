@@ -67,9 +67,9 @@
                         <center> 
                        COD. CLIE.: <?php echo $cuota[0]['cliente_codigo']; ?><br>
                     <?php if ($cuota[0]['venta_id']>0) { ?>
-                       No. Venta: <?php echo $cuota[0]['venta_id']; ?><br> 
+                       VENTA: <?php echo $cuota[0]['venta_id']; ?><br> 
                      <?php } else { ?>
-                       No. Servicio: <?php echo $cuota[0]['servicio_id']; ?><br> 
+                       SERVICIO: <?php echo $cuota[0]['servicio_id']; ?><br> 
                      <?php } ?>
                        <!-- VENDEDOR: <?php echo $cuota[0]['usuario_nombre']; ?>-->
 
@@ -83,7 +83,7 @@
                     </div> </center>
                     <div class="columna_central">
                         <center>      <h3 class="box-title"><u>PLAN DE PAGOS</u></h3><BR>
-                                    CREDITO No.: <?php echo $cuota[0]['credito_id']; ?> <br>
+                                    CREDITO No.: 00<?php echo $cuota[0]['credito_id']; ?> <br>
                                     <?php echo date('d/m/Y H:i:s'); ?> 
                 </center>
                     </div>
@@ -100,7 +100,8 @@
                     </div>
                     <div class="columna_izquierda">
                     
-                       Fecha y Hora: <b><?php $fecha_format = date('d/m/Y', strtotime($cuota[0]['credito_fecha'])); echo $fecha_format; ?>   <?php echo $cuota[0]['credito_hora']; ?></b><br>
+                       FECHA: <b><?php $fecha_format = date('d/m/Y', strtotime($cuota[0]['credito_fecha'])); echo $fecha_format; ?>   <?php echo $cuota[0]['credito_hora']; ?></b><br>
+                       CLIENTE: <b><?php echo $cuota[0]['cliente_nombre']; ?></b>
                        
                        
                     </div> 
@@ -207,8 +208,9 @@
                     <div class="columna_central">
                       <CENTER>
                          <hr style="border-color: black; width: 60%;">
-                        TITULAR: ................................<br>
-                        C.I.: ..........................................
+                        TITULAR: <?php echo $cuota[0]['cliente_nombre']; ?> <br>
+                        C.I.: <?php if(isset($cuota[0]['cliente_ci']) && $cuota[0]['cliente_ci']>0)
+                         echo $cuota[0]['cliente_ci']; ?>
                    
                          
                
