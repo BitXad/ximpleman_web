@@ -347,14 +347,17 @@ window.onkeydown = compruebaTecla;
             <div class="col-md-3">
             <label for="zona_id" class="control-label">ZONA</label>
             <div class="form-group">
-                <select name="zona_id" class="form-control" id="zona_id">
-                    <option value="0">- ZONA -</option>
-                    
-                    <?php foreach ($zonas as $z){ ?>
-                    <option  value="<?php echo $z['zona_id']; ?>" <?php if($cliente[0]['zona_id'] == $z['zona_id']){ echo "'selected'"; } ?> ><?php echo $z['zona_nombre']; ?></option>
-                   <?php } ?>
-                            
-                </select>
+                        <select name="zona_id" class="form-control" id="zona_id">
+                            <option value="0">- ZONAS -</option>
+                            <?php 
+                            foreach($zonas as $categoria_clientezona)
+                            {
+                                    $selected = ($zonas['zona_id'] == $cliente['zona_id']) ? ' selected="selected"' : "";
+
+                                    echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
+                            } 
+                            ?>
+                        </select>
                 <!--<input type="text" name="cliente_zona" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['zona_nombre']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>-->
             </div>
             </div>

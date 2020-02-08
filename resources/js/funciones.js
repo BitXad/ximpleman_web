@@ -209,6 +209,9 @@ function buscarcliente(){
                     $("#cliente_departamento").val("-");
                     $("#cliente_celular").val("");
                     $("#zona_id").val(0);
+                    
+                    
+                    
                 }
 
             },
@@ -2562,7 +2565,8 @@ function borrar_datos_cliente()
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
-    
+    document.getElementById('creditooculto').style.display = 'none';
+                    //document.getElementById('creditooculto').style.display = 'none';
     
     $("#filtrar").focus();
     

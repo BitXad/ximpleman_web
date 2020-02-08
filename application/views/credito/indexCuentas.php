@@ -109,20 +109,23 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead id="titulos">
                     <tr>
-						<th>#</th>
-                                             
+						<th>#</th>                                             
 						<th>Cliente</th>
-                        <th>Credito</th>
-                        <th>Transaccion</th>
+                                                <th>Crédito</th>
+                                                <th>Transac.</th>
 						<th>Estado</th>
 						<th>Monto</th>
-						<th>Cuota Inicial</th>
-						<th>Interes (%)</th>
+						<th>Cuota<br>Inicial</th>
+                                                <th>Interes<br>(%)</th>
 						<th># Pagos</th>
 						<th>Fecha</th>
 						<th>Hora</th>
 						<th>Usuario</th>
 						<th></th>
+                                                
+                                                
+                                                
+                                                
                     </tr></thead>
                     <tbody class="buscar" id="tablacuentas">
                   
