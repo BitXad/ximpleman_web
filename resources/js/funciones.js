@@ -189,6 +189,7 @@ function buscarcliente(){
                     $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
                     $("#cliente_celular").val(registros[0]["cliente_celular"]);
+                    $("#zona_id").val(registros[0]["zona_id"]);
                     
                 }
                 else 
@@ -201,6 +202,16 @@ function buscarcliente(){
                     $("#cliente_ci").val(nit);
                     $("#cliente_nombrenegocio").val("-");
                     $("#cliente_codigo").val("-");
+                    
+                    $("#telefono").val("");
+                    $("#cliente_nombre").val("");
+                    $("#cliente_direccion").val("-");
+                    $("#cliente_departamento").val("-");
+                    $("#cliente_celular").val("");
+                    $("#zona_id").val(0);
+                    
+                    
+                    
                 }
 
             },
@@ -1354,7 +1365,7 @@ function tablaresultados(opcion)
                         
                         html += "<center> ";                        
 //                        html += "   <select class='btn btn-facebook' style='font-size:10px; face=arial narrow;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+registros[i]["existencia"]+","+registros[i]["producto_id"]+")'>";
-                        html += "   <select class='btn btn-facebook' style='font-size:12px; ' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(registros[i])+")'>";
+                        html += "   <select class='btn btn-facebook' style='font-size:14px; font-weight: bold;  font-family: Arial; padding:0;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(registros[i])+")'>";
                         
                         if (rol_precioventa==1){
                             
@@ -1744,6 +1755,7 @@ function registrarcliente()
     var cliente_direccion = document.getElementById('cliente_direccion').value;
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
+    var zona_id = document.getElementById('zona_id').value;
     
    
    //alert(cliente_id);
@@ -1757,7 +1769,7 @@ function registrarcliente()
                     type:"POST",
                     data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id},
                     
                     success:function(respuesta){ 
                         var datos = JSON.parse(respuesta);
@@ -1785,7 +1797,7 @@ function registrarcliente()
             type:"POST",
             data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id},
             success:function(respuesta){  
             
                 var registro = JSON.parse(respuesta);
@@ -2545,6 +2557,7 @@ function borrar_datos_cliente()
     
     $("#venta_efectivo").val("0");
     $("#venta_cambio").val("0");
+    $("#zona_id").val("0");
     
 
     
@@ -2552,7 +2565,8 @@ function borrar_datos_cliente()
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
-    
+    document.getElementById('creditooculto').style.display = 'none';
+                    //document.getElementById('creditooculto').style.display = 'none';
     
     $("#filtrar").focus();
     
@@ -2741,6 +2755,7 @@ function seleccionar_cliente(){
                     $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
                     $("#cliente_celular").val(resultado[0]["cliente_celular"]);
+                    $("#zona_id").val(resultado[0]["zona_id"]);
                     $("#codigo").select();
                 }
        

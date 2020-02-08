@@ -96,6 +96,7 @@ class Cuotum extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+    
     function cuenta_serv($credito_id)
     {
         if($this->acceso(47)){

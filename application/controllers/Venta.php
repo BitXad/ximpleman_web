@@ -27,6 +27,7 @@ class Venta extends CI_Controller{
         $this->load->model('Tipo_servicio_model');
         $this->load->model('Preferencia_model');
         $this->load->model('Credito_model');
+        $this->load->model('Categoria_clientezona_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -83,6 +84,7 @@ class Venta extends CI_Controller{
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
         $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
@@ -115,7 +117,19 @@ class Venta extends CI_Controller{
         $data['page_title'] = "Ventas";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        
+        $cliente_array = $this->Cliente_model->get_cliente_by_id($cliente_id);
+        if(sizeof($cliente_array)>0)
+        {
+            $data['cliente'] = $cliente_array;
+        }
+        else
+        {
+            $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+            
+        }        
+        
+        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
@@ -374,8 +388,18 @@ class Venta extends CI_Controller{
             $modalidad    = $this->input->post('modalidad');
             $dia_pago     = $this->input->post('dia_pago');
             $fecha_inicio = $this->input->post('fecha_inicio');
-
+            $numcuota = $cuotas; //numero de cuotas
             
+                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                    $cuota_numcuota = $i;
+                    
+                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                    if ($modalidad == "MENSUAL") 
+                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                    else 
+                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+
+                }
             
             $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
                     $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
@@ -421,7 +445,7 @@ class Venta extends CI_Controller{
             $descuento = 0;
             $cancelado = 0;
             $credito_monto = $venta_total - $cuota_inicial;
-            $numcuota = $cuotas; //numero de cuotas
+            
             $patron = ($numcuota*0.5) + 0.5;
             $cuota_capital = ($credito_monto)/$numcuota;   // bien         
             $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
@@ -1600,17 +1624,18 @@ function registrarcliente()
             $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
+            $zona_id =  $this->input->post('zona_id');
             
             $cliente_ci = $cliente_nit;
             $cliente_nombre = $cliente_razon;
             $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
                     cliente_razon,cliente_telefono,estado_id,usuario_id,
                     cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
-                    cliente_celular
+                    cliente_celular, zona_id
                     ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
                     $cliente_razon.",".$cliente_telefono.",1,0,".
                    $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
-                   $cliente_celular.")";
+                   $cliente_celular.",".$zona_id.")";
 //            echo $sql;
             $datos = $this->Venta_model->registrarcliente($sql);
             echo json_encode($datos);
@@ -1654,6 +1679,7 @@ function modificarcliente()
             $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
+            $zona_id = $this->input->post('zona_id');
             
             
             if ($cliente_id>0){
@@ -1673,6 +1699,7 @@ function modificarcliente()
                         ",cliente_direccion= ".$cliente_direccion.
                         ",cliente_departamento = ".$cliente_departamento.
                         ",cliente_celular = ".$cliente_celular.
+                        ",zona_id = ".$zona_id.
                         
                         " where cliente_id = ".$cliente_id;
 
