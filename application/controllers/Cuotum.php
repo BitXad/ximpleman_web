@@ -12,6 +12,7 @@ class Cuotum extends CI_Controller{
         $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
         $this->load->model('Credito_model');
+        $this->load->model('Parametro_model');
         $this->load->helper('numeros');  
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -144,6 +145,7 @@ class Cuotum extends CI_Controller{
     {
          if($this->acceso(47)){
             $data['page_title'] = "Comprobante";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
@@ -178,6 +180,7 @@ class Cuotum extends CI_Controller{
     {
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);

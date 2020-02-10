@@ -390,6 +390,11 @@ class Venta extends CI_Controller{
             $fecha_inicio = $this->input->post('fecha_inicio');
             $numcuota = $cuotas; //numero de cuotas
             
+                        
+            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
+            else $intervalo = 7; //si los pagos son semanales
+            
+                $cuota_numcuota = 1;
                 for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
                     $cuota_numcuota = $i;
                     
@@ -400,6 +405,7 @@ class Venta extends CI_Controller{
                         $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
 
                 }
+                $credito_fechalimite = $cuota_fechalimite;
             
             $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
                     $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
@@ -424,21 +430,6 @@ class Venta extends CI_Controller{
             $cuota_glosa = "''";
             $cuota_saldocredito = $venta_total - $cuota_inicial;
                  
-            
-//            for ($ncuotas=1; $ncuotas <= $cuotas; $ncuotas++){
-//                
-//                $sql = "insert into cuota(credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_subtotal,cuota_descuento,cuota_total,cuota_fechalimite,cuota_cancelado,cuota_fecha,cuota_hora,cuota_numercibo,cuota_saldo,cuota_glosa,cuota_saldocredito) value(".
-//                $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$cuota_interes.",".$cuota_moradias.",".$cuota_multa.",".$cuota_subtotal.",".$cuota_descuento.",".$cuota_total.",".$cuota_fechalimite.",".$cuota_cancelado.",".$cuota_fecha.",".$cuota_hora.",".$cuota_numercibo.",".$cuota_saldo.",".$cuota_glosa.",".$cuota_saldocredito.")";
-//          
-//            }
-            
-//***********************************************************************************************
-
-//    if ($_POST['tipotrans_id']==2) { // tipotrans_id = 2 : CREDITO
-//        
-//       $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-//                    $this->db->query($sql);
-//                    $credito_id = $this->db->insert_id();
            
             $dias_mora = 0;
             $multa = 0;
@@ -460,9 +451,7 @@ class Venta extends CI_Controller{
             
             $cuota_fechalimite = $fecha_inicio;
             
-            
-            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
-            else $intervalo = 7; //si los pagos son semanales
+
                 
             
                 for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
@@ -1514,11 +1503,8 @@ function edit($venta_id)
                     show_404();
         }  
 
-        		
         //**************** fin contenido ***************
         //}
-        			
-               
     }
     
 /*
@@ -1750,7 +1736,7 @@ function modificarcliente()
 
 
 /*************** funcion para mostrar la vista de la factura******************/
-function ultimaventa(){
+function ultimaventa($tipo){
     
               if($this->acceso(12)||$this->acceso(30)){
         //**************** inicio contenido ***************    
@@ -1761,7 +1747,7 @@ function ultimaventa(){
     $venta_id = $venta[0]['venta_id'];
     
     if ($venta_tipodoc==1){ 
-        redirect('factura/imprimir_factura/'.$venta_id);
+        redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
         //redirect('factura/factura_boucher/'.$venta_id);
         
     }
@@ -1771,7 +1757,7 @@ function ultimaventa(){
     }
         
        //**************** fin contenido ***************
-        }
+    }
             
 }
 

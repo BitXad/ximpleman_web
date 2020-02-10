@@ -8,10 +8,15 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
+<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
+      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+?>
 
-    <table class="table table-striped" style="width: 20cm; padding: 0;;margin: 0" >
-    <tr>
-        <td style="width: 25%; padding: 0; line-height:10px;" >
+    <table class="table table-striped" style="width: <?php echo $ancho;?>; padding: 0;;margin: 0" >
+    <tr style="line-height: 12px;">
+        <td style="width: 33%; padding: 0; line-height:10px;" >
                 
             <center>
                                
@@ -28,17 +33,17 @@
             </center>                      
         </td>
                    
-        <td style="width: 25%; padding: 0" > 
+        <td style="width: 33%; padding: 0; line-height: 16px;" > 
             <center>
             
                 <br><br>
                 <font size="3" face="arial"><b>COMPROBANTE DE PAGO</b></font> <br>
                 <font size="3" face="arial"><b>Nº 00<?php echo $cuota[0]['credito_id']; ?></b></font> <br>
-                <font size="1" face="arial"><b><?php echo date("d/m/Y H:i:s"); ?></b></font> 
+                <font size="1" face="arial"><?php echo date("d/m/Y H:i:s"); ?></font> 
 
             </center>
         </td>
-        <td style="width: 25%; padding: 0; text-align: left;line-height:9px;" >
+        <td style="width: 33%; padding: 0; text-align: left;line-height:9px; " >
                 <br><br><br><br><br>
        <?php if ($cuota[0]['venta_id']>0) { ?>
     <font face="Arial" size="1"><b>VENTA No.: </b><?php echo $cuota[0]['venta_id']; ?></font><br>
@@ -58,7 +63,7 @@
     
 </table> 
 
-     <table class="table table-striped" style="width: 20cm; padding: 0;margin: 0">
+     <table class="table table-striped" style="width: <?php echo $ancho;?>; padding: 0;margin: 0">
         <tr >
         <td style="width: 10cm;border-top: 1px solid black;padding: 0;background-color: #aaa !important; -webkit-print-color-adjust: exact !important;"><font face="Arial" size="1" ><b>CLIENTE: </b><?php echo $cuota[0]['cliente_nombre'];?></font></td>
 
@@ -66,7 +71,7 @@
         </tr>    
         </table>  
 
-<div class="box" style="width: 20cm; padding: 10px;border-top: 1px solid black;border-bottom: 1px solid black; margin-bottom: 0">
+<div class="box" style="width: <?php echo $ancho;?>; padding: 10px;border-top: 1px solid black;border-bottom: 1px solid black; margin-bottom: 0">
     <table style="font-size: 10px;font-family: 'Arial', Arial, Arial, arial; ">
         <tr>
             <td align="left" style="width: 4cm"> SALDO TOTAL: Bs</td> 
@@ -123,15 +128,15 @@
         
             </div>
  
-<div style="text-align: right;width: 20cm; padding: 0;">
+<div style="text-align: right;width: <?php echo $ancho;?>; padding: 0;">
 
     <font size="1" face="Arial"><?php echo date("d/m/Y   H:i:s"); ?></font>
 
 </div>
 <center>
-    <div class="col-md-12" style="margin-top: 50px;width: 20cm; padding: 0">
+    <div class="col-md-12" style="margin-top: 50px;width: <?php echo $ancho;?>; padding: 0">
         <table>
-            <tr>
+            <tr style="line-height: 10px;">
                 <td> <center>
                 
                     <?php echo "-----------------------------------------------------"; ?><br>
@@ -152,4 +157,5 @@
         </table>
         
     </div>
+</center>
     
