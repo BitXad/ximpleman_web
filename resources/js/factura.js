@@ -59,26 +59,27 @@ function mostrar_facturas() {
                 html = "";
                 if (opcion==1){
                     
-                    html += "<table class='table table-striped' id='mitabla' >";
+                    html += "<table class='table table-striped' id='mitabla' nowrap >";
                     html += "<th>ESPEC.</th>";
                     html += "<th>N°</th>";
                     html += "<th>FECHA DE LA FACTURA</th>";
-                    html += "<th>N° DE LA FACTURA</th>";
+                    html += "<th>N° DE FACT.</th>";
                     html += "<th>N° DE AUTORIZACION</th>";
-                    html += "<th>ESTADO	NIT/CI CLIENTE</th>";
+                    html += "<th>ESTADO</th>";
+                    html += "<th>NIT/CI CLIENTE</th>";
                     html += "<th>NOMBRE O RAZON SOCIAL</th>";
                     html += "<th>IMPORTE TOTAL DE LA VENTA</th>";
                     html += "<th>IMPORTE ICE</th>";
                     html += "<th>/IEHD/TASAS	EXPORTACIONES Y OPERACIONES EXENTAS</th>";	
                     html += "<th>VENTAS GRAVADAS A TASA CERO</th>";	
                     html += "<th>SUBTOTAL</th>";	
-                    html += "<th>DESCUENTOS</th>"; 
-                    html += "<th>BONIFICACIONES Y REBAJAS OTORGADAS</th>";	
+                    html += "<th>DESC.</th>"; 
+                    html += "<th>BONIF. Y REBAJAS OTORGADAS</th>";	
                     html += "<th>IMPORTE BASE PARA DEBITO FISCAL</th>";	
                     html += "<th>DEBITO FISCAL</th>";	
                     html += "<th>CODIGO DE CONTROL</th>";	
                     html += "<th>TRANS</th>";
-                    html += "<th>OPERACION</th>";
+                    html += "<th>OPERACIONES</th>";
                     html += "</tr>";
                     html += "<tbody class='buscar'>";
                     
@@ -96,6 +97,13 @@ function mostrar_facturas() {
                         html += "   <td>"+formato_fecha(factura[i]["factura_fecha"])+"</td>";
                         html += "   <td>"+factura[i]["factura_numero"]+"</td>";
                         html += "   <td>"+factura[i]["factura_autorizacion"]+"</td>";
+                        if(factura[i]["estado_id"]==1){
+                                html += "   <td>V</td>";
+                        }
+                        else{
+                                html += "   <td>A</td>";
+                        }
+                            
                         html += "   <td>"+factura[i]["factura_nit"]+"</td>";
                         html += "   <td>"+factura[i]["factura_razonsocial"]+"</td>";
                         html += "   <td>"+Number(factura[i]["factura_subtotal"]).toFixed(2)+"</td>";
@@ -110,7 +118,8 @@ function mostrar_facturas() {
                         html += "   <td>"+factura[i]["factura_codigocontrol"]+"</td>";
                         html += "   <td>"+factura[i]["venta_id"]+"</td>";
 //                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
-                        html += "   <td><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
+                        html += "   <td><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
+                        html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";                        
                         html += "  <button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button></td>";
                         html += "</tr>";
                         
@@ -120,6 +129,7 @@ function mostrar_facturas() {
                     }
                         var debitofiscal =  totalfinal * 0.13;
                         
+                        html += "<th> </th> ";
                         html += "<th> </th> ";
                         html += "<th> </th> ";
                         html += "<th> </th> ";

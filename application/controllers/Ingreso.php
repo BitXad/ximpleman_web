@@ -244,7 +244,7 @@ class Ingreso extends CI_Controller{
                                                    $dosificacion_llave//Llave de dosificación
                         );        
          return $code;
-    }
+    }  
 
     /*
      * Editing a ingreso

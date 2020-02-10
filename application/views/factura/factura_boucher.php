@@ -132,7 +132,12 @@ border-bottom : 1px solid #aaa;*/
                     <br>
                     <?php //if($factura[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
                          //else {  $titulo1 = "NOTA DE VENTA"; $subtitulo = " "; }?>
-                    <?php $titulo1 = "FACTURA"; $subtitulo=" ORIGINAL " ?>
+                    <?php $titulo1 = "FACTURA";  
+                            
+                        if ($tipo==1) $subtitulo = "ORIGINAL";
+                        else $subtitulo = "COPIA"; 
+
+                    ?>
                     
                 <font size="3" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>
@@ -179,7 +184,7 @@ border-bottom : 1px solid #aaa;*/
        <table class="table table-striped table-condensed"  style="width: 7cm;" >-->
            <tr  style="border-top-style: solid; border-bottom-style: solid; " >
                
-                <td align="center" style="padding: 0;"><b>CN</b></td>
+                <td align="center" style="padding: 0;"><b>CANT</b></td>
                 <td align="center" style="padding: 0;"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0;"><b>P.UNIT</b></td>
                 <td align="center" style="padding: 0;"><b>TOTAL</b></td>
