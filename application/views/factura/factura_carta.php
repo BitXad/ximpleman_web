@@ -130,6 +130,7 @@ border-bottom : 1px solid #aaa;
 <!---------------------- Modal ---------------------------->
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"];
+      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
       $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
 ?>
 
@@ -160,15 +161,13 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 
 
-<div class="container"  style="padding: 0;">
-<div class="col-xs-12" style="padding: 0;">
+<!--<div class="container"  style="padding: 0;">
+<div class="col-xs-12" style="padding: 0;">-->
 
     
-<div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
-    
-</div>
+
  
-<div class="col-xs-10" style="padding: 0;">
+<!--<div class="col-xs-12" style="padding: 0;">-->
 
 
             <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
@@ -444,9 +443,9 @@ border-bottom : 1px solid #aaa;
 
         
 
-    </div>
+    <!--</div>-->
     
-</div>
+<!--</div>
 </div>
 
-
+-->

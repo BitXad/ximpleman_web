@@ -214,7 +214,7 @@ window.onkeydown = compruebaTecla;
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
-<?php $atributos = " btn btn-info btn-sm";  //atributos para los inputs del clientes?>
+<?php $atributos = " btn btn-warning btn-sm";  //atributos para los inputs del clientes?>
 <?php $estilos_facturacion = " style='color: black; text-align: left; font-size: 18px; font-family: Arial;'"; //estilo para los inputs de facturacion?>
 <?php $estilos = " style='background: white; color: black; text-align: left;  font-family: Arial;'"; //estilo para los inputs del cliente?>
 <?php $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;' "; ?>
