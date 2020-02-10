@@ -20,12 +20,12 @@
 <!-------------------------------------------------------->
 <input type="text" id="base_url" value="<?php echo base_url();?>" hidden>
 
-<div class="box-header">
-                <!--<h3 class="box-title">Factura</h3>-->
-<!--            	<div class="box-tools">
+<!--<div class="box-header">
+                <h3 class="box-title">Factura</h3>
+            	<div class="box-tools">
                     <a href="<?php echo site_url('factura/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
-                </div>-->
-</div>
+                </div>
+</div>-->
 <div class="row">
     <div class="col-md-12">
                 <h3 class="box-title">LIBRO DE VENTAS</h3>
@@ -44,7 +44,7 @@
                         <div class="col-md-3">
                             <label for="desde" class="control-label">Desde:</label>
                             <div class="form-group">
-                                 <input type="date"class="btn btn-warning btn-xs form-control"  id="fecha_desde" name="fecha_desde" value="<?php echo date("Y-m-d");?>" onchange="mostrar_facturas()">
+                                 <input type="date"class="btn btn-warning btn-xs form-control"  id="fecha_desde" name="fecha_desde" value="<?php echo date("Y-m-d");?>">
 
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                         <div class="col-md-3">
                             <label for="hasta" class="control-label">Desde:</label>
                             <div class="form-group">
-                                <input type="date" class="btn btn-warning btn-xs form-control"  id="fecha_hasta" name="fecha_hasta" value="<?php echo date("Y-m-d");?>" onchange="mostrar_facturas()">
+                                <input type="date" class="btn btn-warning btn-xs form-control"  id="fecha_hasta" name="fecha_hasta" value="<?php echo date("Y-m-d");?>">
                         
                             </div>
                         </div>
@@ -68,19 +68,20 @@
                         </div>
                         
                 <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group">
+<!--                  <div class="input-group">
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
                       <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código del producto" onkeypress="validar(event,6)">
-                  </div>
+                  </div>-->
             <!--------------------- fin parametro de buscador --------------------->                        
                         
                         <div class="col-md-2">
-                           <label for="desde" class="control-label"> </label>
+                           <label for="desde" class="control-label"> Exportar: </label>
                            <div class="form-group">
               
                                 <button  type="submit" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
+                                <!--<button  type="submit" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>-->
       
                             </div>
                         </div>
@@ -88,7 +89,7 @@
                     
                     </form>
                         <div class="col-md-2">
-                           <label for="desde" class="control-label"> </label>
+                           <label for="desde" class="control-label"> Buscar: </label>
                            <div class="form-group">
               
                                <button  type="submit" class="btn btn-danger btn-xs form-control" onclick="mostrar_facturas()"><span class="fa fa-binoculars"> </span> Ver</button>
@@ -97,13 +98,13 @@
                         </div>
                 </div>
             </div>
-            <div class="box-body table-responsive" id="tabla_factura" >
-                
-                    <!------------ aqui va la tabla JS con las facturas ----------------------->
-            
-                                
-            </div>
         </div>
     </div>
+</div>
+<div class="box-body table-responsive" id="tabla_factura" >
+
+        <!------------ aqui va la tabla JS con las facturas ----------------------->
+
+
 </div>
     

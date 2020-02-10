@@ -211,7 +211,12 @@ border-bottom : 1px solid #aaa;
                     <td style="width: <?php echo 4;?>cm;  padding: 0; line-height: 9px;">
                         <center>            
                                                         <br>
-                            <?php $titulo1 = "FACTURA"; $subtitulo=" ORIGINAL " ?>
+                            <?php $titulo1 = "FACTURA"; 
+                            
+                                if ($tipo==1) $subtitulo = "ORIGINAL";
+                                else $subtitulo = "COPIA"; 
+                                    
+                            ?>
                             
                             <font size="4" face="arial"><b><?php echo $titulo1; ?></b></font> <br>
                             <font size="1" face="arial"><b><?php echo $subtitulo; ?></b></font> <br>                    

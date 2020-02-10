@@ -103,7 +103,7 @@ class Factura extends CI_Controller{
         }
     }
 
-    function factura_carta($venta_id)
+    function factura_carta($venta_id,$tipo)
     {
         
         if($this->acceso(17)){
@@ -118,6 +118,7 @@ class Factura extends CI_Controller{
         $factura = $this->Factura_model->get_factura_venta($venta_id);
         $data['factura'] = $factura;
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['tipo'] = $tipo;
                 
         if(sizeof($factura)>=1){
         
@@ -164,7 +165,7 @@ class Factura extends CI_Controller{
         }
     }    
     
-    function factura_boucher($venta_id)
+    function factura_boucher($venta_id,$tipo)
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
@@ -180,6 +181,7 @@ class Factura extends CI_Controller{
         $factura = $this->Factura_model->get_factura_venta($venta_id);
         $data['factura'] = $factura;
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['tipo'] = $tipo;
         
         if(sizeof($factura)>=1){
         
@@ -228,7 +230,7 @@ class Factura extends CI_Controller{
         }
     }
     
-    function factura_boucher_id($factura_id)
+    function factura_boucher_id($factura_id,$tipo)
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
@@ -245,6 +247,7 @@ class Factura extends CI_Controller{
         $data['page_title'] = "Factura";
         $factura = $this->Factura_model->get_factura_id($factura_id);
         $data['factura'] = $factura;
+        $data['tipo'] = $tipo;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         
         if(sizeof($factura)>=1){
@@ -294,7 +297,7 @@ class Factura extends CI_Controller{
     }
 
     
-    function factura_carta_id($factura_id)
+    function factura_carta_id($factura_id,$tipo)
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************           
@@ -313,6 +316,7 @@ class Factura extends CI_Controller{
         $data['page_title'] = "Factura";
         $factura = $this->Factura_model->get_factura_id($factura_id);
         $data['factura'] = $factura;
+        $data['tipo'] = $tipo;
         $data['parametro'] = $this->Parametro_model->get_parametros();
         
         if(sizeof($factura)>=1){
@@ -676,7 +680,12 @@ class Factura extends CI_Controller{
            $this->excel->getActiveSheet()->setCellValue("C{$contador}", date('d/m/Y', strtotime($l['factura_fecha']))); 
            $this->excel->getActiveSheet()->setCellValue("D{$contador}", $l['factura_numero']);
            $this->excel->getActiveSheet()->setCellValue("E{$contador}", $l['factura_autorizacion']);
-           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $l['estado_id']);
+           
+           $estado_factura = "";
+           if($l['estado_id']==1){ $estado_factura="V";}
+           else { $estado_factura="A";}
+           
+           $this->excel->getActiveSheet()->setCellValue("F{$contador}", $estado_factura);
            $this->excel->getActiveSheet()->setCellValue("G{$contador}", $l['factura_nit']);
            $this->excel->getActiveSheet()->setCellValue("H{$contador}", $l['factura_razonsocial']);
            $this->excel->getActiveSheet()->setCellValue("I{$contador}", $l['factura_total']);
@@ -953,7 +962,7 @@ class Factura extends CI_Controller{
      * Realizado por: Roberto Carlos Soto Sierra
      * Fecha: 05.05.2019
      */
-    function imprimir_factura($venta_id)
+    function imprimir_factura($venta_id,$tipo)
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************            
@@ -963,9 +972,9 @@ class Factura extends CI_Controller{
             if (sizeof($parametros)>0){
                 
                 if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
-                    $this->factura_boucher($venta_id);
+                    $this->factura_boucher($venta_id,$tipo);
                 else
-                    $this->factura_carta($venta_id);
+                    $this->factura_carta($venta_id,$tipo);
             }
 
         //**************** fin contenido ***************
@@ -977,7 +986,7 @@ class Factura extends CI_Controller{
      * Realizado por: Roberto Carlos Soto Sierra
      * Fecha: 05.05.2019
      */
-    function imprimir_factura_id($factura_id)
+    function imprimir_factura_id($factura_id,$tipo)
     {
         if($this->acceso(17)){
         //**************** inicio contenido ***************            
@@ -987,9 +996,9 @@ class Factura extends CI_Controller{
             if (sizeof($parametros)>0){
                 
                 if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
-                    $this->factura_boucher_id($factura_id);
+                    $this->factura_boucher_id($factura_id,$tipo);
                 else
-                    $this->factura_carta_id($factura_id);
+                    $this->factura_carta_id($factura_id,$tipo);
             }
 
         //**************** fin contenido ***************

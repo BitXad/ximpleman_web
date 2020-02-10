@@ -66,6 +66,7 @@ function validar(e,opcion) {
                 $("#nit").val(cod);
                 $("#razon_social").focus();
                 $("#razon_social").select();
+                $("#zona_id").val(0);
                 
             }else{                
              buscarcliente();
@@ -78,10 +79,11 @@ function validar(e,opcion) {
             codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
                     
             $("#cliente_nombre").val(document.getElementById('razon_social').value);
+            $("#cliente_celular").val(''); //si la tecla proviene del input razon social
             $("#telefono").val(''); //si la tecla proviene del input razon social
             
             $("#cliente_codigo").val(codigo);
-           document.getElementById('telefono').focus();
+           document.getElementById('cliente_celular').focus();
         } 
         
         if (opcion==3){   //si la tecla proviene del input codigo de barras          
@@ -117,10 +119,11 @@ function validar(e,opcion) {
                 codigo = codigo[0]+codigo[1] + Math.floor((Math.random()*100000)+50);
 
                 $("#cliente_nombre").val(document.getElementById('razon_social').value);
+                $("#cliente_celular").val(''); //si la tecla proviene del input razon social
                 $("#telefono").val(''); //si la tecla proviene del input razon social
 
                 $("#cliente_codigo").val(codigo);
-                document.getElementById('telefono').focus();               
+                document.getElementById('cliente_celular').focus();               
            }
         }  
         if (opcion==10){   //si la tecla proviene del buscador del reporte de  ventas
@@ -148,7 +151,7 @@ function seleccionar(opcion) {
         }
         
         if (opcion==3){
-            document.getElementById('telefono').select();
+            document.getElementById('cliente_celular').select();
         }
         
         if (opcion==4){
@@ -1346,9 +1349,9 @@ function tablaresultados(opcion)
                         
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
                         html += "<tr>";
-                        html += "<td class='button btn-default' onclick='ocultar_busqueda();'>"+(i+1)+"</td>";
+                        html += "<td class='button btn-default' onclick='ocultar_busqueda();' style='padding:0'>"+(i+1)+"</td>";
                         
-                        html += "<td><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         
                         html += mimagen;   
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
@@ -1360,7 +1363,7 @@ function tablaresultados(opcion)
                        if(! esMobil()){
                         html += "</td>";
                         
-                        html += "<td>"; // style='space-white:nowarp'
+                        html += "<td  style='padding:0'>"; // style='space-white:nowarp'
                         }
                         
                         html += "<center> ";                        
@@ -1471,7 +1474,7 @@ function tablaresultados(opcion)
 //                        html += "</td>";
                         
                         
-                        html += "<td>";
+                        html += "<td style='padding:0;'>";
                         }
                         
                         html += "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
@@ -3483,5 +3486,22 @@ function aniadirdetalleaux(venta_id){
         
         
     })
+    
+}
+
+function imprimir_factura(){
+    
+    var base_url = document.getElementById("base_url").value;
+    var tipo = document.getElementById("select_imprimir_factura").value; 
+    
+    if(tipo==1){ // 1 Imprimir original
+        window.open(base_url+'venta/ultimaventa/1', '_blank');
+    }
+    
+    if(tipo==2){ // 1 Imprimir copia
+        window.open(base_url+'venta/ultimaventa/2', '_blank');
+    }
+    
+    $("#select_imprimir_factura").val(0); 
     
 }
