@@ -1038,12 +1038,12 @@ function fechadeservicio(elfiltro, busquedade){
                             html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #720e9e; float: none' href='"+base_url+"servicio/seguimiento/"+registros[i]["cliente_id"]+"/"+registros[i]["servicio_id"]+"' class='btn btn-primary btn-xs' title='Seguimiento' target='_blank'><span class='fa fa-user-secret'></span> Seguimiento</a><br><br>";
                         }
                         if(registros[i]["estado_id"] != 4 && registros[i]['factura_id'] != null && registros[i]['factura_id'] >0){
-                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura servicio'><span class='fa fa-list-alt'></span> Ver/Anular factura</a>";
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura servicio'><span class='fa fa-list-alt'></span> Ver/Anular factura</a>";
                             //window.open(base_url+"factura/imprimir_factura_id/"+factura_id, '_blank');
                         }else{
                             //html += " <a class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></a> ";
                             //html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #000; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#boton_modal_factura"+i+"' class='btn btn-facebook btn-xs' title='Generar Factura'><span class='fa fa-modx'></span> Generar factura</a>";
-                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #000; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+"); cargar_parafactura_serv("+registros[i]["servicio_id"]+")' class='btn btn-facebook btn-xs' title='Generar Factura'><span class='fa fa-modx'></span> Generar factura</a>";
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #000; float: none' onclick='ocultarmodalnombre("+nombremodal+", "+i+"); cargar_parafactura_serv("+registros[i]["servicio_id"]+");' class='btn btn-facebook btn-xs' title='Generar Factura'><span class='fa fa-modx'></span> Generar factura</a>";
                             
                         }
                         html += "</div>";
@@ -2645,17 +2645,17 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
 /***** Registra facturas en servicio ****/
 function registrar_factura(servicio_id){
     var base_url = document.getElementById("base_url").value;
-    var controlador = base_url+"venta/generar_factura";
+    var controlador = base_url+"venta/generar_factura_detalle_servicio";
      
-    var nit = document.getElementById("generar_nit"+servicio_id).value;
-    var razon_social = document.getElementById("generar_razon"+servicio_id).value;
+    var nit = document.getElementById("generar_nit").value;
+    var razon_social = document.getElementById("generar_razon").value;
     var fecha = new Date();
     var fecha_venta = moment(fecha).format("YYYY-MM-DD");
     //var fecha_venta = fecha();
-    var detalle_factura = document.getElementById("generar_detalle"+servicio_id).value;
+    /*var detalle_factura = document.getElementById("generar_detalle"+servicio_id).value;
     var detalle_unidad = "UNIDAD";
-    var detalle_cantidad = "1";
-    var detalle_prec   = document.getElementById("generar_monto"+servicio_id).value;
+    var detalle_cantidad = "1";*/
+    var detalle_prec   = document.getElementById("generar_monto").value;
     patron = /,/g;
     nuevoValor    = "";
     var detalle_precio = detalle_prec.replace(patron, nuevoValor);
@@ -2665,14 +2665,13 @@ function registrar_factura(servicio_id){
      
     $.ajax({url: controlador,
             type: "POST",
-            data:{nit:nit, razon_social:razon_social, detalle_factura:detalle_factura,
-                 detalle_unidad:detalle_unidad, detalle_cantidad:detalle_cantidad,
+            data:{nit:nit, razon_social:razon_social,
                  fecha_venta:fecha_venta, detalle_precio:detalle_precio, llave_valor:llave_valor,
                  llave_foranea:llave_foranea}, 
             success:function(respuesta){
-                //resultado = JSON.parse(respuesta);
-                //var factura_id = resultado;
-                //window.open(base_url+"factura/imprimir_factura_id/"+factura_id, '_blank');
+                resultado = JSON.parse(respuesta);
+                var factura_id = resultado;
+                window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
                 $("#select_servicio option[value=6]").attr("selected",true);
                 fechadeservicio(null, 1);
             },
@@ -2939,18 +2938,18 @@ function cargar_parafactura_serv(servicio_id){
             success:function(resultado){
                 var registros =  JSON.parse(resultado);
                 if (registros != null){
-                    $("#boton_modal_factura").click();
+                    $("#modalfactura").modal("show");
                     //cargar_factura2(venta_id);
                     html = "";
                     html += "<table>";
                     html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
-                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT</b></td>";
+                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT.&nbsp;&nbsp;</b></td>";
                     html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
-                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";
+                    /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";*/
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>TOTAL</b></td>";
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
-                    html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";
+                    /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b></b></td>";*/
                     html += "</tr>";
                     var cont = 0;
                     var cantidad = 0;
@@ -2958,36 +2957,34 @@ function cargar_parafactura_serv(servicio_id){
                     var total_final = 0;
                     for (var i=0; i< registros.length; i++){
                         cont = cont+1;
-                        cantidad += registros[i]['detallefact_cantidad'];
-                        total_descuento += registros[i]['detallefact_descuento']; 
-                        total_final += Number(registros[i]['detallefact_total']);
+                        //cantidad += registros[i]['detallefact_cantidad'];
+                        cantidad += 1;
+                        //total_descuento += registros[i]['detallefact_descuento']; 
+                        total_descuento += 0;
+                        total_final += Number(registros[i]['detalleserv_total']);
                         html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
                         html += "<td align='center' style='padding: 0;'>";
                         html += "<font style='size:7px; font-family: arial'>";
-                        html += registros[i]['detallefact_cantidad'];
+                        //html += registros[i]['detallefact_cantidad'];
+                        html += 1;
                         html += "</font>";
                         html += "</td>";
                         html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
                         html += "<font style='size:7px; font-family: arial;'> ";
-                        html += registros[i]['detallefact_descripcion'];
-                        if(registros[i]['detallefact_preferencia'].length>0 && registros[i]['detallefact_preferencia']!='null' && registros[i]['detallefact_preferencia']!='-' ){
-                            html += registros[i]['detallefact_preferencia']; }
-
-                        if(registros[i]['detallefact_caracteristicas'].length>0 && registros[i]['detallefact_caracteristicas']!='null' && registros[i]['detallefact_caracteristicas']!='-' ) {
-                            html += "<br>.nl2br("+registros[i]['detallefact_caracteristicas']+");"; }
+                        html += registros[i]['detalleserv_solucion'];
                         html += "</font>";
                         html += "</td>";
-                        html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
+                        /*html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
                         html += Number(registros[i]["detallefact_precio"]).toFixed(2);
-                        html += "</font></td>";
+                        html += "</font></td>";*/
                         html += "<td></td>";
                         html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";
-                        html += Number(registros[i]["detallefact_subtotal"]).toFixed(2);
+                        html += Number(registros[i]["detalleserv_total"]).toFixed(2);
                         html += "</font></td>";
                         html += "<td></td>";
-                        html += "<td>&nbsp;";
+                        /*html += "<td>&nbsp;";
                         html += "<a onclick='quitardetalle_aux("+registros[i]["detallefact_id"]+", "+venta_id+")' class='btn btn-danger btn-xs' title='Quitar detalle'><span class='fa fa-times'></span> </a>";
-                        html += "</td>";
+                        html += "</td>";*/
                         html += "</tr>";
                     }
                     html += "</table>";
@@ -2995,10 +2992,10 @@ function cargar_parafactura_serv(servicio_id){
                     $("#generar_nit").val(registros[0]['cliente_nit']);
                     $("#generar_razon").val(registros[0]['cliente_razon']);
                     $("#generar_detalle").html(html);
-                    $("#generar_venta_id").val(registros[0]['venta_id']);
+                    $("#generar_venta_id").val(registros[0]['servicio_id']);
                     $("#generar_monto").val(Number(total_final).toFixed(2));
-                    $("#botonaniadir").html("<a onclick='aniadirdetalleaux("+venta_id+")' class='btn btn-xs btn-success' class='form-control'><span class='fa fa-check-square-o'></span></a>");
-                    $("#registrar_factura").html("<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+venta_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
+                    //$("#botonaniadir").html("<a onclick='aniadirdetalleaux("+servicio_id+")' class='btn btn-xs btn-success' class='form-control'><span class='fa fa-check-square-o'></span></a>");
+                    $("#registrar_factura").html("<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+servicio_id+")' data-dismiss='modal' ><span class='fa fa-floppy-o'></span> Generar Factura</button>");
                     
                 }
             },

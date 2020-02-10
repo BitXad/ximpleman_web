@@ -2234,8 +2234,12 @@ function registrar_factura(venta_id){
     $.ajax({url: controlador,
             type: "POST",
             data:{venta_id:venta_id, nit:nit, razon:razon, monto_factura:monto_factura}, 
-            success:function(resultado){
-
+            success:function(respuesta){
+                resultado = JSON.parse(respuesta);
+                var factura_id = resultado;
+                alert(factura_id);
+                alert(base_url+"factura/imprimir_factura_id/"+factura_id+"/1");
+                window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
                                     /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada
             },
@@ -2377,7 +2381,7 @@ function tabla_ventas(filtro)
                     html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
                 }
                     if (v[i]['venta_tipodoc']==1){
-                        html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                        html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                     }
                     else{                        
                         html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";

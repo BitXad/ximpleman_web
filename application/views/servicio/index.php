@@ -384,6 +384,7 @@ if(isset($a) && $a == 1){ ?>
     </div>
 </div>
 <!-- ---------------------- Fin modal para buscar el historial de un detalle de servico ----------------- -->
+<!--<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #000; float: none' data-toggle='modal' data-target='#modalfactura' class='btn btn-facebook btn-xs' title='Generar Factura'><span class='fa fa-modx'></span> Generar factura</a>";-->
 <!----------------- INICIO modal factura ---------------------------------------------->
 <div class="modal fade" id="modalfactura" tabindex="-1" role="dialog" aria-labelledby="modalfactura">
     <div class="modal-dialog" role="document">
@@ -400,7 +401,7 @@ if(isset($a) && $a == 1){ ?>
             </div>
             <div class="modal-body" style="padding-top: 0px">
                 <div class="box-body table-responsive">
-                    <b>DETALLE:</b><a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir detalle"><span class="fa fa-edit"></span></a>
+                   <!-- <b>DETALLE:</b><a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir detalle"><span class="fa fa-edit"></span></a>
                     <div id="mostrarocultar" style="padding-left: 0px; visibility:hidden; width: 0px; height: 0px">
                         <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
                             <label for="cantidad_id" class="control-label">CANT.</label>
@@ -432,12 +433,12 @@ if(isset($a) && $a == 1){ ?>
                                 <span id="botonaniadir"></span>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <div id="generar_detalle" name="generar_detalle"></div>
                     <div class="col-md-6">
                         <label for="usuario_idx" class="control-label">TOTAL Bs</label>
                         <input type="text" id="generar_venta_id" value="0.00" hidden >
-                        <input type="text" id="generar_monto" value="0.00" class="form-control btn btn-xs btn-default" style="text-align: left;">
+                        <input type="text" id="generar_monto" value="0.00" class="form-control btn btn-xs btn-default" style="text-align: left;" readonly>
                     </div>
                     <div class="col-md-6" id='botones'  style='display:block;'>
                         <label for="opciones" class="control-label">Opciones</label>

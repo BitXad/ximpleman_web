@@ -2654,7 +2654,7 @@ class Detalle_serv extends CI_Controller{
         if ($this->input->is_ajax_request()) {
             $servicio_id = $this->input->post('servicio_id');
             if ($servicio_id!=""){
-                $datos = $this->Detalle_serv_model->buscar_detalle_serv_cliente($cliente_id);
+                $datos = $this->Detalle_serv_model->get_thisdetalle_serv_forfactura($servicio_id);
                 echo json_encode($datos);
             }else echo json_encode("faltadatos");
         }else{                 
