@@ -41,7 +41,6 @@ body {
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 
 <!-------------------------------------------------------->
- <div class="col-md-12">
      <div class="col-md-4">
      </div><!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
@@ -63,8 +62,13 @@ body {
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
- 
-<div class="row">
+<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"];
+      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+?>
+
+<div class="row" style="max-width:<?php echo $ancho?>;">
     <div style="width: 100%;overflow-x:hidden;overflow-y:auto;">
    
 <div style="float:left; width:22%;">
@@ -102,7 +106,8 @@ body {
                            <font size="2"><b>No.:  <?php echo $cuota[0]['credito_id']; ?></b></font></center>
                 </center>
                     </div>
-</div></div></div>
+</div></div>
+</div>
 <hr style="border-color: black; margin: 5px;">
 <div style="width: 100%;overflow-x:hidden;overflow-y:auto;">
    
@@ -118,7 +123,7 @@ body {
  <hr style="border-color: black; margin: 5px;">
  <div style="width: 100%;overflow-x:hidden;overflow-y:auto;">
    
-<div style="float:left; width:22%;">
+<div style="float:left; width:22%; max-width:<?php echo $ancho?>;">
     <table id="izquierdatabla">
             <tr>
                 <td>TOTAL CREDITO:</td><td style="width: 22px;"></td>
@@ -228,7 +233,8 @@ body {
                   <p style="font-family: 'Arial', Arial, Arial, arial; font-size: 8px;"><?php echo date("d/m/Y   H:i:s"); ?></p><br>
                   
 </div>
-<div style="width: 100%;overflow-x:hidden;overflow-y:auto;">
+
+<div style="max-width:<?php echo $ancho?>;overflow-x:hidden;overflow-y:auto;">
    
 <div style="float:left; width:22%;">
     <center>ENTREGUE CONFORME</center>

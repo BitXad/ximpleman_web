@@ -2930,6 +2930,23 @@ function verificador()
    
 }
 
+
+
+function limpiar_parametros()
+{
+//    var base_url = document.getElementById('base_url').value;
+//    var controlador = base_url+"factura/codigocontrol";
+    
+    $("#factura_llave").val("");
+    $("#factura_autorizacion").val("");
+    $("#factura_numero").val("");
+    $("#factura_nit").val("");
+    $("#factura_fecha").val("");
+    $("#factura_total").val("");
+    $("#factura_codigocontrol").val("");
+    
+}
+
 function modificar_venta(cliente_id)
 {
     var base_url = document.getElementById('base_url').value;

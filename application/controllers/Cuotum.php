@@ -180,6 +180,7 @@ class Cuotum extends CI_Controller{
     {
         if($this->acceso(47)){
             $data['page_title'] = "Cuota";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Cuotum_model->get_all_cuentas($credito_id);

@@ -854,6 +854,7 @@ class Factura extends CI_Controller{
             
 
             $data['page_title'] = "Verificador";
+            $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion(1);
             $data['_view'] = 'factura/verificador';
             $this->load->view('layouts/main',$data);
         }

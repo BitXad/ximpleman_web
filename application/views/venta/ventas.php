@@ -295,7 +295,7 @@ window.onkeydown = compruebaTecla;
             <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
             <font color="red" size="2"> Dosificación no activada</font>
           <?php } ?> 
-          <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-warning btn-sm"> 
+          <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm"> 
             Más información</a>
         </h4>
 
@@ -383,7 +383,12 @@ window.onkeydown = compruebaTecla;
             </div>
             
             <div class="col-md-14" >
-                <br>* Información complementaria del cliente
+                <br>
+                <small>
+                    <b>
+                        * Información complementaria del cliente                   
+                    </b>
+                </small>
             </div>
     
 <!--        
