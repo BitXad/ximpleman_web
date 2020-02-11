@@ -11,7 +11,7 @@
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <div class="row">
     <div class="col-md-12">
-      	<div class="box box-info" style="font-family: Arial">
+      	<div class="box box-info" style="font-family: Arial;">
             <div class="box-header with-border">
                 <h3 class="box-title"><b>
                         Verificador de facturas

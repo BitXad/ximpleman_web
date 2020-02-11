@@ -3401,7 +3401,7 @@ function cargar_factura2(venta_id){
                 if (registros.length>0){
                     html = "";
                     html += "<table>";
-                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
+                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial; font-size:12px; font-weight: bold;'>";
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT</b></td>";
                     html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";
@@ -3419,7 +3419,7 @@ function cargar_factura2(venta_id){
                         cantidad += registros[i]['detallefact_cantidad'];
                         total_descuento += registros[i]['detallefact_descuento']; 
                         total_final += Number(registros[i]['detallefact_total']);
-                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
+                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-family: Arial; font-size:10px; '>";
                         html += "<td align='center' style='padding: 0;'>";
                         html += "<font style='size:7px; font-family: arial'>";
                         html += registros[i]['detallefact_cantidad'];
