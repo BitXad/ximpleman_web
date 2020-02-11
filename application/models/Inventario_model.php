@@ -365,7 +365,8 @@ class Inventario_model extends CI_Model
                   0 as unidad_vend,
                   0 as costov_unit,
                   0 as importe_salida,
-                  c.compra_hora as hora
+                  c.compra_hora as hora,
+                  '' as detalleobs
                 from
                   compra c,
                   detalle_compra d
@@ -388,7 +389,8 @@ class Inventario_model extends CI_Model
                   t.detalleven_cantidad as unidad_vend,
                   t.detalleven_costo as costov_unit,
                   t.detalleven_subtotal as importe_salida,
-                  v.venta_hora as hora
+                  v.venta_hora as hora,
+                  '' as detalleobs
                 from
                   venta v,
                   detalle_venta t
@@ -397,6 +399,29 @@ class Inventario_model extends CI_Model
                   v.venta_id = t.venta_id and 
                   v.venta_fecha >= '".$desde."' and 
                   v.venta_fecha <= '".$hasta."'
+                
+                union
+                
+                select 
+                  ds.detalleserv_fechaterminado as fecha,
+                  0 as num_ingreso,
+                  0 as unidad_comp,
+                  0 as costoc_unit,
+                  0 as importe_ingreso,
+                  ds.detalleserv_id as num_salida,
+                  t.detalleven_cantidad as unidad_vend,
+                  t.detalleven_costo as costov_unit,
+                  t.detalleven_subtotal as importe_salida,
+                  ds.detalleserv_horaterminado as hora,
+                  concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs
+                from
+                  detalle_serv ds,
+                  detalle_venta t
+                where
+                  t.producto_id = ".$producto_id." and 
+                  ds.detalleserv_id = t.detalleserv_id and 
+                  ds.detalleserv_fechaterminado >= '".$desde."' and 
+                  ds.detalleserv_fechaterminado <= '".$hasta."'
                   ) as tx
 
                   order by fecha, hora";

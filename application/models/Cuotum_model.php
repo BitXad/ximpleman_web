@@ -131,27 +131,43 @@ class Cuotum_model extends CI_Model
     
     function get_all_cuenta_serv($credito_id)
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
-        
         $credito = $this->db->query("
             SELECT
-                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*, u.usuario_nombre, f.factura_id
 
             FROM
-                credito c, cliente p, servicio ve, cuota k, estado e
+               cuota k
+            LEFT JOIN credito c on k.credito_id = c.credito_id 
+            LEFT JOIN servicio ve on c.servicio_id = ve.servicio_id
+            LEFT JOIN cliente p on p.cliente_id = ve.cliente_id
+            LEFT JOIN estado e on k.estado_id = e.estado_id
+            LEFT JOIN usuario u on k.usuario_id = u.usuario_id
+            LEFT JOIN factura f on k.cuota_id=f.cuota_id
+            WHERE
+             
+                 ".$credito_id." = k.credito_id
 
+            ORDER BY `cuota_id` ASC
+
+            /*
+
+
+            SELECT
+                c.*, p.*, ve.*, k.cuota_fecha as fechacu, k.*, e.*,
+                u.usuario_nombre, f.factura_id
+
+            FROM
+                credito c, cliente p, servicio ve, cuota k, estado e,
+                usuario u
             WHERE
                 k.credito_id = c.credito_id 
                 and c.servicio_id = ve.servicio_id
                 and p.cliente_id = ve.cliente_id
                 and k.estado_id = e.estado_id
+                and u.usuario_id = ve.usuario_id
                 and ".$credito_id." = k.credito_id
 
-            ORDER BY `cuota_numcuota` ASC
-
-            " . $limit_condition . "
+            ORDER BY `cuota_numcuota` ASC*/
         ")->result_array();
 
         return $credito;

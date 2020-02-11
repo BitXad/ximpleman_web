@@ -961,7 +961,7 @@ function mostrar_kardex(producto_id){
                         else {  saldox = saldo * k[i]['costov_unit']; }
                         
                     html += saldox.toFixed(2)+"</td>";
-                    html +="            <td style='padding:0'></td>";
+                    html +="            <td style='padding:0'>"+k[i]['detalleobs']+"</td>";
                     html +="            ";
                     html +="        </tr>";
                 
