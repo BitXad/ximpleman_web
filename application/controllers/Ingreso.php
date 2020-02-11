@@ -211,21 +211,29 @@ class Ingreso extends CI_Controller{
             '".$detallefact_preferencia."',
             '".$detallefact_caracteristicas."')";
 
-            $this->Ingreso_model->ejecutar($sql);           
+            $this->Ingreso_model->ejecutar($sql); 
+
+            echo'<script type="text/javascript">
+        window.open("../../factura/factura_id/'.$factura_id.'/1", "_blank");
+        </script>';         
        
         }
-            redirect('ingreso/index');
-           
+             
+ echo'<script type="text/javascript">
+        alert("Ingreso Registrado Correctamente");
+        window.location.href="../index";
+        </script>';           
         }
         else
         {
+           $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion_activa();
 	       $this->load->model('Categoria_ingreso_model');
            $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
            $this->load->model('Parametro_model');
            $data['parametro'] = $this->Parametro_model->get_all_parametro();
            $data['page_title'] = "Ingreso";
-            $data['_view'] = 'ingreso/add';
-            $this->load->view('layouts/main',$data);
+           $data['_view'] = 'ingreso/add';
+           $this->load->view('layouts/main',$data);
         }
             }
             

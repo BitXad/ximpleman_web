@@ -34,7 +34,7 @@
 p {
     font-family: Arial;
     font-size: 7pt;
-    line-height: 120%;   /*esta es la propiedad para el interlineado*/
+    line-height: 120%;  /*esta es la propiedad para el interlineado*/
     color: #000;
     padding: 10px;
 }
