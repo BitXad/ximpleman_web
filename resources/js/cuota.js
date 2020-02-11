@@ -40,7 +40,7 @@ function enviar_formulario(cuota_id){
 }
 
 
-
+/*
 
 function facturarcuota(cuota_id){
    var base_url = document.getElementById('base_url').value;
@@ -86,4 +86,4 @@ function facturarcuota(cuota_id){
   }
    
    
-}
+}*/

@@ -786,9 +786,9 @@ class Venta extends CI_Controller{
             
             if($venta_id>0){
                 $sql = "update venta set venta_tipodoc = 1 where venta_id = ".$venta_id;
-                $factura_id = $this->Venta_model->ejecutar($sql);
+                $this->Venta_model->ejecutar($sql);
             }
-      
+            echo json_encode($factura_id);
         //**************** fin contenido ***************
         }
     }

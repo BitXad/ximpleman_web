@@ -314,7 +314,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-primary btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";
                         
                         if (registros[i]['factura_id']>0) {
-                        html += " <a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"' target='_blank' class='btn btn-warning btn-xs' title='IMPRIMIR FACTURA'><span class='fa fa-list'></span></a>";
+                        html += " <a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]['factura_id']+"/2' target='_blank' class='btn btn-warning btn-xs' title='IMPRIMIR FACTURA'><span class='fa fa-list'></span></a>";
                       }else{
                         html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+registros[i]['venta_id']+","+registros[i]['credito_id']+");'><span class='fa fa-modx'></span></button> ";
                       }
@@ -548,7 +548,8 @@ function registrar_factura(){
              detalle_unidad:detalle_unidad,detalle_factura:detalle_factura,factura_efectivo:factura_efectivo,factura_cambio:factura_cambio,
              tipotrans_id:tipotrans_id,llave_foranea:llave_foranea,llave_valor:llave_valor}, 
             success:function(resultado){
-
+              var factura_id = resultado;
+                window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", "_blank");
                 buscar_fecha_cuenta(); //funcion para volver a mostrar la lista de ventas 
                                     /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada
             },
