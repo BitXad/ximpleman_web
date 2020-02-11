@@ -226,13 +226,14 @@ class Ingreso extends CI_Controller{
         }
         else
         {
+           $data['dosificacion'] = $this->Dosificacion_model->get_dosificacion_activa();
 	       $this->load->model('Categoria_ingreso_model');
            $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
            $this->load->model('Parametro_model');
            $data['parametro'] = $this->Parametro_model->get_all_parametro();
            $data['page_title'] = "Ingreso";
-            $data['_view'] = 'ingreso/add';
-            $this->load->view('layouts/main',$data);
+           $data['_view'] = 'ingreso/add';
+           $this->load->view('layouts/main',$data);
         }
             }
             
