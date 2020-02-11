@@ -127,7 +127,7 @@ function fechadeingreso(filtro)
                         html += "<td  class='no-print'><a href='"+base_url+"ingreso/pdf/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
                         html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["ingreso_id"]+"' title='Bouche' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
                         if (registros[i]["factura_id"]>0) {
-                        html += "<a href='"+base_url+"factura/factura_boucher_id/"+registros[i]["factura_id"]+"' title='Factura' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></a>";
+                        html += "<a href='"+base_url+"factura/factura_id/"+registros[i]["factura_id"]+"/2' title='Factura' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></a>";
                         }
                         html += "<a href='"+base_url+"ingreso/edit/"+registros[i]["ingreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";

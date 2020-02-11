@@ -211,11 +211,18 @@ class Ingreso extends CI_Controller{
             '".$detallefact_preferencia."',
             '".$detallefact_caracteristicas."')";
 
-            $this->Ingreso_model->ejecutar($sql);           
+            $this->Ingreso_model->ejecutar($sql); 
+
+            echo'<script type="text/javascript">
+        window.open("../../factura/factura_id/'.$factura_id.'/1", "_blank");
+        </script>';         
        
         }
-            redirect('ingreso/index');
-           
+             
+ echo'<script type="text/javascript">
+        alert("Ingreso Registrado Correctamente");
+        window.location.href="../index";
+        </script>';           
         }
         else
         {
