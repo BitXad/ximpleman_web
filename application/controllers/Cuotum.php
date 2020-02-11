@@ -101,7 +101,22 @@ class Cuotum extends CI_Controller{
     function cuenta_serv($credito_id)
     {
         if($this->acceso(47)){
-            $data['page_title'] = "Cuota";
+            $data['page_title'] = "Plan de pagos";
+            $data['rol'] = $this->session_data['rol'];
+            $cuotas_pendientes = $this->Cuotum_model->get_pendientes($credito_id);
+            if (isset($cuotas_pendientes)) {
+                foreach ($cuotas_pendientes as $cuota) {
+                    $hoy = new DateTime('NOW');
+                    $fechalimite = new DateTime($cuota['cuota_fechalimite']);
+                    if ($hoy>$fechalimite){
+                        $diff = $hoy->diff($fechalimite);
+                        $dias =  $diff->days;
+                        $multa = $dias*$cuota['cuota_interes']/30;
+                        $sql = "UPDATE cuota SET cuota_moradias = ".$dias.", cuota_multa = ".$multa."  WHERE credito_id = ".$credito_id." and cuota_id = ".$cuota['cuota_id']." ";
+                        $this->db->query($sql);
+                    }
+                }
+            }
             $data['cuota'] = $this->Cuotum_model->get_all_cuenta_serv($credito_id);
             $data['credito'] = $this->Credito_model->dato_cuenta_serv($credito_id);
             $data['_view'] = 'cuotum/cuentas';
