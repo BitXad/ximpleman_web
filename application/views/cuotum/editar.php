@@ -160,9 +160,16 @@ input[type=number] { -moz-appearance:textfield; }
             	<button type="submit" class="btn btn-success">
 					<i class="fa fa-check"></i> Guardar
 				</button>
-				  <a href="../cuentas/<?php echo $cuotum['credito_id']; ?>"><button type="button" class="btn btn-danger">
+				<?php if ($tipo['venta_id']>0) { ?>
+        <a href="../cuentas/<?php echo $cuotum['credito_id']; ?>"><button type="button" class="btn btn-danger">
                 <i class="fa fa-times"></i> Cancelar
               </button></a>
+        <?php } else { ?>
+        <a href="../cuenta_serv/<?php echo $cuotum['credito_id']; ?>"><button type="button" class="btn btn-danger">
+                <i class="fa fa-times"></i> Cancelar
+              </button></a>
+              <?php } ?>
+				  
 	        </div>				
 			<?php echo form_close(); ?>
 		</div>

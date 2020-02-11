@@ -177,7 +177,7 @@ $(document).ready(function(){
                       <td <?php echo $color; ?>><?php echo $c['usuario_nombre']; ?></td>
                       <td <?php echo $color; ?>> 
                         <?php if ($c['factura_id']>0) { ?>
-                            <a href="<?php echo site_url('factura/imprimir_factura_id/'.$c['factura_id']); ?>" target="_blank" title="IMPRIMIR FACTURA" class="btn btn-warning btn-xs"><span class="fa fa-list"></span></a>
+                            <a href="<?php echo site_url('factura/imprimir_factura_id/'.$c['factura_id'].'/2'); ?>" target="_blank" title="IMPRIMIR FACTURA" class="btn btn-warning btn-xs"><span class="fa fa-list"></span></a>
 
                         <?php  } if ($c['estado_id']==8) { ?>
                         <?php
