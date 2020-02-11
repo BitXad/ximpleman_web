@@ -1302,7 +1302,7 @@ function tablaresultados(opcion)
                    if (modo_visualizacion == 1){ // visualziacion tipos texto, en lista
                    
                    /************** INICIO MODO TEXTO ***************/
-                   
+                    var nombreprod = "";
                     var cont = 0;
                     var cant_total = 0;
                     var total_detalle = 0;
@@ -1351,7 +1351,13 @@ function tablaresultados(opcion)
                         html += "<tr>";
                         html += "<td class='button btn-default' onclick='ocultar_busqueda();' style='padding:0'>"+(i+1)+"</td>";
                         
-                        html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        nombreprod = registros[i]["producto_nombre"];
+                        
+                        if (nombreprod.length>35)
+                            nombreprod = nombreprod.substr(0,34)+"...";
+                        
+                        //html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ registros[i]["producto_nombre"]+"</b></font>";
+                        html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ nombreprod+"</b></font>";
                         
                         html += mimagen;   
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
