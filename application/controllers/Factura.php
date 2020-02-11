@@ -230,18 +230,6 @@ class Factura extends CI_Controller{
         }
     }
 
-
-    function factura_id($factura_id,$tipo){
-  $num = $this->Parametro_model->get_parametros();
-  $este = $num[0]['parametro_tipoimpresora'];
-    if ($este == 'NORMAL') {
-       redirect('factura/factura_carta_id/'.$factura_id.'/'.$tipo);
-    }else{
-       redirect('factura/factura_boucher_id/'.$factura_id.'/'.$tipo);
- 
-    }
-
-}
     
     function factura_boucher_id($factura_id,$tipo)
     {

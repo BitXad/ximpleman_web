@@ -594,7 +594,7 @@ class Cuotum extends CI_Controller{
 
               $servi="SELECT servicio_id as 'servico' FROM credito WHERE credito_id=".$credito_id." ";
               $servic=$this->db->query($servi)->result_array();
-              if ($servic[0]['servico']!=0) {
+              if ($servic[0]['servico']>0) {
                  redirect('cuotum/cuenta_serv/'.$credito_id);
                } else {
                 redirect('cuotum/cuentas/'.$credito_id);  
@@ -776,6 +776,7 @@ class Cuotum extends CI_Controller{
             $usuario_id = $this->session_data['usuario_id'];
      
         // check if the cuotum exists before trying to edit it
+        $data['tipo'] = $this->Cuotum_model->get_tipo($cuota_id);
         $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
         $credito_id = $this->input->post('credito_id');
         if(isset($data['cuotum']['cuota_id']))
@@ -803,8 +804,12 @@ class Cuotum extends CI_Controller{
                     'cuota_glosa' => $this->input->post('cuota_glosa'),
                 );
 
-                $this->Cuotum_model->update_cuotum($cuota_id,$params);            
-                redirect('cuotum/cuentas/'.$credito_id); 
+                $this->Cuotum_model->update_cuotum($cuota_id,$params); 
+                if ($data['tipo']['servicio_id']>0) {
+                 redirect('cuotum/cuenta_serv/'.$credito_id);
+                } else {
+                redirect('cuotum/cuentas/'.$credito_id);  
+                }           
             }
             else
             {

@@ -303,8 +303,12 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
-                        html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
+                        if (registros[i]['servicio_id']>0) {
+                        html += "<td style='text-align: center'>"+registros[i]['usuario_servnombre']+"</td>";
+                        }
                         if (registros[i]['venta_id']>0) {
+                        html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
+                        
                         html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs' title='VER CUOTAS'><span class='fa fa-eye'></span></a>";
                         html += " <a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs' title='PLAN DE PAGOS'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-primary btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";

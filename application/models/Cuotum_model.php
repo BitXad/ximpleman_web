@@ -287,6 +287,23 @@ class Cuotum_model extends CI_Model
 
         return $credito;
     } 
+
+    function get_tipo($cuota_id)
+    {
+        $cuotum = $this->db->query("
+            SELECT
+                cr.venta_id, cr.servicio_id, cu.credito_id
+
+            FROM
+                credito cr, cuota cu
+
+            WHERE
+            cr.credito_id=cu.credito_id
+            and cu.cuota_id = ".$cuota_id."
+        ")->row_array();
+
+        return $cuotum;
+    }
     
     /*
      * function to update cuotum

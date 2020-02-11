@@ -214,7 +214,7 @@ class Ingreso extends CI_Controller{
             $this->Ingreso_model->ejecutar($sql); 
 
             echo'<script type="text/javascript">
-        window.open("../../factura/factura_id/'.$factura_id.'/1", "_blank");
+        window.open("../../factura/imprimir_factura_id/'.$factura_id.'/1", "_blank");
         </script>';         
        
         }
