@@ -220,7 +220,6 @@ class Ingreso extends CI_Controller{
         }
              
  echo'<script type="text/javascript">
-        alert("Ingreso Registrado Correctamente");
         window.location.href="../index";
         </script>';           
         }
