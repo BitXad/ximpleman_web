@@ -281,10 +281,10 @@
 
                             
                     </div>
-                    <div class="modal-body" style="padding-top: 0px">
+                    <div class="modal-body" style="padding-top: 0px; font-family: Arial;">
                         <!--------------------- TABLA---------------------------------------------------->
                         
-                        <div class="box-body table-responsive">
+                        <div class="box-body table-responsive" style="font-family: Arial;">
                             
                             <b>DETALLE:</b><a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir detalle"><span class="fa fa-edit"></span></a>
                             <div id="mostrarocultar" style="padding-left: 0px; visibility:hidden; width: 0px; height: 0px">
@@ -307,7 +307,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
-                                    <label for="precio_subtotal" class="control-label">TOT.</label>
+                                    <label for="precio_subtotal" class="control-label">TOTAL</label>
                                     <div class="form-group">
                                         <input type="text" readonly name="precio_subtotal" class="form-control" id="precio_subtotal" style="padding-left: 1px" />
                                     </div>

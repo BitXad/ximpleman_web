@@ -1302,7 +1302,7 @@ function tablaresultados(opcion)
                    if (modo_visualizacion == 1){ // visualziacion tipos texto, en lista
                    
                    /************** INICIO MODO TEXTO ***************/
-                   
+                    var nombreprod = "";
                     var cont = 0;
                     var cant_total = 0;
                     var total_detalle = 0;
@@ -1351,7 +1351,13 @@ function tablaresultados(opcion)
                         html += "<tr>";
                         html += "<td class='button btn-default' onclick='ocultar_busqueda();' style='padding:0'>"+(i+1)+"</td>";
                         
-                        html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        nombreprod = registros[i]["producto_nombre"];
+                        
+                        if (nombreprod.length>35)
+                            nombreprod = nombreprod.substr(0,34)+"...";
+                        
+                        //html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ registros[i]["producto_nombre"]+"</b></font>";
+                        html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ nombreprod+"</b></font>";
                         
                         html += mimagen;   
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
@@ -2234,8 +2240,12 @@ function registrar_factura(venta_id){
     $.ajax({url: controlador,
             type: "POST",
             data:{venta_id:venta_id, nit:nit, razon:razon, monto_factura:monto_factura}, 
-            success:function(resultado){
-
+            success:function(respuesta){
+                resultado = JSON.parse(respuesta);
+                var factura_id = resultado;
+                alert(factura_id);
+                alert(base_url+"factura/imprimir_factura_id/"+factura_id+"/1");
+                window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
                                     /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada
             },
@@ -2377,7 +2387,7 @@ function tabla_ventas(filtro)
                     html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
                 }
                     if (v[i]['venta_tipodoc']==1){
-                        html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
+                        html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                     }
                     else{                        
                         html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
@@ -3391,7 +3401,7 @@ function cargar_factura2(venta_id){
                 if (registros.length>0){
                     html = "";
                     html += "<table>";
-                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
+                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial; font-size:12px; font-weight: bold;'>";
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT</b></td>";
                     html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";
@@ -3409,7 +3419,7 @@ function cargar_factura2(venta_id){
                         cantidad += registros[i]['detallefact_cantidad'];
                         total_descuento += registros[i]['detallefact_descuento']; 
                         total_final += Number(registros[i]['detallefact_total']);
-                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
+                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-family: Arial; font-size:10px; '>";
                         html += "<td align='center' style='padding: 0;'>";
                         html += "<font style='size:7px; font-family: arial'>";
                         html += registros[i]['detallefact_cantidad'];
