@@ -1781,7 +1781,11 @@ function mostrardetalleserv(serv_id){
                         res += "<tr style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px;'>";
                         res += "<td style='width: 70%; text-align: left; border: 0px; padding: 0px'>";
                         res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
-                        res += "<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='"+registros[i]['detalleserv_descripcion']+"'>"+registros[i]['detalleserv_descripcion'].substring(0,35)+"...</span>";
+                        var detalle_descripcion = " ";
+                        if(registros[i]['detalleserv_descripcion'] != null){
+                            detalle_descripcion = registros[i]['detalleserv_descripcion'].substring(0,35);
+                        }
+                        res += "<span style='background-color: #"+registros[i]['estado_color']+"' class='btn btn-xs' data-toggle='modal' data-target='#modalverinformacion"+registros[i]['detalleserv_id']+"' title='"+registros[i]['detalleserv_descripcion']+"'>"+detalle_descripcion+"...</span>";
                         res += "["+registros[i]['detalleserv_codigo']+"]";
                         res += "&nbsp;&nbsp;<span style='font-size: 10px'>Resp.:<span style='font-weight: normal'>"+registros[i]["usuario_nombre"]+"</span></span>";
                         res += "</td>";
