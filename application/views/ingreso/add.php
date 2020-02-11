@@ -74,7 +74,7 @@ function facturar(mensualidad){
                 <?php echo form_open('ingreso/add/'); ?>
                 <?php if(count($dosificacion) >0){ ?>
                 <button class="btn btn-info btn-xs" type="button">
-              <input type="checkbox" name="factura" id="factura"  onclick="facturar()"  />
+              <input type="checkbox" name="factura" id="factura"  onclick="facturar()" />
               <label for="factura"> Generar Factura</label></button>
               <?php  }else{ echo "<span class='text-bold text-red'>Dosificación no activa</span>"; } ?>
             </div>
