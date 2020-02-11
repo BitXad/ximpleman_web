@@ -823,4 +823,23 @@ class Detalle_serv_model extends CI_Model
 
         return $detalle_serv;
     }
+    /*
+     * Obtiene todos los detalles de un servicio especifico(servicio_id)
+     */
+    function get_thisdetalle_serv_forfactura($servicio_id)
+    {
+        $detalle_serv = $this->db->query("
+            SELECT
+                ds.detalleserv_id, ds.detalleserv_solucion, detalleserv_total,
+                s.servicio_total, c.cliente_nit, cliente_razon
+            FROM
+                detalle_serv ds
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            WHERE
+                ds.servicio_id = ".$servicio_id."
+        ")->result_array();
+
+        return $detalle_serv;
+    }
 }
