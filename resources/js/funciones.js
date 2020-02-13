@@ -192,7 +192,11 @@ function buscarcliente(){
                     $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
                     $("#cliente_celular").val(registros[0]["cliente_celular"]);
-                    $("#zona_id").val(registros[0]["zona_id"]);
+                    if(registros[0]["zona_id"] != null && registros[0]["zona_id"] >0){
+                        $("#zona_id").val(registros[0]["zona_id"]);
+                    }else{
+                        $("#zona_id").val(0);
+                    }
                     
                 }
                 else 
