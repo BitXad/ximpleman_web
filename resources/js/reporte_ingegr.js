@@ -101,19 +101,18 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                var registros =  JSON.parse(resul);
            
                if (registros != null){
-                   
                     var fecha1 = fecha_desde;
                     var fecha2 = fecha_hasta;
                     var esusuario =  $('#buscarusuario_id option:selected').text();
                     if(!(fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null  || fecha_hasta =="")){
-                        fecha1 = "Desde: "+convertDateFormat(fecha_desde);
-                        fecha2 = " - Hasta: "+convertDateFormat(fecha_hasta);
+                        fecha1 = "Desde: "+moment(fecha_desde).format("DD/MM/YYYY");
+                        fecha2 = " - Hasta: "+moment(fecha_hasta).format("DD/MM/YYYY");
                     }else if(!(fecha_desde == null || fecha_desde =="") && (fecha_desde == null || fecha_hasta =="")){
-                        fecha1 = "De: "+convertDateFormat(fecha_desde);
+                        fecha1 = "De: "+moment(fecha_desde).format("DD/MM/YYYY");
                         fecha2 = "";
                     }else if((fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null || fecha_hasta =="")){
                         fecha1 = "";
-                        fecha2 = "De: "+convertDateFormat(fecha_hasta);
+                        fecha2 = "De: "+moment(fecha_hasta).format("DD/MM/YYYY");
                     }else{
                         fecha1 = "";
                         fecha2 = "";
@@ -202,7 +201,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalingreso1  += parseFloat(registros[i]['ingreso']);
                           html1 += "<tr>";
                           html1 += "<td>"+cont1+"</td>";
-                          html1 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html1 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html1 += "<td>"+registros[i]["detalle"]+"</td>";
                           html1 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                           html1 += "</tr>";
@@ -215,7 +214,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalutilidad += parseFloat(registros[i]['utilidad']);
                           html2 += "<tr>";
                           html2 += "<td>"+cont2+"</td>";
-                          html2 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html2 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html2 += "<td>"+registros[i]["detalle"]+"</td>";
                           html2 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                     //      html2 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
@@ -228,7 +227,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           //totalutilidad22 += parseFloat(registros[i]['utilidad']);
                           html21 += "<tr>";
                           html21 += "<td>"+cont22+"</td>";
-                          html21 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html21 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html21 += "<td>"+registros[i]["detalle"]+"</td>";
                           html21 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                     //      html2 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
@@ -240,7 +239,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           //totalutilidad22 += parseFloat(registros[i]['utilidad']);
                           html22 += "<tr>";
                           html22 += "<td>"+cont22+"</td>";
-                          html22 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html22 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html22 += "<td>"+registros[i]["detalle"]+"</td>";
                           html22 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                     //      html2 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
@@ -252,7 +251,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           //totalutilidad22 += parseFloat(registros[i]['utilidad']);
                           html23 += "<tr>";
                           html23 += "<td>"+cont22+"</td>";
-                          html23 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html23 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html23 += "<td>"+registros[i]["detalle"]+"</td>";
                           html23 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                     //      html2 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
@@ -264,7 +263,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           //totalutilidad22 += parseFloat(registros[i]['utilidad']);
                           html24 += "<tr>";
                           html24 += "<td>"+cont22+"</td>";
-                          html24 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html24 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html24 += "<td>"+registros[i]["detalle"]+"</td>";
                           html24 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                     //      html2 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
@@ -278,7 +277,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalutilidad += parseFloat(registros[i]['utilidad']);
                           html3 += "<tr>";
                           html3 += "<td>"+cont3+"</td>";
-                          html3 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html3 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html3 += "<td>"+registros[i]["detalle"]+"</td>";
                           html3 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                           html3 += "</tr>";
@@ -289,7 +288,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalingreso7  += parseFloat(registros[i]['ingreso']);
                           html7 += "<tr>";
                           html7 += "<td>"+cont7+"</td>";
-                          html7 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html7 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html7 += "<td>"+registros[i]["detalle"]+"</td>";
                           html7 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                           html7 += "</tr>";
@@ -300,7 +299,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalingreso8  += parseFloat(registros[i]['ingreso']);
                           html8 += "<tr>";
                           html8 += "<td>"+cont8+"</td>";
-                          html8 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html8 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html8 += "<td>"+registros[i]["detalle"]+"</td>";
                           html8 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                           html8 += "</tr>";
@@ -311,7 +310,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalingreso9  += parseFloat(registros[i]['ingreso']);
                           html9 += "<tr>";
                           html9 += "<td>"+cont9+"</td>";
-                          html9 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html9 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html9 += "<td>"+registros[i]["detalle"]+"</td>";
                           html9 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                           html9 += "</tr>";
@@ -322,7 +321,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalegreso4  += parseFloat(registros[i]['egreso']);
                           html4 += "<tr>";
                           html4 += "<td>"+cont4+"</td>";
-                          html4 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html4 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html4 += "<td>"+registros[i]["detalle"]+"</td>";
                           html4 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
                           html4 += "</tr>";
@@ -333,7 +332,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalegreso5  += parseFloat(registros[i]['egreso']);
                           html5 += "<tr>";
                           html5 += "<td>"+cont5+"</td>";
-                          html5 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html5 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html5 += "<td>"+registros[i]["detalle"]+"</td>";
                           html5 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
                           html5 += "</tr>";
@@ -344,7 +343,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalegreso6  += parseFloat(registros[i]['egreso']);
                           html6 += "<tr>";
                           html6 += "<td>"+cont6+"</td>";
-                          html6 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html6 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html6 += "<td>"+registros[i]["detalle"]+"</td>";
                           html6 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
                           html6 += "</tr>";
@@ -355,7 +354,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                           totalegreso10  += parseFloat(registros[i]['egreso']);
                           html10 += "<tr>";
                           html10 += "<td>"+cont10+"</td>";
-                          html10 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                          html10 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                           html10 += "<td>"+registros[i]["detalle"]+"</td>";
                           html10 += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
                           html10 += "</tr>";
@@ -371,7 +370,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                               }
                               html11 += "<tr>";
                               html11 += "<td>"+cont11+"</td>";
-                              html11 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                              html11 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                               var detalle = "Cliente no definido";
                               if(registros[i]["detalle"] != null){
                                   detalle = registros[i]["detalle"];
@@ -391,7 +390,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                               }
                               html11 += "<tr>";
                               html11 += "<td>"+cont11+"</td>";
-                              html11 += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                              html11 += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                               var detalle = "Cliente no definido";
                               if(registros[i]["detalle"] != null){
                                   detalle = registros[i]["detalle"];
@@ -408,7 +407,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                         html += "<td>"+(i+1)+"</td>";
                         
                         
-                       html += "<td>"+formatofecha_hora(registros[i]["fecha"])+"</td>";
+                       html += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
                        html += "<td>"+registros[i]["detalle"]+"</td>";
                        html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["ingreso"]).toFixed(2))+"</td>";
                        html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
