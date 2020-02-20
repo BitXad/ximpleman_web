@@ -45,9 +45,7 @@ class Ingreso_model extends CI_Model
      */
     function get_all_ingresos()
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
         
         $ingresos = $this->db->query("
             SELECT
@@ -63,7 +61,7 @@ class Ingreso_model extends CI_Model
 
             ORDER BY `ingreso_fecha` DESC
 
-            " . $limit_condition . "
+          
         ")->result_array();
 
         return $ingresos;
@@ -113,7 +111,7 @@ class Ingreso_model extends CI_Model
                
                 ".$condicion." 
                 
-            ORDER BY i.ingreso_fecha DESC limit 1000
+            ORDER BY i.ingreso_fecha DESC 
         "
         )->result_array();
 
