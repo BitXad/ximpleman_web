@@ -45,9 +45,6 @@ class Egreso_model extends CI_Model
     }
     function get_all_egreso()
     {
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
         $egresos = $this->db->query("
             SELECT
@@ -61,7 +58,6 @@ class Egreso_model extends CI_Model
 
             ORDER BY `egreso_id` DESC
 
-            " . $limit_condition . "
         ")->result_array();
 
         return $egresos;
@@ -90,7 +86,7 @@ class Egreso_model extends CI_Model
                
                 ".$condicion." 
                 
-            ORDER BY e.egreso_fecha DESC limit 100
+            ORDER BY e.egreso_fecha DESC 
         "
         )->result_array();
 

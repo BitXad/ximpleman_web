@@ -83,7 +83,7 @@ function fechadeingreso(filtro)
       
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"ingreso/buscarfecha";
-    var limite = 1000;
+    
     
     $.ajax({url: controlador,
            type:"POST",
@@ -105,10 +105,8 @@ function fechadeingreso(filtro)
                     $("#pillados").html("Registros Encontrados: "+n+"");
                    
                     html = "";
-                   if (n <= limite) x = n; 
-                   else x = limite;
-                   
-                    for (var i = 0; i < x ; i++){
+                
+                    for (var i = 0; i < n ; i++){
                         
                         var suma = Number(registros[i]["ingreso_monto"]);
                         var total = Number(suma+total);
