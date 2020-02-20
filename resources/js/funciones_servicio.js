@@ -2946,7 +2946,8 @@ function cargar_parafactura_serv(servicio_id){
                     //cargar_factura2(venta_id);
                     html = "";
                     html += "<table>";
-                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
+                    html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial; font-size:12px; font-weight: bold;'>";
+                    //html += "<tr style='border-style: solid; border-width: 2px; border-color: black; font-family: Arial;'>";
                     html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>CANT.&nbsp;&nbsp;</b></td>";
                     html += "<td align='center' colspan='2' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>DESCRIPCIÓN</b></td>";
                     /*html += "<td align='center' style='background-color: #aaa !important; -webkit-print-color-adjust: exact;'><b>P.UNIT</b></td>";*/
@@ -2966,7 +2967,8 @@ function cargar_parafactura_serv(servicio_id){
                         //total_descuento += registros[i]['detallefact_descuento']; 
                         total_descuento += 0;
                         total_final += Number(registros[i]['detalleserv_total']);
-                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
+                        html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-family: Arial; font-size:10px; '>";
+                        //html += "<tr style='border-top-style: solid;  border-color: black;  border-top-width: 1px;'>";
                         html += "<td align='center' style='padding: 0;'>";
                         html += "<font style='size:7px; font-family: arial'>";
                         //html += registros[i]['detallefact_cantidad'];
