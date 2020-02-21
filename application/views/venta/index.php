@@ -275,9 +275,20 @@
                                 <h4 class="modal-title" id="myModalLabel"><b>EMITIR FACTURA</b></h4>
                                 <!--<b>ADVERTENCIA: Seleccione la </b>-->                  
                             </center>
+                        
                             
-                        <br><b>NIT:</b><input type="text" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;">
-                        <br><b>RAZON SOCIAL:</b><input type="text" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="col-md-4">
+                                    <b>NIT:</b><input type="text" id="generar_nit" value="0" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+
+                                    </div>
+                                    <div class="col-md-8">
+                                    <b>RAZON SOCIAL:</b><input type="text" id="generar_razon" value="SIN NOMBRE" class="form-control btn btn-xs btn-warning" style="text-align: left;">
+
+                                    </div>
+                                </div>
+                            </div>
 
                             
                     </div>
@@ -286,15 +297,16 @@
                         
                         <div class="box-body table-responsive" style="font-family: Arial;">
                             
-                            <b>DETALLE:</b><a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir detalle"><span class="fa fa-edit"></span></a>
-                            <div id="mostrarocultar" style="padding-left: 0px; visibility:hidden; width: 0px; height: 0px">
+                            <b>DETALLE:</b><a onclick="mostrarocultarcampos()" class="btn btn-xs btn-info" title="Añadir item al detalle"><span class="fa fa-edit"></span> Añadir Item</a>
+                            
+                            <div id="mostrarocultar" style="padding-left: 0px; visibility:hidden; width: 0px; height: 0px;  ">
                                 <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
                                     <label for="cantidad_id" class="control-label">CANT.</label>
                                     <div class="form-group">
                                         <input type="number" step="any" min="0" name="cantidad_id" class="form-control" id="cantidad_id" style="padding-left: 1px" />
                                     </div>
                                 </div>
-                                <div class="col-md-5" style="padding-left: 0px; padding-right: 0px">
+                                <div class="col-md-4" style="padding-left: 0px; padding-right: 0px">
                                     <label for="descripcion" class="control-label">DESCRIPCION</label>
                                     <div class="form-group">
                                         <input type="text" name="descripcion" class="form-control" id="descripcion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -312,32 +324,40 @@
                                         <input type="text" readonly name="precio_subtotal" class="form-control" id="precio_subtotal" style="padding-left: 1px" />
                                     </div>
                                 </div>
-                                <div class="col-md-1" style="padding-left: 0px; padding-right: 0px">
+                                <div class="col-md-2" style="padding-left: 0px; padding-right: 0px">
                                     <label for="boton_aniadir" class="control-label">&nbsp;</label>
                                     <div class="form-group" style="padding-top: 6px">
                                         <span id="botonaniadir"></span>
                                     </div>
                                 </div>
                             </div>
-                            <div id="generar_detalle" name="generar_detalle"></div>
+                            
+                            <div class="col-md-12" id="generar_detalle" name="generar_detalle"></div>
                             <!--<input type="text" id="generar_detalle" value="-" class="form-control btn btn-xs btn-default" style="text-align: left;">-->
-                                
-                            <div class="col-md-6">
+       
+                            <div class="col-md-4">
                                 <label for="usuario_idx" class="control-label">TOTAL Bs</label>
 
                                 <input type="text" id="generar_venta_id" value="0.00" hidden >
-                                <input type="text" id="generar_monto" value="0.00" class="form-control btn btn-xs btn-default" style="text-align: left;">
+                                <input type="text" id="generar_monto" value="0.00" class="form-control btn btn-xs btn-default" style="text-align: right; font-weight: bold; font-size: 15pt;">
                             </div>
                                 
-                            <div class="col-md-6" id='botones'  style='display:block;'>
-                                    <label for="opciones" class="control-label">Opciones</label>
+                            <div class="col-md-4" id='botones'  style='display:block;'>
+                                    <!--<label for="opciones" class="control-label"></label>-->
                                     <div class="form-group">
-                                        <span id="registrar_factura"></span>
-                                        <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
+                                        <span id="registrar_factura"></span>                                        
+                                    </div>
+                            </div>
+                                
+                            <div class="col-md-4" id='botones'  style='display:block;'>
+                                    <!--<label for="opciones" class="control-label"></label>-->
+                                    <div class="form-group">
+                                        
+                                        <button class="btn btn-danger btn-block" id="cancelar_preferencia" data-dismiss="modal" >
                                             <span class="fa fa-close"></span>   Cancelar                                                          
                                         </button>
                                     </div>
-                                </div>
+                            </div>
                             
                                 <!--------------------- inicio loader ------------------------->
                                 <div class="col-md-6" id='loaderinventario'  style='display: none;'>

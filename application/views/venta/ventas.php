@@ -215,7 +215,7 @@ window.onkeydown = compruebaTecla;
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
 <?php $atributos = " btn btn-warning btn-sm";  //atributos para los inputs del clientes?>
-<?php $estilos_facturacion = " style='color: black; text-align: left; font-size: 18px; font-family: Arial;'"; //estilo para los inputs de facturacion?>
+<?php $estilos_facturacion = " style='color: black; background: #1221; text-align: left; font-size: 18px; font-family: Arial;'"; //estilo para los inputs de facturacion?>
 <?php $estilos = " style='background: white; color: black; text-align: left;  font-family: Arial;'"; //estilo para los inputs del cliente?>
 <?php $estilo_div = " style='padding:2; padding-left:1px; margin:0; line-height:15px;' "; ?>
 <!-------------------- inicio collapse ---------------------->
@@ -582,15 +582,14 @@ window.onkeydown = compruebaTecla;
             <!--------------------- fin parametro de buscador ---------------------> 
         
             </div>
-            <div class="col-md-4" style="background-color: black;">
+            <div class="col-md-4" style="background-color: black; line-height: 15px;">
                 <center>
                     
-                <font size="4" style="color:white">
-                    
+                <font size="3" style="color:white;" face="Arial"><b>Total Final Bs</b></font>
                 
-                <b>Total Final</b>
-                <b>Bs <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 150px; border-color: black; border-width: 0; background-color: black; text-align: center" readonly> </b>
-                </font>
+                <font size="6" style="color:white;" face="Arial"><b>
+                    <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 180px; border-color: black; border-width: 0; background-color: black; text-align: center; padding:0;" readonly> </b>                
+                </b></font>
     
                 </center>
 
@@ -868,7 +867,7 @@ window.onkeydown = compruebaTecla;
                         <td style="padding: 0"><b>Total Final Bs</b></td>
                         <td align="right" style="padding: 0">
 
-                              <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">                                
+                              <input class="btn btn-foursquarexs" style="font-size: 20px; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
 
                         </td>
                 </tr>
