@@ -29,10 +29,10 @@
             	<div class="box-tools">
                     <a href="<?php echo site_url('usuario/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>
-        <div class="box-header">
+        
             <font size='4' face='Arial'><b>Usuarios</b></font>
             <br><font size='2' face='Arial' id="encontrados">Registros Encontrados:<?php echo sizeof($usuario);  ?></font> 
-        </div>
+        
 </div>
 
 

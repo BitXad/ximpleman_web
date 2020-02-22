@@ -21,11 +21,10 @@
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <?php $ancho = "18cm"; ?>
 
-<div class="container">
-    
-<table>
+
+<table style="width: <?php echo $ancho; ?>">
     <tr>
-        <td width="300" style="line-height: 12px;">
+        <td width="40%" style="line-height: 12px;">
                      <center>                        
                         <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                         <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>
@@ -33,47 +32,41 @@
                         <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     </center>           
         </td>
-        <td width="300">
+        <td width="40%">
             <center>
                 <font size="3" face="arial"><b>NOTAS DE GARANTIA</b></font><br>
                 <font size="2" face="arial"><b>VENTA Nº: 00<?php echo $venta[0]['venta_id']; ?></b></font>
             </center>
             
         </td>
-        <td width="300">
+        <td width="20%">
 
         
         </td>            
     </tr>    
 </table>
-</div>
 
-    
-<div class="container">
-    <div class="panel panel-primary col-md-8">
-        <h5><b>Cliente: </b><?php echo $venta[0]['cliente_nombre']; ?> <br>
-        <b>Código Cliente: </b><?php echo $venta[0]['cliente_codigo']; ?> <br>
-        <b>Fecha/Hora: </b><?php echo $venta[0]['venta_fecha']; ?></h5>       
-    </div>
-</div>
+<table style="width: <?php echo $ancho; ?>">
+    <tr style="padding:0;">
+        <td width="15%" style="line-height: 12px; padding:0;">
 
+        </td>
+        <td width="70%" style="border-bottom: #000; border-bottom-style: solid; border-top-style: solid; padding:0; background: silver;">
 
-<div class="box-header no-print">
-                <h3 class="box-title  no-print">Detalle Venta</h3>
-
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group  no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el codigo, venta, precio">
-                  </div>
-            <!--------------------- fin parametro de buscador --------------------->
-        <div class="box">
+            <h5 style="font-family: Arial; font-size: smaller; margin-bottom: 0; margin-top: 0;"><b>Cliente: </b><?php echo $venta[0]['cliente_nombre']; ?> <br>
+            <b>Código Cliente: </b><?php echo $venta[0]['cliente_codigo']; ?> <br>
+            <b>Fecha/Hora: </b><?php echo $venta[0]['venta_fecha']; ?></h5>       
             
-            <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla"  border="1" style="width:<?php echo $ancho-1; ?>" >
+        </td>
+        <td width="15%" style="padding:0;">
+
+        
+        </td>            
+    </tr>    
+</table>
+
+<br>
+<table class="table table-striped table-condensed"   border="1" style="width:<?php echo $ancho; ?>" >
                     <tr>
                             <th style="width: 1cm">CANT</th>
                             <th>DESCRIPCIÓN</th>
@@ -112,25 +105,17 @@
                         <td align="center"><?php echo number_format($d['detalleven_descuento'],2,'.',','); ?></td></td>
                         <td align="right"><?php echo number_format($d['detalleven_total'],2,'.',','); ?></td>-->
 
-                        <td class="no-print">
+<!--                        <td class="no-print">
                             <a href="<?php echo site_url('venta/garantia/'.$d['detalleven_id']); ?>" class="btn btn-info btn-xs no-print" target="_BLANK"><span class="fa fa-lock" ></span> Imprimir garantia</a> 
-                            <!--<a href="<?php //echo site_url('detalle_venta/remove/'.$d['detalleven_id']); ?>" class="btn btn-danger btn-xs no-print"><span class="fa fa-trash"></span></a>-->
-                            <!--<button class="btn btn-danger btn-xs no-print" onclick="eliminar_producto_vendido(<?php echo $d['detalleven_id']; ?>)"> <span class="fa fa-trash"></span></a></button>-->
-                        </td>
+                        </td>-->
                     </tr>
                     <?php } ?>
                     <tr>
 
                     </tr>                    
-                </table>
-                
-            </div>
-            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-                </div>                
-        </div>
-    </div>
-</div>
+</table>
+
+
 <b>Usuario: </b><?php echo $venta[0]['cliente_nombre']; ?>
 
 <center>

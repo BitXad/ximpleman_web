@@ -87,7 +87,7 @@ border-bottom : 1px solid #aaa;
 
 <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
     <tr>
-        <td style="width: 6cm; padding: 0; line-height: 9px;" >
+        <td style="max-width: 6cm; padding: 0; line-height: 9px;" >
                 
             <center>
                     <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
@@ -114,20 +114,20 @@ border-bottom : 1px solid #aaa;
             
         </td>
                    
-        <td style="width: 6cm; padding: 0; line-height: 12px; " > 
+        <td style="width: 55%; padding: 0; line-height: 12px; " > 
             <center>
                 <br>
                     <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
                          else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
-                <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
+                <font size="3" face="arial"><b>CERTIFICADO DE GARANTIA</b></font> <br>
                 <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>
             </center>
         </td>
         
-        <td style="width: 6cm; padding: 0; line-height: 9px;" >
-                _______________________________________________                
+        <td style="max-width:6cm; padding: 0; line-height: 9px;" >
+                ______________________________________
                    
                 <br><br> 
                 <small>
@@ -142,7 +142,7 @@ border-bottom : 1px solid #aaa;
                     <b>ZONA: </b><?php echo $venta[0]['zona_nombre'].""; ?>
                 <br>
                 </small>
-                _______________________________________________
+                ______________________________________
         </td>
     </tr>
      
