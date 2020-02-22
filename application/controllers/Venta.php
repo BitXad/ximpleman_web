@@ -1793,7 +1793,7 @@ function ultimagarantia(){
     $venta_id = $venta[0]['venta_id'];
     
 
-     redirect('factura/nota_garantia/'.$venta_id);
+     redirect('factura/certificado_garantia/'.$venta_id);
         //redirect('factura/recibo_boucher/'.$venta_id);        
  
         
