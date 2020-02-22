@@ -350,12 +350,13 @@ function resultadodetalleserviciokardex(codigo){
                         html += "<div class='form-group'>";
                         html += "<input type='date' name='detalleserv_fechaentrega' value='";
                         var fecha = new Date();
-                        fecha.setDate(fecha.getDate()+1);
+                        var resfecha = moment(fecha).format("YYYY-MM-DD")
+                        /*fecha.setDate(fecha.getDate()+1);
                         var mes = fecha.getMonth();
                         var dia = fecha.getDate();
                         if(fecha.getMonth()<10){ mes = "0"+fecha.getMonth();}
                         if(fecha.getDate()<10){ dia = "0"+fecha.getDate();}
-                        var resfecha = fecha.getFullYear()+"-"+mes+"-"+dia;
+                        var resfecha = fecha.getFullYear()+"-"+mes+"-"+dia;*/
                         html += resfecha;
                         html += "' class='form-control' id='detalleserv_fechaentrega' />";
                         html += "</div>";

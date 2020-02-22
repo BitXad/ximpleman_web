@@ -1210,107 +1210,6 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<!------------------------ FIN modal para imprimir reporte Técnico ------------------->";
                         
                         
-                        
-                        html += "<!----------------- modal factura ---------------------------------------------->";
-                        html += "<div style='white-space: normal !important;' class='modal fade' id='boton_modal_factura"+i+"' tabindex='-1' role='dialog' aria-labelledby='boton_modal_facturalabel' aria-hidden='true'>";
-                        html += "<div class='modal-dialog' role='document'>";
-                        html += "<div class='modal-content'>";
-                        html += "<div class='modal-header'>";
-                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>";
-                        html += "<span aria-hidden='true'>&times;</span>";
-                        html += "</button>";
-                        //html += "<center>";
-                        html += "<h4 class='modal-title text-center' id='boton_modal_facturaLabel'><b>EMITIR FACTURA</b></h4>";
-                        //html += "</center>";
-                        var estenit = 0;
-                        if(registros[i]['cliente_nit'] != 0 && registros[i]['cliente_nit'] != '' && registros[i]['cliente_nit'] != null){
-                            estenit = registros[i]['cliente_nit'];
-                        }
-                        var estarazon = registros[i]['cliente_razon'];
-                        if(registros[i]['cliente_razon'] != '' && registros[i]['cliente_razon'] != null){
-                            estarazon = registros[i]['cliente_razon'];
-                        }
-                        html += "<div class='col-md-12'>";
-                        html += "<label for='generar_nit"+registros[i]['servicio_id']+"' class='control-label'><span class='text-danger'>*</span>NIT:</label>";
-                        html += "<div class='form-group'>";
-                        html += "<input type='text' name='generar_nit"+registros[i]['servicio_id']+"' value='"+estenit+"' class='form-control btn btn-xs btn-warning' id='generar_nit"+registros[i]['servicio_id']+"' style='text-align: left;' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
-                        html += "<span class='text-danger' id='error_generar_nit"+registros[i]['servicio_id']+"'></span>";
-                        html += "</div>";
-                        html += "</div>";
-                        
-                        html += "<div class='col-md-12'>";
-                        html += "<label for='generar_razon"+registros[i]['servicio_id']+"' class='control-label'><span class='text-danger'>*</span>RAZON SOCIAL:</label>";
-                        html += "<div class='form-group'>";
-                        html += "<input type='text' name='generar_razon"+registros[i]['servicio_id']+"' value='"+estarazon+"' class='form-control btn btn-xs btn-warning' id='generar_razon"+registros[i]['servicio_id']+"' style='text-align: left;' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
-                        html += "<span class='text-danger' id='error_generar_razon"+registros[i]['servicio_id']+"'></span>";
-                        html += "</div>";
-                        html += "</div>";
-                        
-                        //html += "<br><b>NIT:</b><input type='text' id='generar_nit' value='0' class='form-control btn btn-xs btn-warning' style='text-align: left;'>";
-                        //html += "<br><b>RAZON SOCIAL:</b><input type='text' id='generar_razon' value'SIN NOMBRE class='form-control btn btn-xs btn-warning' style='text-align: left;'>";
-                        
-                        html += "</div>";
-                        html += "<div class='modal-body'>";
-                        html += "<!--------------------- TABLA---------------------------------------------------->";
-
-                        html += "<div class='box-body table-responsive'>";
-                        
-                        html += "<div class='col-md-12'>";
-                        html += "<label for='generar_detalle"+registros[i]['servicio_id']+"' class='control-label'>DETALLE:</label>";
-                        html += "<div class='form-group'>";
-                        html += "<input type='text' name='generar_detalle"+registros[i]['servicio_id']+"' value='-' class='form-control btn btn-xs btn-default' id='generar_detalle"+registros[i]['servicio_id']+"' style='text-align: left;' required onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
-                        html += "<span class='text-danger' id='error_generar_detalle"+registros[i]['servicio_id']+"'></span>";
-                        html += "</div>";
-                        html += "</div>";
-
-                        //html += "<b>DETALLE:</b><input type='text' id='generar_detalle' value='-' class='form-control btn btn-xs btn-default' style='text-align: left;'>";
-
-                        html += "<div class='col-md-6'>";
-                        html += "<label for='generar_monto"+registros[i]['servicio_id']+"' class='control-label'><span class='text-danger'>*</span>TOTAL Bs</label>";
-                        html += "<div class='form-group'>";
-                        html += "<input type='text' id=generar_venta_id"+registros[i]['servicio_id']+"' value='0.00' hidden >";
-                        html += "<input type='text' name='generar_monto"+registros[i]['servicio_id']+"' value='"+numberFormat(Number(registros[i]['servicio_total']).toFixed(2))+"' class='form-control btn btn-xs btn-default' id='generar_monto"+registros[i]['servicio_id']+"' style='text-align: left;' />";
-                        html += "<span class='text-danger' id='error_generar_monto"+registros[i]['servicio_id']+"'></span>";
-                        html += "</div>";
-                        html += "</div>";
-                        
-                        /*
-                        html += "<div class='col-md-6'>";
-                        html += "<label for='usuario_idx' class='control-label'>TOTAL Bs</label>";
-
-                        html += "<input type='text' id=generar_venta_id' value='0.00' hidden >";
-                        html += "<input type='text' id=generar_monto' value='0.00' class='form-control btn btn-xs btn-default' style='text-align: left;'>";
-                        html += "</div>";*/
-
-                        html += "<div class='col-md-6' id='botones'  style='display:block;'>";
-                        html += "<label for='opciones' class='control-label'>&nbsp;</label>";
-                        html += "<div class='form-group'>";
-
-                        html += "<button class='btn btn-facebook' id='boton_asignar' onclick='registrar_factura("+registros[i]['servicio_id']+")' data-dismiss='modal' >";
-                        html += "<span class='fa fa-floppy-o'></span> Generar Factura";
-                        html += "</button>&nbsp;";
-
-                        html += "<button class='btn btn-danger' id='cancelar_preferencia' data-dismiss='modal' >";
-                        html += "<span class='fa fa-close'></span>   Cancelar";
-                        html += "</button>";
-                        html += "</div>";
-                        html += "</div>";
-
-                        html += "<!--------------------- inicio loader ------------------------->";
-                        html += "<div class='col-md-6' id='loaderinventario'  style='display: none;'>";
-                        html += "<center>";
-                        html += "<img src='"+base_url+"resources/images/loader.gif' >";
-                        html += "</center>";
-                        html += "</div>";
-                        html += "<!--------------------- fin inicio loader ------------------------->";
-                        html += "</div>";
-                        html += "<!----------------------FIN TABLA--------------------------------------------------->";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "</div>";
-                        html += "<!----------------- fin modal factura ---------------------------------------------->";
-                        
                         /*
                         html += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         html += "<button class='btn btn-primary btn-xs' type='submit' title='Imprimir Informe Técnico' ><span class='fa fa-print'></span></button>";
@@ -1956,6 +1855,12 @@ function mostrardetalleserv(serv_id){
                         res += "<label for='cliente_ci' class='control-label'>DETALLE:</label>";
                         res += "<div class='form-group' style='font-weight: normal'>";
                         res += registros[i]['detalleserv_descripcion'];
+                        res += "</div>";
+                        res += "</div>";
+                        res += "<div class='col-md-12'>";
+                        res += "<label for='cliente_ci' class='control-label'>FALLA SEGUN CLIENTE:</label>";
+                        res += "<div class='form-group' style='font-weight: normal'>";
+                        res += registros[i]['detalleserv_falla'];
                         res += "</div>";
                         res += "</div>";
                         res += "<div class='col-md-6'>";
