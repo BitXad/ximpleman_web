@@ -2926,7 +2926,7 @@ function anular_venta($venta_id){
             //$venta_id = $this->input->post('venta_id');
             
             $nit_factura = $this->input->post('nit');
-            $razon_social = $this->input->post('razon');
+            $razon_social = $this->input->post('razon_social');
             
             $llave_foranea = $this->input->post('llave_foranea');            
             $llave_valor = $this->input->post('llave_valor');
