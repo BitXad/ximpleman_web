@@ -239,6 +239,7 @@ function tablaproductos()
     var categ = JSON.parse(document.getElementById('categoria_producto').value);
     var controlador = base_url+'venta/detalleventa';
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
+    var venta_descuento = Number(document.getElementById('venta_descuento').value);
     
     $.ajax({url: controlador,
            type:"POST",
@@ -466,8 +467,8 @@ html += "  </div>";
                    html += "                    </tr>   ";                 
                    html += "                </table>";
 
-                   $("#tablaproductos").html(html);                 
-                   tabladetalle(total_detalle,0,total_detalle);
+                   $("#tablaproductos").html(html);
+                   tabladetalle(total_detalle,venta_descuento,total_detalle);
             }
             
                 
@@ -482,10 +483,19 @@ html += "  </div>";
 //muestra la tabla detalle de venta auxiliar
 function tabladetalle(subtotal,descuento,totalfinal)
 {
+    //totalfinal = totalfinal - descuento;
+//    alert(subtotal);
+//    alert(descuento);
+//    alert(totalfinal);
+//    
+    efectivo = totalfinal - descuento;
+    
     $("#venta_total").val(subtotal.toFixed(2));
     $("#venta_descuento").val(descuento.toFixed(2));
     $("#venta_subtotal").val(subtotal.toFixed(2));
-    $("#venta_efectivo").val(subtotal.toFixed(2));
+    $("#venta_efectivo").val(efectivo.toFixed(2));
+    
+    //alert(descuento);
     
     var venta_totalfinal = parseFloat(totalfinal - descuento);
     $("#venta_totalfinal").val(venta_totalfinal.toFixed(2));
@@ -1751,6 +1761,20 @@ function eliminardetalleventa()
     });
 }
 
+function cerrar_ventas(){
+    
+    var answer = window.confirm("¿Desea salir sin guardar cambios?")
+    if (answer) {
+        //some code
+        eliminardetalleventa();
+        window.close();
+    }
+//    else {
+//        //some code
+//    }
+
+}
+
 function registrarcliente()
 {
     var base_url = document.getElementById('base_url').value;
@@ -2384,10 +2408,11 @@ function tabla_ventas(filtro)
 //                    html += "                       </td>";
 
                     html += "                       <td class='no-print' style='padding:0;'>";
-                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
-                    html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modifica el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
+//                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
+                    html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> ";
+                    html += "                           <a href='"+base_url+"factura/certificado_garantia/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir certificado de garantia' style='background-color: purple'> <span class='fa fa-lock'></span> </a> ";
                     
                     if (parametro_modulorestaurante==1){
                     html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
@@ -2539,7 +2564,6 @@ function eliminar_producto_vendido(detalleven_id)
         type:"POST",
         data:{},
         success: function(response){ 
-            
                 
                 }
             });
@@ -2549,7 +2573,6 @@ function eliminar_producto_vendido(detalleven_id)
 
 function borrar_datos_cliente()
 {
-    
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
     $("#nit").val(0);
     $("#razon_social").val("SIN NOMBRE");
@@ -2569,18 +2592,12 @@ function borrar_datos_cliente()
     
     $("#tiposerv_id").val("1");
     $("#venta_numeromesa").val("0");
-    $("#venta_glosa").val("");
-    
-    
-    
+    $("#venta_glosa").val("");  
     
     $("#venta_efectivo").val("0");
     $("#venta_cambio").val("0");
     $("#zona_id").val("0");
-    
-
-    
-    
+     
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
@@ -2589,12 +2606,9 @@ function borrar_datos_cliente()
     
     $("#filtrar").focus();
     
-    
-    
     var facturado = document.getElementById('facturado').checked;      
 
     //Imprimir la factura
-    
     
     if (facturado == 1){
         var boton = document.getElementById("imprimir_factura");
@@ -2615,7 +2629,6 @@ function borrar_datos_cliente()
     document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
     document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
 }
-
 
 function verificar_ventas()
 {
@@ -2810,7 +2823,6 @@ function pasaraventas(pedido_id,usuariopedido_id,cliente_id)
    
 }
 
-
 function ordenaventas(orden_id,usuario_id,cliente_id)
 {
     
@@ -2902,9 +2914,6 @@ function actualizar_caracteristicas(detalleven_id)
         garantia = 0
     }
     
-    
-    //alert(preferencia+" "+caracteristicas);
-    
     $.ajax({url: controlador,
         type:"POST",
         data:{detalleven_id:detalleven_id, preferencia:preferencia, caracteristicas:caracteristicas, check:check,
@@ -2928,8 +2937,6 @@ function verificador()
     var fecha = document.getElementById('factura_fecha').value;
     var monto = document.getElementById('factura_total').value;
     var bandera = 1;
-    
-    
     //alert(llave+" | "+autorizacion+" | "+numero+" | "+nit+" | "+fecha+" | "+monto);
         
     $.ajax({url: controlador,
@@ -2943,10 +2950,7 @@ function verificador()
         }
 
     });
-   
 }
-
-
 
 function limpiar_parametros()
 {
@@ -2974,14 +2978,32 @@ function modificar_venta(cliente_id)
     var venta_total = document.getElementById('venta_total').value;
     var venta_efectivo = document.getElementById('venta_efectivo').value;
     var venta_cambio = document.getElementById('venta_cambio').value;
+    var modificar_credito = document.getElementById('modificar_credito').value;
+    var credito_id = document.getElementById('credito_id').value;
+    
+    var cuotas = document.getElementById('cuotas').value;
+    var modalidad = document.getElementById('modalidad').value;
+    var dia_pago = document.getElementById('dia_pago').value;
+    var fecha_inicio = document.getElementById('fecha_inicio').value;
+    var credito_interes = document.getElementById('credito_interes').value;
+    var cuota_inicial = document.getElementById('cuota_inicial').value;
+    var tipo_transaccion = document.getElementById('tipo_transaccion').value;
+    var forma_pago = document.getElementById('forma_pago').value;
+    var facturado = document.getElementById('facturado').value;
+    
 
         $.ajax({url: controlador,
             type:"POST",
             data:{venta_id:venta_id, cliente_id:cliente_id, venta_fecha:venta_fecha,venta_subtotal:venta_subtotal,
-            venta_descuento:venta_descuento, venta_total:venta_total, venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
+            venta_descuento:venta_descuento, venta_total:venta_total, venta_efectivo:venta_efectivo, venta_cambio:venta_cambio, 
+            modificar_credito:modificar_credito, credito_id: credito_id, 
+            tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
+            venta_total:venta_total, credito_interes:credito_interes,
+            facturado:facturado,venta_fecha:venta_fecha, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
+            modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio},
             success:function(respuesta){ 
-                //tablaproductos();
                 window.close();
+                //alert("Cambios Guardados...!");
             },
             error: function(respuesta){
                 alert("Revise los datos de la venta por favor...!");   
@@ -3007,6 +3029,7 @@ function registrarcliente_modificado()
     var cliente_direccion = document.getElementById('cliente_direccion').value;
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;    
+    var zona_id = document.getElementById('zona_id').value;    
     
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
@@ -3019,7 +3042,7 @@ function registrarcliente_modificado()
                 type:"POST",
                 data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id},
                 success:function(respuesta){ 
                     var datos = JSON.parse(respuesta)
                     cliente_id = datos[0]["cliente_id"];
@@ -3200,14 +3223,6 @@ function guardar_preferencia()
     $("#inputcaract").val("");   
     
 }
-
-//function focus_efectivo(){    
-// //   alert("holaaaaaaaaa");
-//    //document.getElementById('venta_efectivo').focus();     
-//    
-//    document.getElementById('venta_efectivo').focus();
-//    document.getElementById('venta_efectivo').select();
-//}
 
 function focus_efectivo(){
     

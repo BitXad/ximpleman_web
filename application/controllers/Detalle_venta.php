@@ -415,7 +415,7 @@ class Detalle_venta extends CI_Controller{
                     'detallefact_precio' => $detalle_venta['detalleven_precio'],
                     'detallefact_subtotal' => $detalle_venta['detalleven_subtotal'],
                     'detallefact_descuento' => $detalle_venta['detalleven_descuento'],
-                    'detallefact_total' => $detalle_venta['detalleven_total'],
+                    'detallefact_total' => $detalle_venta['detalleven_precio']*$detalle_venta['detalleven_cantidad'],
                     'detallefact_preferencia' => $detalle_venta['detalleven_preferencia'],
                     'detallefact_caracteristicas' => $detalle_venta['detalleven_caracteristicas'],
                     'usuario_id' => $usuario_id,

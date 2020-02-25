@@ -120,13 +120,13 @@ border-bottom : 1px solid #aaa;
                     <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
                          else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
 
-                <font size="3" face="arial"><b>CERTIFICADO DE GARANTIA</b></font> <br>
-                <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
+                <font size="5" face="arial"><b>CERTIFICADO DE GARANTIA</b></font> <br>
+                <font size="4" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
                 <font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>
             </center>
         </td>
         
-        <td style="max-width:6cm; padding: 0; line-height: 9px;" >
+<!--        <td style="max-width:6cm; padding: 0; line-height: 9px;" >
                 ______________________________________
                    
                 <br><br> 
@@ -143,13 +143,32 @@ border-bottom : 1px solid #aaa;
                 <br>
                 </small>
                 ______________________________________
+        </td>-->
+    </tr>
+    <tr>
+        
+        <td colspan="3" style="text-align: center;">
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." / NIT: ".$venta[0]['cliente_nit']; ?> <br>
+                    <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?><br>
+                    
+        </td>
+        
+    </tr>
+    <tr style="border-top-style: solid; border-color: #000;">
+        <td colspan="3" style="text-align: justify;">
+            
+            La empresa <?php echo $empresa[0]['empresa_nombre']; ?>, mediante el presente certificado, garantiza la calidad de los productos que ampara. DOS20, empresa con domicilio en Av. Concón Reñaca #526, Concón, Quinta Región de Valparaíso, Chile. Concede 1 año de garantía por defectos de materiales de fabricación o en la electronica de los productos que comercializa, o en el caso de que exista una instalación realizada por DOS20. Las garantías recogidas en el presente certificado serán prestadas por DOS20 sujetas a los términos y condiciones generales expresadas a continuación: 
+Cualquier cliente o usuario de equipos suministrados por DOS20, que se considere con razones justificadas para reclamar los derechos de garantía establecidos en el presente documento, deberá proceder de la siguiente forma: 
+ 
+            
         </td>
     </tr>
      
 </table>
 
-       <table class="table table-striped table-condensed"  style="width: <?php echo $ancho;?>cm;" >
-           <tr  style="border-top-style: solid; border-bottom-style: solid; border-color: black;">
+       <table class="table table-striped table-condensed"  style="width: <?php echo $ancho;?>cm; border: #000; border-color: #000; border-left-style: solid; border-right-style: solid;" >
+           <tr  style="border-top: solid; border-bottom: solid; border-color: black;">
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>CANT</b></td>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>DESCRIPCIÓN</b></td>
                 <td align="center" style="padding: 0; background-color: #aaa !important; -webkit-print-color-adjust: exact;"><b>P.UNIT</b></td>
@@ -166,7 +185,7 @@ border-bottom : 1px solid #aaa;
                         $total_descuento += $d['detalleven_descuento']; 
                         $total_final += $d['detalleven_total']; 
                         ?>
-           <tr>
+           <tr style="border-bottom-style: solid; border-bottom-color: #000;">
                 <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
                 <td style="padding: 0"><font style="font-size:10px; font-family: arial;"> (<?php echo $d['detalleven_codigo']; ?>) <?php echo $d['producto_nombre'];?>
                         <?php
@@ -188,7 +207,7 @@ border-bottom : 1px solid #aaa;
            <?php } ?>
        </table>
     
-<table class="table" style="max-width: <?php echo $ancho;?>cm;">
+<!--<table class="table" style="max-width: <?php echo $ancho;?>cm;">
     <tr style="border-top-style: solid; background-color: #aaa; border-color: black; ">
         
         <td align="left" style="background-color: #aaa !important; -webkit-print-color-adjust: exact; line-height: 10px;">
@@ -231,14 +250,14 @@ border-bottom : 1px solid #aaa;
             
         </td>          
     </tr>
-<!--
+
     <tr >
         <td colspan="3">
 
          </td>
-    </tr>    -->
+    </tr>    
     
-</table>
+</table>-->
 
 <table class="table" style="width: <?php echo $ancho;?>cm;">
         <tr>
