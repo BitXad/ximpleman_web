@@ -2787,7 +2787,12 @@ function seleccionar_cliente(){
                     $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
                     $("#cliente_celular").val(resultado[0]["cliente_celular"]);
-                    $("#zona_id").val(resultado[0]["zona_id"]);
+                    if(registros[0]["zona_id"] != null && registros[0]["zona_id"] >=0){
+                        $("#zona_id").val(resultado[0]["zona_id"]);
+                    }else{
+                        $("#zona_id").val(0);
+                    }
+                    //$("#zona_id").val(resultado[0]["zona_id"]);
                     $("#codigo").select();
                 }
        
@@ -3001,7 +3006,8 @@ function modificar_venta(cliente_id)
             venta_total:venta_total, credito_interes:credito_interes,
             facturado:facturado,venta_fecha:venta_fecha, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
             modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio},
-            success:function(respuesta){ 
+            success:function(respuesta){
+                window.opener.location.reload();
                 window.close();
                 //alert("Cambios Guardados...!");
             },
