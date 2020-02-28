@@ -169,7 +169,7 @@ border-bottom:1px solid black;
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?></font><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
                     <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
                 
@@ -279,10 +279,23 @@ border-bottom:1px solid black;
 </table>
 
 </div>
-<center>
-                    <div class="col-md-12" style="margin-top: 50px; width: 20cm">
-                    <font size="1" face="arial">
-                    <?php echo "________________________________"; ?><br>
-                    <?php echo "RESPONSABLE"; ?><br>
-                    <?php echo $compra[0]['usuario_nombre']; ?>
-                    </font></div></center>
+<br>
+<table class="table" style="width: 20cm;">
+        <tr>
+            <td  style="padding: 0">
+                <center>
+                    __________________________<br>
+                            ENTREGE CONFORME
+                </center>  
+            </td>
+            <td style="padding: 0">
+            </td>
+            <td  style="padding: 0">
+                <center>
+                    __________________________<br>
+                            RECIBI CONFORME
+                </center>  
+            </td>
+        </tr>
+</table>
+ 
