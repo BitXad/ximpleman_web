@@ -74,9 +74,16 @@ border-bottom : 1px solid #aaa;
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!-------------------------------------------------------->
+<?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"];
+      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+?>
 
-
-<table class="table" style="width: 20cm; padding: 0;" >
+<div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
+    
+</div>
+<div class="col-xs-10" style="padding: 0;">
+<table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
     <tr>
         <td style="width: 6cm; padding: 0" >
                 
@@ -84,12 +91,12 @@ border-bottom : 1px solid #aaa;
                                
                     <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                    <!--<font size="2" face="Arial"><b><?php /*echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];*/ ?><br>-->
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                    <!--<font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>-->
+                    <!--<font size="1" face="Arial"><?php //echo $empresa[0]['empresa_ubicacion']; ?></font>-->
                 
 
             </center>                      
@@ -130,8 +137,8 @@ border-bottom : 1px solid #aaa;
     </tr>
      
 </table>
-
-       <table class="table table-striped table-condensed"  style="width: 20cm;" >
+    <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
+       <!--<table class="table table-striped table-condensed"  style="width: 20cm;" >-->
            <tr  style="border-top-style: solid; border-bottom-style: solid">
                 <td align="center" style="padding: 0"><b>CANT</b></td>
                 <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
@@ -159,8 +166,8 @@ border-bottom : 1px solid #aaa;
                         if ($preferencia !=null && $preferencia!='-')
                             echo  " /".$preferencia;
                         
-                        if ($caracteristicas!=null && $caracteristicas!='-')
-                            echo  "<br>".$caracteristicas;
+                        if ($caracteristicas!='null' && $caracteristicas!=null && $caracteristicas!='-')
+                        echo  "<br>".$caracteristicas;
                         
                         ?>
                     <!--<textarea onload="autosize()"></textarea>-->
@@ -170,8 +177,9 @@ border-bottom : 1px solid #aaa;
            </tr>
            <?php } ?>
        </table>
-    
-<table class="table" style="max-width: 20cm;">
+
+<table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
+<!--<table class="table" style="max-width: 20cm;">-->
     <tr style="border-top-style: solid">
         
         <td align="left">
@@ -226,8 +234,8 @@ border-bottom : 1px solid #aaa;
     </tr>    
     
 </table>
-
-<table class="table" style="width: 20cm;">
+<table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
+<!--<table class="table" style="width: 20cm;">-->
         <tr>
             <td  style="padding: 0">
                 <center>
@@ -245,4 +253,4 @@ border-bottom : 1px solid #aaa;
             </td>
         </tr>
     </table>
-  
+</div>

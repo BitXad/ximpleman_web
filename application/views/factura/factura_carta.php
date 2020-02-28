@@ -363,29 +363,27 @@ border-bottom : 1px solid #aaa;
 
                     <td  align="left" style="width: 7cm; padding:0; line-height: 10px; background-color: #aaa !important; -webkit-print-color-adjust: exact;">
                         <br>
-                        <font size="1" face="arial narrow">
+                        <font size="1" face="Arial narrow">
                             <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
                         </font>
-                        <font size="2" face="arial">
+                        <font size="2" face="Arial">
                         COD. CONTROL: <b><?php echo $factura[0]['factura_codigocontrol']; ?></b><br>
                         </font>
                             
                         <font face="Arial">
-
-                            
                              <?php $fecha_lim = new DateTime($factura[0]['factura_fechalimite']); 
                                     $fecha_limite = $fecha_lim->format('d/m/Y');
                               ?>    
-                            LIMITE DE EMISIÓN: <b><?php echo $fecha_limite; ?></b><br>
+                            LIMITE DE EMISIÓN: <?php echo $fecha_limite; ?><br>
 
-                            USUARIO: <b><?php echo $factura[0]['usuario_nombre']; ?></b> / TRANS: 
-                            <b><?php 
+                            USUARIO: <?php echo $factura[0]['usuario_nombre']; ?> / TRANS: 
+                            <?php 
                                  if ($factura[0]['venta_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['venta_id']."V"; 
                                  if ($factura[0]['credito_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['credito_id']."C"; 
                                  if ($factura[0]['ingreso_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['ingreso_id']."C"; 
                                  if ($factura[0]['servicio_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['servicio_id']."C"; 
                                  if ($factura[0]['cuota_id']>0) echo $factura[0]['factura_id'].".".$factura[0]['cuota_id']."C"; 
-                            ?></b>
+                            ?>
 
                     </td>  
                                         
@@ -414,10 +412,10 @@ border-bottom : 1px solid #aaa;
                 
                 <tr>
                    
-                    <td colspan="2" style=" padding:0;">
+                    <td colspan="2" style=" padding:0; line-height: 10px;">
                         <center>
                                 <?php echo $factura[0]['factura_leyenda1'];?> <br>
-                        <font size="1">
+                        <font face="Arial" size="1">
                                 <?php echo $factura[0]['factura_leyenda2']; ?> 
                         </font>
                         <br>

@@ -598,11 +598,9 @@ class Venta extends CI_Controller{
                         $orden_id.",".$estado.",".$estado_id.",0)";
                 $id = $this->Venta_model->ejecutar($sql);              
                 
-            }
-            
+            }            
         }
-        
-      
+
         //**************** fin contenido ***************
         }
                
@@ -848,11 +846,9 @@ class Venta extends CI_Controller{
             $data['_view'] = 'venta/add';
             $this->load->view('layouts/main',$data);
         }
-        
-        		
+      		
         //**************** fin contenido ***************
-        }
-        			      
+        }			      
         
     }  
 
@@ -1002,8 +998,6 @@ function edit($venta_id)
                             $saldo_deudor = $saldo_deudor - $cuota_capital;
                         }
                     
-                    
-                    
                 }//fin de tipotrans
                 
 
@@ -1037,7 +1031,6 @@ function edit($venta_id)
         else
             show_error('The venta you are trying to edit does not exist.');
             
-            		
         //**************** fin contenido ***************
         }
         			
@@ -1070,7 +1063,6 @@ function edit($venta_id)
         $this->load->view('layouts/main',$data);    
        
     }
-    
     
     /*
      * Modulo paramodificar una venta
@@ -1107,6 +1099,7 @@ function edit($venta_id)
         $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
+        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         
                 
         //**************** inicio contenido ***************     
@@ -1116,7 +1109,11 @@ function edit($venta_id)
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->cargar_detalle_venta($venta_id, $usuario_id);        
         $data['empresa'] = $this->Empresa_model->get_empresa(1);        
-        $data['page_title'] = "Nota de venta";        
+
+        if($venta['tipotrans_id'] == 2){
+            $data['credito'] = $this->Credito_model->get_credito_id($venta_id);
+        }
+    
         
         $data['_view'] = 'venta/modificar_venta';
         $this->load->view('layouts/main',$data);    
@@ -1136,20 +1133,32 @@ function edit($venta_id)
 
                 
         $usuario_id = $this->session_data['usuario_id'];
+        
         $venta_id = $this->input->post('venta_id');
         $cliente_id = $this->input->post('cliente_id');
         $venta_fecha = $this->input->post('venta_fecha');
         $venta_subtotal = $this->input->post('venta_subtotal');
         $venta_descuento = $this->input->post('venta_descuento');
         $venta_total = $this->input->post('venta_total');
+        $venta_total = $venta_total - $venta_descuento;
         $venta_efectivo = $this->input->post('venta_efectivo');
         $venta_cambio = $this->input->post('venta_cambio');
+        $tipotrans_id = $this->input->post('tipo_transaccion');
+        $forma_id = $this->input->post('forma_pago');
+        $credito_id = $this->input->post('credito_id');
+        $cuota_inicial = $this->input->post('cuota_inicial');
+        $credito_interes = $this->input->post('credito_interes');
+        $venta_interes = $this->input->post('venta_interes');
+        $cuotas = $this->input->post('cuotas');
+        
+        $modificar_credito = $this->input->post('modificar_credito');
         
         $porcentaje = 0;
         
         $sql = "delete from detalle_venta where venta_id = ".$venta_id;
         $this->Venta_model->ejecutar($sql);
         
+        /*
         $sql =  "insert into detalle_venta
                 (producto_id,
                   venta_id,
@@ -1190,21 +1199,243 @@ function edit($venta_id)
                   detalle_venta_aux
                 WHERE 
                   usuario_id=".$usuario_id.")";
+        */
+
+
+        
+        if (($venta_total+$venta_descuento)>0)
+            $porcentaje = $venta_descuento / ($venta_total+$venta_descuento);
+        else
+            $porcentaje = 0;
+            
+        $sql =  "insert into detalle_venta
+        (producto_id,
+          venta_id,
+          moneda_id,
+          detalleven_codigo,
+          detalleven_cantidad,
+          detalleven_unidad,
+          detalleven_costo,
+          detalleven_precio,
+          detalleven_subtotal,
+          detalleven_descuento,
+          detalleven_total,
+          detalleven_caracteristicas,
+          detalleven_preferencia,
+          detalleven_comision,
+          detalleven_tipocambio,
+          detalleven_envase,
+          detalleven_nombreenvase,
+          detalleven_costoenvase,
+          detalleven_precioenvase,
+          detalleven_cantidadenvase,
+          detalleven_garantiaenvase,
+          detalleven_devueltoenvase,
+          detalleven_fechadevolucion,
+          detalleven_horadevolucion,
+          detalleven_montodevolucion,
+          detalleven_prestamoenvase,
+          detalleven_fechavenc,
+          usuario_id,
+          factura_id
+        )
+
+        (SELECT 
+          producto_id,
+          ".$venta_id." as venta_id,
+          moneda_id,
+          detalleven_codigo,
+          detalleven_cantidad,
+          detalleven_unidad,
+          detalleven_costo,
+          detalleven_precio - (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+          detalleven_subtotal,
+          (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
+          detalleven_total * (1 - ".$porcentaje."),
+          detalleven_caracteristicas,
+          detalleven_preferencia,
+          detalleven_comision,
+          detalleven_tipocambio,
+            detalleven_envase,
+            detalleven_nombreenvase,
+            detalleven_costoenvase,
+            detalleven_precioenvase,
+            detalleven_cantidadenvase,
+            detalleven_garantiaenvase,
+            detalleven_devueltoenvase,
+            detalleven_fechadevolucion,
+            detalleven_horadevolucion,
+            detalleven_montodevolucion,
+            detalleven_prestamoenvase,
+            detalleven_fechavenc,
+            usuario_id,
+            0 as factura_id
+          
+        FROM
+          detalle_venta_aux
+        WHERE 
+          usuario_id=".$usuario_id.")";
+
+        
+        
         $this->Venta_model->ejecutar($sql);        
+        
         
         $sql = "update venta set ".
                 "cliente_id = ".$cliente_id.
                 ",venta_fecha = '".$venta_fecha."'".
                 ",venta_subtotal = ".$venta_subtotal.
                 ",venta_descuento = ".$venta_descuento.
-                ",venta_total = ".$venta_total.
+                ",venta_total = ".($venta_total).
                 ",venta_efectivo = ".$venta_efectivo.
                 ",venta_cambio = ".$venta_cambio.                
+                ",tipotrans_id = ".$tipotrans_id.                
+                ",forma_id = ".$forma_id.                
                 " where venta_id = ".$venta_id;       
         $this->Venta_model->ejecutar($sql);        
         
         $sql = "delete from detalle_venta_aux where usuario_id = ".$usuario_id;
         $this->Venta_model->ejecutar($sql);        
+        
+        
+        if($tipotrans_id==2){ //si el tipo de transaccion es credito
+
+            if($credito_id>=0){ //si la transaccion era a credito verificar si se desea modificar los datos del credito
+                if($modificar_credito==1){ //verificamos si se da la orden de modificar los valores del credito
+                    //eliminar los datos del credito
+                    $sql = "delete from cuota where credito_id=".$credito_id;
+                    $this->Venta_model->ejecutar($sql);
+                
+                    //Generar credito
+                    $sql = "delete from credito where credito_id=".$credito_id;
+                    $this->Venta_model->ejecutar($sql);
+
+                    //Generar detalle del credito
+                    //$credito_id =  
+                    $estado_id =  8; //8 pendiente 9 cancelado
+                    $compra_id =  0;
+                    $venta_id =  $venta_id;
+                    $credito_monto =  $venta_total - $cuota_inicial;
+                    $credito_cuotainicial =  $cuota_inicial;
+                    $credito_interesproc =  $credito_interes;
+                    $credito_interesmonto =  $venta_total * $venta_interes; //revisar
+                    $credito_numpagos =  $cuotas;
+                    $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
+                    $credito_fecha = date('Y-m-d');
+                    $time = time();
+                    $credito_hora =  date("H:i:s", $time);
+                    $credito_tipo = 1; // 1- ventas 2 - compras
+
+                    $cuotas       = $this->input->post('cuotas');
+                    $interes       = $this->input->post('interes');
+                    $modalidad    = $this->input->post('modalidad');
+                    $dia_pago     = $this->input->post('dia_pago');
+                    $fecha_inicio = $this->input->post('fecha_inicio');
+                    $numcuota = $cuotas; //numero de cuotas
+
+                        
+            if ($modalidad == "MENSUAL") $intervalo = 30; //si los pagos son mensuales
+            else $intervalo = 7; //si los pagos son semanales
+            
+                $cuota_numcuota = 1;
+                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                    $cuota_numcuota = $i;
+                    
+                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                    if ($modalidad == "MENSUAL") 
+                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                    else 
+                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+
+                }
+                $credito_fechalimite = $cuota_fechalimite;
+            
+            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
+                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
+            echo $sql;
+            $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
+
+            
+            $estado_id =  8; //8 pendiente 9 cancelado
+            $cuota_numcuota = 1;
+            $cuota_capital = $venta_total - $cuota_inicial;
+            $cuota_interes = ($venta_total - $cuota_inicial)*($credito_interes/100);
+            $cuota_moradias = 0;
+            $cuota_multa = 0;
+            $cuota_subtotal =  $venta_total - $cuota_inicial;
+            $cuota_descuento = 0;
+            $cuota_total = $venta_total - $cuota_inicial+$cuota_interes;
+            
+            $cuota_cancelado = 0;
+            $cuota_fecha = "'1900-01-01'";
+            $cuota_hora = "'00:00'";
+            $cuota_numercibo =  0;
+            $cuota_saldo = $venta_total - $cuota_inicial;
+            $cuota_glosa = "''";
+            $cuota_saldocredito = $venta_total - $cuota_inicial;
+                 
+           
+            $dias_mora = 0;
+            $multa = 0;
+            $descuento = 0;
+            $cancelado = 0;
+            $credito_monto = $venta_total - $cuota_inicial;
+            
+            $patron = ($numcuota*0.5) + 0.5;
+            $cuota_capital = ($credito_monto)/$numcuota;   // bien         
+            $fijo = $patron * $credito_monto * ($credito_interes/100/$numcuota);
+            $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+            $total = $cuota_subtotal - $descuento;
+            $saldo_deudor = $credito_monto;
+            
+            $siguiente= 0;
+            $cuota_fechalimite = $fecha_inicio;
+           
+           // $fecha_inicio = date('YYYY', $fecha_inicio)."-".date('MM', $fecha_inicio)."-".$dia_pago;
+            
+            $cuota_fechalimite = $fecha_inicio;
+            
+
+                
+            
+                for ($i=1; $i <= $numcuota; $i++) { // ciclo para llenar las cuotas
+                    $cuota_numcuota = $i;
+                    
+                    $cuota_fechalimitex = (time() + ($intervalo * $i * 24 * 60 * 60 ));
+                    if ($modalidad == "MENSUAL") 
+                        $cuota_fechalimite = date('Y-m-'.$dia_pago, $cuota_fechalimitex);
+                    else 
+                        $cuota_fechalimite = date('Y-m-d', $cuota_fechalimitex); 
+                    
+                    $cuota ="insert into cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".
+                            $credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".
+                            $dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",'".$cuota_fechalimite."',".$saldo_deudor.")";
+                  
+                    $this->Venta_model->ejecutar($cuota);
+
+//                    $saldo_deudor = $cuota_total - $cuota_capital;
+//                    $cuota_total = $saldo_deudor;
+                    $saldo_deudor = $saldo_deudor - $cuota_capital;
+                    //$cuota_total = $saldo_deudor;
+                }
+
+                }
+            }
+            else{
+                
+            }
+            
+            
+        }
+        else{
+            if($credito_id>0){ //si la transaccion era a credito eliminar el credito
+                $sql = "delete from cuota where credito_id=".$credito_id;
+                $this->Venta_model->ejecutar($sql);
+                
+                $sql = "delete from credito where credito_id=".$credito_id;
+                $this->Venta_model->ejecutar($sql);                
+            }
+        }
         
         
         //**************** inicio contenido ***************     
@@ -1793,7 +2024,7 @@ function ultimagarantia(){
     $venta_id = $venta[0]['venta_id'];
     
 
-     redirect('factura/nota_garantia/'.$venta_id);
+     redirect('factura/certificado_garantia/'.$venta_id);
         //redirect('factura/recibo_boucher/'.$venta_id);        
  
         
@@ -2695,7 +2926,7 @@ function anular_venta($venta_id){
             //$venta_id = $this->input->post('venta_id');
             
             $nit_factura = $this->input->post('nit');
-            $razon_social = $this->input->post('razon');
+            $razon_social = $this->input->post('razon_social');
             
             $llave_foranea = $this->input->post('llave_foranea');            
             $llave_valor = $this->input->post('llave_valor');

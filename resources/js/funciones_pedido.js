@@ -1614,7 +1614,7 @@ function eliminardetalleventa()
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"pedido/eliminardetalle/";
     borrar_datos_cliente();
-    
+    alert("aquiiiiii");
     $.ajax({url: controlador,
         type:"POST",
         data:{},

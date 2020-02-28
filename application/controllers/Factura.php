@@ -416,8 +416,7 @@ class Factura extends CI_Controller{
         		
         //**************** fin contenido ***************
         }
-    }
-    
+    }   
     
     function recibo_carta($venta_id)
     {
@@ -444,8 +443,7 @@ class Factura extends CI_Controller{
         }
     }
     
-    
-    function nota_garantia($venta_id)
+    function certificado_garantia($venta_id)
     {
         if($this->acceso(21)){
         //**************** inicio contenido ***************           
@@ -462,13 +460,39 @@ class Factura extends CI_Controller{
    
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
   
-        $data['_view'] = 'venta/nota_garantia';
+        $data['_view'] = 'factura/certificado_garantia';
         $this->load->view('layouts/main',$data);       
 
         		
         //**************** fin contenido ***************
         }
     }
+    
+    
+//    function nota_garantia($venta_id)
+//    {
+//        if($this->acceso(21)){
+//        //**************** inicio contenido ***************           
+//    
+//        $usuario_id = $this->session_data['usuario_id'];
+//        
+//        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+//        $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
+//        $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
+//        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+//        $data['page_title'] = "Recibo";
+//
+//        $data['parametro'] = $this->Parametro_model->get_parametros();
+//   
+//        $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
+//  
+//        $data['_view'] = 'venta/nota_garantia';
+//        $this->load->view('layouts/main',$data);       
+//
+//        		
+//        //**************** fin contenido ***************
+//        }
+//    }
 
     /*
      * Adding a new factura

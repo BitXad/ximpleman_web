@@ -253,10 +253,10 @@ function ventas_dia($estado)
           d.detalleven_cantidad,
           d.detalleven_unidad,
           d.detalleven_costo,
-          d.detalleven_precio,
+          d.detalleven_precio+d.detalleven_descuento,
           d.detalleven_subtotal,
           d.detalleven_descuento,
-          d.detalleven_total,
+          d.detalleven_total+ (d.detalleven_descuento*d.detalleven_cantidad),
           d.detalleven_caracteristicas,
           d.detalleven_preferencia,
           d.detalleven_comision,
@@ -271,7 +271,7 @@ function ventas_dia($estado)
         FROM
           detalle_venta d, inventario i
         WHERE           
-          venta_id=".$venta_id." and d.producto_id = i.producto_id )";
+          venta_id=".$venta_id." and d.producto_id = i.producto_id order by d.detalleven_id  )";
         $this->db->query($sql);
         
         $sql =  "select * from detalle_venta_aux d, producto p where "
