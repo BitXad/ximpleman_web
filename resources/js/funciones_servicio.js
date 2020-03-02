@@ -832,6 +832,8 @@ function fechadeservicio(elfiltro, busquedade){
     var filtro = "";
     var base_url       = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
+    /*var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
+    var cantus = all_usuario.length;*/
     var tipoimpresora  = document.getElementById('tipoimpresora').value;
     var parametro_segservicio  = document.getElementById('parametro_segservicio').value;
     if(busquedade == 2){
@@ -850,15 +852,15 @@ function fechadeservicio(elfiltro, busquedade){
     document.getElementById('loader').style.display = 'block';
      
     $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro},
-          
-           success:function(resul){     
-              
-                            
+            type:"POST",
+            data:{filtro:filtro},
+            success:function(resul){
+                
                 $("#encontrados").val(" 0");
-               var registros =  JSON.parse(resul);
-           
+                var registros =  JSON.parse(resul);
+                /*var resultado =  JSON.parse(resul);
+                var registros = resultado.servicios;
+                var detalles = resultado.detalles;*/
                 if (registros != null){
                     var total   = 0;
                     var acuenta = 0;
@@ -869,11 +871,8 @@ function fechadeservicio(elfiltro, busquedade){
                     var total_detalle = 0;*/
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val(" "+n+"");
-                   
+                    //var m = detalles.length;
                     html = "";
-                   /*if (n <= limite) x = n; 
-                   else x = limite; */
-                    
                     for (var i = 0; i < n ; i++){
                         if(registros[i]["servicio_total"] >0){
                             total = Number(total) +Number(registros[i]["servicio_total"]);
@@ -938,7 +937,11 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</td>";
                         processData(registros[i]["servicio_id"]);
                         html += "<td>";
-                        html += "<span class='text-bold' style='font-size: 9pt;' id='mostrardetalleserv"+registros[i]["servicio_id"]+"'></span>";
+                        html += "<span class='text-bold' style='font-size: 9pt;' id='mostrardetalleserv"+registros[i]["servicio_id"]+"'>";
+                        
+                        html += "</span>";
+                        
+                        
                         html += "</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+"'>";
                         html += "<span class='text-bold' style='font-size: 12px'>"+registros[i]["estado_descripcion"]+"</span><br>";
