@@ -765,26 +765,7 @@ class Detalle_serv_model extends CI_Model
             LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
             LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
             WHERE
-            /*SELECT
-                ds.detalleserv_id, ds.detalleserv_descripcion, c.cliente_nombre,
-                ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
-                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
-                ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
-                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id,
-                c.cliente_telefono, c.cliente_celular, e.estado_color, e.estado_descripcion,
-                dv.detalleven_total, p.producto_nombre, s.servicio_fecharecepcion,
-                s.servicio_horarecepcion, s.servicio_fechafinalizacion, s.servicio_horafinalizacion,
-                ds.detalleserv_entregadoa, u.usuario_nombre
-
-            FROM
-                detalle_serv ds
-            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
-            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
-            LEFT JOIN estado e on ds.estado_id = e.estado_id
-            LEFT JOIN detalle_venta dv on ds.detalleserv_id = dv.detalleserv_id
-            LEFT JOIN producto p on dv.producto_id = p.producto_id
-            LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
-            WHERE*/
+            
                 ds.servicio_id = ".$servicio_id."
                
             ORDER BY `detalleserv_id` DESC
@@ -838,6 +819,39 @@ class Detalle_serv_model extends CI_Model
             LEFT JOIN cliente c on s.cliente_id = c.cliente_id
             WHERE
                 ds.servicio_id = ".$servicio_id."
+        ")->result_array();
+
+        return $detalle_serv;
+    }
+    /* devuelve todos los detalles con estado_id = 5 (pendiente) */
+    function get_name_detalle_serv_allpendiente()
+    {
+        $detalle_serv = $this->db->query("
+            SELECT
+                ds.responsable_id,
+                ds.detalleserv_id, ds.detalleserv_descripcion, c.cliente_nombre,
+                ds.detalleserv_falla, ds.detalleserv_diagnostico, ds.detalleserv_solucion,
+                ds.detalleserv_total, ds.detalleserv_acuenta, ds.detalleserv_saldo,
+                ds.detalleserv_precioexterno, ds.detalleserv_detalleexterno,
+                ds.detalleserv_codigo, ds.estado_id as detallestado_id, ds.servicio_id,
+                c.cliente_telefono, c.cliente_celular, e.estado_color, e.estado_descripcion,
+                s.servicio_fecharecepcion, s.tiposerv_id, s.servicio_direccion, ts.tiposerv_descripcion,
+                s.servicio_horarecepcion, s.servicio_fechafinalizacion, s.servicio_horafinalizacion,
+                ds.detalleserv_entregadoa, u.usuario_nombre
+
+            FROM
+                detalle_serv ds
+            LEFT JOIN servicio s on ds.servicio_id = s.servicio_id
+            LEFT JOIN cliente c on s.cliente_id = c.cliente_id
+            LEFT JOIN estado e on ds.estado_id = e.estado_id
+            LEFT JOIN usuario u on ds.responsable_id = u.usuario_id
+            LEFT JOIN tipo_servicio ts on s.tiposerv_id = ts.tiposerv_id
+            WHERE
+            
+                s.estado_id = 5
+               
+            ORDER BY `detalleserv_id` DESC
+            
         ")->result_array();
 
         return $detalle_serv;
