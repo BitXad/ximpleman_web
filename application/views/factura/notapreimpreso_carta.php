@@ -29,7 +29,7 @@
     
 }
 </style>
-<div style="height: 3.2cm;">
+<div style="height: 1.2cm;">
      <table id="mitabla" style="margin-bottom: 0px;">
         <tr style="height: 0.8cm"></tr>
         <tr style="padding-top: 0px">
@@ -37,6 +37,18 @@
             <td align="center" style="width: 1.3cm;font-size: 11px"><?php echo date( "d", strtotime($venta[0]["venta_fecha"]) ); ?> </td>
             <td align="center" style="width: 1.3cm;font-size: 11px"><?php echo date( "m", strtotime($venta[0]["venta_fecha"]) ); ?> </td>
             <td align="center" style="width: 1.3cm;font-size: 11px"><?php echo date( "Y", strtotime($venta[0]["venta_fecha"]) ); ?> </td>
+            
+            
+        </tr>
+
+</table>
+</div><div style="height: 2cm;">
+     <table id="mitabla" style="margin-bottom: 0px;">
+        <tr style="height: 0.5cm"></tr>
+        <tr style="padding-top: 0px">
+            <td style="width: 13.8cm;"></td>
+            <td align="center" style="width: 1.3cm;font-size: 11px">00<?php echo  $venta[0]["venta_id"]; ?> </td>
+            
             
             
         </tr>
@@ -72,7 +84,7 @@
                         $total_descuento += $d['detalleven_descuento']; 
                         $total_final += $d['detalleven_total'];
                         $num = $d['detalleven_preferencia'];
-                        $int = (int)$num;
+                        $int = (floatval($num));
                         $total_cajas += $int;
                         ?>
            <tr>
@@ -112,7 +124,7 @@
                            
         </td>
         <td align="center" style="width: 1cm" >
-                       <?php echo "".number_format($total_cajas); ?>    
+                       <?php echo "".number_format($total_cajas,2,'.',','); ?>    
         </td>
         <td style="width: 1.3cm" >
                            
