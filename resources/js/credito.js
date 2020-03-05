@@ -131,7 +131,7 @@ function tabladeudas(filtro) //Deudas por pagar
                         color = "";
                        if (registros[i]["estado_id"]==9){ 
                            color = "background:"+registros[i]["estado_color"];
-                        alert(color);
+                        //alert(color);
                        }
                        
                         // var suma = Number(registros[i]["detallecomp_total"]);
