@@ -74,7 +74,7 @@
 			</div>
           	<div class="box-footer">
             	<button type="submit" class="btn btn-facebook" id="generar_codigo" onclick="verificador()">
-            		<i class="fa fa-qrcode"></i> Generar Codigo
+            		<i class="fa fa-qrcode"></i> Generar Código
             	</button>
             	<button type="submit" class="btn btn-danger" onclick="limpiar_parametros()">
             		<i class="fa fa-close"></i> Limpiar Parámetros

@@ -1171,9 +1171,6 @@ function mostrar_saldo(producto)
 }
 
 
-
-
-
 function esMobil(){
     
     var isMobile = {
