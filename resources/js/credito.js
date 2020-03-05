@@ -271,7 +271,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         color = "";
                        if (registros[i]["estado_id"]==9){ 
                            color = "background:#"+registros[i]["estado_color"];
-                        alert(color);
+                        //alert(color);
                        }
                         
                         
