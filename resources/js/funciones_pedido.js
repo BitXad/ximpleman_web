@@ -1614,7 +1614,7 @@ function eliminardetalleventa()
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"pedido/eliminardetalle/";
     borrar_datos_cliente();
-    alert("aquiiiiii");
+    //alert("aquiiiiii");
     $.ajax({url: controlador,
         type:"POST",
         data:{},
@@ -1645,6 +1645,12 @@ function registrarcliente()
     var cliente_direccion = document.getElementById('cliente_direccion').value;
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
+    var zona = document.getElementById('zona_id').value;
+    if (zona=='null' || zona=='' || zona==0) {
+        zona_id=0;
+    }else{
+        zona_id=zona;
+    }
     
    
    //alert(cliente_id);
@@ -1658,7 +1664,7 @@ function registrarcliente()
                     type:"POST",
                     data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular},
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular,zona_id:zona_id},
                     
                     success:function(respuesta){ 
                         var datos = JSON.parse(respuesta);

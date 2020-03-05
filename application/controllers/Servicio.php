@@ -1064,6 +1064,13 @@ class Servicio extends CI_Controller{
             
             $datos = $this->Servicio_model->get_all_servicios_pendientes();
             echo json_encode($datos);
+            /*$servicios = $this->Servicio_model->get_all_servicios_pendientes();
+            
+            $this->load->model('Detalle_serv_model');
+            $detalles = $this->Detalle_serv_model->get_name_detalle_serv_allpendiente();
+            
+            $datos=array("servicios" => $servicios, "detalles" => $detalles);
+            echo  json_encode($datos);*/
         }
         else
         {                 

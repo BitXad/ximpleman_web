@@ -241,6 +241,13 @@ function mostrar_ocultar(){
                 <input type="text" name="cliente_celular" class="form-control" id="cliente_celular" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
             </div>
+
+            <div class="col-md-3">
+            <label for="zona_id" class="control-label">CELULAR</label>
+            <div class="form-group">
+                <input type="text" name="zona_id" class="form-control" id="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            </div>
+            </div>
         
         </div>
 
