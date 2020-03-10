@@ -571,7 +571,7 @@ if (desde=='' && hasta=='') {
                 
         },
         error:function(result){
-           alert("Algo salio mal...!!!");
+           //alert("Algo salio mal...!!!");
            html = "";
            $("#categorias").html(html);
         }
@@ -646,7 +646,7 @@ var controlador = base_url+"detalle_venta/busca_simple";
                 
         },
         error:function(result){
-           alert("Algo salio mal...!!!");
+           //alert("Algo salio mal...!!!");
            html = "";
            $("#simple").html(html);
         }

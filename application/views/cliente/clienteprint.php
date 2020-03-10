@@ -35,7 +35,7 @@
     }
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php //echo base_url('resources/css/servicio_reportediax.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
