@@ -1171,9 +1171,6 @@ function mostrar_saldo(producto)
 }
 
 
-
-
-
 function esMobil(){
     
     var isMobile = {
@@ -3007,7 +3004,7 @@ function modificar_venta(cliente_id)
             facturado:facturado,venta_fecha:venta_fecha, tipo_transaccion:tipo_transaccion, forma_pago:forma_pago,
             modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio},
             success:function(respuesta){
-                window.opener.location.reload();
+                //window.opener.location.reload();
                 window.close();
                 //alert("Cambios Guardados...!");
             },
