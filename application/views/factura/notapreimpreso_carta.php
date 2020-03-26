@@ -26,6 +26,28 @@
     padding-bottom: 0px;
     padding-left: 4px;
     padding-right: 4px;
+
+
+    
+}
+
+ #mitabladet {
+    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+    font-family: "Arial", Arial, Arial, arial;
+    font-size: 9px;
+    border-collapse: collapse;
+
+}
+
+#mitabladet td {
+    border: 1px solid rgba(0,0,0,0);
+    border-bottom: 1px solid #62DF23;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 4px;
+    padding-right: 4px;
+
+    
     
 }
 </style>
@@ -71,7 +93,7 @@
 
 
 <div  style="height: 7.8cm;padding-left: 0.4cm">
-       <table   id="mitabla" style="margin-bottom: 0px">
+       <table   id="mitabladet" style="margin-bottom: 0px">
            <?php $cont = 0;
                  $cantidad = 0;
                  $total_descuento = 0;
@@ -123,28 +145,26 @@
         <td style="width: 2cm" >
                            
         </td>
-        <td align="center" style="width: 1cm" >
+        <td align="center" style="width: 1cm;font-size: 11px" >
                        <?php echo "".number_format($total_cajas,2,'.',','); ?>    
         </td>
         <td style="width: 1.3cm" >
                            
         </td>
-        <td style="width: 11.2cm" >
-            <font size="1" face="arial narrow">
+        <td style="width: 11.2cm;font-size: 11px" >
+            
                 <?php echo "".num_to_letras($venta[0]['venta_total']); ?>           
-            </font>
-
+           
         </td>
         <td style="width: 1.6cm" >
                            
         </td>
-        <td align="right" style="width:2.4cm;text-align: right">
+        <td align="right" style="width:2.4cm;text-align: right;font-size: 11px">
             
-            <font size="1" face="arial narrow">
             <b>
                 <?php echo "".number_format($venta[0]['venta_total'] ,2,'.',','); ?>
             </b>
-            </font>
+           
         </td>          
     </tr>
 <!--

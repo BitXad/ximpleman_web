@@ -64,7 +64,15 @@ function mostrar_ocultar(){
 
         }
     else{
-        document.getElementById('creditooculto').style.display = 'none';}
+            document.getElementById('creditooculto').style.display = 'none';}
+}
+
+function mostrar_buscadores(){
+//    var buscador1 =  document.getElementById('creditooculto').style.display;
+//    var buscador1 =  document.getElementById('creditooculto').style.display;
+    document.getElementById('buscador1').style.display = 'block';
+    document.getElementById('categoria').style.display = 'block';
+    
 }
         
 </script>   
@@ -243,7 +251,7 @@ function mostrar_ocultar(){
             </div>
 
             <div class="col-md-3">
-            <label for="zona_id" class="control-label">CELULAR</label>
+            <label for="zona_id" class="control-label">ZONA</label>
             <div class="form-group">
                 <input type="text" name="zona_id" class="form-control" id="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
@@ -259,9 +267,10 @@ function mostrar_ocultar(){
 
 <center>
     <font size="3"><b>PEDIDO</b></font>
-     <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>
+     <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>
     <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
-     <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>
+     <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>
+     <button class="btn btn-facebook btn-xs" onclick="mostrar_buscadores()"><font size="3"><span class="fa fa-binoculars" ></span></font></button>
 </center>   
 
 <div class="container">
@@ -273,14 +282,14 @@ function mostrar_ocultar(){
                     
                 </td>
                 <td>
-                    <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="90">
+                    <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="80">
                     
                     <br><button class="btn btn-warning btn-xs" data-toggle="collapse" data-target="#informacioncliente">más inform.</button>
                 </td>
                 <td style="width: 0.2cm;">
                     
                 </td>
-                <td> 
+                <td style="line-height: 10px;"> 
                     <font size="1" face="arial">
                         <b>CLIENTE: </b><?php echo $cliente[0]['cliente_nombre']; ?> <br>
                         <?php echo $cliente[0]['cliente_nombrenegocio']." ".$cliente[0]['cliente_celular']; ?> <br>                     
@@ -301,7 +310,7 @@ function mostrar_ocultar(){
     <div class="panel panel-primary col-md-10">
         
         <table>      
-            <tr>
+            <tr style="line-height: 10px;">
                 <td style="width: 0.2cm" > 
                 </td> 
         
@@ -318,7 +327,7 @@ function mostrar_ocultar(){
                     
                     </font>
                         <?php if ($cliente[0]['cliente_id']>0){ ?>
-                            <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar </a>
+                            <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar Cliente</a>
                         <?php } ?>
                         
                         <br>    
@@ -368,7 +377,7 @@ function mostrar_ocultar(){
 <div class="row">
     <div class="col-md-6" >
         
-        <div class="row">
+        <div class="row" id="buscador1" style="display: none;">
             
             <!--------------------- parametro de buscador por codigo --------------------->
 
@@ -400,7 +409,7 @@ function mostrar_ocultar(){
             
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria" style="padding:0;">
+<div class="container" id="categoria" style="padding:0; display: none;">
     
     <span class="badge btn-danger" style="width: 170px;">
     
@@ -498,7 +507,7 @@ function mostrar_ocultar(){
                 } ?>
                     
             <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
-                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
+                    <!--<a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a>--> 
             <?php } ?>            
            
 <!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->

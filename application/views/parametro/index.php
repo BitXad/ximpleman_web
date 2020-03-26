@@ -139,11 +139,11 @@ break;
                     <tr>
                         <td><?php
                             if($p['parametro_notaentrega'] == 3){
-                                echo 'NOTA DE ENTREGA 3';
+                                echo 'NOTA 3 (Pre-impresa)';
                             }else if($p['parametro_notaentrega'] == 2){
-                                echo 'NOTA DE ENTREGA 2';
+                                echo 'NOTA 2 (Carta)';
                             }else{
-                                echo 'NOTA DE ENTREGA 1';
+                                echo 'NOTA 1 (Boucher)';
                             }
                             ?>
                         </td>

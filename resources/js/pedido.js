@@ -37,6 +37,9 @@ function tabla_pedidos(filtro)
             var tipo = JSON.parse(document.getElementById('tipo_transaccion').value);
 //            var tipo_venta = JSON.parse(document.getElementById('tipo_venta').value);
             var espresentacion="";
+            var padding = "3px";
+            var fecha_pedido = "";
+            var hora_pedido = "";
             
                 html = "";
 
@@ -50,19 +53,8 @@ function tabla_pedidos(filtro)
             
             for(var i = 0; i<p.length; i++){
                 
-//                if(p[i]["tipotrans_id"] == null || p[i]["tipotrans_id"] == 0 || p[i]["tipotrans_id"]-1 > tipo.length){
-//                    tipotrans = "No definido";
-//                }else{
-//                    tipotrans = tipo[p[i]["tipotrans_id"]-1]["tipotrans_nombre"];
-//                }
-                tipotrans = p[i]["tipotrans_nombre"];
-                
-//                if(p[i]["usuario_id"] == null || p[i]["usuario_id"] == 0 || p[i]["usuario_id"]-1 > usuarios.length){
-//                    nombreusuario = "No definido";
-//                }else{
-//                    nombreusuario = usuarios[p[i]["usuario_id"]-1]["usuario_nombre"];
-//                }
 
+                tipotrans = p[i]["tipotrans_nombre"];
                 nombreusuario = p[i]["usuario_nombre"];
                 
                 cont += 1;//    html += "             $cont = $cont+1;  ";
@@ -71,7 +63,7 @@ function tabla_pedidos(filtro)
                 html += "<tr> ";
                 html += "    <td>"+cont+"</td> ";
 
-                html += "    <td  bgcolor='"+p[i]["estado_color"]+"'><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <sub>["+p[i]["cliente_id"]+"]</sub> ";
+                html += "    <td  bgcolor='"+p[i]["estado_color"]+"' style='line-height: 9px; padding:0; padding:"+padding+";'><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <sub>["+p[i]["cliente_id"]+"]</sub> ";
                 
                 if (p[i]["pedido_latitud"]!=null && p[i]["pedido_longitud"]!=null)
                         imagen = "blue.png";
@@ -82,10 +74,20 @@ function tabla_pedidos(filtro)
                 html += "<br>";
                 html += "    "+p[i]["cliente_nombrenegocio"];
                 html += "<br>  ";
-                html += "    "+p[i]["pedido_fecha"]+"<br> ";
+                
+                fecha_pedido = p[i]["pedido_fecha"];
+                fecha_pedido = fecha_pedido.substr(0,10);
+                
+                hora_pedido = p[i]["pedido_fecha"];
+                hora_pedido = hora_pedido.substr(11,8);
+                
+                html += "    "+ formato_fecha(fecha_pedido)+" - "+hora_pedido+"<br> ";
+                
+                
                 html += "     ";
                 html += "    </td> ";
-                html += "    <td align='center' bgcolor='"+p[i]["estado_color"]+"'> ";
+                
+                html += "    <td align='center' bgcolor='"+p[i]["estado_color"]+"'  style='line-height: 10px; padding:"+padding+";'> ";
 //                html += "        <a href='"+base_url+'pedido/pedidoabierto/'+p[i]["pedido_id"]+"'> ";
                 html += "        <font size='3' color='white'><b>"+'00'+p[i]["pedido_id"]+"</b></font> <br> ";
                 html += "        <font size='1' color='white'>"+p[i]["estado_descripcion"]+"</font> ";
@@ -95,22 +97,22 @@ function tabla_pedidos(filtro)
                 html += "    </td> ";
 
 
-                html += "    <td align='right' bgcolor='"+p[i]["estado_color"]+"'> ";
+                html += "    <td align='right' bgcolor='"+p[i]["estado_color"]+"' style='line-height: 10px; padding:"+padding+";'> ";
                 html += "        "+'Sub Total: '+parseFloat(p[i]["pedido_subtotal"]).toFixed(2)+"<br>  ";
                 html += "        "+'Desc.: '+parseFloat(p[i]["pedido_descuento"]).toFixed(2)+"<br>   ";
                 html += "        <font size='3'><b>"+parseFloat(p[i]["pedido_total"]).toFixed(2)+"</b></font> ";
                 html += "    </td> ";
 
-                html += "    <td bgcolor='"+p[i]["estado_color"]+"'> ";
+                html += "    <td bgcolor='"+p[i]["estado_color"]+"' style='line-height: 10px; padding:"+padding+";'> ";
                 html += "        <center> ";        
-                html += "        <font size='2'> ";        
-                html += "        "+'<b>'+formato_fecha(p[i]["pedido_fechaentrega"])+'<br>'+p[i]["pedido_horaentrega"]+" </b>";
+                html += "        <font size='1'> ";        
+                html += "        "+formato_fecha(p[i]["pedido_fechaentrega"])+'<br>'+p[i]["pedido_horaentrega"];
                 html += "        <br> <small>"+nombreusuario+"</small>"
                 html += "        </font> ";
                 html += "        </center>  ";
                 html += "    </td> ";
 
-                html += "    <td> ";
+                html += "    <td  style='line-height: 10px;  padding:"+padding+";'> ";
                    
 
                     if (p[i]["estado_id"]>=10 && p[i]["estado_id"]<=14){
@@ -154,7 +156,7 @@ function tabla_pedidos(filtro)
                         html += "          </center> ";
                         html += "      </div> ";
                         html += "      <div class='modal-footer'> ";
-                        html += "        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button> ";
+                        html += "        <button type='button' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar</button> ";
                         html += "        <button  class='btn btn-primary' data-dismiss='modal'  onclick='anular_pedido("+p[i]["pedido_id"]+")'><span class='fa fa-money'></span> Anular</button> ";
                         html += "      </div> ";
                         html += "    </div> ";
@@ -188,7 +190,7 @@ function tabla_pedidos(filtro)
 
                         html += "      <div class='modal-body'> ";
                         html += "          <center> ";
-                        html += "              <font size='3'><b>Se enviara este pedido como operación de venta</b></font><br>   ";
+                        html += "              <font size='2'><b>Se enviara este pedido como operación de venta</b></font><br>   ";
                         
                         html += "              <br>   ";
                         
@@ -203,7 +205,7 @@ function tabla_pedidos(filtro)
                         html += "          </center> ";
                         html += "      </div> ";
                         html += "      <div class='modal-footer'> ";
-                        html += "        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Cerrar</button> ";
+                        html += "        <button type='button' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar</button> ";
                         html += "        <button type='button' class='btn btn-primary' data-dismiss='modal'  onclick='consolidar_pedido("+p[i]["pedido_id"]+","+p[i]["pedido_total"]+")'><span class='fa fa-cart-plus'></span> Vender</button> ";
                         html += "      </div> ";
                         html += "    </div> ";
@@ -221,26 +223,26 @@ function tabla_pedidos(filtro)
 
                 }
                 html += "<tr> ";
-                html += "    <th> </th> ";
-                html += "    <th> </th> ";
+                html += "    <th style='padding: 0;'> </th> ";
+                html += "    <th style='padding: 0;'> </th> ";
 
                 html += "         ";
-                html += "    <th> ";
+                html += "    <th style='padding: 0;'> ";
                 html += "        <center>  ";
                 html += "        PEDIDOS<br> ";
                 html += "        <font size='3'><b>"+cont+"</b></font> ";
                 html += "        </center> ";
                 html += "   </th> ";
 
-                html += "   <th> ";
+                html += "   <th style='padding: 0;'> ";
                 html += "        <center> ";
                 html += "            TOTAL Bs<br> ";
                 html += "        <font size='3'><b>"+parseFloat(total_pedido).toFixed(2)+"</b></font> ";
                 html += "        </center> ";
                 html += "   </th> ";
                 html += "     ";
-                html += "    <th></th> ";
-                html += "    <th> </th> ";
+                html += "    <th style='padding: 0;'></th> ";
+                html += "    <th style='padding: 0;'> </th> ";
                 html += "</tr>      ";
          
               //  console.log(html);
