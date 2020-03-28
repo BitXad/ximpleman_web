@@ -1234,7 +1234,7 @@ function tablaresultados(opcion)
                     }
                     
                    html += "                <tr>";
-                   html += "                <th>#</th> ";
+                   html += "                <th style='padding:0;'>#</th> ";
                    html += "                <th>Descripción</th>";
                    
                     if(! esMobil()) { //si no es dispositivo mobil
@@ -1274,9 +1274,9 @@ function tablaresultados(opcion)
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
                         html += "<tr>";
                         
-                        html += "<td onclick='borrar_tabla()'>"+(i+1)+"</td>";
+                        html += "<td onclick='borrar_tabla()' style='padding:0;'>"+(i+1)+"</td>";
                         
-                        html += "<td><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        html += "<td style='padding:0; max-width:700px;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         
                         
                         
@@ -1431,11 +1431,13 @@ function tablaresultados(opcion)
                         
                         html += "<div class='modal fade' id='myModal"+registros[i]["producto_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModal"+registros[i]["producto_id"]+"'>";
                         html += "  <div class='modal-dialog' role='document'>";
-                        html += "<br><br>";
+//                        html += "<br>";
                         html += "<div class='modal-content'>";
-                        html += "  <div class='modal-header'>";
+                        html += "  <div class='modal-header' style='background:silver;'>";
                         html += "       <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "  </div>";                        
+                        html += "  <b> <fa class='fa fa-cart-plus' > </fa>";                        
+                        html += "   AÑADIR AL PEDIDO </b>";                        
+                        html += "  </div>";
                         html += "  <div class='modal-body' >";
                         
                         html += "  <!----------------------------------------------------------------->";
@@ -1444,15 +1446,17 @@ function tablaresultados(opcion)
 //                        html += "       </div>";
 //                        html += "       <div class='col-md-9'>";
                     
-                        html += "       <table>"; // style='space-white: nowrap;'
+                    
+                        html += "               <b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
+
+                        html += "       <table class='table-condensed'>"; // style='space-white: nowrap;'
                         html += "           <tr>";
-                       
-                      
                         html += "               <td>";
                       
+//                       html += "               <b>"+registros[i]["producto_nombre"]+"</b>";
+//                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
                      
-                       html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
-                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
                         html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
                         
                         html += "               </td>";
@@ -1463,15 +1467,18 @@ function tablaresultados(opcion)
                         html += "       <!------------------------------------------------------------------->";
                         html += "  </div>";
                         
-                        html += "  <div class='modal-footer aligncenter'>";
-                        html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
-                        html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
-
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
-//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
-
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
-                        html += "  </div>";                        
+//                        html += "  <div class='modal-footer'>";
+//                        html += "  <center'>";
+//                        
+//                        html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
+//                        html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
+//
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregarxxxx</small></a>";
+//
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
+//                        html += "  </center>";                        
+//                        
+//                        html += "  </div>";                        
                         html += "</div>";
                         
                         html += "  </div>";
@@ -1568,9 +1575,10 @@ function tablaresultados(opcion)
                        
                       
                         html += "               <td>";
+                        html += "               ";
                       
-                     
-                        html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                      
+                        html += "               <font size='1'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
                         html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
                         
