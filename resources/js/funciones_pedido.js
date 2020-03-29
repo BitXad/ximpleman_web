@@ -1388,10 +1388,10 @@ function tablaresultados(opcion)
                        
                         html += "</td>";
                         
-                        html += "<td>";
+                        html += "<td style='padding:0;'>";
                         }
                         
-                        html += "<div id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
+                        html += "<div style='line-height:12px;' id='input_existencia"+registros[i]["producto_id"]+"'> <center><font size='3'><b>"+existencia+"</b></font><br>"+registros[i]["producto_unidad"]+"</center></div>";
                     
                        if(esMobil()){
                             html += "</td>"; //tabla movil extra
@@ -1943,8 +1943,19 @@ function registrarpedido(cliente_id)
                 facturado:facturado,pedido_fecha:pedido_fecha, razon:razon, nit:nit, pedido_descuento:pedido_descuento, pedido_hora:pedido_hora,cliente_id:cliente_id},
             success:function(respuesta){ 
                 eliminardetalleventa();
-                alert('Pedido registrado con éxito..!!');
-                window.opener.location.reload(); window.close();
+                
+                var mensaje;
+                var opcion = confirm("¿Desea realizar un nuevo pedido?");
+                
+                if (opcion == true) {
+                    window.open(base_url+"pedido/pedidoabierto/0","_self");
+               
+                } else {
+                    window.opener.location.reload(); 
+                    window.close();                        
+                }
+                
+//                alert('Pedido registrado con éxito..!!');
                 
                 
             },
