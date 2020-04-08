@@ -67,12 +67,14 @@ function mostrar_ocultar(){
             document.getElementById('creditooculto').style.display = 'none';}
 }
 
+
+
 function mostrar_buscadores(){
-//    var buscador1 =  document.getElementById('creditooculto').style.display;
-//    var buscador1 =  document.getElementById('creditooculto').style.display;
     document.getElementById('buscador1').style.display = 'block';
     document.getElementById('categoria').style.display = 'block';
     
+    //document.getElementById('filtrar4').focus();
+
 }
         
 </script>   
@@ -127,7 +129,7 @@ function mostrar_buscadores(){
         
 <!--------------------- cliente_id --------------------->
 <div class="container" hidden>
-    <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
+    <input type="text" name="cliente_id" id="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
 <!--------------------- fin cliente_id --------------------->
@@ -267,10 +269,12 @@ function mostrar_buscadores(){
 
 <center>
     <font size="3"><b>PEDIDO</b></font>
-     <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>
-    <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
+     <!--<a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>-->
+    <button onclick="focus_cliente()" id="boton_bsucar_clie" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></button>
+    
+     <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
      <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>
-     <button class="btn btn-facebook btn-xs" onclick="mostrar_buscadores()"><font size="3"><span class="fa fa-binoculars" ></span></font></button>
+     <button class="btn btn-facebook btn-xs" onclick="mostrar_buscadores()" title="Buscar productos"><font size="3"><span class="fa fa-binoculars" ></span></font></button>
 </center>   
 
 <div class="container">
@@ -282,7 +286,11 @@ function mostrar_buscadores(){
                     
                 </td>
                 <td>
-                    <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="80">
+                    <?php if(isset($cliente[0]['cliente_foto'])){ ?>
+                        <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="80">
+                    <?php }else{ ?>
+                        <img src="<?php echo base_url("resources/images/clientes/thumb_foto.jpg"); ?>" width="70" height="80">
+                    <?php } ?>
                     
                     <br><button class="btn btn-warning btn-xs" data-toggle="collapse" data-target="#informacioncliente">más inform.</button>
                 </td>
@@ -392,7 +400,7 @@ function mostrar_buscadores(){
            <!--------------------- fin buscador por codigo --------------------->
            
 
-            <div class="col-md-8">
+           <div class="col-md-8">
                 
 <!--            ------------------- parametro de buscador --------------------->
                        
@@ -448,23 +456,23 @@ function mostrar_buscadores(){
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
                 <!--<span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
+                <center>
                 <span class="badge btn-default">
 
                     <!--------------------- inicio loader ------------------------->
                     <div class="row" id='oculto'  style='display:none;'>
-                        <center>
                             <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
-                        </center>
                     </div> 
                     
-                    <div class="row" id='loader'  style='display:none;'>
+<!--                    <div class="row" id='loader'  style='display:none;'>
                         <center>
                             <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
                         </center>
-                    </div> 
+                    </div> -->
                     <!--------------------- fin inicio loader ------------------------->
                     
                 </span>
+                </center>
 
                 
                 
@@ -488,7 +496,7 @@ function mostrar_buscadores(){
     </div>
         
     <div class="col-md-6" id="divventas0" style="display:block;">
-        <div class="row">
+        <div class="row" style="display: none;">
             
             <div class="col-md-8" style="padding:0;">
             <!--------------------- parametro de buscador --------------------->
@@ -528,7 +536,8 @@ function mostrar_buscadores(){
             
             <!--------------------- fin parametro de buscador ---------------------> 
         
-            </div>
+        </div>
+            
             <div class="col-md-4" style="background-color: black;">
                 <center>
                     
@@ -1224,7 +1233,7 @@ function mostrar_buscadores(){
 <div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header" style="padding-bottom: 0;">
                             
                                 <div class="row">
 
@@ -1264,14 +1273,14 @@ function mostrar_buscadores(){
 
                                 
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding-top:0;">
                         <!--------------------- TABLA---------------------------------------------------->
                         <div class="box-body table-responsive">
                         <table class="table table-striped" id="mitabla">
                             <tr>
                                                         
-                                <th>#</th>
-                                <th colspan="2">Clientes</th>
+                                <th style="padding:0;">#</th>
+                                <th colspan="2"  style="padding:0;">Clientes</th>
                             </tr>
                             
                             <tbody class="buscar4" id="clientes_pedido">
@@ -1279,11 +1288,22 @@ function mostrar_buscadores(){
 
                             </tbody>
                         </table>
-                    </div>
+                        </div>
 
                         <!----------------------FIN TABLA--------------------------------------------------->
+                        <div class="footer">
+                            <center>
+                                
+                                <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                    <span class="fa fa-close"></span>   Cerrar
+                                </button>
+
+                            </center>
+                        </div>
 			</div>
 		</div>
 	</div>
 </div>
 <!--------------------------------- FIN MODAL CLIENTES ------------------------------------>
+
+                                                    

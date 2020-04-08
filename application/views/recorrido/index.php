@@ -42,10 +42,11 @@
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 
-
-<table class="table" style="width: 20cm; padding: 0;" >
+<div class="container table-responsive" style="padding:0;" >
+    
+<table class="table" style="width: 20cm; padding: 0; font-family: Arial" >
     <tr>
-        <td style="width: 6cm; padding: 0" >
+        <td style="width: 6cm; padding: 0; line-height: 10px;" >
                 
             <center>
                                
@@ -62,7 +63,7 @@
             </center>                      
         </td>
                    
-        <td style="width: 6cm; padding: 0" > 
+        <td style="width: 6cm; padding: 0; line-height: 10px;" > 
             <center>
             
                 <br><br>
@@ -72,9 +73,9 @@
 
             </center>
         </td>
-        <td style="width: 4cm; padding: 0" >
+        <td style="width: 4cm; padding: 0; line-height: 12px; font-family:arial; font-size: 12px; " >
                 ______________________________                
-                   
+                <br><br>
                                 
                 <div id="datos_recorrido">
                     
@@ -85,6 +86,7 @@
     </tr>
      
 </table>
+</div>
 
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />

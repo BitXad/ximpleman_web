@@ -1,9 +1,16 @@
 $(document).on("ready",inicio);
 function inicio(){
+    var cliente_id = document.getElementById('cliente_id').value;
+        //alert(cliente_id);
+        if (cliente_id==0){
+            $("#boton_bsucar_clie").click();
+        }
         
 //        alert("holaxxx");
         tablaresultados(1);
         tablaproductos(); 
+        
+        
 
 //        document.getElementById('nit').focus();
 //        document.getElementById('nit').select();
@@ -1165,6 +1172,17 @@ function esMobil(){
     return isMobile.any()
     
 }
+
+
+function registrar_cantidad(e,producto_id){
+    tecla = (document.all) ? e.keyCode : e.which;
+
+    if (tecla==13){
+       $("#boton_cantidad"+producto_id).click();
+    }
+    
+}
+
 //Tabla resultados de la busqueda
 function tablaresultados(opcion)
 {   
@@ -1187,7 +1205,6 @@ function tablaresultados(opcion)
     var ancho_imagen = document.getElementById('parametro_anchoimagen').value;;//document.getElementById('parametro_anchoimagen').value;
     var alto_imagen = document.getElementById('parametro_altoimagen').value;; //document.getElementById('parametro_altoimagen').value;
     var forma_imagen = document.getElementById('parametro_formaimagen').value;; //document.getElementById('parametro_altoimagen').value;
-    
 
     if(esMobil()) { tamanio = 1; }
     else{ tamanio = 3; }
@@ -1223,6 +1240,7 @@ function tablaresultados(opcion)
                     var cont = 0;
                     var cant_total = 0;
                     var total_detalle = 0;
+                    var productonombre = "";
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
@@ -1244,9 +1262,7 @@ function tablaresultados(opcion)
                     }
                     else{
                         mensajeboton = " Añadir"; //mensaje para el boton del carrito
-                        
                     }
-                        
                     
                    html += "                </tr>";
                    html += "                <tbody class='buscar' >";
@@ -1259,7 +1275,7 @@ function tablaresultados(opcion)
                     for (var i = 0; i < x ; i++){
                         
                         var mimagen = "";
-                        if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
+                        if(registros[i]["producto_foto"].length>2){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='30' height='30' />";
                             mimagen += "</a>";
@@ -1276,11 +1292,16 @@ function tablaresultados(opcion)
                         
                         html += "<td onclick='borrar_tabla()' style='padding:0;'>"+(i+1)+"</td>";
                         
-                        html += "<td style='padding:0; max-width:700px;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        productonombre = registros[i]["producto_nombre"];
+                        if (productonombre.length > 42){
+                            productonombre = productonombre.substr(0,39)+"..";
+                        }
+                        
+                        html += "<td style='padding:0; max-width:700px;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+productonombre+"</b></font>";
                         
                         
                         
-                        //html += mimagen;   
+//                        html += mimagen;
                         html += "<br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+" | "+registros[i]["producto_codigobarra"];
                         html += "<input type='text' id='input_unidad"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidad"]+"' hidden>";
                         html += "<input type='text' id='input_unidadfactor"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_unidadfactor"]+"' hidden>";
@@ -1399,7 +1420,7 @@ function tablaresultados(opcion)
                         }     
                         
                         if (parseFloat(registros[i]["existencia"])>0){
-                             html += "<button type='button' class='btn btn-warning btn-xl btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' ><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
+                             html += "<button type='button' class='btn btn-warning btn-sm btn-block' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='Añadir al detalle' onclick='focus_cantidad("+registros[i]["producto_id"]+")'><em class='fa fa-cart-arrow-down'></em>"+mensajeboton+"</button>";                             
                         }
                         
                         //html += "<button class='btn btn-success'><i class='fa fa-picture-o'></i></button>";
@@ -1412,7 +1433,7 @@ function tablaresultados(opcion)
                         html += "<div class='modal-content'>";
                         html += "<div class='modal-header'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "<font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
+                        html += "<font size='"+tamanio+"'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "</div>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
@@ -1458,11 +1479,12 @@ function tablaresultados(opcion)
 //                       html += "               <b>"+registros[i]["producto_nombre"]+"</b>";
 //                        html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
                      
-                        html += "               <b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
+                        html += "               <b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' min='0' step='1' max='"+registros[i]["existencia"]+"' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")'></b>";
                         html += "               </td>";
                         
                         html += "               <td rowspan='2'>";
-                        html += "           <img  src='"+base_url+"/"+registros[i]["producto_foto"]+" width='50' heigth='50'>";  
+//                        html += "           <img  src='"+base_url+"/"+registros[i]["producto_foto"]+" width='50' heigth='50'>";  
+                        html += mimagen;  
                         
                         html += "               </td>";                        
                         html += "          </tr>";
@@ -1475,16 +1497,13 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
 
                         html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
-                        html += "  </center>";                        
+                        html += "  </center>";
                         
                         html += "          </td>";
-                        
-                        
                         html += "          </tr>";
-                        
                         
                         html += "       </table>";
                         
@@ -1506,6 +1525,10 @@ function tablaresultados(opcion)
 
                         if(esMobil()){
                          
+                        html += "</td>"; //tabla movil extra                        
+                        html += "<td style='padding: 0;'>"; //tabla movil extra                        
+                        html += mimagen; //tabla movil extra                        
+                        
                         html += "</td>"; //tabla movil extra                        
                         html += "</tr>"; //tabla movil extra
                         html += "</table>"; //tabla movil extra
@@ -1632,7 +1655,7 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' ><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregarxxx</small></button>";
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 
                         html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
@@ -2555,9 +2578,8 @@ function buscar_clientes_pedido()
 
             html = "";
             for (var i = 0; i < c.length; i++){
-
             
-                html += "<tr>";
+                html += "<tr style='border-bottom-style: solid; border-color: black; border-width: 2px'>";
 //                html += "     <form action='"+base_url+"cliente/cambiarcliente/ method='POST' class='form'>";
                 html += "  ";
                 html += "        <td style='padding:0;'>";
@@ -2572,8 +2594,13 @@ function buscar_clientes_pedido()
                 html += "        <td style='padding:0;'>";
 
 
-                html += "                <b> "+c[i]["cliente_nombre"]+"</b> , COD.: "+c[i]["cliente_codigo"]+" <br>";
-                html += "               "+c[i]["cliente_direccion"];
+                cliente_nombre = "<b>"+c[i]["cliente_nombre"]+"</b>";
+                html += "            <a href='"+base_url+"pedido/pedidoabierto/"+c[i]["cliente_id"]+"' class='btn btn-warning btn-xs'>"+"<fa class='fa fa-user'></fa> "+cliente_nombre+"</a>";
+                
+//                html += "                <b> "+c[i]["cliente_nombre"]+"</b> , COD.: "+c[i]["cliente_codigo"]+" <br>";
+                html += "<br>";
+                html += "COD.: "+c[i]["cliente_codigo"]+", "+c[i]["cliente_direccion"];
+                html += "<br>";
                 html += "            C.I.:"+c[i]["cliente_ci"]+" | Telf.:"+c[i]["cliente_telefono"]+" <br>";
                 html += "            <div class='container' hidden='TRUE'>";
                 html += "                <input id='cliente_id'  name='cliente_id' type='text' class='form-control' value='<?php echo $h['cliente_id']; ?>'>";
@@ -2587,7 +2614,6 @@ function buscar_clientes_pedido()
 //                html += "            <button type='submit' class='btn btn-success btn-xs btn-block'>";
 //                html += "                <i class='fa fa-check'></i> Seleccionar Cliente";
 //                html += "            </button>";
-                html += "            <a href='"+base_url+"pedido/pedidoabierto/"+c[i]["cliente_id"]+"' class='btn btn-success btn-xs btn-block'> Seleccionar Cliente</a>";
                 
                 html += "            ";
                 html += "        </td>";
@@ -3058,12 +3084,28 @@ function registrar_recorrido()
     
 }
 
-
-
-
 function focus_efectivo(){
         $('#modalfinalizar').on('shown.bs.modal', function() {
         $('#venta_efectivo').focus();
         $('#venta_efectivo').select();
+    });
+}
+
+function focus_cliente(){
+    
+        $('#modalbuscar').on('shown.bs.modal', function() {
+        $('#filtrar4').focus();
+        $('#filtrar4').select();
+    });
+}
+
+function focus_cantidad(producto_id){
+    
+//    alert(producto_id);
+        var campo = "cantidad"+producto_id;
+    
+        $('#myModal'+producto_id).on('shown.bs.modal', function() {
+        $('#'+campo).focus();
+        $('#'+campo).select();
     });
 }

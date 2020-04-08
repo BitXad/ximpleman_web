@@ -51,12 +51,16 @@ function tabla_pedidos(filtro)
                 opciones += "<option value='"+tipo[i].tipotrans_id+"'>"+tipo[i].tipotrans_nombre+"</option>";
             }
             
+            var nombreusuario = "";
             for(var i = 0; i<p.length; i++){
                 
 
                 tipotrans = p[i]["tipotrans_nombre"];
                 nombreusuario = p[i]["usuario_nombre"];
                 
+                if (nombreusuario.length>12){
+                    nombreusuario = nombreusuario.substr(0,10)+'..';
+                }
                 cont += 1;//    html += "             $cont = $cont+1;  ";
                 total_pedido += parseFloat(p[i]["pedido_total"]); // html += "             $total_pedido+=$p['pedido_total']; ";
                 
@@ -65,12 +69,19 @@ function tabla_pedidos(filtro)
 
                 html += "    <td  bgcolor='"+p[i]["estado_color"]+"' style='line-height: 9px; padding:0; padding:"+padding+";'><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <sub>["+p[i]["cliente_id"]+"]</sub> ";
                 
-                if (p[i]["pedido_latitud"]!=null && p[i]["pedido_longitud"]!=null)
-                        imagen = "blue.png";
-                else
-                        imagen = "noubicacion.png";
+                if (isNaN(p[i]["pedido_latitud"]) || isNaN(["pedido_longitud"])){                    
+                    imagen = "noubicacion.png";
+                    html += " <a href='#' title='CLIENTE SIN UBICACIÓN REGISTRADA'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                }
+                else{
+                    imagen = "blue.png";
+                    html += " <a href='https://www.google.com/maps/dir/"+p[i]['cliente_latitud']+","+p[i]['cliente_longitud']+"' target='_blank' title='lat:"+p[i]['cliente_latitud']+",long:"+p[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                
+                }
                     
-                html += " <a href='https://www.google.com/maps/dir/"+p[i]['cliente_latitud']+","+p[i]['cliente_longitud']+"' target='_blank' title='lat:"+p[i]['cliente_latitud']+",long:"+p[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='30' height='30'></a>";
+                    
+                    
+                
                 html += "<br>";
                 html += "    "+p[i]["cliente_nombrenegocio"];
                 html += "<br>  ";
@@ -107,6 +118,7 @@ function tabla_pedidos(filtro)
                 html += "        <center> ";        
                 html += "        <font size='1'> ";        
                 html += "        "+formato_fecha(p[i]["pedido_fechaentrega"])+'<br>'+p[i]["pedido_horaentrega"];
+                
                 html += "        <br> <small>"+nombreusuario+"</small>"
                 html += "        </font> ";
                 html += "        </center>  ";
@@ -126,7 +138,7 @@ function tabla_pedidos(filtro)
                             html += "        <a href='"+base_url+'pedido/modificarpedido/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
                         }
                  // ****************************** anular pedido ***************************************
-                        html += "       <button type='button' class='btn btn-danger btn-sm'  title='Anular pedido' data-toggle='modal' data-target='#modalanular"+p[i]["pedido_id"]+"'> ";
+                        html += "      <button type='button' class='btn btn-danger btn-sm'  title='Anular pedido' data-toggle='modal' data-target='#modalanular"+p[i]["pedido_id"]+"'> ";
                         html += "           <span class='fa fa-trash'></span> ";
                         html += "      </button>  ";
   
@@ -227,17 +239,19 @@ function tabla_pedidos(filtro)
                 html += "    <th style='padding: 0;'> </th> ";
 
                 html += "         ";
-                html += "    <th style='padding: 0;'> ";
+                html += "    <th style='padding: 0; line-height: 13px;'> ";
                 html += "        <center>  ";
                 html += "        PEDIDOS<br> ";
                 html += "        <font size='3'><b>"+cont+"</b></font> ";
                 html += "        </center> ";
                 html += "   </th> ";
 
-                html += "   <th style='padding: 0;'> ";
+                html += "   <th style='padding: 0; line-height: 13px;'> ";
                 html += "        <center> ";
                 html += "            TOTAL Bs<br> ";
-                html += "        <font size='3'><b>"+parseFloat(total_pedido).toFixed(2)+"</b></font> ";
+                
+                html += "        <font size='3'><b>"+total_pedido.toFixed(2)+"</b></font> ";
+//                html += "        <font size='3'><b>"+formato_numerico(parseFloat(total_pedido).toFixed(2))+"</b></font> ";
                 html += "        </center> ";
                 html += "   </th> ";
                 html += "     ";
@@ -249,7 +263,7 @@ function tabla_pedidos(filtro)
             $("#tabla_pedidos").html(html);
         }        
     });
- 
+ document.getElementById('loader').style.display = "none";
 }
 
 
@@ -590,6 +604,8 @@ function buscar_pedidos()
     var controlador = base_url+"pedido";
     var opcion      = document.getElementById('select_pedidos').value;
     var usuario_id  = document.getElementById('usuario_id').value;
+        
+    document.getElementById('loader').style.display = "block";
     
     var por_usuario = "";
     
@@ -664,6 +680,8 @@ function buscar_pedidos()
     }
 
     tabla_pedidos(filtro);
+    
+    
 }
 
 function formato_numerico(numer){

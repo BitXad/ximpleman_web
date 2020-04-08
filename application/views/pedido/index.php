@@ -98,7 +98,7 @@
     </div>
     -->
     <div class="col-md-6"  style="padding:3px">
-        <div class="form-group">
+        <div class="form-group" style="margin-bottom: 0;">
             <center>
                 <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 100px;"><span class="fa fa-cart-arrow-down"></span> Pedido</a>
                 <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>
@@ -155,14 +155,26 @@
 
 <div class="row">
     <div class="col-md-12" style=" margin-bottom: 0; margin-top: 0;">
+                
+
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group" style=" margin-bottom: 0; margin-top: 0;"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el cliente, fecha, total">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
+        
+        
+            <!--------------------- inicio loader ------------------------->
+            <div class="row" id='loader'  style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                </center>
+            </div> 
+            <!--------------------- fin inicio loader ------------------------->
+
             
-            <div class="box-body table-responsive">
+            <div class="box-body table-responsive" style="padding: 0;">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th style="padding: 0;">#</th>
