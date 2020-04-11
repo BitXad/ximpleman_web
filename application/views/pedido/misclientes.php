@@ -1,8 +1,13 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/pedido.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>" type="text/javascript"></script>
 
 <script type="text/javascript">
+    $(document).on("ready",inicio);
+    function inicio(){
+        //alert("jejeje");
+        misclientes();
+    }
     
         $(document).ready(function () {
             (function ($) {
@@ -26,20 +31,20 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
-<input type="hidden" id="esrol" name="esrol" value="<?php echo $esrol; ?>">
+<!--<input type="hidden" id="esrol" name="esrol" value="<?php echo $esrol; ?>">
 <input type="hidden" id="esrolconsolidar" name="esrolconsolidar" value="<?php echo $esrolconsolidar; ?>">
 
 <input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
 <input id="pedido_id" name="pedido_id" value="0" hidden>
-<!--<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >-->
-<input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>
+<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >
+<input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>-->
 <!--<input id='tipo_venta' name='tipo_venta' value='<?php echo json_encode($tipo_venta); ?>' hidden>-->
 
 <!--<div class="box-header">
 <div class="row clearfix">-->
 <div class="box-body col-md-6" style="padding: 0">
     <center>
-        <h3 class="box-title" style="font-family: Arial; margin: 0;" >Pedidos</h3>
+        <h3 class="box-title" style="font-family: Arial; margin: 0;" >Mis Clientes</h3>
     </center>
 </div>
 
@@ -50,35 +55,20 @@
     <div class="col-md-3"  style="padding:3px; margin-bottom: 0; margin-top: 0;">
         <div class="form-group" style="padding: 0;  margin-bottom: 0; margin-top: 0;">
 
-            <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
+            <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cliente_usuario()">
                     <option value="0"><?php echo "TODOS"; ?></option>
-                    <!--<option value="<?php echo $usuario_id; ?>"><?php echo $usuario_nombre; ?></option>-->
-            <?php foreach($usuario as $u){ ?>
-                    <option value="<?php echo $u['usuario_id']?>"><?php echo $u['usuario_nombre']?></option>
+                   
+            <?php foreach($usuario as $u){ 
+                    $selected = ($u['usuario_id'] == $usuario_id)?"selected":"";
+                ?>
+                    <option value="<?php echo $u['usuario_id']; ?>" <?php echo $selected; ?>><?php echo $u['usuario_nombre']?></option>
             <?php } ?>
             </select>
             
         </div>
     </div>
     <?php } ?>
-                 
-    <div class="col-md-3"  style="padding:3px;  margin-bottom: 0; margin-top: 0;">
-        <div class="form-group" style=" margin-bottom: 0; margin-top: 0;">
-        <select class="btn btn-facebook btn-sm form-control" id="select_pedidos" onclick="buscar_pedidos()">
-            <option value="1">Pedidos de Hoy</option>
-            <option value="2">Pedidos de Ayer</option>
-            <option value="3">Pedidos de la semana</option>
-            <option value="4">Todos los pedidos</option>
-            <option value="5">Pedidos por fecha</option>
-            <option value="6">Entregas de Hoy</option>
-            <option value="7">Entregas de Ayer</option>
-            <option value="8">Entregas de la semana</option>
-            <option value="9">Todas las Entregas</option>
-            <option value="10">Entregas por fecha</option>
-        </select>
-    </div>
-    </div>
-                
+    
     <div class="col-md-6"  style="padding:3px">
         <div class="form-group" style="margin-bottom: 0;">
             <center>
@@ -161,13 +151,11 @@
                     <tr>
                         <th style="padding: 0;">#</th>
                         <th style="padding: 0;">Cliente</th>
-                        <th style="padding: 0;" align="center">COD</th>
-                        <th style="padding: 0;">Total</th>
-                        <th style="padding: 0;">Fecha<br>entrega</th>
-
+                        <th style="padding: 0;" align="center">Direccion/Teléfono</th>
+                        <th style="padding: 0;">Orden<br>Ubicación</th>
                         <th style="padding: 0;"> </th>
                     </tr>
-                    <tbody class="buscar" id="tabla_pedidos">
+                    <tbody class="buscar" id="tabla_clientes">
 
                         <!-- Aqui de acomoda la tabla de pedidos -->
                         
@@ -175,20 +163,7 @@
                 </table>
                                 
             </div>
-<!--            <div class="pull-right">
-                    <?php echo $this->pagination->create_links(); ?>                    
-            </div>-->
         </div>
     </div>
 </div>
 </body>
-
-    <div class="col-md-6"  style="padding:3px">
-        <div class="form-group" style="margin-bottom: 0;">
-            <center>
-                <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 100px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Mis Clientes</a>
-                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>
-                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;"><span class="fa fa-map"></span> Mapa</a>                
-            </center>
-        </div>
-    </div>

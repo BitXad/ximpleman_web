@@ -69,7 +69,10 @@ function tabla_pedidos(filtro)
 
                 html += "    <td  bgcolor='"+p[i]["estado_color"]+"' style='line-height: 9px; padding:0; padding:"+padding+";'><font size='3'><b>"+p[i]["cliente_nombre"]+"</b></font> <sub>["+p[i]["cliente_id"]+"]</sub> ";
                 
-                if (isNaN(p[i]["pedido_latitud"]) || isNaN(["pedido_longitud"])){                    
+//                if (isNaN(p[i]["cliente_latitud"]) || isNaN(["cliente_longitud"])){  
+                
+
+                if ((p[i]["cliente_latitud"]==0 && p[i]["cliente_longitud"]==0) || (p[i]["cliente_latitud"]==null && p[i]["cliente_longitud"]==null) || (p[i]["cliente_latitud"]== "" && p[i]["cliente_longitud"]=="")){ 
                     imagen = "noubicacion.png";
                     html += " <a href='#' title='CLIENTE SIN UBICACIÓN REGISTRADA'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
                 }

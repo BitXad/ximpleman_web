@@ -538,16 +538,9 @@ function registrarpedido()
                 $recorrido_hora.",".
                 $recorrido_detalleresp.")";
         $this->Pedido_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
-        
-        
-//        
-//        $result = 1;
-//        echo '[{"resultado":"'.$result.'"}]';
-            
      
         //**************** fin contenido ***************
         }
-               
         
     }
     
@@ -647,7 +640,7 @@ function registrarpedido()
         }
         		
         //**************** fin contenido ***************
-        			}
+        }
         			          
     }  
 
@@ -796,8 +789,6 @@ function registrarpedido()
                     $dia_pago     = date('d');
                     $fecha_inicio = $credito_fechalimite;
 
-
-
                     $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
                             $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
                     $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
@@ -865,16 +856,8 @@ function registrarpedido()
                             //$cuota_total = $saldo_deudor;
                         }
 
-
-
                 }
             
-            
-            
-            
-            
-            
-
         }
         		
         //**************** fin contenido ***************
@@ -918,7 +901,6 @@ function registrarpedido()
         		
         //**************** fin contenido ***************
         			}
-        			      
     }
     
 
@@ -976,7 +958,6 @@ function registrarpedido()
             
         $this->Pedido_model->ejecutar($sql);
         return true;
-        
             		
         //**************** fin contenido ***************
         			}
@@ -1008,8 +989,6 @@ function registrarpedido()
             		
         //**************** fin contenido ***************
         			}
-        			
-        
     }
 
     function mapa_pedido()        
@@ -1066,11 +1045,9 @@ function registrarpedido()
         $this->Venta_model->ejecutar($sql);
         return true;
     
-            		
         //**************** fin contenido ***************
         }
         		   
-        
     }    
     
 
@@ -1105,8 +1082,6 @@ function registrarpedido()
             		
         //**************** fin contenido ***************
         }
-        			
-        
     }
     
 
@@ -1144,6 +1119,73 @@ function registrarpedido()
         //**************** fin contenido ***************
 //        }
         			
+        
+    }
+    
+
+    /*
+     * Lista de clientes asigandos a un usuario prevendedor
+     */
+    function misclientes()
+    {
+
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+
+        //**************** inicio contenido ***************        
+        
+            $usuario_id = $this->session_data['usuario_id'];
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+            $data['usuario_id'] = $usuario_id;            
+            
+            $data['_view'] = 'pedido/misclientes';
+            $this->load->view('layouts/main',$data);
+            		
+        //**************** fin contenido ***************
+        }        			
+        
+    }
+
+    /*
+     * Lista de clientes asigandos a un usuario prevendedor
+     */
+    function buscar_clientes()
+    {
+
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+
+        //**************** inicio contenido ***************        
+        
+            $usuario_id = $this->session_data['usuario_id'];
+
+            $sql="select * from cliente where usuario_id = ".$usuario_id;            
+            $resultado = $this->Pedido_model->consultar($sql);
+            echo json_encode($resultado);
+            		
+        //**************** fin contenido ***************
+        }
+        
+    }
+    
+
+    /*
+     * Lista de clientes asigandos a un usuario prevendedor
+     */
+    function buscar_cliente_usuario()
+    {
+
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+
+        //**************** inicio contenido ***************        
+        
+            $usuario_id = $this->input->post('usuario_id');
+
+            $sql="select * from cliente where usuario_id = ".$usuario_id;            
+            $resultado = $this->Pedido_model->consultar($sql);
+            echo json_encode($resultado);
+            		
+        //**************** fin contenido ***************
+        }
         
     }
     

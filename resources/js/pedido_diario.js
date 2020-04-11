@@ -227,3 +227,163 @@ function buscar_pedido_index(opcion)
     
     }
 }
+
+function misclientes()
+{    
+    var base_url    = document.getElementById('base_url').value; 
+    var usuario_id    = document.getElementById('select_usuarios').value; 
+    var controlador = base_url+"pedido/buscar_clientes";    
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{usuario_id:usuario_id},
+        success: function(response){
+            
+            var c = JSON.parse(response);
+            var estilo = "style='padding:0;'"
+            var nombre_negocio = "";
+            var cliente_direccion = "";
+            var imagen = "";
+         
+            html = "";
+            
+            for (var i = 0; i < c.length; i++){
+                html += "<tr>";
+                html += "<td "+estilo+">"+(i+1)+"</td>";
+                
+                if((c[i].cliente_nombrenegocio==null)||(c[i].cliente_nombrenegocio=="-")){
+                    nombre_negocio = "";
+                }
+                else{
+                    nombre_negocio = "<br>"+c[i].cliente_nombrenegocio;
+                }
+                
+                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
+                    cliente_direccion = "";
+                }
+                else{
+                    cliente_direccion = c[i].cliente_direccion;
+                }
+                    
+                html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b>"+nombre_negocio+"</td>";
+                html += "<td "+estilo+">"+cliente_direccion;
+                
+                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
+                    html +="";
+                }
+                else{
+                    html += "<br><a href='https://wa.me/591"+c[i].cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
+                    html += c[i].cliente_celular+" - ";
+                }
+                
+
+                 
+                html += c[i].cliente_telefono+"</td>";
+                html += "<td "+estilo+">"+c[i].cliente_ordenvisita;
+                
+                
+//                if (isNaN(c[i]["cliente_latitud"]) || isNaN(["cliente_longitud"])){   
+                if ((c[i]["cliente_latitud"]==0 && c[i]["cliente_longitud"]==0) || (c[i]["cliente_latitud"]==null && c[i]["cliente_longitud"]==null) || (c[i]["cliente_latitud"]== "" && c[i]["cliente_longitud"]=="")){
+                    imagen = "noubicacion.png";
+                    html += " <a href='#' title='CLIENTE SIN UBICACIÓN REGISTRADA'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                }
+                else{
+                    imagen = "blue.png";
+                    html += " <a href='https://www.google.com/maps/dir/"+c[i]['cliente_latitud']+","+c[i]['cliente_longitud']+"' target='_blank' title='lat:"+c[i]['cliente_latitud']+",long:"+c[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                }                
+                
+                html += "</td>";
+                html += "<td "+estilo+">";
+                html += "<a href='"+base_url+"cliente/edit/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-user'></fa></a>";
+                html += "</td>";
+                html += "</tr>";
+            }
+        
+            $("#tabla_clientes").html(html);
+            
+        },
+        error:function (response){
+            alert("ocurrio un error ");
+        }
+    });
+}
+
+function cliente_usuario()
+{    
+    var base_url    = document.getElementById('base_url').value; 
+    var usuario_id    = document.getElementById('select_usuarios').value; 
+    var controlador = base_url+"pedido/buscar_cliente_usuario";    
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{usuario_id:usuario_id},
+        success: function(response){
+            
+            var c = JSON.parse(response);
+            var estilo = "style='padding:0;'"
+            var nombre_negocio = "";
+            var cliente_direccion = "";
+            var imagen = "";
+         
+            html = "";
+            
+            for (var i = 0; i < c.length; i++){
+                html += "<tr>";
+                html += "<td "+estilo+">"+(i+1)+"</td>";
+                
+                if((c[i].cliente_nombrenegocio==null)||(c[i].cliente_nombrenegocio=="-")){
+                    nombre_negocio = "";
+                }
+                else{
+                    nombre_negocio = "<br>"+c[i].cliente_nombrenegocio;
+                }
+                
+                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
+                    cliente_direccion = "";
+                }
+                else{
+                    cliente_direccion = c[i].cliente_direccion;
+                }
+                    
+                html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b>"+nombre_negocio+"</td>";
+                html += "<td "+estilo+">"+cliente_direccion;
+                
+                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
+                    html +="";
+                }
+                else{
+                    html += "<br><a href='https://wa.me/591"+c[i].cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
+                    html += c[i].cliente_celular+" - ";
+                }
+                
+
+                 
+                html += c[i].cliente_telefono+"</td>";
+                html += "<td "+estilo+">"+c[i].cliente_ordenvisita;
+                
+                
+//                if (isNaN(c[i]["cliente_latitud"]) || isNaN(["cliente_longitud"])){   
+                if ((c[i]["cliente_latitud"]==0 && c[i]["cliente_longitud"]==0) || (c[i]["cliente_latitud"]==null && c[i]["cliente_longitud"]==null) || (c[i]["cliente_latitud"]== "" && c[i]["cliente_longitud"]=="")){
+                    imagen = "noubicacion.png";
+                    html += " <a href='#' title='CLIENTE SIN UBICACIÓN REGISTRADA'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                }
+                else{
+                    imagen = "blue.png";
+                    html += " <a href='https://www.google.com/maps/dir/"+c[i]['cliente_latitud']+","+c[i]['cliente_longitud']+"' target='_blank' title='lat:"+c[i]['cliente_latitud']+",long:"+c[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                }                
+                
+                html += "</td>";
+                html += "<td "+estilo+">";
+                html += "<a href='"+base_url+"cliente/edit/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-user'></fa></a>";
+                html += "</td>";
+                html += "</tr>";
+            }
+        
+            $("#tabla_clientes").html(html);
+            
+        },
+        error:function (response){
+            alert("ocurrio un error ");
+        }
+    });
+}
