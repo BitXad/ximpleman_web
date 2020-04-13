@@ -156,6 +156,7 @@ function resultadodetalleservicioview(servicio_id){
     var cobrardetalle     = document.getElementById('cobrardetalle').value;
     var pasaracreditodeta = document.getElementById('pasaracreditodeta').value;
     var cliente_nombre    = document.getElementById('estecliente').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
     
     var controlador   = base_url+"servicio/getdetalleservicio/"+servicio_id;
      
@@ -257,65 +258,52 @@ function resultadodetalleservicioview(servicio_id){
                         html += "<div class='modal-content'>";
                         html += "<div class='modal-header text-center' style='font-size:12pt;'>";
                         html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
-                        html += "<label>REGISTRAR DETALLE DE SERVICIO TECNICO   ("+registros[i]['detalleserv_descripcion']+")</label>";
+                        html += "REGISTRAR SERVICIO TECNICO";
                         html += "<br>N° "+registros[i]['servicio_id'];
                         html += "</div>";
-                        //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
+                        //html += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         html += "<div class='modal-body'>";
                         html += "<!------------------------------------------------------------------->";
                         html += "<span id='mensajeregistrarserterminado' class='text-danger'></span>";
-                        html += "<div class='text-center'><span style='font-size: 12pt'>"+cliente_nombre+"</span>";
-                        var cliente_telef = "";
-                        var cliente_celu = "";
-                        var guion = "";
-                        var nomtelef = "";
-                        if((registros[i]["cliente_telefono"] != "") && (registros[i]["cliente_telefono"] != null) && (registros[i]["cliente_celular"] != "") && (registros[i]["cliente_celular"] != null))
-                        {
-                            guion = "-";
-                            nomtelef = "<br>Telef.: ";
-                        }
-                        if(registros[i]["cliente_telefono"] != null && registros[i]["cliente_telefono"] != ""){
-                            cliente_telef = registros[i]["cliente_telefono"];
-                            nomtelef = "<br>Telef.: ";
-                        }
-                        if(registros[i]["cliente_celular"] != null && registros[i]["cliente_celular"] != ""){
-                            cliente_celu = registros[i]["cliente_celular"];
-                            nomtelef = "<br>Telef.: ";
-                        }
-                        html += nomtelef+cliente_telef+guion+cliente_celu+"</div>";
+                        
                         html +="<table style='width: 100%'>";
                         html +="<tr>";
                         html +="<th><div class='text-right'>Descripción: </div></th>";
 
-                        html +="<td colspan='2'>"+registros[i]['detalleserv_descripcion'];
+                        html +="<td colspan='2'>";
+                        if(tipousuario_id ==1){
+                            html +="<input style='width: 100%' type='text' name='detalleserv_descripcion"+registros[i]['detalleserv_id']+"' id='detalleserv_descripcion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_descripcion']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
+                        }else{
+                            html += registros[i]['detalleserv_descripcion'];
+                        }
                         html +="</td>";
                         html +="</tr>";
                         html +="<tr>";
                         html +="<th><div class='text-right'>Falla según Cliente: </div></th>";
-                        html +="<td  colspan='2'>"+registros[i]['detalleserv_falla'];
+                        html +="<td  colspan='2'>";
+                        if(tipousuario_id ==1){
+                            html +="<input style='width: 100%' type='text' name='detalleserv_falla"+registros[i]['detalleserv_falla']+"' id='detalleserv_falla"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_falla']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
+                        }else{
+                            html += registros[i]['detalleserv_falla'];
+                        }
                         html +="</td>";
                         html +="</tr>";
                         html +="<tr>";
                         html +="<th><div class='text-right'>Diagnóstico: </div></th>";
                         html +="<td colspan='2' style='width: 70%'>";
-                        html +="<input style='width: 100%' type='text' name='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' id='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_diagnostico']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
+                        html +="<input style='width: 100%' type='text' name='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' id='detalleserv_diagnostico"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_diagnostico']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />";
                         html +="</td>";
                         html +="</tr>";
                         html +="<tr>";
                         html +="<th><div class='text-right'>Solución Aplicada: </div></th>";
                         html +="<td colspan='2'>";
-                        html +="<input style='width: 100%' type='text' name='detalleserv_solucion"+registros[i]['detalleserv_id']+"' id='detalleserv_solucion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_solucion']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />"; 
+                        html +="<input style='width: 100%' type='text' name='detalleserv_solucion"+registros[i]['detalleserv_id']+"' id='detalleserv_solucion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_solucion']+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' onclick='this.select();' />"; 
                         html +="</td>";
                         html +="</tr>";
                         html +="<tr>";
                         html +="<th><div class='text-right'>Buscar Insumos: </div></th>";
                         html +="<td colspan='2'>";
-                        //res += "<div class='input-group'>";
-                        //res += "<span class='input-group-addon'>";
-                        //res += "Buscar";
-                        //res += "</span>";
-                        //res +="<input style='width: 100%' type='text' name='detalleserv_solucion"+registros[i]['detalleserv_id']+"' value='"+registros[i]['detalleserv_solucion']+"' />";
-                        //res +="<div class='form-group' id='new_select'>";
+                        
                         html += "<input type='search' name='insumosproducto_id"+registros[i]['detalleserv_id']+"' id='insumosproducto_id"+registros[i]['detalleserv_id']+"' list='listainsumos"+registros[i]['detalleserv_id']+"' style='width: 100%' placeholder='Ingrese el nombre, código del Insumo' onkeypress='buscar_verificarenter(event, "+registros[i]['detalleserv_id']+")' onchange='seleccionar_insumo("+registros[i]['detalleserv_id']+")' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' autocomplete='off' />";
                         html += "<datalist id='listainsumos"+registros[i]['detalleserv_id']+"'>";
                         html += "</datalist>";
@@ -328,12 +316,19 @@ function resultadodetalleservicioview(servicio_id){
                         html +="<input style='width: 100%' type='number' step='any' min='0' name='producto_precio"+registros[i]['detalleserv_id']+"' id='producto_precio"+registros[i]['detalleserv_id']+"' />";
                         html +="</td>";
                         html +="<td style='width: 60%'>";
-                        html +="<input style='width: 100%' type='text' name='nombre_insumo"+registros[i]['detalleserv_id']+"' id='nombre_insumo"+registros[i]['detalleserv_id']+"' />";
+                        html +="<input style='width: 90%' type='text' name='nombre_insumo"+registros[i]['detalleserv_id']+"' id='nombre_insumo"+registros[i]['detalleserv_id']+"' readonly />";
+                        html += "<button class='btn btn-success btn-xs' onclick='registrarinsumo_aldetalle("+registros[i]['detalleserv_id']+")' title='Usar insumo'><span class='fa fa-check'></span></button>";
                         html +="</td>";
-                        /*res +="<td>";
-                        res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalasignarinsumos"+registros[i]['detalleserv_id']+"' title='Asignar Insumos'><span class='fa fa-plus'></span></a>";
-                        res +="</td>";*/
                         html +="</tr>";
+                        
+                        html +="<tr>";
+                        html +="<th><div class='text-right'>Insumos Usados: </div></th>";
+                        html +="<td colspan='2'>";
+                        processmisInsumos(registros[i]['detalleserv_id']);
+                        html +="<div id='misinsumosusados"+registros[i]['detalleserv_id']+"'></div>";
+                        html +="</td>";
+                        html +="</tr>";
+                        
                         html +="<tr style='width: 100%'>";
                         html +="<th style='width: 25%'><div class='text-right'>Servicios Externos: </div></th>";
                         html +="<td style='width: 15%'>";
@@ -344,7 +339,7 @@ function resultadodetalleservicioview(servicio_id){
                         if(registros[i]['detalleserv_detalleexterno'] != "" && registros[i]['detalleserv_detalleexterno'] != null){
                             detalleexterno = registros[i]['detalleserv_detalleexterno'];
                         }
-                        html +="<input style='width: 100%' type='text' name='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' id='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' value='"+detalleexterno+"' />";
+                        html +="<input style='width: 100%' type='text' name='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' id='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' value='"+detalleexterno+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
                         html +="</td>";
                         html +="</tr>";
                         html +="</table>";
@@ -372,10 +367,9 @@ function resultadodetalleservicioview(servicio_id){
                         
                         html += "<button class='btn btn-success' onclick='registrardetalleservicio_terminado("+servicio_id+", "+registros[i]['detalleserv_id']+")' ><span class='fa fa-wrench'></span> Registrar Servicio Terminado</button>";
                         
-                        
                         html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>";
                         html += "</div>";
-                        //res += "</form>";
+                        //html += "</form>";
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
@@ -1013,24 +1007,37 @@ function registrardetalleservicio_entregado(servicio_id, detalleserv_id){
 
 function registrardetalleservicio_terminado(servicio_id, detalleserv_id){
     var base_url = document.getElementById('base_url').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
     var controlador = base_url+"servicio/registrar_servicioterminado";
     var detalleserv_diagnostico = document.getElementById('detalleserv_diagnostico'+detalleserv_id).value;
     var detalleserv_solucion = document.getElementById('detalleserv_solucion'+detalleserv_id).value;
-    var producto_precio = document.getElementById('producto_precio'+detalleserv_id).value;
-    var nombre_insumo = document.getElementById('nombre_insumo'+detalleserv_id).value;
+    //var producto_precio = document.getElementById('producto_precio'+detalleserv_id).value;
+    //var nombre_insumo = document.getElementById('nombre_insumo'+detalleserv_id).value;
     var detalleserv_precioexterno = document.getElementById('detalleserv_precioexterno'+detalleserv_id).value;
     var detalleserv_detalleexterno = document.getElementById('detalleserv_detalleexterno'+detalleserv_id).value;
     var detalleserv_total = document.getElementById('detalleserv_total'+detalleserv_id).value;
     var detalleserv_saldo = document.getElementById('detalleserv_saldo'+detalleserv_id).value;
-    var producto_id = document.getElementById('esteproducto_id'+detalleserv_id).value;
+    //var producto_id = document.getElementById('esteproducto_id'+detalleserv_id).value;
+    $('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
+    var esdata = "";
+    if(tipousuario_id ==1){
+        var detalleserv_descripcion = document.getElementById('detalleserv_descripcion'+detalleserv_id).value;
+        var detalleserv_falla = document.getElementById('detalleserv_falla'+detalleserv_id).value;
+        esdata = {detalleserv_descripcion:detalleserv_descripcion, detalleserv_falla:detalleserv_falla,
+                  detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
+                  detalleserv_precioexterno:detalleserv_precioexterno, detalleserv_detalleexterno:detalleserv_detalleexterno,
+                  detalleserv_total:detalleserv_total, detalleserv_saldo:detalleserv_saldo,
+                  detalleserv_id:detalleserv_id, servicio_id:servicio_id};
+    }else{
+        esdata = {detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
+                  detalleserv_precioexterno:detalleserv_precioexterno, detalleserv_detalleexterno:detalleserv_detalleexterno,
+                  detalleserv_total:detalleserv_total, detalleserv_saldo:detalleserv_saldo,
+                  detalleserv_id:detalleserv_id, servicio_id:servicio_id};
+    }
     $('#modalregistrardetservtecnico'+detalleserv_id).modal('hide');
         $.ajax({url: controlador,
             type:"POST",
-            data:{detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
-                  producto_precio:producto_precio, nombre_insumo:nombre_insumo, detalleserv_id:detalleserv_id,
-                  detalleserv_precioexterno:detalleserv_precioexterno, detalleserv_detalleexterno:detalleserv_detalleexterno,
-                  detalleserv_total:detalleserv_total, detalleserv_saldo:detalleserv_saldo,
-                  producto_id:producto_id, servicio_id:servicio_id},
+            data:esdata,
             success:function(respuesta){
                 
                 resultado = JSON.parse(respuesta);
@@ -1046,15 +1053,6 @@ function registrardetalleservicio_terminado(servicio_id, detalleserv_id){
             error: function(respuesta){
             }
         });
-}
-
-/* buscar insumos-productos */
-function buscar_verificarenter(e, detalleserv_id){
-    tecla = (document.all) ? e.keyCode : e.which;
-  
-    if (tecla==13){
-        buscarinsumosproductos(detalleserv_id);
-    }
 }
 
 /* seleccionar sub-categoria */
@@ -1112,6 +1110,194 @@ function buscarinsumosproductos(detalleserv_id){
                     html += "'>"+resultado[i]["producto_nombre"]+"</option>";
                 }    
                 $("#listainsumos"+detalleserv_id).html(html);
+
+            },
+            error: function(respuesta){
+            }
+        });
+}
+
+function registrarinsumo_aldetalle(detalleserv_id){
+    var controlador = "";
+    var base_url = document.getElementById('base_url').value;
+    var producto_id = document.getElementById('esteproducto_id'+detalleserv_id).value;
+    var producto_precio = document.getElementById('producto_precio'+detalleserv_id).value;
+    if(producto_id >0){
+        controlador = base_url+'categoria_insumo/registrareste_insumo';
+        $.ajax({url: controlador,
+               type:"POST",
+               data:{producto_id:producto_id, detalleserv_id:detalleserv_id, producto_precio:producto_precio},
+               success:function(respuesta){
+                   var registros =  JSON.parse(respuesta);
+                   if (registros != null){
+                       processmisInsumos(detalleserv_id);
+                    //showinsumosusados(servicio_id, detalleserv_id);
+                }
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               //$("#insumosresultados").html(html);
+            }
+
+        });
+    }
+
+}
+async function processmisInsumos(detalleserv_id) {
+  try {
+    const result = await mostrarinsumosdetalleserv(detalleserv_id);
+    //alert(result);
+    $('#misinsumosusados'+detalleserv_id).html(result);
+    //console.log(result);
+    return "";
+  } catch (err) {
+    return console.log(err.message);
+  }
+}
+
+function mostrarinsumosdetalleserv(detalleserv_id){
+    const promise = new Promise(function (resolve, reject) {
+    var base_url = document.getElementById('base_url').value;
+    //var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var controlador = base_url+'servicio/obtenerinsumosusados/'+detalleserv_id;
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(respuesta){
+               var res = "";
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                    var total = 0;
+                    res +="<table style='width: 100%; font-size: 10px; font-weight: normal; padding: 0px'>";
+                    res +="<tr>";
+                    res +="<th style='padding: 0px'>Cant.</th>";
+                    res +="<th style='padding: 0px'>Total</th>";
+                    res +="<th style='padding: 0px'>Insumo</th>";
+                    res +="<th style='padding: 0px'>Código</th>";
+                    res +="<th style='padding: 0px'></th>";
+                    res +="</tr>";
+                    for (var i = 0; i < n ; i++){
+                        total = Number(total)+Number(registros[i]['detalleven_total']);
+                        res +="<tr>";
+                        res +="<td style='padding: 0px' class='text-right'>"+registros[i]['detalleven_cantidad']+"</td>";
+                        res +="<td style='padding: 0px' class='text-right'>"+numberFormat(Number(registros[i]['detalleven_total']).toFixed(2))+"</td>";
+                        res +="<td style='padding: 0px'>"+registros[i]['producto_nombre']+"</td>";
+                        res +="<td style='padding: 0px' class='text-center'>"+registros[i]['producto_codigo']+"</td>";
+                        res +="<td style='padding: 0px' class='text-center'>";
+                        res += "<button class='btn btn-danger btn-xs' onclick='eliminar_insumo("+registros[i]['detalleven_id']+", "+detalleserv_id+")' title='Eliminar insumo'><span class='fa fa-trash'></span></button>";
+                        res +="</td>";
+                        res +="</tr>";
+
+                   }
+                   res +="<tr>";
+                   res +="<td style='padding: 0px'>Total:</td>";
+                   res +="<td style='padding: 0px' class='text-right'>"+numberFormat(Number(total).toFixed(2))+"</td>";
+                   res +="</tr>";
+                   res +="</table>";
+               }else{
+                   res="";
+               }
+               resolve(res);
+        },
+        error:function(error){
+            reject(error);
+        }
+        
+    });
+    });
+  
+  return promise;
+}
+function eliminar_insumo(detalleven_id, detalleserv_id){
+    var controlador = "";
+    var base_url = document.getElementById('base_url').value;
+    //$('#myModal'+i).modal('hide');
+    
+    
+    controlador = base_url+'categoria_insumo/eliminardetalleventa';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{detalleven_id:detalleven_id},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   processmisInsumos(detalleserv_id);
+                //showinsumosusados(servicio_id, detalleserv_id);
+            }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           //$("#insumosresultados").html(html);
+        }
+
+    });
+
+}
+function buscar_verificarenter(e, detalleserv_id){
+    tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){
+        buscarinsumosproductos(detalleserv_id);
+    }
+}
+function buscar_verificarentert(e, detalleserv_id){
+    tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){
+        buscarinsumosproductost(detalleserv_id);
+    }
+}
+
+function buscarinsumosproductos(detalleserv_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"producto/buscar_insumos";
+    var parametro = document.getElementById('insumosproducto_id'+detalleserv_id).value;
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro:parametro},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                fin = resultado.length;
+                html = "";
+                
+                for(var i = 0; i<fin; i++)
+                {
+                    html += "<option value='" +resultado[i]["producto_id"]+"' label='"+resultado[i]["producto_nombre"];
+                    html += "'>"+resultado[i]["producto_nombre"]+"</option>";
+                }    
+                $("#listainsumos"+detalleserv_id).html(html);
+
+            },
+            error: function(respuesta){
+            }
+        });
+}
+
+function buscarinsumosproductost(detalleserv_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"producto/buscar_insumos";
+    var parametro = document.getElementById('insumosproducto_idt'+detalleserv_id).value;
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{parametro:parametro},
+            success:function(respuesta){
+                
+                resultado = JSON.parse(respuesta);
+                fin = resultado.length;
+                html = "";
+                
+                for(var i = 0; i<fin; i++)
+                {
+                    html += "<option value='" +resultado[i]["producto_id"]+"' label='"+resultado[i]["producto_nombre"];
+                    html += "'>"+resultado[i]["producto_nombre"]+"</option>";
+                }    
+                $("#listainsumost"+detalleserv_id).html(html);
 
             },
             error: function(respuesta){
