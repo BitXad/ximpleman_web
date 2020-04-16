@@ -389,6 +389,7 @@ class Servicio extends CI_Controller{
     {
         if($this->acceso(71)){
         $data['a'] = $a;
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         
         $thisrolusuario = $this->session_data['rol'];
         $data['reginftecnico']     = $thisrolusuario[80-1]['rolusuario_asignado'];
