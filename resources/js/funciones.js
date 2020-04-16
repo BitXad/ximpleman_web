@@ -1082,7 +1082,7 @@ function cambiarcantidadjs(e,producto)
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
                     ", detalleven_descuento = "+descuento+
                     ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
-                    "  where producto_id = "+producto_id+" and usuario_id = "+usuario_id;
+                    "  where producto_id = "+producto_id+" and  detalleven_id = "+producto.detalleven_id ; //usuario_id = "+usuario_id;
            // alert(sql);
             
             $.ajax({url: controlador,

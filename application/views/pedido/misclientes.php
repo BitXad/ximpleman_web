@@ -48,6 +48,11 @@
     </center>
 </div>
 
+<button onclick="openCalc()">
+       Launch Calculadora
+</button>
+
+
 <div class="box-body col-md-6"  style="padding:0">
 <div class="row clearfix" style="padding:0">
                     

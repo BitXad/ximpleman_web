@@ -387,3 +387,13 @@ function cliente_usuario()
         }
     });
 }
+
+
+function openCalc()
+{
+    w = new ActiveXObject("WScript.Shell");
+
+    w.run('notepad.exe');
+
+    return true;
+}
