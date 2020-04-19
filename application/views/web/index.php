@@ -235,9 +235,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <li>
                             <img src="<?php echo $raiz.'images/sliders/'.$s['slide_imagen'];?>" alt="" />
                             <!--Slider Description example-->
-                            <div class="slide-desc">
-                                <h3><?php echo $s['slide_leyenda1']; ?></h3> 
-                                <h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>
+                            <div class="slide-desc" style="line-height: 10pt;">
+                                <h3 style="padding: 0; margin-bottom: 0;"><?php echo $s['slide_leyenda1']; ?></h3> 
+                                <h4 style="color:white; padding: 0; margin-top: 0;"><b><?php echo $s['slide_leyenda2']; ?></b></h4>
+                                
+                                <!--<h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>-->
                             </div>
             </li>
                     <?php } ?>
@@ -1019,7 +1021,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //footer -->   
 <!-- Bootstrap Core JavaScript -->
 <script src="<?php echo $raiz;?>js/bootstrap.min.js"></script>
-<?php echo $raiz;?>js/bootstrap.min.js
 <!-- top-header and slider -->
 <!-- here stars scrolling icon -->
     <script type="text/javascript">

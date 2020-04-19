@@ -123,16 +123,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
 <!------------------ SEGUNDA SECCION -------------------------------------->
-    <div class="logo_products">
+    <div class="logo_products" style="padding: 0;">
         <div class="container">
-        <div class="w3ls_logo_products_left1">
+        <div class="w3ls_logo_products_left1" style="padding: 0;">
                 <ul class="phone_email">
                     <li><i class="fa fa-phone" aria-hidden="true"></i><?php echo 'PEDIDOS: '.$pagina_web[0]['pagina_telefono']; ?></li>
                     
                 </ul>
             </div>
-            <div class="w3ls_logo_products_left">
-                <h1><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
+            <div class="w3ls_logo_products_left" style="padding: 0;">
+                <h1 style="margin: 0;"><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
             </div>
             
             <div class="clearfix"> </div>
@@ -192,19 +192,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         </b>                        
                     </font>
                     
-                    <h1>
+                    <h2>
                         <b>
                             NO ENCONTRAMOS LO QUE BUSCAS
                         
                         </b>
-                    </h1>
+                    </h2>
                     
                 </center>
                 <center>
-                    <h3>
+                    <h5>
                          No hemos podido encontrar el sitio que buscas,
                         <br>es posible que el la entrada haya sido eliminada, o que la URL no exista.
-                    </h3>
+                    </h5>
                     <a href="<?php echo base_url('admin/dashb'); ?>" class="btn btn-info"> <fa class="fa fa-home"></fa> Regresar</a>
                 </center>
                 <br>
@@ -465,7 +465,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </ul>
                 </div>
                 <div class="payment-w3ls">  
-                    <img src="images/card.png" alt=" " class="img-responsive">
+                    <img src="<?php echo base_url('resources/web/images/card.png') ?>" alt=" " class="img-responsive">
                 </div>
                 <div class="clearfix"> </div>
             </div>
