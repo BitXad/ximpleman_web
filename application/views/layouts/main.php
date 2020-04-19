@@ -689,7 +689,7 @@
                         </li>-->
                         <!--<li>
                             <a href="<?php //echo site_url('categ_imagen');?>"><i class="fa fa-image"></i>Categoría Imagen</a>
-                        </li>-->
+                          </li>-->
                         <li>
                             <a href="<?php echo site_url('Categoria_imagen');?>"><!--<i class="fa fa-list-ul"></i>--><i class="fa fa-file-image-o"></i>Categoría Imagen</a>
                         </li>
