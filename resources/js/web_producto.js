@@ -56,15 +56,16 @@ function buscar_producto()
                     var n = registros.length; //tamaño del arreglo de la consulta
                     //$("#encontrados").val("- "+n+" -");
                     html = "";
+                    
                     for (var i = 0; i < n ; i++){
                         var mimagen = "";
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
                             mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
-                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='50' height='50' />";
+                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='100' height='100' />";
                             mimagen += "</a>";
                         }else{
                             mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
-                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='50' height='50' />";
+                            mimagen += "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='100' height='100' />";
                             mimagen += "</a>";
                         }
                         var cadena = registros[i]["producto_nombre"];
@@ -144,6 +145,194 @@ function buscar_producto()
     }
 
 }
+
+
+function buscar_por_categoria(categoria_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var idioma_id = document.getElementById('idioma_id').value;
+    var controlador = base_url+'website/webbuscar_categoria/'+categoria_id;
+    
+        document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{categoria_id:categoria_id},
+            success:function(respuesta){
+                
+                    mostrar_tabla_resultados(respuesta,1);
+                    
+                        
+                    document.getElementById('loader').style.display = 'none';
+                
+            },
+            error:function(respuesta){
+               // alert("Algo salio mal...!!!");
+               html = "";
+               $("#tablaresultados").html(html);
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+                //tabla_inventario();
+            }
+        
+        });
+   
+
+}
+
+
+
+function mostrar_tabla_resultados(respuesta,pag){
+    
+        var objeto = respuesta;
+        var registros = JSON.parse(respuesta);
+        var base_url = document.getElementById('base_url').value;
+        
+        var n = registros.length; //tamaño del arreglo de la consulta
+        var ancho_imagen = 100;  
+        var alto_imagen = 100; 
+        
+        var bloque = 12; 
+    
+        var cadena = "";
+        var nombre = "";
+        var mimagen = "";
+        var paginas = 0;
+        var desde = 0;
+        var hasta = 0;
+        //$("#encontrados").val("- "+n+" -");
+        
+        //alert(n);
+        html = "";
+
+        if(n>0){
+            
+            //cantidad de paginas
+            paginas =  Number(n) / Number(bloque); 
+            paginas = Number(paginas).toFixed(0);
+            
+            if (n % bloque>0){
+                paginas++;
+                        
+                        
+            }
+            desde = (pag * bloque) - bloque;
+            hasta = (pag * bloque);
+            
+            //alert(desde+" "+hasta);
+            //fin cantidad de paginas
+                    
+//            for (var i = 0; i < bloque ; i++){
+            for (var i = desde; i < hasta ; i++){
+
+                mimagen = "";
+                
+                if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
+                    mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
+                    mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
+                    mimagen += "</a>";
+                }else{
+                    mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
+                    mimagen += "<img src='"+base_url+"resources/images/productos/thumb_image.png' class='img img-circle' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
+                    mimagen += "</a>";
+                }
+                
+                cadena = registros[i]["producto_nombre"];
+                nombre = "";
+                if(cadena.length>22){
+                    nombre = cadena.substr(0, 20)+"...";
+                }else{
+                    nombre = registros[i]["producto_nombre"];
+                }
+                
+                html += "<div class='col-md-3 top_brand_left-1'>";
+                html += "<div class='hover14 column'>";
+                html += "<div class='agile_top_brand_left_grid'>";
+                
+                //inicio oferta
+                html += "<div class='agile_top_brand_left_grid_pos'>";
+                html += "<img src='"+base_url+"resources/web/images/offer.png"+"' alt=' ' class='img-responsive'>";
+                html += "</div>";
+                //fin oferta
+            
+                html += "<div class='agile_top_brand_left_grid1'>";
+                html += "<figure>";
+                html += "<div class='snipcart-item block'>";
+                html += "<div class='snipcart-thumb'>";
+                html += mimagen;
+                html += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'><p><b><div class='text-center' title='"+cadena+"'>"+nombre+"</div></b></p></a>";
+                /*html += "<div class='stars'>";
+                html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                html += "<i class='fa fa-star blue-star' aria-hidden='true'></i>";
+                html += "<i class='fa fa-star gray-star' aria-hidden='true'></i>";
+                html += "</div>";*/
+                html += "<h4> Bs. "+Number(registros[i]["producto_precio"]).toFixed(2)+"</h4>";
+                html += "</div>";
+                html += "<div class='snipcart-details top_brand_home_details'>";
+                html += "<form action='#' method='post'>";
+                html += "<fieldset>";
+                html += "<input type='hidden' name='cmd' value='_cart'>";
+                html += "<input type='hidden' name='add' id='cantidad"+registros[i]["producto_id"]+"' value='1'>";  
+                html += "<input type='hidden' name='business' value=' '>";
+                html += "<input type='hidden' name='item_name' value='"+registros[i]["producto_nombre"]+"'>";
+                html += "<input type='hidden' name='amount' id='producto_precio"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_precio"]+"'>";
+                html += "<input type='hidden' name='costo' id='producto_costo"+registros[i]["producto_id"]+"' value='"+registros[i]["producto_costo"]+"'>";
+                html += "<input type='hidden' name='discount_amount' id='descuento"+registros[i]["producto_id"]+"' value='0.00'>";
+                html += "<input type='hidden' name='currency_code' value='USD'>";
+                html += "<input type='hidden' name='return' value=' '>";
+                html += "<input type='hidden' name='cancel_return' value=' '>";
+                html += "<input type='button' value='Añadir al pedido' onclick='insertar("+registros[i]["producto_id"]+")'  class='button'>";
+
+                //html += "<input type='button' name='submit' data-toggle='modal' data-target='#modalCart' value='Añadir al pedido' class='button'>";
+                html += "</fieldset>";
+                html += "</form>";
+                html += "</div>";
+                html += "</div>";
+                html += "</figure>";
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
+                html += "</div>";
+
+           }
+
+           if (paginas>1){
+                
+                html += "<br>";
+                html += "<div class='pull-right'>";
+                html += "<div class='btn-group' role='group' aria-label='Button group with nested dropdown'>";
+                
+
+                html += "<select name='oferta' class='btn btn-info' id='oferta' onchange='mostrar_tabla_resultados("+JSON.stringify(respuesta)+",this.value)'>";
+                for (i=1; i<=paginas; i++){                    
+                    if (pag==i){
+                        seleccionado = "selected";
+                    }else{
+                        seleccionado = "";                        
+                    }
+                    
+                    html += "<option value='"+i+"' "+seleccionado+">Pag. "+i+"</option>";
+                }
+                html += "</select>";
+                
+                //botones
+//                html += "<button type='button' class='btn btn-primary' onclick='mostrar_tabla_resultados("+JSON.stringify(respuesta)+","+1+")'> >| </button>"
+//                for (i=1; i<=paginas; i++){                    
+//                    html += "<button type='button' class='btn btn-primary' onclick='mostrar_tabla_resultados("+JSON.stringify(respuesta)+","+i+")'>"+i+"</button>"                                
+//                }
+                // fin botones
+                
+               
+               
+           }
+
+           $("#tablaresultados").html(html);
+        }
+}
+
 
 function buscar_categoria(categoria)
 {
@@ -391,9 +580,6 @@ function tablacarrito(){
                        $("#venta_subtotal").val(subtotal);
                        $("#venta_descuento").val(subtotal-suma);
                        $("#venta_total").val(suma);
-
-
-                       
                        
           }  
         },
@@ -512,6 +698,7 @@ function cerrarsesion(){
 }
 
 function buscarseguimiento(){
+    
      var orden = document.getElementById('orden').value; 
      var venta = document.getElementById('transaccion').value;
      var base_url = document.getElementById('base_url').value;
@@ -539,3 +726,4 @@ function buscarseguimiento(){
     }
         
 }
+

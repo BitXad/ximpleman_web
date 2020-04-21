@@ -215,8 +215,42 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <ul class="nav navbar-nav">
                                         
                                         <?php foreach($menu_principal as $principal) { ?>                                                                                
-                                        <li class="active"><a href="<?php echo base_url(); ?>" class="act"><?php echo $principal['menu_nombre']; ?></a></li>
+                                            <li class="active"><a href="<?php echo base_url(); ?>" class="act"><?php echo $principal['menu_nombre']; ?></a></li>
                                         <?php } ?>                                        
+                                            
+                                            
+<!--                                        
+                                        <li class="active">
+                                            <select class="ac">
+                                                
+                                        <?php 
+                                            foreach($categorias as $cat){?>                    
+                                                <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
+                                        <?php } ?>      
+                                            
+                                            </select>        
+                                        </li>-->
+                                        
+                                        
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categorias<b class="caret"></b></a>
+                                            <ul class="dropdown-menu multi-column columns-3">
+                                                <div class="row">
+                                                    <div class="multi-gd-img">
+                                                        <ul class="multi-column-dropdown">
+                                                            <h6>Todas</h6>
+                                                            <?php 
+                                                                foreach($categorias as $cat){?>                    
+                                                                    <!--<li><a href="" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></a></li>-->
+                                                                    <li style="padding: 0; margin: 3px;"><button style="background: none; border: transparent; padding:0;" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></button></li>
+                                                            <?php } ?>      
+                                                        </ul>
+                                                    </div>	
+
+                                                </div>
+                                        </ul>
+                                    </li>                                        
+
                                         <!------- Bloque de codigo 1 ------------>                                                        
                                     </ul>
                                 </div>
@@ -251,14 +285,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     
     <div class="top-brands">
         <!------------------------ BUSCADOR --------------------------->     
-    <div class="container"> 
-    <div class="input-group input-group-lg">
-<input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
-<span class="input-group-btn">
-<button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
-</span> Buscar</button>
-</span>
-</div>              
+    <div class="container">
+        
+        <!--<div class="container">-->
+            
+        
+<!--        <div class="col-md-5">
+            
+            <div class="input-group input-group-lg">
+            
+                <select type="text" onkeypress="buscarpro(event)" name="buscar_categoria" id="buscar_categoria" class="form-control" autocomplete="off" >
+                    <?php 
+                        foreach($categorias as $cat){?>                    
+                            <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
+                        <?php } ?>    
+                </select>
+            <span class="input-group-btn">
+            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
+            </span> </button>
+            </span>
+            </div>
+
+        </div>-->
+            
+        <!--<div class="col-md-12">-->
+            
+            <div class="input-group input-group-lg">
+            <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
+            <span class="input-group-btn">
+            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
+            </span> Buscar</button>
+            </span>
+            </div>
+
+<!--        </div>
+            
+        </div>-->
+        
+        
         <div class="w3l_search">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
             <?php if(!isset($_COOKIE["cliente_id"])) {
