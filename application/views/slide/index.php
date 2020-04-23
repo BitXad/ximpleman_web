@@ -76,14 +76,14 @@
                                $ancho = "80px";
                                $alto  = "22px";
                            }
-                            $mimagen = "thumb_".$s['slide_imagen'];
-                            if($s['slide_imagen']){
+                            $mimagen = $s['slide_imagen'];//"thumb_".$s['slide_imagen'];
+                            if(isset($s['slide_imagen'])){
                                 ?> <img width="" height="" />
-                            <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $s['slide_id']; ?>" style="padding: 0px;">
-                                <?php
-                                echo '<img src="'.site_url('/resources/web/images/sliders/'.$mimagen).'" width="'.$ancho.'" height="'.$alto.'" />';
-                                ?>
-                            </a>
+                                    <a class="btn  btn-xs" data-toggle="modal" data-target="#mostrarimagen<?php echo $s['slide_id']; ?>" style="padding: 0px;">
+                                        <?php
+                                        echo '<img src="'.site_url('/resources/web/images/sliders/'.$mimagen).'" width="'.$ancho.'" height="'.$alto.'" />';
+                                        ?>
+                                    </a>
                             <?php }
                             else{
                                //echo '<img style src="'.site_url('/resources/web/images/sliders/thumb_default.jpg').'" />'; 

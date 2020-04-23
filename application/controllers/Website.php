@@ -10,6 +10,8 @@ class Website extends CI_Controller{
         parent::__construct();
         $this->load->model('Pagina_web_model');
         $this->load->model('Producto_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Inventario_model');
         $this->load->model('Categoria_producto_model');
         $this->load->helper('cookie');
     }            
@@ -31,6 +33,7 @@ class Website extends CI_Controller{
         $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
         $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
         $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto(); //tipo 2
+        $data['parametro'] = $this->Parametro_model->get_parametros();
         //$data['mapa'] = $this->Mapa_model->get_mapa(1); //mapa
         
 //        $data['_view'] = 'pagina_web/index';
@@ -80,7 +83,7 @@ class Website extends CI_Controller{
     function webbuscar_categoria($categoria_id)
     {
         if($this->input->is_ajax_request()){
-            
+                        
             $datos = $this->Producto_model->get_busqueda_categoria($categoria_id);
             echo json_encode($datos);
         }
@@ -89,6 +92,30 @@ class Website extends CI_Controller{
             show_404();
         }
     }
+    
+    function webbuscar_categoria_bloque($categoria_id)
+    {
+        if($this->input->is_ajax_request()){
+                        
+            $pagina = $this->input->post('pagina');
+            $bloque = $this->input->post('bloque');
+            
+            $desde = ($pagina * $bloque) - ($bloque-1);
+            $hasta = ($pagina * $bloque);
+            
+            $sql = "select * from inventario "
+                    . " where categoria_id = ".$categoria_id
+                    . " order by producto_nombre limit ".$desde.",".$hasta;
+            
+            $datos = $this->Inventario_model->consultar();
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
+    
     function single($idioma_id,$producto_id)
     {
         
