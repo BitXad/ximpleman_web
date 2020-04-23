@@ -281,6 +281,10 @@ function tablaresultadoscliente(limite)
                         //html += "<td>"+esusuario+"</td>";
                         html += "<td style='background-color: #"+registros[i]["estado_color"]+";'><center>"+esusuario+"<br>";
                         html += visita;
+                        html += "<br><b>Orden Visita</b> "
+                        if(registros[i]["cliente_ordenvisita"] != null){
+                            html += registros[i]["cliente_ordenvisita"];
+                        }
                         html += "<br>"+registros[i]["estado_descripcion"]+"</center></td>";
                         html += "<br><td class='no-print'>";
                         html += "<a href='"+base_url+"venta/ventas_cliente/"+registros[i]["cliente_id"]+"' class='btn btn-success btn-xs' title='Vender'><span class='fa fa-cart-plus'></span></a>";
