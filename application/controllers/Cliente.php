@@ -173,33 +173,34 @@ class Cliente extends CI_Controller{
                 $dom = $this->input->post('dom');
                 if($dom != 1){ $dom = 0; }
                 $params = array(
-                            'estado_id' => $estado_id,
-                            'tipocliente_id' => $this->input->post('tipocliente_id'),
-                            'categoriaclie_id' => $this->input->post('categoriaclie_id'),
-                            'cliente_codigo' => $this->input->post('cliente_codigo'),
-                            'cliente_nombre' => $this->input->post('cliente_nombre'),
-                            'cliente_ci' => $this->input->post('cliente_ci'),
-                            'cliente_direccion' => $this->input->post('cliente_direccion'),
-                            'cliente_telefono' => $this->input->post('cliente_telefono'),
-                            'cliente_celular' => $this->input->post('cliente_celular'),
-                            'cliente_foto' => $foto,
-                            'cliente_email' => $this->input->post('cliente_email'),
-                            'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
-                            'cliente_aniversario' => $this->input->post('cliente_aniversario'),
-                            'cliente_latitud' => $this->input->post('cliente_latitud'),
-                            'cliente_longitud' => $this->input->post('cliente_longitud'),
-                            'cliente_nit' => $this->input->post('cliente_nit'),
-                            'cliente_razon' => $this->input->post('cliente_razon'),
-                            'cliente_departamento' => $this->input->post('cliente_departamento'),
-                            'usuario_id' => $this->input->post('usuario_id'),
-                            'zona_id' => $this->input->post('zona_id'),
-                            'lun' => $lun,
-                            'mar' => $mar,
-                            'mie' => $mie,
-                            'jue' => $jue,
-                            'vie' => $vie,
-                            'sab' => $sab,
-                            'dom' => $dom,
+                    'estado_id' => $estado_id,
+                    'tipocliente_id' => $this->input->post('tipocliente_id'),
+                    'categoriaclie_id' => $this->input->post('categoriaclie_id'),
+                    'cliente_codigo' => $this->input->post('cliente_codigo'),
+                    'cliente_nombre' => $this->input->post('cliente_nombre'),
+                    'cliente_ci' => $this->input->post('cliente_ci'),
+                    'cliente_direccion' => $this->input->post('cliente_direccion'),
+                    'cliente_telefono' => $this->input->post('cliente_telefono'),
+                    'cliente_celular' => $this->input->post('cliente_celular'),
+                    'cliente_foto' => $foto,
+                    'cliente_email' => $this->input->post('cliente_email'),
+                    'cliente_nombrenegocio' => $this->input->post('cliente_nombrenegocio'),
+                    'cliente_aniversario' => $this->input->post('cliente_aniversario'),
+                    'cliente_latitud' => $this->input->post('cliente_latitud'),
+                    'cliente_longitud' => $this->input->post('cliente_longitud'),
+                    'cliente_nit' => $this->input->post('cliente_nit'),
+                    'cliente_razon' => $this->input->post('cliente_razon'),
+                    'cliente_departamento' => $this->input->post('cliente_departamento'),
+                    'usuario_id' => $this->input->post('usuario_id'),
+                    'zona_id' => $this->input->post('zona_id'),
+                    'lun' => $lun,
+                    'mar' => $mar,
+                    'mie' => $mie,
+                    'jue' => $jue,
+                    'vie' => $vie,
+                    'sab' => $sab,
+                    'dom' => $dom,
+                    'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
                 );
             
                 $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -366,7 +367,7 @@ class Cliente extends CI_Controller{
                         'vie' => $vie,
                         'sab' => $sab,
                         'dom' => $dom,
-
+                        'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
                     );
 
                     $this->Cliente_model->update_cliente($cliente_id,$params);            
@@ -902,6 +903,7 @@ class Cliente extends CI_Controller{
                                 'vie' => $vie,
                                 'sab' => $sab,
                                 'dom' => $dom,
+                                'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
                     );
 
     //            $cliente_id = $this->Cliente_model->add_cliente($params);

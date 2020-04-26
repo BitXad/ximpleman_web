@@ -317,7 +317,7 @@ function toggle(source) {
                                     </select>
                             </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-3">
                             <label for="usuario_id" class="control-label">Cliente Asignado a:</label>
                             <div class="form-group">
                                     <select name="usuario_id" class="form-control">
@@ -359,7 +359,12 @@ function toggle(source) {
 
                             </div>
                     </div>
-
+                    <div class="col-md-2">
+                        <label for="cliente_ordenvisita" class="control-label">Orden Visita</label>
+                        <div class="form-group">
+                            <input type="number" min="0" name="cliente_ordenvisita" value="<?php echo ($this->input->post('cliente_ordenvisita') ? $this->input->post('cliente_ordenvisita') : $cliente['cliente_ordenvisita']); ?>" class="form-control" id="cliente_ordenvisita" />
+                        </div>
+                    </div>
                     <div class="col-md-2">
                             <label for="estado_id" class="control-label">Estado</label>
                             <div class="form-group">

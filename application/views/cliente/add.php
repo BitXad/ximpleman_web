@@ -328,7 +328,7 @@ function toggle(source) {
                                     </select>
                             </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="dias_visita" class="control-label">Dias de Visita</label><input type="checkbox" id="select_all" onClick="toggle(this)" /> Todos
                             <div class="form-group">
                                 <label>Lunes<input class="checkbox" type="checkbox" name="lun" value="1" id="lun" /></label>&nbsp;&nbsp;&nbsp;
@@ -339,6 +339,12 @@ function toggle(source) {
                                 <label>Sábado<input class="checkbox" type="checkbox" name="sab" value="1" id="sab" /></label>&nbsp;&nbsp;&nbsp;
                                 <label>Domingo<input class="checkbox" type="checkbox" name="dom" value="1" id="dom" /></label>
                             </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="cliente_ordenvisita" class="control-label">Orden Visita</label>
+                        <div class="form-group">
+                            <input type="number" min="0" name="cliente_ordenvisita" value="<?php echo ($this->input->post('cliente_ordenvisita') ? $this->input->post('cliente_ordenvisita') : '0'); ?>" class="form-control" id="cliente_ordenvisita" />
+                        </div>
                     </div>
                 </div>
             </div>
