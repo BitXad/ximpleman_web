@@ -48,10 +48,6 @@
     </center>
 </div>
 
-<button onclick="openCalc()">
-       Launch Calculadora
-</button>
-
 
 <div class="box-body col-md-6"  style="padding:0">
 <div class="row clearfix" style="padding:0">
@@ -72,14 +68,38 @@
             
         </div>
     </div>
+    <?php } else{?>
+    <div hidden="true">
+        
+            <input class="btn btn-warning btn-sm form-control" id="select_usuarios" value="<?php echo $usuario_id; ?>">
+    </div>
+    
     <?php } ?>
+    
+    <?php $dia = date('w'); 
+    ?>
     
     <div class="col-md-6"  style="padding:3px">
         <div class="form-group" style="margin-bottom: 0;">
             <center>
+                
+                <select id="dia_visita" class="btn btn-info btn-sm" style="width: 100px;" onclick="misclientes()">
+                    <option value="1" <?php echo ($dia==1)?"selected":""; ?>>LUNES</option>
+                    <option value="2" <?php echo ($dia==2)?"selected":""; ?>>MARTES</option>
+                    <option value="3" <?php echo ($dia==3)?"selected":""; ?>>MIERCOLES</option>
+                    <option value="4" <?php echo ($dia==4)?"selected":""; ?>>JUEVES</option>
+                    <option value="5" <?php echo ($dia==5)?"selected":""; ?>>VIERNES</option>
+                    <option value="6" <?php echo ($dia==6)?"selected":""; ?>>SABADO</option>
+                    <option value="7" <?php echo ($dia==0)?"selected":""; ?>>DOMINGO</option>
+                    <option value="0" >TODOS</option>
+                    
+                </select>
+                
+                <!--<a href="<?php echo site_url('recorrido'); ?>" ><span class="fa fa-steam"></span> Recorrido</a>-->
+                
                 <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 100px;"><span class="fa fa-cart-arrow-down"></span> Pedido</a>
-                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>
-                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;"><span class="fa fa-map"></span> Mapa</a>                
+                <!--<a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>-->
+                <button target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;" onclick="mapa_clientes()"><span class="fa fa-map"></span> Mapa</button>                
             </center>
         </div>
     </div>
@@ -157,13 +177,14 @@
                         <th style="padding: 0;">#</th>
                         <th style="padding: 0;">Cliente</th>
                         <th style="padding: 0;" align="center">Direccion/Teléfono</th>
-                        <th style="padding: 0;">Orden<br>Ubicación</th>
+                        <th style="padding: 0;">ORD</th>
+                        <th style="padding: 0;">GM</th>
                         <th style="padding: 0;"> </th>
                     </tr>
                     <tbody class="buscar" id="tabla_clientes">
 
                         <!-- Aqui de acomoda la tabla de pedidos -->
-                        
+                    
                     </tbody>
                 </table>
                                 
@@ -172,3 +193,5 @@
     </div>
 </div>
 </body>
+
+<!--<fa class="fa fa-cart-arrow-down"></fa>-->

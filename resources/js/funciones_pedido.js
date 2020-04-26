@@ -1974,6 +1974,7 @@ function registrarpedido(cliente_id)
                     window.open(base_url+"pedido/pedidoabierto/0","_self");
                
                 } else {
+                    eliminardetalleventa();
                     window.opener.location.reload(); 
                     window.close();                        
                 }

@@ -213,8 +213,7 @@ function mostrar_tabla_resultados(respuesta,pag){
         var desde = 0;
         var hasta = 0;
         //$("#encontrados").val("- "+n+" -");
-        
-        alert(n);
+
         html = "";
 
         if(n>0){

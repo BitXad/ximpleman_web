@@ -13,7 +13,7 @@
   </head>
   <body>
       <div class="container">
-          <h4><b>Entregas para hoy: <?php echo sizeof($all_pedido); ?></b>
+          <h4><b>Mis Cliente: <?php echo sizeof($all_pedido); ?></b>
           <a href="<?php echo site_url('pedido'); ?>" class="btn btn-danger btn-sm"><span class="fa fa-list"></span> Pedidos</a>
           </h4>
           <div class="col col-md-12 table-responsive">
@@ -23,7 +23,7 @@
                       
     <div id="map"></div> <!-- mapa -->
     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey']?>"></script>
     <script>      
       //coordada inicial del mapa
       var coordenadas= new google.maps.LatLng(-17.4038, -66.1635);

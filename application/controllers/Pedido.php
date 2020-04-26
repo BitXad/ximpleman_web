@@ -17,6 +17,7 @@ class Pedido extends CI_Controller{
         $this->load->model('Tipo_transaccion_model');
         $this->load->model('Venta_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Parametro_model');
         $this->load->model('Categoria_clientezona_model');
         $this->load->model('Inventario_model');
         if ($this->session->userdata('logged_in')) {
@@ -1034,6 +1035,49 @@ function registrarpedido()
     }
     
 
+    function mapa_clientes($usuario_id,$dia_visita)
+    {
+
+       if($this->acceso(30)) {
+        //**************** inicio contenido ***************  
+//
+//            $usuario_id = $this->session_data['usuario_id'];
+//            $dia_visita = $this->input->post('dia_visita');
+            
+            if($dia_visita == 1){ $condicion = " and c.lun = 1"; } //lunes
+            if($dia_visita == 2){ $condicion = " and c.mar = 1"; }
+            if($dia_visita == 3){ $condicion = " and c.mie = 1"; }
+            if($dia_visita == 4){ $condicion = " and c.jue = 1"; }
+            if($dia_visita == 5){ $condicion = " and c.vie = 1"; }
+            if($dia_visita == 6){ $condicion = " and c.sab = 1"; }
+            if($dia_visita == 7){ $condicion = " and c.dom = 1"; }
+            if($dia_visita == 0){ $condicion = " "; } //todos
+
+            $sql="select c.*,p.pedido_id from cliente c
+                  left join (select * from pedido where date(pedido_fecha) = date(now())) as p on p.cliente_id = c.cliente_id ".
+                 " where c.estado_id = 1 and  c.usuario_id = ".
+                  $usuario_id." ".$condicion.                    
+                  " order by c.cliente_ordenvisita, c.cliente_nombre";
+            $resultado = $this->Pedido_model->consultar($sql);           
+           
+           
+            $data['page_title'] = "Mapa Clientes";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            
+//            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');            
+//            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            $data['all_pedido'] = $resultado;
+            
+            $data['_view'] = 'pedido/mapaclientes';
+            
+            $this->load->view('layouts/main',$data);
+            
+        //**************** fin contenido ***************
+        }
+        
+    }
+    
+
     function eliminardetalle()
     {       
         if($this->acceso(30)){ //12 ventas o 30 pedidos
@@ -1157,8 +1201,22 @@ function registrarpedido()
         //**************** inicio contenido ***************        
         
             $usuario_id = $this->session_data['usuario_id'];
+            $dia_visita = $this->input->post('dia_visita');
+            
+            if($dia_visita == 1){ $condicion = " and c.lun = 1"; } //lunes
+            if($dia_visita == 2){ $condicion = " and c.mar = 1"; }
+            if($dia_visita == 3){ $condicion = " and c.mie = 1"; }
+            if($dia_visita == 4){ $condicion = " and c.jue = 1"; }
+            if($dia_visita == 5){ $condicion = " and c.vie = 1"; }
+            if($dia_visita == 6){ $condicion = " and c.sab = 1"; }
+            if($dia_visita == 7){ $condicion = " and c.dom = 1"; }
+            if($dia_visita == 0){ $condicion = " "; } //todos
 
-            $sql="select * from cliente where usuario_id = ".$usuario_id;            
+            $sql="select c.*,p.pedido_id from cliente c
+                  left join (select * from pedido where date(pedido_fecha) = date(now())) as p on p.cliente_id = c.cliente_id ".
+                 " where c.estado_id = 1 and  c.usuario_id = ".
+                  $usuario_id." ".$condicion.                    
+                  " order by c.cliente_ordenvisita, c.cliente_nombre";
             $resultado = $this->Pedido_model->consultar($sql);
             echo json_encode($resultado);
             		

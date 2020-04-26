@@ -233,10 +233,11 @@ function misclientes()
     var base_url    = document.getElementById('base_url').value; 
     var usuario_id    = document.getElementById('select_usuarios').value; 
     var controlador = base_url+"pedido/buscar_clientes";    
+    var dia_visita = document.getElementById('dia_visita').value;
     
     $.ajax({url:controlador,
         type:"POST",
-        data:{usuario_id:usuario_id},
+        data:{usuario_id:usuario_id, dia_visita:dia_visita},
         success: function(response){
             
             var c = JSON.parse(response);
@@ -244,11 +245,19 @@ function misclientes()
             var nombre_negocio = "";
             var cliente_direccion = "";
             var imagen = "";
+            var color = "";
          
             html = "";
             
             for (var i = 0; i < c.length; i++){
-                html += "<tr>";
+                
+                color = "";
+                if(c[i].pedido_id>0){
+                    //alert(c[i].pedido_id);
+                    color = "style='background-color:silver;'";
+                }
+                    
+                html += "<tr "+color+">";
                 html += "<td "+estilo+">"+(i+1)+"</td>";
                 
                 if((c[i].cliente_nombrenegocio==null)||(c[i].cliente_nombrenegocio=="-")){
@@ -279,7 +288,8 @@ function misclientes()
 
                  
                 html += c[i].cliente_telefono+"</td>";
-                html += "<td "+estilo+">"+c[i].cliente_ordenvisita;
+                html += "<td "+estilo+"><center>"+c[i].cliente_ordenvisita+"</center></td>";
+                html += "<td "+estilo+">";
                 
                 
 //                if (isNaN(c[i]["cliente_latitud"]) || isNaN(["cliente_longitud"])){   
@@ -294,7 +304,15 @@ function misclientes()
                 
                 html += "</td>";
                 html += "<td "+estilo+">";
-                html += "<a href='"+base_url+"cliente/edit/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-user'></fa></a>";
+                
+                if(c[i].pedido_id>0){
+                    //html += "PED. 00"+c[i].pedido_id;
+                    html += "        <a href='"+base_url+'pedido/nota_pedido/'+c[i]["pedido_id"]+"' class='btn btn-warning btn-xs' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                }
+                else{
+                    html += "<a href='"+base_url+"pedido/pedidoabierto/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-cart-arrow-down'></fa></a>";
+                }
+                
                 html += "</td>";
                 html += "</tr>";
             }
@@ -306,6 +324,32 @@ function misclientes()
             alert("ocurrio un error ");
         }
     });
+}
+
+function mapa_clientes()
+{    
+    var base_url    = document.getElementById('base_url').value; 
+    var usuario_id    = document.getElementById('select_usuarios').value; 
+    var dia_visita = document.getElementById('dia_visita').value;
+    var controlador = base_url+"pedido/mapa_clientes/"+usuario_id+"/"+dia_visita;    
+    
+    // abrir un PDF en una pestaña nueva
+    window.open(controlador, '_blank');
+ 
+    // redirigir la pestaña actual a otra URL
+//    window.location.href = 'http://ejemplo.com';
+    
+    
+//    $.ajax({url:controlador,
+//        type:"POST",
+//        data:{usuario_id:usuario_id, dia_visita:dia_visita},
+//        success: function(response){           
+//            
+//        },
+//        error:function (response){
+//            alert("ocurrio un error ");
+//        }
+//    });
 }
 
 function cliente_usuario()
@@ -386,14 +430,4 @@ function cliente_usuario()
             alert("ocurrio un error ");
         }
     });
-}
-
-
-function openCalc()
-{
-    w = new ActiveXObject("WScript.Shell");
-
-    w.run('notepad.exe');
-
-    return true;
 }

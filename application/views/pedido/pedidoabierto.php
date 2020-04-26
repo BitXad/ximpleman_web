@@ -77,6 +77,10 @@ function mostrar_buscadores(){
 
 }
         
+function cerrar_ventana(){
+    window.opener.location.reload();
+    window.close();
+}
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -588,7 +592,7 @@ function mostrar_buscadores(){
             </a>-->
 
             
-                <button  onclick="window.close();" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <button  onclick="cerrar_ventana()" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x  "></i><br><br>
                Salir <br>
             </button>    
