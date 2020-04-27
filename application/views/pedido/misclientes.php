@@ -97,7 +97,7 @@
                 
                 <!--<a href="<?php echo site_url('recorrido'); ?>" ><span class="fa fa-steam"></span> Recorrido</a>-->
                 
-                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 100px;"><span class="fa fa-cart-arrow-down"></span> Pedido</a>
+                <a href="<?php echo site_url('pedido'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 100px;"><span class="fa fa-cart-arrow-down"></span> Pedidos</a>
                 <!--<a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>-->
                 <button target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;" onclick="mapa_clientes()"><span class="fa fa-map"></span> Mapa</button>                
             </center>
@@ -156,7 +156,7 @@
 
         <!--------------------- parametro de buscador --------------------->
                   <div class="input-group" style=" margin-bottom: 0; margin-top: 0;"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el cliente, fecha, total">
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el cliente, pedido, dirección">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
@@ -175,10 +175,9 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th style="padding: 0;">#</th>
-                        <th style="padding: 0;">Cliente</th>
-                        <th style="padding: 0;" align="center">Direccion/Teléfono</th>
-                        <th style="padding: 0;">ORD</th>
-                        <th style="padding: 0;">GM</th>
+                        <th style="padding: 0;">Cliente/Direccion/Teléfono</th>
+                        <th style="padding: 0;">Ord</th>
+                        <th style="padding: 0;"> </th>
                         <th style="padding: 0;"> </th>
                     </tr>
                     <tbody class="buscar" id="tabla_clientes">
@@ -195,3 +194,71 @@
 </body>
 
 <!--<fa class="fa fa-cart-arrow-down"></fa>-->
+
+<div >
+    
+<button type="button" id="boton_modal_cliente" class="btn btn-primary" data-toggle="modal" data-target="#modalcliente" >
+  Launch demo modal
+</button>
+    
+</div>
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalcliente" tabindex="-1" role="dialog" aria-labelledby="modalcliente" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel" style="font-family: Arial;"><b><fa class="fa fa-user"></fa> CLIENTE</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive" id="tabla_datos">
+<!--                            <input type="text" id="ingresorapido_producto" value="-" class="form-control btn btn-xs btn-default" readonly>
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Cantidad:</label>
+                                            
+                                            <input type="text" id="ingresorapido_producto_id" value="0.00" hidden />
+                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning" onkeyup="validar(event,11)" />
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Registrar
+                                                    </button>
+                                                    
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        ------------------- inicio loader -----------------------
+                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        ------------------- fin inicio loader -----------------------
+                            -->
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->

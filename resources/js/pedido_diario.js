@@ -228,6 +228,46 @@ function buscar_pedido_index(opcion)
     }
 }
 
+function cargar_modal(cliente){
+    var html = "";
+    var estilo = "style='padding:0; line-height:13px;'";
+    
+    html += "<table style='font-family: Arial;'>";
+    html += "<tr>";
+        html += "<th colspan='3' "+estilo+">";
+        html += cliente.cliente_nombre;
+        html += "<small>";
+        html += "<br>"+cliente.cliente_nombrenegocio;
+        
+        html += "</th>";        
+    html += "</tr>";
+    
+    html += "<tr "+estilo+">";
+    
+    html += "<td><small>";
+    html += "<br><fa class='fa fa-key'></fa> "+cliente.cliente_codigo+"</small>";
+    html += "<br><fa class='fa fa-home'></fa> "+cliente.cliente_direccion+"</small>";
+    html += "<br><fa class='fa fa-phone'></fa> "+cliente.cliente_telefono;
+    html += "<br><fa class='fa fa-mobile'></fa> "+cliente.cliente_celular+" ";    
+    html += "<a href='https://wa.me/591"+cliente.cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
+    html += "<br><b>NIT: </b>"+cliente.cliente_nit+" ";    
+    html += "<br><b>RAZON SOC.: </b>"+cliente.cliente_razon+" ";    
+    
+    html += "</td>";    
+    
+    html += "</tr>";
+    
+    
+    html += "</table>";
+    
+    
+    $("#tabla_datos").html(html);
+    $("#boton_modal_cliente").click();
+    
+    
+}
+
+
 function misclientes()
 {    
     var base_url    = document.getElementById('base_url').value; 
@@ -275,21 +315,21 @@ function misclientes()
                 }
                     
                 html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b>"+nombre_negocio+"</td>";
-                html += "<td "+estilo+">"+cliente_direccion;
-                
-                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
-                    html +="";
-                }
-                else{
-                    html += "<br><a href='https://wa.me/591"+c[i].cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
-                    html += c[i].cliente_celular+" - ";
-                }
-                
-
-                 
-                html += c[i].cliente_telefono+"</td>";
-                html += "<td "+estilo+"><center>"+c[i].cliente_ordenvisita+"</center></td>";
-                html += "<td "+estilo+">";
+//                html += "<td "+estilo+">"+cliente_direccion;
+//                
+//                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
+//                    html +="";
+//                }
+//                else{
+//                    html += "<br><a href='https://wa.me/591"+c[i].cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
+//                    html += c[i].cliente_celular+" - ";
+//                }
+//                
+//
+//                 
+//                html += c[i].cliente_telefono+"</td>";
+                html += "<td "+estilo+"><center><button class='btn btn-info btn-xs' onclick='cargar_modal("+JSON.stringify(c[i])+")'> <fa class='fa fa-user'></fa> "+  c[i].cliente_ordenvisita+"</button></center></td>";
+                html += "<td "+estilo+"><center>";
                 
                 
 //                if (isNaN(c[i]["cliente_latitud"]) || isNaN(["cliente_longitud"])){   
@@ -302,7 +342,7 @@ function misclientes()
                     html += " <a href='https://www.google.com/maps/dir/"+c[i]['cliente_latitud']+","+c[i]['cliente_longitud']+"' target='_blank' title='lat:"+c[i]['cliente_latitud']+",long:"+c[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
                 }                
                 
-                html += "</td>";
+                html += "</center></td>";
                 html += "<td "+estilo+">";
                 
                 if(c[i].pedido_id>0){

@@ -101,7 +101,7 @@
         //iniciamos un nuevo mapa el div 'map' y le asignamos propiedades
         var map = new google.maps.Map(document.getElementById('map'), {
           center: new google.maps.LatLng(-17.4038, -66.1635), //coordenada inicial
-          zoom: 14, //nivel de zoom
+          zoom: 12, //nivel de zoom
           mapTypeId: google.maps.MapTypeId.ROADMAP //tipo de mapa      
           
         }); 
@@ -120,5 +120,14 @@
     
         </div>
     </div>
+                              <div class="footer">
+                            <center>
+                                
+                                <button class="btn btn-danger" id="cancelar_preferencia" onclick="window.close()" data-dismiss="modal" >
+                                    <span class="fa fa-close"></span>   Cerrar
+                                </button>
+
+                            </center>
+                        </div>
   </body>
 </html>
