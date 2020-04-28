@@ -1290,7 +1290,7 @@ function tablaresultados(opcion)
                         html += "<input type='text' value='"+registros[i]["existencia"]+"' id='existencia"+registros[i]["producto_id"]+"' hidden>";
                         html += "<tr style='border-bottom-style: solid; border-color: #000; border-width: 2px;'>";
                         
-                        html += "<td onclick='borrar_tabla()' style='padding:0;'>"+(i+1)+"</td>";
+                        html += "<td onclick='borrar_tabla()' style='padding:0; background-color:silver;'>"+(i+1)+"</td>";
                         
                         productonombre = registros[i]["producto_nombre"];
                         if (productonombre.length > 42){
