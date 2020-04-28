@@ -228,33 +228,109 @@ function buscar_pedido_index(opcion)
     }
 }
 
+function seleccionar_input(){
+    $("#numero_orden").focus();
+    $("#numero_orden").select();
+}
+
+function cambiar_numero_orden(){
+    var base_url    = document.getElementById('base_url').value; 
+    var controlador = base_url+"pedido/cambiar_orden";    
+    var numero_orden = document.getElementById('numero_orden').value;
+    var cliente_id = document.getElementById('cliente_id').value;
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{cliente_id:cliente_id, numero_orden:numero_orden},
+        success: function(response){
+            misclientes();
+            $("#boton_cerrar").click();
+            
+        },
+        error:function (response){
+            alert("ocurrio un error ");
+        }
+    });
+
+}
+
 function cargar_modal(cliente){
+    var base_url = document.getElementById('base_url').value;
     var html = "";
     var estilo = "style='padding:0; line-height:13px;'";
     
-    html += "<table style='font-family: Arial;'>";
+    var mimagen = "";
+    var visita = "";
+    
+    if(cliente.cliente_foto != null && cliente.cliente_foto !=""){
+       
+        mimagen += "<img src='"+base_url+"resources/images/clientes/"+cliente.cliente_foto+"' class='img img-circle' width='160' height='120' />";
+
+        //mimagen = nomfoto.split(".").join("_thumb.");77
+    }else{
+        mimagen = "<img src='"+base_url+"resources/images/clientes/thumb_image.png' class='img img-circle' width='160' height='120' />";
+    }
+
+    
+    html += "<div hidden='true'>";
+    html += "<input id='cliente_id' value='"+cliente.cliente_id+"' style='width:70px;'>";    
+    html += "</div>";
+    
+    html += "<table style='font-family: Arial;' id='mitabla'>";
     html += "<tr>";
-        html += "<th colspan='3' "+estilo+">";
+    html += "<td>";
+    html += "<center>";
+    html += mimagen;
+    html += "</center>";
+    html += "</td>";
+    html += "</tr>";
+    
+    html += "<tr style='background:silver;' align='center'>";
+        html += "<td "+estilo+">";
+        html += "<b>";
         html += cliente.cliente_nombre;
-        html += "<small>";
+        html += "</b>";
         html += "<br>"+cliente.cliente_nombrenegocio;
         
-        html += "</th>";        
+        html += "</td>";        
     html += "</tr>";
     
     html += "<tr "+estilo+">";
     
-    html += "<td><small>";
-    html += "<br><fa class='fa fa-key'></fa> "+cliente.cliente_codigo+"</small>";
-    html += "<br><fa class='fa fa-home'></fa> "+cliente.cliente_direccion+"</small>";
-    html += "<br><fa class='fa fa-phone'></fa> "+cliente.cliente_telefono;
-    html += "<br><fa class='fa fa-mobile'></fa> "+cliente.cliente_celular+" ";    
+    html += "<td style='font-size:12px;'>";
+    html += "<b>CÓDIGO: </b>"+cliente.cliente_codigo;
+    html += "<br><b>DIRECCIÓN: </b>"+cliente.cliente_direccion;
+    html += "<br><b>DEPARTAMENTO: </b>"+cliente.cliente_departamento;
+    
+    visita = "";
+    if (cliente.lun == 1) visita +="<span class='btn btn-info btn-xs'>LUNES</span>";
+    if (cliente.mar == 1) visita +="<span class='btn btn-warning btn-xs'>MARTES</span>";
+    if (cliente.mie == 1) visita +="<span class='btn btn-danger btn-xs'>MIERCOLES</span>";
+    if (cliente.jue == 1) visita +="<span class='btn btn-success btn-xs' style='background:#32F716;' >JUEVES</span>";
+    if (cliente.vie == 1) visita +="<span class='btn btn-facebook btn-xs'>VIERNES</span>";
+    if (cliente.sab == 1) visita +="<span class='btn btn-success btn-xs'>SABADO</span>";
+    if (cliente.dom == 1) visita +="<span class='btn btn-facebook  btn-xs' style='background: purple;'>DOMINGO</span>";
+    
+    html += "<br><b>VISITA: </b>"+visita;
+    
+    html += "<br><b>TELÉFONO: </b>"+cliente.cliente_telefono;
+    html += "<br><b>CELULAR: </b>"+cliente.cliente_celular+" ";    
     html += "<a href='https://wa.me/591"+cliente.cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
     html += "<br><b>NIT: </b>"+cliente.cliente_nit+" ";    
     html += "<br><b>RAZON SOC.: </b>"+cliente.cliente_razon+" ";    
     
     html += "</td>";    
     
+    html += "</tr>";
+    
+    html += "<tr>";
+    html += "<td>";
+    
+    html += "<b>ORDEN: </b>";
+    html += "<input type='number' class='btn btn-default btn-xs' id='numero_orden' onclick='seleccionar_input()' value='"+cliente.cliente_ordenvisita+"' style='width:70px;'>";
+    html += "<button class='btn btn-facebook btn-xs' id='boton_cambiar_numero' onclick='cambiar_numero_orden()'><fa class='fa fa-random'></fa> Cambiar</button>";
+
+    html += "</td>";
     html += "</tr>";
     
     
@@ -267,23 +343,13 @@ function cargar_modal(cliente){
     
 }
 
-
-function misclientes()
-{    
+//Dibuja la tabla de clientes
+function tabla_clientes(response){
     var base_url    = document.getElementById('base_url').value; 
-    var usuario_id    = document.getElementById('select_usuarios').value; 
-    var controlador = base_url+"pedido/buscar_clientes";    
-    var dia_visita = document.getElementById('dia_visita').value;
-    
-    $.ajax({url:controlador,
-        type:"POST",
-        data:{usuario_id:usuario_id, dia_visita:dia_visita},
-        success: function(response){
-            
+
             var c = JSON.parse(response);
             var estilo = "style='padding:0;'"
             var nombre_negocio = "";
-            var cliente_direccion = "";
             var imagen = "";
             var color = "";
          
@@ -307,27 +373,14 @@ function misclientes()
                     nombre_negocio = "<br>"+c[i].cliente_nombrenegocio;
                 }
                 
-                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
-                    cliente_direccion = "";
-                }
-                else{
-                    cliente_direccion = c[i].cliente_direccion;
-                }
-                    
-                html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b>"+nombre_negocio+"</td>";
-//                html += "<td "+estilo+">"+cliente_direccion;
-//                
 //                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
-//                    html +="";
+//                    cliente_direccion = "";
 //                }
 //                else{
-//                    html += "<br><a href='https://wa.me/591"+c[i].cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
-//                    html += c[i].cliente_celular+" - ";
+//                    cliente_direccion = c[i].cliente_direccion;
 //                }
-//                
-//
-//                 
-//                html += c[i].cliente_telefono+"</td>";
+                    
+                html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b>"+nombre_negocio+"</td>";
                 html += "<td "+estilo+"><center><button class='btn btn-info btn-xs' onclick='cargar_modal("+JSON.stringify(c[i])+")'> <fa class='fa fa-user'></fa> "+  c[i].cliente_ordenvisita+"</button></center></td>";
                 html += "<td "+estilo+"><center>";
                 
@@ -358,7 +411,24 @@ function misclientes()
             }
         
             $("#tabla_clientes").html(html);
+                
+}
+
+function misclientes()
+{    
+    var base_url    = document.getElementById('base_url').value; 
+    var usuario_id    = document.getElementById('select_usuarios').value; 
+    var controlador = base_url+"pedido/buscar_clientes";    
+    var dia_visita = document.getElementById('dia_visita').value;
+    
+    //alert(controlador+" *** "+usuario_id+" *** "+dia_visita);
+    
+    $.ajax({url:controlador,
+        type:"POST",
+        data:{usuario_id:usuario_id, dia_visita:dia_visita},
+        success: function(response){
             
+            tabla_clientes(response);
         },
         error:function (response){
             alert("ocurrio un error ");
@@ -392,82 +462,13 @@ function mapa_clientes()
 //    });
 }
 
-function cliente_usuario()
-{    
-    var base_url    = document.getElementById('base_url').value; 
-    var usuario_id    = document.getElementById('select_usuarios').value; 
-    var controlador = base_url+"pedido/buscar_cliente_usuario";    
+function generar_pedido(){
     
-    $.ajax({url:controlador,
-        type:"POST",
-        data:{usuario_id:usuario_id},
-        success: function(response){
-            
-            var c = JSON.parse(response);
-            var estilo = "style='padding:0;'"
-            var nombre_negocio = "";
-            var cliente_direccion = "";
-            var imagen = "";
-         
-            html = "";
-            
-            for (var i = 0; i < c.length; i++){
-                html += "<tr>";
-                html += "<td "+estilo+">"+(i+1)+"</td>";
-                
-                if((c[i].cliente_nombrenegocio==null)||(c[i].cliente_nombrenegocio=="-")){
-                    nombre_negocio = "";
-                }
-                else{
-                    nombre_negocio = "<br>"+c[i].cliente_nombrenegocio;
-                }
-                
-                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
-                    cliente_direccion = "";
-                }
-                else{
-                    cliente_direccion = c[i].cliente_direccion;
-                }
-                    
-                html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b>"+nombre_negocio+"</td>";
-                html += "<td "+estilo+">"+cliente_direccion;
-                
-                if((c[i].cliente_direccion==null)||(c[i].cliente_direccion=="-")){
-                    html +="";
-                }
-                else{
-                    html += "<br><a href='https://wa.me/591"+c[i].cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-whatsapp'></fa></a>";
-                    html += c[i].cliente_celular+" - ";
-                }
-                
-
-                 
-                html += c[i].cliente_telefono+"</td>";
-                html += "<td "+estilo+">"+c[i].cliente_ordenvisita;
-                
-                
-//                if (isNaN(c[i]["cliente_latitud"]) || isNaN(["cliente_longitud"])){   
-                if ((c[i]["cliente_latitud"]==0 && c[i]["cliente_longitud"]==0) || (c[i]["cliente_latitud"]==null && c[i]["cliente_longitud"]==null) || (c[i]["cliente_latitud"]== "" && c[i]["cliente_longitud"]=="")){
-                    imagen = "noubicacion.png";
-                    html += " <a href='#' title='CLIENTE SIN UBICACIÓN REGISTRADA'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
-                }
-                else{
-                    imagen = "blue.png";
-                    html += " <a href='https://www.google.com/maps/dir/"+c[i]['cliente_latitud']+","+c[i]['cliente_longitud']+"' target='_blank' title='lat:"+c[i]['cliente_latitud']+",long:"+c[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
-                }                
-                
-                html += "</td>";
-                html += "<td "+estilo+">";
-                html += "<a href='"+base_url+"cliente/edit/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-user'></fa></a>";
-                html += "</td>";
-                html += "</tr>";
-            }
-        
-            $("#tabla_clientes").html(html);
-            
-        },
-        error:function (response){
-            alert("ocurrio un error ");
-        }
-    });
+    var base_url    = document.getElementById('base_url').value; 
+    var cliente_id    = document.getElementById('cliente_id').value; 
+    var dia_visita = document.getElementById('dia_visita').value;
+    var controlador = base_url+"pedido/pedidoabierto/"+cliente_id;    
+    
+//    html += "<a href='"+base_url+"pedido/pedidoabierto/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-cart-arrow-down'></fa></a>";
+    window.open(controlador, '_blank');
 }

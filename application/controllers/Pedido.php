@@ -1200,7 +1200,8 @@ function registrarpedido()
 
         //**************** inicio contenido ***************        
         
-            $usuario_id = $this->session_data['usuario_id'];
+            //$usuario_id = $this->session_data['usuario_id'];
+            $usuario_id = $this->input->post('usuario_id');
             $dia_visita = $this->input->post('dia_visita');
             
             if($dia_visita == 1){ $condicion = " and c.lun = 1"; } //lunes
@@ -1217,6 +1218,7 @@ function registrarpedido()
                  " where c.estado_id = 1 and  c.usuario_id = ".
                   $usuario_id." ".$condicion.                    
                   " order by c.cliente_ordenvisita, c.cliente_nombre";
+            
             $resultado = $this->Pedido_model->consultar($sql);
             echo json_encode($resultado);
             		
@@ -1241,6 +1243,31 @@ function registrarpedido()
             $sql="select * from cliente where usuario_id = ".$usuario_id;            
             $resultado = $this->Pedido_model->consultar($sql);
             echo json_encode($resultado);
+            		
+        //**************** fin contenido ***************
+        }
+        
+    }
+    
+
+    /*
+     * Lista de clientes asigandos a un usuario prevendedor
+     */
+    function cambiar_orden()
+    {
+
+        if($this->acceso(12)||$this->acceso(30)){ //12 ventas o 30 pedidos
+
+        //**************** inicio contenido ***************        
+        
+            $cliente_id = $this->input->post('cliente_id');
+            $numero_orden = $this->input->post('numero_orden');
+
+            $sql="update cliente set cliente_ordenvisita = ".$numero_orden.
+                  " where cliente_id = ".$cliente_id;
+            
+            $this->Pedido_model->ejecutar($sql);
+            echo true;
             		
         //**************** fin contenido ***************
         }

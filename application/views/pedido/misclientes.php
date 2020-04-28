@@ -31,17 +31,7 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
-<!--<input type="hidden" id="esrol" name="esrol" value="<?php echo $esrol; ?>">
-<input type="hidden" id="esrolconsolidar" name="esrolconsolidar" value="<?php echo $esrolconsolidar; ?>">
 
-<input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
-<input id="pedido_id" name="pedido_id" value="0" hidden>
-<input id="usuarios" name="usuarios" value='<?php echo json_encode($usuarios); ?>' hidden >
-<input id='tipo_transaccion' name='tipo_transaccion' value='<?php echo json_encode($tipo_transaccion); ?>' hidden>-->
-<!--<input id='tipo_venta' name='tipo_venta' value='<?php echo json_encode($tipo_venta); ?>' hidden>-->
-
-<!--<div class="box-header">
-<div class="row clearfix">-->
 <div class="box-body col-md-6" style="padding: 0">
     <center>
         <h3 class="box-title" style="font-family: Arial; margin: 0;" >Mis Clientes</h3>
@@ -56,7 +46,7 @@
     <div class="col-md-3"  style="padding:3px; margin-bottom: 0; margin-top: 0;">
         <div class="form-group" style="padding: 0;  margin-bottom: 0; margin-top: 0;">
 
-            <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cliente_usuario()">
+            <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onchange="misclientes()">
                     <option value="0"><?php echo "TODOS"; ?></option>
                    
             <?php foreach($usuario as $u){ 
@@ -83,7 +73,7 @@
         <div class="form-group" style="margin-bottom: 0;">
             <center>
                 
-                <select id="dia_visita" class="btn btn-info btn-sm" style="width: 100px;" onclick="misclientes()">
+                <select id="dia_visita" class="btn btn-info btn-sm" style="width: 100px;" onchange="misclientes()">
                     <option value="1" <?php echo ($dia==1)?"selected":""; ?>>LUNES</option>
                     <option value="2" <?php echo ($dia==2)?"selected":""; ?>>MARTES</option>
                     <option value="3" <?php echo ($dia==3)?"selected":""; ?>>MIERCOLES</option>
@@ -95,10 +85,8 @@
                     
                 </select>
                 
-                <!--<a href="<?php echo site_url('recorrido'); ?>" ><span class="fa fa-steam"></span> Recorrido</a>-->
                 
                 <a href="<?php echo site_url('pedido'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 100px;"><span class="fa fa-cart-arrow-down"></span> Pedidos</a>
-                <!--<a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>-->
                 <button target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;" onclick="mapa_clientes()"><span class="fa fa-map"></span> Mapa</button>                
             </center>
         </div>
@@ -112,41 +100,7 @@
 <?php
     $date = date('Y-m-d');
 ?>
-<div class="panel panel-primary col-md-12" id='buscador_oculto' style='display:none;'>
-    <br>
-    <center>            
-        <div class="col-md-2">
-            Desde: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true" value="<?php echo $date; ?>">
-        </div>
-        <div class="col-md-2">
-            Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true" value="<?php echo $date; ?>">
-        </div>
-        
-        <div class="col-md-2">
-            Tipo:             
-            <select  class="btn btn-warning btn-sm form-control" id="estado_id" required="true">
-                <?php foreach($estado as $es){?>
-                    <option value="<?php echo $es['estado_id']; ?>"><?php echo $es['estado_descripcion']; ?></option>
-                <?php } ?>
-            </select>
-        </div>
-        <br>
-        <div class="col-md-3">
-<!--<form method="post" onclick="buscar_por_fecha()">-->
-            
-<!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
-            <button class="btn btn-sm btn-facebook btn-sm btn-block"  onclick="buscar_por_fecha()" type="submit">
-                <h4>
-                <span class="fa fa-search"></span>   Buscar
-                </h4>
-          </button>
-            <br>
-<!--</form>-->
-        </div>
-        
-    </center>    
-    <br>    
-</div>
+
 <!------------------------------------------------------------------------------------------->
 
 
@@ -195,7 +149,7 @@
 
 <!--<fa class="fa fa-cart-arrow-down"></fa>-->
 
-<div >
+<div hidden="true">
     
 <button type="button" id="boton_modal_cliente" class="btn btn-primary" data-toggle="modal" data-target="#modalcliente" >
   Launch demo modal
@@ -207,7 +161,7 @@
 <div class="modal fade" id="modalcliente" tabindex="-1" role="dialog" aria-labelledby="modalcliente" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header" style="padding: 0; background-color: #46b8da">
                             
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -218,43 +172,33 @@
                             </center>
                             
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="padding: 0;">
                         <!--------------------- TABLA---------------------------------------------------->
                         
                         <div class="box-body table-responsive" id="tabla_datos">
-<!--                            <input type="text" id="ingresorapido_producto" value="-" class="form-control btn btn-xs btn-default" readonly>
-                                        <div class="col-md-6">
-                                            <label for="usuario_idx" class="control-label">Cantidad:</label>
-                                            
-                                            <input type="text" id="ingresorapido_producto_id" value="0.00" hidden />
-                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning" onkeyup="validar(event,11)" />
-					</div>
-                                        <div class="col-md-6" id='botones'  style='display:block;'>
-						<label for="opciones" class="control-label">Opciones</label>
-						<div class="form-group">
-                                                        
-                                                    <button class="btn btn-facebook" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
-                                                            <span class="fa fa-floppy-o"></span> Registrar
-                                                    </button>
-                                                    
-                                                    <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
-                                                        <span class="fa fa-close"></span>   Cancelar                                                          
-                                                    </button>
-						</div>
-					</div>
-                            
-                                        ------------------- inicio loader -----------------------
-                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
-                                            <center>
-                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
-                                            </center>
-                                        </div> 
-                                        ------------------- fin inicio loader -----------------------
-                            -->
-             
-                        </div>
 
+                        </div>
+                        
                         <!----------------------FIN TABLA--------------------------------------------------->
+
+                    </div>
+                    <div class="modal-footer" style="padding: 0;">
+                        
+                        <div class="col-md-6" id='botones'>
+                                <div class="form-group">
+                                    <center>
+                                        
+                                        <button class="btn btn-facebook btn-sm" id="boton_generar_pedido" onclick="generar_pedido()"  data-dismiss="modal">
+                                            <span class="fa fa-cart-arrow-down"></span>   Pedido
+                                        </button>                                   
+                                        
+                                        <button class="btn btn-danger btn-sm" id="boton_cerrar" data-dismiss="modal" >
+                                            <span class="fa fa-close"></span>   Cerrar
+                                        </button>                                        
+                                    </center>                                        
+                                </div>
+                        </div>
+                        
                     </div>
 		</div>
 	</div>
@@ -262,3 +206,4 @@
 
 
 <!----------------- fin modal preferencias ---------------------------------------------->
+
