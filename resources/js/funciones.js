@@ -1082,7 +1082,7 @@ function cambiarcantidadjs(e,producto)
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
                     ", detalleven_descuento = "+descuento+
                     ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
-                    "  where producto_id = "+producto_id+" and usuario_id = "+usuario_id;
+                    "  where producto_id = "+producto_id+" and  detalleven_id = "+producto.detalleven_id ; //usuario_id = "+usuario_id;
            // alert(sql);
             
             $.ajax({url: controlador,
@@ -1365,7 +1365,7 @@ function tablaresultados(opcion)
                         nombreprod = registros[i]["producto_nombre"];
                         
                         if (nombreprod.length>35)
-                            nombreprod = nombreprod.substr(0,34)+"...";
+                            nombreprod = "<span title='"+nombreprod+"'>"+nombreprod.substr(0,34)+"...</span>";
                         
                         //html += "<td  style='padding:0'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ registros[i]["producto_nombre"]+"</b></font>";
                         html += "<td  style='padding:0; line-height:10pt;'><font size='"+tamanio+"' face='Arial Narrow'><b>"+ nombreprod+"</b></font>";

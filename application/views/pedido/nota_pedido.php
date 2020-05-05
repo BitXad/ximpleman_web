@@ -138,7 +138,7 @@ border-bottom : 1px solid #aaa;
         });
         
 </script>   
-
+<?php $tam = "18cm"; ?>
 
 
 
@@ -147,12 +147,14 @@ border-bottom : 1px solid #aaa;
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
+<div class="container table-responsive" style="padding: 0;">
+    
 <p>
 <font face="Arial">
 
-    <table class="table" style="width: 20cm; padding: 0;" >
+    <table class="table" style="max-width:<?php echo $tam; ?>; padding: 0;" >
         <tr style="padding: 0;">
-            <td  style="padding: 0;">
+            <td  style="padding: 0; line-height: 10px; width: 30%;">
                     
                 <center>
                 
@@ -165,7 +167,7 @@ border-bottom : 1px solid #aaa;
                 
                 </center>
             </td>
-            <td  style="padding: 0;">
+            <td  style="padding: 0; line-height: 12px; width: 40%;">
                 <center>
                  
                         
@@ -176,8 +178,8 @@ border-bottom : 1px solid #aaa;
                     
                 </center>                
             </td>
-            <td  style="padding: 0;">
-
+            <td  style="padding: 0; line-height: 10px; width:30%;">
+                _______________________________________<br>
                         <font size="1" face="Arial">
                             <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
                             <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
@@ -185,13 +187,15 @@ border-bottom : 1px solid #aaa;
                             <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>
                             <br><b>ZONA: </b><?php echo $pedido[0]['zona_nombre']; ?>
                         </font>
+                        <br>
+                    _______________________________________
 
               
             </td>
         </tr>
     </table>
  
-    <table class="table" style="width: 20cm; height: 1px; padding: 0;" >
+    <table class="table" style="width:<?php echo $tam; ?>; height: 1px; padding: 0;" >
     
         <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0;">
             <!--<th>#</th>-->
@@ -250,7 +254,7 @@ border-bottom : 1px solid #aaa;
 <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
 <br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; ?></font>
 
-    <table class="table" style="width: 20cm;">
+    <table class="table" style="width: <?php echo $tam; ?>;">
         <tr>
             <td  style="padding: 0">
                 <center>
@@ -274,3 +278,4 @@ border-bottom : 1px solid #aaa;
     </table>
 
 </p>
+</div>

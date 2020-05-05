@@ -64,9 +64,23 @@ function mostrar_ocultar(){
 
         }
     else{
-        document.getElementById('creditooculto').style.display = 'none';}
+            document.getElementById('creditooculto').style.display = 'none';}
+}
+
+
+
+function mostrar_buscadores(){
+    document.getElementById('buscador1').style.display = 'block';
+    document.getElementById('categoria').style.display = 'block';
+    
+    //document.getElementById('filtrar4').focus();
+
 }
         
+function cerrar_ventana(){
+    window.opener.location.reload();
+    window.close();
+}
 </script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -119,7 +133,7 @@ function mostrar_ocultar(){
         
 <!--------------------- cliente_id --------------------->
 <div class="container" hidden>
-    <input type="text" name="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
+    <input type="text" name="cliente_id" id="cliente_id" value="<?php echo $cliente[0]['cliente_id']; ?>" class="form-control" id="cliente_id" >
 </div>
 
 <!--------------------- fin cliente_id --------------------->
@@ -243,7 +257,7 @@ function mostrar_ocultar(){
             </div>
 
             <div class="col-md-3">
-            <label for="zona_id" class="control-label">CELULAR</label>
+            <label for="zona_id" class="control-label">ZONA</label>
             <div class="form-group">
                 <input type="text" name="zona_id" class="form-control" id="zona_id" value="<?php echo $cliente[0]['zona_id']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
             </div>
@@ -259,9 +273,12 @@ function mostrar_ocultar(){
 
 <center>
     <font size="3"><b>PEDIDO</b></font>
-     <a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>
-    <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
-     <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>
+     <!--<a href="#" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></a>-->
+    <button onclick="focus_cliente()" id="boton_bsucar_clie" data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-search"></span></font><small> Buscar Clie</small></button>
+    
+     <!--<button class="btn btn-facebook btn-xs"><span class="fa fa-users"> </span>Buscar Cliente</button>-->
+     <a href="<?php echo base_url("cliente/clientenuevo/0"); ?>" class="btn btn-info btn-xs" style="width: 90px;"><font size="3"><span class="fa fa-user" ></span></font> Nuevo</a>
+     <button class="btn btn-facebook btn-xs" onclick="mostrar_buscadores()" title="Buscar productos"><font size="3"><span class="fa fa-binoculars" ></span></font></button>
 </center>   
 
 <div class="container">
@@ -273,14 +290,18 @@ function mostrar_ocultar(){
                     
                 </td>
                 <td>
-                    <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="90">
+                    <?php if(isset($cliente[0]['cliente_foto'])){ ?>
+                        <img src="<?php echo base_url("resources/images/clientes/".$cliente[0]['cliente_foto']); ?>" width="70" height="80">
+                    <?php }else{ ?>
+                        <img src="<?php echo base_url("resources/images/clientes/thumb_foto.jpg"); ?>" width="70" height="80">
+                    <?php } ?>
                     
                     <br><button class="btn btn-warning btn-xs" data-toggle="collapse" data-target="#informacioncliente">más inform.</button>
                 </td>
                 <td style="width: 0.2cm;">
                     
                 </td>
-                <td> 
+                <td style="line-height: 10px;"> 
                     <font size="1" face="arial">
                         <b>CLIENTE: </b><?php echo $cliente[0]['cliente_nombre']; ?> <br>
                         <?php echo $cliente[0]['cliente_nombrenegocio']." ".$cliente[0]['cliente_celular']; ?> <br>                     
@@ -301,7 +322,7 @@ function mostrar_ocultar(){
     <div class="panel panel-primary col-md-10">
         
         <table>      
-            <tr>
+            <tr style="line-height: 10px;">
                 <td style="width: 0.2cm" > 
                 </td> 
         
@@ -318,7 +339,7 @@ function mostrar_ocultar(){
                     
                     </font>
                         <?php if ($cliente[0]['cliente_id']>0){ ?>
-                            <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar </a>
+                            <a href="<?php echo base_url("cliente/modificar_cliente/".$cliente[0]['cliente_id']); ?>" class="btn btn-primary btn-xs"><fa class="fa fa-pencil"> </fa> Modificar Cliente</a>
                         <?php } ?>
                         
                         <br>    
@@ -368,7 +389,7 @@ function mostrar_ocultar(){
 <div class="row">
     <div class="col-md-6" >
         
-        <div class="row">
+        <div class="row" id="buscador1" style="display: none;">
             
             <!--------------------- parametro de buscador por codigo --------------------->
 
@@ -383,7 +404,7 @@ function mostrar_ocultar(){
            <!--------------------- fin buscador por codigo --------------------->
            
 
-            <div class="col-md-8">
+           <div class="col-md-8">
                 
 <!--            ------------------- parametro de buscador --------------------->
                        
@@ -400,7 +421,7 @@ function mostrar_ocultar(){
             
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
-<div class="container" id="categoria" style="padding:0;">
+<div class="container" id="categoria" style="padding:0; display: none;">
     
     <span class="badge btn-danger" style="width: 170px;">
     
@@ -439,23 +460,23 @@ function mostrar_ocultar(){
     <!--<button type="button" class="btn btn-primary"><span class="badge">7</span>Productos encontrados</button>-->
 
                 <!--<span class="badge btn-danger">Encontrados: <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span></span>-->
+                <center>
                 <span class="badge btn-default">
 
                     <!--------------------- inicio loader ------------------------->
                     <div class="row" id='oculto'  style='display:none;'>
-                        <center>
                             <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
-                        </center>
                     </div> 
                     
-                    <div class="row" id='loader'  style='display:none;'>
+<!--                    <div class="row" id='loader'  style='display:none;'>
                         <center>
                             <img src="<?php echo base_url("resources/images/loaderventas.gif"); ?>" >        
                         </center>
-                    </div> 
+                    </div> -->
                     <!--------------------- fin inicio loader ------------------------->
                     
                 </span>
+                </center>
 
                 
                 
@@ -479,7 +500,7 @@ function mostrar_ocultar(){
     </div>
         
     <div class="col-md-6" id="divventas0" style="display:block;">
-        <div class="row">
+        <div class="row" style="display: none;">
             
             <div class="col-md-8" style="padding:0;">
             <!--------------------- parametro de buscador --------------------->
@@ -498,7 +519,7 @@ function mostrar_ocultar(){
                 } ?>
                     
             <?php if($parametro[0]["parametro_modulorestaurante"]==1){ //1 es modo restaurante?>            
-                    <a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a> 
+                    <!--<a href="<?php echo base_url('venta/ultimacomanda');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs" id="imprimir_comanda"><span class="fa fa-print"></span><b> Comanda</b></a>--> 
             <?php } ?>            
            
 <!--            <button onclick='quitartodo()' class='btn btn-danger btn-xs'><span class='fa fa-trash'></span><b> Vaciar</b></button> -->
@@ -519,7 +540,8 @@ function mostrar_ocultar(){
             
             <!--------------------- fin parametro de buscador ---------------------> 
         
-            </div>
+        </div>
+            
             <div class="col-md-4" style="background-color: black;">
                 <center>
                     
@@ -559,7 +581,7 @@ function mostrar_ocultar(){
 
             <center>
             
-            <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <a href="#" data-toggle="modal" onclick="focus_efectivo()" data-target="#modalfinalizar" class="btn btn-sq-lg btn-success" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-money fa-4x"></i><br><br>Finalizar Pedido<br>
             </a>
             
@@ -570,7 +592,7 @@ function mostrar_ocultar(){
             </a>-->
 
             
-                <button  onclick="window.close();" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
+                <button  onclick="cerrar_ventana()" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x  "></i><br><br>
                Salir <br>
             </button>    
@@ -1215,7 +1237,7 @@ function mostrar_ocultar(){
 <div class="modal fade" id="modalbuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+			<div class="modal-header" style="padding-bottom: 0;">
                             
                                 <div class="row">
 
@@ -1255,14 +1277,14 @@ function mostrar_ocultar(){
 
                                 
 			</div>
-			<div class="modal-body">
+			<div class="modal-body" style="padding-top:0;">
                         <!--------------------- TABLA---------------------------------------------------->
                         <div class="box-body table-responsive">
                         <table class="table table-striped" id="mitabla">
                             <tr>
                                                         
-                                <th>#</th>
-                                <th colspan="2">Clientes</th>
+                                <th style="padding:0;">#</th>
+                                <th colspan="2"  style="padding:0;">Clientes</th>
                             </tr>
                             
                             <tbody class="buscar4" id="clientes_pedido">
@@ -1270,11 +1292,22 @@ function mostrar_ocultar(){
 
                             </tbody>
                         </table>
-                    </div>
+                        </div>
 
                         <!----------------------FIN TABLA--------------------------------------------------->
+                        <div class="footer">
+                            <center>
+                                
+                                <button class="btn btn-danger" id="cancelar_preferencia" onclick="cancelar_preferencia()" data-dismiss="modal" >
+                                    <span class="fa fa-close"></span>   Cerrar
+                                </button>
+
+                            </center>
+                        </div>
 			</div>
 		</div>
 	</div>
 </div>
 <!--------------------------------- FIN MODAL CLIENTES ------------------------------------>
+
+                                                    

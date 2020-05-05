@@ -210,7 +210,7 @@ function toggle(source) {
                                                 }
                                                 initMap();
                                             </script>
-                                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U&callback=initMap"></script>
+                                            <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey']?>&callback=initMap"></script>
                                             </div>
                                             <!-- ***********************aqui termina el mapa para capturar coordenadas *********************** -->
 					</div>
@@ -293,7 +293,7 @@ function toggle(source) {
                                             if($tipousuario_id == 1){ $ocultar=""; } 
                                         ?>
                                     
-                                        <div class="col-md-5" <?php echo $ocultar; ?> >
+                                        <div class="col-md-4" <?php echo $ocultar; ?> >
 						<label for="usuario_id" class="control-label">Cliente Asignado a:</label>
 						<div class="form-group">
 							<select name="usuario_id" class="form-control">
@@ -309,7 +309,7 @@ function toggle(source) {
 							</select>
 						</div>
 					</div>
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <?php
                                                     $luncheck =""; $marcheck =""; $miecheck ="";
                                                     $juecheck =""; $viecheck =""; $sabcheck =""; $domcheck =""; $conta = 0; $todos="";
@@ -335,6 +335,12 @@ function toggle(source) {
                                                   
 						</div>
 					</div>
+                    <div class="col-md-2">
+                        <label for="cliente_ordenvisita" class="control-label">Orden Visita</label>
+                        <div class="form-group">
+                            <input type="number" min="0" name="cliente_ordenvisita" value="<?php echo ($this->input->post('cliente_ordenvisita') ? $this->input->post('cliente_ordenvisita') : $cliente['cliente_ordenvisita']); ?>" class="form-control" id="cliente_ordenvisita" />
+                        </div>
+                    </div>
 
                                     
                                         <div class="col-md-2" >

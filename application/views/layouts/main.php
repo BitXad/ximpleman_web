@@ -213,6 +213,17 @@
                         }
                         ?>
                         
+                        
+                        <?php
+                        if($rolusuario[12-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('pedido_diario/index');?>"><i class="fa fa-calendar"></i> Pedidos Diarios</a>
+                        </li>
+                        <?php
+                        } ?>
+                        
+                        
                         <?php 
                         if($rolusuario[139-1]['rolusuario_asignado'] == 1){
                         ?>
@@ -283,6 +294,7 @@
                         <li>
                             <a href="<?php echo site_url('credito/indexDeuda');?>"><i class="glyphicon glyphicon-export"></i> Deudas por Pagar</a>
                         </li>
+                        
                         <?php
                         }
                         if($rolusuario[89-1]['rolusuario_asignado'] == 1){
@@ -677,7 +689,7 @@
                         </li>-->
                         <!--<li>
                             <a href="<?php //echo site_url('categ_imagen');?>"><i class="fa fa-image"></i>Categoría Imagen</a>
-                        </li>-->
+                          </li>-->
                         <li>
                             <a href="<?php echo site_url('Categoria_imagen');?>"><!--<i class="fa fa-list-ul"></i>--><i class="fa fa-file-image-o"></i>Categoría Imagen</a>
                         </li>

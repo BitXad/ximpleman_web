@@ -37,9 +37,9 @@
 
 <!--<div class="box-header">
 <div class="row clearfix">-->
-<div class="box-body col-md-6">
+<div class="box-body col-md-6" style="padding: 0">
     <center>
-        <h3 class="box-title">Pedidos</h3>        
+        <h3 class="box-title" style="font-family: Arial; margin: 0;" >Pedidos</h3>
     </center>
 </div>
 
@@ -47,8 +47,8 @@
 <div class="row clearfix" style="padding:0">
                     
     <?php if($tipousuario_id == 1){ ?>
-    <div class="col-md-3"  style="padding:3px">
-        <div class="form-group">
+    <div class="col-md-3"  style="padding:3px; margin-bottom: 0; margin-top: 0;">
+        <div class="form-group" style="padding: 0;  margin-bottom: 0; margin-top: 0;">
 
             <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
                     <option value="0"><?php echo "TODOS"; ?></option>
@@ -62,8 +62,8 @@
     </div>
     <?php } ?>
                  
-    <div class="col-md-3"  style="padding:3px">
-        <div class="form-group">
+    <div class="col-md-3"  style="padding:3px;  margin-bottom: 0; margin-top: 0;">
+        <div class="form-group" style=" margin-bottom: 0; margin-top: 0;">
         <select class="btn btn-facebook btn-sm form-control" id="select_pedidos" onclick="buscar_pedidos()">
             <option value="1">Pedidos de Hoy</option>
             <option value="2">Pedidos de Ayer</option>
@@ -79,23 +79,19 @@
     </div>
     </div>
                 
-    <div class="col-md-2"  style="padding:3px">
-        <div class="form-group">
-            <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm form-control" target="_blank"><span class="fa fa-cart-arrow-down"></span> Pedido</a>
+    <div class="col-md-6"  style="padding:3px">
+        <div class="form-group" style="margin-bottom: 0;">
+            <center>
+                <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 80px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Clientes</a>
+                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 80px;"><span class="fa fa-cart-arrow-down"></span> Pedido</a>
+                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 80px;"><span class="fa fa-steam"></span> Recorrido</a>
+                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;"><span class="fa fa-map"></span> Mapa</a>                
+            </center>
         </div>
     </div>
     
-    <div class="col-md-2"  style="padding:3px">
-        <div class="form-group">
-                    <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm form-control"><span class="fa fa-steam"></span> Recorrido</a>
-        </div>
-    </div>
-
-    <div class="col-md-2"  style="padding:3px">
-        <div class="form-group">
-                    <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm form-control"><span class="fa fa-map"></span> Mapa</a>
-        </div>
-    </div>
+    
+    
 </div>
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
@@ -141,24 +137,36 @@
 
 
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-12" style=" margin-bottom: 0; margin-top: 0;">
+                
+
         <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group"> <span class="input-group-addon">Buscar</span>
+                  <div class="input-group" style=" margin-bottom: 0; margin-top: 0;"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el cliente, fecha, total">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
+        
+        
+            <!--------------------- inicio loader ------------------------->
+            <div class="row" id='loader'  style='display:none;'>
+                <center>
+                    <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                </center>
+            </div> 
+            <!--------------------- fin inicio loader ------------------------->
+
             
-            <div class="box-body table-responsive">
+            <div class="box-body table-responsive" style="padding: 0;">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-                        <th>N</th>
-                        <th>Cliente</th>
-                        <th align="center">COD</th>
-                        <th>Total</th>
-                        <th>Fecha<br>entrega</th>
+                        <th style="padding: 0;">#</th>
+                        <th style="padding: 0;">Cliente</th>
+                        <th style="padding: 0;" align="center">COD</th>
+                        <th style="padding: 0;">Total</th>
+                        <th style="padding: 0;">Fecha<br>entrega</th>
 
-                        <th> </th>
+                        <th style="padding: 0;"> </th>
                     </tr>
                     <tbody class="buscar" id="tabla_pedidos">
 
@@ -168,10 +176,20 @@
                 </table>
                                 
             </div>
-            <div class="pull-right">
+<!--            <div class="pull-right">
                     <?php echo $this->pagination->create_links(); ?>                    
-            </div>
+            </div>-->
         </div>
     </div>
 </div>
 </body>
+
+<!--    <div class="col-md-6"  style="padding:3px">
+        <div class="form-group" style="margin-bottom: 0;">
+            <center>
+                <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 100px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Mis Clientes</a>
+                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>
+                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;"><span class="fa fa-map"></span> Mapa</a>                
+            </center>
+        </div>
+    </div>-->

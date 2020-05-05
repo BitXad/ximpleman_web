@@ -7,6 +7,8 @@
 <input type="hidden" name="cobrardetalle" id="cobrardetalle" value="<?php echo $cobrardetalle; ?>" />
 <input type="hidden" name="pasaracreditodeta" id="pasaracreditodeta" value="<?php echo $pasaracreditodeta; ?>" />
 <input type="hidden" name="estecliente" id="estecliente" value="<?php echo $cliente["cliente_nombre"]; ?>" />
+<input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" />
+
 <style type="text/css">
 /*    #tamtex{ font-size: 0.1em; }*/
     #recepcion{ background-color: #FFFF33; font-size: small; }

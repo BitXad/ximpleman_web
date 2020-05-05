@@ -23,7 +23,7 @@
                       
     <div id="map"></div> <!-- mapa -->
     
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyClNsJugfWI4xOf1Or9Wdg5lD_qUqaik58"></script>
     <script>      
       //coordada inicial del mapa
       var coordenadas= new google.maps.LatLng(-17.4038, -66.1635);

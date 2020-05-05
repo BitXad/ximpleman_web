@@ -81,7 +81,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <br><br>
                             <div class="modal-content text-left">
                           <div class="modal-header">
-                              <label>Seguimiento a Servicios:</label>
+                              <label>Seguimiento:</label> Soporte Técnico
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                           </div>
                             <?php
@@ -121,7 +121,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                             <br><br>
                             <div class="modal-content text-left">
                           <div class="modal-header">
-                              <label>Seguimiento: Ordenes de trabajo</label>
+                              <label>Seguimiento:</label> Ordenes de trabajo
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                           </div>
                            
@@ -215,8 +215,42 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                     <ul class="nav navbar-nav">
                                         
                                         <?php foreach($menu_principal as $principal) { ?>                                                                                
-                                        <li class="active"><a href="<?php echo base_url(); ?>" class="act"><?php echo $principal['menu_nombre']; ?></a></li>
+                                            <li class="active"><a href="<?php echo base_url(); ?>" class="act"><?php echo $principal['menu_nombre']; ?></a></li>
                                         <?php } ?>                                        
+                                            
+                                            
+<!--                                        
+                                        <li class="active">
+                                            <select class="ac">
+                                                
+                                        <?php 
+                                            foreach($categorias as $cat){?>                    
+                                                <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
+                                        <?php } ?>      
+                                            
+                                            </select>        
+                                        </li>-->
+                                        
+                                        
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categorias<b class="caret"></b></a>
+                                            <ul class="dropdown-menu multi-column columns-3">
+                                                <div class="row">
+                                                    <div class="multi-gd-img">
+                                                        <ul class="multi-column-dropdown">
+                                                            <h6>Todas</h6>
+                                                            <?php 
+                                                                foreach($categorias as $cat){?>                    
+                                                                    <!--<li><a href="" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></a></li>-->
+                                                                    <li style="padding: 0; margin: 3px;"><button style="background: none; border: transparent; padding:0;" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></button></li>
+                                                            <?php } ?>      
+                                                        </ul>
+                                                    </div>	
+
+                                                </div>
+                                        </ul>
+                                    </li>                                        
+
                                         <!------- Bloque de codigo 1 ------------>                                                        
                                     </ul>
                                 </div>
@@ -235,9 +269,11 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <li>
                             <img src="<?php echo $raiz.'images/sliders/'.$s['slide_imagen'];?>" alt="" />
                             <!--Slider Description example-->
-                            <div class="slide-desc">
-                                <h3><?php echo $s['slide_leyenda1']; ?></h3> 
-                                <h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>
+                            <div class="slide-desc" style="line-height: 10pt;">
+                                <h3 style="padding: 0; margin-bottom: 0;"><?php echo $s['slide_leyenda1']; ?></h3> 
+                                <h4 style="color:white; padding: 0; margin-top: 0;"><b><?php echo $s['slide_leyenda2']; ?></b></h4>
+                                
+                                <!--<h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>-->
                             </div>
             </li>
                     <?php } ?>
@@ -249,14 +285,44 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     
     <div class="top-brands">
         <!------------------------ BUSCADOR --------------------------->     
-    <div class="container"> 
-    <div class="input-group input-group-lg">
-<input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
-<span class="input-group-btn">
-<button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
-</span> Buscar</button>
-</span>
-</div>              
+    <div class="container">
+        
+        <!--<div class="container">-->
+            
+        
+<!--        <div class="col-md-5">
+            
+            <div class="input-group input-group-lg">
+            
+                <select type="text" onkeypress="buscarpro(event)" name="buscar_categoria" id="buscar_categoria" class="form-control" autocomplete="off" >
+                    <?php 
+                        foreach($categorias as $cat){?>                    
+                            <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
+                        <?php } ?>    
+                </select>
+            <span class="input-group-btn">
+            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
+            </span> </button>
+            </span>
+            </div>
+
+        </div>-->
+            
+        <!--<div class="col-md-12">-->
+            
+            <div class="input-group input-group-lg">
+            <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
+            <span class="input-group-btn">
+            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
+            </span> Buscar</button>
+            </span>
+            </div>
+
+<!--        </div>
+            
+        </div>-->
+        
+        
         <div class="w3l_search">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
             <?php if(!isset($_COOKIE["cliente_id"])) {
@@ -297,7 +363,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 
 <!------------------------------------- SEGUNDA SECCION -------------------------------------->
 
-                        <div class="grid_3 grid_5">
+                <div class="grid_3 grid_5">
                 <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
                     <ul id="myTab" class="nav nav-tabs" role="tablist">
                         <li role="presentation" class="active"><a href="#expeditions" id="expeditions-tab" role="tab" data-toggle="tab" aria-controls="expeditions" aria-expanded="true"><?php echo $seccion2[0]['seccion_titulo']; ?></a></li>
@@ -310,7 +376,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                 <p class="w3l-ad"><?php echo $seccion1[0]['seccion_texto']; ?></p>
                             </div>
                             <div class="agile_top_brands_grids">
-                                                            <?php foreach($ofertasemanal as $os) { ?>
+                                <?php foreach($ofertasemanal as $os) { ?>
                                                             
                                 <div class="col-md-4 top_brand_left">
                                         <div class="hover14 column">
@@ -725,7 +791,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
                 <div class="agileits_w3layouts_map_pos">
                     <div class="agileits_w3layouts_map_pos1">
-                        <h3>Contact Info</h3>
+                        <h3>Contactos</h3>
                         <p><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</p>
                         <ul class="wthree_contact_info_address">
                             <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
@@ -742,25 +808,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>
             </div>
             <div class="col-md-6 w3_agileits_contact_grid_right">
-                <h2 class="w3_agile_header">Leave a<span> Message</span></h2>
+                <h2 class="w3_agile_header">Dejanos<span> un Mensaje</span></h2>
 
                 <?php echo form_open('website/email'); ?>
                     <span class="input input--ichiro">
                         <input class="input__field input__field--ichiro" type="text" id="input-25" name="nomemail" placeholder=" " required="" />
                         <label class="input__label input__label--ichiro" for="input-25">
-                            <span class="input__label-content input__label-content--ichiro">Your Name</span>
+                            <span class="input__label-content input__label-content--ichiro">Tu Nombre</span>
                         </label>
                     </span>
                     <span class="input input--ichiro">
                         <input class="input__field input__field--ichiro" type="email" id="input-26" name="froemail" placeholder=" " required="" />
 
                         <label class="input__label input__label--ichiro" for="input-26">
-                            <span class="input__label-content input__label-content--ichiro">Your Email</span>
+                            <span class="input__label-content input__label-content--ichiro">Tu Email</span>
                         </label>
                     </span>
                     <input class="form-control" type="hidden" id="empresa_email" name="empresa_email" value="<?php echo $pagina_web[0]['empresa_email']; ?>" />
-                    <textarea placeholder="Your message here..." required="" id="mensaje12" name="mensaje12"></textarea>
-                    <input type="submit" value="Submit">
+                    <textarea placeholder="Escribe Tu Mensaje..." required="" id="mensaje12" name="mensaje12"></textarea>
+                    <input type="submit" value="Enviar">
                 <?php echo form_close(); ?>
             </div>
             <div class="clearfix"> </div>
@@ -951,7 +1017,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="container">
             <div class="w3_footer_grids">
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>Contact</h3>
+                    <h3>CONTACTOS</h3>
                     
                     <ul class="address">
                         <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</li>
@@ -960,7 +1026,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </ul>
                 </div>
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>Information</h3>
+                    <h3>INFORMACIÓN</h3>
                     <ul class="info"> 
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="about.html">About Us</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="contact.html">Contact Us</a></li>
@@ -970,7 +1036,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </ul>
                 </div>
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>Category</h3>
+                    <h3>CATEGORIAS</h3>
                     <ul class="info"> 
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="groceries.html">Groceries</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="household.html">Household</a></li>
@@ -980,7 +1046,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </ul>
                 </div>
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>Profile</h3>
+                    <h3>MENU</h3>
                     <ul class="info"> 
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="products.html">Store</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="checkout.html">My Cart</a></li>
@@ -995,7 +1061,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="footer-copy">
             
             <div class="container">
-                <p>© 2017 Super Market. All rights reserved | Design by <a href="http://w3layouts.com/">W3layouts</a></p>
+                <p>© <?php echo date('Y'); ?> Ximpleman, All rights reserved | <a href="http://www.passwordbolivia.com/">Password Ingeniería Hardware & Software </a></p>
             </div>
         </div>
         
@@ -1004,10 +1070,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <div class="container">
                 <div class="w3layouts-foot">
                     <ul>
-                        <li><a href="#" class="w3_agile_facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                        <li><a href="#" class="agile_twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                        <li><a href="#" class="w3_agile_dribble"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>
-                        <li><a href="#" class="w3_agile_vimeo"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
+                        <li><a href="https://www.facebook.com/sisximpleman/" class="w3_agile_facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                        <li><a href="https://www.twitter.com/sisximpleman/" class="agile_twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                        <!--<li><a href="#" class="w3_agile_dribble"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li>-->
+                        <li><a href="https://www.vimeo.com/sisximpleman/" class="w3_agile_vimeo"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
                     </ul>
                 </div>
                 <div class="payment-w3ls">  
@@ -1019,7 +1085,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- //footer -->   
 <!-- Bootstrap Core JavaScript -->
 <script src="<?php echo $raiz;?>js/bootstrap.min.js"></script>
-<?php echo $raiz;?>js/bootstrap.min.js
 <!-- top-header and slider -->
 <!-- here stars scrolling icon -->
     <script type="text/javascript">

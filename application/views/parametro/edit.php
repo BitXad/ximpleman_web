@@ -259,9 +259,9 @@
                         <label for="parametro_notaentrega" class="control-label">NOTA DE ENTREGA</label>
                         <div class="form-group">
                             <select  name="parametro_notaentrega" class="form-control" id="parametro_notaentrega">
-                                <option value="1" <?php if($parametro['parametro_notaentrega']=='1') echo 'selected'; ?> >NOTA DE ENTREGA N° 1</option>
-                                <option value="2" <?php if($parametro['parametro_notaentrega']=='2') echo 'selected'; ?> >NOTA DE ENTREGA N° 2</option>
-                                <option value="3" <?php if($parametro['parametro_notaentrega']=='3') echo 'selected'; ?> >NOTA DE ENTREGA N° 3</option>
+                                <option value="1" <?php if($parametro['parametro_notaentrega']=='1') echo 'selected'; ?> >NOTA 1 (Boucher)</option>
+                                <option value="2" <?php if($parametro['parametro_notaentrega']=='2') echo 'selected'; ?> >NOTA 2 (Carta)</option>
+                                <option value="3" <?php if($parametro['parametro_notaentrega']=='3') echo 'selected'; ?> >NOTA 3 (Pre-Impresa)</option>
                             </select>
                         </div>
                     </div>

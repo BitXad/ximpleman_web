@@ -30,6 +30,7 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />  
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
 <!--
 <button onclick="mostrar_grafica()">
@@ -433,6 +434,132 @@
               </div>
  </section>
 
+        <section class="col-lg-5 connectedSortable">
+          <!-- Custom tabs (Charts with tabs)-->
+          
+          <!-- /.box -->
+
+          <!-- quick email widget -->
+          <div class="box box-info">
+            <div class="box-header">
+              <i class="fa fa-cubes"></i>
+
+              <h3 class="box-title">Pedidos para hoy
+              </h3>
+              
+                      <div id="div_fecha" style="display: none; padding:0; ">
+                          
+                          <input type="date" id="calendario" value="<?php echo date("Y-m-d"); ?>" class="btn btn-default btn-xs" onchange="buscar_pedido_diario(2)" style="padding:0;" />
+                          
+                      </div>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip"
+                        title="Remove">
+                  <i class="fa fa-times"></i></button>
+                  
+              </div>
+              <!-- /. tools -->
+            </div>
+            <div class="box-body">
+
+
+              <table class="table table-condensed">
+                <tr>
+                  <th>#</th>
+                  <th>
+                      <div id="div_select" style="display: block; padding:0;">
+                      
+                      <select class="btn btn-default btn-xs" id="select_fecha" onchange="buscar_pedido_diario(1)" style="width:55px; padding: 0;">
+                          <option value="1">Hoy</option>
+                          <option value="2">Mañana</option>
+                          <option value="3">Ayer</option>
+                          <option value="4">Fecha</option>
+                      </select>
+                          
+                      </div>
+
+                  
+                  </th>
+                  <th>Proveedor/Detalle</th>
+                  <th>
+                        Bs
+                        <a href="<?php echo base_url("pedido_diario/pedido_nuevo"); ?>" class="btn btn-default btn-xs"><fa class="fa fa-cube"></fa> </a>
+                  </th>
+                </tr>
+                <tbody id="tabla_pedidos_diarios">
+                    
+                    
+                 <?php $cont = 0; $total_dia = 0;
+                  
+                 foreach($pedidos_diarios as $pedidos){
+                        $total_dia = $total_dia + $pedidos['pedido_montototal'];
+                        $cont++;
+                        if($cont%1 == 0){ $tipobar = "danger"; $color="red";}
+                        if($cont%2 == 0){ $tipobar = "info";  $color="light-blue";}
+                        if($cont%3 == 0){ $tipobar = "success"; $color="green";}
+                        if($cont%4 == 0){ $tipobar = "warning"; $color="yellow";}
+                        if($cont%5 == 0){ $tipobar = "facebook"; $color="blue";}
+                ?>
+
+                <tr>
+                    
+                      <td><?php echo $cont; ?></td>
+                      <td>
+                          <small>
+                          
+                          <?php 
+                          $fecha = new DateTime($pedidos['pedido_fecha']);
+                            $fecha_d_m_y = $fecha->format('d/m/Y');
+
+                            echo $fecha_d_m_y; // 01/02/2017
+                            ?>
+                          </small>
+                       </td>
+                        <?php 
+                            $nombre_proveedor = $pedidos['proveedor_nombre'];
+                            
+                            if (strlen($nombre_proveedor)>14){
+                                $nombre_proveedor = substr($nombre_proveedor, 0, 12).".."; 
+                            }
+                                
+                        ?>
+                       
+                      <td style="line-height: 10px;" >
+                        <b><?php echo $nombre_proveedor; ?></b>
+                        <a href='<?php echo base_url("pedido_diario/modificar_pedido/".$pedidos['pedido_id']); ?>'><fa class='fa fa-edit'></fa></a>
+                        <br>
+                        <small>
+                            <?php echo $pedidos['pedido_resumen']; ?>
+                        </small>
+                      </td>
+                      <td style="text-align: right;">
+                          <span class="badge bg-<?php echo $color; ?>">
+                              <?php echo number_format($pedidos['pedido_montototal'],2,'.',',');?>
+                          </span>
+                      </td>
+                </tr>
+                
+                <?php } ?>
+                <tr>
+                    <td colspan="3"><b>TOTAL PEDIDOS PARA HOY Bs</b></td>
+                    <td >
+                        <!--<span class="badge bg-purple">-->
+                        <b>
+                            <?php echo number_format($total_dia,2,'.',',');?>                        
+                        </b>
+                        <!--</span>-->
+                    </td>
+                </tr>
+                
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+
+        </section>
    
     <!-- /.content -->
     
@@ -481,18 +608,30 @@
                         ?>
              
                     <tr>
-                      <td><?php echo $cont; ?></td>
-                      <td><img src="<?php echo base_url('resources/images/usuarios/thumb_'.$user['usuario_imagen']); ?>" class="img-circle" width="50" height="50">
-                          <?php echo $user['usuario_nombre']; ?> </td>
+                       <td style="padding: 0;"><?php echo $cont; ?></td>
+                       <td style="padding: 0; width:50px;" ><img src="<?php echo base_url('resources/images/usuarios/thumb_'.$user['usuario_imagen']); ?>" class="img-circle" width="50" height="50">
+                          <?php //echo $user['usuario_nombre']; ?> 
+                      </td>
                     
-                      <td>
-                        <div class="progress progress-xs">             
+                      <td style="padding: 0;">
+                          <small>
+                              <?php echo $user['usuario_nombre']; ?>
+                          </small>
+                        <div class="progress progress-xs">   
                             
-                          <div class="progress-bar progress-bar-<?php echo $tipobar; ?> progress-xs" style="width: <?php echo $user['total_ventas']/$ventas[0]['total_ventas']*100;?>%"></div>                    
+                          <div class="progress-bar progress-bar-<?php echo $tipobar; ?> progress-xs" style="width: <?php echo $user['total_ventas']/$ventas[0]['total_ventas']*100;?>%"></div>
                         </div>
                       </td>
-                      <td><span class="badge bg-<?php echo $color; ?>"><?php echo number_format($user['total_ventas'],2,',','.');?></span></td>
+                      <td style="padding: 0;"><span class="badge bg-<?php echo $color; ?>"><?php echo number_format($user['total_ventas'],2,'.',',');?></span></td>
                     </tr>
+                    
+<!--                    <tr style="padding: 0;">
+                        <td colspan="2"  style="padding: 0;">
+                            <small>
+                               <?php echo $user['usuario_nombre']; ?>                                
+                            </small>
+                        </td>
+                    </tr>-->
                 
                 <?php } ?>
 
@@ -504,8 +643,9 @@
           </div>
         </section>   
     
+
     
-         <section class="col-lg-5 connectedSortable">
+         <section class="col-lg-7 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
           
           <!-- /.box -->
@@ -570,7 +710,7 @@
                           <div class="progress-bar progress-bar-<?php echo $tipobar; ?> progress-xs" style="width: <?php echo $ventas['venta_dia']/$total_dia*200;?>%"></div>
                         </div>
                       </td>
-                      <td><span class="badge bg-<?php echo $color; ?>"><?php echo number_format($ventas['venta_dia'],2,',','.');?></span></td>
+                      <td><span class="badge bg-<?php echo $color; ?>"><?php echo number_format($ventas['venta_dia'],2,'.',',');?></span></td>
                 </tr>
                 
                 <?php } ?>
@@ -582,6 +722,7 @@
           </div>
 
         </section>   
+   
     <br>
         <section>
             <br>
