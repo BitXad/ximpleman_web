@@ -50,7 +50,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- start-smoth-scrolling -->
 </head>
     
-<body>
+<body onload="buscar_por_categoria(<?php echo $parametro[0]["parametro_mostrarcategoria"]; ?>)">
 <!-- header -->
 <!------------------ PRIMERA SECCION -------------------------------------->
     <div class="agileits_header">
@@ -840,25 +840,25 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <!--Header-->
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-cart-arrow-down"></i> Tu Carrito</h4>
+      <div class="modal-header" style="padding:3px;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-cart-arrow-down"></i> Mi Carrito</h4>
       </div>
       <!--Body-->
       <div class="modal-body" style="overflow-x: auto;">
         
         <div class="col-md-12"></div>
-        <table class="table table-hover">
+        <table class="table table-hover" style="font-size: 12px;">
           <thead>
-            <tr style="color: white; background: rgba(0, 0, 0, 0.7);">
-              <th>#</th>
-              <th>Producto</th>
-              <th>Precio</th>
-              <th>Cant.</th>
-              <th>Desc.</th>
-              <th>Total Bs.</th>
+            <tr style="color: white; background: orange; padding: 0;">
+              <th style="padding:0;">#</th>
+              <th style="padding:0;">Producto</th>
+              <th style="padding:0;">Precio</th>
+              <th style="padding:0;">Cant.</th>
+              <!--<th>Desc.</th>-->
+              <th style="padding:0;">Total Bs.</th>
 
               <th></th>
             </tr>

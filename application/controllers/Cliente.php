@@ -563,8 +563,10 @@ class Cliente extends CI_Controller{
 
                     $this->load->model('Categoria_cliente_model');
                     $data['all_categoria_cliente'] = $this->Categoria_cliente_model->get_all_categoria_cliente();
+                                                
+                    $this->load->model('Parametro_model');
+                    $data['parametro'] = $this->Parametro_model->get_parametros();
 
-                    
                     $data['pedido_id'] = 0;
                     $data['_view'] = 'cliente/modificar_cliente';
                     $this->load->view('layouts/main',$data);

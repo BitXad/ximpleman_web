@@ -27,7 +27,7 @@ $config['base_url'] = 'http://192.168.1.100/ximpleman_web/';
 
 */
 
-$config['base_url'] = 'https://192.168.1.107/ximpleman_web';
+$config['base_url'] = 'https://192.168.1.108/ximpleman_web';
 
 /*
 |--------------------------------------------------------------------------

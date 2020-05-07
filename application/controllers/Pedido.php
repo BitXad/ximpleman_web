@@ -1213,8 +1213,15 @@ function registrarpedido()
             if($dia_visita == 7){ $condicion = " and c.dom = 1"; }
             if($dia_visita == 0){ $condicion = " "; } //todos
 
-            $sql="select c.*,p.pedido_id from cliente c
-                  left join (select * from pedido where date(pedido_fecha) = date(now())) as p on p.cliente_id = c.cliente_id ".
+//            $sql="select c.*,p.pedido_id from cliente c
+//                  left join (select * from pedido where date(pedido_fecha) = date(now())) as p on p.cliente_id = c.cliente_id ".
+//                 " where c.estado_id = 1 and  c.usuario_id = ".
+//                  $usuario_id." ".$condicion.                    
+//                  " order by c.cliente_ordenvisita, c.cliente_nombre";
+            
+        
+            $sql="select c.*,p.pedido_id,p.tiporespuesta_id from cliente c
+                  left join (select * from recorrido_usuario where recorrido_fecha = date(now())) as p on p.cliente_id = c.cliente_id ".
                  " where c.estado_id = 1 and  c.usuario_id = ".
                   $usuario_id." ".$condicion.                    
                   " order by c.cliente_ordenvisita, c.cliente_nombre";

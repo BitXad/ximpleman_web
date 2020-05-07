@@ -3062,7 +3062,7 @@ function registrar_recorrido()
                     recorrido_detalleresp:recorrido_detalleresp},
                 success:function(respuesta){
         //            tablaproductos();
-                    alert("Evento realizado con éxito..!")
+                    alert("Respuesta registrada con éxito..!")
                     window.opener.location.reload(); window.close();
                     
                 },                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
