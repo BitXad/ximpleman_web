@@ -360,8 +360,15 @@ function tabla_clientes(response){
                 color = "";
                 if(c[i].pedido_id>0){
                     //alert(c[i].pedido_id);
-                    color = "style='background-color:silver;'";
+                    color = "style='background-color:#DBA901;'";
                 }
+                else{
+                    if(c[i].tiporespuesta_id>0){         
+                        color = "style='background-color:#BDBDBD;'";
+                    }
+
+                }
+                
                     
                 html += "<tr "+color+">";
                 html += "<td "+estilo+">"+(i+1)+"</td>";
@@ -400,10 +407,10 @@ function tabla_clientes(response){
                 
                 if(c[i].pedido_id>0){
                     //html += "PED. 00"+c[i].pedido_id;
-                    html += "        <a href='"+base_url+'pedido/nota_pedido/'+c[i]["pedido_id"]+"' class='btn btn-warning btn-xs' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                    html += "        <a href='"+base_url+'pedido/nota_pedido/'+c[i]["pedido_id"]+"' class='btn btn-facebook btn-xs' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
                 }
                 else{
-                    html += "<a href='"+base_url+"pedido/pedidoabierto/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-facebook btn-xs'><fa class='fa fa-cart-arrow-down'></fa></a>";
+                    html += "<a href='"+base_url+"pedido/pedidoabierto/"+c[i].cliente_id+"' target='_BLANK' class='btn btn-success btn-xs'><fa class='fa fa-cart-arrow-down'></fa></a>";
                 }
                 
                 html += "</td>";

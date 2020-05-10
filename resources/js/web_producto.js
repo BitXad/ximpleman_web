@@ -192,8 +192,6 @@ function buscar_por_categoria(categoria_id)
 
 }
 
-
-
 function mostrar_tabla_resultados(respuesta,pag){
     
         var objeto = respuesta;
@@ -203,6 +201,7 @@ function mostrar_tabla_resultados(respuesta,pag){
         var n = registros.length; //tamaño del arreglo de la consulta
         var ancho_imagen = 100;  
         var alto_imagen = 100; 
+        var idioma_id = document.getElementById('idioma_id').value;
         
         var bloque = 12; 
     
@@ -244,7 +243,8 @@ function mostrar_tabla_resultados(respuesta,pag){
                 
                 if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
                     mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
-                    mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
+                    mimagen += "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' class='img img-circle' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
+//                    mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='"+ancho_imagen+"' height='"+alto_imagen+"' />";
                     mimagen += "</a>";
                 }else{
                     mimagen += "<a href='website/single/"+idioma_id+"/"+registros[i]["producto_id"]+"'>";
@@ -501,7 +501,7 @@ function cantidar(producto_id){
        
    
         var cantidad = document.getElementById('carrito_cantidad'+producto_id).value; 
-        var descuento = document.getElementById('carrito_descuento'+producto_id).value;
+        var descuento = 0; //document.getElementById('carrito_descuento'+producto_id).value;
         //var producto_costo = document.getElementById('producto_costo'+producto_id).value;
         var producto_precio = document.getElementById('carrito_precio'+producto_id).value;
         //var descripcion = document.getElementById('descripcion'+producto_id).value
@@ -537,6 +537,9 @@ function quitarcarrito(producto_id){
 
 
 function tablacarrito(){
+    
+    var estilo = "style='padding:0;'";
+    
     var cliente_id = document.getElementById('cliente').value;
     if(cliente_id==0){
         var cliente = document.getElementById('miip').value;
@@ -570,27 +573,29 @@ function tablacarrito(){
                         subtotal += Number(registros[i]["carrito_subtotal"]);
                         total_detalle = Number(subtotal);
 
-                        html += "<tr>";
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += "<tr "+estilo+">";
+                        html += "<td "+estilo+"><center>"+(i+1)+"</center></td>";
+                        html += "<td "+estilo+">"+registros[i]["producto_nombre"];
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'></td>";
-                        html += "<td align='right'>"+Number(registros[i]["carrito_precio"]).toFixed(2)+"<input type='hidden' id='carrito_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["carrito_precio"]+"' ></td> ";
-                        html += "<td><input  type='text' onkeypress='cantimas(event,"+registros[i]["producto_id"]+")' id='carrito_cantidad"+registros[i]["producto_id"]+"' autocomplete='off' name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["carrito_cantidad"]+"' >";
+                        html += "<td align='right' style='padding-top:0; padding-bottom:0;'>"+Number(registros[i]["carrito_precio"]).toFixed(2)+"<input type='hidden' id='carrito_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["carrito_precio"]+"' ></td> ";
+                        html += "<td "+estilo+"><input  type='number' onkeypress='cantimas(event,"+registros[i]["producto_id"]+")' id='carrito_cantidad"+registros[i]["producto_id"]+"' autocomplete='off' name='cantidad' class='btn btn-default' value='"+registros[i]["carrito_cantidad"]+"' style='padding:0; width:60px;'>";
                         html += "<input id='carrito_id'  name='carrito_id' type='hidden' class='form-control' value='"+registros[i]["carrito_id"]+"'></td>";
-                        html += "<td align='right'>"+Number(registros[i]["carrito_descuento"]).toFixed(2)+" <input type='hidden' id='carrito_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["carrito_descuento"]+"' ></td>";
-                        html += "<td align='right'><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["carrito_total"]).toFixed(2)+"</b></font></span></center></td>";
-                        html += "<td><button class='btn btn-xs btn-danger' onclick='quitarcarrito("+registros[i]["producto_id"]+")'><i class='fa fa-times' style='color: white'></i></button></td>";
+//                        html += "<td align='right' "+estilo+">"+Number(registros[i]["carrito_descuento"]).toFixed(2)+" <input type='hidden' id='carrito_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["carrito_descuento"]+"' ></td>";
+//                        html += "<td align='right'><center><span class='badge badge-success'><font size='4'> <b>"+Number(registros[i]["carrito_total"]).toFixed(2)+"</b></font></span></center></td>";
+                        html += "<td align='right' style='padding-top:0; padding-buttom:0;'>"+Number(registros[i]["carrito_total"]).toFixed(2)+"</td>";
+                        html += "<td "+estilo+"><button class='btn btn-xs btn-danger' onclick='quitarcarrito("+registros[i]["producto_id"]+")'><i class='fa fa-times' style='color: white'></i></button></td>";
                         html += "</tr>";
                        
                        }
-                       html += "<tr>";
+                       html += "<tr style='background: silver; padding:0;'>";
                       // html += "<td><input id='total'  name='total' type='text' class='form-control' value='"+total_detalle+"'></td>";
-                       html += "<td></td>";
-                       html += "<td></td>";
-                       html += "<td></td>";
-                       html += "<td><font size='3'>TOTAL BS.</td>";
-                       html += "<td></td>";
-                       html += "<td align='right'><font size='3'><b>"+Number(suma).toFixed(2)+"</td>";
+                       html += "<td style='padding:0;'></td>";
+//                       html += "<td></td>";
+//                       html += "<td></td>";
+                       html += "<td colspan='3' style='padding:0;'><b><font size='3'>TOTAL Bs.</b></font></td>";
+//                       html += "<td></td>";
+                       html += "<td align='right' style='padding:0;'><font size='3'><b>"+Number(suma).toFixed(2)+"</b></font></td>";
+                       html += "<td style='padding:0;'></td>";
                        html += "</tr>";
                        $("#carritos").html(html);
                        $("#modalCart").modal("show");

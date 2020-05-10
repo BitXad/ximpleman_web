@@ -39,7 +39,7 @@
 <div class="row clearfix">-->
 <div class="box-body col-md-6" style="padding: 0">
     <center>
-        <h3 class="box-title" style="font-family: Arial; margin: 0;" >Pedidos</h3>
+        <h3 class="box-title" style="font-family: Arial; margin: 0;" >Pedidos Realizados</h3>
     </center>
 </div>
 
@@ -64,7 +64,7 @@
                  
     <div class="col-md-3"  style="padding:3px;  margin-bottom: 0; margin-top: 0;">
         <div class="form-group" style=" margin-bottom: 0; margin-top: 0;">
-        <select class="btn btn-facebook btn-sm form-control" id="select_pedidos" onclick="buscar_pedidos()">
+        <select class="btn btn-facebook btn-sm form-control" id="select_pedidos" onchange="buscar_pedidos()">
             <option value="1">Pedidos de Hoy</option>
             <option value="2">Pedidos de Ayer</option>
             <option value="3">Pedidos de la semana</option>
@@ -83,8 +83,8 @@
         <div class="form-group" style="margin-bottom: 0;">
             <center>
                 <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 80px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Clientes</a>
-                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 80px;"><span class="fa fa-cart-arrow-down"></span> Pedido</a>
-                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 80px;"><span class="fa fa-steam"></span> Recorrido</a>
+                <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 80px;"><span class="fa fa-cart-arrow-down"></span> </span> <span class="fa fa-user-plus"></span> Pedido</a>
+                <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 80px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
                 <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;"><span class="fa fa-map"></span> Mapa</a>                
             </center>
         </div>
