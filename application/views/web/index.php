@@ -154,13 +154,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                       </div>
                     </div>
                     <!-- --------------- F I N Modal para ver el avance de OT --------------- -->
+                    
                 <div class="product_list_header">  
                     <form action="#" method="post" class="last"> 
                         <input type="hidden" name="cmd" value="_cart">
                         <input type="hidden" name="display" value="1">
-                        <button class="w3view-cart" type="button" class="btn btn-primary" onclick="tablacarrito()"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+                        <button class="w3view-cart" type="button" class="btn btn-primary" onclick="tablacarrito()"><i class="fa fa-cart-arrow-down" aria-hidden="true" title="Mi Carrito"></i></button>
+                        
                         <?php if(isset($_COOKIE["cliente_id"])) { ?>
-                        <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesion"></i></button>
+                                <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesion"></i></button>
                         <?php }  ?>
 
                     </form>
@@ -287,55 +289,54 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <!------------------------ BUSCADOR --------------------------->     
     <div class="container">
         
-        <!--<div class="container">-->
+        <div class="container">
+            
+            
+        <div class="col-md-6">
+            
+            <div class="input-group input-group-sm">
+            <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
+            <span class="input-group-btn">
+            <button class="btn btn-warning" onclick="buscar_producto()" type="button">
+                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+            </button>
+            </span>
+            </div>
+
+        </div>
             
         
-<!--        <div class="col-md-5">
+        <div class="col-md-6">
             
-            <div class="input-group input-group-lg">
+            <div class="input-group input-group-sm">
             
-                <select type="text" onkeypress="buscarpro(event)" name="buscar_categoria" id="buscar_categoria" class="form-control" autocomplete="off" >
-                    <?php 
-                        foreach($categorias as $cat){?>                    
-                            <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
-                        <?php } ?>    
+                <select onchange="buscar_por_subcategoria(this.value)" name="select_subcategoria" id="select_subcategoria" class="form-control" autocomplete="off" >
+                    <option value="0" selected> TODOS </option>
                 </select>
             <span class="input-group-btn">
-            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
+            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-list" aria-hidden="true">
             </span> </button>
             </span>
             </div>
 
-        </div>-->
-            
-        <!--<div class="col-md-12">-->
-            
-            <div class="input-group input-group-lg">
-            <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
-            <span class="input-group-btn">
-            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-search" aria-hidden="true">
-            </span> Buscar</button>
-            </span>
-            </div>
-
-<!--        </div>
-            
-        </div>-->
+        </div>
+        
+        </div>
         
         
         <div class="w3l_search">
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
             <?php if(!isset($_COOKIE["cliente_id"])) {
-    $cliente_ide = 0;
-} else {
-    $cliente_ide = $_COOKIE["cliente_id"];
-}
-?>
+                    $cliente_ide = 0;
+                } else {
+                    $cliente_ide = $_COOKIE["cliente_id"];
+                }
+            ?>
             <input type="hidden" name="cliente" id="cliente" value="<?php echo $cliente_ide; ?>" />
             <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
             <input type="hidden" name="myip" id="myip" value="" />
             <input type="hidden" name="seip" id="seip" value="" />
-            <input type="hidden" name="miip" id="miip" value="" />
+            <input type="text" name="miip" id="miip" value="" />
             <!--<form te="#" method="post">-->
             
             
@@ -369,10 +370,10 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <li role="presentation" class="active"><a href="#expeditions" id="expeditions-tab" role="tab" data-toggle="tab" aria-controls="expeditions" aria-expanded="true"><?php echo $seccion2[0]['seccion_titulo']; ?></a></li>
                         <li role="presentation"><a href="#tours" role="tab" id="tours-tab" data-toggle="tab" aria-controls="tours"><?php echo $seccion3[0]['seccion_titulo']; ?></a></li>
                     </ul>
-                    <div id="myTabContent" class="tab-content">
+                    <div id="myTabContent" class="tab-content" style="padding: 20px;">
                         <div role="tabpanel" class="tab-pane fade in active" id="expeditions" aria-labelledby="expeditions-tab">
                             <div class="agile-tp">
-                                <h5><?php echo $seccion1[0]['seccion_descripcion']; ?></h5>
+                                <h5 style="margin: 0px;"><?php echo $seccion1[0]['seccion_descripcion']; ?></h5>
                                 <p class="w3l-ad"><?php echo $seccion1[0]['seccion_texto']; ?></p>
                             </div>
                             <div class="agile_top_brands_grids">
@@ -384,20 +385,20 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                 <div class="agile_top_brand_left_grid_pos">
                                                         <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive" />
                                                 </div>
-                                                <div class="agile_top_brand_left_grid1">
+                                                <div class="agile_top_brand_left_grid1" style="line-height: 10px;">
                                                     <figure>
                                                         <div class="snipcart-item block" >
                                                             <div class="snipcart-thumb">
-                                                                    <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$os['producto_foto'];?>" /></a>     
-                                                                    <p><?php echo $os['producto_nombre'];?></p>
-                                                                    <div class="stars">
+                                                                <a href="products.html"><img title=" " alt=" " src="<?php echo base_url()."resources/images/productos/".$os['producto_foto']; ?>" width="100" height="100"/></a>     
+                                                                    <p style="margin-top: 5px;margin-bottom: 5px;"><?php echo $os['producto_nombre'];?></p>
+                                                                    <div class="stars" style="margin-bottom: 0px;">
                                                                             <i class="fa fa-star blue-star" aria-hidden="true"></i>
                                                                             <i class="fa fa-star blue-star" aria-hidden="true"></i>
                                                                             <i class="fa fa-star blue-star" aria-hidden="true"></i>
                                                                             <i class="fa fa-star blue-star" aria-hidden="true"></i>
                                                                             <i class="fa fa-star gray-star" aria-hidden="true"></i>
                                                                     </div>
-                                                                    <h4><?php echo number_format($os['promocion_preciototal'], 2, '.',',');?><span><?php echo number_format($os['producto_precio'], 2, '.', ','); ?></span></h4>
+                                                                    <h4 style="margin-bottom: 5px; margin-top: 5px;"><?php echo "Bs ".number_format($os['promocion_preciototal'], 2, '.',',');?><span><?php echo number_format($os['producto_precio'], 2, '.', ','); ?></span></h4>
                                                             </div>
                                                             <div class="snipcart-details top_brand_home_details">
                                                                 <form action="#" method="post">
@@ -411,7 +412,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                                     <input type="hidden" name="currency_code" value="USD" />
                                                                     <input type="hidden" name="return" value=" " />
                                                                     <input type="hidden" name="cancel_return" value=" " />
-                                                                    <input type="button" name="submit" value="Añadir al pedido" class="button" onclick="insertar(<?php echo $os['producto_id'];?>)"/>
+                                                                    
+                                                                    <!--<input type="button" name="submit" value="Añadir al pedido" class="button" onclick="insertar(<?php echo $os['producto_id'];?>)"/>-->
+                                                                    <button type="button" name="submit" class="btn btn-info btn-sm" onclick="insertar(<?php echo $os['producto_id'];?>)"><fa class='fa fa-cart-plus'></fa> AÑADIR AL PEDIDO</button>
                                                                      
                                                                     </fieldset>
                                                                 </form>
@@ -857,7 +860,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
               <th style="padding:0;">Producto</th>
               <th style="padding:0;">Precio</th>
               <th style="padding:0;">Cant.</th>
-              <!--<th>Desc.</th>-->
+              <th>Desc.</th>
               <th style="padding:0;">Total Bs.</th>
 
               <th></th>
@@ -1066,6 +1069,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         
     </div>  
+
     <div class="footer-botm">
             <div class="container">
                 <div class="w3layouts-foot">
@@ -1126,7 +1130,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             });
             
         });
-</script>   
+</script> 
 <!-- //main slider-banner --> 
 </body>
 </html>

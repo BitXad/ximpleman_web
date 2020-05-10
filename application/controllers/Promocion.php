@@ -49,7 +49,7 @@ class Promocion extends CI_Controller{
 
     function nomproducto($producto)
     {
-            $sql="SELECT producto_nombre FROM producto WHERE producto_id=".$producto." ";
+            $sql="SELECT producto_nombre, producto_precio FROM producto WHERE producto_id=".$producto." ";
             $nombre=$this->db->query($sql)->row_array();
             echo json_encode($nombre);
     }

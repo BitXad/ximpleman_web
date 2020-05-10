@@ -380,6 +380,35 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
+
+    function get_subcategorias($categoria_id)
+    {
+        $sql = "select * from subcategoria_producto where categoria_id = ".$categoria_id.
+                " order by subcategoria_nombre";
+
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+
+    }
+
+    function get_busqueda_subcategoria($subcategoria_id)
+    {
+        $sql = "SELECT
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
+              FROM
+              producto p
+              LEFT JOIN estado e on p.estado_id = e.estado_id
+              LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
+              WHERE 
+                   p.estado_id = 1
+                   and p.subcategoria_id=".$subcategoria_id."
+              GROUP By p.producto_id
+              ORDER By p.producto_nombre";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
     
     function get_all_productosubcategorias($producto_id)
     {

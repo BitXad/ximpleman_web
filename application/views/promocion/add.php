@@ -60,3 +60,54 @@
       	</div>
     </div>
 </div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->
+<div hidden="true">
+    
+<button  id="boton_productos" class="btn btn-primary" data-toggle="modal" data-target="#modalingreso" >
+  Launch demo modal
+</button>
+</div>
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalingreso" tabindex="-1" role="dialog" aria-labelledby="modalingreso" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>PRODUCTOS</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body" id="modalproducto" style="font-family: Arial; font-size:10px;">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+                    <div class="modal-footer">
+                        <div class="form-group">
+                                                        
+                            <button class="btn btn-facebook" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
+                                    <span class="fa fa-floppy-o"></span> Registrar
+                            </button>
+
+                            <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
+                                <span class="fa fa-close"></span>   Cancelar                                                          
+                            </button>
+                        </div>
+                        
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->

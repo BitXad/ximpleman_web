@@ -93,6 +93,33 @@ class Website extends CI_Controller{
         }
     }
     
+    function webbuscar_subcategoria($subcategoria_id)
+    {
+        if($this->input->is_ajax_request()){
+                        
+            $datos = $this->Producto_model->get_busqueda_subcategoria($subcategoria_id);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
+    
+    
+    function obtener_subcategoria($categoria_id)
+    {
+        if($this->input->is_ajax_request()){
+                        
+            $datos = $this->Producto_model->get_subcategorias($categoria_id);
+            echo json_encode($datos);
+        }
+        else
+        {                 
+            show_404();
+        }
+    }
+    
     function webbuscar_categoria_bloque($categoria_id)
     {
         if($this->input->is_ajax_request()){

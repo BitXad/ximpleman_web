@@ -14,7 +14,8 @@ function tablareproducto()
 	var base_url = document.getElementById('base_url').value;
    
     var controlador = base_url+'compra/buscarcompra';
-    var parametro = document.getElementById('vender').value    
+    var parametro = document.getElementById('vender').value;
+    var estilo = "style='padding:0;'";    
     
 
     $.ajax({url: controlador,
@@ -35,11 +36,13 @@ function tablareproducto()
                     var n = registros.length; //tama«Ðo del arreglo de la consulta
                     $("#encontrados").val("- "+n+" -");
                     html = "";
+                    
                     html += "<table class='table table-striped no-print' id='mitabla'>";
                     html += "<tr>"
                     html += "<th>N</th>";
                     html += "<th>ID</th>";
                     html += "<th>Producto</th>";
+                    html += "<th>Precio</th>";
                     html += "<th></th>";
                     html += "</tr>";
                     html += "<tbody class='buscar' id='tablareproducto'>";
@@ -49,36 +52,32 @@ function tablareproducto()
                         html += "<tr>";
                        // "echo form_open('cotizacion/insertarproducto/')"; 
                       
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td>";
+                        html += "<td "+estilo+">"+(i+1)+"</td>";
+                        html += "<td "+estilo+">";
                         
                         html += "<div clas='row'>";                                            
                         
                         html += "<b>"+registros[i]["producto_id"]+"</b>";
                         html += "</td>";
-                        html += "</div>";   
-                        html += "<div class='col-md-12'>";
-                        html += "<td>";
-                        html += "<b>"+registros[i]["producto_nombre"]+"</b>";
-                        
-                        html += "<td>";
 
-                        html += "<button type='button' onclick='selecproducto("+registros[i]["producto_id"]+")' class='btn btn-primary btn-xs'><i class='fa fa-check'></i></button>";
-                        
-                        
-                        
-                        html += "</div>";
-                        html += "</div>";
-                      
+                        html += "<td "+estilo+">";
+                        html += "<b>"+registros[i]["producto_nombre"]+"</b>";                        
                         html += "</td>";
-                      
-                       
+
+                        html += "<td  "+estilo+">";
+                        html += Number(registros[i]["producto_precio"]).toFixed(2);
+                        html += "</td>";
+                        
+                        html += "<td "+estilo+">";
+                        html += "<button type='button' onclick='selecproducto("+registros[i]["producto_id"]+")' class='btn btn-primary btn-xs'><i class='fa fa-check'></i></button>";                        
+                        html += "</td>";                       
                         html += "</tr>";
 
                    }
                        html += "</tbody>"
                    
-                   $("#tablareproducto").html(html);
+                   $("#modalproducto").html(html);
+                   $("#boton_productos").click();
                    
             }
                 
@@ -105,9 +104,17 @@ function selecproducto(producto)
           
            success:function(report){  
             var registros =  JSON.parse(report);
-            var nombre=registros["producto_nombre"];
+            var nombre = registros["producto_nombre"];
+            var precio = registros["producto_precio"];
+            
             $("#vender").val(nombre);
-	
+            $("#promocion_titulo").val("PROMOCIÓN "+nombre);
+            $("#promocion_cantidad").val(1);
+            $("#promocion_preciototal").val(precio);
+            $("#promocion_descripcion").val(nombre);
+            
+            $("#cancelar_preferencia").click();
+            
 	}
 });
 }
