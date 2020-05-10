@@ -124,6 +124,7 @@ pre {
                             <th>Unidad</th>
                             <th>Precio<br>Unit.</th>
                             <th>Cant.</th>
+                            <th>Sub Total.</th>
                             <th>Desc.</th>
                             <th>Precio<br>Total</th>
                     </tr>
@@ -156,6 +157,7 @@ pre {
                          <td style="text-align: center;"> <?php echo $d['producto_unidad']; ?></pre></td>
                          <td  style="text-align: right;"><?php echo number_format($d['detallecot_precio'],2,".",","); ?></td>  
                          <td  style="text-align: center;"> <?php echo $d['detallecot_cantidad']; ?></td>
+                         <td  style="text-align: right;"> <?php echo number_format($d['detallecot_precio']*$d['detallecot_cantidad'],2,".",","); ?></td>
                          <td  style="text-align: right;"> <?php echo number_format($d['detallecot_descuento'], 2, ".", ","); ?> </font></td>
                          <td  style="text-align: right;">   
                          <font size="2"><b><?php echo number_format($d['detallecot_total'],2,".",","); ?></b></font><br>
@@ -175,12 +177,12 @@ pre {
                     <table class="table table-striped table-condensed" id="mitabla">
    <td>
                     	 <center>  
-                    	 <b>LITERAL: <?php echo num_to_letras($totalfinal-$descuento); ?></b></center>
+                    	 <b>LITERAL: <?php echo num_to_letras($totalfinal); ?></b></center>
                     	 <div class="col-md-12" style="text-align: right;">
-                    	 <b>Sub Total <font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font></b><br>
+                    	 <b>Sub Total <font size="3"><b><?php echo number_format($totalfinal + $descuento,2,".",","); ?></b></font></b><br>
                        <b>Toltal Desc. <font size="3"><b><?php echo number_format($descuento,2,".",","); ?></b></font></b><br>
                     	 <b>TOTAL
-                            	<font size="3"><b><?php echo number_format($totalfinal-$descuento,2,".",","); ?></b></font>
+                            	<font size="3"><b><?php echo number_format($totalfinal,2,".",","); ?></b></font>
                         </div>    
                    </td>
                     
