@@ -193,6 +193,7 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
                 </div>
                 <div class="col-md-8 agileinfo_single_right">
                 <h2><?php echo $producto[0]['producto_nombre']; ?></h2>
+                    
                     <div class="rating1">
                         <span class="starRating">
                             <input id="rating5" type="radio" name="rating" value="5">
@@ -207,21 +208,27 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
                             <label for="rating1">1</label>
                         </span>
                     </div>
-                    <div class="w3agile_description">
+                
+                    
+                    
+                    <div class="w3agile_description"  style="padding: 0;margin: 0px;">
+                        <h4 class="m-sing" ><b>DESCRIPCIÓN</b></h4>                        
+                        <p style="padding: 0;margin: 0px;"><?php echo $producto[0]['producto_caracteristicas']; ?></p>
+                        <hr style="padding: 0;margin: 0px;">
                         
-                        <p><b>Categoria :</b> <?php echo $producto[0]['categoria_nombre']; ?></p>
+<!--                        <p style="padding: 0;margin: 0px;"><b>Categoria :</b> <?php echo $producto[0]['categoria_nombre']; ?></p>
                         
-                        <p><b>Marca :</b> <?php echo $producto[0]['producto_marca']; ?></p>
+                        <p style="padding: 0;margin: 0px;"><b>Marca :</b> <?php echo $producto[0]['producto_marca']; ?></p>
                         
-                        <p><b>Industria :</b> <?php echo $producto[0]['producto_industria']; ?></p>
-                        <p><?php echo $producto[0]['producto_caracteristicas']; ?></p>
+                        <p style="padding: 0;margin: 0px;"><b>Industria :</b> <?php echo $producto[0]['producto_industria']; ?></p>-->
                     </div>
+                
                     <div class="snipcart-item block">
                         <div class="snipcart-thumb agileinfo_single_right_snipcart">
-                            <h4 class="m-sing">Bs. <?php echo number_format($producto[0]['producto_precio'],2,'.',','); ?></h4>
+                            <h4 class="m-sing" >Bs <?php echo number_format($producto[0]['producto_precio'],2,'.',','); ?></h4>
                         </div>
                         <div class="snipcart-details agileinfo_single_right_details">
-                            <form action="#" method="post">
+<!--                            <form action="#" method="post">
                                 <fieldset>
                                     <input type="hidden" name="cmd" value="_cart">
                                     <input type="hidden" name="add" value="1">
@@ -232,13 +239,37 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
                                     <input type="hidden" name="currency_code" value="USD">
                                     <input type="hidden" name="return" value=" ">
                                     <input type="hidden" name="cancel_return" value=" ">
+                                    
                                     <input type="submit" name="submit" value="Add to cart" class="button">
+                                </fieldset>
+                            </form>-->
+                            <form action="#" method="post">
+                                <fieldset>
+                                    <input type="hidden" name="cmd" value="_cart" />
+                                    <input type="hidden" name="add" id="cantidad<?php echo $producto[0]['producto_id'];?>" value="1" />
+                                    <input type="hidden" name="business" value=" " />
+                                    <input type="hidden" name="item_name" value="<?php echo $producto[0]['producto_nombre'];?>" />
+                                    <input type="hidden" name="amount" id="producto_precio<?php echo $producto[0]['producto_id'];?>" value="<?php echo $producto[0]['producto_precio'];?>" />
+                                    <input type="hidden" name="discount_amount" id="descuento<?php echo $producto[0]['producto_id'];?>" value="<?php echo ($producto[0]['producto_precio']); ?>" />
+                                    <input type="hidden" name="currency_code" value="USD" />
+                                    <input type="hidden" name="return" value=" " />
+                                    <input type="hidden" name="cancel_return" value=" " />
+                                    <!--<input type="button" name="submit" value="Añadir al pedido" class="button" onclick="insertar(<?php echo $producto[0]['producto_id'];?>)"/>-->
+                                    <a href="<?php echo base_url("website/micarrito/".$idioma_id); ?>" type="button" name="submit" class="btn btn-info btn-sm" onclick="insertar(<?php echo $producto[0]['producto_id'];?>)">
+                                            <fa class='fa fa-cart-plus'></fa> Mi Carrito
+                                    </a>
+
                                 </fieldset>
                             </form>
                         </div>
                     </div>
                 </div>
-                <div class="clearfix"> </div>
+                
+                    <div class="checkout-right-basket">
+                                    <a href="<?php echo base_url(); ?>"><span class="fa fa-cart-arrow-down" aria-hidden="true"></span> Continuar Comprando</a>
+                    </div>
+                    <div class="clearfix"> </div>
+
             </div>
         </div>
     </div>
