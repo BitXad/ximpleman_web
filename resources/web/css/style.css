@@ -592,6 +592,7 @@ i.gray-star {
 	border: none;
 	text-indent: 100%;
 	background: url(../images/arrow.png) no-repeat 0px 0px;
+	/*background: url(../images/blue.png) no-repeat 0px 0px;*/
 }
 #toTopHover {
 	width: 32px;
@@ -1357,7 +1358,7 @@ ul.faq {
 /*-- //single --*/
 .brands {
     padding: 5em 0;
-    background: #eed3b6;
+    background: #fe9126;
 }
 .brands-w3l {
     text-align: center;

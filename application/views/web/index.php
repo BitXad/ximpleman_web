@@ -38,8 +38,28 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         $(".scroll").click(function(event){     
             event.preventDefault();
             $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+            
         });
     });
+    
+    
+function mostrar() {
+       // $('#map').css({ 'width':'100%', 'height':'400px' });
+   
+//    obj = document.getElementById('oculto'+a);
+//    //obj.style.visibility = (obj.style.visibility == 'hidden') ? 'visible' : 'hidden';
+//    //objm = document.getElementById('map');
+//    if(obj.style.visibility == 'hidden'){
+//        $('#map').css({ 'width':'0px', 'height':'0px' });
+//        $('#mosmapa').text("Modificar Ubicación del negocio");
+//    }else{
+//        $('#map').css({ 'width':'100%', 'height':'400px' });
+//        $('#mosmapa').text("Cerrar mapa");
+//    }
+
+}
+    
+    
 </script>
 <script src="//norfipc.com/js/jquery.cookie.js"></script>
 <script src="//norfipc.com/js/cookiecompliance.js"></script>
@@ -63,11 +83,13 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!------------------ MENU CABECERA  ----------------------------------->                    
                 <div class="agile-login">
                     <ul>
-                        <li><a href="" data-toggle="modal" data-target="#seguimientoOT">Clientes</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#seguimientoOT">Ordenes</a></li>
                         <li><a href="" data-toggle="modal" data-target="#seguimientoservicio">servicio</a></li>
+                        
                         <?php foreach($menu_cabecera as $cabecera) { ?>
                         <li><a href="<?php echo base_url().$cabecera['menu_enlace']; ?>"><?php echo $cabecera['menu_nombre']; ?></a></li>
                         <?php } ?>
+                        
                         <!--<li><select class="selectpicker" data-width="fit">
                     <option data-content='<span class="flag-icon flag-icon-us"></span> English'><span class="flag-icon flag-icon-us"></span>English</option>
                     <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
@@ -162,7 +184,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <button class="w3view-cart" type="button" class="btn btn-primary" onclick="tablacarrito()"><i class="fa fa-cart-arrow-down" aria-hidden="true" title="Mi Carrito"></i></button>
                         
                         <?php if(isset($_COOKIE["cliente_id"])) { ?>
-                                <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesion"></i></button>
+                                <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesión"></i></button>
                         <?php }  ?>
 
                     </form>
@@ -197,6 +219,8 @@ License URL: http://creativecommons.org/licenses/by/3.0/
  FIN SEGUNDA SECCION -------------------------------------->
 
 <!-- //header -->
+
+
 <!-- navigation -->
     <div class="navigation-agileits">
         <div class="container">
@@ -233,7 +257,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                             </select>        
                                         </li>-->
                                         
-                                        
+<!--                                        
                                         <li class="dropdown">
                                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categorias<b class="caret"></b></a>
                                             <ul class="dropdown-menu multi-column columns-3">
@@ -243,7 +267,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                             <h6>Todas</h6>
                                                             <?php 
                                                                 foreach($categorias as $cat){?>                    
-                                                                    <!--<li><a href="" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></a></li>-->
+                                                                    <li><a href="" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></a></li>
                                                                     <li style="padding: 0; margin: 3px;"><button style="background: none; border: transparent; padding:0;" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></button></li>
                                                             <?php } ?>      
                                                         </ul>
@@ -252,9 +276,54 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                 </div>
                                         </ul>
                                     </li>                                        
+-->
+                                        <!------- Bloque de codigo 1 ------------>
+                                        
+                        <?php if(isset($_COOKIE["cliente_id"])) { 
+                            
+                                        $nombre_cliente = ucwords(strtolower($_COOKIE["cliente_nombre"])); 
+                                        
+                                        if(strlen($nombre_cliente)>15){
+                                                $nombre_cliente = substr($nombre_cliente, 0, 12)."..";
+                                        }
+                        ?>
+                                    
+                                        <!------- Inicio menu usuario ------------>                                        
+                                        <li class="dropdown">
+                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><fa class="fa fa-user"></fa><small> <?php echo $nombre_cliente; ?></small></a>
+                                            <ul class="dropdown-menu multi-column columns-3">
+                                                <div class="row">
+                                                    <div class="multi-gd-img">
+                                                        <ul class="multi-column-dropdown">
+                                                            <!--<h6>Todas</h6>-->
+                                                            <li><a href="<?php echo base_url("website/miperfil/").$idioma_id; ?>" >Mi perfil</a></li>
+                                                            <li><a href="<?php echo base_url("website/micarrito/").$idioma_id; ?>" >Mi carrito</a></li>
+                                                            <li><a href="<?php echo base_url("website/miscompras/").$idioma_id; ?>" >Mis Compras</a></li>
+                                                            <li><a href="<?php echo base_url("website/cerrarsesion/").$idioma_id; ?>" >Finalizar Sesion</a></li>
+                                                            
+                                                        </ul>
+                                                    </div>	
 
-                                        <!------- Bloque de codigo 1 ------------>                                                        
+                                                </div>
+                                        </ul>
+                                    </li>                                         
+                                    <!------- Fin menu usuario ------------>                                                                            
+                        <?php } else{ ?>                                    
+
+                                        <!------- Inicio iniciar sesion ------------>                                        
+                                        <li class="dropdown">
+                                            <a href="#modalCliente" data-target="#modalCliente"  class="dropdown-toggle" data-toggle="modal">Iniciar Sesión</a>
+                                        </li>                                         
+                                        <!------- Fin iniciar sesion ----------
+                                                                       
+                        <?php }  ?>                                    
+                                    
+                                        
                                     </ul>
+                                <ul>
+                                
+                                </ul>
+                                
                                 </div>
                                 <!--------------------- FIN MENU PRINCIPAL ---------------------------------------->                            
                             </nav>
@@ -262,7 +331,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         </div>
         
 <!-- //navigation -->
+
+
+
+
     <!-- main-slider -->
+                                        
         <ul id="demo1">
                     <?php 
                         
@@ -281,50 +355,213 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <?php } ?>
 
         </ul>
+    
     <!-- //main-slider -->
+    
+    
+    
     <!-- //top-header and slider -->
     <!-- top-brands -->
+<!---------------------- carrusel ------------------------------------>
+
+  
+<!--            <div class="container">
+                <div class="col-md-12">
+                
+			<div class="contanier">
+                                    <center>
+                                
+				<h3 class="w3_agile_header">COMPRAR NUNCA FUE TAN FACIL</h3>
+				<h3 class="page-header icon-subheading">Glyphicons</h3>
+				<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
+                                        <li> 
+                                            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 
+                                            <span class="glyphicon-class">glyphicon glyphicon-asterisk</span> 
+                                        </li> 
+                                        <li> 
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
+                                            <span class="glyphicon-class">glyphicon glyphicon-plus</span> 
+                                        </li> 
+                                        <li> 
+                                            <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
+                                            <span class="glyphicon-class">glyphicon glyphicon-euro</span> 
+                                        </li> 
+                                        <li> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
+                                            <span class="glyphicon-class">glyphicon glyphicon-minus</span> 
+                                        </li> 
+                                        <li> 
+                                            <span class="glyphicon glyphicon-eur" aria-hidden="true"></span> 
+                                            <span class="glyphicon-class">glyphicon glyphicon-eur</span> 
+                                        </li> 
+                                        <li> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
+                                            <span class="glyphicon-class">glyphicon glyphicon-minus</span> 
+                                        </li> 
+
+                                </div>
+                                    </center>
+                    </div>
+            </div>  
+        </div>-->
+
+
+<!----------------------- fin carrusel----------------------------------->  
+
+
+<!------------------------- INICIO FRANJA -------------------------------------->
+ 
+ <div class="w3agile-ftr-top"  style="background-color: #333333; color:white;">
+		<div class="ftr-toprow" class="container">
+                    <center  >
+                        <div style="background-color: #000000;" >
+                        <h4 style="margin:0;"><b>COMPRAR NUNCA FUE MÁS FACIL</b></h4>
+                            
+                        </div>
+                        
+                    </center>
+			<div class="ftr-toprow">
+				<div class="col-md-4 ftr-top-grids" >
+                                    <center>
+					<div class="ftr-top-left">
+                                                <h1 style="margin-top: 0px;margin-bottom: 0px;">
+                                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>                                                    
+                                                </h1>
+					</div> 
+					<div class="ftr-top-right">
+                                                <h4 style="margin:0;">PASO 1</h4>
+						<p>Añade productos al carrito</p>
+					</div> 
+					<div class="clearfix"> </div>
+                                    </center>
+				</div>
+                            
+				<div class="col-md-4 ftr-top-grids">
+                                    <center>
+					<div class="ftr-top-left">
+                                                <h1 style="margin-top: 0px;margin-bottom: 0px;">
+						<i class="fa fa-list-ul" aria-hidden="true"></i>
+                                                </h1>
+					</div> 
+					<div class="ftr-top-right">
+						<h4 style="margin:0;">PASO 2</h4>
+						<p>Registra tus datos</p>
+					</div> 
+					<div class="clearfix"> </div>
+                                    </center>
+				</div>
+                            
+				<div class="col-md-4 ftr-top-grids">
+                                    <center>
+					<div class="ftr-top-left">
+                                                <h1 style="margin-top: 0px;margin-bottom: 0px;">
+						<i class="fa fa-truck" aria-hidden="true"></i>
+                                                </h1>
+					</div> 
+					<div class="ftr-top-right">
+                                            <h4 style="margin:0;">PASO 3</h4>
+                                            <p>Recibe tu pedido</p>
+					</div>
+					<div class="clearfix"> </div>
+                                    </center>
+				</div>
+                            
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+     <br>
+	</div>
+ <!--------------------------- FIN FRANJA------------------------------------>    
+ 
+<!------------------------- INICIO BUSCADOR-------------------------------------->
+ 
+ <div class="w3agile-ftr-top"  style="background-color: #333333; color:white;">
+		<div class="ftr-toprow" class="container">
+                    
+			<div class="ftr-toprow">
+
+                                    <center>
+                                        
+                                <div class="container">
+
+
+                                        <div class="col-md-4">
+
+                                            <div class="input-group input-group-sm">
+                                            <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
+                                            <span class="input-group-btn">
+                                            <button class="btn btn-warning" onclick="buscar_producto()" type="button">
+                                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
+                                            </button>
+                                            </span>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-md-4">
+
+                                            <div class="input-group input-group-sm">
+
+                                                <select onchange="buscar_por_categoria(this.value)" name="select_categoria" id="select_categoria" class="form-control" autocomplete="off" >
+                                                    <option value="0" selected> TODOS </option>
+                                                
+                                                    <?php 
+                                                        foreach($categorias as $cat){?>    
+                                                             <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
+                                                    
+                                                    <?php } ?>  
+                                                </select>
+                                                
+                                            <span class="input-group-btn">
+                                            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-list" aria-hidden="true">
+                                            </span> </button>
+                                            </span>
+                                            </div>
+
+                                        </div>
+
+
+                                        <div class="col-md-4">
+
+                                            <div class="input-group input-group-sm">
+
+                                                <select onchange="buscar_por_subcategoria(this.value)" name="select_subcategoria" id="select_subcategoria" class="form-control" autocomplete="off" >
+                                                    <option value="0" selected> TODOS </option>
+                                                </select>
+                                            <span class="input-group-btn">
+                                            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-list" aria-hidden="true">
+                                            </span> </button>
+                                            </span>
+                                            </div>
+
+                                        </div>
+
+                                        </div>      
+                                        
+                                        
+                                    </center>
     
-    <div class="top-brands">
-        <!------------------------ BUSCADOR --------------------------->     
-    <div class="container">
+			</div>
+		</div>
+     <br>
+    </div>
+ <!--------------------------- FIN BUSCADOR------------------------------------>       
+        
+        
+        
+
+    
+    <div class="top-brands" style="padding-top: 20px;padding-bottom: 20px;">
+        <!------------------------ BUSCADOR --------------------------->         
+                <h2 class="w3_agile_vimeo">NUESTROS PRODUCTOS</h2>
+
         
         <div class="container">
-            
-            
-        <div class="col-md-6">
-            
-            <div class="input-group input-group-sm">
-            <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
-            <span class="input-group-btn">
-            <button class="btn btn-warning" onclick="buscar_producto()" type="button">
-                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
-            </button>
-            </span>
-            </div>
-
-        </div>
-            
-        
-        <div class="col-md-6">
-            
-            <div class="input-group input-group-sm">
-            
-                <select onchange="buscar_por_subcategoria(this.value)" name="select_subcategoria" id="select_subcategoria" class="form-control" autocomplete="off" >
-                    <option value="0" selected> TODOS </option>
-                </select>
-            <span class="input-group-btn">
-            <button class="btn btn-warning" onclick="buscar_producto()" type="button"><span class="glyphicon glyphicon-list" aria-hidden="true">
-            </span> </button>
-            </span>
-            </div>
-
-        </div>
-        
-        </div>
         
         
         <div class="w3l_search">
+            <center>
+                
+                
             <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
             <?php if(!isset($_COOKIE["cliente_id"])) {
                     $cliente_ide = 0;
@@ -336,7 +573,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             <input type="hidden" name="idioma_id" id="idioma_id" value="<?php echo $idioma_id; ?>" />
             <input type="hidden" name="myip" id="myip" value="" />
             <input type="hidden" name="seip" id="seip" value="" />
-            <input type="text" name="miip" id="miip" value="" />
+            <input type="hidden" name="miip" id="miip" value="" />
             <!--<form te="#" method="post">-->
             
             
@@ -345,12 +582,22 @@ License URL: http://creativecommons.org/licenses/by/3.0/
             </div>
                
             <!--</form>-->
+            </center>
         </div>
 <!------------------------ BUSCADOR --------------------------->                    
             
             <br><br>
             <div id="tablaresultados"></div>
+            
     </div>
+        
+ 
+        
+        
+        
+        
+        
+        
         <div class="container">
         <!--<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
         
@@ -363,6 +610,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <?php } ?>-->
                 
 <!------------------------------------- SEGUNDA SECCION -------------------------------------->
+            
+            <div class="col-md-12">
+                <h2 class="w3_agile_vimeo">NUESTRAS OFERTAS</h2>
+                <div class="clearfix"> </div>
+            </div>  
+            <br>
+
+        
+
 
                 <div class="grid_3 grid_5">
                 <div class="bs-example bs-example-tabs" role="tabpanel" data-example-id="togglable-tabs">
@@ -389,7 +645,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                     <figure>
                                                         <div class="snipcart-item block" >
                                                             <div class="snipcart-thumb">
-                                                                <a href="products.html"><img title=" " alt=" " src="<?php echo base_url()."resources/images/productos/".$os['producto_foto']; ?>" width="100" height="100"/></a>     
+                                                                <a href="<?php echo base_url("website/single/".$idioma_id."/".$os['producto_id']); ?>">
+                                                                    <img title=" " alt=" " src="<?php echo base_url()."resources/images/productos/".$os['producto_foto']; ?>" width="100" height="100"/>
+                                                                </a>     
                                                                     <p style="margin-top: 5px;margin-bottom: 5px;"><?php echo $os['producto_nombre'];?></p>
                                                                     <div class="stars" style="margin-bottom: 0px;">
                                                                             <i class="fa fa-star blue-star" aria-hidden="true"></i>
@@ -450,7 +708,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                                                 <figure>
                                                     <div class="snipcart-item block" >
                                                         <div class="snipcart-thumb">
-                                                            <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz."/images/".$od['producto_foto'];?>" /></a>     
+                                                            <a href="<?php echo base_url("website/single/".$idioma_id."/".$od['producto_id']); ?>">
+                                                                <img title=" " alt=" " src="<?php echo $raiz."/images/".$od['producto_foto'];?>" />
+                                                            </a>
                                                             <p><?php echo $od['producto_nombre'];?></p>
                                                             <div class="stars">
                                                                 <i class="fa fa-star blue-star" aria-hidden="true"></i>
@@ -533,7 +793,9 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       </div>
           </center>
     
-    </div><!-- /.carousel -->   
+    </div>
+ <!-- /.carousel -->   
+    
 <!--banner-bottom--><!--
                 <div class="ban-bottom-w3l">
                     <div class="container">
@@ -571,24 +833,43 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 </div>-->
 <!--banner-bottom-->
 <!--brands-->
-    <div class="brands">
+<!--    <div class="brands">
         <div class="container">
         <h3>CATEGORIA PRODUCTOS</h3>
-            <div class="brands-agile">
-                <?php foreach ($categorias as $cat) { 
+            <div class="brands-agile">-->
+                
+<!--                <?php foreach ($categorias as $cat) { 
+                    
                     if (strlen($cat["categoria_nombre"])<13){ ?>
-                  <div class="col-md-3 w3layouts-brand">
-                    <div class="brands-w3l">
-                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p><br>
-                    </div>
-                </div> 
+                
+                        <div class="col-md-3 w3layouts-brand">
+                          <div class="brands-w3l">
+                              <p><a onclick="buscar_por_categoria(<?php echo $cat["categoria_id"]; ?>)" >
+                                  <small>
+                                        <fa class="fa fa-cart-arrow-down" ></fa>
+                                         <?php echo $cat["categoria_nombre"]; ?>                                      
+                                  </small>
+                                  </a></p><br>
+                          </div>
+                      </div>
+                
                 <?php } else { ?>
-                 <div class="col-md-3 w3layouts-brand">
-                    <div class="brands-w3l">
-                        <p><a onclick="buscar_categoria(<?php echo $cat["categoria_id"]; ?>)" ><?php echo $cat["categoria_nombre"]; ?></a></p><br>
-                    </div>
-                </div>
+                
+                    <div class="col-md-3 w3layouts-brand">
+                       <div class="brands-w3l">
+                           <p><a onclick="buscar_por_categoria(<?php echo $cat["categoria_id"]; ?>)" >
+                                  <small>
+                               <?php echo $cat["categoria_nombre"]; ?>
+                                  </small>
+                               </a></p><br>
+                       </div>
+                   </div>
+                
                 <?php } } ?>
+                -->
+                
+                
+<!--                
             </div>
              <div class="row" id='loader1'  style='display:none; text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
@@ -597,208 +878,208 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                 <div class="clearfix"></div>
             <div id="tablacategorias"></div>
         </div>
-    </div>  
+    </div>  -->
+
+
+
 <!--//brands-->
-<!-- new -->
-<!--    <div class="newproducts-w3agile">
-        <div class="container">
-            <h3>New offers</h3>
-                <div class="agile_top_brands_grids">
-                    <div class="col-md-3 top_brand_left-1">
-                        <div class="hover14 column">
-                            <div class="agile_top_brand_left_grid">
-                                <div class="agile_top_brand_left_grid_pos">
-                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-                                </div>
-                                <div class="agile_top_brand_left_grid1">
-                                    <figure>
-                                        <div class="snipcart-item block">
-                                            <div class="snipcart-thumb">
-                                                <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/14.png"></a>      
-                                                <p>Fried-gram</p>
-                                                <div class="stars">
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                                                </div>
-                                                    <h4>$35.99 <span>$55.00</span></h4>
-                                            </div>
-                                            <div class="snipcart-details top_brand_home_details">
-                                                <form action="#" method="post">
-                                                    <fieldset>
-                                                        <input type="hidden" name="cmd" value="_cart">
-                                                        <input type="hidden" name="add" value="1">
-                                                        <input type="hidden" name="business" value=" ">
-                                                        <input type="hidden" name="item_name" value="Fortune Sunflower Oil">
-                                                        <input type="hidden" name="amount" value="35.99">
-                                                        <input type="hidden" name="discount_amount" value="1.00">
-                                                        <input type="hidden" name="currency_code" value="USD">
-                                                        <input type="hidden" name="return" value=" ">
-                                                        <input type="hidden" name="cancel_return" value=" ">
-                                                        <input type="submit" name="submit" value="Add to cart" class="button">
-                                                    </fieldset>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 top_brand_left-1">
-                        <div class="hover14 column">
-                            <div class="agile_top_brand_left_grid">
-                                <div class="agile_top_brand_left_grid_pos">
-                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-                                </div>
-                                <div class="agile_top_brand_left_grid1">
-                                    <figure>
-                                        <div class="snipcart-item block">
-                                            <div class="snipcart-thumb">
-                                                <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/15.png"></a>      
-                                                <p>Navaratan-dal</p>
-                                                <div class="stars">
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                                                </div>
-                                                    <h4>$30.99 <span>$45.00</span></h4>
-                                            </div>
-                                            <div class="snipcart-details top_brand_home_details">
-                                                <form action="#" method="post">
-                                                    <fieldset>
-                                                        <input type="hidden" name="cmd" value="_cart">
-                                                            <input type="hidden" name="add" value="1">
-                                                            <input type="hidden" name="business" value=" ">
-                                                            <input type="hidden" name="item_name" value="basmati rise">
-                                                            <input type="hidden" name="amount" value="30.99">
-                                                            <input type="hidden" name="discount_amount" value="1.00">
-                                                            <input type="hidden" name="currency_code" value="USD">
-                                                            <input type="hidden" name="return" value=" ">
-                                                            <input type="hidden" name="cancel_return" value=" ">
-                                                            <input type="submit" name="submit" value="Add to cart" class="button">
-                                                    </fieldset>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 top_brand_left-1">
-                        <div class="hover14 column">
-                            <div class="agile_top_brand_left_grid">
-                                <div class="agile_top_brand_left_grid_pos">
-                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-                                </div>
-                                <div class="agile_top_brand_left_grid_pos">
-                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-                                </div>
-                                <div class="agile_top_brand_left_grid1">
-                                    <figure>
-                                        <div class="snipcart-item block">
-                                            <div class="snipcart-thumb">
-                                                <a href="products.html"><img src="<?php echo $raiz;?>images/16.png" alt=" " class="img-responsive"></a>
-                                                <p>White-peasmatar</p>
-                                                <div class="stars">
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                                                </div>
-                                                    <h4>$80.99 <span>$105.00</span></h4>
-                                            </div>
-                                            <div class="snipcart-details top_brand_home_details">
-                                                <form action="#" method="post">
-                                                    <fieldset>
-                                                        <input type="hidden" name="cmd" value="_cart">
-                                                        <input type="hidden" name="add" value="1">
-                                                        <input type="hidden" name="business" value=" ">
-                                                        <input type="hidden" name="item_name" value="Pepsi soft drink">
-                                                        <input type="hidden" name="amount" value="80.00">
-                                                        <input type="hidden" name="discount_amount" value="1.00">
-                                                        <input type="hidden" name="currency_code" value="USD">
-                                                        <input type="hidden" name="return" value=" ">
-                                                        <input type="hidden" name="cancel_return" value=" ">
-                                                        <input type="submit" name="submit" value="Add to cart" class="button">
-                                                    </fieldset>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 top_brand_left-1">
-                        <div class="hover14 column">
-                            <div class="agile_top_brand_left_grid">
-                                <div class="agile_top_brand_left_grid_pos">
-                                    <img src="<?php echo $raiz;?>images/offer.png" alt=" " class="img-responsive">
-                                </div>
-                                <div class="agile_top_brand_left_grid1">
-                                    <figure>
-                                        <div class="snipcart-item block">
-                                            <div class="snipcart-thumb">
-                                                <a href="products.html"><img title=" " alt=" " src="<?php echo $raiz;?>images/17.png"></a>      
-                                                <p>Channa-dal</p>
-                                                <div class="stars">
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star blue-star" aria-hidden="true"></i>
-                                                    <i class="fa fa-star gray-star" aria-hidden="true"></i>
-                                                </div>
-                                                    <h4>$35.99 <span>$55.00</span></h4>
-                                            </div>
-                                            <div class="snipcart-details top_brand_home_details">
-                                                <form action="#" method="post">
-                                                    <fieldset>
-                                                        <input type="hidden" name="cmd" value="_cart">
-                                                        <input type="hidden" name="add" value="1">
-                                                        <input type="hidden" name="business" value=" ">
-                                                        <input type="hidden" name="item_name" value="Fortune Sunflower Oil">
-                                                        <input type="hidden" name="amount" value="35.99">
-                                                        <input type="hidden" name="discount_amount" value="1.00">
-                                                        <input type="hidden" name="currency_code" value="USD">
-                                                        <input type="hidden" name="return" value=" ">
-                                                        <input type="hidden" name="cancel_return" value=" ">
-                                                        <input type="submit" name="submit" value="Add to cart" class="button">
-                                                    </fieldset>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </figure>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                        <div class="clearfix"> </div>
-                </div>
-        </div>
-    </div> -->
-<!-- //new -->
+
+
+	<!-- about-team -->
+	<div class="about-team" style="background-color: #fe9126;"> 
+		<div class="container">
+			<h3 class="w3_agile_header">Meet Our Team</h3>
+			<div class="team-agileitsinfo">
+                            
+				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
+                                    <img src="<?php echo base_url("resources/web/images/t1.jpg") ?>" alt="" class="img img-circle"/>
+					<div class="team-w3lstext">
+						<!--<h4><span>WHATSAPP</span></h4>-->
+						<!--<p>Llamanos o envianos un mensaje, te contestaremos a la brevedad posible.</p>-->
+					</div>
+					<div class="social-icons caption" style="font-size: 30px;"> 
+						<ul>
+							<li><a href="#" class="fa fa-whatsapp"> </a> Whatsapp</li>
+<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
+							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
+						</ul>
+						<div class="clearfix"> </div>  
+					</div>
+				</div>
+                            
+				<div class=" col-md-3 about-team-grids" style="background-color: #fe9126">
+					<img src="<?php echo base_url("resources/web/images/t2.jpg") ?>" alt="" class="img img-circle"/>
+					<div class="team-w3lstext">
+						<!--<h4><span>FACEBOOK</span></h4>-->
+						<!--<p>Visita nuestra página de facebook, o dejanos un like.</p>-->
+					</div>
+					<div class="social-icons caption" style="font-size: 30px;"> 
+						<ul>
+							<li><a href="#" class="fa fa-facebook facebook"> </a> Facebook</li>
+<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
+							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
+						</ul>
+						<div class="clearfix"> </div>  
+					</div>
+				</div>
+                            
+				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
+					<img src="<?php echo base_url("resources/web/images/t3.jpg") ?>" alt="" class="img img-circle"/>
+					<div class="team-w3lstext">
+						<!--<h4><span>TWITEER</span> Supervisior</h4>-->				
+						<!--<p>Siguenos en twiteer.</p>-->
+					</div>
+					<div class="social-icons caption" style="font-size: 30px;"> 
+						<ul>
+							<li><a href="#" class="fa fa-twitter twitter"> </a> Twitter</li>
+<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
+							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
+						</ul>
+						<div class="clearfix"> </div>  
+					</div>
+				</div>
+                            
+				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
+					<img src="<?php echo base_url("resources/web/images/t4.jpg") ?>" alt="" class="img img-circle"/>
+					<div class="team-w3lstext">
+						<!--<h4><span>RACKHAM,</span> Staff</h4>-->
+						<!--<p>Odio dignissimos vero eos voluptatem accusantium doloremque laudantium reader will be distracted.</p>-->
+					</div>
+					<div class="social-icons caption" style="font-size: 30px;"> 
+						<ul>
+							<li><a href="#" class="fa fa-instagram"> </a> Instagram</li>
+<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
+							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
+						</ul>
+						<div class="clearfix"> </div>  
+					</div>
+				</div>
+                            
+				<div class="clearfix"> </div>
+			</div>
+		</div>
+	</div>
+	<!-- //about-team -->
+
 
 <!-- contact -->
     <div class="about">
         <div class="w3_agileits_contact_grids">
             <div class="col-md-6 w3_agileits_contact_grid_left">
                 <div class="agile_map">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.3905851087434!2d-34.90500565012194!3d-8.061582082752993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab18d90992e4ab%3A0x8e83c4afabe39a3a!2sSport+Club+Do+Recife!5e0!3m2!1sen!2sin!4v1478684415917" style="border:0"></iframe>
+                    <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.3905851087434!2d-34.90500565012194!3d-8.061582082752993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab18d90992e4ab%3A0x8e83c4afabe39a3a!2sSport+Club+Do+Recife!5e0!3m2!1sen!2sin!4v1478684415917" style="border:0"></iframe>-->
+                        <?php 
+                            $latitud = -17.39716889823463;
+                            $longitud = -66.15336055501709;
+                        ?>
+                    
+                    <div id="mimapa">
+                        
+                            <input type="hidden" value="<?php echo $latitud; ?>" id="empresa_latitud"/>
+                            <input type="hidden" value="<?php echo $longitud; ?>" id="empresa_longitud"/>
+                            
+                        <div id="map" style="width:100%; height:550px; "></div>
+                        <script type="text/javascript">
+                            var marker;          //variable del marcador
+                            var coords_lat = {};    //coordenadas obtenidas con la geolocalización
+                            var coords_lng = {};    //coordenadas obtenidas con la geolocalización
+
+
+                            //Funcion principal
+                            initMap = function () 
+                            {
+                                //usamos la API para geolocalizar el usuario
+
+                                //milat = document.getElementById('cliente_latitud').value;
+                                milat = $('#empresa_latitud').val();
+                                //milng = document.getElementById('cliente_longitud').value;
+                                milng = $('#empresa_longitud').val();
+
+                                    navigator.geolocation.getCurrentPosition(
+                                    function (position){
+                                        if(milat == 'undefined' || milat == null || milat ==""){
+                                            coords_lat =  {
+                                            lat: position.coords.latitude,
+                                            };
+                                            //milat = position.coords.latitude;
+                                        }else{
+                                            coords_lat =  {
+                                            lat: milat,
+                                            };
+                                        }
+                                        if(milng == 'undefined' || milng == null || milng ==""){
+                                            coords_lng =  {
+                                              lng: position.coords.longitude,
+                                            };
+                                            //lng = position.coords.longitude;
+                                        }else{
+                                            coords_lng =  {
+                                              lng: milng,
+                                            };
+                                        } 
+                                        /*coords_lat =  {
+                                            lat: milat,
+                                            };
+
+                                        coords_lng =  {
+                                              lng: milng,
+                                            };*/
+                                        setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
+
+
+                                      },function(error){console.log(error);});
+                            }
+
+                            function setMapa (coords_lat, coords_lng)
+                            {
+                                //document.getElementById("cliente_latitud").value = coords_lat.lat;
+                               // document.getElementById("cliente_longitud").value = coords_lng.lng;
+                                  //Se crea una nueva instancia del objeto mapa
+                                  var map = new google.maps.Map(document.getElementById('map'),
+                                  {
+                                    zoom: 19,
+                                    center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+
+                                  });
+
+                                  //Creamos el marcador en el mapa con sus propiedades
+                                  //para nuestro obetivo tenemos que poner el atributo draggable en true
+                                  //position pondremos las mismas coordenas que obtuvimos en la geolocalización
+                                  marker = new google.maps.Marker({
+                                    map: map,
+                                    draggable: false,
+                                    animation: google.maps.Animation.DROP,
+                                    position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
+
+                                  });
+                                  //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
+                                  //cuando el usuario a soltado el marcador
+                                  //marker.addListener('click', toggleBounce);
+
+                                  marker.addListener( 'dragend', function (event)
+                                  {
+                                    //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
+                                    document.getElementById("empresa_latitud").value = this.getPosition().lat();
+                                    document.getElementById("empresa_longitud").value = this.getPosition().lng();
+                                  });
+                            }
+                            initMap();
+                        </script>
+                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey'];?>&callback=initMap"></script>
+                        </div>                    
+
+                
                 </div>
+                        
                 <div class="agileits_w3layouts_map_pos">
-                    <div class="agileits_w3layouts_map_pos1">
-                        <h3>Contactos</h3>
+                    <div class="agileits_w3layouts_map_pos1" style="padding: 5px;">
+                        <h3 style="margin-top: 10px;">Contactos</h3>
+                        
                         <p><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</p>
+                        
                         <ul class="wthree_contact_info_address">
-                            <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
-                            <li><i class="fa fa-phone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
+                            <li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
+                            <li><i class="fa fa-phone" aria-hidden="true" style="padding-right: 0px;"></i> <?php echo $pagina_web[0]['empresa_telefono']; ?></li>
                         </ul>
                         <div class="w3_agile_social_icons w3_agile_social_icons_contact">
                             <ul>
@@ -810,6 +1091,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     </div>
                 </div>
             </div>
+            
             <div class="col-md-6 w3_agileits_contact_grid_right">
                 <h2 class="w3_agile_header">Dejanos<span> un Mensaje</span></h2>
 
@@ -832,6 +1114,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                     <input type="submit" value="Enviar">
                 <?php echo form_close(); ?>
             </div>
+            
             <div class="clearfix"> </div>
         </div>
     </div>
@@ -855,15 +1138,15 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="col-md-12"></div>
         <table class="table table-hover" style="font-size: 12px;">
           <thead>
-            <tr style="color: white; background: orange; padding: 0;">
-              <th style="padding:0;">#</th>
-              <th style="padding:0;">Producto</th>
-              <th style="padding:0;">Precio</th>
-              <th style="padding:0;">Cant.</th>
-              <th>Desc.</th>
-              <th style="padding:0;">Total Bs.</th>
+            <tr style="color: white; background: #333333; padding: 0;">
+              <!--<th>#</th>-->
+              <th style="padding:0;"></th>
+              <th style="padding:0; text-align: center;">Producto</th>
+              <th style="padding:0; text-align: center;">Precio</th>
+              <th style="padding:0; text-align: center;">Cant.</th>
+              <!--<th style="padding:0;">Desc.</th>-->
+              <th style="padding:0; text-align: center;">Total Bs.</th>
 
-              <th></th>
             </tr>
           </thead>
           <tbody id="carritos">
@@ -873,8 +1156,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       </div>
       <!--Footer-->
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Continuar Comprando</button>
-        <button class="btn btn-primary" onclick="realizarcompra()">Realizar la Compra</button>
+          
+          <center>
+            <button class="btn btn-primary" data-dismiss="modal" style="width: 140px;"><i class="fa fa-cart-arrow-down"></i> Continuar</button>
+            <button class="btn btn-success" data-dismiss="modal" onclick="realizarcompra()"  style="width: 140px;"><i class="fa fa-money"></i> Finalizar Compra</button>              
+          </center>
+          
       </div>
     </div>
   </div>
@@ -888,7 +1175,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
     <div class="modal-content">
       <!--Header-->
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Finalizar Compra<i class="fa fa-cart-arrow-down"></i></h4>
+        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-cart-arrow-down"></i> Finalizar Compra</h4>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -898,30 +1185,33 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <div class="col-md-12"></div>
         <table class="table table-hover">
          <div class="col-md-6">
-            METODO DE PAGO:             
+            <b>Método de pago:</b>             
             <select class="form-control" name="metodo_pago" id="metodo_pago" required>
                 <option value="1">Pago en Entrega</option>
                 <option value="3">Transferencia</option>
             </select>
         </div>
         <div class="col-md-6">
-            METODO DE ENVIO:             
+            <b>Forma de envio:</b>             
             <select class="form-control" name="metodo_envio" id="metodo_envio" required>
                 <option value="1">A Domicilio</option>
                 <option value="2">Sucursal</option>
             </select>
         </div>
         <div class="col-md-6">
-            NIT: <input type="text" class="form-control" value="" id="venta_nit" name="venta_nit" required="true">
+            <b>NIT:</b> <input type="text" class="form-control" value="" id="venta_nit" name="venta_nit" required="true">
         </div>
         <div class="col-md-6">
-            RAZON SOCIAL: <input type="text" class="form-control" value="" id="venta_razon" name="venta_razon" required="true">
+            <b>Razón Social:</b> <input type="text" class="form-control" value="" id="venta_razon" name="venta_razon" required="true">
         </div>
         <div class="col-md-6">
-            TELF: <input type="text" class="form-control" value="" id="venta_telefono" name="venta_telefono" required="true">
+            <b>Celular:</b> <input type="text" class="form-control" value="" id="venta_celular" name="venta_celular" required="true">
         </div>
         <div class="col-md-6">
-            DIRECCION: <input type="text" class="form-control" value="" id="venta_direccion" name="venta_direccion" required="true"> <input type="hidden" class="form-control" value="" id="venta_subtotal" name="venta_subtotal" required="true">
+            <b>Teléfono:</b> <input type="text" class="form-control" value="" id="venta_telefono" name="venta_telefono" required="true">
+        </div>
+        <div class="col-md-6">
+            <b>Dirección:</b> <input type="text" class="form-control" value="" id="venta_direccion" name="venta_direccion" required="true"> <input type="hidden" class="form-control" value="" id="venta_subtotal" name="venta_subtotal" required="true">
             <input type="hidden" class="form-control" value="" id="venta_descuento" name="venta_descuento" required="true">
             <input type="hidden" class="form-control" value="" id="venta_total" name="venta_total" required="true">
         </div>
@@ -932,7 +1222,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
       <!--Footer-->
       <div class="modal-footer">
         <div></div>
-        <button class="btn btn-primary" type="button" onclick="venta_online()">Realizar la Compra</button>
+        <button class="btn btn-primary" type="button" onclick="venta_online()"><i class="fa fa-money"></i> Finalizar Compra</button>
       </div>
     </div>
   </div>
@@ -945,68 +1235,106 @@ License URL: http://creativecommons.org/licenses/by/3.0/
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <!--Header-->
-      <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel"><i class="fa fa-user"></i> Cliente</h4>
+      <div class="modal-header" style="background-color: #000000;">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
+        <!--<h4 class="modal-title" id="myModalLabel"><i class="fa fa-user"></i> Cliente</h4>-->
+          <img src="<?php echo base_url("resources/web/images/logo.png") ?>" width="30%" height="30%">
       </div>
       <!--Body-->
       <div class="modal-body">
         <div class="col-md-12"></div>
         <table class="table table-hover">
-         <div class="col-md-5">
-           <button class="btn btn-primary" style="width: 100%" onclick="registrarcli()" type="button" >Registrate</button>
-         </div>
-         <div class="col-md-2">
-           
-         </div>   
-         <div class="col-md-5">
-            <button class="btn btn-primary" style="width: 100%" onclick="inisesion()" type="button" >Iniciar Sesion</button>
-         </div>  
-        <div style="display:none" id="registrarcli">
-         <div class="col-md-6">
-            NOMBRE:  <input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true">
-        </div>
-        <div class="col-md-6">
-            C.I.: <input type="text" class="form-control" value="" id="cliente_ci" name="cliente_ci" required="true">        
-        </div>
-        <div class="col-md-6">
-            NIT: <input type="text" class="form-control" value="" id="cliente_nit" name="cliente_nit" required="true">
-        </div>
-        <div class="col-md-6">
-            RAZON SOCIAL: <input type="text" class="form-control" value="" id="cliente_razon" name="cliente_razon" required="true">
-        </div>
-        <div class="col-md-6">
-            TELF: <input type="text" class="form-control" value="" id="cliente_telefono" name="cliente_telefono" required="true">
-        </div>
-        <div class="col-md-6">
-            DIRECCION: <input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true">
-        </div>
-        <div class="col-md-6">
-        </div>
-        <div class="col-md-6">
-            <br>
-        <button class="btn btn-success" type="button" onclick="registrarcliente()">Registrarse</button>
-        </div>
-        </div>
-        <div style="display:none" id="inisesion">
-         <div class="col-md-6">
-            LOGIN:  <input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true">
-        </div>
-        <div class="col-md-6">
-            CLAVE: <input type="text" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true">        
-        </div>
-        <div class="col-md-6">
-        </div>
-        <div class="col-md-6">
-            <br>
-        <button class="btn btn-success" type="button" onclick="sesion()">Ingresar</button>
-        </div>
-        
-        </div>
-        </table>
+            
+            
+            <tr>
+                <td>    
+                    <div class="col-md-12" style="padding:0; border-bottom: silver;" >
+                        <div class="btn-group" role="group" aria-label="login">
+                                                            
+                        <button class="btn btn-primary"  style="width: 120px;" onclick="inisesion()" id="boton_sesion"><fa class="fa fa-key"></fa> Iniciar Sesion</button>
+                        <button class="btn btn-default" style="width: 120px;" onclick="registrarcli()" id="boton_registro"><fa class="fa fa-user-plus"></fa> Registrate</button>
+                    </div>
+                    </div>
+                </td>    
+            </tr>
+            <tr>
+                <td>    
+            
+        <!--         <div class="col-md-2">
 
+                 </div>   -->
+        <!--         <div class="col-md-5"  style="padding:0;">
+                    <button class="btn btn-primary" style="width: 100%" onclick="inisesion()" type="button" >Iniciar Sesion</button>
+                 </div>  -->
+
+                    <div style="display:block;" id="inisesion" >
+                            <br>
+
+                        <div>
+
+                            <div class="col-md-6">
+                                <b><fa class="fa fa-user"></fa> Usuario: </b><input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true">
+                           </div>
+                           <div class="col-md-6">
+                               <b><fa class="fa fa-lock"></fa> Contraseña: </b><input type="text" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true">
+                               <a href="<?php echo base_url("website/recuperarclave/".$idioma_id); ?>" >¿Olvidaste tu contraseña?</a>
+                           </div>
+
+                           <div class="col-md-12" style="text-align: justify; line-height: 12px; font-family: Arial;">
+                               <p >
+                                   <small>
+                                    Al identificarte aceptas nuestras Condiciones de uso y venta. Consulta nuestro Aviso de privacidad y nuestras Aviso de Cookies y Aviso sobre publicidad basada en los intereses del usuario.                                       
+                                   </small>
+                               </p>
+                                   
+                               <center>
+                                   <button class="btn btn-danger" type="button" data-dismiss="modal" style="width: 100px;"><fa class="fa fa-times"></fa> Cerrar</button>                
+                                   <button class="btn btn-success" type="button" onclick="sesion()" style="width: 100px;"><fa class="fa fa-inbox"></fa> Ingresar</button>                
+                               </center>
+                           </div>
+                        </div>
+
+                    </div>        
+        
+        
+                    <div style="display:none" id="registrarcli">
+                     <div class="col-md-6">
+                        NOMBRE:  <input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true">
+                    </div>
+                    <div class="col-md-6">
+                        C.I.: <input type="text" class="form-control" value="" id="cliente_ci" name="cliente_ci" required="true">        
+                    </div>
+                    <div class="col-md-6">
+                        NIT: <input type="text" class="form-control" value="" id="cliente_nit" name="cliente_nit" required="true">
+                    </div>
+                    <div class="col-md-6">
+                        RAZON SOCIAL: <input type="text" class="form-control" value="" id="cliente_razon" name="cliente_razon" required="true">
+                    </div>
+                    <div class="col-md-6">
+                        TELF: <input type="text" class="form-control" value="" id="cliente_telefono" name="cliente_telefono" required="true">
+                    </div>
+                    <div class="col-md-6">
+                        DIRECCION: <input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true">
+                    </div>
+                    <div class="col-md-6">
+                    </div>
+                    <div class="col-md-6">
+                        <br>
+                    <button class="btn btn-success" type="button" onclick="registrarcliente()">Registrarse</button>
+                    </div>
+                    </div>
+        
+        
+                    
+        
+        
+                </td>
+            </tr>
+        
+        </table>
+        
       </div>
      
     </div>
@@ -1015,58 +1343,159 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <!-- Modal: registro -->
 
 
+
+
+
+
+<!----------------- fin modal mensaje ---------------------------------------------->
+<div hidden="true">
+    
+<button type="button" id="boton_modal_mensaje" class="btn btn-primary" data-toggle="modal" data-target="#modalmensaje" >
+  Modal mensaje
+</button>
+</div>
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalmensaje" tabindex="-1" role="dialog" aria-labelledby="modalmensaje" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>ADVERTENCIA</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+
+                            <div class="col-md-3" id="imagen_advertencia">
+                                <center>
+                                    <img src="<?php echo base_url("resources/web/images/advertencia.png"); ?>" width="50px;" height="50px;" >                                    
+                                </center>
+                            </div>
+
+                            <div class="col-md-9">
+                                <center>
+                                    
+                                    <div class="form-group" id="mensaje_advertencia">
+                                        <b> La operacion es invalida...!</b>
+                                        <br> Revise los parámetros por favor...!!                                            
+                                    </div>
+
+                                </center>
+                            </div>
+
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+                    
+                    <div class="modal-footer" >
+                        <center>
+                            <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
+                                    <span class="fa fa-close"></span>  Aceptar
+                            </button>                                                    
+                        </center>
+                    </div>
+                    
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->
+
+
+
+
+
+
 <!-- //footer -->
 <div class="footer">
         <div class="container">
             <div class="w3_footer_grids">
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>CONTACTOS</h3>
+                    <center>
+<!--                    <h3>CONTACTOS</h3>
                     
                     <ul class="address">
                         <li><i class="glyphicon glyphicon-map-marker" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</li>
                         <li><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i><a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
                         <li><i class="glyphicon glyphicon-earphone" aria-hidden="true"></i><?php echo $pagina_web[0]['empresa_telefono']; ?></li>
-                    </ul>
+                    </ul>-->
+                        <a href="<?php echo base_url("website/ximpleman"); ?>" target="_BLANK" >
+                            <img src="<?php echo base_url("resources/web/images/logo.png"); ?>" width="50%" height="50%">
+                        </a>
+                    </center>
                 </div>
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>INFORMACIÓN</h3>
+                    <center>
+<!--                    <h3>INFORMACIÓN</h3>
                     <ul class="info"> 
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="about.html">About Us</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="contact.html">Contact Us</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="short-codes.html">Short Codes</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="faq.html">FAQ's</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="products.html">Special Products</a></li>
+                    </ul>-->
+                    <ul class="info"> <br>
+                        <li><i class="fa" aria-hidden="true"></i><a href="faq.html">Política de privacidad</a></li>
+                    
                     </ul>
+                    </center>
                 </div>
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>CATEGORIAS</h3>
+                    <center>
+<!--                    <h3>CATEGORIAS</h3>
                     <ul class="info"> 
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="groceries.html">Groceries</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="household.html">Household</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="personalcare.html">Personal Care</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="packagedfoods.html">Packaged Foods</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="beverages.html">Beverages</a></li>
+                    </ul>-->
+                    <ul class="info"> 
+                        <br>
+                        <li><i class="fa" aria-hidden="true"></i><a href="groceries.html">Un producto de </a></li>
                     </ul>
+                    </center>
                 </div>
                 <div class="col-md-3 w3_footer_grid">
-                    <h3>MENU</h3>
+                    <center>
+                        
+                        
+<!--                    <h3>MENU</h3>
                     <ul class="info"> 
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="products.html">Store</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="checkout.html">My Cart</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="login.html">Login</a></li>
                         <li><i class="fa fa-arrow-right" aria-hidden="true"></i><a href="registered.html">Create Account</a></li>
-                    </ul>
+                    </ul>-->
+
+                        <a href="<?php echo base_url("website/password"); ?>" target="_BLANK" >
+                        <img src="<?php echo base_url("resources/web/images/logo_password.png"); ?>" width="50%" height="50%">
+                        </a>
+                    </center>
                 </div>
                 <div class="clearfix"> </div>
             </div>
         </div>
         
-        <div class="footer-copy">
+<!--        <div class="footer-copy">
             
             <div class="container">
                 <p>© <?php echo date('Y'); ?> Ximpleman, All rights reserved | <a href="http://www.passwordbolivia.com/">Password Ingeniería Hardware & Software </a></p>
             </div>
-        </div>
+        </div>-->
         
     </div>  
 

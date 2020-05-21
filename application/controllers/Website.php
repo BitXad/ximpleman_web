@@ -13,6 +13,7 @@ class Website extends CI_Controller{
         $this->load->model('Parametro_model');
         $this->load->model('Inventario_model');
         $this->load->model('Categoria_producto_model');
+        $this->load->model('Cliente_model');
         $this->load->helper('cookie');
     }            
 
@@ -160,6 +161,7 @@ class Website extends CI_Controller{
         $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
 
         $data['producto'] = $this->Pagina_web_model->get_producto($producto_id);
+        $data['idioma_id'] = $idioma_id;
         
 //        $data['_view'] = 'pagina_web/index';
 //        $this->load->view('layouts/main',$data);        
@@ -260,13 +262,15 @@ function sesioncliente(){
     $resultado = "SELECT * from cliente WHERE cliente_codigo='".$login."' AND cliente_codigo = '".$clave."' ";
     $result=$this->db->query($resultado)->row_array();
     if ($result){
-    $clienteid=$result['cliente_id'];
+    $clienteid = $result['cliente_id'];
+    $clientenombre = $result['cliente_nombre'];
     $update="UPDATE carrito
               SET cliente_id = '".$clienteid."' 
               WHERE cliente_id = '".$ipe."' ";
     $this->db->query($update);
 
     setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
+    setcookie("cliente_nombre", $clientenombre, time() + (3600 * 24), "/");
     return true;
 }else{
     show_404();
@@ -395,5 +399,88 @@ function venta_online(){
         $this->db->query($borrar_carrito);
         
 }
+
+function ximpleman(){
+    
+    header("Location: https://www.ximpleman.com");
+}
+function password(){
+    
+    header("Location: https://www.passwordbolivia.com");
+}
+
+function recuperarclave($idioma_id)
+{
+
+    //$idioma_id = 1; //1 - español
+    $data['idioma_id'] = $idioma_id;
+    $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+
+    $data['parametro'] = $this->Parametro_model->get_parametros();
+
+    $data['_view'] = 'website';
+    $this->load->view('web/recuperarclave',$data);
+}
+
+function miperfil($idioma_id)
+{
+
+    //$idioma_id = 1; //1 - español
+    $data['idioma_id'] = $idioma_id;
+    $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+    $cliente_id = $_COOKIE["cliente_id"];
+    $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
+    
+    $data['parametro'] = $this->Parametro_model->get_parametros();
+
+    $data['_view'] = 'website';
+    $this->load->view('web/miperfil',$data);
+}
+
+function micarrito($idioma_id)
+{
+
+    //$idioma_id = 1; //1 - español
+    $data['idioma_id'] = $idioma_id;
+    $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+    $data['parametro'] = $this->Parametro_model->get_parametros(); 
+    
+    $cliente_id = $_COOKIE["cliente_id"];
+    
+    $cliente = $this->Cliente_model->get_cliente($cliente_id);
+    $data['productos'] = $this->Pagina_web_model->get_carrito($cliente_id);
+
+    $data['_view'] = 'website';
+    $this->load->view('web/micarrito',$data);
+}
+
+function miscompras($idioma_id)
+{
+
+    //$idioma_id = 1; //1 - español
+    $data['idioma_id'] = $idioma_id;
+    $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+    $cliente_id = $_COOKIE["cliente_id"];
+    
+    $cliente = $this->Cliente_model->get_cliente($cliente_id);
+    $data['cliente'] = $cliente;
+    
+    $data['parametro'] = $this->Parametro_model->get_parametros();
+    
+    
+    $data['productos'] = $this->Pagina_web_model->get_carrito($cliente_id);
+
+    $data['_view'] = 'website';
+    $this->load->view('web/miscompras',$data);
+}
+
 
 }
