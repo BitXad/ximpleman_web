@@ -67,6 +67,7 @@ function mostrar() {
 <link href="<?php echo $raiz;?>css/flag-icon.min.css" rel="stylesheet"> 
 <link href="<?php echo $raiz;?>css/bootstrap-select.min.css" rel="stylesheet"> 
 <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!-- start-smoth-scrolling -->
 </head>
     
