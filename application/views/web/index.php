@@ -591,11 +591,6 @@ function mostrar() {
             
     </div>
         
- 
-        
-        
-        
-        
         
         
         <div class="container">
@@ -1563,5 +1558,6 @@ function mostrar() {
         });
 </script> 
 <!-- //main slider-banner --> 
-</body>
+    
+    </body>
 </html>

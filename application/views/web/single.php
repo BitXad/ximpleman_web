@@ -473,7 +473,7 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
                     
                     <div class="w3agile_description"  style="padding: 0;margin: 0px;">
                         <h4 class="m-sing" ><b>DESCRIPCIÓN</b></h4>                        
-                        <p style="padding: 0;margin: 0px; text-align: justify;"><?php echo $producto[0]['producto_caracteristicas']; ?></p>
+                        <p style="padding: 0;margin: 0px; text-align: justify; line-height: 13px;"><?php echo $producto[0]['producto_caracteristicas']; ?></p>
                         <hr style="padding: 0;margin: 0px;">
                         
                         <p style="padding: 0;margin: 0px;"><b>Categoria :</b> <?php echo $producto[0]['categoria_nombre']; ?></p>
@@ -554,6 +554,9 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
             <input type="hidden" name="miip" id="miip" value="" />
 
 
+            
+            
+            
 <!-- new -->
     <div class="newproducts-w3agile">
         <div class="container">
