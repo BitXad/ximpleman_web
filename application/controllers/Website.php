@@ -150,38 +150,51 @@ class Website extends CI_Controller{
     {
         
         //$idioma_id = 1; //1 - español
-        $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
-        $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
-        $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
-        $data['menu_item'] = $this->Pagina_web_model->get_menu_item($idioma_id);
-        $data['slider'] = $this->Pagina_web_model->get_slider(1,$idioma_id); //tipo 1
-        $data['seccion1'] = $this->Pagina_web_model->get_seccion(1,$idioma_id); //seccion 1
-        $data['seccion2'] = $this->Pagina_web_model->get_seccion(2,$idioma_id); //seccion 2
-        $data['seccion3'] = $this->Pagina_web_model->get_seccion(3,$idioma_id); //seccion 3        
-        $data['ofertasemanal'] = $this->Pagina_web_model->get_oferta_semanal(); //seccion 3
-        $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
-        $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
         
+        $pagina_web = $this->Pagina_web_model->get_pagina($idioma_id);
+        
+        if (sizeof($pagina_web)>0){ //si es idioma valido
+            
+            $producto = $this->Pagina_web_model->get_producto($producto_id);
+            
+            if(sizeof($producto)>0){ //si el producto es valido
 
-        $data['producto'] = $this->Pagina_web_model->get_producto($producto_id);
-        $data['idioma_id'] = $idioma_id;
+                $data['pagina_web'] = $pagina_web;
+                $data['producto'] = $this->Pagina_web_model->get_producto($producto_id);
+                $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+                $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+                $data['menu_item'] = $this->Pagina_web_model->get_menu_item($idioma_id);
+                $data['slider'] = $this->Pagina_web_model->get_slider(1,$idioma_id); //tipo 1
+                $data['seccion1'] = $this->Pagina_web_model->get_seccion(1,$idioma_id); //seccion 1
+                $data['seccion2'] = $this->Pagina_web_model->get_seccion(2,$idioma_id); //seccion 2
+                $data['seccion3'] = $this->Pagina_web_model->get_seccion(3,$idioma_id); //seccion 3        
+                $data['ofertasemanal'] = $this->Pagina_web_model->get_oferta_semanal(); //seccion 3
+                $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
+                $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
+
+
+                $data['idioma_id'] = $idioma_id;
+
+                //Galeria de producto
+
+               // $data['producto_nombre'] = $producto['producto_nombre'];
+                $params = 0;
+                $data['producto_id'] = $producto_id;
+                $data['all_imagen_producto'] = $this->Imagen_producto_model->get_all_imagen_mi_producto($producto_id, $params);      
+
+                //Galeria de producto
+
+                $data['_view'] = 'website';
+                $this->load->view('web/single',$data);
+                
+            }else{ redirect(""); }
+            
+
+        }else{ redirect(""); }
+            
         
-        //Galeria de producto
-        
-       // $data['producto_nombre'] = $producto['producto_nombre'];
-        $params = 0;
-        $data['producto_id'] = $producto_id;
-        $data['all_imagen_producto'] = $this->Imagen_producto_model->get_all_imagen_mi_producto($producto_id, $params);      
-        
-        //Galeria de producto
         
         
-//        $data['_view'] = 'pagina_web/index';
-//        $this->load->view('layouts/main',$data);        
-        
-        $data['_view'] = 'website';
-//        $this->load->view('layouts/login',$data);
-        $this->load->view('web/single',$data);
     }
 
 

@@ -20,6 +20,11 @@ function darip(){
     var losip = myip+seip;
 
     $('#miip').val(losip);
+    
+    
+    var UID = Math.floor(Math.random() * 999999);
+    
+    alert("UID: "+UID);
 }
  
 
