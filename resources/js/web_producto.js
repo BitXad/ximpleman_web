@@ -2,29 +2,42 @@
 
 $(document).on("ready",inicio);
 function inicio(){
-var findIP = new Promise(r=>{var w=window,a=new (w.RTCPeerConnection||w.mozRTCPeerConnection||w.webkitRTCPeerConnection)({iceServers:[]}),b=()=>{};a.createDataChannel("");a.createOffer(c=>a.setLocalDescription(c,b,b),b);a.onicecandidate=c=>{try{c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r)}catch(e){}}})
-findIP.then(ip => $('#myip').val(ip)).catch(e => console.error(e)); 
-$.getJSON('https://api.ipify.org?format=jsonp&callback=?', function(obj) {
-$("#seip").val((JSON.stringify(obj.ip)).replace(/['"]+/g, ''));
-
-darip();
-});
+//var findIP = new Promise(r=>{var w=window,a=new (w.RTCPeerConnection||w.mozRTCPeerConnection||w.webkitRTCPeerConnection)({iceServers:[]}),b=()=>{};a.createDataChannel("");a.createOffer(c=>a.setLocalDescription(c,b,b),b);a.onicecandidate=c=>{try{c.candidate.candidate.match(/([0-9]{1,3}(\.[0-9]{1,3}){3}|[a-f0-9]{1,4}(:[a-f0-9]{1,4}){7})/g).forEach(r)}catch(e){}}})
+//findIP.then(ip => $('#myip').val(ip)).catch(e => console.error(e)); 
+//$.getJSON('https://api.ipify.org?format=jsonp&callback=?', function(obj) {
+//$("#seip").val((JSON.stringify(obj.ip)).replace(/['"]+/g, ''));    
+//darip();
+//});
  
+    var UID = Math.floor(Math.random() * 999999999);    ////
+ 
+    if (detectCookie('codigo_usuario')){
+        UID = getCookie('codigo_usuario');
+    }
+    else
+    {
+        setCookie('codigo_usuario', UID, 30);
+
+    }
+        $('#seip').val(UID);/////
+        darip();
+ 
+    
+  
 
 }
 
 
 function darip(){
-    var myip = document.getElementById('myip').value; 
+    
     var seip = document.getElementById('seip').value;
+    var myip = document.getElementById('myip').value; 
     var losip = myip+seip;
 
-    $('#miip').val(losip);
+    ///$('#miip').val(losip);
+   
+    $('#miip').val(seip); ////
     
-    
-    var UID = Math.floor(Math.random() * 999999);
-    
-    alert("UID: "+UID);
 }
  
 
@@ -485,9 +498,9 @@ function insertar(producto_id){
     
         var controlador = base_url+'website/insertarproducto/';
         if(cliente_id==0){
-        var cliente = document.getElementById('miip').value;
+            var cliente = document.getElementById('miip').value;
         }else{
-        var cliente = document.getElementById('cliente').value;
+            var cliente = document.getElementById('cliente').value;
         }
 
     
@@ -760,8 +773,9 @@ function venta_online(){
 function cerrarsesion(){
      //location.reload();
        var base_url = document.getElementById('base_url').value;
+       var cliente_id = document.getElementById('cliente').value;
 //        var controlador = base_url+'website/venta_online/';
-        
+        setCookie('codigo_usuario', cliente_id, 30);
         top.location = base_url;
         
      
@@ -845,3 +859,59 @@ getUserIP(function(miip){
 
  
 
+// - crear cookies, modificar cookie
+    //función que crea una cookie y asigna información y fecha de caducidad.
+        //función copiada de https://www.w3schools.com/js/js_cookies.asp
+        function setCookie(cname, cvalue, exdays) {
+                    var d = new Date();
+
+                    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                    var expires = "expires="+ d.toUTCString();
+
+                    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                }
+
+// - eliminar cookies
+    //función que dado el nombre de una cookie (cname) la elimina. 
+        
+        function removeCookie(cname){
+            setCookie(cname,"",-1);
+        }
+        
+// - leer cookies
+    //función que dado el nombre de una cookie (cname) devuelve su contenido.
+
+        //función copiada de https://www.w3schools.com/js/js_cookies.asp
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        
+// - detectar cookie
+        //función que dado el nombre de una cookie (cname) devuelve true si existe y tiene contenido y false si no existe o existe pero no contiene contenido.
+            function detectCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for(var i = 0; i <ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0 && (name.length != c.length))  {
+                    return true;
+                }
+            }
+            return false;
+        }
