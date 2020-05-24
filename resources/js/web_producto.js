@@ -70,6 +70,7 @@ function buscar_producto()
                 
                 mostrar_tabla_resultados(respuesta,1);
                 document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                $("#boton_buscar_prod").focus();
                                 
             },
             error:function(respuesta){
@@ -752,7 +753,13 @@ function venta_online(){
 }
 
 function cerrarsesion(){
-     location.reload();
+     //location.reload();
+       var base_url = document.getElementById('base_url').value;
+//        var controlador = base_url+'website/venta_online/';
+        
+        top.location = base_url;
+        
+     
 }
 
 function buscarseguimiento(){

@@ -488,7 +488,7 @@ function mostrar() {
                                             <div class="input-group input-group-sm">
                                             <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
                                             <span class="input-group-btn">
-                                            <button class="btn btn-warning" onclick="buscar_producto()" type="button">
+                                            <button class="btn btn-warning" onclick="buscar_producto()" type="button" id="boton_buscar_prod">
                                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
                                             </button>
                                             </span>
@@ -554,7 +554,11 @@ function mostrar() {
         <!------------------------ BUSCADOR --------------------------->         
                 <h2 class="w3_agile_vimeo">NUESTROS PRODUCTOS</h2>
 
-        
+            
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
+                       
         <div class="container">
         
         
@@ -576,11 +580,7 @@ function mostrar() {
             <input type="hidden" name="miip" id="miip" value="" />
             <!--<form te="#" method="post">-->
             
-            
-            <div class="row" id='loader'  style='display:none; text-align: center'>
-                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-            </div>
-               
+
             <!--</form>-->
             </center>
         </div>
@@ -632,6 +632,7 @@ function mostrar() {
                                 <h5 style="margin: 0px;"><?php echo $seccion1[0]['seccion_descripcion']; ?></h5>
                                 <p class="w3l-ad"><?php echo $seccion1[0]['seccion_texto']; ?></p>
                             </div>
+                            
                             <div class="agile_top_brands_grids">
                                 <?php foreach($ofertasemanal as $os) { ?>
                                                             
@@ -1119,6 +1120,7 @@ function mostrar() {
         </div>
     </div>
 <!-- contact -->
+
 
 <!-- Modal: modalCart -->
 <div class="modal fade" id="modalCart" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel"

@@ -67,6 +67,7 @@ function mostrar() {
 <link href="<?php echo $raiz;?>css/flag-icon.min.css" rel="stylesheet"> 
 <link href="<?php echo $raiz;?>css/bootstrap-select.min.css" rel="stylesheet"> 
 <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!-- start-smoth-scrolling -->
 </head>
     
@@ -355,9 +356,19 @@ function mostrar() {
 
 
 <!-- checkout -->
-	<div class="checkout">
+
+
+	<div class="checkout" style="padding-top: 0px;">
 		<div class="container">
-                    <h2>Tu carrito de comprar contiene: <span><b><?php echo sizeof($productos)." PRODUCTOS"; ?></b></span></h2>
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title">
+
+                            <fa class="fa fa-cart-arrow-down"></fa>    Mi Carrito</h3>
+
+
+                    </div>
+                    <h2>contiene: <span><b><?php echo sizeof($productos)." PRODUCTOS"; ?></b></span></h2>
 			<div class="checkout-right">
 				<table class="timetable_sub">
 					<thead>
@@ -433,13 +444,14 @@ function mostrar() {
 			</div>
 			<div class="checkout-left">	
 				<div class="checkout-left-basket">
-					<h4>Continuar Comprando</h4>
+					<h4>Resumen</h4>
 					<ul>
-						<li>Product1 <i>-</i> <span>$15.00 </span></li>
-						<li>Product2 <i>-</i> <span>$25.00 </span></li>
-						<li>Product3 <i>-</i> <span>$29.00 </span></li>
-						<li>Total Service Charges <i>-</i> <span>$15.00</span></li>
-						<li>Total <i>-</i> <span>$84.00</span></li>
+<!--						<li>Product1 <i>-</i> <span>$15.00 </span></li>
+						<li>Product2 <i>-</i> <span>$25.00 </span></li>-->
+						<li>Total Bs<i>-</i> <span>$29.00 </span></li>
+						<li>Delivery <i>-</i> <span>$15.00</span></li>
+						<li>Cupon de Descuento <i>-</i> <span>$15.00</span></li>
+						<li>Total Final<i>-</i> <span>$84.00</span></li>
 					</ul>
 				</div>
 				<div class="checkout-right-basket">
