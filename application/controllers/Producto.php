@@ -195,6 +195,8 @@ class Producto extends CI_Controller{
                 'producto_principioact' => $this->input->post('producto_principioact'),
                 'producto_accionterap' => $this->input->post('producto_accionterap'),
                 'producto_cantidadenvase' => $this->input->post('producto_cantidadenvase'),
+                'subcategoria_id' => $this->input->post('subcategoria_id'),
+                'producto_unidadentera' => $this->input->post('producto_unidadentera'),
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
@@ -359,7 +361,9 @@ class Producto extends CI_Controller{
                     'destino_id' => $this->input->post('destino_id'),
                     'producto_principioact' => $this->input->post('producto_principioact'),
                     'producto_accionterap' => $this->input->post('producto_accionterap'),
-                    'producto_cantidadenvase' => $this->input->post('producto_cantidadenvase'),                
+                    'producto_cantidadenvase' => $this->input->post('producto_cantidadenvase'),
+                    'subcategoria_id' => $this->input->post('subcategoria_id'),
+                    'producto_unidadentera' => $this->input->post('producto_unidadentera'),
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);
@@ -374,7 +378,10 @@ class Producto extends CI_Controller{
 
                 $this->load->model('Categoria_producto_model');
                 $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-
+                
+                $this->load->model('Subcategoria_producto_model');
+                $data['all_subcategoria_producto'] = $this->Subcategoria_producto_model->get_all_subcategoria_de_categoria($data['producto']['categoria_id']);
+                
                 $this->load->model('Presentacion_model');
                 $data['all_presentacion'] = $this->Presentacion_model->get_all_presentacion();
                 $data['unidades'] = $this->Producto_model->get_all_unidad();
@@ -939,6 +946,26 @@ class Producto extends CI_Controller{
         $res = $this->Producto_model->get_this_insumo($producto_id);
 
         echo json_encode($res);
+    }
+    /* * obtener subcategoria de la categoria de un producto */
+    function obtener_subcategoria()
+    {
+        if($this->acceso(103)) {
+            if ($this->input->is_ajax_request()) {
+                $this->load->model('Subcategoria_producto_model');
+                $categoria_id = $this->input->post('categoria_id');
+                if($categoria_id != ""){
+                    $datos = $this->Subcategoria_producto_model->get_all_subcategoria_de_categoria($categoria_id);
+                    echo json_encode($datos);
+                }else{
+                    echo json_encode(null);
+                }
+            }
+            else
+            {                 
+                show_404();
+            }
+        }
     }
     
 }

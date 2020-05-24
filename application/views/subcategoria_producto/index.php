@@ -18,10 +18,10 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <div class="box-header">
-    <font size='4' face='Arial'><b>Categoria Producto</b></font>
-    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($categoria_producto); ?></font>
+    <font size='4' face='Arial'><b>Sub Categoria Producto</b></font>
+    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($subcategoria_producto); ?></font>
             	<div class="box-tools no-print">
-                    <a href="<?php echo site_url('categoria_producto/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Categoria</a> 
+                    <a href="<?php echo site_url('subcategoria_producto/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Sub Categoria</a> 
                 </div>
 </div>
 <div class="row">
@@ -39,25 +39,26 @@
                         <th>#</th>
                         <th class="no-print"></th>
                         <th>Nombre</th>
+                        <th>Categoria</th>
                         <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $i = 0;
-                          foreach($categoria_producto as $c){; 
+                          foreach($subcategoria_producto as $c){;
                               $i = $i+1;?>
                     <tr>
                         <td><?php echo $i ?></td>
                         <td class="no-print text-center">
-                            <?php if($c['categoria_imagen'] != null || $c['categoria_imagen'] != ""){ ?>
-                                        <a class="btn btn-xs" data-toggle="modal" data-target="#myModal<?php echo $c['categoria_id']; ?>">
-                                            <img src="<?php echo site_url('resources/images/categorias/')."thumb_".$c['categoria_imagen']; ?>" class="img-circle" width="40" height="40">
+                            <?php if($c['subcategoria_imagen'] != null || $c['subcategoria_imagen'] != ""){ ?>
+                                        <a class="btn btn-xs" data-toggle="modal" data-target="#myModal<?php echo $c['subcategoria_id']; ?>">
+                                            <img src="<?php echo site_url('resources/images/subcategorias/')."thumb_".$c['subcategoria_imagen']; ?>" class="img-circle" width="40" height="40">
                                         </a>
                                         
                             <?php } /*else{ ?>
                                         <img src="<?php echo site_url('resources/images/categorias/default_thumb.jpg'); ?>" class="img-circle" width="40" height="40">
                             <?php }*/ ?>
                             <!------------------------ INICIO modal para ver imagen ------------------->
-                            <div class="modal fade" id="myModal<?php echo $c['categoria_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $c['categoria_imagen']; ?>">
+                            <div class="modal fade" id="myModal<?php echo $c['subcategoria_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $c['subcategoria_imagen']; ?>">
                               <div class="modal-dialog" role="document">
                                     <br><br>
                                 <div class="modal-content">
@@ -66,7 +67,7 @@
                                   </div>
                                   <div class="modal-body">
                                    <!------------------------------------------------------------------->
-                                   <img style="max-height: 100%; max-width: 100%" src="<?php echo site_url('resources/images/categorias/').$c['categoria_imagen']; ?>">
+                                   <img style="max-height: 100%; max-width: 100%" src="<?php echo site_url('resources/images/subcategorias/').$c['subcategoria_imagen']; ?>">
                                    <!------------------------------------------------------------------->
                                   </div>
                                 </div>
@@ -74,6 +75,7 @@
                             </div>
                             <!------------------------ FIN modal para ver imagen ------------------->
                         </td>
+                        <td><?php echo $c['subcategoria_nombre']; ?></td>
                         <td><?php echo $c['categoria_nombre']; ?></td>
                         <td class="no-print">
                              <!------------------------ INICIO modal para confirmar eliminación ------------------->
@@ -87,19 +89,19 @@
                                           <div class="modal-body">
                                            <!------------------------------------------------------------------->
                                            <h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la categoria de producto <b> <?php echo $c['categoria_nombre']; ?></b>?
+                                               ¿Desea eliminar la sub categoria de producto <b> <?php echo $c['subcategoria_nombre']; ?></b>?
                                            </h3>
                                            <!------------------------------------------------------------------->
                                           </div>
                                           <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_producto/remove/'.$c['categoria_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                                      <a href="<?php echo site_url('subcategoria_producto/remove/'.$c['subcategoria_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                       <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>
                                     </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
-                            <a href="<?php echo site_url('categoria_producto/edit/'.$c['categoria_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
+                            <a href="<?php echo site_url('subcategoria_producto/edit/'.$c['subcategoria_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <!--<a data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>

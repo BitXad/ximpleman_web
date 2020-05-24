@@ -34,6 +34,7 @@ class Cliente extends CI_Controller{
     {
         if($this->acceso(94)){
             $data['rol'] = $this->session_data['rol'];
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['page_title'] = "Cliente";
             $data['a'] = $a;
             $data['err'] ="";
@@ -172,6 +173,8 @@ class Cliente extends CI_Controller{
                 if($sab != 1){ $sab = 0; }
                 $dom = $this->input->post('dom');
                 if($dom != 1){ $dom = 0; }
+                $la_contraseña ="";
+                if($this->input->post('cliente_clave') !=""){ $la_contraseña = md5($this->input->post('cliente_clave')); }
                 $params = array(
                     'estado_id' => $estado_id,
                     'tipocliente_id' => $this->input->post('tipocliente_id'),
@@ -201,6 +204,7 @@ class Cliente extends CI_Controller{
                     'sab' => $sab,
                     'dom' => $dom,
                     'cliente_ordenvisita' => $this->input->post('cliente_ordenvisita'),
+                    'cliente_clave' => $la_contraseña,
                 );
             
                 $cliente_id = $this->Cliente_model->add_cliente($params);
@@ -1054,17 +1058,14 @@ class Cliente extends CI_Controller{
         if($this->acceso(30)){
             if ($this->input->is_ajax_request()) {
                 $parametro = $this->input->post('parametro');
-
                 if ($parametro!=""){
-                    
                     $datos = $this->Cliente_model->get_cliente_parametro($parametro);
-                
                 echo json_encode($datos);
                 }
                 else echo json_encode(null);
             }
             else
-            {                 
+            {
                 show_404();
             }
         }
@@ -1164,6 +1165,35 @@ class Cliente extends CI_Controller{
 
             $data['_view'] = 'cliente/clienteprint';
             $this->load->view('layouts/main',$data);
+        }
+    }
+    /*
+    * cambiar contraseña
+    */
+    function nuevaclave()
+    {
+        if($this->acceso(94)){
+            if ($this->input->is_ajax_request()) {
+                $cliente_id = $this->input->post('cliente_id');
+                if ($cliente_id!=""){
+                    //$data['usuario'] = $this->Cliente_model->get_cliente($cliente_id);
+                    $new_password = md5($this->input->post('nuevo_pass'));
+                    $conf_password = md5($this->input->post('repita_pass'));
+                    if($new_password === $conf_password){
+                        $params = array(
+                            'cliente_clave' => $new_password,
+                        );
+                        $this->Cliente_model->update_cliente($cliente_id, $params);
+                        echo json_encode("ok");
+                    }else{
+                        echo json_encode("no");
+                    }
+                }else echo json_encode(null);
+            }
+            else
+            {
+                show_404();
+            }
         }
     }
 }

@@ -100,7 +100,7 @@
             <?php echo form_open_multipart('producto/edit/'.$producto['producto_id']); ?>
             <div class="box-body">
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Producto</label>
                         <div class="form-group">
                             <input type="text" name="producto_nombre" value="<?php echo ($this->input->post('producto_nombre') ? $this->input->post('producto_nombre') : $producto['producto_nombre']); ?>" class="form-control" id="producto_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -124,6 +124,12 @@
                         </div>
                     </div>
                     <div class="col-md-2">
+                        <label for="producto_unidadentera" class="control-label">Unidad Entera</label>
+                        <div class="form-group">
+                            <input type="number" step="any" min="0" name="producto_unidadentera" value="<?php echo ($this->input->post('producto_unidadentera') ? $this->input->post('producto_unidadentera') : $producto['producto_unidadentera']); ?>" class="form-control" id="producto_unidadentera" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                         <label for="producto_marca" class="control-label">Marca</label>
                         <div class="form-group">
                             <input type="text" name="producto_marca" value="<?php echo ($this->input->post('producto_marca') ? $this->input->post('producto_marca') : $producto['producto_marca']); ?>" class="form-control" id="producto_marca" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -135,13 +141,13 @@
                             <input type="text" name="producto_industria" value="<?php echo ($this->input->post('producto_industria') ? $this->input->post('producto_industria') : $producto['producto_industria']); ?>" class="form-control" id="producto_industria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
                         <div class="form-group">
                             <input type="text" name="producto_codigobarra" value="<?php echo ($this->input->post('producto_codigobarra') ? $this->input->post('producto_codigobarra') : $producto['producto_codigobarra']); ?>" class="form-control" id="producto_codigobarra" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required />
                         </div>
                     </div>                                    
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código Producto</label>
                         <div class="form-group">
                             <input type="text" name="producto_codigo" value="<?php echo ($this->input->post('producto_codigo') ? $this->input->post('producto_codigo') : $producto['producto_codigo']); ?>" class="form-control" id="producto_codigo" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -151,7 +157,7 @@
                     <div class="col-md-3">
                         <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
                         <div class="form-group" style="display: flex">
-                            <select name="categoria_id" class="form-control" required id="categoria_id">
+                            <select name="categoria_id" class="form-control" required id="categoria_id" onchange="mostrar_subcategoriaproducto(this.value)">
                                     <option value="">- CATEGORIA -</option>
                                     <?php 
                                     foreach($all_categoria_producto as $categoria_producto)
@@ -164,6 +170,21 @@
                             </select>
                             <a data-toggle="modal" data-target="#modalcategoria" class="btn btn-warning" title="Registrar Nueva Categoria">
                                 <i class="fa fa-plus-circle"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-2">  
+                        <label for="subcategoria_id" class="control-label">Sub Categoria</label>
+                        <div class="form-group">
+                            <select name="subcategoria_id" class="form-control" id="subcategoria_id">
+                                <option value="">- SUB CATEGORIA -</option>
+                                <?php 
+                                foreach($all_subcategoria_producto as $subcategoria_producto)
+                                {
+                                    $selected = ($subcategoria_producto['subcategoria_id'] == $producto['subcategoria_id']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$subcategoria_producto['subcategoria_id'].'" '.$selected.'>'.$subcategoria_producto['subcategoria_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">  

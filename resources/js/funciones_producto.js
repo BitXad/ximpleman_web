@@ -156,13 +156,20 @@ function tablaresultadosproducto(limite)
                         }else{
                             escategoria = registros[i]["categoria_nombre"];
                         }
+                        var essubcategoria="";
+                        if(registros[i]["subcategoria_id"] == null || registros[i]["subcategoria_id"] == 0 || registros[i]["subcategoria_id"] ==""){
+                            essubcategoria = "No definido";
+                        }else{
+                            essubcategoria = registros[i]["subcategoria_nombre"];
+                        }
                         var esmoneda="";
                         if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"] == ""){ 
                             esmoneda = "No definido";
                         }else{
                             esmoneda = registros[i]["moneda_descripcion"];
                         }
-                        html += "<td><b>CATEGORIA: </b>"+escategoria+"<br><b>UNIDAD: </b>"+registros[i]["producto_unidad"]+"<br>";
+                        html += "<td><b>CATEGORIA: </b>"+escategoria+"<br><b>SUB CATEGORIA: </b>"+essubcategoria+"<br>";
+                        html += "<b>UNIDAD: </b>"+registros[i]["producto_unidad"]+"<br>";
                         html += "<b>CANT. MIN.: </b>";
                         var cantmin= 0;
                         if(registros[i]["producto_cantidadminima"] != null || registros[i]["producto_cantidadminima"] ==""){

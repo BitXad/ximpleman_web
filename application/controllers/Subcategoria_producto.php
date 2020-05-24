@@ -4,11 +4,12 @@
  * www.crudigniter.com
  */
  
-class Categoria_producto extends CI_Controller{
+class Subcategoria_producto extends CI_Controller{
     private $session_data = "";
     function __construct()
     {
         parent::__construct();
+        $this->load->model('Subcategoria_producto_model');
         $this->load->model('Categoria_producto_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -27,37 +28,37 @@ class Categoria_producto extends CI_Controller{
         }
     }
     /*
-     * Listing of categoria_producto
+     * Listing of subcategoria_producto
      */
     function index()
     {
         if($this->acceso(118)){
-            $data['page_title'] = "Categoria Producto";
+            $data['page_title'] = "Subcategoria Producto";
             
-            $data['categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+            $data['subcategoria_producto'] = $this->Subcategoria_producto_model->get_all_subcategoria_producto();
 
-            $data['_view'] = 'categoria_producto/index';
+            $data['_view'] = 'subcategoria_producto/index';
             $this->load->view('layouts/main',$data);
         }
     }
 
     /*
-     * Adding a new categoria_producto
+     * Adding a new subcategoria_producto
      */
     function add()
     {
         if($this->acceso(118)){
-            $data['page_title'] = "Categoria Producto";
+            $data['page_title'] = "Subcategoria Producto";
             $this->load->library('form_validation');
-            $this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-            if($this->form_validation->run())     
+            $this->form_validation->set_rules('subcategoria_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())
             {
                 /* *********************INICIO imagen***************************** */
                 $foto="";
-                if (!empty($_FILES['categoria_imagen']['name'])){
+                if (!empty($_FILES['subcategoria_imagen']['name'])){
 		
                         $this->load->library('image_lib');
-                        $config['upload_path'] = './resources/images/categorias/';
+                        $config['upload_path'] = './resources/images/subcategorias/';
                         $img_full_path = $config['upload_path'];
 
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
@@ -71,7 +72,7 @@ class Categoria_producto extends CI_Controller{
                         $config['file_ext_tolower'] = TRUE;
 
                         $this->load->library('upload', $config);
-                        $this->upload->do_upload('categoria_imagen');
+                        $this->upload->do_upload('subcategoria_imagen');
 
                         $img_data = $this->upload->data();
                         $extension = $img_data['file_ext'];
@@ -79,7 +80,7 @@ class Categoria_producto extends CI_Controller{
                         if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                             $conf['image_library'] = 'gd2';
                             $conf['source_image'] = $img_data['full_path'];
-                            $conf['new_image'] = './resources/images/categorias/';
+                            $conf['new_image'] = './resources/images/subcategorias/';
                             $conf['maintain_ratio'] = TRUE;
                             $conf['create_thumb'] = FALSE;
                             $conf['width'] = 800;
@@ -92,8 +93,8 @@ class Categoria_producto extends CI_Controller{
                         }
                         /* ********************F I N  para resize***************************** */
                         $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/categorias/'.$new_name.$extension;
-                        $confi['new_image'] = './resources/images/categorias/'."thumb_".$new_name.$extension;
+                        $confi['source_image'] = './resources/images/subcategorias/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/subcategorias/'."thumb_".$new_name.$extension;
                         $confi['create_thumb'] = FALSE;
                         $confi['maintain_ratio'] = TRUE;
                         $confi['width'] = 50;
@@ -107,43 +108,45 @@ class Categoria_producto extends CI_Controller{
                     }
                 /* *********************FIN imagen***************************** */
                 $params = array(
-                    'categoria_nombre' => $this->input->post('categoria_nombre'),
-                    'categoria_imagen' => $foto,
+                    'subcategoria_nombre' => $this->input->post('subcategoria_nombre'),
+                    'categoria_id' => $this->input->post('categoria_id'),
+                    'subcategoria_imagen' => $foto,
                 );
 
-                $categoria_producto_id = $this->Categoria_producto_model->add_categoria_producto($params);
-                redirect('categoria_producto/index');
+                $subcategoria_id = $this->Subcategoria_producto_model->add_subcategoria_producto($params);
+                redirect('subcategoria_producto/index');
             }
             else
-            {            
-                $data['_view'] = 'categoria_producto/add';
+            {
+                $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+                $data['_view'] = 'subcategoria_producto/add';
                 $this->load->view('layouts/main',$data);
             }
         }
     }  
 
     /*
-     * Editing a categoria_producto
+     * Editing a subcategoria_producto
      */
-    function edit($categoria_id)
+    function edit($subcategoria_id)
     {
         if($this->acceso(118)){
-            $data['page_title'] = "Categoria Producto";
-            // check if the categoria_producto exists before trying to edit it
-            $data['categoria_producto'] = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
-            if(isset($data['categoria_producto']['categoria_id']))
+            $data['page_title'] = "Subcategoria Producto";
+            // check if the subcategoria_producto exists before trying to edit it
+            $data['subcategoria_producto'] = $this->Subcategoria_producto_model->get_subcategoria_producto($subcategoria_id);
+            if(isset($data['subcategoria_producto']['subcategoria_id']))
             {
                 $this->load->library('form_validation');
-                $this->form_validation->set_rules('categoria_nombre','Categoria Categoria','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-                if($this->form_validation->run())     
+                $this->form_validation->set_rules('subcategoria_nombre','Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
                 {
                     /* *********************INICIO imagen***************************** */
                 $foto="";
-                    $foto1= $this->input->post('categoria_imagen1');
-                if (!empty($_FILES['categoria_imagen']['name']))
+                    $foto1= $this->input->post('subcategoria_imagen1');
+                if (!empty($_FILES['subcategoria_imagen']['name']))
                 {
                     $this->load->library('image_lib');
-                    $config['upload_path'] = './resources/images/categorias/';
+                    $config['upload_path'] = './resources/images/subcategorias/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
                     $config['max_size'] = 0;
                     $config['max_width'] = 0;
@@ -154,7 +157,7 @@ class Categoria_producto extends CI_Controller{
                     $config['file_ext_tolower'] = TRUE;
 
                     $this->load->library('upload', $config);
-                    $this->upload->do_upload('categoria_imagen');
+                    $this->upload->do_upload('subcategoria_imagen');
 
                     $img_data = $this->upload->data();
                     $extension = $img_data['file_ext'];
@@ -162,7 +165,7 @@ class Categoria_producto extends CI_Controller{
                     if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
                         $conf['image_library'] = 'gd2';
                         $conf['source_image'] = $img_data['full_path'];
-                        $conf['new_image'] = './resources/images/categorias/';
+                        $conf['new_image'] = './resources/images/subcategorias/';
                         $conf['maintain_ratio'] = TRUE;
                         $conf['create_thumb'] = FALSE;
                         $conf['width'] = 800;
@@ -177,7 +180,7 @@ class Categoria_producto extends CI_Controller{
                     //$directorio = base_url().'resources/imagenes/';
                     $base_url = explode('/', base_url());
                     //$directorio = FCPATH.'resources\images\productos\\';
-                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/categorias/';
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/subcategorias/';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/productos/';
                     if(isset($foto1) && !empty($foto1)){
                       if(file_exists($directorio.$foto1)){
@@ -188,8 +191,8 @@ class Categoria_producto extends CI_Controller{
                       }
                   }
                     $confi['image_library'] = 'gd2';
-                    $confi['source_image'] = './resources/images/categorias/'.$new_name.$extension;
-                    $confi['new_image'] = './resources/images/categorias/'."thumb_".$new_name.$extension;
+                    $confi['source_image'] = './resources/images/subcategorias/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/subcategorias/'."thumb_".$new_name.$extension;
                     $confi['create_thumb'] = FALSE;
                     $confi['maintain_ratio'] = TRUE;
                     $confi['width'] = 50;
@@ -205,38 +208,40 @@ class Categoria_producto extends CI_Controller{
                 }
                 /* *********************FIN imagen***************************** */
                     $params = array(
-                        'categoria_nombre' => $this->input->post('categoria_nombre'),
-                        'categoria_imagen' => $foto,
+                        'subcategoria_nombre' => $this->input->post('subcategoria_nombre'),
+                        'categoria_id' => $this->input->post('categoria_id'),
+                        'subcategoria_imagen' => $foto,
                     );
-                    $this->Categoria_producto_model->update_categoria_producto($categoria_id,$params);            
-                    redirect('categoria_producto/index');
+                    $this->Subcategoria_producto_model->update_subcategoria_producto($subcategoria_id,$params);            
+                    redirect('subcategoria_producto/index');
                 }
                 else
                 {
-                    $data['_view'] = 'categoria_producto/edit';
+                    $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
+                    $data['_view'] = 'subcategoria_producto/edit';
                     $this->load->view('layouts/main',$data);
                 }
             }
             else
-                show_error('The categoria_producto you are trying to edit does not exist.');
+                show_error('The subcategoria_producto you are trying to edit does not exist.');
         }
     } 
 
     /*
-     * Deleting categoria_producto
+     * Deleting subcategoria_producto
      */
-    function remove($categoria_id)
+    function remove($subcategoria_id)
     {
         if($this->acceso(118)){
-        $categoria_producto = $this->Categoria_producto_model->get_categoria_producto($categoria_id);
-        // check if the categoria_producto exists before trying to delete it
-        if(isset($categoria_producto['categoria_id']))
+        $subcategoria_producto = $this->Categoria_producto_model->get_subcategoria_producto($subcategoria_id);
+        // check if the subcategoria_producto exists before trying to delete it
+        if(isset($subcategoria_producto['subcategoria_id']))
         {
-            $this->Categoria_producto_model->delete_categoria_producto($categoria_id);
-            redirect('categoria_producto/index');
+            $this->Subcategoria_producto_model->delete_subcategoria_producto($subcategoria_id);
+            redirect('subcategoria_producto/index');
         }
         else
-            show_error('The categoria_producto you are trying to delete does not exist.');
+            show_error('The subcategoria_producto you are trying to delete does not exist.');
         }
     }
     

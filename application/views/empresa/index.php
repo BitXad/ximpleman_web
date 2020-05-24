@@ -59,6 +59,7 @@
                     <tr>
                         <th>#</th>
                         <th>Empresa</th>
+                        <th>Map</th>
                         <th>Eslogan</th>
                         <th>Dirección</th>
                         <th>Teléfono</th>
@@ -110,6 +111,21 @@
                                     </div>
                             </div>
                             
+                        </td>
+                        <td class="no-print" style="text-align: center">
+                            <?php
+                            if(($e["empresa_latitud"]==0 && $e["empresa_longitud"]==0) || ($e["empresa_latitud"]==null && $e["empresa_longitud"]==null) || ($e["empresa_latitud"]== "" && $e["empresa_longitud"]=="")){
+                            ?>
+                                <img src="<?php echo base_url('resources/images/noubicacion.png'); ?>" width="30" height="30">
+                            <?php
+                                }else{
+                            ?>
+                            <a href="https://www.google.com/maps/dir/<?php echo $e["empresa_latitud"].",".$e["empresa_longitud"]; ?>" target="_blank" title="<?php echo "lat.:".$e["empresa_latitud"].", long.:".$e["empresa_longitud"]?>">
+                            <img src="<?php echo base_url('resources/images/blue.png'); ?>" width="30" height="30">
+                            </a>
+                            <?php
+                                }
+                            ?>
                         </td>
                         <td><?php echo $e['empresa_eslogan']; ?></td>
                         <td><?php echo $e['empresa_direccion'];
