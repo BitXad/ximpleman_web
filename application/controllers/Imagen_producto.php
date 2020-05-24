@@ -287,8 +287,8 @@ class Imagen_producto extends CI_Controller{
     {
         if($this->acceso(109)){
             $data['page_title'] = "Galeria Producto";
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+       
+        $params = 0;
         
         $config = $this->config->item('pagination');
         $config['base_url'] = site_url('imagen_producto/index?');

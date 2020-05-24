@@ -139,9 +139,7 @@ class Imagen_producto_model extends CI_Model
                 and i.producto_id = p.producto_id
                 and i.producto_id = '$producto_id'
 
-            ORDER BY `imagenprod_id` DESC
-
-            " . $limit_condition . "
+            ORDER BY `imagenprod_id` ASC
         ")->result_array();
 
         return $imagen;

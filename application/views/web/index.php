@@ -632,6 +632,7 @@ function mostrar() {
                                 <h5 style="margin: 0px;"><?php echo $seccion1[0]['seccion_descripcion']; ?></h5>
                                 <p class="w3l-ad"><?php echo $seccion1[0]['seccion_texto']; ?></p>
                             </div>
+                            
                             <div class="agile_top_brands_grids">
                                 <?php foreach($ofertasemanal as $os) { ?>
                                                             
@@ -1119,6 +1120,7 @@ function mostrar() {
         </div>
     </div>
 <!-- contact -->
+
 
 <!-- Modal: modalCart -->
 <div class="modal fade" id="modalCart" tabindex="-1"  role="dialog" aria-labelledby="exampleModalLabel"

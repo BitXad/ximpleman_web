@@ -13,6 +13,8 @@ class Website extends CI_Controller{
         $this->load->model('Parametro_model');
         $this->load->model('Inventario_model');
         $this->load->model('Categoria_producto_model');
+        $this->load->model('Imagen_producto_model');
+        $this->load->model('producto_model');
         $this->load->model('Cliente_model');
         $this->load->helper('cookie');
     }            
@@ -159,9 +161,20 @@ class Website extends CI_Controller{
         $data['ofertasemanal'] = $this->Pagina_web_model->get_oferta_semanal(); //seccion 3
         $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
         $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
+        
 
         $data['producto'] = $this->Pagina_web_model->get_producto($producto_id);
         $data['idioma_id'] = $idioma_id;
+        
+        //Galeria de producto
+        
+       // $data['producto_nombre'] = $producto['producto_nombre'];
+        $params = 0;
+        $data['producto_id'] = $producto_id;
+        $data['all_imagen_producto'] = $this->Imagen_producto_model->get_all_imagen_mi_producto($producto_id, $params);      
+        
+        //Galeria de producto
+        
         
 //        $data['_view'] = 'pagina_web/index';
 //        $this->load->view('layouts/main',$data);        
