@@ -2647,7 +2647,7 @@ class Detalle_serv extends CI_Controller{
         }
     }
     /*
-     * ************* recupera el kardex por medio de un codigo ***********
+     * ************* obtiene los detalles deun servicio para la facturacion.. ***********
      */
     function get_detalle_serv()
     {

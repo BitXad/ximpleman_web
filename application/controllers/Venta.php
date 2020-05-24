@@ -2993,7 +2993,18 @@ function anular_venta($venta_id){
             $this->load->model('Detalle_serv_model');
             $all_detalle_servicio_factura = $this->Detalle_serv_model->get_thisdetalle_serv_forfactura($llave_valor);
             //$all_detalle_factura_aux = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
+            $parametro_serviciofact = $this->input->post('parametro_serviciofact');
+            $detalle_servfact = "";
             foreach($all_detalle_servicio_factura as $detalle_fact){
+                if($parametro_serviciofact == 1){
+                    $detalle_servfact = $detalle_fact['detalleserv_solucion'];
+                }elseif($parametro_serviciofact == 2){
+                    $detalle_servfact = $detalle_fact['detalleserv_descripcion'];
+                }elseif($parametro_serviciofact == 3){
+                    $detalle_servfact = $detalle_fact['detalleserv_solucion'].", ".$detalle_fact['detalleserv_descripcion'];
+                }elseif($parametro_serviciofact == 4){
+                    $detalle_servfact = $detalle_fact['detalleserv_descripcion'].", ".$detalle_fact['detalleserv_solucion'];
+                }
                 $params = array(
                 'producto_id' => 0,
                 'venta_id' => 0,
@@ -3001,7 +3012,7 @@ function anular_venta($venta_id){
                 'detallefact_cantidad' => 1,
                 'detallefact_codigo' => '',
                 'detallefact_unidad' => 'UNIDAD',
-                'detallefact_descripcion' => $detalle_fact['detalleserv_solucion'],
+                'detallefact_descripcion' => $detalle_servfact,
                 'detallefact_precio' => 0,
                 'detallefact_subtotal' => $detalle_fact['detalleserv_total'],
                 'detallefact_descuento' => 0,

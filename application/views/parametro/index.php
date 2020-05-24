@@ -87,6 +87,7 @@ break;
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DIAS DE ENTREGA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">RESOLUCIÓN DE IMAGEN</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">SEGUIMIENTO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 0, 0, 0.3);">DETALLE FACTURA</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_diagnostico']; ?></td>
@@ -94,6 +95,11 @@ break;
                         <td><?php echo $p['parametro_diasentrega']; ?></td>
                         <td><?php if($p['parametro_imagenreal'] == 1){ echo "SUBIR IMAGENES EN TAMAÑO REAL"; }else{ echo "SUBIR IMAGENES COMPRIMIDOS"; } ?></td>
                         <td><?php if($p['parametro_segservicio'] == 1){ echo "ACTIVAR SEGUIMIENTO"; }else{ echo "DESACTIVAR SEGUIMIENTO"; } ?></td>
+                        <td><?php if($p['parametro_serviciofact'] == 1){ echo "SOLUCION"; }
+                                  elseif($p['parametro_serviciofact'] == 2){ echo "DESCRIPCION"; }
+                                  elseif($p['parametro_serviciofact'] == 3){ echo "SOLUCION Y DESCRIPCION"; }
+                                  elseif($p['parametro_serviciofact'] == 4){ echo "DESCRIPCION Y SOLUCION"; } ?>
+                        </td>
                     </tr>
                         
                     <tr>
