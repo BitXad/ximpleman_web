@@ -49,6 +49,7 @@ function tablaresultadoscliente(limite)
     var parametro = "";
     var limit = limite;
     var base_url = document.getElementById('base_url').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
     
     if(limit == 1){
         controlador = base_url+'cliente/buscarclienteslimit/';
@@ -299,7 +300,7 @@ function tablaresultadoscliente(limite)
                         
                         
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
-
+                        
                         
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
@@ -343,6 +344,53 @@ function tablaresultadoscliente(limite)
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
+                        if(tipousuario_id == 1){
+                            html+= "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalcambiar"+registros[i]["cliente_id"]+"' title='Cambiar contraseña'><em class='fa fa-gear'></em></a>";
+                        
+                        html += "<!------------------------ INICIO modal para cambiar PASSWORD ------------------->";
+                        html += "<div class='modal fade' id='modalcambiar"+registros[i]["cliente_id"]+"' tabindex='-1' role='dialog' aria-labelledby='modalcambiarlabel"+registros[i]["cliente_id"]+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header text-center text-bold' style='font-size: 12pt'>";
+                        html += "<label>CAMBIAR CONTRASEÑA</label>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "</div>";
+                        //html += "<?php";
+                        /*html += "echo form_open('usuario/nueva_clave/'.$u['usuario_id']);";
+                        html += "?>";*/
+                        html += "<div class='modal-body' style='font-size: 10pt'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='nuevo_pass"+registros[i]["cliente_id"]+"' class='control-label'>Nueva Contraseña</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='password' name='nuevo_pass"+registros[i]["cliente_id"]+"' class='form-control' id='nuevo_pass"+registros[i]["cliente_id"]+"' />";
+                        html += "<span class='text-danger' id='error_nuevopass'></span>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<div class='col-md-6'>";
+                        html += "<label for='repita_pass"+registros[i]["cliente_id"]+"' class='control-label'>Repita Contraseña</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='password' name='repita_pass"+registros[i]["cliente_id"]+"' class='form-control' id='repita_pass"+registros[i]["cliente_id"]+"' />";
+                        html += "<span class='text-danger' id='error_nuevopass1'></span>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<a class='btn btn-success' onclick='cambiarcontrasenia("+registros[i]["cliente_id"]+", "+limit+")'>";
+                        html += "<i class='fa fa-check'></i> Cambiar";
+                        html += "</a>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>";
+                        html += "</div>";
+                        //html += "<?php";
+                        //html += "echo form_close();";
+                        //html += "?>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para cambiar PASSWORD ------------------->";
+                        }
                         html += "</td>";
                         
                         html += "</tr>";
@@ -364,7 +412,33 @@ function tablaresultadoscliente(limite)
             //tabla_inventario();
         }
         
-    });   
-
+    });
 }
-  
+
+function cambiarcontrasenia(cliente_id, limit){
+    var base_url    = document.getElementById('base_url').value;
+    var nuevo_pass  = document.getElementById('nuevo_pass'+cliente_id).value;
+    var repita_pass = document.getElementById('repita_pass'+cliente_id).value;
+    var controlador = base_url+"cliente/nuevaclave/";
+     $('#modalcambiar'+cliente_id).modal('hide');
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{cliente_id:cliente_id, nuevo_pass:nuevo_pass, repita_pass:repita_pass },
+            success:function(resul){
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    if(registros == "ok"){
+                        alert("Cambio de contraseña exitosa");
+                        tablaresultadoscliente(limit);
+                    }else{
+                        alert("Las contraseñas deben ser iguales");
+                        $('#modalcambiar'+cliente_id).modal('show');
+                    }
+                }
+        },
+        error:function(resul){
+          // alert("Algo salio mal...!!!");
+           alert("Ocurrio un error inesperado");
+        } 
+    });
+}

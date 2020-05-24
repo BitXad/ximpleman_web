@@ -25,6 +25,7 @@
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">ALTO FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">MARGEN FACTURA</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">PERMISO CLIENTES</th>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">API KEY</th>
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_numrecegr']; ?></td>
@@ -37,6 +38,7 @@
                         <!--<th style="font-size: 11px;color:black;">TITULO DOC.</th>
                         <td><?php echo $p['parametro_tituldoc']; ?></td>-->
                         <td><?php  if ($p['parametro_permisocredito']==1){ echo 'TODOS'; }else{ echo'INDIVIDUAL'; } ?></td>
+                        <td><?php echo $p['parametro_apikey']; ?></td>
                     </tr>
                   
                     <tr>
