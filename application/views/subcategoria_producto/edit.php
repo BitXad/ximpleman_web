@@ -7,6 +7,15 @@
             <?php echo form_open_multipart('subcategoria_producto/edit/'.$subcategoria_producto['subcategoria_id']); ?>
             <div class="box-body">
                 <div class="row clearfix">
+                    <div class="col-md-1">
+                        <span class="text-center btn-block">
+                            <?php if($subcategoria_producto["subcategoria_imagen"] != "" && $subcategoria_producto["subcategoria_imagen"] != null){ ?>
+                            <img src="<?php echo site_url('resources/images/subcategorias/')."thumb_".$subcategoria_producto['subcategoria_imagen']; ?>" class="img-circle" width="40" height="40">
+                            <?php
+                            }
+                            ?>
+                        </span>
+                    </div>
                     <div class="col-md-4">
                         <label for="subcategoria_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
@@ -14,7 +23,7 @@
                             <span class="text-danger"><?php echo form_error('subcategoria_nombre');?></span>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
                         <div class="form-group">
                             <select name="categoria_id" class="form-control" id="categoria_id" required> 
@@ -31,6 +40,7 @@
                         <label for="subcategoria_imagen" class="control-label">Imagen</label>
                         <div class="form-group">
                             <input type="file" name="subcategoria_imagen" value="<?php echo $this->input->post('subcategoria_imagen'); ?>" class="form-control" id="subcategoria_imagen" accept="image/png, image/jpeg, image/jpg, image/gif" />
+                                <?php echo $subcategoria_producto['subcategoria_imagen'] ?>
                             <input type="hidden" name="subcategoria_imagen1" value="<?php echo ($this->input->post('subcategoria_imagen') ? $this->input->post('subcategoria_imagen') : $subcategoria_producto['subcategoria_imagen']); ?>" class="form-control" id="subcategoria_imagen1" />
                         </div>
                     </div>

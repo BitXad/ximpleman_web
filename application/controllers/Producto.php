@@ -967,5 +967,32 @@ class Producto extends CI_Controller{
             }
         }
     }
+    /* registrar subcategoria */
+    function aniadirsubcategoria()
+    {
+        if($this->acceso(103)) {
+            if ($this->input->is_ajax_request()) {
+                $this->load->model('Subcategoria_producto_model');
+                $parametro = $this->input->post('parametro');
+                $categoria_id = $this->input->post('categoria_id');
+                if($parametro != ""){
+                    $params = array(
+                    'subcategoria_nombre' => $parametro,
+                    'categoria_id' => $categoria_id,
+
+                    );
+                    $subcategoria_id = $this->Subcategoria_producto_model->add_subcategoria_producto($params);
+                    $datos = $this->Subcategoria_producto_model->get_subcategoria_producto($subcategoria_id);
+                    echo json_encode($datos);
+                }else{
+                    echo json_encode(null);
+                }
+            }
+            else
+            {                 
+                show_404();
+            }
+        }
+    }
     
 }

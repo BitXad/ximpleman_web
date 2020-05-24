@@ -172,9 +172,9 @@
                                 <i class="fa fa-plus-circle"></i></a>
                         </div>
                     </div>
-                    <div class="col-md-2">  
+                    <div class="col-md-3">  
                         <label for="subcategoria_id" class="control-label">Sub Categoria</label>
-                        <div class="form-group">
+                        <div class="form-group" style="display: flex">
                             <select name="subcategoria_id" class="form-control" id="subcategoria_id">
                                 <option value="">- SUB CATEGORIA -</option>
                                 <?php 
@@ -182,12 +182,20 @@
                                 {
                                     $selected = ($subcategoria_producto['subcategoria_id'] == $producto['subcategoria_id']) ? ' selected="selected"' : "";
                                     echo '<option value="'.$subcategoria_producto['subcategoria_id'].'" '.$selected.'>'.$subcategoria_producto['subcategoria_nombre'].'</option>';
-                                } 
+                                }
                                 ?>
                             </select>
+                            <?php
+                                if($producto['categoria_id'] != "" && $producto['categoria_id'] != null){
+                            ?>
+                                    <a data-toggle="modal" data-target="#modalsubcategoria" class="btn btn-warning" title="Registrar Nueva Sub Categoria">
+                                        <i class="fa fa-plus-circle"></i></a>
+                            <?php
+                                }
+                            ?>
                         </div>
                     </div>
-                    <div class="col-md-3">  
+                    <div class="col-md-2">  
                         <label for="destino_id" class="control-label">Destino</label>
                         <div class="form-group">
                             <select name="destino_id" class="form-control" id="destino_id">
@@ -611,3 +619,29 @@
     </div>
 </div>
 <!------------------------ FIN modal para Registrar nueva Categoria ------------------->
+<!------------------------ INICIO modal para Registrar nueva SUB Categoria ------------------->
+<div class="modal fade" id="modalsubcategoria" tabindex="-1" role="dialog" aria-labelledby="modalsubcategoria">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_subcategoria" class="control-label">Registrar Nueva Sub Categoria</label>
+                    <div class="form-group">
+                        <input type="text" name="nueva_subcategoria"  class="form-control" id="nueva_subcategoria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevasubcategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva SUB Categoria ------------------->
