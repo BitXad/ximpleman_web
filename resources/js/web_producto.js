@@ -70,6 +70,7 @@ function buscar_producto()
                 
                 mostrar_tabla_resultados(respuesta,1);
                 document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+                $("#boton_buscar_prod").focus();
                                 
             },
             error:function(respuesta){

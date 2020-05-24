@@ -488,7 +488,7 @@ function mostrar() {
                                             <div class="input-group input-group-sm">
                                             <input type="text" onkeypress="buscarpro(event)" name="parabuscar" id="parabuscar" class="form-control" placeholder="Buscar un producto..." required autocomplete="off" >
                                             <span class="input-group-btn">
-                                            <button class="btn btn-warning" onclick="buscar_producto()" type="button">
+                                            <button class="btn btn-warning" onclick="buscar_producto()" type="button" id="boton_buscar_prod">
                                                 <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 
                                             </button>
                                             </span>
