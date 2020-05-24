@@ -399,8 +399,10 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
 
                     </div>
                     
-                                    <!-------------------- galeria de productos ----------------------->
-                     <div class="clearfix"> </div>
+                <!-------------------- galeria de productos ----------------------->
+                
+                <?php if (sizeof($all_imagen_producto)>0){ ?>
+                    <div class="clearfix"></div>
 <!--                <div class="row">-->
                     <div class="col-md-12  agileinfo_single_left">
 
@@ -445,7 +447,7 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
                     </div>
 
                 <!--</div>-->
-
+                <?php } ?>
                 <!-------------------- // galeria de productos ----------------------->
                 </div>
                 
@@ -513,10 +515,10 @@ tiendas, ventas, facturacion, contabilidad, distribucion" />
                                     <input type="hidden" name="return" value=" " />
                                     <input type="hidden" name="cancel_return" value=" " />
                                     <!--<input type="button" name="submit" value="Añadir al pedido" class="button" onclick="insertar(<?php echo $producto[0]['producto_id'];?>)"/>-->
-                                    <a href="<?php echo base_url("website/micarrito/".$idioma_id); ?>" type="button" name="submit" class="btn btn-info btn-sm" onclick="insertar(<?php echo $producto[0]['producto_id'];?>)">
+<!--                                    <a href="<?php echo base_url("website/micarrito/".$idioma_id); ?>" type="button" name="submit" class="btn btn-info btn-sm" onclick="insertar(<?php echo $producto[0]['producto_id'];?>)">
                                             <fa class='fa fa-cart-plus'></fa> Mi Carrito
-                                    </a>
-
+                                    </a>-->
+                                    <button type="button" name="submit" class="btn btn-info btn-sm" onclick="insertar(<?php echo $producto[0]['producto_id'];?>)"><fa class='fa fa-cart-plus'></fa> AÑADIR AL PEDIDO</button>
                                 </fieldset>
                             </form>
                         </div>

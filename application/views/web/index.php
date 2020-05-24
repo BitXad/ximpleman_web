@@ -554,7 +554,11 @@ function mostrar() {
         <!------------------------ BUSCADOR --------------------------->         
                 <h2 class="w3_agile_vimeo">NUESTROS PRODUCTOS</h2>
 
-        
+            
+            <div class="row" id='loader'  style='display:none; text-align: center'>
+                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+            </div>
+                       
         <div class="container">
         
         
@@ -576,11 +580,7 @@ function mostrar() {
             <input type="hidden" name="miip" id="miip" value="" />
             <!--<form te="#" method="post">-->
             
-            
-            <div class="row" id='loader'  style='display:none; text-align: center'>
-                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-            </div>
-               
+
             <!--</form>-->
             </center>
         </div>
