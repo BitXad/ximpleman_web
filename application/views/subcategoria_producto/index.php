@@ -37,18 +37,59 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
-                        <th class="no-print"></th>
-                        <th>Nombre</th>
                         <th>Categoria</th>
+                        <th class="no-print"></th>
+                        <th>Sub Categoria</th>
                         <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $i = 0;
+                            $anterior = "";
                           foreach($subcategoria_producto as $c){;
                               $i = $i+1;?>
+                        
+                        
+                            <?php 
+                            
+                                    if ($anterior == $c['categoria_nombre']){
+                                        
+                                        $categoria = "";
+                                        $estilo = "";
+                                    }else{
+                                        $anterior = $c['categoria_nombre'];
+                                        $categoria = $c['categoria_nombre'];
+                                        $estilo = "style='border-bottom-style: solid; border-color: #000;'";
+                                        ?>
+                        
+                                        <tr <?php echo $estilo; ?> >
+                                            <!--<td></td>-->
+                                            <td colspan="5"><b style="font-size: 12pt;">
+                            
+                                                <?php echo $categoria; ?>
+                        
+                                             </b></td>
+<!--                                            <td></td>
+                                            <td></td>
+                                            <td></td>-->
+                                        </tr>
+                        
+                                        
+                                        
+                            <?php        }
+                            
+                                
+                                ?>
+                        
+                        
                     <tr>
                         <td><?php echo $i ?></td>
+                        
+                            
+                        <td>
+
+                        </td>
                         <td class="no-print text-center">
+                            
                             <?php if($c['subcategoria_imagen'] != null || $c['subcategoria_imagen'] != ""){ ?>
                                         <a class="btn btn-xs" data-toggle="modal" data-target="#myModal<?php echo $c['subcategoria_id']; ?>">
                                             <img src="<?php echo site_url('resources/images/subcategorias/')."thumb_".$c['subcategoria_imagen']; ?>" class="img-circle" width="40" height="40">
@@ -58,6 +99,7 @@
                                         <img src="<?php echo site_url('resources/images/categorias/default_thumb.jpg'); ?>" class="img-circle" width="40" height="40">
                             <?php }*/ ?>
                             <!------------------------ INICIO modal para ver imagen ------------------->
+
                             <div class="modal fade" id="myModal<?php echo $c['subcategoria_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $c['subcategoria_imagen']; ?>">
                               <div class="modal-dialog" role="document">
                                     <br><br>
@@ -75,8 +117,8 @@
                             </div>
                             <!------------------------ FIN modal para ver imagen ------------------->
                         </td>
+                        
                         <td><?php echo $c['subcategoria_nombre']; ?></td>
-                        <td><?php echo $c['categoria_nombre']; ?></td>
                         <td class="no-print">
                              <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
