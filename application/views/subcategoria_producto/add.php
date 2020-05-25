@@ -16,7 +16,7 @@
             <div class="box-body">
                 <div class="row clearfix">
                     <div class="col-md-4">
-                        <label for="subcategoria_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
+                        <label for="subcategoria_nombre" class="control-label"><span class="text-danger">*</span>Sub categoria</label>
                         <div class="form-group">
                             <input type="text" name="subcategoria_nombre" value="<?php echo $this->input->post('subcategoria_nombre'); ?>" class="form-control" id="categoria_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus />
                             <span class="text-danger"><?php echo form_error('subcategoria_nombre');?></span>

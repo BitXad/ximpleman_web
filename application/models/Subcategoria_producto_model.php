@@ -22,7 +22,7 @@ class Subcategoria_producto_model extends CI_Model
             FROM
                 subcategoria_producto sc
             LEFT JOIN categoria_producto c on sc.categoria_id = c.categoria_id
-            ORDER BY `sc`.`subcategoria_nombre`
+            ORDER BY `c`.`categoria_nombre`
         ")->result_array();
         return $subcategoria_producto;
     }
