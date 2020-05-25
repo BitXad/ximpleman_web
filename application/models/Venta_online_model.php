@@ -39,8 +39,13 @@ class Venta_online_model extends CI_Model
   }
   function get_detalle($venta)
     {
-        $sql = "SELECT c.*, p.producto_nombre from detalle_ventaonline c, inventario p
-               where c.producto_id=p.producto_id and c.venta_id=".$venta." ORDER BY c.detalleven_id desc ";
+        $sql = "SELECT
+                        c.*, p.producto_nombre, p.existencia
+                FROM
+                        detalle_ventaonline c
+                LEFT JOIN inventario p on c.producto_id=p.producto_id
+                WHERE
+                        c.venta_id=".$venta." ORDER BY c.detalleven_id desc ";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }

@@ -54,11 +54,11 @@ class Venta_online extends CI_Controller{
     }
 
     function detalle(){
-    $venta = $this->input->post('venta');
-    $datos = $this->Venta_online_model->get_detalle($venta);
-     if(isset($datos)){
-                        echo json_encode($datos);
-                    }else { echo json_encode(null); } 
+        $venta = $this->input->post('venta');
+        $datos = $this->Venta_online_model->get_detalle($venta);
+        if(isset($datos)){
+            echo json_encode($datos);
+        }else { echo json_encode(null); } 
     }
 
     /*
