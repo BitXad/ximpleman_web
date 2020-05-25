@@ -106,15 +106,10 @@ function detalleonline(venta){
                         descuento += Number(registros[i]["detalleven_descuento"]);
                         subtotal += Number(registros[i]["detalleven_subtotal"]);
                         total_detalle = Number(subtotal);
-                        html += "<tr>";
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["producto_nombre"]+"</b>";
-                        html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'></td>";
-                        html += "<td align='right'>"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<input type='hidden' id='detalleven_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["detalleven_precio"]+"' ></td> ";
-                        html += "<td align='center'>"+registros[i]["detalleven_cantidad"]+"</td>";
                         var estotal = Number(registros[i]["existencia"])-Number(registros[i]["detalleven_cantidad"]);
                         var existencia ="";
                         var resdisp ="";
+                        var nohay = "";
                         if(estotal > 0){
                             existencia = registros[i]["detalleven_cantidad"];
                             resdisp = Number(registros[i]["detalleven_total"]).toFixed(2);
@@ -131,10 +126,17 @@ function detalleonline(venta){
                                 resdisp = Number(existencia*Number(registros[i]["detalleven_precio"])).toFixed(2);
                                 mitotal = mitotal+Number(resdisp);
                             }else{
-                                existencia = "NO HAY";
+                                existencia = "0";
                                 resdisp = Number(0).toFixed(2);
+                                nohay = "style='background: #ed632d;'";
                             }
                         }
+                        html += "<tr "+nohay+" >";
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td><b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'></td>";
+                        html += "<td align='right'>"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<input type='hidden' id='detalleven_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["detalleven_precio"]+"' ></td> ";
+                        html += "<td align='center'>"+registros[i]["detalleven_cantidad"]+"</td>";
                         html += "<td align='center' class='text-aqua text-bold'>";
                         html += existencia;
                         html += "</td>";
@@ -161,12 +163,48 @@ function detalleonline(venta){
                        html += "</tr>";
                        $("#detalle").html(html);
                        $("#modalDetalle").modal("show");
+                       html1 = "<button class='btn btn-primary' id='paraconsolidarventa' onclick='pasar_aventas("+venta+")'>Consolidar Venta</button>";
+                       $("#paraconsolidarventa").replaceWith(html1);
           }
         },
         error:function(respuesta){
    }
 
 });
+}
+
+//function pasar_aventas(pedido_id,usuariopedido_id,cliente_id)
+function pasar_aventas(venta_id)
+{
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta_online/pasar_aventas/";
+   
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{venta_id:venta_id},
+        success:function(respuesta){
+            var registros =  JSON.parse(respuesta);
+            if (registros != null){
+                /*var n = registros.length; //tamanio del arreglo de la consulta
+                var total_detalle = Number(0);
+                var suma = Number(0);
+                var subtotal = Number(0);
+                var descuento = Number(0);
+                var mitotal = Number(0);
+                html = "";
+                for (var i = 0; i < n ; i++){
+
+                }*/
+                //alert(base_url+"venta/ventas_cliente/"+registros['cliente_id']);
+                window.open(base_url+"venta/ventas_cliente/"+registros['cliente_id']);
+            }
+            
+        },
+        error: function(respuesta){
+            tablaproductos();
+            datoscliente(cliente_id);
+        }
+    });
 }
 
 

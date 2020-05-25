@@ -37,10 +37,12 @@ class Venta_online_model extends CI_Model
 
         return $detalle_venta;
   }
+  /* obtiene detalle venta online y existencia para comparar existencia.... en modal */
   function get_detalle($venta)
     {
         $sql = "SELECT
-                        c.*, p.producto_nombre, p.existencia
+                        c.*, p.producto_nombre, p.producto_unidad, p.producto_marca, p.categoria_id,
+                        p.producto_codigobarra, p.existencia
                 FROM
                         detalle_ventaonline c
                 LEFT JOIN inventario p on c.producto_id=p.producto_id
@@ -49,4 +51,41 @@ class Venta_online_model extends CI_Model
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }
+    
+    
+    /*
+     * function to eliminar 
+     */
+    function eliminar_detalleventaux($usuario_id)
+    {
+        return $this->db->delete('detalle_venta_aux',array('usuario_id'=>$usuario_id));
+    }
+    function ejecutar($sql)
+    {
+        $vonline = $this->db->query($sql);        
+        $insert_id = $this->db->insert_id();   
+        
+        return $insert_id;
+    }
+    /* para obtener cliente_id */
+    function get_thiscliente($venta_id)
+    {
+        $sql = "SELECT
+                        v.cliente_id
+                FROM
+                        venta_online v
+                WHERE
+                        v.venta_id= $venta_id";
+        $result = $this->db->query($sql)->row_array();
+        return $result;        
+    }
+    /*
+     * function to add venta online en modulo de ventas
+     */
+    function add_detalleventa_aux($params)
+    {
+        $this->db->insert('detalle_venta_aux',$params);
+        return $this->db->insert_id();
+    }
+    
 }

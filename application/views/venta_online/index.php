@@ -209,7 +209,7 @@
       </div>
       <!--Footer-->
       <div class="modal-footer">
-        <button class="btn btn-primary" onclick="()">Consolidar Venta</button>
+          <button class="btn btn-primary" id="paraconsolidarventa">Consolidar Venta</button>
       </div>
     </div>
   </div>
