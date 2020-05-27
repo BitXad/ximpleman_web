@@ -1227,8 +1227,7 @@ function mostrar() {
 <!-- Modal: finalizar -->
 
 <!-- Modal: registro -->
-<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <!--Header-->
@@ -1272,10 +1271,10 @@ function mostrar() {
                         <div>
 
                             <div class="col-md-6">
-                                <b><fa class="fa fa-user"></fa> Usuario: </b><input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true">
+                                <b><fa class="fa fa-user"></fa> Usuario: </b><input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true" onkeyup="saltar_input(event,1)">
                            </div>
                            <div class="col-md-6">
-                               <b><fa class="fa fa-lock"></fa> Contraseña: </b><input type="text" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true">
+                               <b><fa class="fa fa-lock"></fa> Contraseña: </b><input type="text" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true" onkeyup="saltar_input(event,2)">
                                <a href="<?php echo base_url("website/recuperarclave/".$idioma_id); ?>" >¿Olvidaste tu contraseña?</a>
                            </div>
 
@@ -1288,7 +1287,7 @@ function mostrar() {
                                    
                                <center>
                                    <button class="btn btn-danger" type="button" data-dismiss="modal" style="width: 100px;"><fa class="fa fa-times"></fa> Cerrar</button>                
-                                   <button class="btn btn-success" type="button" onclick="sesion()" style="width: 100px;"><fa class="fa fa-inbox"></fa> Ingresar</button>                
+                                   <button class="btn btn-success" type="button" onclick="sesion()" style="width: 100px;" id="boton_login"><fa class="fa fa-inbox"></fa> Ingresar</button>                
                                </center>
                            </div>
                         </div>
@@ -1297,30 +1296,68 @@ function mostrar() {
         
         
                     <div style="display:none" id="registrarcli">
+                        
                      <div class="col-md-6">
-                        NOMBRE:  <input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true">
+                         <b><fa class="fa fa-list-ul"></fa> Nombre (*): </b><input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);">
                     </div>
+                        
+                        
+                     <div class="col-md-6">
+                         <b><fa class="fa fa-mobile-phone"></fa> Celular (*): </b><input type="number" class="form-control" value="" id="cliente_celular" name="cliente_celular" required="true">
+                    </div>
+                        
                     <div class="col-md-6">
-                        C.I.: <input type="text" class="form-control" value="" id="cliente_ci" name="cliente_ci" required="true">        
-                    </div>
+                        <b><fa class="fa fa-map-marker"></fa> Dirección (*): </b><input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);">
+                    </div>                       
+                        
+                        
                     <div class="col-md-6">
-                        NIT: <input type="text" class="form-control" value="" id="cliente_nit" name="cliente_nit" required="true">
-                    </div>
+                        <b><fa class="fa fa-map-marker"></fa> Email (*): </b><input type="text" class="form-control" value="" id="cliente_email" name="cliente_email" required="true">
+                    </div>                       
+                        
                     <div class="col-md-6">
-                        RAZON SOCIAL: <input type="text" class="form-control" value="" id="cliente_razon" name="cliente_razon" required="true">
+                        <b><fa class="fa fa-key"></fa> Contraseña (*): </b><input type="text" class="form-control" value="" id="cliente_clavereg" name="cliente_clavereg" required="true">
                     </div>
+                        
+                        
                     <div class="col-md-6">
-                        TELF: <input type="text" class="form-control" value="" id="cliente_telefono" name="cliente_telefono" required="true">
+                        <b><fa class="fa fa-key"></fa> Repetir contraseña (*): </b><input type="text" class="form-control" value="" id="cliente_repeticion" name="cliente_repeticion" required="true">
+                        
                     </div>
+                        
+                    <div class="col-md-12" style="color:red;">
+                        <small>
+                                <span id="">La contraseña y la repetición no coinciden </span>
+                        </small>
+                    </div>
+                        
+                        
+                    <div class="col-md-6" hidden="true">
+                        C.I.: <input type="text" class="form-control" value="0" id="cliente_ci" name="cliente_ci" required="true">        
+                    </div>
+                        
+                    <div class="col-md-6" hidden="true">
+                        NIT: <input type="text" class="form-control" value="0" id="cliente_nit" name="cliente_nit" required="true">
+                    </div>
+                        
+                    <div class="col-md-6" hidden="true">
+                        RAZON SOCIAL: <input type="text" class="form-control" value="SIN NOMBRE" id="cliente_razon" name="cliente_razon" required="true">
+                    </div>
+                        
+                    <div class="col-md-6" hidden="true">
+                        TELF: <input type="text" class="form-control" value="0" id="cliente_telefono" name="cliente_telefono" required="true">
+                    </div>
+                        
                     <div class="col-md-6">
-                        DIRECCION: <input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true">
                     </div>
-                    <div class="col-md-6">
+                    
+                    <div class="col-md-12">
+                        <center>
+                            <button class="btn btn-danger" type="button" data-dismiss="modal" style="width: 120px;"><fa class="fa fa-times"></fa> Cerrar</button>   
+                            <button class="btn btn-success" type="button" onclick="registrarcliente()"  style="width: 120px;"><fa class="fa fa-floppy-o"></fa> Registrarse</button>                            
+                        </center>                            
                     </div>
-                    <div class="col-md-6">
-                        <br>
-                    <button class="btn btn-success" type="button" onclick="registrarcliente()">Registrarse</button>
-                    </div>
+                        
                     </div>
         
         

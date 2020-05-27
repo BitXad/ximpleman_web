@@ -49,17 +49,28 @@ function registrarcli(){
 //    document.getElementById('boton_registro').class = "btn btn-dafault";
     $('#boton_sesion').removeClass("btn btn-primary").addClass("btn btn-default");
     $('#boton_registro').removeClass("btn btn-default").addClass("btn btn-primary");
+    
+    
 }
 
 function inisesion(){
+    
     document.getElementById('inisesion').style.display = 'block';
     document.getElementById('registrarcli').style.display = 'none';
+    
+    
 //
 //    document.getElementById('boton_sesion').class = "btn btn-default";
 //    document.getElementById('boton_registro').class = "btn btn-primary";
     
     $('#boton_sesion').removeClass("btn btn-default").addClass("btn btn-primary");
     $('#boton_registro').removeClass("btn btn-primary").addClass("btn btn-default");
+    
+    $('#modalCliente').on('shown.bs.modal', function() {
+        $('#cliente_login').focus();      
+    });
+    
+    
 }
 
 function buscarpro(e){
@@ -652,9 +663,6 @@ function tablacarrito(){
 
 function realizarcompra(){
 
-
-
-
     var cliente = document.getElementById('cliente').value; 
     var total = document.getElementById('venta_total').value; 
 
@@ -683,7 +691,9 @@ function realizarcompra(){
                                 $("#venta_celular").val(registros["cliente_celular"]);
 
 
-                         $("#modalFinalizar").modal("show");  
+                             $("#modalFinalizar").modal("show");  
+                         
+                         
                          }   
                     },
                     error:function(respuesta){
@@ -915,3 +925,81 @@ getUserIP(function(miip){
             }
             return false;
         }
+        
+function saltar_input(e,opc){
+    
+    tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (opc==1){
+        
+        if (tecla==13){ 
+            $("#cliente_clave").focus();
+        }        
+    }
+     
+    if (opc==2){
+        
+        if (tecla==13){ 
+            $("#boton_login").click();
+        }        
+    }
+    
+    
+    
+}
+
+function registrarcliente()
+{
+    var base_url = document.getElementById('base_url').value;
+    
+    var controlador = base_url+'website/registrarclienteonline';
+    
+    var cliente_id = 0; //document.getElementById('cliente_id').value;
+    
+    var nit = 0;  //document.getElementById('nit').value;
+    var razon = 'SIN NOMBRE'; //document.getElementById('razon_social').value;
+    var telefono = 0; //document.getElementById('telefono').value;    
+    var tipocliente_id = 1; //document.getElementById('tipocliente_id').value;
+    
+    var cliente_nombre = document.getElementById('cliente_nombre').value;
+    var cliente_ci = 0; // document.getElementById('cliente_ci').value;
+    var cliente_nombrenegocio = '-'; //document.getElementById('cliente_nombrenegocio').value;    
+    var cliente_codigo = Math.floor(Math.random() * 999999999); //document.getElementById('cliente_codigo').value;
+    
+    var cliente_direccion = document.getElementById('cliente_direccion').value;
+    var cliente_departamento = '-';//document.getElementById('cliente_departamento').value;
+    var cliente_celular = document.getElementById('cliente_celular').value;
+    var zona_id = 1; //document.getElementById('zona_id').value;
+    
+    var cliente_email = document.getElementById('cliente_email').value;
+    var cliente_clave = document.getElementById('cliente_clavereg').value;
+
+    
+//    alert(nit+","+razon+","+telefono+","+ cliente_nombre+","+ tipocliente_id+","+cliente_nombre+","+ cliente_ci+","+
+//    cliente_nombrenegocio+","+ cliente_codigo+","+cliente_direccion+","+ cliente_departamento+","+ cliente_celular+","+ zona_id+","+cliente_email+","+cliente_clave);
+
+ 
+  
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                        cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
+                        cliente_email:cliente_email, cliente_clave:cliente_clave},
+            success:function(respuesta){  
+            
+                var registro = JSON.parse(respuesta);
+                
+                cliente_id = registro[0]["cliente_id"];
+                
+                alert(cliente_id);
+                //registrarventa(cliente_id);
+                
+            },
+            error: function(respuesta){
+                cliente_id = 0;            
+                alert(cliente_id);
+            }
+        });
+       
+}

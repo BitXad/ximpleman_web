@@ -575,7 +575,7 @@ class Venta extends CI_Controller{
          
                 $this->Venta_model->ejecutar($sql);               
                 
-                $this->ultimaventa();
+                $this->ultimaventa(1);
        //     }
         }
         
@@ -1868,6 +1868,7 @@ function registrarcliente()
         			}
         		
 }
+    
 /*
 * Registrar cliente
 */

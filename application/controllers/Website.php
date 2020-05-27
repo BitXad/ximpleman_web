@@ -701,6 +701,64 @@ function miscompras($idioma_id)
                 show_error('The cliente you are trying to edit does not exist.');
         
     }
+    
+    
+/*
+* Registrar cliente
+*/
+function registrarclienteonline()
+{
+//        if(($this->acceso(12)==true)||($this->acceso(30)==true)){
+//        //**************** inicio contenido ***************    
+//    
+        if ($this->input->is_ajax_request()) {
+            
+                      
+            $cliente_nit = $this->input->post('nit');
+            $cliente_razon = "'".$this->input->post('razon')."'";
+            $cliente_telefono = "'".$this->input->post('telefono')."'";
+            $tipocliente_id = $this->input->post('tipocliente_id');
+            
+            $cliente_nombre =  "'".$this->input->post('cliente_nombre')."'";
+            $cliente_ci =  "'".$this->input->post('cliente_ci')."'";
+            $cliente_nombrenegocio =  "'".$this->input->post('cliente_nombrenegocio')."'";
+            $cliente_codigo =  "'".$this->input->post('cliente_codigo')."'";
+
+            $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
+            $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
+            $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
+            $zona_id =  $this->input->post('zona_id');
+            $cliente_email = "'".$this->input->post('cliente_email').".";
+            
+            $cliente_clave = md5($this->input->post('cliente_clave'));
+            
+            
+            $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
+                    cliente_razon,cliente_telefono,estado_id,usuario_id,
+                    cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
+                    cliente_celular, zona_id, cliente_email, cliente_clave
+                    ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
+                    $cliente_razon.",".$cliente_telefono.",1,0,".
+                   $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
+                   $cliente_celular.",".$zona_id.",".$cliente_email.",".$cliente_clave.")";
+            
+            echo $sql;
+            
+            $datos = $this->Venta_model->registrarcliente($sql);
+            echo json_encode($datos);
+            
+        }
+        else
+        {                 
+            show_404();
+            
+        }   
+        
+        		
+        //**************** fin contenido ***************
+//        			}
+        		
+}    
 
 
 }
