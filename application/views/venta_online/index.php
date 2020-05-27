@@ -195,8 +195,10 @@
               <th>Producto</th>
               <th>Precio</th>
               <th>Cant.</th>
+              <th class="text-aqua">Disp.</th>
               <th>Desc.U.</th>
               <th>Total</th>
+              <th class="text-aqua">Total</th>
               <th></th>
             </tr>
           </thead>
@@ -207,7 +209,7 @@
       </div>
       <!--Footer-->
       <div class="modal-footer">
-        <button class="btn btn-primary" onclick="()">Consolidar Venta</button>
+          <button class="btn btn-primary" id="paraconsolidarventa">Consolidar Venta</button>
       </div>
     </div>
   </div>
