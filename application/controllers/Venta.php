@@ -1879,8 +1879,9 @@ function modificarcliente()
     
         if ($this->input->is_ajax_request()) {
             
-            $cliente_nit = $this->input->post('nit');          
-            if($cliente_nit == null) $cliente_nit = 0;
+            $cliente_nit = $this->input->post('nit');    
+            
+            if($cliente_nit == null || $cliente_nit==0) $cliente_nit = 0;
             
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
@@ -1920,7 +1921,7 @@ function modificarcliente()
                         ",zona_id = ".$zona_id.
                         
                         " where cliente_id = ".$cliente_id;
-
+                
                 $datos = $this->Venta_model->modificarcliente($sql);            
                 echo  '[{"cliente_id":'.$cliente_id.'}]';
             }

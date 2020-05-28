@@ -1327,7 +1327,7 @@ function mostrar() {
                         
                     <div class="col-md-12" style="color:red;">
                         <small>
-                                <span id="">La contraseña y la repetición no coinciden </span>
+                                <span id="mensaje_log"> </span>
                         </small>
                     </div>
                         

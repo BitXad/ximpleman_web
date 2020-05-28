@@ -315,7 +315,7 @@ class Venta_model extends CI_Model
      */
     function registrarcliente($sql)
     {        
-        $res = $this->db->query($sql);        
+        $this->db->query($sql);        
         
         //$sql =  "select * from cliente where cliente_id=".$cliente_id;
         $sql =  "select max(cliente_id) as cliente_id from cliente";  
@@ -328,8 +328,8 @@ class Venta_model extends CI_Model
      */
     function modificarcliente($sql)
     {        
-        $resultado = $this->db->query($sql);        
-        return $resultado;
+        $this->db->query($sql);        
+        return true;
     }
 
     /*

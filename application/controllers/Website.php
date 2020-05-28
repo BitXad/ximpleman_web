@@ -14,6 +14,7 @@ class Website extends CI_Controller{
         $this->load->model('Inventario_model');
         $this->load->model('Categoria_producto_model');
         $this->load->model('Imagen_producto_model');
+        $this->load->model('Venta_model');
         $this->load->model('producto_model');
         $this->load->model('Cliente_model');
         $this->load->helper('cookie');
@@ -728,9 +729,9 @@ function registrarclienteonline()
             $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
             $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
             $zona_id =  $this->input->post('zona_id');
-            $cliente_email = "'".$this->input->post('cliente_email').".";
+            $cliente_email = "'".$this->input->post('cliente_email')."'";
             
-            $cliente_clave = md5($this->input->post('cliente_clave'));
+            $cliente_clave = "'".md5($this->input->post('cliente_clave'))."'";
             
             
             $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,

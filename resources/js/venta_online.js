@@ -128,24 +128,24 @@ function detalleonline(venta){
                             }else{
                                 existencia = "0";
                                 resdisp = Number(0).toFixed(2);
-                                nohay = "style='background: #ed632d;'";
+                                nohay = "style='background: gray;'";
                             }
                         }
                         html += "<tr "+nohay+" >";
-                        html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["producto_nombre"]+"</b>";
+                        html += "<td style='padding:0'>"+(i+1)+"</td>";
+                        html += "<td style='padding:0'><b>"+registros[i]["producto_nombre"]+"</b>";
                         html += " <input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'></td>";
-                        html += "<td align='right'>"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<input type='hidden' id='detalleven_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["detalleven_precio"]+"' ></td> ";
-                        html += "<td align='center'>"+registros[i]["detalleven_cantidad"]+"</td>";
-                        html += "<td align='center' class='text-aqua text-bold'>";
-                        html += existencia;
-                        html += "</td>";
+                        html += "<td align='right' style='padding:0'>"+Number(registros[i]["detalleven_precio"]).toFixed(2)+"<input type='hidden' id='detalleven_precio"+registros[i]["producto_id"]+"' name='producto_precio' type='text' size='3' class='form-control'  value='"+registros[i]["detalleven_precio"]+"' ></td> ";
+                        html += "<td align='center' style='padding:0'>"+registros[i]["detalleven_cantidad"]+"</td>";
                         //html += "<td><input  type='readonly' onkeypress='cantimas(event,"+registros[i]["producto_id"]+")' id='detalleven_cantidad"+registros[i]["producto_id"]+"' autocomplete='off' name='cantidad' size='3' type='text' class='form-control' value='"+registros[i]["detalleven_cantidad"]+"' >";
                         html += "<input id='detalleven_id'  name='detalleven_id' type='hidden' class='form-control' value='"+registros[i]["detalleven_id"]+"'></td>";
-                        html += "<td align='right'>"+Number(registros[i]["detalleven_descuento"]).toFixed(2)+" <input type='hidden' id='detalleven_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["detalleven_descuento"]+"' ></td>";
-                        html += "<td align='right'><b>"+Number(registros[i]["detalleven_total"]).toFixed(2)+"</b></td>";
+                        html += "<td align='right' style='padding:0'>"+Number(registros[i]["detalleven_descuento"]).toFixed(2)+" <input type='hidden' id='detalleven_descuento"+registros[i]["producto_id"]+"' name='descuento' size='3' type='text' class='form-control' value='"+registros[i]["detalleven_descuento"]+"' ></td>";
+                        html += "<td align='right' style='padding:0'><b>"+Number(registros[i]["detalleven_total"]).toFixed(2)+"</b></td>";
                         // html += "<td><button class='btn btn-xs btn-danger' onclick='quitardetalleven("+registros[i]["producto_id"]+")'><i class='fa fa-times' style='color: white'></i></button></td>";
-                        html += "<td class='text-right text-aqua text-bold'>";
+                        html += "<td align='center' class='text-aqua text-bold' style='padding:0'>";
+                        html += existencia;
+                        html += "</td>";
+                        html += "<td class='text-right text-aqua text-bold' style='padding:0'>";
                         html += resdisp;
                         html += "</td>";
                         html += "</tr>";
@@ -163,7 +163,7 @@ function detalleonline(venta){
                        html += "</tr>";
                        $("#detalle").html(html);
                        $("#modalDetalle").modal("show");
-                       html1 = "<button class='btn btn-primary' id='paraconsolidarventa' onclick='pasar_aventas("+venta+")'>Consolidar Venta</button>";
+                       html1 = "<button class='btn btn-primary' id='paraconsolidarventa' onclick='pasar_aventas("+venta+")'><fa class='fa fa-cart-plus'></fa> Consolidar Venta</button>";
                        $("#paraconsolidarventa").replaceWith(html1);
           }
         },

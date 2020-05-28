@@ -961,45 +961,123 @@ function registrarcliente()
     var telefono = 0; //document.getElementById('telefono').value;    
     var tipocliente_id = 1; //document.getElementById('tipocliente_id').value;
     
-    var cliente_nombre = document.getElementById('cliente_nombre').value;
+    var cliente_nombre = "";
+    cliente_nombre = document.getElementById('cliente_nombre').value;
     var cliente_ci = 0; // document.getElementById('cliente_ci').value;
     var cliente_nombrenegocio = '-'; //document.getElementById('cliente_nombrenegocio').value;    
     var cliente_codigo = Math.floor(Math.random() * 999999999); //document.getElementById('cliente_codigo').value;
     
     var cliente_direccion = document.getElementById('cliente_direccion').value;
     var cliente_departamento = '-';//document.getElementById('cliente_departamento').value;
-    var cliente_celular = document.getElementById('cliente_celular').value;
+    var cliente_celular = "";
+    cliente_celular = document.getElementById('cliente_celular').value;
+    
     var zona_id = 1; //document.getElementById('zona_id').value;
     
     var cliente_email = document.getElementById('cliente_email').value;
-    var cliente_clave = document.getElementById('cliente_clavereg').value;
-
+   
+    var cliente_clave = "";
+    cliente_clave = document.getElementById('cliente_clavereg').value;
+    
+    var cliente_repeticion = "";
+    cliente_repeticion = document.getElementById('cliente_repeticion').value;
+    
+    
     
 //    alert(nit+","+razon+","+telefono+","+ cliente_nombre+","+ tipocliente_id+","+cliente_nombre+","+ cliente_ci+","+
 //    cliente_nombrenegocio+","+ cliente_codigo+","+cliente_direccion+","+ cliente_departamento+","+ cliente_celular+","+ zona_id+","+cliente_email+","+cliente_clave);
 
- 
-  
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
-                        cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
-                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                        cliente_email:cliente_email, cliente_clave:cliente_clave},
-            success:function(respuesta){  
+    var error = 0;
+    
+    
+    if (cliente_nombre.length >4){
+        
+        if( cliente_celular.length > 5){
             
-                var registro = JSON.parse(respuesta);
+        
+        if( cliente_direccion.length > 5){
                 
-                cliente_id = registro[0]["cliente_id"];
+            if(email_valido(cliente_email)){
                 
-                alert(cliente_id);
-                //registrarventa(cliente_id);
+                    if(cliente_clave == cliente_repeticion){
+                            
+                            if(cliente_clave.length>4){
+                                
+
+                                    $.ajax({url: controlador,
+                                            type:"POST",
+                                            data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                                                        cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                                                        cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
+                                                        cliente_email:cliente_email, cliente_clave:cliente_clave},
+                                            success:function(respuesta){  
+
+                                                var registro = JSON.parse(respuesta);
+
+                                                cliente_id = registro[0]["cliente_id"];
+
+                                                alert("jejej: "+cliente_id);
+                                                //registrarventa(cliente_id);
+
+                                            },
+                                            error: function(respuesta){
+                                //                cliente_id = 0;            
+                                //                alert(cliente_id);
+                                            }
+
+                                    });
+                                
+                            }
+                            else{ 
+                                html = "La clave es demasiado corta (la clave debe tener mas de 4 caracteres)";
+                                $("#mensaje_log").html(html);    
+                            }
+                        
+                    }
+                    else{
+                        html = "La clave y su repeticion no coinciden";
+                        $("#mensaje_log").html(html);    
+                        
+                    }
+                  
                 
-            },
-            error: function(respuesta){
-                cliente_id = 0;            
-                alert(cliente_id);
             }
-        });
-       
+            else{
+                
+                html = "Debe registrar un correo electrónico válido";
+                $("#mensaje_log").html(html);    
+
+                
+            }
+            
+            
+         }
+        else{
+            html = "Debe especificar la dirección";
+            $("#mensaje_log").html(html);    
+
+        }   
+            
+            
+        }
+        else{ 
+            html = "Debe registrar un numero de teléfono celular";
+            $("#mensaje_log").html(html);    
+
+        }
+                
+    }else{ 
+    
+        html = "Debe registrar un nombre";
+        $("#mensaje_log").html(html);    
+    }
+
+    
+    
+}
+
+function email_valido( email ) 
+{
+    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email) ? true : false;
 }
