@@ -130,5 +130,22 @@ class Proveedor_model extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    /*
+     * Get all proveedor activos
+     */
+    function get_all_proveedor_activo()
+    {
+        $proveedor = $this->db->query("
+            SELECT
+                p.*, e.*
+            FROM
+                proveedor p, estado e
+            WHERE
+                p.estado_id=e.estado_id
+                and p.estado_id =1
+            ORDER BY `proveedor_id` DESC
+        ")->result_array();
+        return $proveedor;
+    }
 
 }
