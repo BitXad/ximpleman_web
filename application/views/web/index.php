@@ -1298,37 +1298,37 @@ function mostrar() {
                     <div style="display:none" id="registrarcli">
                         
                      <div class="col-md-6">
-                         <b><fa class="fa fa-list-ul"></fa> Nombre (*): </b><input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);">
+                         <b><fa class="fa fa-list-ul"></fa> Nombre (*): <small style="color:red;"><span id="mensaje_lognombre"> </span></small></b><input type="text" class="form-control" value="" id="cliente_nombre" name="cliente_nombre" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end); enfocar(event,1)">
                     </div>
                         
                         
                      <div class="col-md-6">
-                         <b><fa class="fa fa-mobile-phone"></fa> Celular (*): </b><input type="number" class="form-control" value="" id="cliente_celular" name="cliente_celular" required="true">
+                         <b><fa class="fa fa-mobile-phone"></fa> Celular (*): <small style="color:red;"><span id="mensaje_logcelular"> </span></small></b><input type="number" class="form-control" value="" id="cliente_celular" name="cliente_celular" required="true" onkeyup="enfocar(event,2)">
                     </div>
                         
                     <div class="col-md-6">
-                        <b><fa class="fa fa-map-marker"></fa> Dirección (*): </b><input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);">
+                        <b><fa class="fa fa-map-marker"></fa> Dirección (*): <small style="color:red;"><span id="mensaje_logdireccion"> </span></small></b><input type="text" class="form-control" value="" id="cliente_direccion" name="cliente_direccion" required="true" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end); enfocar(event,3)">
                     </div>                       
                         
                         
                     <div class="col-md-6">
-                        <b><fa class="fa fa-map-marker"></fa> Email (*): </b><input type="text" class="form-control" value="" id="cliente_email" name="cliente_email" required="true">
+                        <b><fa class="fa fa-map-marker"></fa> Usuario/Email (*): <small style="color:red;"><span id="mensaje_logemail"> </span></small></b><input type="text" class="form-control" value="" id="cliente_email" name="cliente_email" required="true" onkeyup="enfocar(event,4);">
                     </div>                       
                         
                     <div class="col-md-6">
-                        <b><fa class="fa fa-key"></fa> Contraseña (*): </b><input type="text" class="form-control" value="" id="cliente_clavereg" name="cliente_clavereg" required="true">
+                        <b><fa class="fa fa-key"></fa> Contraseña (*): <small style="color:red;"><span id="mensaje_logclave"> </span></small></b><input type="password" class="form-control" value="" id="cliente_clavereg" name="cliente_clavereg" required="true" onkeyup="enfocar(event,5);" autocomplete="off">
                     </div>
                         
                         
                     <div class="col-md-6">
-                        <b><fa class="fa fa-key"></fa> Repetir contraseña (*): </b><input type="text" class="form-control" value="" id="cliente_repeticion" name="cliente_repeticion" required="true">
+                        <b><fa class="fa fa-key"></fa> Repetir contraseña (*): <small style="color:red;"><span id="mensaje_logrepetir"> </span></small></b><input type="password" class="form-control" value="" id="cliente_repeticion" name="cliente_repeticion" required="true" onkeyup="enfocar(event,6);" autocomplete="off">
                         
                     </div>
                         
                     <div class="col-md-12" style="color:red;">
-                        <small>
-                                <span id="mensaje_log"> </span>
-                        </small>
+                        
+                        <small><span id="mensaje_log"> </span></small>
+                    
                     </div>
                         
                         
@@ -1354,7 +1354,7 @@ function mostrar() {
                     <div class="col-md-12">
                         <center>
                             <button class="btn btn-danger" type="button" data-dismiss="modal" style="width: 120px;"><fa class="fa fa-times"></fa> Cerrar</button>   
-                            <button class="btn btn-success" type="button" onclick="registrarcliente()"  style="width: 120px;"><fa class="fa fa-floppy-o"></fa> Registrarse</button>                            
+                            <button class="btn btn-success" type="button" onclick="registrarcliente()"  style="width: 120px;" id="boton_registrar_datos"><fa class="fa fa-floppy-o"></fa> Registrarse</button>                            
                         </center>                            
                     </div>
                         
@@ -1595,6 +1595,8 @@ function mostrar() {
         });
 </script> 
 <!-- //main slider-banner --> 
-    
+    <?php 
+        $var = "827ccb0eea8a706c4c34a16891f84e7b"; 
+        echo md5($var); ?> 
     </body>
 </html>

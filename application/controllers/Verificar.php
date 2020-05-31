@@ -214,6 +214,70 @@ class Verificar extends CI_Controller
     }
 
 
+    public function activate($cliente_id, $codigo_activacion)
+    {
+        $this->load->model('Cliente_model');
+        $cliente = $this->Cliente_model->verificar_cliente($cliente_id,$codigo_activacion);
+        
+        if (isset($cliente)){ //si existe el cliente en espera de activacion
+            
+            $ipe = $cliente_id;//$this->input->post('ipe');
+            
+            $this->Cliente_model->activar_cliente($cliente_id);
+            
+            $login = $cliente['cliente_email'];
+            $clave = $cliente['cliente_clave'];
+
+            $clienteid = $cliente['cliente_id'];
+            $clientenombre = $cliente['cliente_nombre'];
+            
+            $update="UPDATE carrito
+                      SET cliente_id = '".$clienteid."' 
+                      WHERE cliente_id = '".$ipe."' ";
+            $this->db->query($update);
+
+            setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
+            setcookie("cliente_nombre", $clientenombre, time() + (3600 * 24), "/");
+            
+            redirect();//redireccionara a la pagina principal
+        
+        }
+        
+            redirect("error");
+    }
+
+
+    function sesioncliente(){
+        
+        $login = $this->input->post('login');
+        $clave = md5($this->input->post('clave'));
+        $ipe = $this->input->post('ipe');
+
+//        $resultado = "SELECT * from cliente WHERE cliente_codigo='".$login."' AND cliente_codigo = '".$clave."' ";
+        $resultado = "SELECT * from cliente WHERE cliente_email = '".$login."'".
+                    " and cliente_clave = '".$clave."' ";
+                    " and estado_id = 1";
+        $result=$this->db->query($resultado)->row_array();
+        
+        if ($result){
+        $clienteid = $result['cliente_id'];
+        $clientenombre = $result['cliente_nombre'];
+        $update="UPDATE carrito
+                  SET cliente_id = '".$clienteid."' 
+                  WHERE cliente_id = '".$ipe."' ";
+        $this->db->query($update);
+
+        setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
+        setcookie("cliente_nombre", $clientenombre, time() + (3600 * 24), "/");
+        return true;
+        
+        }else{
+            show_404();
+        }
+    }    
+    
+    
+
 }
 
 ?>

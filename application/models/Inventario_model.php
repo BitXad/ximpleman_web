@@ -497,4 +497,10 @@ class Inventario_model extends CI_Model
         return $producto;
 
     }
+    
+    function consultar($sql)
+    {        
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+    }
 }

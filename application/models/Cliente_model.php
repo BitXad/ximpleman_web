@@ -481,4 +481,37 @@ class Cliente_model extends CI_Model
 
     }    
     
+   /*
+     * Funcion para verificar si existe cliente en espera de activacion
+     */
+    function verificar_cliente($cliente_id, $codigo_activacion)
+    {
+
+        $sql = "select * from cliente where ".
+                " cliente_id = ".$cliente_id.
+                " and md5(cliente_codactivacion) = '".$codigo_activacion."'".
+                " and estado_id = 2";
+                
+        $cliente = $this->db->query($sql)->row_array();
+        return $cliente;
+
+    }    
+    
+    
+   /*
+     * Funcion para verificar si existe cliente en espera de activacion
+     */
+    function activar_cliente($cliente_id)
+    {
+
+        $sql = "update cliente set ".
+                " estado_id = 1,".
+                " cliente_fechaactivacion = now()".
+                " where cliente_id = ".$cliente_id;
+                
+        $this->db->query($sql);
+        return true;
+
+    }    
+    
 }

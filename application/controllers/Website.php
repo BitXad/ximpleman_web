@@ -17,6 +17,7 @@ class Website extends CI_Controller{
         $this->load->model('Venta_model');
         $this->load->model('producto_model');
         $this->load->model('Cliente_model');
+        $this->load->model('Configuracion_email_model');
         $this->load->helper('cookie');
     }            
 
@@ -59,6 +60,7 @@ class Website extends CI_Controller{
             mail($to, $subject, $message, $headers);
                 
             redirect('website/index/1');
+            
     }
 
     function esp()
@@ -138,7 +140,7 @@ class Website extends CI_Controller{
                     . " where categoria_id = ".$categoria_id
                     . " order by producto_nombre limit ".$desde.",".$hasta;
             
-            $datos = $this->Inventario_model->consultar();
+            $datos = $this->Inventario_model->consultar($sql);
             echo json_encode($datos);
         }
         else
@@ -192,10 +194,7 @@ class Website extends CI_Controller{
             
 
         }else{ redirect(""); }
-            
-        
-        
-        
+                    
     }
 
 
@@ -272,300 +271,306 @@ class Website extends CI_Controller{
        }
    }
 
-function carrito(){
-    
-    $cliente = $this->input->post('cliente');
-    $datos = $this->Pagina_web_model->get_carrito($cliente);
-    
-    if(isset($datos)){
-        echo json_encode($datos);
-    }else { echo json_encode(null); } 
-}
+    function carrito(){
 
-
-function sesioncliente(){
-    $login = $this->input->post('login');
-    $clave = $this->input->post('clave');
-    $ipe = $this->input->post('ipe');
-
-    $resultado = "SELECT * from cliente WHERE cliente_codigo='".$login."' AND cliente_codigo = '".$clave."' ";
-    $result=$this->db->query($resultado)->row_array();
-    if ($result){
-    $clienteid = $result['cliente_id'];
-    $clientenombre = $result['cliente_nombre'];
-    $update="UPDATE carrito
-              SET cliente_id = '".$clienteid."' 
-              WHERE cliente_id = '".$ipe."' ";
-    $this->db->query($update);
-
-    setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
-    setcookie("cliente_nombre", $clientenombre, time() + (3600 * 24), "/");
-    return true;
-    }else{
-        show_404();
-    }
-}
-
-function getcliente(){
         $cliente = $this->input->post('cliente');
-    $datos = $this->Pagina_web_model->get_cliente($cliente);
-     if(isset($datos)){
-                        echo json_encode($datos);
-                    }else { echo json_encode(null); } 
-}
+        $datos = $this->Pagina_web_model->get_carrito($cliente);
 
-function quitar(){
-        $producto_id = $this->input->post('producto_id');
-    $sql = "DELETE FROM carrito
-            WHERE producto_id=".$producto_id." ";
-    $this->db->query($sql);
-    return true;
-}
+        if(isset($datos)){
+            echo json_encode($datos);
+        }else { echo json_encode(null); } 
+    }
 
 
-function venta_online(){
-    //renovar datos de cliente
-    $nit = $this->input->post('nit');
-    $razon = $this->input->post('razon');
-    $telefono = $this->input->post('telefono');
-    $direccion = $this->input->post('direccion');
-    //datos para venta online
-    $forma = $this->input->post('forma');
-    $cliente = $this->input->post('cliente');
-    $subtotal = $this->input->post('subtotal');
-    $descuento = $this->input->post('descuento');
-    $total = $this->input->post('total');
-    $tipo_servicio = $this->input->post('tipo_servicio');
-
-    $fecha = "now()";
-    $hora = "'".date('H:i:s')."'";
-
-    $updatecli = "UPDATE cliente SET cliente_nit='".$nit."', cliente_razon='".$razon."', cliente_telefono='".$telefono."',cliente_direccion='".$direccion."' WHERE cliente_id=".$cliente." ";
-    $this->db->query($updatecli);
-    $venta = "INSERT INTO venta_online
-        (forma_id,
-          tipotrans_id,
-          cliente_id,
-          moneda_id,
-          estado_id,
-          venta_fecha,
-          venta_hora,
-          venta_subtotal,
-          venta_descuento,
-          venta_total,
-          venta_tipodoc,
-          tiposerv_id,
-          entrega_id
-        )
-        VALUES
-        (".$forma.",          
-          1,
-          ".$cliente.",
-          1,
-          1,
-          ".$fecha.",
-          ".$hora.",
-          ".$subtotal.",
-          ".$descuento.",
-          ".$total.",
-          1,
-          ".$tipo_servicio.",
-          1          
-          )"
-        ;
+    function sesioncliente(){
         
-        $this->db->query($venta);
-        $venta_id = $this->db->insert_id();
+        $login = $this->input->post('login');
+        $clave = md5($this->input->post('clave'));
+        $ipe = $this->input->post('ipe');
 
-    $detalle =  "INSERT INTO detalle_ventaonline
-        (producto_id,
-          venta_id,
-          moneda_id,
-          detalleven_codigo,
-          detalleven_cantidad,
-          detalleven_unidad,
-          detalleven_costo,
-          detalleven_precio,
-          detalleven_subtotal,
-          detalleven_descuento,
-          detalleven_total,
-          detalleven_caracteristicas,
-          detalleven_comision,
-          detalleven_tipocambio,
-            detalleven_envase,
-            detalleven_nombreenvase,
-            detalleven_costoenvase,
-            detalleven_precioenvase
-        )
-
-
-        (SELECT 
-          c.producto_id,
-          ".$venta_id.",
-          1,
-          producto_codigo,
-          carrito_cantidad,
-          producto_unidad,
-          carrito_costo,
-          carrito_precio,
-          carrito_subtotal,
-          carrito_descuento,
-          carrito_total,
-          producto_caracteristicas,
-          producto_comision,
-          producto_tipocambio,
-            producto_envase,
-            producto_nombreenvase,
-            producto_costoenvase,
-            producto_precioenvase
-        FROM
-          carrito c,producto p
-          WHERE c.cliente_id=".$cliente." and c.producto_id=p.producto_id)"
-        ;
-        $this->db->query($detalle); 
-
-        $borrar_carrito = "DELETE FROM carrito WHERE cliente_id='".$cliente."' ";
-        $this->db->query($borrar_carrito);
+//        $resultado = "SELECT * from cliente WHERE cliente_codigo='".$login."' AND cliente_codigo = '".$clave."' ";
+        $resultado = "SELECT * from cliente WHERE cliente_email = '".$login."'".
+                    " and cliente_clave = '".$clave."' ";
+                    " and estado_id = 1";
+        $result=$this->db->query($resultado)->row_array();
         
-}
+        if ($result){
+        $clienteid = $result['cliente_id'];
+        $clientenombre = $result['cliente_nombre'];
+        $update="UPDATE carrito
+                  SET cliente_id = '".$clienteid."' 
+                  WHERE cliente_id = '".$ipe."' ";
+        $this->db->query($update);
 
-function ximpleman(){
-    
-    header("location: https://www.ximpleman.com");
-}
-function password(){
-    
-    header("location: https://www.passwordbolivia.com");
-}
+        setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
+        setcookie("cliente_nombre", $clientenombre, time() + (3600 * 24), "/");
+        return true;
+        
+        }else{
+            show_404();
+        }
+    }
 
-function recuperarclave($idioma_id)
-{
+    function getcliente(){
+            $cliente = $this->input->post('cliente');
+        $datos = $this->Pagina_web_model->get_cliente($cliente);
+         if(isset($datos)){
+                            echo json_encode($datos);
+                        }else { echo json_encode(null); } 
+    }
 
-    //$idioma_id = 1; //1 - español
-    $data['idioma_id'] = $idioma_id;
-    $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
-    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
-    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+    function quitar(){
+            $producto_id = $this->input->post('producto_id');
+        $sql = "DELETE FROM carrito
+                WHERE producto_id=".$producto_id." ";
+        $this->db->query($sql);
+        return true;
+    }
 
-    $data['parametro'] = $this->Parametro_model->get_parametros();
 
-    $data['_view'] = 'website';
-    $this->load->view('web/recuperarclave',$data);
-}
+    function venta_online(){
+        //renovar datos de cliente
+        $nit = $this->input->post('nit');
+        $razon = $this->input->post('razon');
+        $telefono = $this->input->post('telefono');
+        $direccion = $this->input->post('direccion');
+        //datos para venta online
+        $forma = $this->input->post('forma');
+        $cliente = $this->input->post('cliente');
+        $subtotal = $this->input->post('subtotal');
+        $descuento = $this->input->post('descuento');
+        $total = $this->input->post('total');
+        $tipo_servicio = $this->input->post('tipo_servicio');
 
-function miperfil($idioma_id)
-{
-    //$idioma_id = 1; //1 - español
-    $pagina_web = $this->Pagina_web_model->get_pagina($idioma_id);
-    if (sizeof($pagina_web)>0){
-        $data['pagina_web'] = $pagina_web;
+        $fecha = "now()";
+        $hora = "'".date('H:i:s')."'";
+
+        $updatecli = "UPDATE cliente SET cliente_nit='".$nit."', cliente_razon='".$razon."', cliente_telefono='".$telefono."',cliente_direccion='".$direccion."' WHERE cliente_id=".$cliente." ";
+        $this->db->query($updatecli);
+        $venta = "INSERT INTO venta_online
+            (forma_id,
+              tipotrans_id,
+              cliente_id,
+              moneda_id,
+              estado_id,
+              venta_fecha,
+              venta_hora,
+              venta_subtotal,
+              venta_descuento,
+              venta_total,
+              venta_tipodoc,
+              tiposerv_id,
+              entrega_id
+            )
+            VALUES
+            (".$forma.",          
+              1,
+              ".$cliente.",
+              1,
+              1,
+              ".$fecha.",
+              ".$hora.",
+              ".$subtotal.",
+              ".$descuento.",
+              ".$total.",
+              1,
+              ".$tipo_servicio.",
+              1          
+              )"
+            ;
+
+            $this->db->query($venta);
+            $venta_id = $this->db->insert_id();
+
+        $detalle =  "INSERT INTO detalle_ventaonline
+            (producto_id,
+              venta_id,
+              moneda_id,
+              detalleven_codigo,
+              detalleven_cantidad,
+              detalleven_unidad,
+              detalleven_costo,
+              detalleven_precio,
+              detalleven_subtotal,
+              detalleven_descuento,
+              detalleven_total,
+              detalleven_caracteristicas,
+              detalleven_comision,
+              detalleven_tipocambio,
+                detalleven_envase,
+                detalleven_nombreenvase,
+                detalleven_costoenvase,
+                detalleven_precioenvase
+            )
+
+
+            (SELECT 
+              c.producto_id,
+              ".$venta_id.",
+              1,
+              producto_codigo,
+              carrito_cantidad,
+              producto_unidad,
+              carrito_costo,
+              carrito_precio,
+              carrito_subtotal,
+              carrito_descuento,
+              carrito_total,
+              producto_caracteristicas,
+              producto_comision,
+              producto_tipocambio,
+                producto_envase,
+                producto_nombreenvase,
+                producto_costoenvase,
+                producto_precioenvase
+            FROM
+              carrito c,producto p
+              WHERE c.cliente_id=".$cliente." and c.producto_id=p.producto_id)"
+            ;
+            $this->db->query($detalle); 
+
+            $borrar_carrito = "DELETE FROM carrito WHERE cliente_id='".$cliente."' ";
+            $this->db->query($borrar_carrito);
+
+    }
+
+    function ximpleman(){
+
+        header("location: https://www.ximpleman.com");
+    }
+    function password(){
+
+        header("location: https://www.passwordbolivia.com");
+    }
+
+    function recuperarclave($idioma_id)
+    {
+
+        //$idioma_id = 1; //1 - español
         $data['idioma_id'] = $idioma_id;
-    }
-    else{
+        $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+        $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+        $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
 
-        redirect("website/miperfil/1");
-    }
-    
-    
-    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
-    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+        $data['parametro'] = $this->Parametro_model->get_parametros();
 
-    if (isset($_COOKIE["cliente_id"])){
-            
-        $cliente_id = $_COOKIE["cliente_id"];
-        if(is_numeric($cliente_id)){
-            
-            $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
-            $data['parametro'] = $this->Parametro_model->get_parametros();
-            $data['_view'] = 'website';
-            $this->load->view('web/miperfil',$data);
-            
-        }else{ redirect(); }
-            
+        $data['_view'] = 'website';
+        $this->load->view('web/recuperarclave',$data);
     }
-    else{ redirect(); }
-    
-}
 
-function micarrito($idioma_id)
-{
-    //$idioma_id = 1; //1 - español
-    $pagina_web = $this->Pagina_web_model->get_pagina($idioma_id);
-    if (sizeof($pagina_web)>0){
-        $data['pagina_web'] = $pagina_web;
+    function miperfil($idioma_id)
+    {
+        //$idioma_id = 1; //1 - español
+        $pagina_web = $this->Pagina_web_model->get_pagina($idioma_id);
+        if (sizeof($pagina_web)>0){
+            $data['pagina_web'] = $pagina_web;
+            $data['idioma_id'] = $idioma_id;
+        }
+        else{
+
+            redirect("website/miperfil/1");
+        }
+
+
+        $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+        $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+
+        if (isset($_COOKIE["cliente_id"])){
+
+            $cliente_id = $_COOKIE["cliente_id"];
+            if(is_numeric($cliente_id)){
+
+                $data['cliente'] = $this->Cliente_model->get_cliente($cliente_id);
+                $data['parametro'] = $this->Parametro_model->get_parametros();
+                $data['_view'] = 'website';
+                $this->load->view('web/miperfil',$data);
+
+            }else{ redirect(); }
+
+        }
+        else{ redirect(); }
+
+    }
+
+    function micarrito($idioma_id)
+    {
+        //$idioma_id = 1; //1 - español
+        $pagina_web = $this->Pagina_web_model->get_pagina($idioma_id);
+        if (sizeof($pagina_web)>0){
+            $data['pagina_web'] = $pagina_web;
+            $data['idioma_id'] = $idioma_id;
+        }
+        else{
+
+            redirect("website/micarrito/1");
+        }    
+
+    //    $data['idioma_id'] = $idioma_id;
+        $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+        $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+        $data['parametro'] = $this->Parametro_model->get_parametros(); 
+
+        if (isset($_COOKIE["cliente_id"])){
+
+            $cliente_id = $_COOKIE["cliente_id"];
+
+            if(is_numeric($cliente_id)){
+
+                $cliente = $this->Cliente_model->get_cliente($cliente_id);
+                $data['productos'] = $this->Pagina_web_model->get_carrito($cliente_id);
+
+                $data['_view'] = 'website';
+                $this->load->view('web/micarrito',$data);
+
+            }else{ redirect(); }
+
+        }
+        else{ redirect(); }
+
+    }
+
+    function miscompras($idioma_id)
+    {
+        //$idioma_id = 1; //1 - español
+        $pagina_web = $this->Pagina_web_model->get_pagina($idioma_id);
+        if (sizeof($pagina_web)>0){
+            $data['pagina_web'] = $pagina_web;
+            $data['idioma_id'] = $idioma_id;
+        }
+        else{
+
+            redirect("website/miscompras/1");
+        }    
+
+        //$idioma_id = 1; //1 - español
         $data['idioma_id'] = $idioma_id;
-    }
-    else{
+    //    $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+        $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+        $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
 
-        redirect("website/micarrito/1");
-    }    
-    
-//    $data['idioma_id'] = $idioma_id;
-    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
-    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
-    $data['parametro'] = $this->Parametro_model->get_parametros(); 
-    
-    if (isset($_COOKIE["cliente_id"])){
 
-        $cliente_id = $_COOKIE["cliente_id"];
-        
-        if(is_numeric($cliente_id)){
-        
-            $cliente = $this->Cliente_model->get_cliente($cliente_id);
-            $data['productos'] = $this->Pagina_web_model->get_carrito($cliente_id);
+        if (isset($_COOKIE["cliente_id"])){
 
-            $data['_view'] = 'website';
-            $this->load->view('web/micarrito',$data);
-            
+            $cliente_id = $_COOKIE["cliente_id"];
+
+            if(is_numeric($cliente_id)){
+
+                $cliente = $this->Cliente_model->get_cliente($cliente_id);
+                $data['cliente'] = $cliente;
+
+                $data['parametro'] = $this->Parametro_model->get_parametros();
+
+
+                $data['productos'] = $this->Pagina_web_model->get_carrito($cliente_id);
+
+                $data['_view'] = 'website';
+                $this->load->view('web/miscompras',$data);
+
+            }else{ redirect(); }
+
         }else{ redirect(); }
-            
+
     }
-    else{ redirect(); }
-    
-}
-
-function miscompras($idioma_id)
-{
-    //$idioma_id = 1; //1 - español
-    $pagina_web = $this->Pagina_web_model->get_pagina($idioma_id);
-    if (sizeof($pagina_web)>0){
-        $data['pagina_web'] = $pagina_web;
-        $data['idioma_id'] = $idioma_id;
-    }
-    else{
-
-        redirect("website/miscompras/1");
-    }    
-    
-    //$idioma_id = 1; //1 - español
-    $data['idioma_id'] = $idioma_id;
-//    $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
-    $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
-    $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
-    
-    
-    if (isset($_COOKIE["cliente_id"])){
-
-        $cliente_id = $_COOKIE["cliente_id"];
-        
-        if(is_numeric($cliente_id)){
-    
-            $cliente = $this->Cliente_model->get_cliente($cliente_id);
-            $data['cliente'] = $cliente;
-
-            $data['parametro'] = $this->Parametro_model->get_parametros();
-
-
-            $data['productos'] = $this->Pagina_web_model->get_carrito($cliente_id);
-
-            $data['_view'] = 'website';
-            $this->load->view('web/miscompras',$data);
-            
-        }else{ redirect(); }
-            
-    }else{ redirect(); }
-    
-}
 
 
     /*
@@ -704,62 +709,170 @@ function miscompras($idioma_id)
     }
     
     
-/*
-* Registrar cliente
-*/
-function registrarclienteonline()
-{
-//        if(($this->acceso(12)==true)||($this->acceso(30)==true)){
-//        //**************** inicio contenido ***************    
-//    
-        if ($this->input->is_ajax_request()) {
-            
-                      
-            $cliente_nit = $this->input->post('nit');
-            $cliente_razon = "'".$this->input->post('razon')."'";
-            $cliente_telefono = "'".$this->input->post('telefono')."'";
-            $tipocliente_id = $this->input->post('tipocliente_id');
-            
-            $cliente_nombre =  "'".$this->input->post('cliente_nombre')."'";
-            $cliente_ci =  "'".$this->input->post('cliente_ci')."'";
-            $cliente_nombrenegocio =  "'".$this->input->post('cliente_nombrenegocio')."'";
-            $cliente_codigo =  "'".$this->input->post('cliente_codigo')."'";
+    /*
+    * Registrar cliente
+    */
+    function registrarclienteonline()
+    {
+    //        if(($this->acceso(12)==true)||($this->acceso(30)==true)){
+    //        //**************** inicio contenido ***************    
+    //    
+            if ($this->input->is_ajax_request()) {
 
-            $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
-            $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
-            $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
-            $zona_id =  $this->input->post('zona_id');
-            $cliente_email = "'".$this->input->post('cliente_email')."'";
-            
-            $cliente_clave = "'".md5($this->input->post('cliente_clave'))."'";
-            
-            
-            $sql = "insert cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
-                    cliente_razon,cliente_telefono,estado_id,usuario_id,
-                    cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
-                    cliente_celular, zona_id, cliente_email, cliente_clave
-                    ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
-                    $cliente_razon.",".$cliente_telefono.",1,0,".
-                   $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
-                   $cliente_celular.",".$zona_id.",".$cliente_email.",".$cliente_clave.")";
-            
-            echo $sql;
-            
-            $datos = $this->Venta_model->registrarcliente($sql);
-            echo json_encode($datos);
-            
-        }
-        else
-        {                 
-            show_404();
-            
-        }   
-        
-        		
-        //**************** fin contenido ***************
-//        			}
-        		
-}    
 
+                $cliente_nit = $this->input->post('nit');
+                $cliente_razon = "'".$this->input->post('razon')."'";
+                $cliente_telefono = "'".$this->input->post('telefono')."'";
+                $tipocliente_id = $this->input->post('tipocliente_id');
+
+                $nombre =  $this->input->post('cliente_nombre');
+                $cliente_nombre =  "'".$nombre."'";
+                $cliente_ci =  "'".$this->input->post('cliente_ci')."'";
+                $cliente_nombrenegocio =  "'".$this->input->post('cliente_nombrenegocio')."'";
+                $cliente_codigo =  "'".$this->input->post('cliente_codigo')."'";
+
+                $cliente_direccion =  "'".$this->input->post('cliente_direccion')."'";
+                $cliente_departamento =  "'".$this->input->post('cliente_departamento')."'";
+                $cliente_celular =  "'".$this->input->post('cliente_celular')."'";
+                $zona_id =  $this->input->post('zona_id');
+                $email = $this->input->post('cliente_email');
+                $cliente_email = "'".$email."'";
+                
+                $codigo = mt_rand(100000,1250000);
+                
+                
+                $codigo_activacion = "'".$codigo."'";
+                
+                
+                $cliente_clave = "'".md5($this->input->post('cliente_clave'))."'";
+
+
+                $sql = "insert into cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
+                        cliente_razon,cliente_telefono,estado_id,usuario_id,
+                        cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
+                        cliente_celular, zona_id, cliente_email, cliente_clave,cliente_codactivacion
+                        ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
+                        $cliente_razon.",".$cliente_telefono.",2,0,".
+                       $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
+                       $cliente_celular.",".$zona_id.",".$cliente_email.",".$cliente_clave.",".$codigo_activacion.")";
+
+                
+
+                $datos = $this->Venta_model->registrarcliente($sql);
+                $cliente_id = 0
+                        ;
+                if (isset($datos)){
+                    $cliente_id  = $datos[0]["cliente_id"];                    
+                }
+                
+                
+                $parametros = base_url("verificar/activate/".$cliente_id."/".md5($codigo));
+                
+                $this->enviar_email($parametros,$email,$nombre);
+                
+                echo json_encode($datos);
+
+            }
+            else
+            {                 
+                show_404();
+
+            }   
+
+
+            //**************** fin contenido ***************
+    //        			}
+
+    }    
+
+    function buscar_email(){
+
+        $email = $this->input->post('email');
+        $sql = "select cliente_email from cliente where cliente_email = '".$email."'";
+        $resultado =  $this->Inventario_model->consultar($sql);
+        echo json_encode($resultado);
+    }
+    
+    function enviar_email($direccion,$email_destino,$nombre_cliente) {
+
+            $this->load->library('email');
+            $this->email->set_newline("\r\n");
+            $configuracion = $this->Configuracion_email_model->get_configuracion_email(1);
+            
+            $config['protocol'] = $configuracion['email_protocolo'];
+            $config['smtp_host'] = $configuracion['email_host'];
+            $config['smtp_port'] = $configuracion['email_puerto'];
+            $config['smtp_user'] = $configuracion['email_usuario'];
+            $config['smtp_pass'] = $configuracion['email_clave'];
+            $config['smtp_from_name'] = $configuracion['email_nombre'];
+            $config['priority'] = $configuracion['email_prioridad'];
+            $config['charset'] = $configuracion['email_charset'];
+            $config['smtp_crypto'] = $configuracion['email_encriptacion'];
+            $config['wordwrap'] = TRUE;
+            $config['newline'] = "\r\n";
+            $config['mailtype'] = $configuracion['email_tipo'];
+            $email_copia = '';
+            
+            $this->email->initialize($config);
+
+            $this->email->from($config['smtp_user'], $config['smtp_from_name']);
+            $this->email->to($email_destino);
+            $this->email->cc($configuracion['email_copia']);
+//            $this->email->bcc($attributes['cc']);
+            $this->email->subject("Felicidades por registrarte en nuestra plataforma");
+
+            
+            $html = "<html>";
+            $html = "<head>";
+            $html = "<link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css' integrity='sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M' crossorigin='anonymous'>";
+            $html = "</head>";
+            $html = "<body>";
+            
+            $html .= "<div class='container' style='font-family: Arial'>";
+            $html .= "<div class='col-md-2' style='background:gray;'></div>";
+            
+            $html .= "<div class='col-md-10'>";
+            $html .= "<center>";
+            $html .= "<h3>GRACIAS POR REGISTRARTE</h3>";
+            $html .= " ";
+            $html .= "<h4>".$nombre_cliente." BIENVENIDO(A) A NUESTRA PLATAFORMA</h4>";
+            $html .= "<br>";
+            $html .= $configuracion['email_cabecera'];
+            $html .= "<br>";
+            $html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm' > Activar mi Cuenta</a>";
+//            $html .= "<form method='get' action='/".$direccion."'>";
+//            $html .= "<button type='submit'>Activar mi Cuenta</button>";
+//            $html .= "</form>";
+            
+            $html .= "<br>";
+            $html .= "<br>";
+
+            $html .= $configuracion['email_pie'];
+            $html .= "<br>";
+            $html .= "<br>";
+            $html .= "<br><a href='".$direccion."' class='btn btn-info btn-sm'>".$direccion."</a>";
+           
+            $html .= "</center>";
+            $html .= "</div>";
+            
+            $html .= "<div class='col-md-2'></div>";            
+            $html .= "</div>";
+            
+            $html .= "</body>";
+            $html .= "</html>";
+            
+            
+            $this->email->message($html);
+
+            if($this->email->send()) {
+                return true;        
+            } else {
+                return false;
+            }       
+
+    }
+
+ 
+   
 
 }

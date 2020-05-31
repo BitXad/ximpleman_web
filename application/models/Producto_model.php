@@ -350,7 +350,7 @@ class Producto_model extends CI_Model
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion
               FROM
-              producto p
+              inventario p
               LEFT JOIN estado e on p.estado_id = e.estado_id
               WHERE 
                    p.estado_id = 1
@@ -370,7 +370,7 @@ class Producto_model extends CI_Model
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
               FROM
-              producto p
+              inventario p
               LEFT JOIN estado e on p.estado_id = e.estado_id
               LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
               WHERE 
@@ -399,7 +399,7 @@ class Producto_model extends CI_Model
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
               FROM
-              producto p
+              inventario p
               LEFT JOIN estado e on p.estado_id = e.estado_id
               LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
               WHERE 
