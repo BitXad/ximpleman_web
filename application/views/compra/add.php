@@ -13,7 +13,7 @@
 							<select name="estado_id" class="form-control">
 								<option value="">select estado</option>
 								<?php 
-								foreach($all_estado as $estado)
+								foreach($all_estado   as $estado)
 								{
 									$selected = ($estado['estado_id'] == $this->input->post('estado_id')) ? ' selected="selected"' : "";
 
