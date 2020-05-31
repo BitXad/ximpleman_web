@@ -178,13 +178,13 @@ border-bottom : 1px solid #aaa;
 
                         <center>
                                 <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                                <?php if (sizeof($empresa[0]['empresa_eslogan'])>0){ ?>
+                                <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
                                 <small>
                                         <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                                    
                                 </small> 
                                 <?php } ?>
                                 
-                                <?php if (sizeof($empresa[0]['empresa_propietario'])>0){ ?>
+                                <?php if (isset($empresa[0]['empresa_propietario'])){ ?>
                                 <font size="1" face="Arial narrow"><b><small>
                                     
                                 
@@ -329,10 +329,10 @@ border-bottom : 1px solid #aaa;
                            <td align="center" style="padding: 0;"><font style="size:7px; font-family: arial"> <?php echo $d['detallefact_cantidad']; ?></font></td>
                             <td colspan="2" style="padding: 0; line-height: 10px;"><font style="size:7px; font-family: arial;"> 
                                 <?php echo $d['detallefact_descripcion']; ?>
-                                <?php if(sizeof($d['detallefact_preferencia'])>0 && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
+                                <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
                                     echo  $d['detallefact_preferencia']; }
                                 ?>
-                                <?php if(sizeof($d['detallefact_caracteristicas'])>0 && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
+                                <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
                                     echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
                                     //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
                                     

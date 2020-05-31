@@ -86,6 +86,8 @@ class Parametro extends CI_Controller{
                     'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
                     'parametro_segservicio' => $this->input->post('parametro_segservicio'),
                     'parametro_notaentrega' => $this->input->post('parametro_notaentrega'),
+                    'parametro_apikey' => $this->input->post('parametro_apikey'),
+                    'parametro_serviciofact' => $this->input->post('parametro_serviciofact'),
                
             );
             
@@ -150,6 +152,8 @@ class Parametro extends CI_Controller{
                     'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
                     'parametro_segservicio' => $this->input->post('parametro_segservicio'),
                     'parametro_notaentrega' => $this->input->post('parametro_notaentrega'),
+                    'parametro_apikey' => $this->input->post('parametro_apikey'),
+                    'parametro_serviciofact' => $this->input->post('parametro_serviciofact'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
@@ -157,7 +161,6 @@ class Parametro extends CI_Controller{
             }
             else
             {
-
                 $data['page_title'] = "Parametro";
                 $data['_view'] = 'parametro/edit';
                 $this->load->view('layouts/main',$data);

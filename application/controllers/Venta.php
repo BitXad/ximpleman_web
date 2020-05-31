@@ -575,7 +575,7 @@ class Venta extends CI_Controller{
          
                 $this->Venta_model->ejecutar($sql);               
                 
-                $this->ultimaventa();
+                $this->ultimaventa(1);
        //     }
         }
         
@@ -1868,6 +1868,7 @@ function registrarcliente()
         			}
         		
 }
+    
 /*
 * Registrar cliente
 */
@@ -1878,8 +1879,9 @@ function modificarcliente()
     
         if ($this->input->is_ajax_request()) {
             
-            $cliente_nit = $this->input->post('nit');          
-            if($cliente_nit == null) $cliente_nit = 0;
+            $cliente_nit = $this->input->post('nit');    
+            
+            if($cliente_nit == null || $cliente_nit==0) $cliente_nit = 0;
             
             $cliente_razon = "'".$this->input->post('razon')."'";
             $cliente_telefono = "'".$this->input->post('telefono')."'";
@@ -1919,7 +1921,7 @@ function modificarcliente()
                         ",zona_id = ".$zona_id.
                         
                         " where cliente_id = ".$cliente_id;
-
+                
                 $datos = $this->Venta_model->modificarcliente($sql);            
                 echo  '[{"cliente_id":'.$cliente_id.'}]';
             }
@@ -2993,7 +2995,18 @@ function anular_venta($venta_id){
             $this->load->model('Detalle_serv_model');
             $all_detalle_servicio_factura = $this->Detalle_serv_model->get_thisdetalle_serv_forfactura($llave_valor);
             //$all_detalle_factura_aux = $this->Detalle_factura_aux_model->getall_detalle_factura_aux($venta_id);
+            $parametro_serviciofact = $this->input->post('parametro_serviciofact');
+            $detalle_servfact = "";
             foreach($all_detalle_servicio_factura as $detalle_fact){
+                if($parametro_serviciofact == 1){
+                    $detalle_servfact = $detalle_fact['detalleserv_solucion'];
+                }elseif($parametro_serviciofact == 2){
+                    $detalle_servfact = $detalle_fact['detalleserv_descripcion'];
+                }elseif($parametro_serviciofact == 3){
+                    $detalle_servfact = $detalle_fact['detalleserv_solucion'].", ".$detalle_fact['detalleserv_descripcion'];
+                }elseif($parametro_serviciofact == 4){
+                    $detalle_servfact = $detalle_fact['detalleserv_descripcion'].", ".$detalle_fact['detalleserv_solucion'];
+                }
                 $params = array(
                 'producto_id' => 0,
                 'venta_id' => 0,
@@ -3001,7 +3014,7 @@ function anular_venta($venta_id){
                 'detallefact_cantidad' => 1,
                 'detallefact_codigo' => '',
                 'detallefact_unidad' => 'UNIDAD',
-                'detallefact_descripcion' => $detalle_fact['detalleserv_solucion'],
+                'detallefact_descripcion' => $detalle_servfact,
                 'detallefact_precio' => 0,
                 'detallefact_subtotal' => $detalle_fact['detalleserv_total'],
                 'detallefact_descuento' => 0,

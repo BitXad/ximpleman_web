@@ -40,7 +40,7 @@ class Empresa extends CI_Controller{
         $config['base_url'] = site_url('empresa/index?');
         $config['total_rows'] = $this->Empresa_model->get_all_empresa_count();
         $this->pagination->initialize($config);
-
+            
         $data['empresa'] = $this->Empresa_model->get_all_empresa($params);
         
         $data['_view'] = 'empresa/index';
@@ -127,13 +127,18 @@ class Empresa extends CI_Controller{
                     'empresa_email' => $this->input->post('empresa_email'),
                     'empresa_profesion' => $this->input->post('empresa_profesion'),
                     'empresa_cargo' => $this->input->post('empresa_cargo'),
+                    'empresa_latitud' => $this->input->post('empresa_latitud'),
+                    'empresa_longitud' => $this->input->post('empresa_longitud'),
             );
             
             $empresa_id = $this->Empresa_model->add_empresa($params);
             redirect('empresa/index');
         }
         else
-        {            
+        {
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametro(1);
+            
             $data['_view'] = 'empresa/add';
             $this->load->view('layouts/main',$data);
         }
@@ -239,6 +244,8 @@ class Empresa extends CI_Controller{
                         'empresa_email' => $this->input->post('empresa_email'),
                         'empresa_profesion' => $this->input->post('empresa_profesion'),
                         'empresa_cargo' => $this->input->post('empresa_cargo'),
+                        'empresa_latitud' => $this->input->post('empresa_latitud'),
+                        'empresa_longitud' => $this->input->post('empresa_longitud'),
                 );
 
                 $this->Empresa_model->update_empresa($empresa_id,$params);            
@@ -246,6 +253,9 @@ class Empresa extends CI_Controller{
             }
             else
             {
+                $this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_parametro(1);
+                
                 $data['_view'] = 'empresa/edit';
                 $this->load->view('layouts/main',$data);
             }

@@ -37,6 +37,7 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th>#</th>
+                        <th class="no-print"></th>
                         <th>Nombre</th>
                         <th class="no-print"></th>
                     </tr>
@@ -46,6 +47,33 @@
                               $i = $i+1;?>
                     <tr>
                         <td><?php echo $i ?></td>
+                        <td class="no-print text-center">
+                            <?php if($c['categoria_imagen'] != null || $c['categoria_imagen'] != ""){ ?>
+                                        <a class="btn btn-xs" data-toggle="modal" data-target="#myModal<?php echo $c['categoria_id']; ?>">
+                                            <img src="<?php echo site_url('resources/images/categorias/')."thumb_".$c['categoria_imagen']; ?>" class="img-circle" width="40" height="40">
+                                        </a>
+                                        
+                            <?php } /*else{ ?>
+                                        <img src="<?php echo site_url('resources/images/categorias/default_thumb.jpg'); ?>" class="img-circle" width="40" height="40">
+                            <?php }*/ ?>
+                            <!------------------------ INICIO modal para ver imagen ------------------->
+                            <div class="modal fade" id="myModal<?php echo $c['categoria_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $c['categoria_imagen']; ?>">
+                              <div class="modal-dialog" role="document">
+                                    <br><br>
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                  </div>
+                                  <div class="modal-body">
+                                   <!------------------------------------------------------------------->
+                                   <img style="max-height: 100%; max-width: 100%" src="<?php echo site_url('resources/images/categorias/').$c['categoria_imagen']; ?>">
+                                   <!------------------------------------------------------------------->
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <!------------------------ FIN modal para ver imagen ------------------->
+                        </td>
                         <td><?php echo $c['categoria_nombre']; ?></td>
                         <td class="no-print">
                              <!------------------------ INICIO modal para confirmar eliminación ------------------->

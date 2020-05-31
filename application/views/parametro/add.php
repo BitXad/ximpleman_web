@@ -63,6 +63,12 @@
                         </select>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <label for="parametro_apikey" class="control-label">API KEY</label>
+                    <div class="form-group">
+                        <input type="text" name="parametro_apikey" value="<?php echo ($this->input->post('parametro_apikey') ? $this->input->post('parametro_apikey') : ""); ?>" class="form-control" id="parametro_apikey" />
+                    </div>
+                </div>
             </div><hr>
             <div class="box-body" style="margin-top: -20px;margin-bottom: -20px; background: rgba(0, 255, 0, 0.3);"><u><b>CREDITOS</b></u><br>
                 <div class="col-md-2">
@@ -145,6 +151,17 @@
                         <select  name="parametro_segservicio" class="form-control" id="parametro_segservicio" >
                              <option value="1">ACTIVAR SEGUIMIENTO</option>
                             <option value="0">DESACTIVAR SEGUIMIENTO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label for="parametro_serviciofact" class="control-label"> DETALLE FACTURA</label>
+                    <div class="form-group">
+                        <select  name="parametro_serviciofact" class="form-control" id="parametro_serviciofact" >
+                            <option value="1">SOLUCION</option>
+                            <option value="2">DESCRIPCION</option>
+                            <option value="3">SOLUCION Y DESCRIPCION</option>
+                            <option value="4">DESCRIPCION Y SOLUCION</option>
                         </select>
                     </div>
                 </div>

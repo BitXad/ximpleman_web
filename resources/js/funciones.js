@@ -1793,8 +1793,15 @@ function registrarcliente()
     var cliente_celular = document.getElementById('cliente_celular').value;
     var zona_id = document.getElementById('zona_id').value;
     
-   
-   //alert(cliente_id);
+    if (Number.isInteger(zona_id)){
+        zona_id = document.getElementById('zona_id').value;
+    }else{        
+        zona_id = 0;
+    }
+    
+
+//   alert(nit+" ** "+razon+" ** "+telefono+" ** "+cliente_id+" ** "+cliente_nombre+" ** "+tipocliente_id+" ** "+cliente_nombre+" ** "+cliente_ci+" ** "+cliente_nombrenegocio+" ** "+
+//           cliente_codigo+" ** "+cliente_direccion+" ** "+cliente_departamento+" ** "+cliente_celular+" ** "+zona_id);
    
     if (cliente_id > 0 || nit==0){ //si el cliente existe debe actualizar sus datos 
         

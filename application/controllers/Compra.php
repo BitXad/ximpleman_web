@@ -131,7 +131,7 @@ class Compra extends CI_Controller{
             $this->load->model('Proveedor_model');
             $data['comprasn'] = $this->Compra_model->get_compra_sin_nombre($usuario_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
-            $data['proveedor'] = $this->Proveedor_model->get_all_proveedor();
+            $data['proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
             $data['_view'] = 'compra/compraProveedor';
             $this->load->view('layouts/main',$data);
         }
@@ -494,7 +494,7 @@ class Compra extends CI_Controller{
 
 
                $this->load->model('Proveedor_model');
-               $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
+               $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
 
                $this->load->model('Forma_pago_model');
                $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();
@@ -538,7 +538,7 @@ class Compra extends CI_Controller{
 
 
                 $this->load->model('Proveedor_model');
-                $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor();
+                $data['all_proveedor'] = $this->Proveedor_model->get_all_proveedor_activo();
 
                 $this->load->model('Forma_pago_model');
                 $data['all_forma_pago'] = $this->Forma_pago_model->get_all_forma_pago();

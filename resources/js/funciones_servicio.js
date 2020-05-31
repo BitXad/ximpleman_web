@@ -2558,6 +2558,7 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
 function registrar_factura(servicio_id){
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"venta/generar_factura_detalle_servicio";
+    var parametro_serviciofact = document.getElementById("parametro_serviciofact").value;
      
     var nit = document.getElementById("generar_nit").value;
     var razon_social = document.getElementById("generar_razon").value;
@@ -2579,7 +2580,7 @@ function registrar_factura(servicio_id){
             type: "POST",
             data:{nit:nit, razon_social:razon_social,
                  fecha_venta:fecha_venta, detalle_precio:detalle_precio, llave_valor:llave_valor,
-                 llave_foranea:llave_foranea}, 
+                 llave_foranea:llave_foranea, parametro_serviciofact:parametro_serviciofact}, 
             success:function(respuesta){
                 resultado = JSON.parse(respuesta);
                 var factura_id = resultado;
@@ -2843,6 +2844,7 @@ function registrarinsumo_aldetalle(detalleserv_id){
 /* carga los detalles de un servicio */
 function cargar_parafactura_serv(servicio_id){
     var base_url = document.getElementById("base_url").value;
+    var parametro_serviciofact = document.getElementById("parametro_serviciofact").value;
     var controlador = base_url+"detalle_serv/get_detalle_serv";
     $.ajax({url: controlador,
             type: "POST",
@@ -2885,7 +2887,17 @@ function cargar_parafactura_serv(servicio_id){
                         html += "</td>";
                         html += "<td colspan='2' style='padding: 0; line-height: 10px;'>";
                         html += "<font style='size:7px; font-family: arial;'> ";
-                        html += registros[i]['detalleserv_solucion'];
+                        var eldetalle = "";
+                        if(parametro_serviciofact == 1){
+                            eldetalle = registros[i]['detalleserv_solucion'];
+                        }else if(parametro_serviciofact == 2){
+                            eldetalle = registros[i]['detalleserv_descripcion'];
+                        }else if(parametro_serviciofact == 3){
+                            eldetalle = registros[i]['detalleserv_solucion']+", "+registros[i]['detalleserv_descripcion'];
+                        }else if(parametro_serviciofact == 4){
+                            eldetalle = registros[i]['detalleserv_descripcion']+", "+registros[i]['detalleserv_solucion'];
+                        }
+                        html += eldetalle;
                         html += "</font>";
                         html += "</td>";
                         /*html += "<td align='right' style='padding: 0;'><font style='size:7px; font-family: arial'>";

@@ -154,8 +154,8 @@ class Factura_model extends CI_Model
                 `factura`
 
             WHERE
-                factura_fecha >= '".$inicio."'
-                and factura_fecha <= '".$fin."'
+                factura_fechaventa >= '".$inicio."'
+                and factura_fechaventa <= '".$fin."'
                 
 
             ORDER BY `factura_id` ASC";

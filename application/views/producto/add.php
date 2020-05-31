@@ -108,14 +108,13 @@
             <?php echo form_open_multipart('producto/add'); ?>
             <div class="box-body">
                 <div class="row clearfix">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                             <label for="producto_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                             <div class="form-group">
                                 <input type="text" name="producto_nombre" value="<?php echo $this->input->post('producto_nombre'); ?>" class="form-control" id="producto_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autofocus autocomplete="off" />
                                     <span class="text-danger"><?php echo form_error('producto_nombre');?></span>
                             </div>
                     </div>
-					
                     <div class="col-md-2">
                         <label for="producto_unidad" class="control-label">Unidad</label>
                         <div class="form-group">
@@ -125,6 +124,12 @@
                                     <option value="<?php echo $u['unidad_nombre']; ?>"> <?php echo $u['unidad_nombre']; ?> </option>
                                 <?php } ?>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="producto_unidadentera" class="control-label">Unidad Entera</label>
+                        <div class="form-group">
+                            <input type="number" step="any" min="0" name="producto_unidadentera" value="<?php echo ($this->input->post('producto_unidadentera') ? $this->input->post('producto_unidadentera') : "1"); ?>" class="form-control" id="producto_unidadentera" />
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -139,13 +144,13 @@
                                     <input type="text" name="producto_industria" value="<?php echo "BOLIVANA"; ?>" class="form-control" id="producto_industria"  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"/>
                             </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                             <label for="producto_codigobarra" class="control-label"><span class="text-danger">*</span>Código de barras</label>
                             <div class="form-group">
                                 <input type="text" name="producto_codigobarra" value="<?php echo $this->input->post('producto_codigobarra'); ?>" class="form-control" id="producto_codigobarra" required  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autocomplete="off" />
                             </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                             <label for="producto_codigo" class="control-label"><span class="text-danger">*</span>Código Producto</label>
                             <div class="form-group">
                                 <input type="text" name="producto_codigo" value="<?php echo $this->input->post('producto_codigo'); ?>" class="form-control" id="producto_codigo" required  onclick="this.select();" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" autocomplete="off" />
@@ -155,7 +160,7 @@
                     <div class="col-md-3">  
                             <label for="categoria_id" class="control-label"><span class="text-danger">*</span>Categoria</label>
                             <div class="form-group" style="display: flex">
-                                <select name="categoria_id" class="form-control" required id="categoria_id">
+                                <select name="categoria_id" class="form-control" required id="categoria_id" onchange="mostrar_subcategoriaproducto(this.value)">
                                             <option value="">- CATEGORIA -</option>
                                             <?php 
                                             foreach($all_categoria_producto as $categoria_producto)
@@ -170,7 +175,16 @@
                                 <i class="fa fa-plus-circle"></i></a>
                             </div>
                     </div>
-                    <div class="col-md-3">  
+                    <div class="col-md-3">
+                        <label for="subcategoria_id" class="control-label">Sub Categoria</label>
+                        <div class="form-group" style="display: flex">
+                            <select name="subcategoria_id" class="form-control" id="subcategoria_id">
+                                <option value="">- SUB CATEGORIA -</option>
+                            </select>
+                            <span id="parasubcat"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
                             <label for="destino_id" class="control-label">Destino</label>
                             <div class="form-group">
                                 <select name="destino_id" class="form-control" id="destino_id">
@@ -530,3 +544,29 @@
     </div>
 </div>
 <!------------------------ FIN modal para Registrar nueva Categoria ------------------->
+<!------------------------ INICIO modal para Registrar nueva SUB Categoria ------------------->
+<div class="modal fade" id="modalsubcategoria" tabindex="-1" role="dialog" aria-labelledby="modalsubcategoria">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+            </div>
+            <div class="modal-body">
+               <!------------------------------------------------------------------->
+               <div class="col-md-12">
+                    <label for="nueva_subcategoria" class="control-label">Registrar Nueva Sub Categoria</label>
+                    <div class="form-group">
+                        <input type="text" name="nueva_subcategoria"  class="form-control" id="nueva_subcategoria" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                    </div>
+                </div>
+               <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a onclick="registrarnuevasubcategoria()" class="btn btn-success"><span class="fa fa-check"></span> Registrar </a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Registrar nueva SUB Categoria ------------------->

@@ -40,15 +40,16 @@
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 
 
 <table class="table" style="width: 20cm; padding: 0;" >
-    <tr>
-        <td style="width: 10cm; padding: 0" >
+    <tr style="line-height: 10px;">
+        <td style="width: 10cm; padding: 0; line-height: 10px;" >
                 
             <center>
                                
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>
+                    <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
                     <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
@@ -64,7 +65,7 @@
         <td style="width: 8cm; padding: 0" > 
             <center>
             
-                <br><br>
+                <br>
                 <font size="3" face="arial"><b>VENTAS ONLINE</b></font> <br>
                 <!--<font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>-->
                 
@@ -174,8 +175,7 @@
 </div>
 
 <!-- Modal: modalCart -->
-<div class="modal fade" id="modalDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
+<div class="modal fade" id="modalDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="font-family: Arial; font-size: 12px;">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <!--Header-->
@@ -188,16 +188,19 @@
       <!--Body-->
       <div class="modal-body" style="overflow-x: auto;">        
         <div class="col-md-12"></div>
-        <table class="table table-striped table-condensed">
+        
+        <table class="table table-striped table-condensed" id="mitabla">
           <thead>
             <tr style="color: white; background: rgba(0, 0, 0, 0.7);">
-              <th>#</th>
-              <th>Producto</th>
-              <th>Precio</th>
-              <th>Cant.</th>
-              <th>Desc.U.</th>
-              <th>Total</th>
-              <th></th>
+              <th style="padding:0">#</th>
+              <th style="padding:0">Producto</th>
+              <th style="padding:0">Precio</th>
+              <th style="padding:0">Cant.</th>
+              <th style="padding:0">Desc.</th>
+              <th style="padding:0">Total</th>
+              <th  style="padding:0">Disp.</th>
+              <th  style="padding:0">Total</th>
+<!--              <th></th>-->
             </tr>
           </thead>
           <tbody id="detalle">
@@ -207,7 +210,7 @@
       </div>
       <!--Footer-->
       <div class="modal-footer">
-        <button class="btn btn-primary" onclick="()">Consolidar Venta</button>
+          <button class="btn btn-primary" id="paraconsolidarventa"><fa class="fa fa-cart-plus"></fa> Consolidar Venta</button>
       </div>
     </div>
   </div>

@@ -91,7 +91,7 @@ border-bottom : 1px solid #aaa;
                 
             <center>
                     <font size="2" face="Arial black"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <?php if (sizeof($empresa[0]['empresa_eslogan'])>0){ ?>
+                    <?php if (isset($empresa[0]['empresa_eslogan'])){ ?>
                     <small>
                             <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                                    
                     </small> 

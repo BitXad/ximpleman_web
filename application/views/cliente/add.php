@@ -312,23 +312,36 @@ function toggle(source) {
                                     </select>
                             </div>
                     </div>
-                    <div class="col-md-6">
-                            <label for="usuario_id" class="control-label">Cliente Asignado a:</label>
-                            <div class="form-group">
-                                    <select name="usuario_id" class="form-control">
-                                            <option value="">- USUARIO -</option>
-                                            <?php 
-                                            foreach($all_usuario_prev as $usuario_prev)
-                                            {
-                                                    $selected = ($usuario_prev['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
-
-                                                    echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
-                                            } 
-                                            ?>
-                                    </select>
-                            </div>
+                    <div class="col-md-3">
+                        <label for="usuario_id" class="control-label">Cliente Asignado a:</label>
+                        <div class="form-group">
+                            <select name="usuario_id" class="form-control">
+                                <option value="">- USUARIO -</option>
+                                <?php 
+                                foreach($all_usuario_prev as $usuario_prev)
+                                {
+                                    $selected = ($usuario_prev['usuario_id'] == $this->input->post('usuario_id')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$usuario_prev['usuario_id'].'" '.$selected.'>'.$usuario_prev['usuario_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-2">
+                        <label for="cliente_clave" class="control-label">Contraseña</label>
+                        <div class="form-group">
+                            <input type="password" name="cliente_clave" value="<?php echo $this->input->post('cliente_clave'); ?>" class="form-control" id="cliente_clave" />
+                            <span class="text-danger"><?php echo form_error('cliente_clave');?></span>
+                        </div>
+                    </div>
+                    <!--<div class="col-md-2">
+                        <label for="rcliente_clave" class="control-label"><span class="text-danger">*</span>Repetir Contraseña</label>
+                        <div class="form-group">
+                            <input type="password" name="rcliente_clave" value="<?php /*echo $this->input->post('rcliente_clave'); ?>" class="form-control" id="rcliente_clave" />
+                            <span class="text-danger"><?php echo form_error('rcliente_clave');*/ ?></span>
+                        </div>
+                    </div>-->
+                    <div class="col-md-5">
                         <label for="dias_visita" class="control-label">Dias de Visita</label><input type="checkbox" id="select_all" onClick="toggle(this)" /> Todos
                             <div class="form-group">
                                 <label>Lunes<input class="checkbox" type="checkbox" name="lun" value="1" id="lun" /></label>&nbsp;&nbsp;&nbsp;

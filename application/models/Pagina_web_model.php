@@ -206,10 +206,10 @@ class Pagina_web_model extends CI_Model
         return $resultado; 
         
     }
-    function get_carrito($cliente)
+    function get_carrito($cliente_id)
     {
-        $sql = "SELECT c.*, p.producto_nombre from carrito c, inventario p
-               where c.producto_id=p.producto_id and cliente_id='".$cliente."' ORDER BY c.carrito_id desc ";
+        $sql = "SELECT c.*, p.producto_nombre, p.producto_unidadentera,p.producto_foto from carrito c, inventario p
+               where c.producto_id=p.producto_id and cliente_id='".$cliente_id."' ORDER BY c.carrito_id asc ";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }

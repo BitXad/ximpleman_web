@@ -172,11 +172,12 @@ class Producto_model extends CI_Model
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
              cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
-             dp.destino_nombre
+             dp.destino_nombre, scp.subcategoria_nombre
               FROM
               producto p
               LEFT JOIN estado e on p.estado_id = e.estado_id
               LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+              LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
               LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
               LEFT JOIN moneda m on p.moneda_id = m.moneda_id
               LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
@@ -227,11 +228,12 @@ class Producto_model extends CI_Model
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
              cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
-             dp.destino_nombre
+             dp.destino_nombre, scp.subcategoria_nombre
               FROM
               producto p
               LEFT JOIN estado e on p.estado_id = e.estado_id
               LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+              LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
               LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
               LEFT JOIN moneda m on p.moneda_id = m.moneda_id
               LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
@@ -250,11 +252,12 @@ class Producto_model extends CI_Model
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
              cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
-             dp.destino_nombre
+             dp.destino_nombre, scp.subcategoria_nombre
               FROM
               producto p
               LEFT JOIN estado e on p.estado_id = e.estado_id
               LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+              LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
               LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
               LEFT JOIN moneda m on p.moneda_id = m.moneda_id
               LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
@@ -373,6 +376,35 @@ class Producto_model extends CI_Model
               WHERE 
                    p.estado_id = 1
                    and p.categoria_id=".$categoria_id."
+              GROUP By p.producto_id
+              ORDER By p.producto_nombre";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
+
+    function get_subcategorias($categoria_id)
+    {
+        $sql = "select * from subcategoria_producto where categoria_id = ".$categoria_id.
+                " order by subcategoria_nombre";
+
+        $resultado = $this->db->query($sql)->result_array();
+        return $resultado;
+
+    }
+
+    function get_busqueda_subcategoria($subcategoria_id)
+    {
+        $sql = "SELECT
+             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
+              FROM
+              producto p
+              LEFT JOIN estado e on p.estado_id = e.estado_id
+              LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
+              WHERE 
+                   p.estado_id = 1
+                   and p.subcategoria_id=".$subcategoria_id."
               GROUP By p.producto_id
               ORDER By p.producto_nombre";
 
