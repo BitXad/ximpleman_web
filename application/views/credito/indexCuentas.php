@@ -21,7 +21,7 @@
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
     <div class="col-md-6 no-print">
-               <font size='4' face='Arial'><b>Cuentas por Cobrar</b></font>
+               <font size='4' face='Arial'><b>Deudas por Cobrar</b></font>
                <br><font size='2' face='Arial' id="pillados">Registros Econtrados: </font>
         </div>
         <div class="col-md-6 no-print">
@@ -111,12 +111,12 @@
                     <tr>
 						<th>#</th>                                             
 						<th>Cliente</th>
-                                                <th>Crédito</th>
-                                                <th>Transac.</th>
+                        <th>Crédito</th>
+                        <th>Transac.</th>
 						<th>Estado</th>
 						<th>Monto</th>
 						<th>Cuota<br>Inicial</th>
-                                                <th>Interes<br>(%)</th>
+                        <th>Interes<br>(%)</th>
 						<th># Pagos</th>
 						<th>Fecha</th>
 						<th>Hora</th>

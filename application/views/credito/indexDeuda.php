@@ -22,7 +22,7 @@
 <div class="box-header">
                <div class="col-md-6 no-print">
                <font size='4' face='Arial'><b>Deudas por Pagar</b></font>
-               <br><font size='2' face='Arial' id="pillados">Registros Econtrados: </font>
+               <br><font size='2' face='Arial' id="pillados1">Registros Econtrados: </font>
                </div>  
             <div class="col-md-6 no-print">
             <form action="<?php echo site_url('credito/repoDeudas'); ?>"  target="_blank" method="POST">
@@ -34,7 +34,7 @@
                 <?php if($rol[44-1]['rolusuario_asignado'] == 1){ ?>
                  <button class="btn btn-success btn-md" style="float: right;margin-left: 10px"><span class="fa fa-print"></span> Imprimir</button>
                 <?php } ?>
-                <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" > Agrupar</label>
+                <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1"> Agrupar</label>
             </form>
             </div>
             </div>

@@ -120,24 +120,25 @@ function inicio(){
                           foreach($credito as $t){
 
                             $totalCreditos+=$t['credito_monto'];
-                            $cancelado=0; foreach($cuota as $k){ if($k['credito_id']==$t['credito_id']){
-                            $cancelado+=$k['cuota_cancelado'];
-                            }}
+                            $cancelado=0; 
                             $repeat=false;
 
                            for($i=0;$i<count($result);$i++)
     {
-
+        foreach($cuota as $k){ if($k['credito_id']==$t['credito_id']){
+                            
+                            
         if($result[$i]['proveedor_nombre']==$t['proveedor_nombre'])
         {
              
             $result[$i]['credito_monto']+=$t['credito_monto']; 
+            $result[$i]['credito_cancelado']+=$k['cuota_cancelado'];
             $repeat=true;
  
             break;
              
         } 
-    }
+    }}}
     if($repeat==false)
         $result[] = array('proveedor_nombre' => $t['proveedor_nombre'], 'credito_monto' => $t['credito_monto']
     , 'proveedor_telefono' => $t['proveedor_telefono'], 'proveedor_telefono2' => $t['proveedor_telefono2'], 'credito_cancelado' => $cancelado);

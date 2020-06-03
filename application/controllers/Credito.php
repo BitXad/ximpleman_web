@@ -109,7 +109,7 @@ class Credito extends CI_Controller{
            
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Credito_model->filtrodeudas($filtro);
-            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['cuota'] = $this->Cuotum_model->get_cuota_compra();
             $data['agrupar'] = $agrupar;
             $data['_view'] = 'credito/repoDeudas';
             $this->load->view('layouts/main',$data);
@@ -137,7 +137,7 @@ class Credito extends CI_Controller{
             $data['page_title'] = "Cuentas x Cobrar";
             $data['rol'] = $this->session_data['rol'];
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['cuota'] = $this->Cuotum_model->get_cuota_venta();
             $data['_view'] = 'credito/indexCuentas';
             $this->load->view('layouts/main',$data); 
         }
@@ -174,7 +174,7 @@ class Credito extends CI_Controller{
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['credito'] = $this->Credito_model->filtrocuentas($filtro);
             $data['agrupar'] = $agrupar;
-            $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['cuota'] = $this->Cuotum_model->get_cuota_venta();
             $data['_view'] = 'credito/repoCuentas';
             $this->load->view('layouts/main',$data);
         }

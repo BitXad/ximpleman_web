@@ -97,7 +97,7 @@ function tabladeudas(filtro) //Deudas por pagar
                if (registros != null){                   
                    
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                    $("#pillados").html("Registros Encontrados: "+n+" ");
+                    $("#pillados1").html("Registros Encontrados: "+n+" ");
                     //var total_detalle = Number(0);
                     //var suma = Number(0);
                     //var subtotal = Number(0);
@@ -365,7 +365,7 @@ function tabladeudasagrupado(filtro)
                if (registros != null){                   
                    
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                    $("#pillados").html("Registros Encontrados: "+n+" ");
+                    $("#pillados1").html("Registros Encontrados: "+n+" ");
                     //var total_detalle = Number(0);
                     //var suma = Number(0);
                     //var subtotal = Number(0);
