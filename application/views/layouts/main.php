@@ -311,7 +311,15 @@
                 if($rolusuario[125-1]['rolusuario_asignado'] == 1){
                 ?>
                 <li>
-                <a href="<?php echo site_url('parametro');?>"><i class="fa fa-sliders"></i> <span>Configuración</span></a>
+                    <a href="#"><i class="fa fa-sliders"></i> <span>Configuración</span></a>
+                    <ul class="treeview-menu">
+                        <li>
+                            <a href="<?php echo site_url('parametro');?>"><i class="fa fa-check-square"></i> <span> Parametros</span></a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-envelope"></i> <span> Email</span></a>
+                        </li>
+                    </ul>
                 </li>
                 <?php
                 }
