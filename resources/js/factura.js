@@ -216,7 +216,6 @@ function generarexcel(){
                             row += 'DEBITO FISCAL' + ',';
                             row += 'CODIGO DE CONTROL' + ',';
                             row += 'TRANS' + ',';
-                            row += 'SUBTOTAL' + ',';
        
                         row = row.slice(0, -1);
 
@@ -246,9 +245,9 @@ function generarexcel(){
                             row += '"' +Number(factura[i]["factura_ice"]).toFixed(2)+ '",';
                             row += '"' +Number(factura[i]["factura_exento"]).toFixed(2)+ '",';
                             row += '0,';
+                            row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
                             row += '"' +Number(factura[i]["factura_descuento"]).toFixed(2)+ '",';
                             row += '0,';
-                     
                             row += '"' +Number(factura[i]["factura_total"]).toFixed(2)+ '",';
                             row += '"' +Number(factura[i]["factura_total"]*0.13).toFixed(2)+ '",';
                             row += '"' +factura[i]["factura_codigocontrol"]+ '",';
