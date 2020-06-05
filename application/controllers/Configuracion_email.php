@@ -9,48 +9,69 @@ class Configuracion_email extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Configuracion_email_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
     } 
-
+    
     /*
      * Listing of configuracion_email
      */
     function index()
     {
-        $data['configuracion_email'] = $this->Configuracion_email_model->get_all_configuracion_email();
-        
-        $data['_view'] = 'configuracion_email/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(125)) {
+            $data['configuracion_email'] = $this->Configuracion_email_model->get_all_configuracion_email();
+            $data['page_title'] = "Parametro";
+            $data['_view'] = 'configuracion_email/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new configuracion_email
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'email_protocolo' => $this->input->post('email_protocolo'),
-				'email_host' => $this->input->post('email_host'),
-				'email_puerto' => $this->input->post('email_puerto'),
-				'email_usuario' => $this->input->post('email_usuario'),
-				'email_clave' => $this->input->post('email_clave'),
-				'email_nombre' => $this->input->post('email_nombre'),
-				'email_prioridad' => $this->input->post('email_prioridad'),
-				'email_charset' => $this->input->post('email_charset'),
-				'email_encriptacion' => $this->input->post('email_encriptacion'),
-				'email_tipo' => $this->input->post('email_tipo'),
-				'email_copia' => $this->input->post('email_copia'),
-				'estado_id' => $this->input->post('estado_id'),
-            );
-            
-            $configuracion_email_id = $this->Configuracion_email_model->add_configuracion_email($params);
-            redirect('configuracion_email/index');
-        }
-        else
-        {            
-            $data['_view'] = 'configuracion_email/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(125)) {
+            if(isset($_POST) && count($_POST) > 0)     
+            {
+                $estado = 1;
+                $params = array(
+                    'email_protocolo' => $this->input->post('email_protocolo'),
+                    'email_host' => $this->input->post('email_host'),
+                    'email_puerto' => $this->input->post('email_puerto'),
+                    'email_usuario' => $this->input->post('email_usuario'),
+                    'email_clave' => $this->input->post('email_clave'),
+                    'email_nombre' => $this->input->post('email_nombre'),
+                    'email_prioridad' => $this->input->post('email_prioridad'),
+                    'email_charset' => $this->input->post('email_charset'),
+                    'email_encriptacion' => $this->input->post('email_encriptacion'),
+                    'email_tipo' => $this->input->post('email_tipo'),
+                    'email_copia' => $this->input->post('email_copia'),
+                    'email_cabecera' => $this->input->post('email_cabecera'),
+                    'email_pie' => $this->input->post('email_pie'),
+                    'estado_id' => $estado,
+                );
+
+                $configuracion_email_id = $this->Configuracion_email_model->add_configuracion_email($params);
+                redirect('configuracion_email/index');
+            }
+            else
+            {            
+                $data['_view'] = 'configuracion_email/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -58,57 +79,47 @@ class Configuracion_email extends CI_Controller{
      * Editing a configuracion_email
      */
     function edit($email_id)
-    {   
-        // check if the configuracion_email exists before trying to edit it
-        $data['configuracion_email'] = $this->Configuracion_email_model->get_configuracion_email($email_id);
-        
-        if(isset($data['configuracion_email']['email_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'email_protocolo' => $this->input->post('email_protocolo'),
-					'email_host' => $this->input->post('email_host'),
-					'email_puerto' => $this->input->post('email_puerto'),
-					'email_usuario' => $this->input->post('email_usuario'),
-					'email_clave' => $this->input->post('email_clave'),
-					'email_nombre' => $this->input->post('email_nombre'),
-					'email_prioridad' => $this->input->post('email_prioridad'),
-					'email_charset' => $this->input->post('email_charset'),
-					'email_encriptacion' => $this->input->post('email_encriptacion'),
-					'email_tipo' => $this->input->post('email_tipo'),
-					'email_copia' => $this->input->post('email_copia'),
-					'estado_id' => $this->input->post('estado_id'),
-                );
+    {
+        if($this->acceso(125)) {
+            // check if the configuracion_email exists before trying to edit it
+            $data['configuracion_email'] = $this->Configuracion_email_model->get_configuracion_email($email_id);
 
-                $this->Configuracion_email_model->update_configuracion_email($email_id,$params);            
-                redirect('configuracion_email/index');
+            if(isset($data['configuracion_email']['email_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                        'email_protocolo' => $this->input->post('email_protocolo'),
+                        'email_host' => $this->input->post('email_host'),
+                        'email_puerto' => $this->input->post('email_puerto'),
+                        'email_usuario' => $this->input->post('email_usuario'),
+                        'email_clave' => $this->input->post('email_clave'),
+                        'email_nombre' => $this->input->post('email_nombre'),
+                        'email_prioridad' => $this->input->post('email_prioridad'),
+                        'email_charset' => $this->input->post('email_charset'),
+                        'email_encriptacion' => $this->input->post('email_encriptacion'),
+                        'email_tipo' => $this->input->post('email_tipo'),
+                        'email_copia' => $this->input->post('email_copia'),
+                        'email_cabecera' => $this->input->post('email_cabecera'),
+                        'email_pie' => $this->input->post('email_pie'),
+                        'estado_id' => $this->input->post('estado_id'),
+                    );
+
+                    $this->Configuracion_email_model->update_configuracion_email($email_id,$params);            
+                    redirect('configuracion_email/index');
+                }
+                else
+                {
+                    $this->load->model('Estado_model');
+                    $tipo = 1;
+                    $data['all_estado'] = $this->Estado_model->get_tipo_estado($tipo);
+
+                    $data['_view'] = 'configuracion_email/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'configuracion_email/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The configuracion_email you are trying to edit does not exist.');
         }
-        else
-            show_error('The configuracion_email you are trying to edit does not exist.');
-    } 
-
-    /*
-     * Deleting configuracion_email
-     */
-    function remove($email_id)
-    {
-        $configuracion_email = $this->Configuracion_email_model->get_configuracion_email($email_id);
-
-        // check if the configuracion_email exists before trying to delete it
-        if(isset($configuracion_email['email_id']))
-        {
-            $this->Configuracion_email_model->delete_configuracion_email($email_id);
-            redirect('configuracion_email/index');
-        }
-        else
-            show_error('The configuracion_email you are trying to delete does not exist.');
     }
-    
 }

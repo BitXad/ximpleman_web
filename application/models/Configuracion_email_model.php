@@ -37,14 +37,11 @@ class Configuracion_email_model extends CI_Model
     {
         $configuracion_email = $this->db->query("
             SELECT
-                *
-
+                c.*, e.estado_descripcion
             FROM
-                `configuracion_email`
-
+                `configuracion_email` c, `estado` e
             WHERE
-                1 = 1
-
+                c.estado_id = e.estado_id
             ORDER BY `email_id` ASC
         ")->result_array();
 
