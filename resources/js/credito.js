@@ -110,7 +110,7 @@ function tabladeudas(filtro) //Deudas por pagar
                     html2 += "<th>#</th>";  
                     html2 += "<th>Cliente</th>";  
                     html2 += "<th>Crédito</th>";  
-                    html2 += "<th>Compra</th>";  
+                    html2 += "<th>Transacción</th>";  
                     html2 += "<th>Estado</th>";  
                     html2 += "<th>Monto<br>Crédito</th>";  
                     html2 += "<th>Cuota<br>Inicial</th>";  

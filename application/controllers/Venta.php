@@ -1321,7 +1321,7 @@ function edit($venta_id)
                     $credito_interesmonto =  $venta_total * $venta_interes; //revisar
                     $credito_numpagos =  $cuotas;
                     $credito_fechalimite =  "date_add(date(now()), INTERVAL +1 WEEK)";
-                    $credito_fecha = date('Y-m-d');
+                    $credito_fecha = $venta_fecha;
                     $time = time();
                     $credito_hora =  date("H:i:s", $time);
                     $credito_tipo = 1; // 1- ventas 2 - compras
@@ -1350,8 +1350,8 @@ function edit($venta_id)
                 }
                 $credito_fechalimite = $cuota_fechalimite;
             
-            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_hora,credito_tipo) value(".
-                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."','".$credito_hora."',".$credito_tipo.")";
+            $sql = "insert  into credito(estado_id,compra_id,venta_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_fechalimite,credito_fecha,credito_tipo) value(".
+                    $estado_id.",".$compra_id.",".$venta_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",'".$credito_fechalimite."','".$credito_fecha."',".$credito_tipo.")";
             echo $sql;
             $credito_id = $this->Venta_model->ejecutar($sql);// cargar los productos del detalle_aux al detalle_venta
 

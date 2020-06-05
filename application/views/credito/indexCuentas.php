@@ -108,7 +108,7 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <thead id="titulos">
-                    <tr>
+                    <!--<tr>
 						<th>#</th>                                             
 						<th>Cliente</th>
                         <th>Crédito</th>
@@ -126,7 +126,8 @@
                                                 
                                                 
                                                 
-                    </tr></thead>
+                    </tr>-->
+                    </thead>
                     <tbody class="buscar" id="tablacuentas">
                   
                 </table>
