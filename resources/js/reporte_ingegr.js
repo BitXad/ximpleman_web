@@ -86,6 +86,7 @@ function numberFormat(numero){
 function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
 
     var base_url    = document.getElementById('base_url').value;
+    var tipousuario_id    = document.getElementById('tipousuario_id').value;
     var controlador = base_url+"reportes/buscarlosreportes";
      /*var limite = 1000; */
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
@@ -451,10 +452,12 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                        }
                        html += "</td>";
                        html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
-                       if(registros[i]['tipo'] == 3 || registros[i]['tipo'] == 2 || registros[i]['tipo'] == 21 || registros[i]['tipo'] == 22 || registros[i]['tipo'] == 23 || registros[i]['tipo'] == 24 || registros[i]['tipo'] == 7){
-                           html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
-                       }else{
-                           html += "<td id='alinearder'>0.00</td>";
+                       if(tipousuario_id == 1){
+                           if(registros[i]['tipo'] == 3 || registros[i]['tipo'] == 2 || registros[i]['tipo'] == 21 || registros[i]['tipo'] == 22 || registros[i]['tipo'] == 23 || registros[i]['tipo'] == 24 || registros[i]['tipo'] == 7){
+                               html += "<td id='alinearder'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
+                           }else{
+                               html += "<td id='alinearder'>0.00</td>";
+                           }
                        }
 
                        
@@ -478,14 +481,20 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    
                    htmls += "<tr>";
                    htmls += "<td></td>";
-                   htmls += "<td colspan='2' class='esbold'>TOTAL INGRESOS(EFECTIVO, VENTAS CONT., COBROS CRED., SERVICIOS)/UTILIDAD:</td>";
+                   var labelutilidad = "";
+                   if(tipousuario_id == 1){
+                       labelutilidad = "/UTILIDAD";
+                   }
+                   htmls += "<td colspan='2' class='esbold'>TOTAL INGRESOS(EFECTIVO, VENTAS CONT., COBROS CRED., SERVICIOS)"+labelutilidad+":</td>";
                    /*var totaling = Number(totalingreso).toFixed(2);
                    var n = totaling.toString(); */
-                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalingreso1+totalingreso2+totalingreso3+totalingreso11).toFixed(2))+"</td>";
+                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalingreso1+totalingreso2+totalingreso3+totalingreso11+totalingreso7).toFixed(2))+"</td>";
                    htmls += "<td class='esbold' id='alinearder'></td>";
                    //htmls += "<td></td>";
                    //htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
-                   htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
+                   if(tipousuario_id == 1){
+                       htmls += "<td class='esbold' id='alinearder'>"+numberFormat(Number(totalutilidad).toFixed(2))+"</td>";
+                   }
                    htmls += "</tr>";
                    
                    
@@ -494,7 +503,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    htmls += "<td></td>";
                    htmls += "<td colspan='3' class='text-bold' style='font-family: Arial; font-size: 12px'>SALDO EFECTIVO EN CAJA Bs.</td>";
                    //htmls += "<td colspan='2'></td>";
-                   htmls += "<td class='text-bold' id='alinearder' style='font-family: Arial; font-size: 12px'>"+numberFormat(Number((totalingreso1+totalingreso2+totalingreso3+totalingreso11)-totalegreso).toFixed(2))+"</td>";
+                   htmls += "<td class='text-bold' id='alinearder' style='font-family: Arial; font-size: 12px'>"+numberFormat(Number((totalingreso1+totalingreso2+totalingreso3+totalingreso11+totalingreso7)-totalegreso).toFixed(2))+"</td>";
                    htmls += "</tr>";
                    
 
@@ -705,7 +714,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     totaltablaegresoresultados  = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr><td style='width:5%;'> </td><td style='width:61%;'><b>TOTAL EGRESOS: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number(totalegreso4+totalegreso5+totalegreso6+totalegreso10).toFixed(2))+"</b></td></tr></table>";
                     /* *****************F I N para suma reporte total de INGRESOS****************** */ 
                    //para mostrar saldo en caja
-                    saldoencaja = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr style='font-size: 12px'><td style='width:5%;'> </td><td style='width:61%;' id='alinearder'><b>SALDO EFECTIVO EN CAJA: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number((totalingreso1+totalingreso2+totalingreso3+totalingreso11)-totalegreso).toFixed(2))+"</b></td></tr></table>";
+                    saldoencaja = "<table style='width:100%;' class='table table-striped table-condensed' id='tablasinespacio'><tr style='font-size: 12px'><td style='width:5%;'> </td><td style='width:61%;' id='alinearder'><b>SALDO EFECTIVO EN CAJA: </b></td><td style='width:17%;'></td><td style='width:17%;' id='alinearder'><b>"+numberFormat(Number((totalingreso1+totalingreso2+totalingreso3+totalingreso11+totalingreso7)-totalegreso).toFixed(2))+"</b></td></tr></table>";
                     /* *****************INICIO para reporte TOTAL****************** */
                     cabecerahtmlt= "<label  class='control-label'><a href='#' class='btn btn-success btn-sm no-print' id='mostotal' onclick='mostrartotal(); return false'>REPORTE TOTAL</a></label>";
                     cabecerahtmlt += "<div id='ocultot' style='visibility: hidden; width: 0; height: 0;'>";
@@ -718,7 +727,9 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     cabecerahtmlt += "<th style='width: 43%'>Detalle</th>";
                     cabecerahtmlt += "<th style='width: 15%'>Ingreso</th>";
                     cabecerahtmlt += "<th style='width: 15%'>Egreso</th>";
-                    cabecerahtmlt += "<th style='width: 10%'>Utilidad</th>";
+                    if(tipousuario_id == 1){
+                        cabecerahtmlt += "<th style='width: 10%'>Utilidad</th>";
+                    }
                     cabecerahtmlt += "</tr>";
                     cabecerahtmlt += "<tbody>";
                     
