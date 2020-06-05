@@ -39,7 +39,7 @@
                 </div>-->
                 
                 <div class="col-md-12">
-                    <form action="<?php echo site_url('factura/generar_excel'); ?>" method="POST">
+                    <!--<form action="<?php //echo site_url('factura/generar_excel'); ?>" method="POST">-->
                         
                         <div class="col-md-3">
                             <label for="desde" class="control-label">Desde:</label>
@@ -80,14 +80,14 @@
                            <label for="desde" class="control-label"> Exportar: </label>
                            <div class="form-group">
               
-                                <button  type="submit" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
+                                <button onclick="generarexcel()" type="button" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
                                 <!--<button  type="submit" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>-->
       
                             </div>
                         </div>
                         
                     
-                    </form>
+                    <!--</form>-->
                         <div class="col-md-2">
                            <label for="desde" class="control-label"> Buscar: </label>
                            <div class="form-group">
