@@ -51,6 +51,46 @@ class Cuotum_model extends CI_Model
         return $cuota;
     }
 
+    function get_cuota_compra()
+    {
+        $cuota = $this->db->query("
+            SELECT
+                c.*, cr.compra_id
+
+            FROM
+                cuota c, credito cr
+
+            WHERE
+                c.credito_id=cr.credito_id
+                and cr.compra_id>0
+                and c.estado_id=9
+
+            ORDER BY `cuota_id` 
+        ")->result_array();
+
+        return $cuota;
+    }
+
+    function get_cuota_venta()
+    {
+        $cuota = $this->db->query("
+            SELECT
+                c.*, cr.venta_id
+
+            FROM
+                cuota c, credito cr
+
+            WHERE
+                c.credito_id=cr.credito_id
+                and cr.venta_id>0
+                and c.estado_id=9
+
+            ORDER BY `cuota_id` 
+        ")->result_array();
+
+        return $cuota;
+    }
+
      function get_all_deuda($credito_id)
     {
         $limit_condition = "";
