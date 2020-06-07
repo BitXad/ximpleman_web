@@ -25,7 +25,7 @@
 <!-------------------------------------------------------->
 
 <div class="box-header">
-                <h3 class="box-title">Compra</h3>
+                <h3 class="box-title">Compras</h3>
                 <div class="box-tools">
                     <a href="<?php echo site_url('compra/add'); ?>" class="btn btn-success btn-sm">+ Añadir</a> 
                 </div>
