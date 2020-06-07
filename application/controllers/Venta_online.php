@@ -37,7 +37,7 @@ class Venta_online extends CI_Controller{
         
             //$data['venta'] = $this->Venta_online_model->get_all_articulo();
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
-            $data['_view'] = 'Venta_online/index';
+            $data['_view'] = 'venta_online/index';
             $this->load->view('layouts/main',$data);
         
     }

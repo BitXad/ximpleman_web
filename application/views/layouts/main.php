@@ -317,7 +317,7 @@
                             <a href="<?php echo site_url('parametro');?>"><i class="fa fa-check-square"></i> <span> Parametros</span></a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('egreso');?>"><i class="fa fa-envelope"></i> <span> Email</span></a>
+                            <a href="<?php echo site_url('configuracion_email');?>"><i class="fa fa-envelope"></i> <span> Email</span></a>
                         </li>
                     </ul>
                 </li>
