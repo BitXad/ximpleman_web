@@ -189,7 +189,7 @@ $(document).ready(function(){
                     </span><br>
                 <b>Telef.: </b><span id="cliente-telefono"><?php echo $cliente['cliente_telefono']." - ".$cliente['cliente_celular']; } ?>
                     </span><br>
-                <b>Código Cliente: </b><span id="cliente-codigo"><?php if(is_null($cliente['cliente_codigo'])){ echo "NO DEFINIDO";} else{ echo $cliente['cliente_codigo']; } ?>
+                <b>Código Cliente: </b><span id="cliente-codigo"><?php if(isset($cliente['cliente_codigo'])){ echo $cliente['cliente_codigo']; } else{ echo "NO DEFINIDO"; } ?>
                     </span><br>
                 <b>Fecha/Hora: </b><?php if(is_null($servicio['servicio_fecharecepcion'])){ echo "NO DEFINIDO";} else{ echo date('d/m/Y', strtotime($servicio['servicio_fecharecepcion'])); echo '|'.$servicio['servicio_horarecepcion']; } ?><br>
                 <b>Registrado por: </b><?php if(is_null($usuario['usuario_id'])){ echo "NO DEFINIDO";} else{ echo $usuario['usuario_nombre']; } ?><br>
