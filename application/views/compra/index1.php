@@ -259,7 +259,7 @@
               <?php } else { ?>
                 <span class="btn-info btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
               <?php }  ?>
-                <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?><?php if ($c['compra_caja']==2){  ?><span class="btn-warning btn-xs">  <?php echo "Orden de Pago"; } ?></span></td>
+                <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?><?php if ($c['compra_caja']==2){  ?><span class="btn-warning btn-xs">  <?php echo "Orden de Pago"; } ?><?php if ($c['compra_caja']==0){  ?><span class="btn-warning btn-xs">  <?php echo "Ninguno"; } ?></span></td>
                 <td><center><font size="4"><b><?php echo $c['compra_id']; ?></b></font></center></td>
                 <td align="right" ><?php echo "Sub Total: ".number_format($c['compra_subtotal'],'2','.',','); ?><br>
                   <?php echo "Desc.: ".number_format($c['compra_descuento'],'2','.',','); ?><br>
