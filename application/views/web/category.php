@@ -67,11 +67,12 @@ function mostrar() {
 <link href="<?php echo $raiz;?>css/flag-icon.min.css" rel="stylesheet"> 
 <link href="<?php echo $raiz;?>css/bootstrap-select.min.css" rel="stylesheet"> 
 <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
-<input type="hidden" value="4" id="imagenes_fila" />
+<input type="hidden" value="3" id="imagenes_fila" />
 <!-- start-smoth-scrolling -->
 </head>
     
 <body onload="buscar_por_categoria(<?php echo $parametro[0]["parametro_mostrarcategoria"]; ?>)">
+
 <!-- header -->
 <!------------------ PRIMERA SECCION -------------------------------------->
     <div class="agileits_header">
@@ -84,13 +85,11 @@ function mostrar() {
 <!------------------ MENU CABECERA  ----------------------------------->                    
                 <div class="agile-login">
                     <ul>
-                        <li><a href="" data-toggle="modal" data-target="#seguimientoOT">Ordenes</a></li>
+                        <li><a href="" data-toggle="modal" data-target="#seguimientoOT">Clientes</a></li>
                         <li><a href="" data-toggle="modal" data-target="#seguimientoservicio">servicio</a></li>
-                        
                         <?php foreach($menu_cabecera as $cabecera) { ?>
                         <li><a href="<?php echo base_url().$cabecera['menu_enlace']; ?>"><?php echo $cabecera['menu_nombre']; ?></a></li>
                         <?php } ?>
-                        
                         <!--<li><select class="selectpicker" data-width="fit">
                     <option data-content='<span class="flag-icon flag-icon-us"></span> English'><span class="flag-icon flag-icon-us"></span>English</option>
                     <option  data-content='<span class="flag-icon flag-icon-mx"></span> Español'>Español</option>
@@ -185,7 +184,7 @@ function mostrar() {
                         <button class="w3view-cart" type="button" class="btn btn-primary" onclick="tablacarrito()"><i class="fa fa-cart-arrow-down" aria-hidden="true" title="Mi Carrito"></i></button>
                         
                         <?php if(isset($_COOKIE["cliente_id"])) { ?>
-                                <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesión"></i></button>
+                                <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesion"></i></button>
                         <?php }  ?>
 
                     </form>
@@ -202,8 +201,8 @@ function mostrar() {
 <!------------------ FIN PRIMERA SECCION ----------------------------------->
 
 
-<!------------------ SEGUNDA SECCION 
-    <div class="logo_products">
+<!------------------ SEGUNDA SECCION ------------------------>
+    <div class="logo_products" style="padding:0;">
         <div class="container">
         <div class="w3ls_logo_products_left1">
                 <ul class="phone_email">
@@ -214,13 +213,21 @@ function mostrar() {
             <div class="w3ls_logo_products_left">
                 <h1><a href="<?php echo base_url();?>"><?php echo $pagina_web[0]['empresa_nombre']; ?></a></h1>
             </div>
+            
+            <div class="clearfix"> </div>
         </div>
     </div>
 
- FIN SEGUNDA SECCION -------------------------------------->
+<!---------------------------------- FIN SEGUNDA SECCION -------------------------------------->
 
-<!-- //header -->
 
+
+
+
+
+
+<!-- //header -->    
+    
 
 <!-- navigation -->
     <div class="navigation-agileits">
@@ -246,38 +253,9 @@ function mostrar() {
                                         <?php } ?>                                        
                                             
                                             
-<!--                                        
-                                        <li class="active">
-                                            <select class="ac">
-                                                
-                                        <?php 
-                                            foreach($categorias as $cat){?>                    
-                                                <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
-                                        <?php } ?>      
-                                            
-                                            </select>        
-                                        </li>-->
-                                        
-<!--                                        
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categorias<b class="caret"></b></a>
-                                            <ul class="dropdown-menu multi-column columns-3">
-                                                <div class="row">
-                                                    <div class="multi-gd-img">
-                                                        <ul class="multi-column-dropdown">
-                                                            <h6>Todas</h6>
-                                                            <?php 
-                                                                foreach($categorias as $cat){?>                    
-                                                                    <li><a href="" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></a></li>
-                                                                    <li style="padding: 0; margin: 3px;"><button style="background: none; border: transparent; padding:0;" onclick="buscar_por_categoria(<?php echo $cat['categoria_id']; ?>);"><?php echo $cat['categoria_nombre']; ?></button></li>
-                                                            <?php } ?>      
-                                                        </ul>
-                                                    </div>	
 
-                                                </div>
-                                        </ul>
-                                    </li>                                        
--->
+                                        
+
                                         <!------- Bloque de codigo 1 ------------>
                                         
                         <?php if(isset($_COOKIE["cliente_id"])) { 
@@ -334,144 +312,19 @@ function mostrar() {
 <!-- //navigation -->
 
 
-
-
-    <!-- main-slider -->
-                                        
-        <ul id="demo1">
-                    <?php 
-                        
-                    foreach($slider as $s){
-                    ?>
-            <li>
-                            <img src="<?php echo $raiz.'images/sliders/'.$s['slide_imagen'];?>" alt="" />
-                            <!--Slider Description example-->
-                            <div class="slide-desc" style="line-height: 10pt;">
-                                <h3 style="padding: 0; margin-bottom: 0;"><?php echo $s['slide_leyenda1']; ?></h3> 
-                                <h4 style="color:white; padding: 0; margin-top: 0;"><b><?php echo $s['slide_leyenda2']; ?></b></h4>
-                                
-                                <!--<h5><badge class="btn btn-warning btn-xs"><b><?php echo $s['slide_leyenda2']; ?></b></badge></h5>-->
-                            </div>
-            </li>
-                    <?php } ?>
-
-        </ul>
+<!-- breadcrumbs -->
+    <div class="breadcrumbs">
+        <div class="container">
+            <ol class="breadcrumb breadcrumb1 animated wow slideInLeft" data-wow-delay=".5s">
+                <li><a href="<?php echo base_url(); ?>"><span class="glyphicon glyphicon-home" aria-hidden="true"></span>Inicio</a></li>
+                <li class="active">Producto</li>
+            </ol>
+        </div>
+    </div>
+<!-- //breadcrumbs -->    
     
-    <!-- //main-slider -->
-    
-    
-    
-    <!-- //top-header and slider -->
-    <!-- top-brands -->
-<!---------------------- carrusel ------------------------------------>
-
-  
-<!--            <div class="container">
-                <div class="col-md-12">
-                
-			<div class="contanier">
-                                    <center>
-                                
-				<h3 class="w3_agile_header">COMPRAR NUNCA FUE TAN FACIL</h3>
-				<h3 class="page-header icon-subheading">Glyphicons</h3>
-				<div class="bs-glyphicons"> <ul class="bs-glyphicons-list"> 
-                                        <li> 
-                                            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span> 
-                                            <span class="glyphicon-class">glyphicon glyphicon-asterisk</span> 
-                                        </li> 
-                                        <li> 
-                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 
-                                            <span class="glyphicon-class">glyphicon glyphicon-plus</span> 
-                                        </li> 
-                                        <li> 
-                                            <span class="glyphicon glyphicon-euro" aria-hidden="true"></span>
-                                            <span class="glyphicon-class">glyphicon glyphicon-euro</span> 
-                                        </li> 
-                                        <li> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
-                                            <span class="glyphicon-class">glyphicon glyphicon-minus</span> 
-                                        </li> 
-                                        <li> 
-                                            <span class="glyphicon glyphicon-eur" aria-hidden="true"></span> 
-                                            <span class="glyphicon-class">glyphicon glyphicon-eur</span> 
-                                        </li> 
-                                        <li> <span class="glyphicon glyphicon-minus" aria-hidden="true"></span> 
-                                            <span class="glyphicon-class">glyphicon glyphicon-minus</span> 
-                                        </li> 
-
-                                </div>
-                                    </center>
-                    </div>
-            </div>  
-        </div>-->
 
 
-<!----------------------- fin carrusel----------------------------------->  
-
-
-<!------------------------- INICIO FRANJA -------------------------------------->
- 
- <div class="w3agile-ftr-top"  style="background-color: #333333; color:white;">
-		<div class="ftr-toprow" class="container">
-                    <center  >
-                        <div style="background-color: #000000;" >
-                        <h4 style="margin:0;"><b>COMPRAR NUNCA FUE MÁS FACIL</b></h4>
-                            
-                        </div>
-                        
-                    </center>
-			<div class="ftr-toprow">
-				<div class="col-md-4 ftr-top-grids" >
-                                    <center>
-					<div class="ftr-top-left">
-                                                <h1 style="margin-top: 0px;margin-bottom: 0px;">
-                                                    <i class="fa fa-cart-plus" aria-hidden="true"></i>                                                    
-                                                </h1>
-					</div> 
-					<div class="ftr-top-right">
-                                                <h4 style="margin:0;">PASO 1</h4>
-						<p>Añade productos al carrito</p>
-					</div> 
-					<div class="clearfix"> </div>
-                                    </center>
-				</div>
-                            
-				<div class="col-md-4 ftr-top-grids">
-                                    <center>
-					<div class="ftr-top-left">
-                                                <h1 style="margin-top: 0px;margin-bottom: 0px;">
-						<i class="fa fa-list-ul" aria-hidden="true"></i>
-                                                </h1>
-					</div> 
-					<div class="ftr-top-right">
-						<h4 style="margin:0;">PASO 2</h4>
-						<p>Registra tus datos</p>
-					</div> 
-					<div class="clearfix"> </div>
-                                    </center>
-				</div>
-                            
-				<div class="col-md-4 ftr-top-grids">
-                                    <center>
-					<div class="ftr-top-left">
-                                                <h1 style="margin-top: 0px;margin-bottom: 0px;">
-						<i class="fa fa-truck" aria-hidden="true"></i>
-                                                </h1>
-					</div> 
-					<div class="ftr-top-right">
-                                            <h4 style="margin:0;">PASO 3</h4>
-                                            <p>Recibe tu pefdido</p>
-					</div>
-					<div class="clearfix"> </div>
-                                    </center>
-				</div>
-                            
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-     <br>
-	</div>
- <!--------------------------- FIN FRANJA------------------------------------>    
- 
 <!------------------------- INICIO BUSCADOR-------------------------------------->
  
  <div class="w3agile-ftr-top"  style="background-color: #333333; color:white;">
@@ -479,7 +332,7 @@ function mostrar() {
                     
 			<div class="ftr-toprow">
 
-                                    <center>
+                            <center><br>
                                         
                                 <div class="container">
 
@@ -553,17 +406,46 @@ function mostrar() {
     
     <div class="top-brands" style="padding-top: 20px;padding-bottom: 20px;">
         <!------------------------ BUSCADOR --------------------------->         
-                <h2 class="w3_agile_vimeo">NUESTROS PRODUCTOS</h2>
+                <h2 class="w3_agile_vimeo">CATEGORIAS</h2>
 
             
             <div class="row" id='loader'  style='display:none; text-align: center'>
                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
             </div>
                        
-        <div class="container">
         
+        <div class="container">
+                <div class="col-md-3 products-left">
+				<div class="categories">
+					<h2>Categorias</h2>
+                                        
+					<ul class="cate">
+                                            <?php 
+                                              
+                                                foreach($categorias as $cat){
+                                            ?> 
+						<li>
+                                                    <a href="products.html"><i class="fa fa-" aria-hidden="true">                                                    
+                                                    </i> <?php echo $cat["categoria_nombre"]; ?></a>
+                                                </li>
+                                            <?php } ?> 
+							<ul>
+								<li><a href="products.html"><i class="fa fa-arrow-right" aria-hidden="true"></i>Cuts & Sprouts</a></li>
+							</ul>
+						
+					</ul>
+                                        
+				</div>																																												
+			</div>
+            
+                <div class="col-md-9 products-left">
+                
+                <div class="container">
         
         <div class="w3l_search">
+            
+            
+            
             <center>
                 
                 
@@ -592,18 +474,18 @@ function mostrar() {
             
     </div>
         
+                
+                </div>
+
+        </div>        
+                
+                
+        
         
         
         <div class="container">
-        <!--<h2><?php echo $seccion1[0]['seccion_titulo']; ?></h2>
-        
-                <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
-                    <h3><?php echo $seccion1[0]['seccion_descripcion']; ?></h3>
-                <?php } ?>
-        
-                    <?php if (sizeof($seccion1[0]['seccion_descripcion'])>0) { ?>
-        <h5><?php echo $seccion1[0]['seccion_texto']; ?></h5>
-                <?php } ?>-->
+
+            
                 
 <!------------------------------------- SEGUNDA SECCION -------------------------------------->
             
@@ -793,329 +675,8 @@ function mostrar() {
     </div>
  <!-- /.carousel -->   
     
-<!--banner-bottom--><!--
-                <div class="ban-bottom-w3l">
-                    <div class="container">
-                    <div class="col-md-6 ban-bottom3">
-                            <div class="ban-top">
-                                <img src="<?php echo $raiz;?>images/p2.jpg" class="img-responsive" alt=""/>
-                                
-                            </div>
-                            <div class="ban-img">
-                                <div class=" ban-bottom1">
-                                    <div class="ban-top">
-                                        <img src="<?php echo $raiz;?>images/p3.jpg" class="img-responsive" alt=""/>
-                                        
-                                    </div>
-                                </div>
-                                <div class="ban-bottom2">
-                                    <div class="ban-top">
-                                        <img src="<?php echo $raiz;?>images/p4.jpg" class="img-responsive" alt=""/>
-                                        
-                                    </div>
-                                </div>
-                                <div class="clearfix"></div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 ban-bottom">
-                            <div class="ban-top">
-                                <img src="<?php echo $raiz;?>images/111.jpg" class="img-responsive" alt=""/>
-                                
-                                
-                            </div>
-                        </div>
-                        
-                        <div class="clearfix"></div>
-                    </div>
-                </div>-->
-<!--banner-bottom-->
-<!--brands-->
-<!--    <div class="brands">
-        <div class="container">
-        <h3>CATEGORIA PRODUCTOS</h3>
-            <div class="brands-agile">-->
-                
-<!--                <?php foreach ($categorias as $cat) { 
-                    
-                    if (strlen($cat["categoria_nombre"])<13){ ?>
-                
-                        <div class="col-md-3 w3layouts-brand">
-                          <div class="brands-w3l">
-                              <p><a onclick="buscar_por_categoria(<?php echo $cat["categoria_id"]; ?>)" >
-                                  <small>
-                                        <fa class="fa fa-cart-arrow-down" ></fa>
-                                         <?php echo $cat["categoria_nombre"]; ?>                                      
-                                  </small>
-                                  </a></p><br>
-                          </div>
-                      </div>
-                
-                <?php } else { ?>
-                
-                    <div class="col-md-3 w3layouts-brand">
-                       <div class="brands-w3l">
-                           <p><a onclick="buscar_por_categoria(<?php echo $cat["categoria_id"]; ?>)" >
-                                  <small>
-                               <?php echo $cat["categoria_nombre"]; ?>
-                                  </small>
-                               </a></p><br>
-                       </div>
-                   </div>
-                
-                <?php } } ?>
-                -->
-                
-                
-<!--                
-            </div>
-             <div class="row" id='loader1'  style='display:none; text-align: center'>
-                <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-            </div>
-            <center><a><h2 id="la_categoria"></h2></a></center>
-                <div class="clearfix"></div>
-            <div id="tablacategorias"></div>
-        </div>
-    </div>  -->
 
 
-
-<!--//brands-->
-
-
-	<!-- about-team -->
-	<div class="about-team" style="background-color: #fe9126;"> 
-		<div class="container">
-			<h3 class="w3_agile_header">COMUNICATE CON NOSOTROS</h3>
-			<div class="team-agileitsinfo">
-                            
-				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
-                                    <img src="<?php echo base_url("resources/web/images/t1.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>WHATSAPP</span></h4>-->
-						<!--<p>Llamanos o envianos un mensaje, te contestaremos a la brevedad posible.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-							<li><a href="#" class="fa fa-whatsapp"> </a> Whatsapp</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class=" col-md-3 about-team-grids" style="background-color: #fe9126">
-					<img src="<?php echo base_url("resources/web/images/t2.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>FACEBOOK</span></h4>-->
-						<!--<p>Visita nuestra página de facebook, o dejanos un like.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-							<li><a href="#" class="fa fa-facebook facebook"> </a> Facebook</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
-					<img src="<?php echo base_url("resources/web/images/t3.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>TWITEER</span> Supervisior</h4>-->				
-						<!--<p>Siguenos en twiteer.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-							<li><a href="#" class="fa fa-twitter twitter"> </a> Twitter</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class="col-md-3 about-team-grids" style="background-color: #fe9126">
-					<img src="<?php echo base_url("resources/web/images/t4.jpg") ?>" alt="" class="img img-circle"/>
-					<div class="team-w3lstext">
-						<!--<h4><span>RACKHAM,</span> Staff</h4>-->
-						<!--<p>Odio dignissimos vero eos voluptatem accusantium doloremque laudantium reader will be distracted.</p>-->
-					</div>
-					<div class="social-icons caption" style="font-size: 30px;"> 
-						<ul>
-							<li><a href="#" class="fa fa-instagram"> </a> Instagram</li>
-<!--							<li><a href="#" class="fa fa-twitter twitter"> </a></li>
-							<li><a href="#" class="fa fa-google-plus googleplus"> </a></li> -->
-						</ul>
-						<div class="clearfix"> </div>  
-					</div>
-				</div>
-                            
-				<div class="clearfix"> </div>
-			</div>
-		</div>
-	</div>
-	<!-- //about-team -->
-
-
-<!-- contact -->
-    <div class="about">
-        <div class="w3_agileits_contact_grids">
-            <div class="col-md-6 w3_agileits_contact_grid_left">
-                <div class="agile_map">
-                    <!--<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.3905851087434!2d-34.90500565012194!3d-8.061582082752993!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7ab18d90992e4ab%3A0x8e83c4afabe39a3a!2sSport+Club+Do+Recife!5e0!3m2!1sen!2sin!4v1478684415917" style="border:0"></iframe>-->
-                        <?php 
-                            $latitud = $pagina_web[0]['empresa_latitud'];
-                            $longitud = $pagina_web[0]['empresa_longitud'];
-                        ?>
-                    
-                    <div id="mimapa">
-                        
-                            <input type="hidden" value="<?php echo $latitud; ?>" id="empresa_latitud"/>
-                            <input type="hidden" value="<?php echo $longitud; ?>" id="empresa_longitud"/>
-                            
-                        <div id="map" style="width:100%; height:550px; "></div>
-                        <script type="text/javascript">
-                            var marker;          //variable del marcador
-                            var coords_lat = {};    //coordenadas obtenidas con la geolocalización
-                            var coords_lng = {};    //coordenadas obtenidas con la geolocalización
-
-
-                            //Funcion principal
-                            initMap = function () 
-                            {
-                                //usamos la API para geolocalizar el usuario
-
-                                //milat = document.getElementById('cliente_latitud').value;
-                                milat = $('#empresa_latitud').val();
-                                //milng = document.getElementById('cliente_longitud').value;
-                                milng = $('#empresa_longitud').val();
-
-                                    navigator.geolocation.getCurrentPosition(
-                                    function (position){
-                                        if(milat == 'undefined' || milat == null || milat ==""){
-                                            coords_lat =  {
-                                            lat: position.coords.latitude,
-                                            };
-                                            //milat = position.coords.latitude;
-                                        }else{
-                                            coords_lat =  {
-                                            lat: milat,
-                                            };
-                                        }
-                                        if(milng == 'undefined' || milng == null || milng ==""){
-                                            coords_lng =  {
-                                              lng: position.coords.longitude,
-                                            };
-                                            //lng = position.coords.longitude;
-                                        }else{
-                                            coords_lng =  {
-                                              lng: milng,
-                                            };
-                                        } 
-                                        /*coords_lat =  {
-                                            lat: milat,
-                                            };
-
-                                        coords_lng =  {
-                                              lng: milng,
-                                            };*/
-                                        setMapa(coords_lat, coords_lng);  //pasamos las coordenadas al metodo para crear el mapa
-
-
-                                      },function(error){console.log(error);});
-                            }
-
-                            function setMapa (coords_lat, coords_lng)
-                            {
-                                //document.getElementById("cliente_latitud").value = coords_lat.lat;
-                               // document.getElementById("cliente_longitud").value = coords_lng.lng;
-                                  //Se crea una nueva instancia del objeto mapa
-                                  var map = new google.maps.Map(document.getElementById('map'),
-                                  {
-                                    zoom: 19,
-                                    center:new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
-
-                                  });
-
-                                  //Creamos el marcador en el mapa con sus propiedades
-                                  //para nuestro obetivo tenemos que poner el atributo draggable en true
-                                  //position pondremos las mismas coordenas que obtuvimos en la geolocalización
-                                  marker = new google.maps.Marker({
-                                    map: map,
-                                    draggable: false,
-                                    animation: google.maps.Animation.DROP,
-                                    position: new google.maps.LatLng(coords_lat.lat,coords_lng.lng),
-
-                                  });
-                                  //agregamos un evento al marcador junto con la funcion callback al igual que el evento dragend que indica 
-                                  //cuando el usuario a soltado el marcador
-                                  //marker.addListener('click', toggleBounce);
-
-                                  marker.addListener( 'dragend', function (event)
-                                  {
-                                    //escribimos las coordenadas de la posicion actual del marcador dentro del input #coords
-                                    document.getElementById("empresa_latitud").value = this.getPosition().lat();
-                                    document.getElementById("empresa_longitud").value = this.getPosition().lng();
-                                  });
-                            }
-                            initMap();
-                        </script>
-                        <script async defer src="https://maps.googleapis.com/maps/api/js?key=<?php echo $parametro[0]['parametro_apikey'];?>&callback=initMap"></script>
-                        </div>                    
-
-                
-                </div>
-                        
-                <div class="agileits_w3layouts_map_pos">
-                    <div class="agileits_w3layouts_map_pos1" style="padding: 5px;">
-                        <h3 style="margin-top: 10px;">Contactos</h3>
-                        
-                        <p><?php echo $pagina_web[0]['empresa_direccion']; ?>, <?php echo $pagina_web[0]['empresa_departamento']; ?>.</p>
-                        
-                        <ul class="wthree_contact_info_address">
-                            <li><i class="fa fa-envelope" aria-hidden="true"></i> <a href="mailto:<?php echo $pagina_web[0]['empresa_email']; ?>"><?php echo $pagina_web[0]['empresa_email']; ?></a></li>
-                            <li><i class="fa fa-phone" aria-hidden="true" style="padding-right: 0px;"></i> <?php echo $pagina_web[0]['empresa_telefono']; ?></li>
-                        </ul>
-                        <div class="w3_agile_social_icons w3_agile_social_icons_contact">
-                            <ul>
-                                <li><a href="#" class="icon icon-cube agile_facebook"></a></li>
-                                <li><a href="#" class="icon icon-cube agile_rss"></a></li>
-                                <li><a href="#" class="icon icon-cube agile_t"></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-md-6 w3_agileits_contact_grid_right">
-                <h2 class="w3_agile_header">Dejanos<span> un Mensaje</span></h2>
-
-                <?php echo form_open('website/email'); ?>
-                    <span class="input input--ichiro">
-                        <input class="input__field input__field--ichiro" type="text" id="input-25" name="nomemail" placeholder=" " required="" />
-                        <label class="input__label input__label--ichiro" for="input-25">
-                            <span class="input__label-content input__label-content--ichiro">Tu Nombre</span>
-                        </label>
-                    </span>
-                    <span class="input input--ichiro">
-                        <input class="input__field input__field--ichiro" type="email" id="input-26" name="froemail" placeholder=" " required="" />
-
-                        <label class="input__label input__label--ichiro" for="input-26">
-                            <span class="input__label-content input__label-content--ichiro">Tu Email</span>
-                        </label>
-                    </span>
-                    <input class="form-control" type="hidden" id="empresa_email" name="empresa_email" value="<?php echo $pagina_web[0]['empresa_email']; ?>" />
-                    <textarea placeholder="Escribe Tu Mensaje..." required="" id="mensaje12" name="mensaje12"></textarea>
-                    <input type="submit" value="Enviar">
-                <?php echo form_close(); ?>
-            </div>
-            
-            <div class="clearfix"> </div>
-        </div>
-    </div>
-<!-- contact -->
 
 
 <!-- Modal: modalCart -->
@@ -1275,7 +836,7 @@ function mostrar() {
                                 <b><fa class="fa fa-user"></fa> Usuario: </b><input type="text" class="form-control" value="" id="cliente_login" name="cliente_login" required="true" onkeyup="saltar_input(event,1)">
                            </div>
                            <div class="col-md-6">
-                               <b><fa class="fa fa-lock"></fa> Contraseña: </b><input type="password" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true" onkeyup="saltar_input(event,2)">
+                               <b><fa class="fa fa-lock"></fa> Contraseña: </b><input type="text" class="form-control" value="" id="cliente_clave" name="cliente_clave" required="true" onkeyup="saltar_input(event,2)">
                                <a href="<?php echo base_url("website/recuperarclave/".$idioma_id); ?>" >¿Olvidaste tu contraseña?</a>
                            </div>
 
@@ -1596,5 +1157,6 @@ function mostrar() {
         });
 </script> 
 <!-- //main slider-banner --> 
+   
     </body>
 </html>

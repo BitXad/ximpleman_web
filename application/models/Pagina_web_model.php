@@ -197,6 +197,7 @@ class Pagina_web_model extends CI_Model
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;        
     }
+    
     function get_producto($producto_id)
     {
         $sql = "select c.*, p.* from categoria_producto c, producto p 
@@ -206,6 +207,7 @@ class Pagina_web_model extends CI_Model
         return $resultado; 
         
     }
+    
     function get_carrito($cliente_id)
     {
         $sql = "SELECT c.*, p.producto_nombre, p.producto_unidadentera,p.producto_foto from carrito c, inventario p
@@ -213,6 +215,18 @@ class Pagina_web_model extends CI_Model
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }
+
+    function get_compras($cliente_id)
+    {
+
+        $sql = "select * from venta_online v
+                left join estado e on e.estado_id = v.estado_id 
+                where v.cliente_id = ".$cliente_id;
+        $result = $this->db->query($sql)->result_array();
+        return $result;
+        
+    }
+    
     function get_cliente($cliente)
     {
         $sql = "SELECT * from cliente

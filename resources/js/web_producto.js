@@ -234,6 +234,7 @@ function mostrar_tabla_resultados(respuesta,pag){
         var idioma_id = document.getElementById('idioma_id').value;
         
         var bloque = 12; 
+        var imagenes_fila = Number(document.getElementById('imagenes_fila').value) ; 
     
         var cadena = "";
         var nombre = "";
@@ -351,7 +352,7 @@ function mostrar_tabla_resultados(respuesta,pag){
                 html += "</div>";
                 html += "</div>";
                 
-                if ((i+1) % 4 ==0) {
+                if ((i+1) % Number(imagenes_fila) ==0) {
                 html += "<div class='clearfix'> </div>";
                 }
 
@@ -360,14 +361,14 @@ function mostrar_tabla_resultados(respuesta,pag){
            if (paginas>1){
                 
                 html += "<div class='container'>";
-                html += "<div class='col-md-12'>";
-                html += "<div class='pull-right'>";
+                html += "<div class='col-sm-6'>";
+                html += "<div class='pull-left'>";
                 html += "<div class='btn-group' role='group' aria-label='Button group with nested dropdown'>";
                                 
 
-                html += "<select type='button' name='oferta' class='btn btn-info btn-xs' id='oferta' onchange='mostrar_tabla_resultados("+JSON.stringify(respuesta)+",this.value)'>";
+                html += "<select type='button' name='paginas' class='btn btn-info btn-xs' id='paginas' onchange='mostrar_tabla_resultados("+JSON.stringify(respuesta)+",this.value)'>";
                 for (i=1; i<=paginas; i++){                    
-                    if (pag==i){
+                    if (pag == i){
                         seleccionado = "selected";
                     }else{
                         seleccionado = "";                        
@@ -386,9 +387,7 @@ function mostrar_tabla_resultados(respuesta,pag){
 //                    html += "<button type='button' class='btn btn-primary' onclick='mostrar_tabla_resultados("+JSON.stringify(respuesta)+","+i+")'>"+i+"</button>"                                
 //                }
                 // fin botones
-                
-               
-               
+
            }
 
            $("#tablaresultados").html(html);
@@ -565,6 +564,67 @@ function cantidar(producto_id){
          }
     });
 
+}
+
+function incrementar_cantidad(producto_id){
+    
+   
+        var cantidad = document.getElementById('carrito_cantidad'+producto_id).value; 
+        var descuento = 0; //document.getElementById('carrito_descuento'+producto_id).value;
+        //var producto_costo = document.getElementById('producto_costo'+producto_id).value;
+        var producto_precio = document.getElementById('carrito_precio'+producto_id).value;
+        //var descripcion = document.getElementById('descripcion'+producto_id).value
+        var base_url = document.getElementById('base_url').value;
+    
+        var controlador = base_url+'website/cantidad/';
+   
+        //alert(cantidad+" - "+producto_precio);
+   
+        cantidad = Number(cantidad) + 1;
+        $.ajax({url: controlador,
+               type:"POST",
+               data:{producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_precio:producto_precio},
+               success:function(respuesta){     
+                  //tablacarrito(); 
+                location.reload();
+                 
+//                  $('#'+'carrito_cantidad'+producto_id).focus();
+             }
+        });
+        
+        location.reload();
+}
+
+function reducir_cantidad(producto_id){
+    
+   
+        var cantidad = document.getElementById('carrito_cantidad'+producto_id).value; 
+        var descuento = 0; //document.getElementById('carrito_descuento'+producto_id).value;
+        //var producto_costo = document.getElementById('producto_costo'+producto_id).value;
+        var producto_precio = document.getElementById('carrito_precio'+producto_id).value;
+        //var descripcion = document.getElementById('descripcion'+producto_id).value
+        var base_url = document.getElementById('base_url').value;
+    
+        var controlador = base_url+'website/cantidad/';
+   
+        //alert(cantidad+" - "+producto_precio);
+   
+        cantidad = Number(cantidad) - 1;
+        
+        if (cantidad>=1){
+        
+            $.ajax({url: controlador,
+                   type:"POST",
+                   data:{producto_id:producto_id, cantidad:cantidad, descuento:descuento, producto_precio:producto_precio},
+                   success:function(respuesta){     
+                      //tablacarrito(); 
+                    location.reload();
+
+    //                  $('#'+'carrito_cantidad'+producto_id).focus();
+                 }
+            });
+        }
+        location.reload();
 }
 
 function quitarcarrito(producto_id){
@@ -990,12 +1050,8 @@ function registrarcliente()
     var cliente_repeticion = "";
     cliente_repeticion = document.getElementById('cliente_repeticion').value;
     
-    
-    
 //    alert(nit+","+razon+","+telefono+","+ cliente_nombre+","+ tipocliente_id+","+cliente_nombre+","+ cliente_ci+","+
 //    cliente_nombrenegocio+","+ cliente_codigo+","+cliente_direccion+","+ cliente_departamento+","+ cliente_celular+","+ zona_id+","+cliente_email+","+cliente_clave);
-
-    var error = 0;
     
     html = "";        
     $("#mensaje_lognombre").html(html); 
@@ -1006,25 +1062,26 @@ function registrarcliente()
     $("#mensaje_logrepetir").html(html); 
     
     
-    if (cliente_nombre.length >4){
-        
+    if (cliente_nombre.length >4){        
         if( cliente_celular.length > 5){
-            
-        
-        if( cliente_direccion.length > 5){
-                
-            if(email_valido(cliente_email)){
-                
-            
-                if(email_norepetido(cliente_email)){
-                
-                    
-                    if(cliente_clave.length>4){
-                
-                    if(cliente_clave == cliente_repeticion){
-                            
+            if( cliente_direccion.length > 5){
+                if(email_valido(cliente_email)){
+                    if(email_norepetido(cliente_email)){
+                        if(cliente_clave.length>4){
+                            if(cliente_clave == cliente_repeticion){
                                 
+                                    html = "";
+                                    html += "<center>";
+                                    html += "<b>REGISTRANDO...</b>";
+                                    html += "<br>";
+                                    html += "<br>";
+                                    html += "<img src='"+base_url+"/resources/images/loaderventas.gif'>";
+                                    html += "<br>";
+                                    html += "<br>";
+                                    html += "</center>";
 
+                                    $("#registrarcli").html(html);
+                                    
                                     $.ajax({url: controlador,
                                             type:"POST",
                                             data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
@@ -1035,7 +1092,7 @@ function registrarcliente()
                                                     
                                                     html = "";
                                                     html += "<center>";
-                                                    html += "<b>NOTIFICACIÓN</b>";
+                                                    html += "<b>AVISO IMPORTANTE</b>";
                                                     html += "<br>";
                                                     html += "<br>Tu usuario fue registrado correctamente,";
                                                     html += "<br>Te enviamos un enlace a tu correo electrónico para activar tu cuenta,";
@@ -1069,65 +1126,45 @@ function registrarcliente()
                             else{ 
                                 html = "La clave y su repeticion no coinciden";
                                 $("#mensaje_logclave").html(html);
-                                $("#cliente_clavereg").focus();
-                                
-                            }
-                        
+                                $("#cliente_clavereg").focus();                                
+                            }                        
                     }
                     else{
                         html = "La clave es demasiado corta (tener más de 4 caracteres)";
                         $("#mensaje_logclave").html(html);    
-                        $("#cliente_clavereg").focus();
-                        
+                        $("#cliente_clavereg").focus();                        
                     }
-                  
-                
             }
             else{
                 
                 html = "Ya existe un usuario registrado con mismo e-mail";
                 $("#mensaje_logemail").html(html);    
                 $("#cliente_email").focus();
-
-                
-            }            
-            
+                }            
             }
             else{
                 
                 html = "Debes registrar un correo electrónico válido";
                 $("#mensaje_logemail").html(html);    
-                $("#cliente_email").focus();
-
-                
+                $("#cliente_email").focus();            
             }
-            
-            
          }
         else{
             html = "Debes especificar una dirección válida";
             $("#mensaje_logdireccion").html(html);    
             $("#cliente_direccion").focus();
-
-        }   
-            
-            
+            }   
         }
         else{ 
             html = "Debes registrar tu número de celular";
             $("#mensaje_logcelular").html(html);    
             $("#cliente_celular").focus();
-
-        }
-                
+            }
     }else{ 
-    
         html = "Debe registrar tú nombre";
         $("#mensaje_lognombre").html(html);    
         $("#cliente_nombre").focus();
     }
-
-    
     
 }
 
@@ -1154,8 +1191,7 @@ function email_norepetido( email )
                
                 if (Number(res.length)>0)  r = 0;
                 else r = 1;
-                
-                
+
             },
             error:function(respuesta){
                 r = 0;

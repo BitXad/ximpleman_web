@@ -364,44 +364,54 @@ function mostrar() {
 					<thead>
 						<tr>
 							<th>No.</th>	
-							<th>prod</th>
-							<th>cantidad</th>
-							<th>Detalle</th>
+							<th>Codigo</th>
+							<th>Fecha</th>
+							<th>Monto Bs</th>
 						
-							<th>Precio</th>
-							<th>Quitar</th>
+							<th>Estado</th>
 						</tr>
 					</thead>
-					<tr class="rem1">
-						<td class="invert">1</td>
-						<td class="invert-image"><a href="single.html"><img src="images/1.png" alt=" " class="img-responsive" /></a></td>
-						<td class="invert">
-							 <div class="quantity"> 
-								<div class="quantity-select">                           
-									<div class="entry value-minus">&nbsp;</div>
-									<div class="entry value"><span>1</span></div>
-									<div class="entry value-plus active">&nbsp;</div>
-								</div>
-							</div>
-						</td>
-						<td class="invert">Tata Salt</td>
-						
-						<td class="invert">$290.00</td>
-						<td class="invert">
-							<div class="rem">
-								<div class="close1"> </div>
-							</div>
-							<script>$(document).ready(function(c) {
-								$('.close1').on('click', function(c){
-									$('.rem1').fadeOut('slow', function(c){
-										$('.rem1').remove();
-									});
-									});	  
-								});
-						   </script>
-						</td>
-					</tr>
-					<tr class="rem2">
+                                        <?php 
+                                            $cont = 0;
+                                        foreach($compras as $com){ ?>
+                                        
+                                                <tr class="rem1">
+                                                        <td class="invert"><?php echo ++$cont; ?></td>
+                                                        <!--<td class="invert-image"><a href="single.html"><img src="images/1.png" alt=" " class="img-responsive" /></a></td>-->
+                                                        <td class="invert"><?php echo "00".$com["venta_id"] ?></td>
+<!--                                                        <td class="invert">
+                                                                 <div class="quantity"> 
+                                                                        <div class="quantity-select">                           
+                                                                                <div class="entry value-minus">&nbsp;</div>
+                                                                                <div class="entry value"><span>1</span></div>
+                                                                                <div class="entry value-plus active">&nbsp;</div>
+                                                                        </div>
+                                                                </div>
+                                                        </td>-->
+                                                        <td class="invert"><?php echo  date("d/m/Y", strtotime($com["venta_fecha"])); ?></td>
+                                                        <td class="invert"><?php echo number_format($com["venta_total"],2,".",","); ?></td>
+
+                                                        <td class="invert"><?php echo $com["estado_descripcion"]; ?></td>
+<!--                                                        <td class="invert">
+                                                                <div class="rem">
+                                                                        <div class="close1"> </div>
+                                                                </div>
+                                                                <script>$(document).ready(function(c) {
+                                                                        $('.close1').on('click', function(c){
+                                                                                $('.rem1').fadeOut('slow', function(c){
+                                                                                        $('.rem1').remove();
+                                                                                });
+                                                                                });	  
+                                                                        });
+                                                           </script>
+                                                        </td>-->
+                                                </tr>
+                                                
+                                        <?php } ?>
+                                        
+                                        
+                                        
+<!--					<tr class="rem2">
 						<td class="invert">2</td>
 						<td class="invert-image"><a href="single.html"><img src="images/2.png" alt=" " class="img-responsive" /></a></td>
 						<td class="invert">
@@ -429,7 +439,7 @@ function mostrar() {
 								});
 						   </script>
 						</td>
-					</tr>
+					</tr>-->
 <!--					<tr class="rem3">
 						<td class="invert">3</td>
 						<td class="invert-image"><a href="single.html"><img src="images/3.png" alt=" " class="img-responsive" /></a></td>
@@ -486,7 +496,7 @@ function mostrar() {
 					</ul>
 				</div>-->
 				<div class="checkout-right-basket">
-					<a href="single.html"><span class="glyphicon glyphicon-menu-left" aria-hidden="true"></span>Continue Shopping</a>
+                                    <a href="<?php echo base_url(); ?>"><span class="fa fa-cart-arrow-down" aria-hidden="true"></span> Continuar Comprando</a>
 				</div>
 				<div class="clearfix"> </div>
 			</div>

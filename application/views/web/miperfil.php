@@ -572,7 +572,7 @@ function toggle(source) {
             <div class="box-footer">
                 <center>
                     <a href="<?php echo site_url('cliente/index'); ?>" class="btn btn-danger">
-                        <i class="fa fa-times"></i> Cancelar</a>
+                        <i class="fa fa-times"></i> Salir</a>
                     <button type="submit" class="btn btn-success">
                             <i class="fa fa-floppy-o"></i> Guardar
                     </button>

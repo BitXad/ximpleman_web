@@ -379,14 +379,18 @@ function mostrar() {
 							<th>Detalle</th>
 						
 							<th>Precio</th>
+							<th>Total</th>
 							<th>Quitar</th>
 						</tr>
 					</thead>
                                         
                                         <?php 
                                             $cont = 0;
+                                            $total_final = 0;
+                                            
                                             foreach($productos as $p){ 
-                                            $cont++;
+                                                $cont++;
+                                                $total_final += $p["carrito_total"];
                                         ?>
                                         
 					<tr class="rem1">
@@ -399,18 +403,33 @@ function mostrar() {
                                                 </td>
                                                 
 						<td class="invert">
-							 <div class="quantity"> 
+<!--							<div class="quantity"> 
 								<div class="quantity-select">                           
-									<div class="entry value-minus">&nbsp;</div>
+                                                                    <div class="entry value-minus">&nbsp;</div>
+                                                                    <div class="entry"><span id="carrito_cantidad<?php echo $p["producto_id"] ?>"> <?php echo $p["carrito_cantidad"] ?></span></div>
+                                                                    <div class="entry value-plus active" onclick="cantidad_producto(<?php echo $p["producto_id"]; ?>)">&nbsp</div>
+								</div>
+							</div>-->
+                                                        <div class="quantity"> 
+								<div class="quantity-select">                           
+									<div class="entry value-minus" onclick="reducir_cantidad(<?php echo $p["producto_id"]; ?>)">&nbsp;</div>
 									<div class="entry value"><span><?php echo $p["carrito_cantidad"] ?></span></div>
-									<div class="entry value-plus active">&nbsp;</div>
+									<div class="entry value-plus active" onclick="incrementar_cantidad(<?php echo $p["producto_id"]; ?>)">&nbsp;</div>
 								</div>
 							</div>
 						</td>
-						<td class="invert"><?php echo $p["producto_nombre"] ?></td>
+						<td class="invert"><?php echo $p["producto_nombre"]; ?></td>
 						
-                                                <td class="invert"><?php echo number_format($p["carrito_total"], 2,".",",")?></td>
+                                                <td class="invert"><?php echo number_format($p["carrito_precio"], 2,".",","); ?>  
+                                                                    <input type="hidden" value="<?php echo $p["carrito_cantidad"]; ?>" id="carrito_cantidad<?php echo $p["producto_id"]; ?>"/>
+                                                                    <input type="hidden" value="<?php echo $p["carrito_precio"]; ?>" id="carrito_precio<?php echo $p["producto_id"]; ?>"/>
+                                                </td>
+                                                
+                                                <td class="invert"><?php echo number_format($p["carrito_total"], 2,".",","); ?></td>
 						<td class="invert">
+                                                    <center>
+
+                                            
 							<div class="rem">
 								<div class="close1"> </div>
 							</div>
@@ -421,11 +440,19 @@ function mostrar() {
 									});
 									});	  
 								});
-						   </script>
+                                                        </script>
+                                                    </center>
 						</td>
+                                                
 					</tr>
                                         
                                         <?php } ?>
+                                        <tr>
+                       
+                                            <td colspan="5"><b>TOTAL FINAL Bs</b></td>
+                                            <td><b><?php echo number_format($total_final, 2,".",","); ?></b></td>
+                                            <td></td>
+                                        </tr>
                                         
                                             <!--quantity-->
                                                     <script>
@@ -448,11 +475,12 @@ function mostrar() {
 					<ul>
 <!--						<li>Product1 <i>-</i> <span>$15.00 </span></li>
 						<li>Product2 <i>-</i> <span>$25.00 </span></li>-->
-						<li>Total Bs<i>-</i> <span>$29.00 </span></li>
-						<li>Delivery <i>-</i> <span>$15.00</span></li>
-						<li>Cupon de Descuento <i>-</i> <span>$15.00</span></li>
-						<li>Total Final<i>-</i> <span>$84.00</span></li>
+						<li>Total <i>Bs</i> <span><?php echo number_format($total_final, 2,".",",")?></span></li>
+						<li>Delivery <i>Bs</i> <span><?php echo number_format(0, 2,".",",")?></span></li>
+						<li>Cupon de Descuento <i>Bs</i> <span><?php echo number_format(0, 2,".",",")?></span></li>
+                                                <li style="color:black;"><b>Total Final Bs</b> <span><b><?php echo number_format($total_final, 2,".",",")?></b></span></li>
 					</ul>
+                                        <button class="btn btn-success btn-block"><fa class="fa fa-cart-arrow-down"></fa> COMPRAR Y PAGAR</button>
 				</div>
 				<div class="checkout-right-basket">
                                     <a href="<?php echo base_url(); ?>"><span class="fa fa-cart-arrow-down" aria-hidden="true"></span> Continuar Comprando</a>

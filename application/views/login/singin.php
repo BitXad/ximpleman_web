@@ -4,7 +4,7 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 -->
 <!DOCTYPE HTML>
-<html>
+<html style="background-color: black;">
 <head>
     <title>Ximpleman :: Sistema Integral de Ventas</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -30,6 +30,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
          folder instead of downloading all of them to reduce the load. -->
    <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    
+    
     <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
 </head>  
 <body>
@@ -70,8 +72,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </div><!-- /.info-box-content -->
               </div>  
 <?php } ?>
-<div class="login-page">
-               <div class="login-main">
+   
+    <div class="login-page" style="background-image: url(<?php echo base_url("resources/images/fondo.jpg"); ?>); background-repeat: no-repeat;background-size: cover; ">
+        <div class="login-main">
         <p class="center-block">
             <?php
  
@@ -126,8 +129,45 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </div>
 <!--inner block end here-->
 <!--copy rights start here-->
-<div class="copyrights">
+<!--<div class="copyrights">
     <p>All Rights Reserved © <?php $fecha = date('Y'); echo $fecha; ?> Password SRL | Design by  <a href="http://www.passwordbolivia.com/" target="_blank">Password SRL</a> </p>
-</div>
+</div>-->
 <!--COPY rights end here-->
 
+<div class="footer" style="background-color: #000">
+    
+        <div class="container"> <br> </div>
+    
+        <div class="container">
+            <div class="w3_footer_grids">
+                <div class="col-md-3 w3_footer_grid">
+                    <center>
+                        <a href="<?php echo base_url("website/ximpleman"); ?>" target="_BLANK" >
+                            <img src="<?php echo base_url("resources/web/images/logo.png"); ?>" width="50%" height="50%">
+                        </a>
+                    </center>
+                </div>
+                <div class="col-md-3 w3_footer_grid">
+                    <center>
+                        <a href="faq.html">Política de privacidad</a>
+                    
+                    </center>
+                </div>
+                <div class="col-md-3 w3_footer_grid">
+                    <center>
+                        <a href="groceries.html">Un producto de</a>
+                    </center>
+                </div>
+                <div class="col-md-3 w3_footer_grid">
+                    <center>
+                        <a href="<?php echo base_url("website/password"); ?>" target="_BLANK" >
+                        <img src="<?php echo base_url("resources/web/images/logo_password.png"); ?>" width="50%" height="50%">
+                        </a>
+                    </center>
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+        
+        <div class="container"> <br> </div>
+    </div>  
