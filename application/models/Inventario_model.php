@@ -35,7 +35,7 @@ class Inventario_model extends CI_Model
         $sql = "select p.* from inventario p
                 where p.estado_id=1 and p.producto_id between 1 and 10 
                 group by p.producto_id
-                order by p.producto_nombre asc";
+                order by p.producto_nombre asc limit 20";
         $producto = $this->db->query($sql)->result_array();
         
         return $producto;

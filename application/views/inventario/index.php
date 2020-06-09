@@ -84,7 +84,7 @@
 <div class="box-header no-print">
             <h3 class="box-title"></h3>
             <div class="box-tools no-print">
-                <form action="<?php echo site_url('inventario/generar_excel'); ?>" method="POST">
+                
                 <button class="btn btn-success btn-sm" onclick="actualizar_inventario()" type="button"><span class="fa fa-cubes"></span> Actualizar</button>
                 <?php if($rolusuario[27-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-primary btn-sm" onclick="tabla_inventario()" type="button"><span class="fa fa-list"></span> Mostrar todo</button>
@@ -93,9 +93,9 @@
                 <?php } if($rolusuario[28-1]['rolusuario_asignado'] == 1){ ?>
                 <button class="btn btn-facebook btn-sm" onclick="mostrar_duplicados()" type="button"><span class="fa fa-copy"></span> Prod. Duplicados</button>
                 
-                <button class="btn btn-danger btn-sm" id="excel"  type="submit"><span class="fa fa-file-excel-o"></span> Exportar Excel</button>
+                <button class="btn btn-danger btn-sm" id="excel" onclick="generarexcel()"  type="button"><span class="fa fa-file-excel-o"></span> Exportar Excel</button>
                 <?php } ?>
-                </form>
+              
             </div>
 </div>
 

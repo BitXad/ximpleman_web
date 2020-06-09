@@ -39,7 +39,7 @@
                 </div>-->
                 
                 <div class="col-md-12">
-                    <form action="<?php echo site_url('factura/generar_excel'); ?>" method="POST">
+                    
                         
                         <div class="col-md-3">
                             <label for="desde" class="control-label">Desde:</label>
@@ -67,27 +67,22 @@
                         </div>
                         
                 <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group">
-                      <span class="input-group-addon"> 
-                        Buscar 
-                      </span>           
-                      <input id="filtrarproducto" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código del producto" onkeypress="validar(event,6)">
-                  </div>
+                  
             <!--------------------- fin parametro de buscador --------------------->                        
                         
                         <div class="col-md-2">
-                           <label for="desde" class="control-label"> </label>
+                           <label for="desde" class="control-label"> Exportar:  </label>
                            <div class="form-group">
               
-                                <button  type="submit" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
+                                <button onclick="generarexcel2()" type="button" class="btn btn-facebook btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
       
                             </div>
                         </div>
                         
                     
-                    </form>
+                   
                         <div class="col-md-2">
-                           <label for="desde" class="control-label"> </label>
+                           <label for="desde" class="control-label"> Buscar:    </label>
                            <div class="form-group">
               
                                <button  type="submit" class="btn btn-danger btn-xs form-control" onclick="mostrar_facturas2()"><span class="fa fa-binoculars"> </span> Ver</button>
