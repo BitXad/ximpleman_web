@@ -48,6 +48,34 @@ class Website extends CI_Controller{
 //        $this->load->view('layouts/login',$data);
         $this->load->view('web/index',$data);
     }
+    
+    function categoria($idioma_id)
+    {
+        
+        //$idioma_id = 1; //1 - español
+        $data['idioma_id'] = $idioma_id;
+        $data['pagina_web'] = $this->Pagina_web_model->get_pagina($idioma_id);
+        $data['menu_cabecera'] = $this->Pagina_web_model->get_menu_cabecera($idioma_id);
+        $data['menu_principal'] = $this->Pagina_web_model->get_menu_principal($idioma_id);
+        $data['menu_item'] = $this->Pagina_web_model->get_menu_item($idioma_id);
+        $data['slider'] = $this->Pagina_web_model->get_slider(1,$idioma_id); //tipo 1
+        $data['seccion1'] = $this->Pagina_web_model->get_seccion(1,$idioma_id); //seccion 1
+        $data['seccion2'] = $this->Pagina_web_model->get_seccion(2,$idioma_id); //seccion 2
+        $data['seccion3'] = $this->Pagina_web_model->get_seccion(3,$idioma_id); //seccion 3        
+        $data['ofertasemanal'] = $this->Pagina_web_model->get_oferta_semanal(); //seccion 3
+        $data['ofertasdia'] = $this->Pagina_web_model->get_oferta_dia(); //seccion 3
+        $data['slider2'] = $this->Pagina_web_model->get_slider(2,$idioma_id); //tipo 2
+        $data['categorias'] = $this->Categoria_producto_model->get_all_categoria_producto(); //tipo 2
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        //$data['mapa'] = $this->Mapa_model->get_mapa(1); //mapa
+        
+//        $data['_view'] = 'pagina_web/index';
+//        $this->load->view('layouts/main',$data);        
+        
+        $data['_view'] = 'website';
+//        $this->load->view('layouts/login',$data);
+        $this->load->view('web/category',$data);
+    }
 
     function email(){
 
@@ -561,7 +589,7 @@ class Website extends CI_Controller{
                 $data['parametro'] = $this->Parametro_model->get_parametros();
 
 
-                $data['productos'] = $this->Pagina_web_model->get_carrito($cliente_id);
+                $data['compras'] = $this->Pagina_web_model->get_compras($cliente_id);
 
                 $data['_view'] = 'website';
                 $this->load->view('web/miscompras',$data);
