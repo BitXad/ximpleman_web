@@ -988,3 +988,126 @@ function mostrar_kardex(producto_id){
     
 }
 
+function generarexcel(){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'inventario/generar_excel';    
+    
+
+     //parametro = document.getElementById('filtrar').value;   
+     //controlador = base_url+'ingreso/buscarallingreso/';
+    var showLabel = true;
+    
+    var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
+    //document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           success:function(result){
+                var factura = JSON.parse(result);
+                var tam = factura.length;
+              
+                var mensaje = "";
+                
+                html = "";
+                if (tam>0){
+                  /* **************INICIO Generar Excel JavaScript************** */
+                    var CSV = 'sep=,' + '\r\n\n';
+                    //This condition will generate the Label/Header
+                    if (showLabel) {
+                        var row = "";
+
+                        //This loop will extract the label from 1st index of on array
+                        
+
+                            //Now convert each value to string and comma-seprated
+                            
+                            row += 'N°' + ',';
+                            row += 'DESCRIPCION' + ',';
+                            row += 'CODIGO' + ',';
+                            row += 'CATEGORIA' + ',';
+                            row += 'UNIDAD' + ',';
+                            row += 'COSTO' + ',';
+                            row += 'SALDO' + ',';
+                            row += 'TOTAL' + ',';
+       
+                        row = row.slice(0, -1);
+
+                        //append Label row with line break
+                        CSV += row + '\r\n';
+                    }
+                    
+                    //1st loop is to extract each row
+                    for (var i = 0; i < tam; i++) {
+                        var row = "";
+                        //2nd loop will extract each column and convert it in string comma-seprated
+                        
+                            row += 'i+1,';
+                            row += '"' +factura[i]["producto_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_codigo"]+ '",';
+                            row += '"' +factura[i]["categoria_nombre"]+ '",';
+                            row += '"' +factura[i]["producto_unidad"]+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["existencia"]).toFixed(2)+ '",';
+                            row += '"' +Number(factura[i]["producto_costo"]*factura[i]["existencia"]).toFixed(2)+ '",';
+                           
+
+                        
+                        row.slice(0, row.length - 1);
+
+                        //add a line break after each row
+                        CSV += row + '\r\n';
+                    }
+                    
+                    if (CSV == '') {        
+                        alert("Invalid data");
+                        return;
+                    }
+                    
+                    //Generate a file name
+                    var fileName = "Inventario_";
+                    //this will remove the blank-spaces from the title and replace it with an underscore
+                    fileName += reportitle.replace(/ /g,"_");   
+
+                    //Initialize file format you want csv or xls
+                    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                    // Now the little tricky part.
+                    // you can use either>> window.open(uri);
+                    // but this will not work in some browsers
+                    // or you will not get the correct file extension    
+
+                    //this trick will generate a temp <a /> tag
+                    var link = document.createElement("a");    
+                    link.href = uri;
+
+                    //set the visibility hidden so it will not effect on your web-layout
+                    link.style = "visibility:hidden";
+                    link.download = fileName + ".csv";
+
+                    //this part will append the anchor tag and remove it after automatic click
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    /* **************F I N  Generar Excel JavaScript************** */
+                   
+                   
+                   
+                   
+                   //document.getElementById('loader').style.display = 'none';
+            }
+         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#tabla_factura").html(html);
+        },
+        complete: function (jqXHR, textStatus) {
+            //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader 
+            //tabla_inventario();
+        }
+        
+    });   
+
+}

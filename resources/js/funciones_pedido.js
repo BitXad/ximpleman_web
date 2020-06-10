@@ -2597,10 +2597,12 @@ function buscar_clientes_pedido()
 
                 cliente_nombre = "<b>"+c[i]["cliente_nombre"]+"</b>";
                 html += "            <a href='"+base_url+"pedido/pedidoabierto/"+c[i]["cliente_id"]+"' class='btn btn-warning btn-xs'>"+"<fa class='fa fa-user'></fa> "+cliente_nombre+"</a>";
-                
 //                html += "                <b> "+c[i]["cliente_nombre"]+"</b> , COD.: "+c[i]["cliente_codigo"]+" <br>";
                 html += "<br>";
-                html += "COD.: "+c[i]["cliente_codigo"]+", "+c[i]["cliente_direccion"];
+                html += "COD.: "+c[i]["cliente_codigo"]+", Dir.: "+c[i]["cliente_direccion"]+", Zona: ";
+                if(c[i]["zona_nombre"] != null){
+                    html += c[i]["zona_nombre"];
+                }else{ html += "sin zona";}
                 html += "<br>";
                 html += "            C.I.:"+c[i]["cliente_ci"]+" | Telf.:"+c[i]["cliente_telefono"]+" <br>";
                 html += "            <div class='container' hidden='TRUE'>";
