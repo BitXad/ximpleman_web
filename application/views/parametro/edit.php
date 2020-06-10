@@ -46,12 +46,14 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="parametro_margenfactura" class="control-label">MARGEN FACTURA</label>
+                    <label for="parametro_margenfactura" class="control-label">MARGEN IZQUIERDO FACTURA</label>
                     <div class="form-group">
-                        <select  name="parametro_margenfactura" class="form-control" id="parametro_margenfactura" >
+                            <input type="parametro_margenfactura" name="parametro_margenfactura" value="<?php echo ($this->input->post('parametro_margenfactura') ? $this->input->post('parametro_margenfactura') : $parametro['parametro_margenfactura']); ?>" class="form-control" id="parametro_margenfactura" />
+                        
+<!--                        <select  name="parametro_margenfactura" class="form-control" id="parametro_margenfactura" >
                             <option value="1">1</option>
                             <option value="2" <?php if($parametro['parametro_permisocredito']=='2'){ ?> selected <?php } ?> >2</option>
-                        </select>
+                        </select>-->
                     </div>
                 </div>
                 <div class="col-md-3">

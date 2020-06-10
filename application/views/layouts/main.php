@@ -132,9 +132,18 @@
                         <li>
                             <a href="<?php echo site_url('venta/ventas');?>"><i class="fa fa-cart-plus"></i> Ventas</a>
                         </li>
+                        <?php } ?>
+                        
                         <?php
-                        }
-                        if($rolusuario[1-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[12-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('venta_online');?>"><i class="fa fa-internet-explorer"></i> Ventas Online</a>
+                        </li>
+                        <?php } ?>
+                        
+                        <?php 
+                            if($rolusuario[1-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('compra');?>"><i class="fa fa-shopping-basket"></i> Compras</a>

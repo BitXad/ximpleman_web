@@ -74,7 +74,7 @@ border-bottom : 1px solid #aaa;*/
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 <?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
 <!---------------------- Modal ---------------------------->
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
@@ -104,6 +104,15 @@ border-bottom : 1px solid #aaa;*/
 <!-------------------------------------------------------->
 
 
+<table class="table" >
+<tr>
+<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
+    
+</td>
+
+<td style="padding: 0;">
+    
+    
 <table class="table" style="width: <?php echo $ancho?>" >
     <tr>
 <!--        <td style="padding: 0; width: 0cm">-->
@@ -288,6 +297,13 @@ border-bottom : 1px solid #aaa;*/
     </tr>    
     
 </table>
+
+</td>    
+</tr>    
+</table>
+
+
+
   
 <?php if ($tipousuario_id == 1){ ?>
         

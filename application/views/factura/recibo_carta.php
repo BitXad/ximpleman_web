@@ -76,15 +76,16 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"];
-      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
 
-<div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
+<table class="table" >
+<tr>
+<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
     
-</div>
- 
-<div class="col-xs-10" style="padding: 0;">
-
+</td>
+<td style="padding: 0;">
+    
 <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
     <tr>
         <td style="width: 6cm; padding: 0; line-height: 9px;" >
@@ -263,4 +264,5 @@ border-bottom : 1px solid #aaa;
         </tr>
     </table>
 
-</div>
+</tr>    
+</table>
