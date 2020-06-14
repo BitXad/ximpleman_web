@@ -131,7 +131,7 @@ border-bottom : 1px solid #aaa;
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"];
       //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
-      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
 
         <div id="myModalAnular" class="modal fade no-print" role="dialog">
@@ -161,13 +161,13 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 
 
-<!--<div class="container"  style="padding: 0;">
-<div class="col-xs-12" style="padding: 0;">-->
-
+<table class="table" >
+<tr>
+<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
     
-
- 
-<!--<div class="col-xs-12" style="padding: 0;">-->
+</td>
+<td style="padding: 0;">
+    
 
 
             <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
@@ -429,7 +429,7 @@ border-bottom : 1px solid #aaa;
             <?php if ($tipousuario_id == 1){ ?>
 
 
-                <div class="col-md-12 no-print" style="max-width: 7cm;">
+                <div class="col-md-12 no-print" style="max-width: 7cm; font-family: Arial">
 
                     <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModalAnular"><i class="fa fa-ban"></i> Anular Factura</button>
                     <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#myModal" onclick="window.close();"><i class="fa fa-times"></i> Cerrar</button>
@@ -440,10 +440,6 @@ border-bottom : 1px solid #aaa;
             <?php } ?>
 
         
-
-    <!--</div>-->
-    
-<!--</div>
-</div>
-
--->
+</td>
+</tr>
+</table>

@@ -114,43 +114,51 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 <?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      //$margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
 ?>
+<table class="table" >
+<tr>
+<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
+    
+</td>
+
+<td style="padding: 0;">
+    
 
 
-<table class="table" style="width: <?php echo $ancho; ?>;" >
-    <tr>
-        <td style="padding:0;">        
-            <center>
-                               
-                    <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
-                    <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
-                    <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
-                    <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
-                    <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
-                
-                    <br>
-                    <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
-                         else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
+        <table class="table" style="width: <?php echo $ancho; ?>;" >
+            <tr>
+                <td style="padding:0;">        
+                    <center>
 
-                <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
-                <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
-                <br> 
-                <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
-                        $fecha_d_m_a = $fecha->format('d/m/Y');
-                  ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                    <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
-                    <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
-                <br>
-            </center>                      
-        </td>
-    </tr>
-     
-</table>
+                            <!--<img src="<?php echo base_url('resources/images/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60"><br>-->
+                            <font size="3" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
+                            <!--<font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->
+                            <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
+                            <!--<font size="1" face="Arial"><?php echo $factura[0]['factura_sucursal'];?><br>-->
+                            <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
+                            <font size="1" face="Arial"><?php echo $empresa[0]['empresa_telefono']; ?></font><br>
+                            <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font>
+
+                            <br>
+                            <?php if($venta[0]['venta_tipodoc']==1){ $titulo1 = "FACTURA"; $subtitulo = "ORIGINAL"; }
+                                 else {  $titulo1 = "NOTA"; $subtitulo = "ORIGINAL"; }?>
+
+                        <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
+                        <font size="1" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
+                        <br> 
+                        <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
+                                $fecha_d_m_a = $fecha->format('d/m/Y');
+                          ?>    
+                            <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                            <b>CODIGO: </b><?php echo $venta[0]['cliente_codigo']." ".$venta[0]['cliente_nit']; ?> <br>
+                            <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
+                        <br>
+                    </center>                      
+                </td>
+            </tr>
+
+        </table>
 
        <table class="table table-striped table-condensed"  style="width: <?php echo $ancho; ?>;" >
            <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
@@ -243,3 +251,6 @@ border-bottom : 1px solid #aaa;
     
 </table>
   
+</td>
+</tr>
+</table>
