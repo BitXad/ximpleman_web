@@ -34,21 +34,7 @@ class Compra extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
-    public function boucher($compra_id){
-
-     if($this->acceso(1)){
-         $data['page_title'] = "Compra";
-         $usuario_id = $this->session_data['usuario_id'];
-         $this->load->model('Empresa_model');
-         $data['empresa'] = $this->Empresa_model->get_empresa(1);
-         $data['compra'] = $this->Compra_model->join_compras($compra_id);
-         $this->load->model('detalle_compra_model');
-         $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
-         $data['credito'] = $this->Compra_model->get_credito($compra_id);
-         $data['_view'] = 'compra/boucher';
-         $this->load->view('layouts/main',$data);
-     }
- } 
+    
     /*
      * Listing of compra
      */
@@ -1479,19 +1465,11 @@ function remove($compra_id)
     }
 }
 function nota($compra_id){
+
+
   $num = $this->Compra_model->numero();
   $este = $num[0]['parametro_tipoimpresora'];
-    if ($este == 'NORMAL') {
-       redirect('compra/pdf/'.$compra_id);
-    }else{
-       redirect('compra/boucher/'.$compra_id);
- 
-    }
-
-}
-
-function pdf($compra_id){
-    if($this->acceso(1)){
+  if($this->acceso(1)){
         $data['page_title'] = "Compra";
         $usuario_id = $this->session_data['usuario_id'];
         $this->load->model('Empresa_model');
@@ -1500,10 +1478,19 @@ function pdf($compra_id){
         $this->load->model('Detalle_compra_model');
         $data['detalle_compra'] = $this->Compra_model->get_detalle_compra($compra_id);
         $data['credito'] = $this->Compra_model->get_credito($compra_id);
+        
+    }
+    if ($este == 'NORMAL') {
         $data['_view'] = 'compra/reciboCompra';
         $this->load->view('layouts/main',$data);
+    }else{
+        $data['_view'] = 'compra/boucher';
+        $this->load->view('layouts/main',$data);
+ 
     }
+
 }
+
 
 function modificarproveedor()
 {
