@@ -6,47 +6,47 @@
             </div>
             <?php echo form_open('parametro/edit/'.$parametro['parametro_id']); ?>
             <div class="box-body" style="margin-top: 0px;margin-bottom: -20px; background: rgba(0, 0, 255, 0.3);"><u><b>CONFIGURACION</b></u><br>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_numrecegr" class="control-label"> NUMERO EGRESO</label>
                     <div class="form-group">
                         <input type="text" readonly name="parametro_numrecegr" value="<?php echo ($this->input->post('parametro_numrecegr') ? $this->input->post('parametro_numrecegr') : $parametro['parametro_numrecegr']); ?>" class="form-control" id="parametro_numrecegr" />
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_numrecing" class="control-label"> NUMERO INGRESO</label>
                     <div class="form-group">
                         <input type="text" readonly name="parametro_numrecing" value="<?php echo ($this->input->post('parametro_numrecing') ? $this->input->post('parametro_numrecing') : $parametro['parametro_numrecing']); ?>" class="form-control" id="parametro_numrecing" />
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_copiasfact" class="control-label"> NO. DE COPIAS FACTURA</label>
                     <div class="form-group">
                         <input type="number" name="parametro_copiasfact" value="<?php echo ($this->input->post('parametro_copiasfact') ? $this->input->post('parametro_copiasfact') : $parametro['parametro_copiasfact']); ?>" class="form-control" id="parametro_copiasfact" />
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_tipoimpresora" class="control-label"> TIPO DE IMPRESORA</label>
                     <div class="form-group">
                         <select  name="parametro_tipoimpresora"  class="form-control" id="parametro_tipoimpresora" >
                             <option value="FACTURADORA">FACTURADORA</option>
-                            <option value="NORMAL" <?php if($parametro['parametro_tipoimpresora']=='NORMAL'){ ?> selected <?php } ?> >NORMAL</option>
+                            <option value="NORMAL" <?php if($parametro['parametro_tipoimpresora']=='NORMAL'){ ?> selected <?php } ?> >CARTA/MEDIA CARTA</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="parametro_anchofactura" class="control-label">ANCHO FACTURA</label>
+                <div class="col-md-2">
+                    <label for="parametro_anchofactura" class="control-label">ANCHO FACTURA (CM)</label>
                     <div class="form-group">
                         <input type="number" step="any" name="parametro_anchofactura" value="<?php echo ($this->input->post('parametro_anchofactura') ? $this->input->post('parametro_anchofactura') : $parametro['parametro_anchofactura']); ?>" class="form-control" id="parametro_anchofactura" />
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="parametro_altofactura" class="control-label">ALTO FACTURA</label>
+                <div class="col-md-2">
+                    <label for="parametro_altofactura" class="control-label">ALTO FACTURA (CM)</label>
                     <div class="form-group">
                         <input type="number" name="parametro_altofactura" value="<?php echo ($this->input->post('parametro_altofactura') ? $this->input->post('parametro_altofactura') : $parametro['parametro_altofactura']); ?>" class="form-control" id="parametro_altofactura" />
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="parametro_margenfactura" class="control-label">MARGEN IZQUIERDO FACTURA</label>
+                <div class="col-md-2">
+                    <label for="parametro_margenfactura" class="control-label">MARGEN IZQ. FACTURA (CM)</label>
                     <div class="form-group">
                             <input type="parametro_margenfactura" name="parametro_margenfactura" value="<?php echo ($this->input->post('parametro_margenfactura') ? $this->input->post('parametro_margenfactura') : $parametro['parametro_margenfactura']); ?>" class="form-control" id="parametro_margenfactura" />
                         
@@ -65,7 +65,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-7">
                     <label for="parametro_apikey" class="control-label">API KEY</label>
                     <div class="form-group">
                         <input type="text" name="parametro_apikey" value="<?php echo ($this->input->post('parametro_apikey') ? $this->input->post('parametro_apikey') : $parametro['parametro_apikey']); ?>" class="form-control" id="parametro_apikey" />
@@ -139,11 +139,11 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="parametro_imagenreal" class="control-label"> RESOLUCIÓN DE IMAGEN</label>
+                    <label for="parametro_imagenreal" class="control-label"> SUBIR IMAGENES</label>
                     <div class="form-group">
                         <select  name="parametro_imagenreal" class="form-control" id="parametro_imagenreal" >
-                             <option value="1">SUBIR IMAGENES EN TAMAÑO REAL</option>
-                            <option value="0" <?php if($parametro['parametro_imagenreal']==0){ ?> selected <?php } ?> >SUBIR IMAGENES COMPRIMIDOS</option>
+                             <option value="1">EN TAMAÑO REAL</option>
+                            <option value="0" <?php if($parametro['parametro_imagenreal']==0){ ?> selected <?php } ?> >COMPRIMIDAS</option>
                         </select>
                     </div>
                 </div>
