@@ -123,7 +123,7 @@ border-bottom : 1px solid #aaa;
 
                 <font size="3" face="arial"><b>NOTA DE ENTREGA</b></font> <br>
                 <font size="3" face="arial"><b>Nº 00<?php echo $venta[0]['venta_id']; ?></b></font> <br>
-                <font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>
+                <!--<font size="1" face="arial"><b><?php echo $venta[0]['venta_fecha']." ".$venta[0]['venta_hora']; ?></b></font> <br>-->
             </center>
         </td>
         
@@ -252,6 +252,7 @@ border-bottom : 1px solid #aaa;
                     __________________________<br>
                             ENTREGE CONFORME
                 </center>  
+                <?php echo date("d/m/Y H:i:s"); ?>
             </td>
             <td style="padding: 0">
             </td>

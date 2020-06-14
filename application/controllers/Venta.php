@@ -1971,25 +1971,24 @@ function modificarcliente()
 /*************** funcion para mostrar la vista de la factura******************/
 function ultimaventa($tipo){
     
-              if($this->acceso(12)||$this->acceso(30)){
-        //**************** inicio contenido ***************    
-    
-                
-    $venta = $this->Venta_model->ultima_venta();
-    $venta_tipodoc = $venta[0]['venta_tipodoc'];
-    $venta_id = $venta[0]['venta_id'];
-    
-    if ($venta_tipodoc==1){ 
-        redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
-        //redirect('factura/factura_boucher/'.$venta_id);
-        
-    }
-    else{
-        redirect('factura/imprimir_recibo/'.$venta_id);
-        //redirect('factura/recibo_boucher/'.$venta_id);        
-    }
-        
-       //**************** fin contenido ***************
+    if($this->acceso(12)||$this->acceso(30)){
+
+            //**************** inicio contenido ***************    
+        $venta = $this->Venta_model->ultima_venta();
+        $venta_tipodoc = $venta[0]['venta_tipodoc'];
+        $venta_id = $venta[0]['venta_id'];
+
+        if ($venta_tipodoc==1){ 
+            redirect('factura/imprimir_factura/'.$venta_id."/".$tipo);
+            //redirect('factura/factura_boucher/'.$venta_id);
+
+        }
+        else{
+            redirect('factura/imprimir_recibo/'.$venta_id);
+            //redirect('factura/recibo_boucher/'.$venta_id);        
+        }
+
+           //**************** fin contenido ***************
     }
             
 }
