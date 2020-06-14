@@ -122,9 +122,11 @@ function fechadeingreso(filtro)
                         html += "<td align='right'>"+Number(registros[i]["ingreso_monto"]).toFixed(2)+"</td>"; 
                         html += "<td>"+registros[i]["ingreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
-                        html += "<td  class='no-print'><a href='"+base_url+"ingreso/pdf/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
-                        html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["ingreso_id"]+"' title='Bouche' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
-                        if (registros[i]["factura_id"]>0) {
+                        html += "<td  class='no-print'><a href='"+base_url+"ingreso/imprimir/"+registros[i]["ingreso_id"]+"' title='Carta' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
+                       
+//                        html += "<a href='"+base_url+"ingreso/boucher/"+registros[i]["ingreso_id"]+"' title='Bouche' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
+                        
+                       if (registros[i]["factura_id"]>0) {
                         html += "<a href='"+base_url+"factura/imprimir_factura_id/"+registros[i]["factura_id"]+"/2' title='Factura' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></a>";
                         }
                         html += "<a href='"+base_url+"ingreso/edit/"+registros[i]["ingreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";

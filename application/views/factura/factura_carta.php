@@ -420,7 +420,7 @@ border-bottom : 1px solid #aaa;
                         </font>
                         <br>
                                 <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
-                        </center>   
+                        </center>
                     </td>
                 </tr>
 
