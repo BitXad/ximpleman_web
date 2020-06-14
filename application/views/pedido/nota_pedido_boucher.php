@@ -175,7 +175,7 @@ border-bottom : 1px solid #aaa;
                     
                 <center>
                 
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>                    
+                    <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>-->                    
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="1" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->                    
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
@@ -215,13 +215,13 @@ border-bottom : 1px solid #aaa;
  
     <table class="table" style="width:<?php echo $ancho; ?>; height: 1px; padding: 0;" >
     -->
-        <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0;">
+        <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0; font-family: Arial narrow;">
             <!--<th>#</th>-->
             <th style="padding: 0"><center>CANT</center></th>
             <th style="padding: 0"><center>DESCRIPCIÓN</center></th>
             <!--<th style="padding: 0"><center>UNIDAD</center></th>-->
-            <th style="padding: 0"><center>P.UNIT</center></th>
-            <th style="padding: 0"><center>TOTAL</center></th>
+            <th style="padding: 0"><center> P.UNIT</center></th>
+            <th style="padding: 0"><center> TOTAL</center></th>
         </tr>
         
         <?php 
@@ -240,7 +240,7 @@ border-bottom : 1px solid #aaa;
                         <?php echo $p['detalleped_cantidad']; ?>
                     </center>
                 </td>
-                <td style="padding: 0">
+                <td style="padding: 0;">
                     <?php echo $p['producto_nombre']; ?>
                 </td>
 <!--                <td style="padding: 0">
