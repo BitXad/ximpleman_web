@@ -201,7 +201,7 @@ $(document).ready(function(){
                           <?php } else { ?>
                              <a href="<?php echo site_url("cuotum/pendiente/".$c['cuota_id']."/".$c['credito_id']."/".$c['cuota_numcuota']); ?>" title="REESTABLECER"class="btn btn-info btn-xs"><span class="fa fa-undo"></span></a>
                              <a href="<?php echo site_url('cuotum/recibodeudas/'.$c['cuota_id']); ?>" title="RECIBO" target="_blank" class="btn btn-success btn-xs"><span class="fa fa-print"></span></a>
-                             <a href="<?php echo site_url("cuotum/comprobantedeudas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
+                             <a href="<?php echo site_url("cuotum/comprobantedeudas/".$c['cuota_id']."/".$c['credito_id']); ?>" target="_blank" title="RECIBO DIVIDIDO" class="btn btn-facebook btn-xs"><span class="fa fa-print"></span></a>
 
                         </td>  
                        <?php } ?>

@@ -1466,9 +1466,10 @@ function remove($compra_id)
 }
 function nota($compra_id){
 
-
+  $data['parametro'] = $this->Parametro_model->get_parametros();
   $num = $this->Compra_model->numero();
   $este = $num[0]['parametro_tipoimpresora'];
+
   if($this->acceso(1)){
         $data['page_title'] = "Compra";
         $usuario_id = $this->session_data['usuario_id'];

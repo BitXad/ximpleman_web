@@ -11,7 +11,8 @@ class Cuotum extends CI_Controller{
         parent::__construct();
         $this->load->model('Cuotum_model');
         $this->load->model('Empresa_model');
-        $this->load->model('Credito_model');
+        $this->load->model('Credito_model');        
+        $this->load->model('Compra_model');
         $this->load->model('Parametro_model');
         $this->load->helper('numeros');  
         $this->load->model('Dosificacion_model');
@@ -151,25 +152,46 @@ class Cuotum extends CI_Controller{
     }
     function recibodeudas($cuota_id)
     {
+
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $num = $this->Compra_model->numero();
+        $este = $num[0]['parametro_tipoimpresora'];
         if($this->acceso(41)){
             $data['page_title'] = "Cuota";
             $data['cuota'] = $this->Cuotum_model->get_recibo_deuda($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-            $data['_view'] = 'cuotum/reciboDeuda';
-            $this->load->view('layouts/main',$data);
+        if ($este == 'NORMAL') {
+        $data['_view'] = 'cuotum/reciboDeuda';
+        $this->load->view('layouts/main',$data);
+        }else{
+        $data['_view'] = 'cuotum/boucherDeuda';
+        $this->load->view('layouts/main',$data);
+ 
+        }
+            
         }
     }
      function recibocuentas($cuota_id)
     {
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $num = $this->Compra_model->numero();
+        $este = $num[0]['parametro_tipoimpresora'];
          if($this->acceso(47)){
             $data['page_title'] = "Comprobante";
             $data['parametro'] = $this->Parametro_model->get_parametros();
             $data['cuota'] = $this->Cuotum_model->get_recibo_cuenta($cuota_id);
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
            // $data['cuotum'] = $this->Cuotum_model->get_cuotum($cuota_id);
-            $data['_view'] = 'cuotum/reciboCuenta';
-            $this->load->view('layouts/main',$data);
+           
+        if ($este == 'NORMAL') {
+        $data['_view'] = 'cuotum/reciboCuenta';
+        $this->load->view('layouts/main',$data);
+        }else{
+        $data['_view'] = 'cuotum/boucherCuenta';
+        $this->load->view('layouts/main',$data);
+ 
+        }
         }
     }
 

@@ -10,6 +10,8 @@ class Cotizacion extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Cotizacion_model');
+        $this->load->model('Compra_model');
+        $this->load->model('Parametro_model');
         $this->load->helper('numeros');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
@@ -135,6 +137,9 @@ class Cotizacion extends CI_Controller{
     }
     function recibo($cotizacion_id)
     {
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $num = $this->Compra_model->numero();
+        $este = $num[0]['parametro_tipoimpresora'];
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
@@ -144,9 +149,17 @@ class Cotizacion extends CI_Controller{
             $this->load->model('Detalle_cotizacion_model');
             $data['detalle_cotizacion'] = $this->Cotizacion_model->get_detalle_cotizacion($cotizacion_id);
             $data['usuario'] = $this->Cotizacion_model->get_cotizacion_usuario($usuario_id);  
-            $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);     
-            $data['_view'] = 'cotizacion/recibo';
-            $this->load->view('layouts/main',$data);
+            $data['cotizacion'] = $this->Cotizacion_model->get_cotizacion($cotizacion_id);
+
+        if ($este == 'NORMAL') {
+        $data['_view'] = 'cotizacion/recibo';
+        $this->load->view('layouts/main',$data);
+        }else{
+        $data['_view'] = 'cotizacion/boucher';
+        $this->load->view('layouts/main',$data);
+ 
+        }
+     
        
         }
     }
