@@ -459,7 +459,7 @@ function mostrar() {
 					</div> 
 					<div class="ftr-top-right">
                                             <h4 style="margin:0;">PASO 3</h4>
-                                            <p>Recibe tu pefdido</p>
+                                            <p>Recibe tu pedido</p>
 					</div>
 					<div class="clearfix"> </div>
                                     </center>
