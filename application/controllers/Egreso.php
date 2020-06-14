@@ -41,7 +41,7 @@ class Egreso extends CI_Controller{
             $data['page_title'] = "Egreso";
             $data['rol'] = $this->session_data['rol'];
             $data['egreso'] = $this->Egreso_model->get_all_egreso();
-            $data['categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
+            $data['all_categoria_egreso'] = $this->Categoria_egreso_model->get_all_categoria_egreso();
             $data['empresa'] = $this->Empresa_model->get_empresa(1);    
             $data['_view'] = 'egreso/index';
             $this->load->view('layouts/main',$data);
@@ -54,12 +54,13 @@ class Egreso extends CI_Controller{
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');
+            $categoria = $this->input->post('categ');
             
            if ($filtro == null){
             $result = $this->Egreso_model->get_all_egreso($params);
             }
             else{
-            $result = $this->Egreso_model->fechaegreso($filtro);            
+            $result = $this->Egreso_model->fechaegreso($filtro,$categoria);            
             }
            echo json_encode($result);
             

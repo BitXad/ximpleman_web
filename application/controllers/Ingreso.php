@@ -46,13 +46,13 @@ class Ingreso extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['ingresos'] = $this->Ingreso_model->get_all_ingresos();
-        $data['categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+        $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
         $data['page_title'] = "Ingreso";
         $data['_view'] = 'ingreso/index';
         $this->load->view('layouts/main',$data);
             }
            
-    }
+    } 
 
      function buscarfecha()
     {
@@ -64,12 +64,13 @@ class Ingreso extends CI_Controller{
         if ($this->input->is_ajax_request()) {
             
             $filtro = $this->input->post('filtro');
+            $categoria = $this->input->post('categ');
             
            if ($filtro == null){
             $result = $this->Ingreso_model->get_all_ingresos($params);
             }
             else{
-            $result = $this->Ingreso_model->fechaingreso($filtro);            
+            $result = $this->Ingreso_model->fechaingreso($filtro,$categoria);            
             }
            echo json_encode($result);
             

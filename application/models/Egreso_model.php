@@ -72,7 +72,7 @@ class Egreso_model extends CI_Model
         return $this->db->insert_id();
     }
     
-    function fechaegreso($condicion)
+    function fechaegreso($condicion,$categoria)
     {
 
        $egreso = $this->db->query("
@@ -85,6 +85,7 @@ class Egreso_model extends CI_Model
                 
                
                 ".$condicion." 
+                ".$categoria." 
                 
             ORDER BY e.egreso_fecha DESC 
         "

@@ -94,7 +94,7 @@ class Ingreso_model extends CI_Model
         return $nom;
     }
     
-     function fechaingreso($condicion)
+     function fechaingreso($condicion,$categoria)
     {
 
             
@@ -110,6 +110,7 @@ class Ingreso_model extends CI_Model
                 1=1
                
                 ".$condicion." 
+                ".$categoria."
                 
             ORDER BY i.ingreso_fecha DESC 
         "

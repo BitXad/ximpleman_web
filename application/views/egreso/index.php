@@ -76,14 +76,14 @@
         </div>
         
            <div class="row">
-        <div class="col-md-8 no-print">
+        <div class="col-md-6 no-print">
        <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
           </div>
-      <div class="col-md-4 no-print">
+      <div class="col-md-3 no-print">
       <div  class="box-tools" >
                           
                     <select  class="btn btn-primary btn-sm" id="select_compra" onchange="buscar_egresos()">
@@ -98,6 +98,23 @@
 
       </div>
     </div>
+    <div class="col-md-">
+                                    
+                                    <div class="form-group">
+                                        
+                                        <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm">
+                <option value="0">- Todas -</option>
+                <?php 
+                foreach($all_categoria_egreso as $categoria_egreso)
+                {
+                  $selected = ($categoria_egreso['categoria_categr'] == $this->input->post('egreso_categoria')) ? ' selected="selected"' : "";
+
+                  echo '<option value="'.$categoria_egreso['categoria_categr'].'" '.$selected.'>'.$categoria_egreso['categoria_categr'].'</option>';
+                } 
+                ?>
+              </select>
+                                    </div>
+                                </div>
 </div>
 </div>
 <div class="col-md-6 no-print">

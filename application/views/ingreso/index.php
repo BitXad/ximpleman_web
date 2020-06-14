@@ -74,16 +74,16 @@
                 <font size='4' face='Arial'><b>Ingresos</b></font>
                 <br><font size='2' face='Arial' id="pillados"></font>
         </div>
-        
+         
            <div class="row">
-        <div class="col-md-8 no-print">
+        <div class="col-md-6 no-print">
        <!--------------------- parametro de buscador --------------------->
                   <div class="input-group"> <span class="input-group-addon">Buscar</span>
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese la descripción">
                   </div>
             <!--------------------- fin parametro de buscador --------------------->
           </div>
-      <div class="col-md-4 no-print">
+      <div class="col-md-3 no-print">
       <div  class="box-tools" >
                           
                     <select  class="btn btn-primary btn-sm" id="select_compra" onchange="buscar_ingresos()">
@@ -98,6 +98,23 @@
 
       </div>
     </div>
+        <div class="col-md-3">
+                                   
+                                    <div class="form-group">
+                                        
+              <select name="categoria_id" id="categoria_id" class="btn btn-primary btn-sm" >
+                <option value="0">- Todas -</option>
+                <?php 
+                foreach($all_categoria_ingreso as $categoria_ingreso)
+                {
+                  $selected = ($categoria_ingreso['categoria_cating'] == $this->input->post('ingreso_categoria')) ? ' selected="selected"' : "";
+
+                  echo '<option value="'.$categoria_ingreso['categoria_cating'].'" '.$selected.'>'.$categoria_ingreso['categoria_cating'].'</option>';
+                } 
+                ?>
+              </select>
+                                    </div>
+                                </div>  
 </div>
 </div>
 <div class="col-md-6 no-print">

@@ -82,12 +82,17 @@ function fechadeingreso(filtro)
 {   
       
    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"ingreso/buscarfecha";
-    
+   var controlador = base_url+"ingreso/buscarfecha";
+   var categoria = document.getElementById('categoria_id').value;
+   if (categoria==0) {
+       var categ = " ";
+   }else{
+       var categ = " and i.ingreso_categoria='"+categoria+"' ";
+   }
     
     $.ajax({url: controlador,
            type:"POST",
-           data:{filtro:filtro},
+           data:{filtro:filtro,categ:categ},
           
            success:function(resul){     
               

@@ -82,10 +82,15 @@ function fechadeegreso(filtro)
       
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"egreso/buscarfecha";
-    
+    var categoria = document.getElementById('categoria_id').value;
+   if (categoria==0) {
+       var categ = " ";
+   }else{
+       var categ = " and e.egreso_categoria='"+categoria+"' ";
+   }
     $.ajax({url: controlador,
            type:"POST",
-           data:{filtro:filtro},
+           data:{filtro:filtro,categ:categ},
           
            success:function(resul){     
               
