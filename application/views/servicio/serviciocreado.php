@@ -449,15 +449,7 @@ $(document).ready(function(){
     </div>
     <div style="float: right; text-align: center;">
         <?php
-        $dir_url = "";
-        if($all_parametro[0]['parametro_tipoimpresora'] == "FACTURADORA"){
-            $dir_url = site_url('servicio/boletarecepcion_boucher/'.$servicio['servicio_id']);
-            $titprint = "Imp. Boucher";
-        }else{
-            //$dir_url = site_url('servicio/boletarecepcion/'.$servicio['servicio_id']);
-            $dir_url = site_url('servicio/boletacomprobanteserv/'.$servicio['servicio_id']);
-            $titprint = "Imp. Normal";
-        }
+        $dir_url = site_url('servicio/imprimircomprobante/'.$servicio['servicio_id']);
         ?>
         
         

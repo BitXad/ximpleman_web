@@ -595,7 +595,23 @@ class Servicio extends CI_Controller{
         {                 
             show_404();
         }
-}
+    }
+    
+    /*************** funcion para mostrar la vista del comprobate  de registro de servicios ******************/
+    function imprimircomprobante($servicio_id){
+        if($this->acceso(69)){
+        //**************** inicio contenido ***************
+            $this->load->model('Parametro_model');
+            $parametros = $this->Parametro_model->get_parametros();
+            if(sizeof($parametros)>0){
+                if($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->boletarecepcion_boucher($servicio_id);
+                else
+                    $this->boletacomprobanteserv($servicio_id);
+            }
+        //**************** fin contenido ***************
+        }
+    }
     
     function boletarecepcion_boucher($servicio_id)
     {
@@ -608,7 +624,7 @@ class Servicio extends CI_Controller{
 //	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
             
             $this->load->model('Parametro_model');
-            $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
@@ -656,7 +672,7 @@ class Servicio extends CI_Controller{
 //	    $data['all_cliente_activo'] = $this->Cliente_model->get_all_cliente_id1();
             
             $this->load->model('Parametro_model');
-            $data['all_parametro'] = $this->Parametro_model->get_all_parametro();
+            $data['parametro'] = $this->Parametro_model->get_parametros();
             
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);

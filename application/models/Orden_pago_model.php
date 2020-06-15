@@ -122,4 +122,16 @@ class Orden_pago_model extends CI_Model
     {
         return $this->db->delete('orden_pago',array('orden_id'=>$orden_id));
     }
+    /* get orden pago y usuario */
+    function get_orden_pagousuario($orden_id)
+    {
+        $orden = $this->db->query("
+            select
+                      o.*, u.usuario_nombre
+                from orden_pago o
+                left join usuario u on o.usuario_id2 = u.usuario_id
+                where o.orden_id = $orden_id")->row_array();
+
+        return $orden;
+    }
 }
