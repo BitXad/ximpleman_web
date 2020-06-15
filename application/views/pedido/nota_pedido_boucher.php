@@ -166,16 +166,16 @@ border-bottom : 1px solid #aaa;
 
 <!--<div class="container table-responsive" style="padding: 0;">-->
     
-<p>
+<!--<p>-->
 <font face="Arial">
 
     <table class="table" style="max-width:<?php echo $ancho; ?>; padding: 0;" >
         <tr style="padding: 0;">
-            <td  style="padding: 0; line-height: 10px; width: 30%;">
+            <td  style="padding: 0; line-height: 10px; width: 30%;" colspan="4">
                     
                 <center>
                 
-                    <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>                    
+                    <!--<img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="80" height="60"><br>-->                    
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <!--<font size="1" face="Arial"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>-->                    
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_direccion']; ?><br>
@@ -184,7 +184,9 @@ border-bottom : 1px solid #aaa;
                 
                 </center>
             </td>
-            <td  style="padding: 0; line-height: 12px; width: 40%;">
+        </tr>
+        <tr style="padding: 0;">
+            <td  style="padding: 0; line-height: 12px; width: 40%;" colspan="4">
                 <center>
                  
                         
@@ -195,8 +197,10 @@ border-bottom : 1px solid #aaa;
                     
                 </center>                
             </td>
-            <td  style="padding: 0; line-height: 10px; width:30%;">
-                _______________________________________<br>
+        </tr>
+        <tr style="padding: 0;">
+            <td></td>
+            <td  style="padding: 0; line-height: 10px; width:30%;" colspan="3">
                         <font size="1" face="Arial">
                             <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
                             <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
@@ -204,23 +208,20 @@ border-bottom : 1px solid #aaa;
                             <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>
                             <br><b>ZONA: </b><?php echo $pedido[0]['zona_nombre']; ?>
                         </font>
-                        <br>
-                    _______________________________________
-
               
             </td>
         </tr>
-    </table>
+<!--    </table>
  
     <table class="table" style="width:<?php echo $ancho; ?>; height: 1px; padding: 0;" >
-    
-        <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0;">
+    -->
+        <tr   style="border-top-style: solid; border-bottom-style: solid; padding: 0; font-family: Arial narrow;">
             <!--<th>#</th>-->
             <th style="padding: 0"><center>CANT</center></th>
             <th style="padding: 0"><center>DESCRIPCIÓN</center></th>
-            <th style="padding: 0"><center>UNIDAD</center></th>
-            <th style="padding: 0"><center>PREC.UNIT</th>
-            <th style="padding: 0"><center>TOTAL</th>
+            <!--<th style="padding: 0"><center>UNIDAD</center></th>-->
+            <th style="padding: 0"><center> P.UNIT</center></th>
+            <th style="padding: 0"><center> TOTAL</center></th>
         </tr>
         
         <?php 
@@ -239,12 +240,12 @@ border-bottom : 1px solid #aaa;
                         <?php echo $p['detalleped_cantidad']; ?>
                     </center>
                 </td>
-                <td style="padding: 0">
+                <td style="padding: 0;">
                     <?php echo $p['producto_nombre']; ?>
                 </td>
-                <td style="padding: 0">
+<!--                <td style="padding: 0">
                     <?php echo $p['producto_unidad']; ?>
-                </td>
+                </td>-->
                 <td align="right"  style="padding: 0">
                     
                     <?php echo number_format($p['detalleped_precio'],2,".",","); ?>
@@ -257,44 +258,59 @@ border-bottom : 1px solid #aaa;
         <?php 
             }
         ?>
-        <tr align="right" style="border-top: solid; border-bottom: solid;">
+        <tr style="border-top-style: solid; border-bottom-style: solid; padding: 0;">
 <!--            <th></th>-->
-            <td colspan="4"  style="padding: 0"><font size="3"><b>Total Bs</b></font></td>
+            <td colspan="3"  style="padding: 0"><font size="3"><b>Total Bs</b></font></td>
 <!--            <th></th>
             <th></th>-->
             <td align="right"  style="padding: 0"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
         </tr>                        
 
-    </table>    
-</font>
+<!--    </table>    
+</font>-->
 
-<font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
-<br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; ?></font>
 
-    <table class="table" style="width: <?php echo $ancho; ?>;">
+<!--    <table class="table" style="width: <?php echo $ancho; ?>;">-->
         <tr>
-            <td  style="padding: 0">
+            <td colspan="4">
+                <font size="1"><b>NOTA: </b><?php echo $pedido[0]['pedido_glosa']; ?>
+                <br><b>PREVED.: </b><?php echo $pedido[0]['usuario_nombre']; ?></font>                
+            </td>
+        </tr>    
+        <tr>    
+            <td  style="padding: 0" colspan="4">
                 <center>
-                    __________________________<br>
-                            ENTREGE CONFORME
+                    <br>
+                    <br>
+                    ________________<br>
+                    ENTREGE CONFORME
                 </center>  
             </td>
-            <td style="padding: 0">
+            
+        </tr>    
+        <tr>    
+            <td  style="padding: 0" colspan="4">
                 <center>
-                    __________________________<br>
-                            DESPACHADO POR
+                    <br>
+                    <br>
+                    ________________<br>
+                    DESPACHADO POR
                 </center>  
             </td>
-            <td  style="padding: 0">
+        </tr>    
+        <tr>    
+            <td  style="padding: 0" colspan="4">
                 <center>
-                    __________________________<br>
-                            RECIBI CONFORME
+                    <br>
+                    <br>
+                    ________________<br>
+                    RECIBI CONFORME
                 </center>  
             </td>
         </tr>
     </table>
 
-</p>
+<!--</p>-->
 <!--</div>
     -->
     

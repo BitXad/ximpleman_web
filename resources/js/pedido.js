@@ -133,10 +133,10 @@ function tabla_pedidos(filtro)
                     if (p[i]["estado_id"]>=10 && p[i]["estado_id"]<=14){
                         
                         if (p[i]["estado_id"]==13){
-                            html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                            html += "        <a href='"+base_url+'pedido/imprimir/'+p[i]["pedido_id"]+"' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
                         }
                         else{
-                        html += "        <a href='"+base_url+'pedido/nota_pedido/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
+                        html += "        <a href='"+base_url+'pedido/imprimir/'+p[i]["pedido_id"]+"' target='_blank' class='btn btn-warning btn-sm' title='Imprimir comprobante de pedido'><span class='fa fa-print'></span></a> ";
                         if(esrol == 1){
                             html += "        <a href='"+base_url+'pedido/modificarpedido/'+p[i]["pedido_id"]+"' class='btn btn-success btn-sm' title='Modificar datos de pedido'><span class='fa fa-cubes'></span></a> ";
                         }

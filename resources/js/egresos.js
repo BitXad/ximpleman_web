@@ -124,11 +124,13 @@ function fechadeegreso(filtro)
                         html += "<td align='right'>"+Number(registros[i]["egreso_monto"]).toFixed(2)+"</td>"; 
                         html += "<td>"+registros[i]["egreso_moneda"]+"</td>"; 
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
-                        html += "<td class='no-print'><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
-                        html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
-                        html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
+//                        html += "<td class='no-print'><a href='"+base_url+"egreso/pdf/"+registros[i]["egreso_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'></a>";
+//                        html += "<a href='"+base_url+"egreso/boucher/"+registros[i]["egreso_id"]+"' title='BOUCHER' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
+                        html += "<td class='no-print'><a href='"+base_url+"egreso/imprimir/"+registros[i]["egreso_id"]+"' title='Imprimir comprobante' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></a>";
+
+                       html += "<a href='"+base_url+"egreso/edit/"+registros[i]["egreso_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
-                        html += "<!------------------------ INICIO modal para confirmar eliminaci«Ñn ------------------->";
+                        html += "<!------------------------ INICIO modal para confirmar eliminaciï¿½ï¿½ï¿½n ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
                         html += "<br><br>";
@@ -150,7 +152,7 @@ function fechadeegreso(filtro)
                         html += "</div>";
                         html += "</div>";
                         html += "</div>";
-                        html += "<!------------------------ FIN modal para confirmar eliminaci«Ñn ------------------->";
+                        html += "<!------------------------ FIN modal para confirmar eliminaciï¿½ï¿½ï¿½n ------------------->";
                         html += "</td>";
                         
                         html += "</tr>";

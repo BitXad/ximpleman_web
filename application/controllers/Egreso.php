@@ -172,27 +172,53 @@ class Egreso extends CI_Controller{
      */
 
 public function pdf($egreso_id){
-    if($this->acceso(64)){
+
+    if($this->acceso(64)){        
         $data['page_title'] = "Egreso";
-      $data['egresos'] = $this->Egreso_model->get_egresos($egreso_id);
-      $data['empresa'] = $this->Empresa_model->get_empresa(1);    
-             $data['_view'] = 'egreso/recibo';
-            $this->load->view('layouts/main',$data);
-       
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['egresos'] = $this->Egreso_model->get_egresos($egreso_id);
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);    
+        $data['_view'] = 'egreso/recibo';
+        $this->load->view('layouts/main',$data);
         }
     }
 
 
     public function boucher($egreso_id){
+        
         if($this->acceso(64)){
             $data['page_title'] = "Egreso";
-      $data['egreso'] = $this->Egreso_model->get_egresos($egreso_id);
-      $data['empresa'] = $this->Empresa_model->get_empresa(1);    
-             $data['_view'] = 'egreso/reciboboucher';
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['egreso'] = $this->Egreso_model->get_egresos($egreso_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);    
+            $data['_view'] = 'egreso/reciboboucher';
             $this->load->view('layouts/main',$data);
-            }
+        }
     }
 
+    /*************** funcion para mostrar la vista de la factura******************/
+    function imprimir($egreso_id){
+    
+        if($this->acceso(58)){
+        //**************** inicio contenido ***************            
+                
+            $parametros = $this->Parametro_model->get_parametros();
+
+            if (sizeof($parametros)>0){
+                
+                if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->boucher($egreso_id);
+                else
+                    $this->pdf($egreso_id);
+            }
+
+        //**************** fin contenido ***************
+        } 
+                
+    }     
+    
+    
+    
     function remove($egreso_id)
     {
         if($this->acceso(62)){

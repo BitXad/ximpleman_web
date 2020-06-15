@@ -99,6 +99,7 @@ class Pedido extends CI_Controller{
         $data['page_title'] = "Nota de Pedido";
         $data['pedido'] = $data['pedido'] = $this->Pedido_model->get_pedido_id($pedido_id);
         $data['empresa'] = $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+        $data['parametro'] = $this->Parametro_model->get_parametros();
         
         $data['_view'] = 'pedido/nota_pedido';
         $this->load->view('layouts/main',$data);
@@ -108,6 +109,60 @@ class Pedido extends CI_Controller{
         			}
         		
     }
+
+    /*
+     * Listing of pedido
+     */
+    function nota_pedido_boucher($pedido_id)
+    {
+        
+        if($this->acceso(32)) {
+        //**************** inicio contenido ***************            
+            $usuario_id = $this->session_data['usuario_id'];
+            $empresa_id = 1;
+
+            $data['page_title'] = "Nota de Pedido";
+            $data['pedido'] = $data['pedido'] = $this->Pedido_model->get_pedido_id($pedido_id);
+            $data['empresa'] = $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+
+            $data['_view'] = 'pedido/nota_pedido_boucher';
+            $this->load->view('layouts/main',$data);
+
+        		
+        //**************** fin contenido ***************
+        }
+        		
+    }
+    
+    
+    /*
+     * Listing of pedido
+     */
+    function imprimir($pedido_id)
+    {
+        
+        if($this->acceso(32)) {
+            //**************** inicio contenido ***************            
+            
+                            
+            $parametros = $this->Parametro_model->get_parametros();
+
+            if (sizeof($parametros)>0){
+                
+                if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->nota_pedido_boucher($pedido_id);
+                else
+                    $this->nota_pedido($pedido_id);
+            }
+
+            
+            //**************** fin contenido ***************
+        }
+        		
+    }
+    
+    
     /*
      * Listing of pedido
      */

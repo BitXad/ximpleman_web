@@ -54,7 +54,7 @@ margin : 0 0 0px 0;
 padding : 0 0 0 0;
 border-spacing : 0 0;
 border-collapse : collapse;
-font-family: Arial narrow;
+font-family: Arial;
 font-size: 7pt;  
 
 }
@@ -82,11 +82,23 @@ border-bottom : 1px solid #aaa;
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
 <!-------------------------------------------------------->
+<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+?>
+
+<table class="table" >
+<tr>
+<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
+    
+</td>
+
+<td style="padding: 0;">
 
 
-<table class="table" style="width: 7cm; margin-bottom: 0px;" >
+<table class="table" style="width: <?php echo $ancho; ?>; margin-bottom: 0px;" >
     <tr>
-        <td>
+        <td colspan="3">
                 
             <center>
                                
@@ -102,49 +114,58 @@ border-bottom : 1px solid #aaa;
                     <br>
                    
 
-                <font size="3" face="arial"><b>EGRESO</b></font> <br>
-                <font size="1" face="arial"><b>NUMERO:  00<?php echo $egreso[0]['egreso_id']; ?> </b></font> <br>            
+                <font size="3" face="arial"><b>RECIBO DE EGRESO</b></font> <br>
+                <font size="2" face="arial"><b>Nº:  00<?php echo $egreso[0]['egreso_id']; ?> </b></font> <br>            
                              
-                _______________________________________________
-                <br> 
-                <?php $fecha = new DateTime($egreso[0]['egreso_fecha']); 
-                        $fecha_d_m_a = $fecha->format('d/m/Y');
-                  ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
-                    
-                    <b>SE ENTREGO A: </b><?php echo $egreso[0]['egreso_nombre'].""; ?>
-                <br>_______________________________________________
 
             </center>                      
      </td>
- </tr>
-     
-</table>
+    </tr>
+ 
+    <tr style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;"> 
+        <td colspan="3">           
+            <center>                      
+                             
+                <?php $fecha = new DateTime($egreso[0]['egreso_fecha']); 
+                        $fecha_d_m_a = $fecha->format('d/m/Y');
+                  ?>    
+                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>                  
+                    <b>SE ENTREGO A: </b><?php echo $egreso[0]['egreso_nombre'].""; ?>
 
-       <table class="table"  style="width: 7cm; margin: 0; padding: 0;" >
+            </center>                      
+     </td>
+    </tr>
+     
+<!--</table>
+
+       <table class="table"  style="width: 7cm; margin: 0; padding: 0;" >-->
            <tr>
                <td align="left" ><b>LA SUMA DE: </b></td>
-               <td align="right"><?php echo number_format($egreso[0]['egreso_monto'],2,'.',','); ?></td>
+               <td align="right" colspan="2">
+                    <font face="Arial" size="3">
+                    <b>
+                        <?php echo number_format($egreso[0]['egreso_monto'],2,'.',','); ?>
+                    </b>
+                    </font>
+               </td>
                
                                
            </tr>
            
            <tr>
                <td align="left"><b>POR CONCEPTO DE: </b></td>
-               <td><?php echo $egreso[0]['egreso_categoria'];?><br>
+               <td colspan="2"><?php echo $egreso[0]['egreso_categoria'];?><br>
                              (<?php echo $egreso[0]['egreso_concepto'];?>)</td>
                 
                
            </tr>
                
-       </table>
-        <center  style="width: 7cm; padding-left: 8px;">
-         <font size="1" face="arial"> _______________________________________________ </font>
-        </center>  
-<table class="table" style="max-width: 7cm;">
-    <tr>
+    </table>
+ 
+    <table class="table" style="max-width: <?php echo $ancho; ?>;">
+    <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;">
         
-        <td align="right">
+        <td align="right" colspan="3">
             
             
             <font size="2">
@@ -159,15 +180,10 @@ border-bottom : 1px solid #aaa;
             
         </td>          
     </tr>
-    <tr>
-        <td nowrap>
-           
-            </font>
-        </td>           
-    </tr>
+   
      
     <tr >
-          <td>
+        <td colspan="3">
              No. TRANSACCION:  <b> 00<?php echo $egreso[0]['egreso_numero']; ?> </b><br>
                     
                USUARIO: <b><?php echo $egreso[0]['usuario_nombre']; ?></b>
@@ -175,27 +191,33 @@ border-bottom : 1px solid #aaa;
          </td>
     </tr>    
     
-</table>
-<table class="table" style="max-width: 7cm;">
-            <tr>
+<!--</table>
+<table class="table" style="max-width: 7cm;">-->
+            <tr style="font-family: Arial Narrow;">
                 <td> <center>
                 
-                        <?php echo "------------------------------------"; ?><br>
                         <?php echo "RECIBI CONFORME"; ?><br>
                     
                     </center>
+                     <?php echo date("d/m/Y H:i:s");?>
                 </td>
-                <td width="20">
-                    <?php echo "     "; ?><br>
-                    <?php echo "     "; ?><br>
+                <td width="10">
                 </td>
                 <td>
                     <center>
 
-                        <?php echo "------------------------------------"; ?><br>
                         <?php echo "ENTREGUE CONFORME"; ?><br>   
 
                     </center>
                 </td>
-            </tr>
+</tr>
         </table>
+
+
+
+
+
+
+</td>    
+</tr>    
+</table>
