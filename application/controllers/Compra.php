@@ -977,7 +977,7 @@ $almacen = $existir[0]["existencia"];
      $yacredito  = "SELECT COUNT(credito_id) as 'creditos' FROM credito WHERE credito.compra_id=".$compra_id;
      $tiene_credito = $this->db->query($yacredito)->result_array();
 
-     if ($tiene_credito[0]['creditos']<1) {
+     if (!isset($tiene_credito[0]['creditos'])) {
 
         $dias_mora = 0;
         $multa = 0;
@@ -1137,7 +1137,7 @@ $this->db->query($chaucre);
         $cuota_numcuota = $i;
         $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
         $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.",)";
+        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
         $this->db->query($cuota);
         $siguiente = $siguiente+$periodo;
         $saldo_deudor = $cuota_total - $cuota_capital;
