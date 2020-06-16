@@ -4,23 +4,22 @@
     margin-left: 0mm;
     margin-right: 0mm;
 }
-body {
+/*boy {
     font-family: Arial;
     font-size: 11px;
-}
+}*/
     #derechatabla {
     /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
     font-family: Arial;
     font-size: 11px;
     border-collapse: collapse;
     width: 100%;
-}
-#izquierdatabla {
-    /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
-    font-family: Arial;
-    font-size: 9px;
-}    
-
+    }
+    #izquierdatabla {
+        /*font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;*/
+        font-family: Arial;
+        font-size: 9px;
+    }
 </style>
 <script type="text/javascript">
     $(document).ready(function()
@@ -32,7 +31,7 @@ body {
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
-<table>
+<table style="font-family: Arial; font-size: 11px;">
     <tr>
         <td style="width: 4.3cm; vertical-align: top;">
             <div style="font-family: Arial; font-size: 9pt; text-align: center;"> 
