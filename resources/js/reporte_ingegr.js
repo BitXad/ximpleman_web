@@ -106,8 +106,8 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     var fecha2 = fecha_hasta;
                     var esusuario =  $('#buscarusuario_id option:selected').text();
                     if(!(fecha_desde == null || fecha_desde =="") && !(fecha_hasta == null  || fecha_hasta =="")){
-                        fecha1 = "Desde: "+moment(fecha_desde).format("DD/MM/YYYY");
-                        fecha2 = " - Hasta: "+moment(fecha_hasta).format("DD/MM/YYYY");
+                        fecha1 = "<span class='text-bold'>Desde: </span>"+moment(fecha_desde).format("DD/MM/YYYY");
+                        fecha2 = "<span class='text-bold'>Hasta: </span>"+moment(fecha_hasta).format("DD/MM/YYYY");
                     }else if(!(fecha_desde == null || fecha_desde =="") && (fecha_desde == null || fecha_hasta =="")){
                         fecha1 = "De: "+moment(fecha_desde).format("DD/MM/YYYY");
                         fecha2 = "";
@@ -572,7 +572,7 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                    htmls += "</tr>";
                    
 
-                   $('#elusuario').html("Usuario: "+esusuario);
+                   $('#elusuario').html("<span class='text-bold'>Usuario: </span>"+esusuario);
                    $('#fecha1impresion').html(fecha1);
                    $('#fecha2impresion').html(fecha2);
                    
