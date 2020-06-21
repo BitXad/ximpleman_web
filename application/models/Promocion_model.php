@@ -17,16 +17,16 @@ class Promocion_model extends CI_Model
     function get_promocion($promocion_id)
     {
         $promocion = $this->db->query("
-            SELECT
-                p.*, t.producto_nombre
+                SELECT 
+                  p.*, t.producto_nombre
+                FROM
+                  promocion p
 
-            FROM
-                promocion p , producto t
+                LEFT JOIN 
+                producto t on t.producto_id = p.producto_id
 
-            WHERE
-
+                WHERE
                 promocion_id = ".$promocion_id."
-                and  p.producto_id=t.producto_id
         ",array($promocion_id))->row_array();
 
         return $promocion;
@@ -58,19 +58,16 @@ class Promocion_model extends CI_Model
             $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
         
         $promocion = $this->db->query("
-            SELECT
-                *
+                SELECT p.*, e.`estado_tipo`,e.`estado_descripcion`,e.`estado_color`,
+                pr.*
 
-            FROM
-                promocion p, producto pr, estado e
+                FROM promocion p
+                LEFT JOIN producto pr on pr.producto_id = p.producto_id
+                LEFT JOIN estado e on e.estado_id = p.estado_id
 
-            WHERE
-                p.producto_id = pr.producto_id
-                and p.estado_id = e.estado_id
-
-            ORDER BY `promocion_id` DESC
-
-            " . $limit_condition . "
+                WHERE p.estado_id = 1  
+                ORDER BY
+                  p.promocion_id DESC
         ")->result_array();
 
         return $promocion;
@@ -100,5 +97,15 @@ class Promocion_model extends CI_Model
     function delete_promocion($promocion_id)
     {
         return $this->db->delete('promocion',array('promocion_id'=>$promocion_id));
+    }
+    
+    /*
+     * function to delete promocion
+     */
+    function get_detalle_promocion($promocion_id)
+    {
+        $sql =  "select * from conspromocion where 
+                 promocion_id = ".$promocion_id;
+        return $this->db->query($sql)->result_array(); 
     }
 }

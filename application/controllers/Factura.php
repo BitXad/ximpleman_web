@@ -1038,11 +1038,13 @@ class Factura extends CI_Controller{
         //**************** inicio contenido ***************            
             $parametros = $this->Parametro_model->get_parametros();
             if (sizeof($parametros)>0){
+                
                 if ($parametros[0]['parametro_notaentrega']==1){
                     if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
                         $this->recibo_boucher($venta_id);
                     else
                         $this->recibo_carta($venta_id);
+                    
                 }elseif($parametros[0]['parametro_notaentrega']==2){
                     if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
                         $this->notae_boucher($venta_id);
@@ -1051,6 +1053,24 @@ class Factura extends CI_Controller{
                 }else{
                     $this->notapreimpreso_carta($venta_id);
                 }
+                
+                
+//                if ($parametros[0]['parametro_notaentrega']==1){
+//                    if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+//                        $this->recibo_boucher($venta_id);
+//                    else
+//                        $this->recibo_carta($venta_id);
+//                    
+//                }elseif($parametros[0]['parametro_notaentrega']==2){
+//                    if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+//                        $this->notae_boucher($venta_id);
+//                    else
+//                        $this->notae_carta($venta_id);
+//                }else{
+//                    $this->notapreimpreso_carta($venta_id);
+//                }
+//                
+//                
             }
         //**************** fin contenido ***************
         }
