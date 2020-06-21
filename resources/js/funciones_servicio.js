@@ -1026,16 +1026,16 @@ function fechadeservicio(elfiltro, busquedade){
                             html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' class='btn btn-success btn-xs' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' data-toggle='modal' data-target='#modalregistraresteservicio"+registros[i]['servicio_id']+"' title='Registrar entrega del servicio'><span class='fa fa-file-zip-o'></span> Entrega del servicio</a><br><br>";
                         }
                         
-                        var dir_url = "";
-                        var titprint = "";
-                        if(tipoimpresora == "FACTURADORA"){
+                        var dir_url = base_url+"servicio/imprimircomprobante/"+registros[i]["servicio_id"];
+                        //var titprint = "";
+                        /*if(tipoimpresora == "FACTURADORA"){
                             dir_url = base_url+"servicio/boletarecepcion_boucher/"+registros[i]["servicio_id"];
                             titprint = "Impresion boucher";
                         }else{
                             dir_url = base_url+"servicio/boletacomprobanteserv/"+registros[i]["servicio_id"];
                             titprint = "Impresion normal";
-                        }
-                        html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+dir_url+"' id='imprimir' class='btn btn-success btn-xs' target='_blank' title='"+titprint+"' ><span class='fa fa-print'></span> Imprimir orden de servicio</a><br><br>";
+                        }*/
+                        html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+dir_url+"' id='imprimir' class='btn btn-success btn-xs' target='_blank' title='Imprimir orden de servicio' ><span class='fa fa-print'></span> Imprimir orden de servicio</a><br><br>";
                         html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalinformetecnico"+i+"' onclick='checkenfalso("+registros[i]["servicio_id"]+"), ocultarmodalnombre("+nombremodal+", "+i+")' class='btn btn-primary btn-xs' title='Informe técnico'><span class='fa fa-file-text'></span> Informe Técnico</a><br><br>";
                         if(parametro_segservicio == 1){
                             html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; background: #720e9e; float: none' href='"+base_url+"servicio/seguimiento/"+registros[i]["cliente_id"]+"/"+registros[i]["servicio_id"]+"' class='btn btn-primary btn-xs' title='Seguimiento' target='_blank'><span class='fa fa-user-secret'></span> Seguimiento</a><br><br>";

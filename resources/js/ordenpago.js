@@ -117,8 +117,9 @@ function buscar(control){
                         html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
                         html += "</td>";
                         }else{
-                         
-                        html += ""+registros[i]["orden_cobradapor"]+"<br>"+registros[i]["orden_ci"]+"<br><span class='btn btn-facebook btn-xs'>"+registros[i]["estado_descripcion"]+"</span></td>";
+                        html += ""+registros[i]["orden_cobradapor"]+"<br>"+registros[i]["orden_ci"]+"<br><span class='btn btn-facebook btn-xs'>"+registros[i]["estado_descripcion"]+"</span>";
+                        html += "<a href='"+base_url+"orden_pago/imprimir/"+registros[i]["orden_id"]+"' target='_blank' class='btn btn-success btn-xs' title='Reimprimir comprobante de pago'><span class='fa fa-print'></span></a>";
+                        html += "</td>";
                         }
                         html += "</tr>";
                     } 
@@ -159,7 +160,8 @@ function pagar(orden){
            type:"POST",
            data:{cancelado:cancelado,cobrado:cobrado,cicobra:cicobra},
           
-           success:function(resul){    
+           success:function(resul){
+               window.open(base_url+"orden_pago/imprimir/"+orden, '_blank');
                    buscarorden(1); 
 
                  },

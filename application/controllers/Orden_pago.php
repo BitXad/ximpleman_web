@@ -10,6 +10,7 @@ class Orden_pago extends CI_Controller{
         parent::__construct();
         $this->load->model('Orden_pago_model');
         $this->load->model('Usuario_model');
+        $this->load->helper('numeros');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -350,5 +351,50 @@ class Orden_pago extends CI_Controller{
         else
             show_error('The orden_pago you are trying to delete does not exist.');
     }
+    /*************** funcion para mostrar la vista del recibo de orden pagado ******************/
+    function imprimir($orden_id){
+        if($this->acceso(89)){
+        //**************** inicio contenido ***************
+            $this->load->model('Parametro_model');
+            $parametros = $this->Parametro_model->get_parametros();
+            if (sizeof($parametros)>0){
+                
+                if ($parametros[0]['parametro_tipoimpresora']=="FACTURADORA")
+                    $this->reciboboucher($orden_id);
+                else
+                    $this->recibo($orden_id);
+            }
+        //**************** fin contenido ***************
+        }             
+    }
+    /* Nota de impresion tamaño carta*/
+    function recibo($orden_id){
+        if($this->acceso(89)){
+            //$this->load->model('Parametro_model');
+            $this->load->model('Empresa_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['orden_pago'] = $this->Orden_pago_model->get_orden_pagousuario($orden_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['page_title'] = "Recibo orden de pago"; 
+            $data['_view'] = 'orden_pago/recibo';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    /* Nota de impresion formato Buecher */
+    function reciboboucher($orden_id){
+        if($this->acceso(89)){
+            //$this->load->model('Parametro_model');
+            $this->load->model('Empresa_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['orden_pago'] = $this->Orden_pago_model->get_orden_pagousuario($orden_id);
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
+            $data['page_title'] = "Recibo orden de pago"; 
+            $data['_view'] = 'orden_pago/reciboboucher';
+            $this->load->view('layouts/main',$data);
+        }
+    }
+    
+
+    
     
 }

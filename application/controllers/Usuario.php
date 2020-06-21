@@ -433,8 +433,8 @@ private function acceso($id_rol){
         if($this->acceso(148)){
 
                 $this->form_validation->set_rules('usuario_nombre', 'Nombre', 'trim|required|min_length[3]|max_length[150]');
-                $this->form_validation->set_rules('usuario_email', 'Email', 'trim|required|valid_email|min_length[5]|max_length[250]|callback_hay_email2');//OJO
-                $this->form_validation->set_message('hay_email2', 'El email ya se registro, escriba uno diferente');
+                //$this->form_validation->set_rules('usuario_email', 'Email', 'trim|required|valid_email|min_length[5]|max_length[250]|callback_hay_email2');//OJO
+                //$this->form_validation->set_message('hay_email2', 'El email ya se registro, escriba uno diferente');
                 $this->form_validation->set_rules('usuario_login', 'Login', 'trim|required|min_length[3]|max_length[50]|callback_hay_login2');//OJO
                 $this->form_validation->set_message('hay_login2', 'El login ya se registro, escriba uno diferente');
 
