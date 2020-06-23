@@ -177,13 +177,15 @@ border-bottom : 1px solid #aaa;
                         $caracteristicas = $d['detalleven_caracteristicas'];
                         
                         if ($preferencia !="null" && $preferencia!='-')
-                            echo  " /".$preferencia;
+                            echo  " /".nl2br($preferencia);
                         
                         if ($caracteristicas!="null" && $caracteristicas!='-')
                             echo  "<br>".nl2br($caracteristicas);
                         
                         ?>
 
+                    
+                    
                 </td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>

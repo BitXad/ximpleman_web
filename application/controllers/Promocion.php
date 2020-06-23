@@ -60,6 +60,7 @@ class Promocion extends CI_Controller{
     function add()
     {
         if($this->acceso(155)){
+            
             $this->load->library('form_validation');
             $this->form_validation->set_rules('promocion_titulo','Promocion Titulo','required');
             $this->form_validation->set_rules('promocion_cantidad','Promocion Cantidad','required');
@@ -68,22 +69,37 @@ class Promocion extends CI_Controller{
             {
                 $fecha = date("Y-m-d");
                 $estado_id = 1;
+//                $params = array(
+//                    'producto_id' => $this->input->post('producto_id'),
+//                    'estado_id' => $estado_id,
+//                    'promocion_titulo' => $this->input->post('promocion_titulo'),
+//                    'promocion_cantidad' => $this->input->post('promocion_cantidad'),
+//                    'promocion_preciototal' => $this->input->post('promocion_preciototal'),
+//                    'promocion_descripcion' => $this->input->post('promocion_descripcion'),
+//                    'promocion_fecha' => $fecha,
+//                );
+
                 $params = array(
+                    'estado_id' => $this->input->post('estado_id'),
                     'producto_id' => $this->input->post('producto_id'),
-                    'estado_id' => $estado_id,
                     'promocion_titulo' => $this->input->post('promocion_titulo'),
                     'promocion_cantidad' => $this->input->post('promocion_cantidad'),
                     'promocion_preciototal' => $this->input->post('promocion_preciototal'),
+                    'promocion_fecha' => $this->input->post('promocion_fecha'),
                     'promocion_descripcion' => $this->input->post('promocion_descripcion'),
-                    'promocion_fecha' => $fecha,
-                );
+                );                
+                
+                
                 $promocion_id = $this->Promocion_model->add_promocion($params);
-                redirect('promocion/index');
+                redirect('promocion/edit/'.$promocion_id);
             }
             else
             {
                 $this->load->model('Producto_model');
                 $data['all_producto'] = $this->Producto_model->get_busqueda_productos_all();
+                
+                $this->load->model('Estado_model');
+                $data['all_estado'] = $this->Estado_model->get_tipo_estado(1);
                 
                 $data['page_title'] = "Promocion";
                 $data['_view'] = 'promocion/add';
@@ -100,6 +116,7 @@ class Promocion extends CI_Controller{
         if($this->acceso(155)){
             // check if the promocion exists before trying to edit it
             $data['promocion'] = $this->Promocion_model->get_promocion($promocion_id);
+            $data['detalle_promocion'] = $this->Promocion_model->get_detalle_promocion($promocion_id);
 
             if(isset($data['promocion']['promocion_id']))
             {
@@ -112,28 +129,29 @@ class Promocion extends CI_Controller{
                 if($this->form_validation->run())     
                 {   
                     $params = array(
-                        'producto_id' => $this->input->post('producto_id'),
                         'estado_id' => $this->input->post('estado_id'),
+                        'producto_id' => $this->input->post('producto_id'),
                         'promocion_titulo' => $this->input->post('promocion_titulo'),
                         'promocion_cantidad' => $this->input->post('promocion_cantidad'),
                         'promocion_preciototal' => $this->input->post('promocion_preciototal'),
+                        'promocion_fecha' => $this->input->post('promocion_fecha'),
                         'promocion_descripcion' => $this->input->post('promocion_descripcion'),
                     );
 
                     $this->Promocion_model->update_promocion($promocion_id,$params);            
                     redirect('promocion/index');
-                }
-                else
-                {
-                    $this->load->model('Producto_model');
-                    $data['all_producto'] = $this->Producto_model->get_busqueda_productos_all();
+                    }
+                    else
+                    {
+                        $this->load->model('Producto_model');
+                        $data['all_producto'] = $this->Producto_model->get_busqueda_productos_all();
 
-                    $this->load->model('Estado_model');
-                    $data['all_estado'] = $this->Estado_model->get_estado_tipo(1);
-                    $data['page_title'] = "Promocion";
-                    $data['_view'] = 'promocion/edit';
-                    $this->load->view('layouts/main',$data);
-                }
+                        $this->load->model('Estado_model');
+                        $data['all_estado'] = $this->Estado_model->get_estado_tipo(1);
+                        $data['page_title'] = "Promocion";
+                        $data['_view'] = 'promocion/edit';
+                        $this->load->view('layouts/main',$data);
+                    }
             }
             else
                 show_error('The promocion you are trying to edit does not exist.');

@@ -892,7 +892,7 @@ function mostrar_kardex(producto_id){
                    
                     if (cont == 1){
                         html += "<tr style='padding:0'>";
-                        html += "<td style='padding:0'></td>";                    
+                        html += "<td style='padding:0'><center>"+formato_fecha(fecha_desde)+"</center></td>";    
                         html += "<td style='padding:0'></td>";                      
                         html += "<td style='padding:0'></td>";                    
                         html += "<td style='padding:0'></td>";                    
@@ -924,7 +924,7 @@ function mostrar_kardex(producto_id){
                         html += k[i]['num_ingreso'];
                     html += "</td>";
                     
-                    html += "            <td style='padding:0'><b>";
+                    html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
                         if (k[i]['unidad_comp']!=0) 
                             html += k[i]['unidad_comp'];
                     html += "</b></td>";
@@ -942,7 +942,7 @@ function mostrar_kardex(producto_id){
                         if (k[i]['num_salida']!=0)  html += Number(k[i]['num_salida']).toFixed(2);
                     html += "</td>";
                         
-                    html += "            <td style='padding:0'><b>";
+                    html += "            <td style='padding:0; background-color: #E9FC00 !important; -webkit-print-color-adjust: exact;'><b>";
                             if (k[i]['unidad_vend']!=0) html += Number(k[i]['unidad_vend']).toFixed(2);
                             
                     html += "</b></td>";
@@ -954,7 +954,12 @@ function mostrar_kardex(producto_id){
                     html +="            <td style='padding:0'>";
                                 if (k[i]['importe_salida'] != 0)  html += Number(k[i]['importe_salida']).toFixed(2);
                     html +="</td>";
-                    html +="            <td style='padding:0'><b>"+Number(saldo).toFixed(2)+"</b></td>";
+                    
+                    if (Number(saldo)>=0){
+                        html +="            <td style='padding:0'><b>"+Number(saldo).toFixed(2)+"</b></td>";
+                    }else{
+                        html +="            <td style='padding:0; background:orange;'><b>"+Number(saldo).toFixed(2)+"</b></td>";                        
+                    }
                     html +="            <td style='padding:0'>";
                     
                         if(Number(saldo * k[i]['costoc_unit']).toFixed(2)>0){ saldox = saldo * k[i]['costoc_unit'];}

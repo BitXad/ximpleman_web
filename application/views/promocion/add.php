@@ -10,49 +10,66 @@
             <?php echo form_open('promocion/add'); ?>
             <div class="box-body">
                 <div class="row clearfix">
-                    <div class="col-md-6">
-                        <label for="producto_id" class="control-label"><span class="text-danger">*</span>Producto</label>
-                        <div class="form-group">
+                                        <div class="col-md-6" hidden="true">
+						<label for="estado_id" class="control-label">Estado</label>
+						<div class="form-group">
+							<select name="estado_id" class="form-control">
+								<option value="1">ACTIVO</option>
+								<?php 
+								foreach($all_estado as $estado)
+								{
+									$selected = ($estado['estado_id'] == $this->input->post('estado_id')) ? ' selected="selected"' : "";
 
-                            <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto"  onkeypress="ventaproducto(event)" />
-                          <input type="hidden" class="form-control" name="producto_id" id="producto_id" value="<?php echo $this->input->post('producto_id'); ?>" required/>
-                        </div>
-
-                    </div>
-                    <div class="col-md-6 no-print" id="tablareproducto"></div>
-                    <div class="col-md-6">
-                        <label for="promocion_titulo" class="control-label"><span class="text-danger">*</span>Título</label>
-                        <div class="form-group">
-                            <input type="text" name="promocion_titulo" value="<?php echo $this->input->post('promocion_titulo'); ?>" class="form-control" id="promocion_titulo"  onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                            <span class="text-danger"><?php echo form_error('promocion_titulo');?></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="promocion_cantidad" class="control-label"><span class="text-danger">*</span>Cantidad</label>
-                        <div class="form-group">
-                            <input type="text" name="promocion_cantidad" value="<?php echo $this->input->post('promocion_cantidad'); ?>" class="form-control" min="0" id="promocion_cantidad"  />
-                            <span class="text-danger"><?php echo form_error('promocion_cantidad');?></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="promocion_preciototal" class="control-label"><span class="text-danger">*</span>Precio Total</label>
-                        <div class="form-group">
-                            <input type="number" name="promocion_preciototal" value="<?php echo $this->input->post('promocion_preciototal'); ?>" step="any" min="0" class="form-control" id="promocion_preciototal" required />
-                            <span class="text-danger"><?php echo form_error('promocion_preciototal');?></span>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="promocion_descripcion" class="control-label">Descripción</label>
-                        <div class="form-group">
-                            <input type="text" name="promocion_descripcion" value="<?php echo $this->input->post('promocion_descripcion'); ?>" class="form-control" id="promocion_descripcion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                        </div>
-                    </div>
+									echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
+								} 
+								?>
+							</select>
+						</div>
+					</div>
+                                        <div class="col-md-6" hidden="true">
+						<label for="producto_id" class="control-label">Producto Id</label>
+						<div class="form-group">
+							<!--<input type="text" name="producto_id" value="<?php echo $this->input->post('producto_id'); ?>" class="form-control" id="producto_id" />-->
+							<input type="text" name="producto_id" value="<?php echo 0; ?>" class="form-control" id="producto_id" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="promocion_titulo" class="control-label">Titulo</label>
+						<div class="form-group">
+							<input type="text" name="promocion_titulo" value="<?php echo $this->input->post('promocion_titulo'); ?>" class="form-control" id="promocion_titulo" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="promocion_cantidad" class="control-label">Cantidad</label>
+						<div class="form-group">
+							<input type="text" name="promocion_cantidad" value="<?php echo $this->input->post('promocion_cantidad'); ?>" class="form-control" id="promocion_cantidad" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="promocion_preciototal" class="control-label">Precio Total</label>
+						<div class="form-group">
+							<input type="text" name="promocion_preciototal" value="<?php echo $this->input->post('promocion_preciototal'); ?>" class="form-control" id="promocion_preciototal" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="promocion_fecha" class="control-label">Fecha</label>
+						<div class="form-group">
+							<input type="date" name="promocion_fecha" value="<?php echo $this->input->post('promocion_fecha'); ?>" class="form-control" id="promocion_fecha" />
+						</div>
+					</div>
+					<div class="col-md-6">
+						<label for="promocion_descripcion" class="control-label">Promocion Descripcion</label>
+						<div class="form-group">
+							<textarea name="promocion_descripcion" class="form-control" id="promocion_descripcion"><?php echo $this->input->post('promocion_descripcion'); ?></textarea>
+						</div>
+					</div>
                 </div>
             </div>
             <div class="box-footer">
             	<button type="submit" class="btn btn-success">
                     <i class="fa fa-check"></i> Guardar
             	</button>
+                
                 <a href="<?php echo site_url('promocion'); ?>" class="btn btn-danger">
                     <i class="fa fa-times"></i> Cancelar</a>
             </div>
