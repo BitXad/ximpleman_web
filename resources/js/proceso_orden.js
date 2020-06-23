@@ -27,11 +27,17 @@ function buscarorden(estado){
                         html += "<td align='center'>"+(i+1)+"</td>";
                         html += "<td align='center'><b>"+registros[i]["orden_numero"]+"</b></td>";
                         html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["producto_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["tipoorden_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_cantidad"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_ancho"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_largo"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_total"]+"</td>";
                         html += "<td align='center'>"+registros[i]["estado_orden"]+"</td>";
                         html += "<td align='center'>"+moment(registros[i]["proceso_fechaproceso"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
                         html += "<td align='center'>"+registros[i]["estado_proceso"]+"</td>";
-                        html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</a> ";
-                        html += "<button class='btn btn-success btn-xs' onclick='terminar("+registros[i]["proceso_id"]+","+registros[i]["estado"]+")'>Terminado</button></td>";
+                        //html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</a> ";
+                        html += "<td><button class='btn btn-success btn-xs' onclick='terminar("+registros[i]["proceso_id"]+","+registros[i]["estado"]+")'>Terminado</button></td>";
                         html += "</tr>";
                        
                        }
@@ -81,10 +87,16 @@ function buscarterminados(estado){
                         html += "<td align='center'>"+(i+1)+"</td>";
                         html += "<td align='center'><b>"+registros[i]["orden_numero"]+"</b></td>";
                         html += "<td>"+registros[i]["cliente_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["producto_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["tipoorden_nombre"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_cantidad"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_ancho"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_largo"]+"</td>";
+                        html += "<td>"+registros[i]["detalleorden_total"]+"</td>";
                         html += "<td align='center'>"+moment(registros[i]["inicio"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
                         html += "<td align='center'>"+moment(registros[i]["fin"]).format('DD/MM/YYYY HH:mm:ss')+"</td>";
-                        html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</a> ";
-                        html += "<button class='btn btn-warning btn-xs' onclick='recibir("+registros[i]["orden_id"]+")'>Recibir</button></td>";
+                        //html += "<td align='center'><a href='"+base_url+"orden_trabajo/ordenrecibo/"+registros[i]["orden_id"]+"'  target='_blank' class='btn btn-facebook btn-xs' >Ver Detalle</a> ";
+                        html += "<td><button class='btn btn-warning btn-xs' onclick='recibir("+registros[i]["detalleorden_id"]+")'>Recibir</button></td>";
                         html += "</tr>";
                        
                        }

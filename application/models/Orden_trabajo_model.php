@@ -58,7 +58,7 @@ class Orden_trabajo_model extends CI_Model
                 c.usuario_id = u.usuario_id and 
                 c.cliente_id = cli.cliente_id
                
-            ORDER BY `orden_id` DESC limit 100
+            ORDER BY `orden_id` DESC limit 1000
 
         ")->result_array();
 
@@ -70,7 +70,7 @@ class Orden_trabajo_model extends CI_Model
          
         $orden_trabajo = $this->db->query("
             SELECT
-                c.*, u.*, cli.cliente_nombre, v.venta_id, e.estado_id
+                c.*, u.usuario_nombre, cli.cliente_nombre, v.venta_id, e.estado_id
 
             FROM
                 orden_trabajo c
