@@ -455,6 +455,7 @@ class Compra extends CI_Controller{
         if($this->acceso(1)){
             $data['page_title'] = "Compra";
             $usuario_id = $this->session_data['usuario_id'];
+            $data['tipo_usu'] = $this->session_data['tipousuario_id'];
             // check if the compra exists before trying to edit it
              $data['compra'] = $this->Compra_model->get_compra($compra_id);
              $compra = $this->Compra_model->get_proveedor_id($compra_id);
