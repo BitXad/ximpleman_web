@@ -31,7 +31,7 @@ class Servicio extends CI_Controller{
     /*
      * Listing of servicio
      */
-    function index($es = null)
+    function index($a = null, $b = null)
     {
         if($this->acceso(69)){
             $usuario_id  = $this->session_data['usuario_id'];
@@ -39,7 +39,8 @@ class Servicio extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         //$data['servicio'] = $this->Servicio_model->get_all_servicios_pendientes();
-        $data['a']=$es;
+        $data['a']=$a;
+        $data['b']=$b;
         
         $this->load->model('Estado_model');
         $data['all_estado'] = $this->Estado_model->get_all_estado_servicio();
@@ -161,13 +162,14 @@ class Servicio extends CI_Controller{
      * Crea un Nuevo SERVICIO en donde se puede registrar productos para
      * dar amntenimineto, reparar, diagnosticar...
      */
-    function serviciocreado($servicio_id, $a = null)
+    function serviciocreado($servicio_id, $a = null, $b = null)
     {
         if($this->acceso(70)){
         /*$data = array(
             'page_title' => 'Admin >> Mi Cuenta'
         );*/
         $data['a'] = $a;
+        $data['b'] = $b;
         $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
 	if(count($data['servicio']) >0)
         {
@@ -500,12 +502,12 @@ class Servicio extends CI_Controller{
             if(isset($res) && !is_null($res)){
                 redirect('servicio/serview/'.$servicio_id);
             }else{
-            redirect('servicio/index/1');
+            redirect('servicio/index/n');
             }
         }
         else
         {
-            redirect('servicio/index/1');
+            redirect('servicio/index/n');
         }
     }
 }

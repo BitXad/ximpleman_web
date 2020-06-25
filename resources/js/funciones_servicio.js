@@ -1,6 +1,14 @@
 $(document).on("ready",inicio);
 function inicio(){
-    fechadeservicio(null, 2);
+    var este_serv = document.getElementById('a').value;
+    if(este_serv == null || este_serv == ""){
+        fechadeservicio(null, 2);
+    }else{
+        if(este_serv != "n" && este_serv != "no"){
+            $("#filtrar").val(este_serv);
+            fechadeservicio(null, 1);
+        }
+    }
 }
 
 function imprimirdetalle(){
@@ -832,6 +840,7 @@ function fechadeservicio(elfiltro, busquedade){
     var filtro = "";
     var base_url       = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var unico = document.getElementById('b').value;
     /*var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
     var cantus = all_usuario.length;*/
     var tipoimpresora  = document.getElementById('tipoimpresora').value;
@@ -865,7 +874,8 @@ function fechadeservicio(elfiltro, busquedade){
                     var total   = 0;
                     var acuenta = 0;
                     var saldo   = 0;
-                    
+                    var res_unico = "";
+                    if(unico == "s"){ res_unico = "/s"; }
                     /*var cont = 0;
                     var total = Number(0);
                     var total_detalle = 0;*/
@@ -915,7 +925,10 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<br>"+nomtelef+cliente_telef+guion+cliente_celu+" "+reswhatsapp+"</td>";
                         html += "<td class='text-center'>";
                         //if(registros[i]["estado_id"] == 5){
-                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3' class='btn btn-info btn-xs' title='Añadir, modificar servicio creado'>"+registros[i]["servicio_id"]+"</a>";
+                        html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3"+res_unico+"' class='btn btn-info btn-xs' title='Añadir, modificar servicio creado'>"+registros[i]["servicio_id"]+"</a>";
+                        if(unico != "s"){
+                            html += "<br><a href='"+base_url+"servicio/index/"+registros[i]["servicio_id"]+"/s' target='_blank' class='btn btn-primary btn-xs' title='Trabajar con este servicio'><span class='fa fa-connectdevelop'></span></a>";
+                        }
                        /* }else{
                             html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
                         }*/
@@ -1011,7 +1024,7 @@ function fechadeservicio(elfiltro, busquedade){
                         var nombremodal = '"modalbotones"';
                         if(registros[i]["estado_id"] != 4){
                             //html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='col-md-1 btn btn-info btn-xs' title='Ver, modificar servicio'><font size='5'><span class='fa fa-pencil'></span></font></a>";
-                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' title='Ver, modificar servicio'><span class='fa fa-pencil'></span> Modificar Servicio</a><br><br>";
+                            html += "<a style='width: 200px; margin-right: 1px; margin-top: 1px; float: none' href='"+base_url+"servicio/serview/"+registros[i]["servicio_id"]+"' class='btn btn-info btn-xs' target='_blank' title='Ver, modificar servicio'><span class='fa fa-pencil'></span> Modificar Servicio</a><br><br>";
                         }
                         if(registros[i]["estado_id"] != 6 && registros[i]["estado_id"] != 7 && registros[i]["estado_id"] != 4){
                             //html += "<a style='width: 50px; margin-right: 1px; margin-top: 1px; float: none' data-toggle='modal' data-target='#modalanulado"+i+"' onclick='ocultarmodalnombre("+nombremodal+", "+i+")' class='col-md-1 btn btn-soundcloud btn-xs' title='Anular servicio'><font size='5'><span class='fa fa-minus-circle'></span></font></a>";
@@ -1632,7 +1645,7 @@ function anulartodoelservicio(servicio_id, num){
                var registros =  JSON.parse(respuesta);
                if (registros != null){
                     if("ok"){
-                        buscar_servicioporfechas();
+                        fechadeservicio(null, 1);
                     }
                }
         }
@@ -1667,6 +1680,7 @@ function mostrardetalleserv(serv_id){
     var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
     var base_url = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var unico = document.getElementById('b').value;
     var parametro_segservicio = document.getElementById('parametro_segservicio').value;
     var controlador = base_url+'servicio/getname_detalleservicio/'+serv_id;
     $.ajax({url: controlador,
@@ -1678,11 +1692,13 @@ function mostrardetalleserv(serv_id){
                if (registros != null){
                    var cantus = all_usuario.length;
                     var n = registros.length; //tamaño del arreglo de la consulta
+                    var res_unico = "";
+                    if(unico == "s"){ res_unico = "/s"; }
                     for (var i = 0; i < n ; i++){
                         //res += "<span style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px; width: 80% !important' class='btn btn-xs' title='Servicio "+registros[i]['estado_descripcion']+"' >";
                         res += "<tr style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px;'>";
                         res += "<td style='width: 70%; text-align: left; border: 0px; padding: 0px'>";
-                        res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+res_unico+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
                         var detalle_descripcion = " ";
                         if(registros[i]['detalleserv_descripcion'] != null){
                             detalle_descripcion = registros[i]['detalleserv_descripcion'].substring(0,35);
@@ -1740,7 +1756,7 @@ function mostrardetalleserv(serv_id){
                         }
                         if(registros[i]['detallestado_id'] != 7){
                             if(parametro_segservicio == 1){
-                                res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
+                                res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+res_unico+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                             }
                         }
                         if(registros[i]['detallestado_id'] == 5){
@@ -1851,7 +1867,7 @@ function mostrardetalleserv(serv_id){
                         //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         res += "<div class='modal-body'>";
                         res += "<!------------------------------------------------------------------->";
-                        res += "<span id='mensajeregistrarserterminado' class='text-danger'></span>";
+                        //res += "<span id='mensajeregistrarserterminado' class='text-danger'></span>";
                        
                        
                         res += "<div class='col-md-12'>";
@@ -1947,7 +1963,7 @@ function mostrardetalleserv(serv_id){
                         //res += "<form style='display:inline' action='"+base_url+"servicio/boletainftecservicio/"+registros[i]["servicio_id"]+"' method='post' target='_blank'>";
                         res += "<div class='modal-body'>";
                         res += "<!------------------------------------------------------------------->";
-                        res += "<span id='mensajeregistrarserterminado' class='text-danger'></span>";
+                        res += "<span id='mensajeregistrarserterminadotec"+registros[i]["detalleserv_id"]+"' class='text-danger'></span>";
                         res += "<div class='text-center'><span style='font-size: 12pt'>"+registros[i]['cliente_nombre']+"</span>";
                         var cliente_telef = "";
                         var cliente_celu = "";
@@ -2421,7 +2437,9 @@ function registrarservicio_terminado(servicio_id, detalleserv_id){
                 fin = resultado.length;
                 html = "";
                 if(resultado == "faltainf"){
-                    $('#mensajeregistrarserterminado').html("<br>Los campos: Diagnostico, Solución y Total; no debes estar vacios");
+                    alert("Los campos: Diagnostico, Solución y Total; no debes estar vacios");
+                    $('#mensajeregistrarserterminadotec'+detalleserv_id).html("<br>Los campos: Diagnostico, Solución y Total; no debes estar vacios");
+                    $('#modalregistrarservtecnico'+detalleserv_id).modal('show');
                 }else if(resultado == "ok"){
                     //$('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
                     $("#select_servicio option[value=6]").attr("selected",true);
@@ -2472,10 +2490,13 @@ function registrarinformacion_detservicio(servicio_id, detalleserv_id){
                 fin = resultado.length;
                 html = "";
                 if(resultado == "faltainf"){
-                    $('#mensajeregistrarserterminado').html("<br>Los campos: Diagnostico, Solución y Total; no debes estar vacios");
+                    alert("Los campos: Diagnostico, Solución y Total; no debes estar vacios");
+                    $('#mensajeregistrarserterminadotec'+detalleserv_id).html("<br>Los campos: Diagnostico, Solución y Total; no debes estar vacios");
+                    $('#modalregistrarservtecnico'+detalleserv_id).modal('show');
                 }else if(resultado == "ok"){
                     //$('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
                     $("#select_servicio option[value=6]").attr("selected",true);
+                    //$('#modalregistrarservtecnico'+detalleserv_id).modal('hide');
                     fechadeservicio(null, 1);
                 }
 

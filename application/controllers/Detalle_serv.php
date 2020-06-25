@@ -1928,11 +1928,13 @@ class Detalle_serv extends CI_Controller{
                 {
                     redirect('detalle_serv/kardex_detallek/'.$codigo);
                 }else{
-                    redirect('servicio/index/'.$servicio_id."/no");
+                    redirect('servicio/index/no');
+                    //redirect('servicio/index/'.$servicio_id."/no");
                 }
             }else{
-                $data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
-                $this->load->view('layouts/main',$data);
+                redirect('servicio/index/no');
+                /*$data['_view'] = 'servicio/serviciocreado/'.$servicio_id;
+                $this->load->view('layouts/main',$data);*/
             }
         }
     }
@@ -2289,21 +2291,23 @@ class Detalle_serv extends CI_Controller{
     /*
      *  *********************Modifica el detalle de un servicio, no modifica el codigo*******************************
      */
-    function modificareldetalle($servicio_id, $detalleserv_id)
+    function modificareldetalle($servicio_id, $detalleserv_id, $b = null)
     {
         if($this->acceso(86)){
             $data['page_title'] = "Detalle de Servicio";
-        $this->load->model('Servicio_model');
-        $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
-        
-        if(isset($_POST) && count($_POST) > 0)     
+            $this->load->model('Servicio_model');
+            $data['servicio'] = $this->Servicio_model->get_servicio($servicio_id);
+            $data['b'] = $b;
+        if(isset($_POST) && count($_POST) > 0)
         {
             $this->load->library('form_validation');
 
 	    $this->form_validation->set_rules('detalleserv_descripcion','Detalle Servicio Descripcion','required');
 	    //$this->form_validation->set_rules('detalleserv_codigo','Detalle Servicio Codigo','required');
 	    $this->form_validation->set_rules('detalleserv_falla','Detalle Servicio Falla','required');
-            
+            if($b == "s"){
+                $esunico = "/index/".$servicio_id."/s";
+            }else{ $esunico = ""; }
 	    if($this->form_validation->run())     
             {
                 $estado_id = $this->input->post('estado_id');
@@ -2407,7 +2411,7 @@ class Detalle_serv extends CI_Controller{
                     );
 
                     $this->Servicio_model->update_servicio($servicio_id,$sumparams);
-                    redirect('servicio');
+                    redirect('servicio'.$esunico);
                     
                 }elseif($estado_id == 7){ //el 7 representa a ENTREGADO
                     $estado_credid = 16;
@@ -2466,7 +2470,7 @@ class Detalle_serv extends CI_Controller{
 
                     $this->Servicio_model->update_servicio($servicio_id,$sumparams);
                     
-                    redirect('servicio');
+                    redirect('servicio'.$esunico);
                     
                 }elseif($estado_id == 6 || $estado_id == 5)
                 { //5 --> PENDIENTE; 6-->TERMINADO
@@ -2510,7 +2514,7 @@ class Detalle_serv extends CI_Controller{
                     );
 
                     $this->Servicio_model->update_servicio($servicio_id,$sumparams);
-                    redirect('servicio');
+                    redirect('servicio'.$esunico);
                 }elseif($estado_id == 16){
                     //este estado es CREDITO
         $estado_terminadoid = 7; // estado ENTREGADO
@@ -2581,7 +2585,7 @@ class Detalle_serv extends CI_Controller{
                 $this->load->model('Servicio_model');
                 $this->Servicio_model->update_servicio($servicio_id,$params);
             }
-             redirect('servicio');
+             redirect('servicio'.$esunico);
             }elseif($estado_id == 28){
                 $detparams = array(
                                 'estado_id' => $estado_id,
@@ -2601,13 +2605,13 @@ class Detalle_serv extends CI_Controller{
                     );
                     $this->Servicio_model->update_servicio($servicio_id,$params);
                 }
-                redirect('servicio');
+                redirect('servicio'.$esunico);
             }
-            redirect('servicio');
+            redirect('servicio'.$esunico);
             }
             else
             {
-                redirect('servicio');
+                redirect('servicio'.$esunico);
             }
         }else
         {

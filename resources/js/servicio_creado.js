@@ -1938,13 +1938,17 @@ function finalizarservicio(servicio_id, num, direccion){
         
     });
         if(tienedetalle == "si"){
+            var unico = document.getElementById('b').value;
+            var res_unico = "";
+            if(unico == "s"){ res_unico = "/index/"+servicio_id+"/s"; }
             if(num == 2){
-                location.href = base_url+'servicio';
+                
+                location.href = base_url+'servicio'+res_unico;
                 window.open(direccion,'_blank');
                 //window.location.href='../../../servicio';
             }else{
                 window.open(direccion,'_blank');
-                location.href = base_url+'servicio';
+                location.href = base_url+'servicio'+res_unico;
                 //window.location.href='../../servicio';
             }
         }else{
@@ -1968,8 +1972,12 @@ function finalizarservicio2(num, direccion){
     if(concliente != 0){
         if(tienedetalle == "si"){
         if(num == 2){
+            var servicio_id = document.getElementById('esteservicio_id').value;
+            var unico = document.getElementById('b').value;
+            var res_unico = "";
+            if(unico == "s"){ res_unico = "/index/"+servicio_id+"/s"; }
             window.open(direccion,'_blank');
-            location.href = base_url+'servicio';
+            location.href = base_url+'servicio'+res_unico;
             //window.location.href='../../../servicio';
         }
         }else{
@@ -2129,9 +2137,13 @@ function salirdeservicio(){
     var base_url     = document.getElementById('base_url').value;
     var concliente   = document.getElementById('concliente').value;
     var tienedetalle = document.getElementById('tienedetalle').value;
+    var servicio_id = document.getElementById('esteservicio_id').value;
+    var unico = document.getElementById('b').value;
+    var res_unico = "";
+    if(unico == "s"){ res_unico = "/index/"+servicio_id+"/s"; }
     if(concliente != 0){
         if(tienedetalle == "si"){
-            location.href = base_url+'servicio';
+            location.href = base_url+'servicio'+res_unico;
         }else{
             alert("El Servicio no tiene Registrado detalles, debe ingresar productos");
         }
