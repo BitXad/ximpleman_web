@@ -103,8 +103,8 @@ class Producto extends CI_Controller{
                         $config['allowed_types'] = 'gif|jpeg|jpg|png';
                         $config['image_library'] = 'gd2';
                         $config['max_size'] = 0;
-                        $config['max_width'] = 5900;
-                        $config['max_height'] = 5900;
+                        $config['max_width'] = 0;
+                        $config['max_height'] = 0;
                         
                         $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                         $config['file_name'] = $new_name; //.$extencion;
@@ -257,8 +257,8 @@ class Producto extends CI_Controller{
                     $config['upload_path'] = './resources/images/productos/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
                     $config['max_size'] = 0;
-                    $config['max_width'] = 5900;
-                    $config['max_height'] = 5900;
+                    $config['max_width'] = 0;
+                    $config['max_height'] = 0;
 
                     $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
                     $config['file_name'] = $new_name; //.$extencion;

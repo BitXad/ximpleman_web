@@ -396,9 +396,10 @@ function listaprecios() {
         html = "";
         for (var i = 0; i < n ; i++){
             html += "<tr>";
-            html += "<td class='text-center'>"+(i+1)+"</td>";
-            html += "<td>";
-            html += "<div style='padding-left: 4px'>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>"+(i+1)+"</td>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px'>";
+            html += registros[i]["producto_nombre"];
+            /*html += "<div style='padding-left: 4px'>";
             var tamaniofont = 3;
             if(registros[i]["producto_nombre"].length >50){
                 tamaniofont = 1;
@@ -413,17 +414,17 @@ function listaprecios() {
                 html +="<br>Acción Terapeutica: "+registros[i]['producto_accionterap'];
             }
 
-            html += caracteristica;*/
+            html += caracteristica;
             html += "";
-            html += "</div>";
+            html += "</div>";*/
             html += "</td>";
-            html += "<td class='text-center'>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-center'>";
             html += registros[i]["producto_unidad"];
             html += "</td>";
-            html += "<td class='text-right'>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
             html += registros[i]["producto_codigobarra"];
             html += "</td>";
-            html += "<td class='text-right'>";
+            html += "<td style='padding-top: 0px; padding-bottom: 0px' class='text-right'>";
             html += registros[i]["producto_precio"];
             html += "</td>";
             html += "</tr>";
