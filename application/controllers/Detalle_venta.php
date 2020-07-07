@@ -457,6 +457,7 @@ class Detalle_venta extends CI_Controller{
             echo json_encode(null);
         }        
     }
+    
     /* inserta el detalle generado desde generar factura a detalle_factura_aux */
     function insert_detalle_factura_aux()
     {
@@ -491,4 +492,73 @@ class Detalle_venta extends CI_Controller{
             echo json_encode(null);
         }        
     }
+    
+    /* ingresar promocion */
+    function ingresar_promocion()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $usuario_id = $this->session_data['usuario_id'];
+            $cantidad = 1;
+            $promocion_id = $this->input->post('promocion_id');
+            
+            $sql = "select * from detalle_venta_aux where promocion_id = ".$promocion_id." and usuario_id = ".$usuario_id;
+            $resultado = $this->db->query($sql)->result_array();
+            if( sizeof($resultado)>0){
+                
+                $sql = "update detalle_venta_aux d, conspromocion t set
+                        d.detalleven_cantidad = d.detalleven_cantidad + t.detalleven_cantidad,
+                        d.detalleven_subtotal = d.detalleven_subtotal + t.detalleven_subtotal,
+                        d.detalleven_total = d.detalleven_total + t.detalleven_total
+                        
+                        where 
+                        t.promocion_id = ".$promocion_id." and
+                        d.promocion_id = t.promocion_id and
+                        d.producto_id = t.producto_id                   
+                        ";
+                $this->db->query($sql);
+                return true;    
+                
+            }
+            else{
+                    $sql = " insert detalle_venta_aux(
+                        producto_id,venta_id,moneda_id,detalleven_codigo,
+                        detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,
+                        detalleven_subtotal,detalleven_descuento,detalleven_total,
+                        detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,
+                        detalleven_tipocambio,usuario_id,existencia,producto_nombre,
+                        producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                        detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,
+                        detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,
+                        detalleven_devueltoenvase,detalleven_fechadevolucion,detalleven_horadevolucion,
+                        detalleven_montodevolucion,detalleven_prestamoenvase,detalleven_fechavenc, promocion_id
+                        )
+                        (
+                        select producto_id,venta_id,moneda_id,detalleven_codigo,
+                        detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,
+                        detalleven_subtotal,detalleven_descuento,detalleven_total,
+                        detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,
+                        detalleven_tipocambio,".$usuario_id.",existencia,producto_nombre,
+                        producto_unidad,producto_marca,categoria_id,producto_codigobarra,
+                        detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,
+                        detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,
+                        detalleven_devueltoenvase,detalleven_fechadevolucion,detalleven_horadevolucion,
+                        detalleven_montodevolucion,detalleven_prestamoenvase,detalleven_fechavenc, promocion_id
+
+                        from conspromocion
+                        where promocion_id = ".$promocion_id.")";
+                        $this->db->query($sql);
+            
+                    return true;
+            }
+            
+            
+        }
+        else{
+            echo json_encode(null);
+        }        
+    }
+    
+    
+    
 }

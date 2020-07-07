@@ -258,7 +258,9 @@ function tablaproductos()
                         html += "<table class='table table-striped table-condensed' id='mitablaventas'>";
                         html += "                    <tr>";
                         html += "                            <th style='padding:0'>#</th>";
-                        html += "                            <th style='padding:0'>Descripción</th>";
+                        html += "                            <th style='padding:0'>Descripción<br>";
+//                        html += "<input type='checkbox' id='check_agrupar' class='btn btn-success btn-xs'  value='1'> Agrupar";
+                        html += " </th>";
                         
                         if(esMobil()){
                             html += "                            <th style='padding:0'>Precio<br>Cant.</th>";                            
@@ -3571,4 +3573,26 @@ function imprimir_factura(){
     
     $("#select_imprimir_factura").val(0); 
     
+}
+
+function ingresar_promocion(promocion_id){
+    
+    var base_url = document.getElementById("base_url").value;
+    var controlador = base_url+"detalle_venta/ingresar_promocion";
+    
+    $.ajax({url: controlador,
+            type: "POST",
+            data:{promocion_id:promocion_id}, 
+            success:function(resultado){
+                var registros =  JSON.parse(resultado);
+                
+                
+//                if (registros.length>0){
+//                    
+//                }
+            },
+        });
+                
+           
+    tablaproductos();
 }

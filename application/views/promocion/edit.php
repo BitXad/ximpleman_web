@@ -10,6 +10,7 @@
       	<div class="box box-info">
             <div class="box-header with-border">
               	<h3 class="box-title">Editar Promoción</h3>
+                <input type="hidden" value="<?php echo $promocion['promocion_id']; ?>" id="promocion_id">
             </div>
                 <?php echo form_open('promocion/edit/'.$promocion['promocion_id']); ?>
                 <div class="box-body">
@@ -70,6 +71,15 @@
             
             
             <div class="box-body table-responsive">
+                <div>
+
+                <button type="button" id="boton_modal_ingreso" class="btn btn-success" data-toggle="modal" data-target="#modalingreso" >
+                    <fa class="fa fa-cubes"></fa> Añadir Producto
+                </button>
+                </div>
+                
+                
+                
                 <table class="table table-striped" id="mitabla">
                     <tr>
 						<th>#</th>
@@ -85,16 +95,16 @@
                         $num = 0;
                         foreach($detalle_promocion as $d){ 
                             
-                            $total += $d['detallepromo_precio']*$d['detallepromo_cantidad'];
+                            $total += $d['detalleven_precio']*$d['detalleven_cantidad'];
                         ?>
                     <tr>
                             <!--<td><?php echo $d['detallepromo_id']; ?></td>-->
                             <td><?php echo ++$num; ?></td>
                             <td><?php echo $d['producto_nombre']; ?></td>
                             <td><?php echo $d['producto_codigobarra']; ?></td>
-                            <td style="text-align: center"><?php echo number_format($d['detallepromo_cantidad'],2,".",","); ?></td>
-                            <td style="text-align: right"><?php echo number_format($d['detallepromo_precio'],2,".",",");; ?></td>
-                            <td style="text-align: right"><?php echo number_format($d['detallepromo_precio']*$d['detallepromo_cantidad'],2,".",",");; ?></td>
+                            <td style="text-align: center"><?php echo number_format($d['detalleven_cantidad'],2,".",","); ?></td>
+                            <td style="text-align: right"><?php echo number_format($d['detalleven_precio'],2,".",",");; ?></td>
+                            <td style="text-align: right"><?php echo number_format($d['detalleven_precio']*$d['detalleven_cantidad'],2,".",",");; ?></td>
                             <td>
                             <a href="<?php echo site_url('detalle_promocion/edit/'.$d['detallepromo_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> </a> 
                             <a href="<?php echo site_url('detalle_promocion/remove/'.$d['detallepromo_id']."/".$d['promocion_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> </a>
@@ -108,11 +118,10 @@
                     </tr>
                 </table>
                 
-                <input type="text" value="<?php echo $total; ?>" id="promocion_total_final" />
+                <input type="hidden" value="<?php echo $total; ?>" id="promocion_total_final" name="promocion_total_final" />
                                 
             </div>            
-            
-            
+                        
                 <div class="box-footer">
                     <button type="submit" class="btn btn-success">
                         <i class="fa fa-check"></i> Guardar
@@ -126,18 +135,13 @@
 </div>
 
 <!----------------- fin modal preferencias ---------------------------------------------->
-<div>
-    
-<button type="button" id="boton_modal_ingreso" class="btn btn-primary" data-toggle="modal" data-target="#modalingreso" >
-  Launch demo modal
-</button>
-</div>
+
 <!----------------- modal preferencias ---------------------------------------------->
 
 <div class="modal fade" id="modalingreso" tabindex="-1" role="dialog" aria-labelledby="modalingreso" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
-			<div class="modal-header">
+                    <div class="modal-header" >
                             
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -145,6 +149,8 @@
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>BUSCAR PRODUCTOS</b></h4>
                                 <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                                
+                                <input type="text" id="parametro" class="form-control btn-default" onkeyup="buscar(event)">
                             </center>
                             
                     </div>
@@ -152,36 +158,29 @@
                         <!--------------------- TABLA---------------------------------------------------->
                         
                         <div class="box-body table-responsive">
-                            <input type="text" id="ingresorapido_producto" value="-" class="form-control btn btn-xs btn-default" readonly>
-                                        <div class="col-md-6">
-                                            <label for="usuario_idx" class="control-label">Cantidad:</label>
-                                            
-                                            <input type="text" id="ingresorapido_producto_id" value="0.00" hidden />
-                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning" onkeyup="validar(event,11)" />
-					</div>
-                                        <div class="col-md-6" id='botones'  style='display:block;'>
-						<label for="opciones" class="control-label">Opciones</label>
-						<div class="form-group">
-                                                        
-                                                    <button class="btn btn-facebook" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
-                                                            <span class="fa fa-floppy-o"></span> Registrar
-                                                    </button>
-                                                    
-                                                    <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
-                                                        <span class="fa fa-close"></span>   Cancelar                                                          
-                                                    </button>
-						</div>
-					</div>
-                            
+
                                         <!--------------------- inicio loader ------------------------->
-                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
+                                        <div class="col-md-6" id='oculto'  style='display: none;'>
                                             <center>
                                                 <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
                                             </center>
                                         </div> 
                                         <!--------------------- fin inicio loader ------------------------->
                             
-             
+                                        <table class="table-responsive" id="mitabla">
+                                            <tr>
+                                                <th style="padding: 0">#</th>
+                                                <th style="padding: 0">DESCRIPCIÓN</th>
+                                                <th style="padding: 0">CODIGO</th>
+                                                <th style="padding: 0">CANTIDAD</th>
+                                                <th style="padding: 0">PRECIO</th>
+                                                <th style="padding: 0"></th>                                                
+                                            </tr>
+                                            <tbody id="tablaresultados">
+                                                <!---------- aqui van los resultados -->
+                                            </tbody>
+                                            
+                                        </table>
                         </div>
 
                         <!----------------------FIN TABLA--------------------------------------------------->

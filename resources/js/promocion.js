@@ -118,3 +118,116 @@ function selecproducto(producto)
 	}
 });
 }
+
+function buscar(e){
+    tecla = (document.all) ? e.keyCode : e.which;
+  
+    if (tecla==13){ 
+        buscar_productos();
+    }
+    
+}
+
+//Tabla resultados de la busqueda
+function buscar_productos()
+{   
+    
+    var controlador = "";
+    var parametro = document.getElementById('parametro').value;    
+    var limite = 500;
+    var base_url = document.getElementById('base_url').value;    
+    controlador = base_url+'venta/buscarproductos/';
+
+    document.getElementById('oculto').style.display = 'block'; //ocultar el bloque del loader
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{parametro:parametro},
+           success:function(respuesta){     
+
+               var registros =  JSON.parse(respuesta);
+                
+               if (registros != null){
+                   
+                    var nombreprod = "";
+                    var cont = 0;
+                    var cant_total = 0;
+                    var total_detalle = 0;
+                    var n = registros.length; //tamaño del arreglo de la consulta
+               
+                    
+                   html = "";
+
+                   if (n <= limite) x = n; 
+                   else x = limite;
+                    
+                    for (var i = 0; i < x ; i++){
+                       html += "                <tr>";
+                        html += "<td>"+(Number(i)+1)+"</td>" ;
+                        html += "<td>"+registros[i].producto_nombre+"</td>" ;                        
+                        html += "<td>"+registros[i].producto_codigobarra+"</td>" ;                        
+//                        html += "<td>"+registros[i].producto_precio+"</td>" ;
+                        html += "<td><input type='text' value='1' style='width:50px;' id='cantidad"+registros[i].producto_id+"'/></td>" ;
+                        html += "<td><input type='text' value='"+registros[i].producto_precio+"' style='width:50px;' id='precio"+registros[i].producto_id+"'/></td>" ;
+                        html += "<td><button class='btn btn-facebook btn-xs' onclick='registrar_producto("+registros[i].producto_id+")' >";
+                        html += "       <fa class='fa fa-arrow-down'></fa> </button>" ;
+                        html += "</td>";
+                        html += "</tr>";
+                
+                    }
+                   
+                   $("#tablaresultados").html(html);
+                   
+                   /************** FIN MODO GRAFICO ***************/
+               }// fin visualizacion modo grafico
+                
+        },
+        error:function(respuesta){
+           html = "";
+           $("#tablaresultados").html(html);            
+        },
+        complete: function (jqXHR, textStatus) {
+   
+            document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+             
+//            $("#filtrar").focus();
+//            $("#filtrar").select();
+        }
+        
+    });  
+    
+ //   $("#encontrados").focus(); //Quita el foco del buscador para que desparezca el teclado android
+}
+
+function registrar_producto(producto_id){
+    
+    var cantidad = document.getElementById('cantidad'+producto_id).value;
+    var precio = document.getElementById('precio'+producto_id).value;
+    var promocion_id = document.getElementById('promocion_id').value;
+    var base_url = document.getElementById('base_url').value;    
+    var controlador = base_url+'promocion/registrar_detalle/';
+        
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{cantidad:cantidad, producto_id:producto_id, precio:precio,promocion_id:promocion_id },
+           success:function(respuesta){     
+
+                location.reload(); 
+          
+                
+            },
+            error:function(respuesta){
+
+            },
+            complete: function (jqXHR, textStatus) {
+
+                document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
+
+    //            $("#filtrar").focus();
+    //            $("#filtrar").select();
+            }
+        
+    });  
+    
+    
+}

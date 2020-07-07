@@ -28,6 +28,7 @@ class Venta extends CI_Controller{
         $this->load->model('Preferencia_model');
         $this->load->model('Credito_model');
         $this->load->model('Categoria_clientezona_model');
+        $this->load->model('Promocion_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -93,6 +94,7 @@ class Venta extends CI_Controller{
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
+        $data['promociones'] = $this->Promocion_model->get_promociones();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         

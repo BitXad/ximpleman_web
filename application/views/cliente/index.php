@@ -1,4 +1,6 @@
+
 <!----------------------------- script buscador --------------------------------------->
+
 <script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
@@ -222,7 +224,9 @@
         <div class="box">
             
             <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
+                <table class="table table-striped table-condensed display" id="mitabla">
+                    <thead>
+                        
                     <tr>
                         <th>#</th>
                         <th>Nombre</th>
@@ -237,6 +241,7 @@
                         <!--<th>Estado</th>-->
                         <th class="no-print"></th>
                     </tr>
+                    </thead>
                     <tbody class="buscar" id="tablaresultados">
                     
                     </tbody>    
@@ -258,3 +263,5 @@ echo '<script type="text/javascript">
     alert("El Cliente NO puede ser ELIMINADO, \n porque tiene transacciones realizadas");
 </script>';
 ?>
+
+

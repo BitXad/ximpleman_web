@@ -297,7 +297,17 @@ window.onkeydown = compruebaTecla;
           <?php } ?> 
           <a data-toggle="collapse" href="#collapse1" style="padding: 0;" class="btn btn-default btn-sm"> 
             Más información</a>
+            
+            
+            <?php 
+            if ($parametro[0]["parametro_agruparitems"] == 1 )
+                    { $agrupar = "checked='true'";}
+              else {$agrupar = " ";}
+        ?>
+            <input type='checkbox' id='check_agrupar' value='1' <?php echo $agrupar; ?>> <button class="btn btn-default btn-xs"> Agrupar</button> 
         </h4>
+
+
 
       </div>
     <div id="collapse1" class="panel-collapse collapse">
@@ -465,18 +475,27 @@ window.onkeydown = compruebaTecla;
     </select>
         <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span>
     </span>
-        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
-       <?php 
-            if ($parametro[0]["parametro_agruparitems"] == 1 )
-                    { $agrupar = "checked='true'";}
-              else {$agrupar = " ";}
-        ?>
+       
+<!-------------------------- BOTON AGRUPAR --------------------------------------->    
+        <?php 
+//            if ($parametro[0]["parametro_agruparitems"] == 1 )
+//                    { $agrupar = "checked='true'";}
+//              else {$agrupar = " ";}
+//        ?>
+       <!--<button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>--> 
         
-    <!--<span class="badge btn-primary">-->
+<!-------------------------- FIN BOTON AGRUPAR --------------------------------------->    
+       
+       <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
+       
+        <button type="button" id="boton_modal_promocion" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalpromocion" >
+                    <fa class="fa fa-cube"></fa> Promociones
+        </button>    
+<!--<span class="badge btn-primary">-->
         
         
         
-        <button class="btn btn-primary btn-xs"><input type='checkbox' id='check_agrupar' class="btn btn-success btn-xs"  value='1' <?php echo $agrupar; ?>> Agrupar</button>
+        
         
         
     <!--</span>-->
@@ -1348,3 +1367,82 @@ window.onkeydown = compruebaTecla;
 
 
 <!----------------- fin modal preferencias ---------------------------------------------->
+
+
+<!----------------- modal promociones ---------------------------------------------->
+
+<div class="modal fade" id="modalpromocion" tabindex="-1" role="dialog" aria-labelledby="modalpromocion" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+                    <div class="modal-header" >
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>COMBOS Y PROMOCIONES</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                                
+                                <!--<input type="text" id="parametro" class="form-control btn-default" onkeyup="buscar(event)">-->
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='oculto'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                                        <center>
+                                            
+                                        <?php 
+                                        
+                                            $alto_botonx = 150;
+                                            $ancho_botonx = 100;
+                                            foreach($promociones as $prom){ ?>
+    <!--                                        <button > <fa class="fa fa-cube"></fa> 
+                                                    <?php echo $prom["promocion_titulo"]; ?>
+                                            </button>-->
+
+
+    <button data-toggle="modal" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_botonx; ?>px !important; height: <?php echo $alto_botonx; ?>px !important;" title=" <?php echo $prom["promocion_titulo"]; ?>" onclick="ingresar_promocion(<?php echo $prom["promocion_id"]; ?>)">
+                                                    <i class="fa fa-cubes fa-2x"></i><br><br>
+                                                    <small>
+                                                        <?php echo $prom["promocion_titulo"]; ?><br>
+                                                        
+                                                    </small>
+                                                    <b>
+                                                        <?php echo "Bs ".number_format($prom["promocion_preciototal"],2,".",","); ?>
+                                                    </b>
+                                                </button>
+
+                                        <?php } ?>
+<!--                                        <table class="table-responsive" id="mitabla">
+                                            <tr>
+                                                <th style="padding: 0">#</th>
+                                                <th style="padding: 0">DESCRIPCIÓN</th>
+                                                <th style="padding: 0">CODIGO</th>
+                                                <th style="padding: 0">CANTIDAD</th>
+                                                <th style="padding: 0">PRECIO</th>
+                                                <th style="padding: 0"></th>                                                
+                                            </tr>
+                                            <tbody id="tablaresultados">
+                                                -------- aqui van los resultados 
+                                            </tbody>
+                                            
+                                        </table>-->
+                                        </center>
+                            </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+<!----------------- fin modal promociones ---------------------------------------------->

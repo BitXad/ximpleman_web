@@ -108,4 +108,28 @@ class Promocion_model extends CI_Model
                  promocion_id = ".$promocion_id;
         return $this->db->query($sql)->result_array(); 
     }
+
+    /*
+     * ejecutar consulta
+     */
+    function ejecutar($sql)
+    {
+        $this->db->query($sql);
+        return true;
+    }
+    
+    /*
+     * promociones
+     */
+    function get_promociones()
+    {
+        $sql =  "select p.*
+                from promocion p 
+                where 
+                p.estado_id = 1 and 
+                p.promocion_id in 
+                ( select  distinct(promocion_id) from detalle_promocion)";
+        return $this->db->query($sql)->result_array(); 
+    }
+    
 }

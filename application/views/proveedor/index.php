@@ -1,3 +1,10 @@
+<script rel="stylesheet" type="text/css" href="<?php echo base_url('resources/plugins/datatables/jquery.dataTables.css'); ?>">  </script>
+<script type="text/javascript" charset="utf8" src="<?php echo base_url('resources/plugins/datatables/jquery.dataTables.min.js'); ?>"></script>
+
+<?php //echo base_url('resources/plugins/datatables/jquery.dataTables.min.css'); ?>
+<!--<br>-->
+<?php //echo base_url('resources/plugins/datatables/jquery.dataTables.min.js'); ?>
+
 
 <script src="<?php echo base_url('resources/js/responsable.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
@@ -37,6 +44,14 @@
     }
     td div div{
         
+    }
+    
+    div.dataTables_length {
+    padding-left: 2em;
+    }
+    div.dataTables_length,
+    div.dataTables_filter {
+        padding-top: 0.55em;
     }
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -137,17 +152,21 @@
         <div class="box">
             
             <div class="box-body table-responsive">
-                <table class="table table-striped table-condensed" id="mitabla">
-                    <tr>
-						<th>#</th>
-						
-						<th>Nombre</th>
-						<th>Contacto</th>
-						<th>Nit</br>
-						Razón</th>
-						<th>Estado</th>
-						<!--<th>Autorización</th>-->
-						<th class="no-print"></th>
+                <table class="table table-striped table-condensed display" id="mitabla">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+
+                            <th>Nombre</th>
+                            <th>Contacto</th>
+                            <th>Nit</br>
+                            Razón</th>
+                            <th>Estado</th>
+                            <!--<th>Autorización</th>-->
+                            <th class="no-print"></th>
+                        </tr>                        
+                    </thead>
+                        
                     <tbody class="buscar">
                     <?php $cont = 0;
                           foreach($proveedor as $p){;
@@ -207,15 +226,29 @@
                             <td class="no-print">
                             <a href="<?php echo site_url('proveedor/edit/'.$p['proveedor_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span></a> 
                             <!--<a href="<?php echo site_url('proveedor/remove/'.$p['proveedor_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
-                        </td>
+                            </td>
                     </tr>
                     <?php } ?>
+                    </tbody>
+<!--                    <tfoot>
+                        <tr>
+                            <th>#</th>
+
+                            <th>Nombre</th>
+                            <th>Contacto</th>
+                            <th>Nit</br>
+                            Razón</th>
+                            <th>Estado</th>
+                            <th>Autorización</th>
+                            <th class="no-print"></th>
+                        </tr> 
+                    </tfoot>-->
                 </table>
                                 
             </div>
-            <div class="pull-right">
+<!--            <div class="pull-right">
                     <?php echo $this->pagination->create_links(); ?>                    
-                </div>
+                </div>-->
         </div>
         <?php
             if($a =="1"){
@@ -227,3 +260,36 @@
             ?>
     </div>
 </div>
+
+<script>
+    $(document).ready(function() {
+    $('#mitabla').DataTable( {
+        "pagingType": "full_numbers",
+         "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "todos"]]
+    } );
+} );
+    
+    
+//    $(document).ready( function () {
+//    $('#mitabla').DataTable({
+//      "searching": false
+////      "paging": true,
+////      "lengthChange": false,
+////      "searching": false,
+////      "ordering": true,
+////      "info": true,
+////      "autoWidth": false
+//    });
+//} );
+//  $(function () {
+//    $("#mitabla").DataTable();
+//    $('#example2').DataTable({
+//      "paging": true,
+//      "lengthChange": false,
+//      "searching": false,
+//      "ordering": true,
+//      "info": true,
+//      "autoWidth": false
+//    });
+//  });
+</script>

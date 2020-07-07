@@ -128,12 +128,18 @@ class Promocion extends CI_Controller{
 
                 if($this->form_validation->run())     
                 {   
+                    
+                    if($this->input->post('promocion_total_final')>0)
+                        $preciototal = $this->input->post('promocion_total_final');
+                    else
+                        $preciototal = $this->input->post('promocion_preciototal');
+                    
                     $params = array(
                         'estado_id' => $this->input->post('estado_id'),
                         'producto_id' => $this->input->post('producto_id'),
                         'promocion_titulo' => $this->input->post('promocion_titulo'),
                         'promocion_cantidad' => $this->input->post('promocion_cantidad'),
-                        'promocion_preciototal' => $this->input->post('promocion_preciototal'),
+                        'promocion_preciototal' => $preciototal,
                         'promocion_fecha' => $this->input->post('promocion_fecha'),
                         'promocion_descripcion' => $this->input->post('promocion_descripcion'),
                     );
@@ -174,6 +180,27 @@ class Promocion extends CI_Controller{
             }
             else
                 show_error('The promocion you are trying to delete does not exist.');
+        }
+    }
+
+    /*
+     * registrar producto al detalle
+     */
+    function registrar_detalle()
+    {
+        if($this->acceso(155)){
+            $cantidad = $this->input->post("cantidad");
+            $producto_id = $this->input->post("producto_id");
+            $precio = $this->input->post("precio");
+            $promocion_id = $this->input->post("promocion_id");
+            
+            $sql = "insert into detalle_promocion(detallepromo_cantidad,detallepromo_precio,producto_id,promocion_id) values ".
+                   "(".$cantidad.",".$precio.",".$producto_id.",".$promocion_id.")";
+                    
+            $this->Promocion_model->ejecutar($sql);
+            
+            echo json_encode(true);
+            
         }
     }
     
