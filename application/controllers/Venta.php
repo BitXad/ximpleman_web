@@ -1804,6 +1804,35 @@ function buscarcategorias()
         //**************** fin contenido ***************
               
 }
+    
+/*
+* buscar productos por categoria de productos
+*/
+function buscarsubcategorias()
+{
+        //**************** inicio contenido ***************   
+   
+        $usuario_id = $this->session_data['usuario_id'];
+
+        if ($this->input->is_ajax_request()) {
+            
+            $parametro = $this->input->post('parametro');   
+            
+            if ($parametro!=""){
+            $datos = $this->Inventario_model->get_inventario_subcategoria($parametro);            
+            //$datos = $this->Inventario_model->get_inventario_bloque();
+            echo json_encode($datos);
+            }
+            else echo json_encode(null);
+        }
+        else
+        {                 
+            show_404();
+        }      
+        		
+        //**************** fin contenido ***************
+              
+}
 
 function buscarcotizar()
 {

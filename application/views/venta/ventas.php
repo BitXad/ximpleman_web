@@ -457,12 +457,12 @@ window.onkeydown = compruebaTecla;
 <!-------------------- CATEGORIAS------------------------------------->
 <div class="container" id="categoria" style="padding:0;">
     
-    <span class="badge btn-danger" style="width: 170px;">
+    <span class="badge btn-danger" style="width: 300px;">
     
     
     
-        <select class="bange btn-danger" style="border-width: 0; width:100px;"  onchange="tablaresultados(2)" id="categoria_prod">
-                <option value="0" >Todas las Categorias</option>
+        <select class="bange btn-danger" style="border-width: 0; width:110px;"  onchange="tablaresultados(2)" id="categoria_prod">
+                <option value="0" >- CATEGORIAS -</option>
         <?php 
             foreach($categoria_producto as $categ){ 
                 $selected = ($categ['categoria_id'] == $parametro[0]['parametro_mostrarcategoria']) ? ' selected="selected"' : "";
@@ -472,7 +472,12 @@ window.onkeydown = compruebaTecla;
         <?php
             }
         ?>
-    </select>
+        </select>
+        
+        <select class="bange btn-danger" style="border-width: 0; width:110px;"  onchange="tablaresultados(3)" id="subcategoria_prod">
+                <option value="0" >- SUB CATEGORIAS -</option>
+        
+        </select>
         <span class="badge btn-facebook"><input style="border-width: 0;" id="encontrados" type="text"  size="3" value="0" readonly="true"> </span>
     </span>
        
