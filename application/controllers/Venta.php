@@ -1608,7 +1608,7 @@ function edit($venta_id)
                     ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
                     ", detalleven_descuento = ".$descuento.
                     ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
-                    "  where detalleven_id = ".$detalleven_id;
+                    "  where detalleven_id = ".$detalleven_id." and detalleven_cantidad > 1";
             
         $this->Venta_model->ejecutar($sql);
         return true;

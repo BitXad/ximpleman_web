@@ -875,8 +875,10 @@ function reducir(cantidad,detalleven_id)
 
         var base_url = document.getElementById('base_url').value;
         var controlador = base_url+"venta/reducir/";
-
-           $.ajax({url: controlador,
+        
+        if (Number(cantidad)>0){
+            
+            $.ajax({url: controlador,
                 type:"POST",
                 data:{cantidad:cantidad,detalleven_id:detalleven_id},
                 success:function(respuesta){
@@ -884,7 +886,8 @@ function reducir(cantidad,detalleven_id)
                     tabladetalle();                
                 }
 
-        });     
+            });     
+        }
  
     
 }
@@ -1078,27 +1081,31 @@ function cambiarcantidadjs(e,producto)
         var descuento = 0;
         var cantidad_total = parseFloat(cantidad_en_detalle_otros(producto.producto_id)) + parseFloat(cantidad); 
 
-        if (parseFloat(cantidad_total) <= parseFloat(existencia)){
+        if (Number(cantidad)>0){
+        
+            if (parseFloat(cantidad_total) <= parseFloat(existencia)){
 
-            sql = "update detalle_venta_aux set detalleven_cantidad =  "+cantidad+
-                    ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
-                    ", detalleven_descuento = "+descuento+
-                    ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
-                    "  where producto_id = "+producto_id+" and  detalleven_id = "+producto.detalleven_id ; //usuario_id = "+usuario_id;
-           // alert(sql);
-            
-            $.ajax({url: controlador,
-                type:"POST",
-                data:{sql:sql},
-                success:function(respuesta){
-                        //var r = JSON.parse(respuesta);                        
-                }
-            });      
+                sql = "update detalle_venta_aux set detalleven_cantidad =  "+cantidad+
+                        ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)"+
+                        ", detalleven_descuento = "+descuento+
+                        ", detalleven_total = (detalleven_precio - "+descuento+")*(detalleven_cantidad)"+
+                        "  where producto_id = "+producto_id+" and  detalleven_id = "+producto.detalleven_id ; //usuario_id = "+usuario_id;
+               // alert(sql);
 
+                $.ajax({url: controlador,
+                    type:"POST",
+                    data:{sql:sql},
+                    success:function(respuesta){
+                            //var r = JSON.parse(respuesta);                        
+                    }
+                });      
+
+            }
+            else { 
+
+                alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
         }
-        else { 
-            
-            alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+        
         
         tablaproductos();
     }
