@@ -121,7 +121,12 @@
     </div>
     <div style="float: right">
     <center>
-        <a href="<?php echo site_url('imagen_producto/catalogodet/'.$detalleserv_id); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
+        <?php
+        if($b == "s"){
+            $esunico = "/s";
+        }else{ $esunico = ""; }
+        ?>
+        <a href="<?php echo site_url('imagen_producto/catalogodet/'.$detalleserv_id.$esunico); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
     </center>
 </div>
 </div>

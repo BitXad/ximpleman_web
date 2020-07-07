@@ -68,6 +68,8 @@
                     </select>
     </div>
 </div>-->
+<?php foreach ($detalle as $key) { ?>
+ 
 <div class="row">
     <div class="col-md-12">
         <div class="box">
@@ -101,7 +103,8 @@
                         <?php  
                             $cont = 0;
                         foreach ($procesos as $p){ 
-                            
+                            if ($key['detalleorden_id']==$p['detalleorden_id']) {
+                                                        
                             if ($cont > 0){ ?>                        
                         <td  style="padding: 0;"><br><br><br><font face="Arial" size="3"><fa class="fa fa-arrow-right"></fa> </font></td>
                             <?php } $cont++;  ?>
@@ -131,7 +134,7 @@
                             </div>
                         </td>                                                   
 
-                        <?php } ?>   
+                        <?php } }  } ?>   
                         
                        
                         

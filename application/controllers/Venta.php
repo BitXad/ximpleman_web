@@ -587,20 +587,26 @@ class Venta extends CI_Controller{
             $this->Venta_model->ejecutar($sql);
             $proceso_fechaproceso = "now()";
             $contador = 1;
-            $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.")";
+            $detalle = "SELECT detalleorden_id from detalle_orden where orden_id=".$orden_id." ";
+            $detalle_orden = $this->db->query($detalle)->result_array();
+            foreach ($detalle_orden as $det) {
+            
+            $prisql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,proceso_fechaproceso,proceso_fechaterminado,detalleorden_id) value(".$orden_id.",17,26,0,".$proceso_fechaproceso.",".$proceso_fechaproceso.",".$det['detalleorden_id'].")";
             $primid = $this->Venta_model->ejecutar($prisql); 
 
             for ($contador = 18; $contador<=23; $contador++){
                  
-                //$orden_id = 
+                
                 $estado = $contador;
                 $estado_id = 24;
                 
-                $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id) value(".
-                        $orden_id.",".$estado.",".$estado_id.",0)";
+                $sql = "insert into proceso_orden(orden_id,estado,estado_id,usuario_id,detalleorden_id) value(".
+                        $orden_id.",".$estado.",".$estado_id.",0,".$det['detalleorden_id'].")";
                 $id = $this->Venta_model->ejecutar($sql);              
                 
-            }            
+            }  
+
+            }          
         }
 
         //**************** fin contenido ***************

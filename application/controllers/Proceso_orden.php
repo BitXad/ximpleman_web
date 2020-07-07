@@ -141,7 +141,7 @@ class Proceso_orden extends CI_Controller{
             SET estado_id=25, proceso_fechaproceso=NOW()
 
             WHERE 
-                orden_id=".$orden." and estado=".$estado." ";
+                detalleorden_id=".$orden." and estado=".$estado." ";
                   $datos=$this->db->query($sql);
             
                         echo json_encode($datos);

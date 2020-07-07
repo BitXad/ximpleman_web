@@ -109,7 +109,10 @@ function mostrarAlert(){
             <div class="box-header with-border">
               	<h3 class="box-title">Modificar Producto <b><?php echo $detalle_serv['detalleserv_codigo']; ?></b></h3>
             </div>
-			<?php echo form_open('detalle_serv/modificareldetalle/'.$servicio['servicio_id'].'/'.$detalle_serv['detalleserv_id']); ?>
+            <?php
+            if($b == "s"){ $res_unico = "/s"; }else{ $res_unico = ""; }
+            ?>
+			<?php echo form_open('detalle_serv/modificareldetalle/'.$servicio['servicio_id'].'/'.$detalle_serv['detalleserv_id'].$res_unico); ?>
 			<div class="box-body">
 				<div class="row clearfix">
                                     <div class="col-md-2">
@@ -310,8 +313,13 @@ function mostrarAlert(){
             	<button type="submit" class="btn btn-success">
 			<i class="fa fa-check"></i> Guardar
 		</button>
-                <a href="<?php echo site_url('servicio'); ?>" class="btn btn-danger">
-                                <i class="fa fa-times"></i> Cancelar</a>
+                <?php
+                if($b == "s"){
+                    $esunico = "/index/".$servicio['servicio_id']."/s";
+                }else{ $esunico = ""; }
+                ?>
+                <a href="<?php echo site_url('servicio'.$esunico); ?>" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar</a>
 	        </div>				
 			<?php echo form_close(); ?>
 		</div>

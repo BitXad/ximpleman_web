@@ -57,6 +57,12 @@
 						<th>#</th>
 						<th>OT</th>
 						<th>Cliente</th>
+                        <th>Producto</th>
+                        <th>Tipo</th>
+                        <th>Cant.</th>
+                        <th>Ancho M2</th>
+                        <th>Alto M2</th>
+                        <th>Total M2</th>
                         <th>Fecha Inicio</th>
 						<th>Fecha Terminado</th>
             

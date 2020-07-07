@@ -62,8 +62,14 @@ Class Seguimiento extends CI_Controller
         
             
             $data['estados'] = $this->Estado_model->get_estado_tipo(7);
-            $data['procesos'] = $this->Proceso_orden_model->get_seguimiento($orden_id,$venta_id);
+            $detal = $this->Proceso_orden_model->get_detalle($orden_id);
+            
+            $data['procesos'] = $this->Proceso_orden_model->get_seguimiento($venta_id);
+            
+            
+            $data['detalle'] = $this->Proceso_orden_model->get_detalle($orden_id);
             $data['orden_id'] = $orden_id;
+
             $data['_view'] = 'proceso_orden/seguimiento';
             
             $this->load->view('layouts/clientmain',$data);

@@ -50,11 +50,15 @@ class Proceso_orden_model extends CI_Model
     {
         $proceso_orden = $this->db->query("
             SELECT
-                p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso'
+                p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso', d.*, pd.producto_nombre, tup.tipoorden_nombre
 
             FROM
-                proceso_orden p
-            LEFT JOIN orden_trabajo o on p.orden_id=o.orden_id
+                detalle_orden d
+
+            LEFT JOIN tipo_orden tup on d.tipoorden_id=tup.tipoorden_id
+            LEFT JOIN proceso_orden p on p.detalleorden_id=d.detalleorden_id
+            LEFT JOIN producto pd on d.producto_id=pd.producto_id
+            LEFT JOIN orden_trabajo o on o.orden_id=d.orden_id
             LEFT JOIN cliente c on o.cliente_id=c.cliente_id
             LEFT JOIN estado e on p.estado=e.estado_id
             LEFT JOIN estado i on p.estado_id=i.estado_id
@@ -69,11 +73,15 @@ class Proceso_orden_model extends CI_Model
     {
         $proceso_orden = $this->db->query("
             SELECT
-                p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso'
+                p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso', d.*, pd.producto_nombre, tup.tipoorden_nombre
 
             FROM
-                proceso_orden p
-            LEFT JOIN orden_trabajo o on p.orden_id=o.orden_id
+                
+                detalle_orden d
+            LEFT JOIN tipo_orden tup on d.tipoorden_id=tup.tipoorden_id    
+            LEFT JOIN proceso_orden p on p.detalleorden_id=d.detalleorden_id
+            LEFT JOIN producto pd on d.producto_id=pd.producto_id
+            LEFT JOIN orden_trabajo o on d.orden_id=o.orden_id
             LEFT JOIN cliente c on o.cliente_id=c.cliente_id
             LEFT JOIN estado e on p.estado=e.estado_id
             LEFT JOIN estado i on p.estado_id=i.estado_id
@@ -90,14 +98,18 @@ class Proceso_orden_model extends CI_Model
         $proceso_orden = $this->db->query("
             SELECT
     p.*, o.orden_numero, o.cliente_id, c.cliente_nombre, e.estado_descripcion as 'estado_orden', i.estado_descripcion as 'estado_proceso',
-    pro.proceso_fechaproceso as 'inicio', pro.proceso_fechaterminado as 'fin'
+    pro.proceso_fechaproceso as 'inicio', pro.proceso_fechaterminado as 'fin', d.*, pd.producto_nombre, tup.tipoorden_nombre
 FROM
-    proceso_orden p
-LEFT JOIN orden_trabajo o on p.orden_id=o.orden_id
+    detalle_orden d
+
+LEFT JOIN tipo_orden tup on d.tipoorden_id=tup.tipoorden_id    
+LEFT JOIN proceso_orden p on p.detalleorden_id=d.detalleorden_id
+LEFT JOIN producto pd on d.producto_id=pd.producto_id
+LEFT JOIN orden_trabajo o on d.orden_id=o.orden_id
 LEFT JOIN cliente c on o.cliente_id=c.cliente_id
 LEFT JOIN estado e on p.estado=e.estado_id
 LEFT JOIN estado i on p.estado_id=i.estado_id
-LEFT JOIN proceso_orden pro on p.orden_id=pro.orden_id
+LEFT JOIN proceso_orden pro on p.detalleorden_id=pro.detalleorden_id
 WHERE 
  pro.estado=".$estadoante." and pro.proceso_fechaterminado is not null and pro.estado_id>1
      and p.estado=".$estadoact." and p.proceso_fechaproceso is null 
@@ -178,13 +190,32 @@ GROUP BY p.proceso_id
     /*
      * Seguimiento de procesos
      */
-    function get_seguimiento($orden_id,$venta_id)
+
+    function get_detalle($orden_id)
+    {
+        
+        $sql = "SELECT 
+                d.*
+
+
+                FROM
+                
+                detalle_orden d
+              WHERE
+                
+                d.orden_id = ".$orden_id." ";
+                
+ 
+        $seguimiento = $this->db->query($sql)->result_array();
+
+        return $seguimiento;
+    }
+    function get_seguimiento($venta_id)
     {
         
         $sql = "SELECT 
                 v.venta_fecha,
                 v.venta_id,
-                o.orden_numero,
                 p.*,
                 c.cliente_nombre,
                 c.cliente_ci,
@@ -194,15 +225,14 @@ GROUP BY p.proceso_id
 
                 FROM
                 venta v,
-                orden_trabajo o,
+                detalle_orden o,
                 proceso_orden p,
                 cliente c,
                 estado e
               WHERE
                 v.venta_id = ".$venta_id." and
-                o.orden_id = ".$orden_id." and
                 v.orden_id = o.orden_id and
-                o.orden_id = p.orden_id and
+                o.detalleorden_id = p.detalleorden_id and
                 p.estado_id = e.estado_id and
                 v.cliente_id = c.cliente_id";
  

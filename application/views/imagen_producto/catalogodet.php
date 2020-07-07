@@ -34,6 +34,15 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
+<?php
+if($b == "s"){
+    $esunico = "/s";
+    $esunicovolver = "/index/".$servicio_id."/s";
+}else{
+    $esunico = "";
+    $esunicovolver = "";
+}
+?>
 <div class="box-header">
     <div class="col-md-12">
         <div class="col-md-6">
@@ -44,7 +53,7 @@
         <br>
         <div class="col-md-6 box-tools no-print text-center">
             <a class="btn btn-success btn-foursquarexs" data-toggle="modal" data-target="#modalgaleria"><font size="5"><span class="fa fa-image "></span></font><br><small> Añadir Img..</small></a>
-            <a href="<?php echo site_url('imagen_producto/galeriadetalle/'.$detalleserv_id); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
+            <a href="<?php echo site_url('imagen_producto/galeriadetalle/'.$detalleserv_id.$esunico); ?>" class="btn btn-warning btn-foursquarexs" ><font size="5"><span class="fa fa-image"></span></font><br><small>Ver Slider..</small></a>
         </div>
     </div>
 </div>
@@ -137,7 +146,7 @@
                                         <!------------------------------------------------------------------->
                                         </div>
                                         <div class="modal-footer" style="text-align: center">
-                                            <a href="<?php echo site_url('imagen_producto/eliminar/'.$imagen['imagenprod_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                            <a href="<?php echo site_url('imagen_producto/eliminar/'.$imagen['imagenprod_id'].$esunico); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                 <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                       </div>
                                     </div>
@@ -176,7 +185,7 @@
     </div>
     <div style="float: right">
         <center>
-            <a href="<?php echo site_url('servicio'); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
+            <a href="<?php echo site_url('servicio'.$esunicovolver); ?>" class="btn btn-sq-lg btn-danger" style="width: 120px !important; height: 120px !important; " ><span class="fa fa-sign-out fa-4x"></span><br>Salir</a>
         </center>
     </div>
 </div>
@@ -195,7 +204,7 @@
         </div>
         <div class="modal-body">
             <?php //echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id,' class="dropzone" id="my-awesome-dropzone"'); ?>
-            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id); ?>
+            <?php echo form_open_multipart('imagen_producto/addimg_det/'.$detalleserv_id.$esunico); ?>
             
                 <div class="row clearfix">
                     <div class="col-md-6">

@@ -7,6 +7,8 @@
 <input type="hidden" name="parametro_segservicio" id="parametro_segservicio" value="<?php echo $all_parametro[0]['parametro_segservicio']; ?>" />
 <input type="hidden" name="parametro_serviciofact" id="parametro_serviciofact" value="<?php echo $all_parametro[0]['parametro_serviciofact']; ?>" />
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($all_usuario);  ?>' />
+<input type="hidden" name="a" id="a" value='<?php echo $a; ?>' />
+<input type="hidden" name="b" id="b" value='<?php echo $b; ?>' />
 
 <script type="text/javascript">
         $(document).ready(function () {
@@ -52,18 +54,21 @@
         <div class="box-header">
             <font size='4' face='Arial'><b>Servicios</b></font>
             <br><font size='2' face='Arial'>Registros Encontrados: <span id="regencontrados"></span></font>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <font size="2" face="Arial" title="Ir a reporte de servicios"><a class="btn btn-facebook btn-xs" href="<?php echo site_url('reportes/servicioreportes') ?>">Reporte de Servicios</a></font>
+            <?php if($b != "s") {?>
+            <font style="padding-left: 20px" size="2" face="Arial" title="Ir a reporte de servicios"><a class="btn btn-facebook btn-xs" href="<?php echo site_url('reportes/servicioreportes') ?>">Reporte de Servicios</a></font>
+            <?php }?>
         </div>
         <!--este es FIN del BREADCRUMB buscador-->
         <div class="col-md-8" style="padding-right: 0px">
+            <?php if($b == "s") { $lectura ="readonly"; }else{ $lectura = ""; } ?>
         <!--este es INICIO de input buscador-->
         <div class="input-group">
             <span class="input-group-addon">Buscar</span>
-            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)" autofocus autocomplete="off">
+            <input <?php echo $lectura; ?> id="filtrar" type="text" class="form-control" placeholder="Ingrese cliente, código, estado serv.." onkeypress="validar2(event,3)" autofocus autocomplete="off">
             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="fechadeservicio('', 1)"><span class="fa fa-search"></span></div>
         </div>
         </div>
+        <?php if($b != "s") {?>
         <div class="col-md-4">
             <div  class="box-tools" >
                 <select  class="btn btn-primary btn-sm form-control" name="" select_servicio id="select_servicio" onchange="buscar_servicioporfechas()">
@@ -81,7 +86,9 @@
                 </select>
             </div>
         </div>
+        <?php } ?>
     </div>
+    <?php if($b != "s") {?>
     <!---------------- BOTONES --------->
     <div class="col-md-6 no-print text-center">
         <!--<div class="box-tools text-center" style="display: flex;">-->
@@ -110,6 +117,7 @@
         <!--</div>-->
     </div>
     <!---------------- FIN BOTONES --------->
+    <?php } ?>
 </div>
 <!-- *******************************INICIO Buscador por fechas************************************ -->
 <div class="no-print">
@@ -263,7 +271,7 @@
     </div>
 </div>
 <?php
-if(isset($a) && $a == 1){ ?>
+if(isset($a) && $a == "n"){ ?>
     <script type="text/javascript">
     alert('No Existe ese servicio');
     </script> 

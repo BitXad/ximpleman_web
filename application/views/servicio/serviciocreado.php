@@ -1,7 +1,11 @@
 <script src="<?php echo base_url('resources/js/servicio_creado.js'); ?>" type="text/javascript"></script>
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="concliente" id="concliente" value="<?php echo $servicio['cliente_id']; ?>" />
+<input type="hidden" value="<?php echo $servicio['servicio_id']; ?>" id="esteservicio_id">
+<input type="hidden" value="<?php echo $parametro['parametro_diagnostico']; ?>" id="parametro_diagnostico">
+<input type="hidden" value="<?php echo $parametro['parametro_solucion']; ?>" id="parametro_solucion">
 <input type="hidden" name="tienedetalle" id="tienedetalle" value="no" />
+<input type="hidden" name="b" id="b" value="<?php echo $b; ?>" />
 <script>
     $(document).ready(function() {
 
@@ -178,9 +182,6 @@ $(document).ready(function(){
 </script>
 
 <div class="box-header with-border">
-    <input type="hidden" value="<?php echo $servicio['servicio_id']; ?>" id="esteservicio_id">
-    <input type="hidden" value="<?php echo $parametro['parametro_diagnostico']; ?>" id="parametro_diagnostico">
-    <input type="hidden" value="<?php echo $parametro['parametro_solucion']; ?>" id="parametro_solucion">
     <h3 class="box-title"><b>Detalle del Servicio N°: <?php echo $servicio['servicio_id'] ?></b></h3>
     <div class="container">
         <div class="panel panel-primary col-md-5">

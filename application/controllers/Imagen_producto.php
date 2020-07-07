@@ -306,10 +306,11 @@ class Imagen_producto extends CI_Controller{
         }
     }
     /* ***** Funcion que muestra las imagenes de DETALLES DE SERVICIO ***** */
-    function catalogodet($detalleserv_id)
+    function catalogodet($detalleserv_id, $b = null)
     {
         if($this->acceso(69)){
             $data['page_title'] = "Imagenen Producto";
+            $data['b'] = $b;
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Detalle_serv_model');
             $detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
@@ -323,13 +324,16 @@ class Imagen_producto extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
-    function addimg_det($detalleserv_id)
+    function addimg_det($detalleserv_id, $b = null)
     {
         if($this->acceso(69)){
             //$this->load->library('form_validation');
             $this->load->model('Parametro_model');
             $parametro = $this->Parametro_model->get_parametro(1);
-            
+            $data['b'] = $b;
+            if($b == "s"){
+                $esunico = "/s";
+            }else{ $esunico = ""; }
             $tipousuario_id = $this->session_data['tipousuario_id'];
             /* *********************INICIO imagen***************************** */
             $foto="";
@@ -417,16 +421,19 @@ class Imagen_producto extends CI_Controller{
             
             $imagenprod_id = $this->Imagen_producto_model->add_imagen_producto($params);
             //sleep(1);
-            redirect('imagen_producto/catalogodet/'.$detalleserv_id);
+            redirect('imagen_producto/catalogodet/'.$detalleserv_id.$esunico);
             
         }
     }
     
-    function eliminar($imagenprod_id)
+    function eliminar($imagenprod_id, $b = null)
     {
         if($this->acceso(69)){
         $imagen_producto = $this->Imagen_producto_model->get_imagen_producto($imagenprod_id);
-
+        $data['b'] = $b;
+        if($b == "s"){
+            $esunico = "/s";
+        }else{ $esunico = ""; }
         // check if the imagen_producto exists before trying to delete it
         if(isset($imagen_producto['imagenprod_id']))
         {
@@ -444,16 +451,17 @@ class Imagen_producto extends CI_Controller{
                 }
             }
             $this->Imagen_producto_model->delete_imagen($imagenprod_id);
-            redirect('imagen_producto/catalogodet/'.$imagen_producto['detalleserv_id']);
+            redirect('imagen_producto/catalogodet/'.$imagen_producto['detalleserv_id'].$esunico);
         }
         else
             show_error('The imagen_producto you are trying to delete does not exist.');
         }
     }
     
-    function galeriadetalle($detalleserv_id)
+    function galeriadetalle($detalleserv_id, $b = null)
     {
         if($this->acceso(69)){
+            $data['b'] = $b;
         $this->load->model('Detalle_serv_model');
 	$detalle_serv = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
         $data['detalleserv_descripcion'] = $detalle_serv['detalleserv_descripcion'];
