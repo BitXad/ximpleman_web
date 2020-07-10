@@ -451,10 +451,18 @@
                         if($rolusuario[118-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Categoria_producto');?>"><i class="fa fa-cubes"></i>Producto</a>
+                            <a href="<?php echo site_url('Categoria_producto');?>"><i class="fa fa-cube"></i>Producto</a>
                         </li>
                         <?php
                         }
+                        if($rolusuario[118-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('subcategoria_producto');?>"><i class="fa fa-cubes"></i>Sub Categoria Prod.</a>
+                        </li>
+                        <?php
+                        }
+                        
                         if($rolusuario[114-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>

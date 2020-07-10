@@ -136,11 +136,19 @@ function buscar_por_categoria(categoria_id)
             data:{categoria_id:categoria_id},
             success:function(respuesta){
                 
+                    var res = JSON.parse(respuesta);
                     
-                    mostrar_tabla_resultados(respuesta,1);
-                    
+                    if (res.length>0){
                         
+                        mostrar_tabla_resultados(respuesta,1);                                            
+                    }
+                    else{                        
+                        html = "";
+                        $("#tablaresultados").html(html);
+                    }
+                    
                     document.getElementById('loader').style.display = 'none';
+                
                 
             },
             error:function(respuesta){
@@ -203,8 +211,18 @@ function buscar_por_subcategoria(subcategoria_id)
             type:"POST",
             data:{subcategoria_id:subcategoria_id},
             success:function(respuesta){
+                    
+                    var res = JSON.parse(respuesta);
+                    
+                    if (res.length>0){
+                        mostrar_tabla_resultados(respuesta,1);                                            
+                    }
+                    else{                        
+                        html = "";
+                        $("#tablaresultados").html(html);
+                    }                                                                        
                                    
-                    mostrar_tabla_resultados(respuesta,1);
+//                    mostrar_tabla_resultados(respuesta,1);
                     document.getElementById('loader').style.display = 'none';
                 
             },
