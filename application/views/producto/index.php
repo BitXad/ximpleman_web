@@ -11,7 +11,7 @@
 <script src="<?php echo base_url('resources/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
 <!-- Bootstrap 3.3.6 -->
 
-    <?php echo base_url('resources/plugins/datatables/dataTables.bootstrap.css'); ?> <br>
+   
         
 <script type="text/javascript">
         $(document).ready(function () {
@@ -253,11 +253,11 @@ echo '<script type="text/javascript">
 <!----------------------------------------->
 <!----------------------------------------->
 
-<div class="box">
+<!--<div class="box">
             <div class="box-header">
               <h3 class="box-title">Data Table With Full Features</h3>
             </div>
-            <!-- /.box-header -->
+             /.box-header 
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -689,8 +689,8 @@ echo '<script type="text/javascript">
                 </tfoot>
               </table>
             </div>
-            <!-- /.box-body -->
-          </div>
+             /.box-body 
+          </div>-->
 
 
 <script>

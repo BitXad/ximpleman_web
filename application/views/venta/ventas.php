@@ -456,7 +456,8 @@ window.onkeydown = compruebaTecla;
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
 <div class="container" id="categoria" style="padding:0;">
-    
+    <center>
+        
     <span class="badge btn-danger" style="width: 300px;">
     
     
@@ -527,7 +528,7 @@ window.onkeydown = compruebaTecla;
                 </span>
 
                 
-                
+    </center>          
 </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
