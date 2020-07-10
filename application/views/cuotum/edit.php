@@ -72,13 +72,13 @@ input[type=number] { -moz-appearance:textfield; }
 					<div class="col-md-2">
 						<label for="cuota_capital" class="control-label">Capital</label>
 						<div class="form-group">
-							<input type="number" name="cuota_capital" value="<?php echo ($this->input->post('cuota_capital') ? $this->input->post('cuota_capital') : $cuotum['cuota_capital']); ?>" class="form-control" id="cuota_capital" required="number" />
+                                                    <input type="number" step="any" name="cuota_capital" value="<?php echo ($this->input->post('cuota_capital') ? $this->input->post('cuota_capital') : $cuotum['cuota_capital']); ?>" class="form-control" id="cuota_capital" required="number" />
 						</div>
 					</div>
 					<div class="col-md-2">
 						<label for="cuota_interes" class="control-label">Interes</label>
 						<div class="form-group">
-							<input type="number" name="cuota_interes" value="<?php echo ($this->input->post('cuota_interes') ? $this->input->post('cuota_interes') : $cuotum['cuota_interes']); ?>" class="form-control" id="cuota_interes" readonly/>
+							<input type="number" step="any" name="cuota_interes" value="<?php echo ($this->input->post('cuota_interes') ? $this->input->post('cuota_interes') : $cuotum['cuota_interes']); ?>" class="form-control" id="cuota_interes" readonly/>
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -90,25 +90,25 @@ input[type=number] { -moz-appearance:textfield; }
 					<div class="col-md-2">
 						<label for="cuota_multa" class="control-label">Multa</label>
 						<div class="form-group">
-							<input type="number" name="cuota_multa" value="<?php echo ($this->input->post('cuota_multa') ? $this->input->post('cuota_multa') : $cuotum['cuota_multa']); ?>" class="form-control" id="cuota_multa" />
+							<input type="number" step="any" name="cuota_multa" value="<?php echo ($this->input->post('cuota_multa') ? $this->input->post('cuota_multa') : $cuotum['cuota_multa']); ?>" class="form-control" id="cuota_multa" />
 						</div>
 					</div>
 					<div class="col-md-2">
 						<label for="cuota_subtotal" class="control-label">Subtotal</label>
 						<div class="form-group">
-							<input type="number" name="cuota_subtotal" value="<?php echo ($this->input->post('cuota_subtotal') ? $this->input->post('cuota_subtotal') : $cuotum['cuota_subtotal']); ?>" class="form-control" id="cuota_subtotal" />
+							<input type="number" step="any" name="cuota_subtotal" value="<?php echo ($this->input->post('cuota_subtotal') ? $this->input->post('cuota_subtotal') : $cuotum['cuota_subtotal']); ?>" class="form-control" id="cuota_subtotal" />
 						</div>
 					</div>
 					<div class="col-md-2">
 						<label for="cuota_descuento" class="control-label">Descuento</label>
 						<div class="form-group">
-							<input type="number" name="cuota_descuento" value="<?php echo ($this->input->post('cuota_descuento') ? $this->input->post('cuota_descuento') : $cuotum['cuota_descuento']); ?>" class="form-control" id="cuota_descuento" />
+							<input type="number" step="any" name="cuota_descuento" value="<?php echo ($this->input->post('cuota_descuento') ? $this->input->post('cuota_descuento') : $cuotum['cuota_descuento']); ?>" class="form-control" id="cuota_descuento" />
 						</div>
 					</div>
 					<div class="col-md-2">
 						<label for="cuota_descuento" class="control-label">TOTAL</label>
 						<div class="form-group">
-							<input type="number" name="cuota_total" value="<?php echo ($this->input->post('cuota_total') ? $this->input->post('cuota_total') : $cuotum['cuota_total']); ?>" class="form-control" id="cuota_total" />
+							<input type="number" step="any" name="cuota_total" value="<?php echo ($this->input->post('cuota_total') ? $this->input->post('cuota_total') : $cuotum['cuota_total']); ?>" class="form-control" id="cuota_total" />
 						</div>
 					</div>
 					<div class="col-md-2">
@@ -120,7 +120,7 @@ input[type=number] { -moz-appearance:textfield; }
 					<div class="col-md-2">
 						<label for="cuota_cancelado" class="control-label">Cancelado</label>
 						<div class="form-group">
-							<input type="number" name="cuota_cancelado" value="<?php echo ($this->input->post('cuota_cancelado') ? $this->input->post('cuota_cancelado') : $cuotum['cuota_cancelado']); ?>" class="form-control" id="cuota_cancelado" />
+							<input type="number" step="any" name="cuota_cancelado" value="<?php echo ($this->input->post('cuota_cancelado') ? $this->input->post('cuota_cancelado') : $cuotum['cuota_cancelado']); ?>" class="form-control" id="cuota_cancelado" />
 						</div>
 					</div>
 					<!--<div class="col-md-2">
@@ -144,7 +144,7 @@ input[type=number] { -moz-appearance:textfield; }
 					<div class="col-md-2">
 						<label for="cuota_saldo" class="control-label">Saldo</label>
 						<div class="form-group">
-							<input type="number" name="cuota_saldo" value="<?php echo ($this->input->post('cuota_saldo') ? $this->input->post('cuota_saldo') : $cuotum['cuota_saldo']); ?>" class="form-control" id="cuota_saldo" readonly/>
+							<input type="number" step="any" name="cuota_saldo" value="<?php echo ($this->input->post('cuota_saldo') ? $this->input->post('cuota_saldo') : $cuotum['cuota_saldo']); ?>" class="form-control" id="cuota_saldo" readonly/>
 						</div>
 					</div>
 					<div class="col-md-6">
