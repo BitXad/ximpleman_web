@@ -456,7 +456,7 @@ window.onkeydown = compruebaTecla;
         </div>
 <!-------------------- CATEGORIAS------------------------------------->
 <div class="container" id="categoria" style="padding:0;">
-    <center>
+<!--    <center>-->
         
     <span class="badge btn-danger" style="width: 300px;">
     
@@ -528,7 +528,7 @@ window.onkeydown = compruebaTecla;
                 </span>
 
                 
-    </center>          
+    <!--</center>-->          
 </div>
 <!-------------------- FIN CATEGORIAS--------------------------------->
         
@@ -673,15 +673,17 @@ window.onkeydown = compruebaTecla;
             </a>
             <?php } ?>
 
+            <?php if($rolusuario[30-1]['rolusuario_asignado'] == 1){ ?>
             <a href="#" data-toggle="modal" data-target="#modalinventario" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-truck fa-4x"></i><br><br>
                Asignar <br>
             </a>
+            <?php } ?>    
 
             <?php if($rolusuario[18-1]['rolusuario_asignado'] == 1){ ?>
             <a  href="<?php echo site_url('venta'); ?>" class="btn btn-sq-lg btn-danger" style="width: <?php echo $ancho_boton; ?>px !important; height: <?php echo $alto_boton; ?>px !important;">
                 <i class="fa fa-sign-out fa-4x"></i><br><br>
-               Salir <br>
+               Ventas <br>
             </a>    
             <?php } ?>    
             </center>
@@ -1213,7 +1215,7 @@ window.onkeydown = compruebaTecla;
                                         <!--------------------- inicio loader ------------------------->
                                         <div class="col-md-6" id='loaderinventario'  style='display:none;'>
                                             <center>
-                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >
                                             </center>
                                         </div> 
                                         <!--------------------- fin inicio loader ------------------------->
