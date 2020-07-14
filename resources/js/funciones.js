@@ -2329,8 +2329,8 @@ function registrar_factura(venta_id){
             success:function(respuesta){
                 resultado = JSON.parse(respuesta);
                 var factura_id = resultado;
-                alert(factura_id);
-                alert(base_url+"factura/imprimir_factura_id/"+factura_id+"/1");
+                //alert(factura_id);
+                //alert(base_url+"factura/imprimir_factura_id/"+factura_id+"/1");
                 window.open(base_url+"factura/imprimir_factura_id/"+factura_id+"/1", '_blank');
                 ventas_por_fecha(); //funcion para volver a mostrar la lista de ventas 
                                     /// puede ser remplazada por otra funcion que se aplique a su modulo o eliminada

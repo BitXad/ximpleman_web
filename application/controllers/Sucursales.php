@@ -4,7 +4,7 @@
  * www.crudigniter.com
  */
  
-class Inventario extends CI_Controller{
+class Sucursales extends CI_Controller{
     private $session_data = "";
     function __construct()
     {
@@ -12,6 +12,9 @@ class Inventario extends CI_Controller{
         $this->load->model('Inventario_model');
         $this->load->model('Empresa_model');
         $this->load->model('Producto_model');
+        $this->load->model('Sucursales_model');
+        $this->load->model('Parametro_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -33,40 +36,101 @@ class Inventario extends CI_Controller{
      */
     function index()
     {
-        
 
         if($this->acceso(24)){
+            
+            
         //**************** inicio contenido ***************
+        $producto_codigo = $this->input->post('producto_codigo');
+        $parametro = $this->Parametro_model->get_parametros();
+        
+        
+        if ($producto_codigo==0){
+            
             $data['rolusuario'] = $this->session_data['rol'];
-        $empresa_id = 1;
-        $data['page_title'] = "Inventario";
-        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-        $data['_view'] = 'inventario/index';
-        $this->load->view('layouts/main',$data);
-		
-        //**************** fin contenido ***************
-			}
-			
-    }
+            $empresa_id = 1;
+            $data['page_title'] = "Inventario";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            $data['_view'] = 'sucursales/index';
+            $this->load->view('layouts/main',$data);
+        }
+        else{
+            
+            $data['rolusuario'] = $this->session_data['rol'];
+            $empresa_id = 1;
+            
+            $data['page_title'] = "centralizador";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $sql = "select *,empresa_nombre,empresa_direccion from inventario, empresa  where producto_codigobarra = '".$producto_codigo."'";
+ 
+            if($parametro[0]["parametro_sucursales"]<=1){
+                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
+                $suc1 = null;
+                $suc2 = null;
+                $suc3 = null;
+                $suc4 = null;
+                $suc5 = null;
+            }
+            
 
-    /*
-     * Listing of producto
-     */
-    function realizable()
-    {
-        
+            if($parametro[0]["parametro_sucursales"]==2){
+                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
+                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
+                $suc2 = null;
+                $suc3 = null;
+                $suc4 = null;
+                $suc5 = null;
+            }
+            
 
-        if($this->acceso(24)){
-        //**************** inicio contenido ***************
-        $data['rolusuario'] = $this->session_data['rol'];
-        $empresa_id = 1;
-        $data['page_title'] = "Inventario";
-        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-        $data['_view'] = 'inventario/realizable';
-        $this->load->view('layouts/main',$data);
-		
+            if($parametro[0]["parametro_sucursales"]==3){
+                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
+                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
+                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
+                $suc3 = null;
+                $suc4 = null;
+                $suc5 = null;
+            }
+
+            if($parametro[0]["parametro_sucursales"]==4){
+                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
+                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
+                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
+                $suc3 = $this->Sucursales_model->consulta_sucursal3($sql);
+                $suc4 = null;
+                $suc5 = null;
+            }
+            
+
+            if($parametro[0]["parametro_sucursales"]==5){
+                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
+                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
+                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
+                $suc3 = $this->Sucursales_model->consulta_sucursal3($sql);
+                $suc4 = $this->Sucursales_model->consulta_sucursal4($sql);
+                $suc5 = null;
+            }
+
+            if($parametro[0]["parametro_sucursales"]==6){
+                $suc0 = $this->Sucursales_model->consulta_sucursal0($sql);    
+                $suc1 = $this->Sucursales_model->consulta_sucursal1($sql);
+                $suc2 = $this->Sucursales_model->consulta_sucursal2($sql);
+                $suc3 = $this->Sucursales_model->consulta_sucursal3($sql);
+                $suc4 = $this->Sucursales_model->consulta_sucursal4($sql);
+                $suc5 = $this->Sucursales_model->consulta_sucursal5($sql);
+            }
+            
+            $suc =  array($suc0,$suc1,$suc2,$suc3,$suc4,$suc5);
+            $data['inventario'] = $suc;
+            
+            $data['_view'] = 'sucursales/index';
+            $this->load->view('layouts/main',$data);
+            
+        }
+	
         //**************** fin contenido ***************
-			}
+        }
 			
     }
 
@@ -155,7 +219,6 @@ class Inventario extends CI_Controller{
         //**************** inicio contenido ***************
 		
             $parametro = $this->input->post("parametro");
-            
             if ($parametro=="" || $parametro==null)
                 $resultado = $this->Inventario_model->get_inventario();                
             else

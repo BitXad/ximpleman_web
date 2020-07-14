@@ -149,14 +149,9 @@
                             <a href="<?php echo site_url('compra');?>"><i class="fa fa-shopping-basket"></i> Compras</a>
                         </li>
                         <?php
-                        }
-                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i> Inventario</a>
-                        </li>
+                        } ?>
+                        
                         <?php
-                        }
                         if($rolusuario[30-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -513,8 +508,22 @@
                             <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
                         </li>
                         <?php
-                        }
+                        } ?>
                         
+                        
+                        <?php
+                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-cubes"></i> Inventario Valorado</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('inventario');?>"><i class="fa fa-money"></i> Inventario Realizable</a>
+                        </li>
+                        <?php
+                        } ?>
+                        
+                        <?php
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
