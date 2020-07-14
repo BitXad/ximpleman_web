@@ -91,7 +91,7 @@ private function acceso($id_rol){
                 );*/
 
                 $this->form_validation->set_rules('usuario_nombre', 'Usuario Nombre', 'required');
-                $this->form_validation->set_rules('usuario_email', 'Email', 'trim|required|valid_email|min_length[5]|max_length[250]|callback_hay_email2');//OJO
+                //$this->form_validation->set_rules('usuario_email', 'Email', 'trim|required|valid_email|min_length[5]|max_length[250]|callback_hay_email2');//OJO
                 $this->form_validation->set_message('hay_email2', 'El email ya se registro, escriba uno diferente');
                 $this->form_validation->set_rules('usuario_login', 'usuario_login', 'required|is_unique[usuario.usuario_login]',
                     array('is_unique' => 'Este login de usuario ya existe.'));
