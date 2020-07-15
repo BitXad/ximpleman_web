@@ -71,7 +71,22 @@
 									<input type="datetime" name="egreso_fecha" value="<?php echo ($this->input->post('egreso_fecha') ? $this->input->post('egreso_fecha') : $egreso['egreso_fecha']); ?>" class="form-control" id="egreso_fecha" required />
 								</div>
 							</div>
-							
+							<div class="col-md-4">
+                                                        <label for="usuario_id" class="control-label">Usuario</label>
+                                                            <div class="form-group">
+                                                                <select name="usuario_id" class="form-control" required >
+                                                                    <option value="">Selecciona un Usuario</option>
+                                                                    <?php 
+                                                                    foreach($all_usuario as $usuario)
+                                                                    {
+                                                                      $selected = ($usuario['usuario_id'] == $egreso['usuario_id']) ? ' selected="selected"' : "";
+
+                                                                      echo '<option value="'.$usuario['usuario_id'].'" '.$selected.'>'.$usuario['usuario_nombre'].'</option>';
+                                                                    } 
+                                                                    ?>
+                                                                </select>
+                                                            </div>
+                                                        </div>
 							<?php } ?>
 							
 							<div class="col-md-4">
