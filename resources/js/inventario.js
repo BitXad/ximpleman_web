@@ -37,33 +37,51 @@ function formato_fecha(string){
     return info;
 }
 
-function formato_numerico(numer){
-    var partdecimal = "";
-    var numero = "";
-    var num = numer.toString();
-    var signonegativo = "";
-    var resultado = "";
+function formato_numerico(numero){
     
-    /*quitamos el signo al numero, si es que lo tubiera*/
-    if(num[0]=="-"){
-        signonegativo="-";
-        numero = num.substring(1, num.length);
-    }else{
-        numero = num;
-    }
-    /*guardamos la parte decimal*/
-    if(num.indexOf(".")>=0){
-        partdecimal = num.substring(num.indexOf("."), num.length);
-        numero = numero.substring(0,num.indexOf(".")-1);
-    }else{
-        numero = num;
-    }
-    for (var j, i = numero.length - 1, j = 0; i >= 0; i--, j++){
-        resultado = numero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
-    }
- 
-    resultado = signonegativo+resultado+partdecimal;
-    return resultado;
+        
+    
+        nStr = Number(numero).toFixed(2);
+        nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+        
+	
+	return x1 + x2;
+    
+//    var partdecimal = "";
+//    var numero = "";
+//    var num = numer.toString();
+//    var signonegativo = "";
+//    var resultado = "";
+//    
+//    /*quitamos el signo al numero, si es que lo tubiera*/
+//    if(num[0]=="-"){
+//        signonegativo="-";
+//        numero = num.substring(1, num.length);
+//    }else{
+//        numero = num;
+//    }
+//    /*guardamos la parte decimal*/
+//    if(num.indexOf(".")>=0){
+//        partdecimal = num.substring(num.indexOf("."), num.length);
+//        numero = numero.substring(0,num.indexOf(".")-1);
+//    }else{
+//        numero = num;
+//    }
+//    for (var j, i = numero.length - 1, j = 0; i >= 0; i--, j++){
+//        resultado = numero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+//    }
+// 
+//    resultado = signonegativo+resultado+partdecimal;
+//    return resultado;
+
+    //  return  Intl.NumberFormat("en-IN").format(numero)
 }
 
 
@@ -179,7 +197,7 @@ function tabla_inventario(){
                 html += "	<th> </th>";
                 html += "	<th></th>";
                 html += "	<th></th>";
-                html += "	<th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "	<th>"+formato_numerico(total_final)+"</th>";
 
                 html += "</tr>    ";
                 html += "</table>";            
@@ -370,7 +388,7 @@ function tabla_inventario(){
 //                html += "	<th> </th>";
 //                html += "	<th></th>";
 //                html += "	<th></th>";
-                html += "	<th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "	<th>"+formato_numerico(total_final)+"</th>";
                 html += "	<th></th>";
                 html += "	<th></th>";
                 html += "	<th></th>";
@@ -494,7 +512,7 @@ function tabla_inventario_sucursal(){
 //                html += "	<th> </th>";
                 html += "	<th></th>";
                 html += "	<th></th>";
-                html += "	<th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "	<th>"+formato_numerico(total_final)+"</th>";
                 html += "	<th></th>";
 
                 html += "</tr>    ";
@@ -619,7 +637,7 @@ function tabla_inventario_existencia(){
                 html += "    <th> </th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
-                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "    <th>"+formato_numerico(total_final)+"</th>";
 
                 html += "</tr>    ";
                 html += "</table>";            
@@ -810,7 +828,7 @@ function tabla_inventario_existencia(){
 //                html += "    <th> </th>";
 //                html += "    <th></th>";
 //                html += "    <th></th>";
-                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "    <th>"+formato_numerico(total_final)+"</th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
@@ -935,7 +953,7 @@ function tabla_existencia_realizable(){
                 html += "    <th> </th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
-                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "    <th>"+formato_numerico(total_final)+"</th>";
 
                 html += "</tr>    ";
                 html += "</table>";            
@@ -1128,7 +1146,7 @@ function tabla_existencia_realizable(){
 //                html += "    <th> </th>";
 //                html += "    <th></th>";
 //                html += "    <th></th>";
-                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "    <th>"+formato_numerico(total_final)+"</th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
@@ -1254,7 +1272,7 @@ function tabla_inventario_realizable(){
                 html += "    <th> </th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
-                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "    <th>"+formato_numerico(total_final)+"</th>";
 
                 html += "</tr>    ";
                 html += "</table>";            
@@ -1447,7 +1465,7 @@ function tabla_inventario_realizable(){
 //                html += "    <th> </th>";
 //                html += "    <th></th>";
 //                html += "    <th></th>";
-                html += "    <th>"+total_final.toFixed(formato_numerico(2))+"</th>";
+                html += "    <th>"+formato_numerico(total_final)+"</th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
                 html += "    <th></th>";
@@ -1615,7 +1633,7 @@ function mostrar_duplicados()
                 html += "	<th> </th>";
                 html += "	<th></th>";
                 html += "	<th></th>";
-                html += "	<th>"+total_final.toFixed(2)+"</th>";
+                html += "	<th>"+formato_numerico(total_final)+"</th>";
                 html += "	<!--<th></th>-->";
                 html += "</tr>    ";
                 html += "</table>";            
