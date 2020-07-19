@@ -141,19 +141,22 @@ class Credito_model extends CI_Model
         $deuda = $this->db->query("
 
            SELECT
-                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, ve.orden_id, p.cliente_id, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id
+                c.*, ve.venta_id as ventita, ve.cliente_id, e.*, ve.orden_id, ve.venta_total,
+                p.cliente_id as clienteid, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , 
+                r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, 
+                f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id
 
             FROM
                 credito c
 
-LEFT JOIN venta ve on c.venta_id = ve.venta_id
-LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
-LEFT JOIN estado e on c.estado_id = e.estado_id
-LEFT JOIN servicio s on c.servicio_id = s.servicio_id
-LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
-LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
-LEFT JOIN usuario us on s.usuario_id = us.usuario_id 
-LEFT JOIN factura f on c.credito_id = f.credito_id
+            LEFT JOIN venta ve on c.venta_id = ve.venta_id
+            LEFT JOIN cliente p on ve.cliente_id = p.cliente_id
+            LEFT JOIN estado e on c.estado_id = e.estado_id
+            LEFT JOIN servicio s on c.servicio_id = s.servicio_id
+            LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
+            LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
+            LEFT JOIN usuario us on s.usuario_id = us.usuario_id 
+            LEFT JOIN factura f on c.credito_id = f.credito_id
 
 
 

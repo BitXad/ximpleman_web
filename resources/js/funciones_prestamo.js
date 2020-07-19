@@ -1,6 +1,7 @@
 $(document).on("ready",inicio);
 function inicio(){
     buscar_prestamos();
+    inventario_envases();
 }
 
 function formato_fecha(string){
@@ -176,4 +177,96 @@ function buscar_prestamos(kardex,producto_id){
            }
     }); 
     
+}
+function inventario_envases(){
+    
+    var base_url =  document.getElementById('base_url').value;
+    var controlador = base_url+"venta/buscar_inventarioenvases";
+//    var fecha_desde = document.getElementById('fecha_desde').value;
+//    var fecha_hasta = document.getElementById('fecha_hasta').value;
+//    var usuario_id = document.getElementById('select_usuario').value;
+//    var tipo_prestamo = document.getElementById('tipo_prestamo').value;
+    //alert(usuario_id);
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{},
+           async: false, 
+           success:function(respuesta){
+               
+               var prestamo = JSON.parse(respuesta); 
+               var html = "";
+               var cantidad_prestados = 0;
+               var cantidad_envases = 0;
+               var cantidad_saldos = 0;
+               var cantidad_inventario = 0;
+               var monto_inventario = 0;
+               
+               for(var i=0; i < prestamo.length; i++){
+                   
+                   html += "<tr>";
+                   html += "<td style='padding:0'>"+Number(i+1)+"</td>";
+                   html += "<td style='padding:0'>"+prestamo[i].producto+"</td>";
+                   html += "<td style='padding:0'><center>"+prestamo[i].unidad+"</center></td>";
+                   html += "<td style='padding:0'><center>"+prestamo[i].inventario+"</center></td>";
+                   html += "<td style='padding:0'><center>"+formato_numerico(prestamo[i].costo)+"</center></td>";
+                   html += "<td style='padding:0'><center>"+formato_numerico(prestamo[i].prestados)+"</center></td>";
+                   html += "<td style='padding:0'><center>"+formato_numerico(prestamo[i].existencia)+"</center></td>";
+                   html += "<td style='padding:0'><center>"+formato_numerico(prestamo[i].total)+"</center></td>";
+                   if (prestamo[i].prestados>0){
+                       html += "<td style='padding:0' class='no-print'><center><a href='"+base_url+"venta/envases_prestados/"+prestamo[i].producto_id+"' target='_BLANK' class='btn btn-warning btn-xs no-print' ><fa class='fa fa-list'></fa> Prestamos</a></center></td>";                       
+                   }
+                                  
+                   cantidad_inventario += Number(prestamo[i].inventario);
+                   cantidad_prestados += Number(prestamo[i].prestados);
+                   cantidad_envases += Number(prestamo[i].inventario);
+                   cantidad_saldos += Number(prestamo[i].existencia);
+                   monto_inventario += Number(prestamo[i].total);
+                   
+//                   html += "<td style='padding:0' class='no-print'>";
+////                   html += "<button class='btn btn-warning btn-xs'  onclick='buscar_prestamos(1,"+prestamo[i].producto_id+")' title='Muestra el historial de prestamos de envases'><fa class='fa fa-list'></fa> Historial</button>";
+////                   if(! Number(prestamo[i].detalleven_usuario_id)>0){                   
+////                       html += "<button class='btn btn-success btn-xs'  onclick='cargar_parametros("+JSON.stringify(prestamo[i])+")' title='Realizar devolución'><fa class='fa fa-money'></fa> Devolución</button>";
+////                    }
+//                    
+//                   html += "</td>";
+                   html += "</tr>";
+               }
+               
+               html+= "<tr>";
+               html+= "<th></th>";
+               html+= "<th></th>";
+               html+= "<th></th>";
+               html+= "<th>"+formato_numerico(cantidad_inventario)+"</th>";
+               html+= "<th></th>";
+               html+= "<th>"+formato_numerico(cantidad_prestados)+"</th>";
+               html+= "<th>"+formato_numerico(cantidad_saldos)+"</th>";
+               html+= "<th>"+formato_numerico(monto_inventario)+"</th>";
+               html+= "</tr>";
+               
+               $("#tabla_inventario").html(html);              
+                
+           },
+           error:function(respuesta){               
+             res = 0;
+           }
+    }); 
+    
+}
+
+function formato_numerico(numero){
+    
+        
+    
+        nStr = Number(numero).toFixed(2);
+        nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	
+	return x1 + x2;
 }

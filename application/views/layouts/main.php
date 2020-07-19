@@ -520,6 +520,9 @@
                         <li>
                             <a href="<?php echo site_url('inventario/realizable');?>"><i class="fa fa-money"></i> Inventario Realizable</a>
                         </li>
+                        <li>
+                            <a href="<?php echo site_url('venta/inventario_envases');?>"><i class="fa fa-glass"></i> Inventario de Envases</a>
+                        </li>
                         <?php
                         } ?>
                         

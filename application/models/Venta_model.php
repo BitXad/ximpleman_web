@@ -547,5 +547,56 @@ function get_busqueda($condicion)
         return $credito_id;
     }
     
+    function buscar_inventarioenvases()
+    {
+        
+        $sql = "select * from consinventarioenvase";
+        $inventario = $this->db->query($sql)->result_array();
+        
+        return $inventario;
+    }
+    
+    
+    function get_envasesprestados($producto_id)
+    {
+        
+        
+        $sql = "
+                SELECT 
+                  p.producto_id, 
+                  p.producto_nombre,
+                  p.producto_codigo,
+                  p.producto_nombreenvase,
+                  v.venta_id,
+                  v.venta_fecha,
+                  c.cliente_nombre,
+                  c.cliente_celular,
+                  d.detalleven_cantidadenvase - d.detalleven_devueltoenvase as prestados,
+                  d.detalleven_garantiaenvase,
+                  d.detalleven_cantidadenvase
+
+                FROM
+                  producto p,
+                  detalle_venta d,
+                  cliente c,
+                  venta v,
+                  usuario u
+                WHERE
+                  c.cliente_id = v.cliente_id AND 
+                  v.venta_id = d.venta_id AND 
+                  d.producto_id = p.producto_id AND 
+                  d.detalleven_prestamoenvase = 1 AND 
+                  d.usuario_id = u.usuario_id AND
+                  (d.detalleven_cantidadenvase - d.detalleven_devueltoenvase) > 0 AND
+                  p.producto_id = ".$producto_id."
+
+                ORDER BY
+                 V.venta_id";
+        
+        $inventario = $this->db->query($sql)->result_array();
+        
+        return $inventario;
+    }
+    
     
 }

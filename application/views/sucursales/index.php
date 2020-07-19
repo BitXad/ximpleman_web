@@ -192,7 +192,10 @@
                                         </b>
                                     </td>
                                     <td style="text-align: center"><?php echo number_format($suc0["existencia"] * $suc0["producto_precio"],2,".",","); ?></td>
-                                    <td><button class="btn btn-xs btn-info"><fa class="fa fa-pencil"> </fa></button></td>
+                                    <td>
+                                        <button class="btn btn-xs btn-info"><fa class="fa fa-arrow-right"> </fa></button>
+                                    
+                                    </td>
                                 </tr> 
 
                                     <?php } } ?>

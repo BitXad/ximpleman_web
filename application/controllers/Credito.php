@@ -36,19 +36,22 @@ class Credito extends CI_Controller{
     function index()
     {
         if($this->acceso(41)){
-            $data['page_title'] = "Creditos";
-            $params['limit'] = RECORDS_PER_PAGE; 
-            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-
-            $config = $this->config->item('pagination');
-            $config['base_url'] = site_url('credito/index?');
-            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
-            $this->pagination->initialize($config);
-
-            $data['credito'] = $this->Credito_model->get_all_deuda($params);
-
-            $data['_view'] = 'credito/index';
-            $this->load->view('layouts/main',$data);
+            
+            $this->indexDeuda();
+            
+//            $data['page_title'] = "Creditos";
+//            $params['limit'] = RECORDS_PER_PAGE; 
+//            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
+//
+//            $config = $this->config->item('pagination');
+//            $config['base_url'] = site_url('credito/index?');
+//            $config['total_rows'] = $this->Credito_model->get_all_credito_count();
+//            $this->pagination->initialize($config);
+//
+//            
+//            $credito = $this->Credito_model->get_all_deuda($params);
+//            $data['credito'] = $credito;
+            
         }
     }
 
@@ -79,6 +82,7 @@ class Credito extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+    
     function repoDeudas()
     {
         if($this->acceso(41)){

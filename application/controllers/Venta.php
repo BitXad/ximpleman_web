@@ -2771,7 +2771,7 @@ function anular_venta($venta_id){
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
         $data['empresa'] = $this->Empresa_model->get_empresa(1); 
         
-        $data['page_title'] = "Vencimientos"
+        $data['page_title'] = "Envases y Prestamos"
                 . "";
         $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
         //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
@@ -2790,6 +2790,123 @@ function anular_venta($venta_id){
         //**************** fin contenido ***************
         }    
     }
+
+    //Muestra la lista de vencimientos
+    function envases_prestados($producto_id)
+    {
+        
+        if($this->acceso(30)) {
+                
+        //**************** inicio contenido ***************            
+        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_nombre = $this->session_data['usuario_nombre'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];
+        
+        $rolusuario = $this->session_data['rol'];
+
+        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+        
+        $data['page_title'] = "Envases y Prestamos";
+        //$data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+        
+        $data['prestamos'] = $this->Venta_model->get_envasesprestados($producto_id); // para el select
+        
+        $data['usuario_id'] = $usuario_id; //el usuario logueado        
+        $data['tipousuario_id'] = $tipousuario_id; 
+        $data['usuario_nombre'] = $usuario_nombre;
+        
+
+        
+        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
+        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
+        
+        $data['_view'] = 'venta/envases_prestados';
+        $this->load->view('layouts/main',$data);
+        //**************** fin contenido ***************
+        }    
+    }
+
+    //Muestra la lista de vencimientos
+    function inventario_envases()
+    {
+        
+        if($this->acceso(30)) {
+                
+        //**************** inicio contenido ***************            
+        $usuario_id = $this->session_data['usuario_id'];
+        $usuario_nombre = $this->session_data['usuario_nombre'];
+        $tipousuario_id = $this->session_data['tipousuario_id'];
+        
+        $rolusuario = $this->session_data['rol'];
+
+        $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
+        $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+        
+        
+        $rolusuario = $this->session_data['rol'];
+
+
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+        
+        $data['page_title'] = "Inventario de Envases";
+
+        $data['usuario'] = $this->Usuario_model->get_todos_usuario(); // para el select
+        //$data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo(); //para el select
+        
+        $data['usuario_id'] = $usuario_id; //el usuario logueado        
+        $data['tipousuario_id'] = $tipousuario_id; 
+        $data['usuario_nombre'] = $usuario_nombre;
+        
+
+        
+        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
+//        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
+        
+        $data['_view'] = 'venta/inventario_envases';
+        $this->load->view('layouts/main',$data);
+        //**************** fin contenido ***************
+        }    
+    }
+
+    //Muestra la lista de vencimientos
+    function buscar_inventarioenvases(){
+        
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+
+            $resultado = $this->Venta_model->buscar_inventarioenvases();
+            
+            echo json_encode($resultado);
+        }
+        else
+        {
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+        
+   }   
+
+    //Muestra la lista de vencimientos
+    function buscar_inventario(){
+        
+        if($this->acceso(12)){
+        //**************** inicio contenido ***************       
+
+            $resultado = $this->Venta_model->get_prestamos($fecha_desde,$fecha_hasta,$usuario_id);
+            
+            echo json_encode($resultado);
+        }
+        else
+        {
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+        
+   }   
     
     function lista_prestamos(){
         

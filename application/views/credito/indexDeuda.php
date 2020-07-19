@@ -123,7 +123,8 @@
 						<th>Usuario</th>
 						<th></th>
                         
-                    </tr></thead>
+                    </tr>
+                    </thead>
                     <tbody class="buscar" id="tabladeudas">
                     
                 </table>
