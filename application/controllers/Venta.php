@@ -2159,8 +2159,8 @@ function anular_venta($venta_id){
             where venta_id = ".$venta_id;
     $this->Venta_model->ejecutar($sql);
             
-//    $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
-//    $this->Venta_model->ejecutar($sql);
+    $sql =  "update pedido set estado_id = 11 where pedido_id = (select v.pedido_id from venta v where v.venta_id = ".$venta_id.")";
+    $this->Venta_model->ejecutar($sql);
 //    
     
     $this->Inventario_model->actualizar_inventario(); 
