@@ -1066,7 +1066,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
     //$total_consumo = 0;
     
 ?>              
-        <div class="col-md-12" id='radio' style='display:block;'>
+        <div class="col-md-12" id='radio' >
                     <span class="btn btn-xs" style="border-color: orange;">
     <input type="radio" id="compra_caja0"
      name="compra_caja" value="" <?php if ($compra[0]['compra_caja']=='' || $compra[0]['compra_caja']==0 || $compra[0]['compra_caja']==null){ ?> checked <?php } ?> >

@@ -711,13 +711,12 @@ function mostrar_radio(){
     var opcionradio      = document.getElementById('tipotrans').value;
      if (opcionradio == 2) {
 
-       document.getElementById('radio').style.display = 'none';
+       
        document.getElementById('credin').style.display = 'block';
-       document.getElementById('compra_caja0').checked = true;
        
     }
      else{
-        document.getElementById('radio').style.display = 'block';
+        
         document.getElementById('credin').style.display = 'none';}
 }
 
