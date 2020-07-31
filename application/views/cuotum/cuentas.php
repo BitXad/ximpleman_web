@@ -307,10 +307,12 @@ $(document).ready(function(){
                           <input type="text"  name="cuota_razon" id="cuota_razon<?php echo $c['cuota_id']; ?>" value="<?php echo $credito[0]['cliente_razon']; ?>" class="form-control" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);"  />
                         </div>
                     </div>
-                    </div>
+                    
             
                     <div class="col-md-12" id="detallec<?php echo $c['cuota_id']; ?>">
-                    
+                      <label for="detalle<?php echo $c['cuota_id']; ?>" class="control-label">Detalle</label>
+                    <input type="text"  name="detalle<?php echo $c['cuota_id']; ?>" id="detalle<?php echo $c['cuota_id']; ?>" value="" class="form-control"  />
+                    </div>
                     </div>
                 </div>
               <div class="modal-footer" align="right">

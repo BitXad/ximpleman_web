@@ -41,6 +41,7 @@ class Subcategoria_producto_model extends CI_Model
      */
     function get_all_subcategoria_de_categoria($categoria_id)
     {
+        if($categoria_id =="" || $categoria_id == null){ $categoria_id = 0;}
         $subcategoria_producto = $this->db->query("
             SELECT
                 sc.*
