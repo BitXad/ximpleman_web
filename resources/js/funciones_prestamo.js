@@ -233,6 +233,8 @@ function inventario_envases(){
                    html += "</tr>";
                }
                
+
+               
                html+= "<tr>";
                html+= "<th></th>";
                html+= "<th></th>";

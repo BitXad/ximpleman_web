@@ -9,8 +9,9 @@ function buscar_por_fecha(){
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var usuario = document.getElementById('buscarusuario_id').value;
     
-    fechabusquedaingegr(fecha_desde, fecha_hasta, usuario);
+    buscarporfecha(fecha_desde, fecha_hasta, usuario);
 }
+
 function numberFormat(numero){
         // Variable que contendra el resultado final
         var resultado = "";
@@ -65,11 +66,11 @@ function formato_numerico(numero){
 	return x1 + x2;
 }
 
-function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
+function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
     var base_url    = document.getElementById('base_url').value;
     var tipousuario_id    = document.getElementById('tipousuario_id').value;
-    var controlador = base_url+"reportes/buscarlosreportes";
+    var controlador = base_url+"reportes/buscarporfecha";
     document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
     
     $.ajax({url: controlador,
@@ -78,24 +79,27 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
           
            success:function(resul){
               
-                $("#resingegr").val("- 0 -");
+//                $("#resingegr").val("- 0 -");
                var registros =  JSON.parse(resul);
-           
+               
+//               alert(registros.length);
                if (registros != null){
+                   
                     var fecha1 = fecha_desde;
                     var fecha2 = fecha_hasta;
                     var esusuario =  $('#buscarusuario_id option:selected').text();
                     fecha1 = "<span class='text-bold'>Desde: </span>"+moment(fecha_desde).format("DD/MM/YYYY");
-                    fecha2 = "<span class='text-bold'>Hasta: </span>"+moment(fecha_hasta).format("DD/MM/YYYY");
+                    fecha2 = "<br><span class='text-bold'>Hasta: </span>"+moment(fecha_hasta).format("DD/MM/YYYY");
                     
-                    var totalingreso = 0;
-                    var totalegreso = 0;
+                    var totalingresos = 0;
+                    var totalegresos = 0;
                     var totalutilidad = 0;
+                    
                     var totalingresotarj = 0;
                     var totalingresoefec = 0;
 
                     var n = registros.length; //tamaño del arreglo de la consulta
-                    $("#resingegr").val("- "+n+" -");
+//                    $("#resingegr").val("- "+n+" -");
                    
                     html  = "";
                     htmle = "";
@@ -104,90 +108,71 @@ function fechabusquedaingegr(fecha_desde, fecha_hasta, usuario){
                     var conte = 1;
                     
                     var bandcredito = true;
+                    
                     for (var i = 0; i < n ; i++){
-                        if(registros[i]['tipo'] != 7){
-                            totalingreso += parseFloat(registros[i]['ingreso']);
-                        }
-                        if(registros[i]['tipo'] == 21 || registros[i]['tipo'] == 22 || registros[i]['tipo'] == 23 || registros[i]['tipo'] == 24){
-                            totalingresotarj += parseFloat(registros[i]['ingreso']);
-                        }
-                        if(registros[i]['tipo'] == 1 || registros[i]['tipo'] == 2 || registros[i]['tipo'] == 3 || registros[i]['tipo'] == 11 || registros[i]['tipo'] == 12){
-                            totalingresoefec += parseFloat(registros[i]['ingreso']);
-                        }
-                        totalegreso   += parseFloat(registros[i]['egreso']);
-                        totalutilidad += parseFloat(registros[i]['utilidad']);
-                      if(registros[i]['tipo'] == 4 || registros[i]['tipo'] == 5 || registros[i]['tipo'] == 6 || registros[i]['tipo'] == 10){
-                          //totalegreso  += parseFloat(registros[i]['egreso']);
-                          htmle += "<tr class='labj'>";
-                          htmle += "<td>"+conte+"</td>";
-                          htmle += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
-                          htmle += "<td>"+registros[i]["detalle"]+"</td>";
-                          htmle += "<td></td>";
-                          htmle += "<td class='text-right'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
-                          if(tipousuario_id == 1){
-                              htmle += "<td></td>";
-                          }
-                          htmle += "</tr>";
-                          conte += 1;
-                      }else{
-                            html += "<tr class='labj'>";
-
-                            html += "<td>"+conti+"</td>";
-
-
-                           html += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY HH:mm:ss");+"</td>";
-                           html += "<td>"+registros[i]["detalle"]+"</td>";
-                           html += "<td class='text-right'>";
-
-                           if(registros[i]['tipo'] == 7){
-                               /*totalutilidad7 += parseFloat(registros[i]['utilidad']);
-                               totalutilidad += parseFloat(registros[i]['utilidad']);*/
-                               if(bandcredito == true){
-                                   html += numberFormat(Number(registros[i]["ingreso"]).toFixed(2));
-                                   //totalingreso7  += parseFloat(registros[i]['ingreso']);
-                                   totalingreso  += parseFloat(registros[i]['ingreso']);
-                                   totalingresoefec  += parseFloat(registros[i]['ingreso']);
-                                   bandcredito = false;
-                               }else if((i+1) < registros.length){
-                                   if(registros[i]["id"] != registros[i+1]["id"]){
-                                       bandcredito = true;
-                                       html += "0.00";
-                                   }else{
-                                       html += "0.00";
-                                   }
-                               }else if((i+1) == registros.length){
-                                   html += "0.00";
-                               }
-                           }else{
-                               html += numberFormat(Number(registros[i]["ingreso"]).toFixed(2));
-                           }
-                           html += "</td>";
-                           html += "<td class='text-right'>"+numberFormat(Number(registros[i]["egreso"]).toFixed(2))+"</td>";
-                           if(tipousuario_id == 1){
-                               //if(registros[i]['tipo'] == 3 || registros[i]['tipo'] == 2 || registros[i]['tipo'] == 21 || registros[i]['tipo'] == 22 || registros[i]['tipo'] == 23 || registros[i]['tipo'] == 24 || registros[i]['tipo'] == 7){
-                                   html += "<td class='text-right'>"+numberFormat(Number(registros[i]["utilidad"]).toFixed(2))+"</td>";
-                               /*}else{
-                                   html += "<td class='text-right'>0.00</td>";
-                               }*/
-                           }
-                            html += "</tr>";
-                            conti += 1;
-                        }
+                        
+                        totalingresos += Number(registros[i]["ingresos"]);
+                        totalegresos += Number(registros[i]["egresos"]);
+                       
+                        html += "<tr >"
+                            html += "<td>"+(i+1)+"</td>";
+                            html += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY");+"</td>";
+                            html += "<td style='text-align: right'>"+registros[i]["recibo"];
+                            
+                            enlace = "";
+                            if (registros[i]["orden"]==1 && registros[i]["recibo"]>0) enlace = base_url+"ingreso/imprimir/"+registros[i]["recibo"];
+                            if (registros[i]["orden"]==2 && registros[i]["recibo"]>0) enlace = base_url+"factura/imprimir_recibo/"+registros[i]["recibo"];                            
+                            if (registros[i]["orden"]==3 && registros[i]["recibo"]>0) enlace = base_url+"servicio/imprimircomprobante/"+registros[i]["recibo"];
+                            if (registros[i]["orden"]==4 && registros[i]["recibo"]>0) enlace = base_url+"servicio/boletainftecservicio/"+registros[i]["recibo"];
+                            if (registros[i]["orden"]==5 && registros[i]["recibo"]>0) enlace = base_url+"cuotum/recibocuentas/"+registros[i]["recibo"];
+                            if (registros[i]["orden"]==6 && registros[i]["recibo"]>0) enlace = base_url+"venta/prestamos/";
+                            // DEL 7 AL 10 RESERVADO PARA FUTUROS INGRESOS
+                            if (registros[i]["orden"]==11 && registros[i]["recibo"]>0) enlace = base_url+"egreso/imprimir/"+registros[i]["recibo"];
+                            if (registros[i]["orden"]==12 && registros[i]["recibo"]>0) enlace = base_url+"compra/nota/"+registros[i]["recibo"];
+                            if (registros[i]["orden"]==13 && registros[i]["recibo"]>0) enlace = base_url+"orden_pago/imprimir/"+registros[i]["recibo"];
+                            if (registros[i]["orden"]==14 && registros[i]["recibo"]>0) enlace = base_url+"cuotum/recibodeudas/"+registros[i]["recibo"];
+                            
+                            
+                            
+                            html += " <a href="+enlace+" target='_BLANK' class='no-print'><fa class='fa fa-print'></fa></a>";
+    
+                            html += "</td>";
+                            html += "<td style='text-align: center'>"+registros[i]["factura"]+"</td>";
+                            html += "<td>"+registros[i]["detalle"]+"</td>";
+                            html += "<td style='text-align: right'>"+formato_numerico(registros[i]["ingresos"])+"</td>";
+                            html += "<td style='text-align: right'>"+formato_numerico(registros[i]["egresos"])+"</td>";
+                            html += "<td style='text-align: right'>"+formato_numerico(registros[i]["utilidad"])+"</td>";
+                        html += "</tr>";
+                    
+                       
                     }
+                    html += "<tr style='background-color: #aaaaaa;' class='fondoprint'>";
+                    html += "<td> </td>";
+                    html += "<td> </td>";
+                    html += "<td> </td>";
+                    html += "<td> </td>";
+                    html += "<td> </td>";
+                    html += "<td style='text-align: right'>"+formato_numerico(totalingresos)+"</td>";
+                    html += "<td style='text-align: right'>"+formato_numerico(totalegresos)+"</td>";
+                    html += "<td style='text-align: right'>"+formato_numerico(totalutilidad)+"</td>";
+                    html += "</tr>";
+                    
+                    
+                    $("#tablatotalresultados").html(html);
                    
-                    $('#elusuario').html("<span class='text-bold'>USUARIO: </span>"+esusuario);
+                    $('#elusuario').html("<span class='text-bold'>Usuario: </span>"+esusuario);
                     $('#fecha1impresion').html(fecha1);
                     $('#fecha2impresion').html(fecha2);
-                   
-                    $("#tablaingresos").html(html);
-                    $("#tablaegresos").html(htmle);
-                    $("#totalingresos").html(numberFormat(Number(totalingreso).toFixed(2)));
-                    $("#totalegresos").html(numberFormat(Number(totalegreso).toFixed(2)));
-                    if(tipousuario_id == 1){
-                        $("#totalutilidad").html(numberFormat(Number(totalutilidad).toFixed(2)));
-                    }
-                    $("#totalingresotarj").html(numberFormat(Number(totalingresotarj).toFixed(2)));
-                    $("#saldoencaja").html(numberFormat(Number(totalingresoefec-totalegreso).toFixed(2)));
+//                   
+//                    $("#tablaingresos").html(html);
+//                    $("#tablaegresos").html(htmle);
+//                    $("#totalingresos").html(numberFormat(Number(totalingreso).toFixed(2)));
+//                    $("#totalegresos").html(numberFormat(Number(totalegreso).toFixed(2)));
+//                    if(tipousuario_id == 1){
+//                        $("#totalutilidad").html(numberFormat(Number(totalutilidad).toFixed(2)));
+//                    }
+//                    $("#totalingresotarj").html(numberFormat(Number(totalingresotarj).toFixed(2)));
+//                    $("#saldoencaja").html(numberFormat(Number(totalingresoefec-totalegreso).toFixed(2)));
                     
                    document.getElementById('loader').style.display = 'none';
             }
