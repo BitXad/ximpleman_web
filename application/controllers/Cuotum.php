@@ -522,7 +522,7 @@ class Cuotum extends CI_Controller{
             $cantidad = 1;
             $detallefact_codigo = "-";
             $detallefact_cantidad = $cantidad;
-            $detallefact_descripcion = $this->input->post('detalle'.$cuota_id);
+            $detallefact_descripcion = $this->input->post('detalle');
             $unidad = "";
             
             $precio = $this->input->post('cuota_cancelado');
@@ -532,10 +532,8 @@ class Cuotum extends CI_Controller{
             $detallefact_total = $factura_subtotal;
             $detallefact_preferencia =  "";
             $detallefact_caracteristicas = "";
-             echo'<script type="text/javascript">
-        alert('.$detallefact_descripcion.');
-        </script>'; 
-            $sql1 =  "insert into detalle_factura(
+            
+            $sql =  "insert into detalle_factura(
             producto_id,
             factura_id,
             detallefact_codigo,
@@ -563,8 +561,8 @@ class Cuotum extends CI_Controller{
             '".$detallefact_preferencia."',
             '".$detallefact_caracteristicas."')";
 
-            $this->db->query($sql1);
-            /*$this->Ingreso_model->ejecutar($sql); */
+            $this->db->query($sql);
+            $this->Ingreso_model->ejecutar($sql); 
 
             echo'<script type="text/javascript">
         window.open("../../factura/imprimir_factura_id/'.$factura_id.'/1", "_blank");

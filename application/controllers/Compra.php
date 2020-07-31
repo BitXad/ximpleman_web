@@ -925,10 +925,7 @@ $almacen = $existir[0]["existencia"];
    $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
    $this->db->query($eliminar_aux);
    ///////////si elige generar orden de pago/////////////////////////
-   
-   if ($_POST['tipotrans_id']==1 ) {
-
-    if ($_POST['compra_caja']==2 ) {
+   if ($_POST['compra_caja']==2 ) {
      $this->load->model('Orden_pago_model');
       $nodoc=$this->input->post('compra_numdoc');
       $orden_fecha = "'".date("Y-m-d")."'"; 
@@ -956,8 +953,7 @@ $almacen = $existir[0]["existencia"];
 
          }
    }
-
-
+   if ($_POST['tipotrans_id']==1 ) {
     $borracuota  = "SELECT credito_id FROM credito WHERE credito.compra_id=".$compra_id;
     $las_cuotas = $this->db->query($borracuota)->result_array();
     if (sizeof($las_cuotas)>0) {
@@ -978,36 +974,7 @@ $almacen = $existir[0]["existencia"];
 
    
     if ($_POST['tipotrans_id']==2 ) { // tipotrans_id = 2 : CREDITO
-     
-    if ($_POST['compra_caja']==2 ) {
-     $this->load->model('Orden_pago_model');
-      $nodoc=$this->input->post('compra_numdoc');
-      $orden_fecha = "'".date("Y-m-d")."'"; 
-      $orden_hora = "'".date("H:i:s")."'"; 
-      $compra_prove=$this->Compra_model->get_compra_proveedor($compra_id);
-      $proveedor_nombre = $compra_prove[0]['proveedor_nombre'];
-      $orden_monto = $this->input->post('compra_totalfinal');
-      $orden_motivo = "'pago a proveedor compra No. ".$compra_id." documento de respaldo No. ".$nodoc." '";
-     
-      $cuota_id = 0;
-     $yaorden  = "SELECT COUNT(orden_id) as 'ordenes' FROM orden_pago WHERE orden_pago.compra_id=".$compra_id;
-     $tiene_orden = $this->db->query($yaorden)->result_array();
-     
-     if ($tiene_orden[0]['ordenes']<1) {
-    
-      $orden = "insert into orden_pago(usuario_id1,usuario_id2,orden_monto,orden_destinatario,orden_motivo,orden_fecha,orden_hora,estado_id,orden_cancelado,compra_id,cuota_id) "
-                    . "value(".$usuario_id.",0".",".$credito_cuotainicial.",'".$proveedor_nombre."',".$orden_motivo.",".$orden_fecha.",".$orden_hora.",8,0,".$compra_id.",".$cuota_id.")";
-            //echo $sql;
-           $this->Orden_pago_model->registrar_orden($orden);
-         }else{
-           $orden = "UPDATE orden_pago SET usuario_id1=".$usuario_id.",usuario_id2=0,orden_monto=".$credito_cuotainicial.",orden_destinatario='".$proveedor_nombre."',orden_motivo=".$orden_motivo." WHERE compra_id= ".$compra_id." ";
-                    
-
-           $this->Orden_pago_model->registrar_orden($orden);
-
-         }
-   }    
-
+        
      $yacredito  = "SELECT COUNT(credito_id) as 'creditos' FROM credito WHERE credito.compra_id=".$compra_id;
      $tiene_credito = $this->db->query($yacredito)->result_array();
 

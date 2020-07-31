@@ -14,11 +14,12 @@ function facturar(cuota){
                    
                  		html = "";
 
-                       
-                        html += "PAGO DE CUOTA No. "+registros["cuota_numcuota"]+"/credito "+registros["credito_id"]+"";
-                   
+                        html += "<label for='detalle' class='control-label'>Detalle</label>";
+                        html += "<div class='form-group'>";
+                        html += "<input type='text' name='detalle' value='PAGO DE CUOTA No. "+registros["cuota_numcuota"]+"/credito "+registros["credito_id"]+" ' class='form-control' id='detalle' />";
+                        html += "</div>";
                     	//alert(registros["cuota_id"]);
-                       $("#detalle"+registros["cuota_id"]+"").val(html);
+                       $("#detallec"+registros["cuota_id"]+"").html(html);
                        document.getElementById('clinit'+cuota).style.display = 'block';
                        
                        
@@ -34,7 +35,6 @@ function facturar(cuota){
 
 function enviar_formulario(cuota_id){
   var base_url    = document.getElementById('base_url').value;
-  //alert (document.getElementById('detalle'+cuota_id).value);
    document.getElementById("finpagar"+cuota_id).submit();
    facturarcuota(cuota_id);
 }
