@@ -1382,6 +1382,7 @@ class Servicio extends CI_Controller{
                 $this->form_validation->set_rules('detalleserv_saldo','Saldo','trim|required', array('required' => 'Este Campo no debe ser vacio'));
                 if($this->form_validation->run())
                 {
+                    $usuario_id  = $this->session_data['usuario_id'];
                     $servicio_id = $this->input->post('servicio_id');
                     $detalleserv_id = $this->input->post('detalleserv_id');
                     $estado_id = 7; // 7 ---> ENTREGADO
@@ -1389,8 +1390,10 @@ class Servicio extends CI_Controller{
                     $hora_entregado  = date('H:i:s');
                     
                     $params = array(
+                        'usuariopsaldo_id' => $usuario_id,
                         'detalleserv_fechaentregado' => $fecha_entregado,
                         'detalleserv_horaentregado' => $hora_entregado,
+                        'detalleserv_fpagosaldo' => $fecha_entregado." ".$hora_entregado,
                         'estado_id' => $estado_id,
                         'detalleserv_total'       => $this->input->post('detalleserv_total'),
                         'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
@@ -1455,15 +1458,17 @@ class Servicio extends CI_Controller{
                 $this->form_validation->set_rules('detalleserv_saldo','Saldo','trim|required', array('required' => 'Este Campo no debe ser vacio'));
                 if($this->form_validation->run())
                 {
-                    $servicio_id = $this->input->post('servicio_id');
+                    $usuario_id  = $this->session_data['usuario_id'];
                     $detalleserv_id = $this->input->post('detalleserv_id');
                     $estado_id = 7; // 7 ---> ENTREGADO
                     $fecha_entregado = date('Y-m-d');
                     $hora_entregado  = date('H:i:s');
                     
                     $params = array(
+                        'usuariopsaldo_id' => $usuario_id,
                         'detalleserv_fechaentregado' => $fecha_entregado,
                         'detalleserv_horaentregado' => $hora_entregado,
+                        'detalleserv_fpagosaldo' => $fecha_entregado." ".$hora_entregado,
                         'estado_id' => $estado_id,
                         'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
                         'detalleserv_entregadoa'  => $this->input->post('detalleserv_entregadoa'),
