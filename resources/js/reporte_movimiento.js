@@ -113,6 +113,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         
                         totalingresos += Number(registros[i]["ingresos"]);
                         totalegresos += Number(registros[i]["egresos"]);
+                        totalutilidad += Number(registros[i]["utilidad"]);
                        
                         html += "<tr >"
                             html += "<td>"+(i+1)+"</td>";
@@ -139,9 +140,19 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             html += "</td>";
                             html += "<td style='text-align: center'>"+registros[i]["factura"]+"</td>";
                             html += "<td>"+registros[i]["detalle"]+"</td>";
-                            html += "<td style='text-align: right'>"+formato_numerico(registros[i]["ingresos"])+"</td>";
-                            html += "<td style='text-align: right'>"+formato_numerico(registros[i]["egresos"])+"</td>";
-                            html += "<td style='text-align: right'>"+formato_numerico(registros[i]["utilidad"])+"</td>";
+                            
+                            html += "<td style='text-align: right'>";
+                                if (Number(registros[i]["ingresos"])>0) html += formato_numerico(registros[i]["ingresos"]);
+                            html += "</td>";
+                            
+                            html += "<td style='text-align: right'>";
+                                if (Number(registros[i]["egresos"]>0)) html += formato_numerico(registros[i]["egresos"]);
+                            html += "</td>";
+                            
+                            html += "<td style='text-align: right'>";
+                                if (Number(registros[i]["utilidad"])>0) html += formato_numerico(registros[i]["utilidad"]);
+                            html += "</td>";
+                            
                         html += "</tr>";
                     
                        
