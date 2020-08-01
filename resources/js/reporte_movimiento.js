@@ -158,10 +158,10 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                        
                     }
                     html += "<tr style='background-color: #aaaaaa;' class='fondoprint'>";
-                    html += "<td> </td>";
-                    html += "<td> </td>";
-                    html += "<td> </td>";
-                    html += "<td> </td>";
+                    html += "<td colspan='4'>TOTALES </td>";
+//                    html += "<td> </td>";
+//                    html += "<td> </td>";
+//                    html += "<td> </td>";
                     html += "<td> </td>";
                     html += "<td style='text-align: right'>"+formato_numerico(totalingresos)+"</td>";
                     html += "<td style='text-align: right'>"+formato_numerico(totalegresos)+"</td>";
