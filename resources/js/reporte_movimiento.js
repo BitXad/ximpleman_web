@@ -101,7 +101,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 //                    $("#resingegr").val("- "+n+" -");
                    
                     html  = "";
-                    htmle = "";                    
+                    htmle = "";      
+                    estilo = "style='padding:0; '";
                     for (var i = 0; i < n ; i++){
                         
                         totalingresos += Number(registros[i]["ingresos"]);
@@ -110,10 +111,10 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         
                         if(registros[i]["tipotrans_id"]<=2 && registros[i]["forma_id"]==1) totalefectivo += Number(registros[i]["ingresos"]);                       
                        
-                        html += "<tr >"
-                            html += "<td>"+(i+1)+"</td>";
-                            html += "<td>"+moment(registros[i]["fecha"]).format("DD/MM/YYYY");+"</td>";
-                            html += "<td style='text-align: right'>"+registros[i]["recibo"];
+                        html += "<tr "+estilo+">"
+                            html += "<td "+estilo+">"+(i+1)+"</td>";
+                            html += "<td "+estilo+">"+moment(registros[i]["fecha"]).format("DD/MM/YYYY");+"</td>";
+                            html += "<td style='text-align: right; padding:0;'>"+registros[i]["recibo"];
                             
                             enlace = "";
                             if (registros[i]["orden"]==1 && registros[i]["recibo"]>0) enlace = base_url+"ingreso/imprimir/"+registros[i]["recibo"];
@@ -134,18 +135,18 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             html += " <a href="+enlace+" target='_BLANK' class='no-print'><fa class='fa fa-print'></fa></a>";
     
                             html += "</td>";
-                            html += "<td style='text-align: center'>"+registros[i]["factura"]+"</td>";
-                            html += "<td>"+registros[i]["detalle"]+"</td>";
+                            html += "<td style='text-align: center; padding:0;'>"+registros[i]["factura"]+"</td>";
+                            html += "<td "+estilo+">"+registros[i]["detalle"]+"</td>";
                             
-                            html += "<td style='text-align: right'>";
+                            html += "<td style='text-align: right; padding:0;'>";
                                 if (Number(registros[i]["ingresos"])>0) html += formato_numerico(registros[i]["ingresos"]);
                             html += "</td>";
                             
-                            html += "<td style='text-align: right'>";
+                            html += "<td style='text-align: right; padding:0;'>";
                                 if (Number(registros[i]["egresos"]>0)) html += formato_numerico(registros[i]["egresos"]);
                             html += "</td>";
                             
-                            html += "<td style='text-align: right'>";
+                            html += "<td style='text-align: right; padding:0;'>";
                                 if (Number(registros[i]["utilidad"])>0) html += formato_numerico(registros[i]["utilidad"]);
                             html += "</td>";
                             
@@ -154,27 +155,29 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                        
                     }
                     
-                    html += "<tr style='background-color: #aaaaaa !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>";
-                        html += "<td colspan='4'><b>TOTALES </b></td>";
-                        html += "<td> </td>";
-                        html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
-                        html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
-                        html += "<td style='text-align: right'><b>"+formato_numerico(totalutilidad)+"</b></td>";                    
+//                    html += "<tr style='background-color: #aaaaaa !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>";
+//                        html += "<td colspan='4'><b>TOTALES </b></td>";
+//                        html += "<td> </td>";
+//                        html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
+//                        html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
+//                        html += "<td style='text-align: right'><b>"+formato_numerico(totalutilidad)+"</b></td>";                    
+//                    html += "</tr>";
+
+                    estilo = "style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-size:12px; padding:0; '";
+                    
+                    html += "<tr>";
+                        html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS Bs</b></td>";
+                        html += "<td "+estilo+" ><b>"+formato_numerico(totalingresos)+"</b></td>";
+                        html += "<td "+estilo+" ></td>";
+                        html += "<td "+estilo+" ></td>";
                     html += "</tr>";
 
                     html += "<tr>";
-                        html += "<td colspan='5'>TOTAL INGRESOS Bs</td>";
-                        html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
                         html += "<td></td>";
-                    html += "</tr>";
-
-                    html += "<tr>";
-                        html += "<td></td>";
-                        html += "<td colspan='5'>TOTAL EGRESOS Bs</td>";
+                        html += "<td colspan='5'><b>TOTAL EGRESOS Bs</b></td>";
                         html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
                     html += "</tr>";
 
-                    estilo = "style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-size:12px;'";
                     
                     subtotal = totalingresos - totalegresos;
                     
@@ -191,19 +194,20 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     html += "<tr style='font-size:12px;'>";
                         html += "<td></td>";
                         html += "<td colspan='5'><b>TOTAL TRANSACCIONES BANCO/TARJ. CREDITO/DEBITO Bs</b></td>";
-                        html += "<td colspan='2'><b>"+formato_numerico(totalbanco)+"</b></td>";
-    //                    html += "<td "+estilo+"></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalbanco)+"</b></td>";
+                        html += "<td></td>";
                     html += "</tr>";
-                    
-//                    totalfinal = 0;
-//                    totalfinal = subtotal - tot;
-                    
                     
                     html += "<tr style='font-size:12px;'>";
     //                    html += "<td "+estilo+"></td>";
                         html += "<td "+estilo+" colspan='5'><b>TOTAL EFECTIVO EN CAJA Bs</b></td>";
                         html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(totalefectivo)+"</b></td>";
                         html += "<td "+estilo+"></td>";
+                    html += "</tr>";
+
+                   html += "<tr style='font-size:12px;'>";
+                        html += "<td colspan='7'><b>UTILIDAD Bs</b></td>";
+                        html += "<td colspan='2' style='text-align: right;'><b>"+formato_numerico(totalutilidad)+"</b></td>";
                     html += "</tr>";
                     
                     
