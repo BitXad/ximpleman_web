@@ -167,7 +167,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     html += "<tr>";
                         html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS Bs</b></td>";
-                        html += "<td "+estilo+" style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
+                        html += "<td "+estilo+" ><b>"+formato_numerico(totalingresos)+"</b></td>";
                         html += "<td "+estilo+" ></td>";
                         html += "<td "+estilo+" ></td>";
                     html += "</tr>";
@@ -194,19 +194,20 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     html += "<tr style='font-size:12px;'>";
                         html += "<td></td>";
                         html += "<td colspan='5'><b>TOTAL TRANSACCIONES BANCO/TARJ. CREDITO/DEBITO Bs</b></td>";
-                        html += "<td colspan='2'><b>"+formato_numerico(totalbanco)+"</b></td>";
-    //                    html += "<td "+estilo+"></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalbanco)+"</b></td>";
+                        html += "<td></td>";
                     html += "</tr>";
-                    
-//                    totalfinal = 0;
-//                    totalfinal = subtotal - tot;
-                    
                     
                     html += "<tr style='font-size:12px;'>";
     //                    html += "<td "+estilo+"></td>";
                         html += "<td "+estilo+" colspan='5'><b>TOTAL EFECTIVO EN CAJA Bs</b></td>";
                         html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(totalefectivo)+"</b></td>";
                         html += "<td "+estilo+"></td>";
+                    html += "</tr>";
+
+                   html += "<tr style='font-size:12px;'>";
+                        html += "<td colspan='7'><b>UTILIDAD Bs</b></td>";
+                        html += "<td colspan='2' style='text-align: right;'><b>"+formato_numerico(totalutilidad)+"</b></td>";
                     html += "</tr>";
                     
                     

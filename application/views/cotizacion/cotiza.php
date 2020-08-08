@@ -117,7 +117,7 @@
                 <td style="text-align: left;"><b><?php echo $d['producto_nombre']; ?></b> /
                     Marca: <b><?php echo $d['producto_marca']; ?></b>
                     <!--Industria: <b><?php //echo $d['producto_industria']; ?></b>-->
-                    <?php if($d['detallecot_caracteristica'] == "null"){ echo " "; }else{ echo $d['detallecot_caracteristica'];} ?>
+                    <?php if($d['detallecot_caracteristica'] == "null"){ echo " "; }else{ echo nl2br($d['detallecot_caracteristica']);} ?>
                 </td>
                 <td class="text-center">
                     <?php echo $d['producto_industria']; ?>
