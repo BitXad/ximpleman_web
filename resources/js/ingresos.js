@@ -119,7 +119,7 @@ function fechadeingreso(filtro)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["ingreso_nombre"]+"</b></td>";
+                        html += "<td><b>"+registros[i]["ingreso_nombre"]+"</b><sub> ["+registros[i]["ingreso_id"]+"]</sub></td>";
                         html += "<td align='center'>"+registros[i]["ingreso_numero"]+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["ingreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
                         html += "<td>"+registros[i]["ingreso_categoria"]+"</br>"; 

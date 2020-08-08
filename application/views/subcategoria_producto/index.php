@@ -118,7 +118,7 @@
                             <!------------------------ FIN modal para ver imagen ------------------->
                         </td>
                         
-                        <td><?php echo $c['subcategoria_nombre']; ?></td>
+                        <td><?php echo $c['subcategoria_nombre']; ?><sub> [<?php echo $c['subcategoria_id']; ?>]</sub></td>
                         <td class="no-print">
                              <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">

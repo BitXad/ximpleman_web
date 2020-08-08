@@ -53,7 +53,7 @@
                     <tr>
                         <td><?php echo $i ?></td>
 						<!--<td><?php //echo $c['categoriaclie_id']; ?></td>-->
-						<td><?php echo $c['categoriaclie_descripcion']; ?></td>
+						<td><?php echo $c['categoriaclie_descripcion']; ?><sub> [<?php echo $c['categoriaclie_id']; ?>]</sub></td>
 						<td><?php echo $c['categoriaclie_porcdesc']; ?></td>
 						<td><?php echo $c['categoriaclie_montodesc']; ?></td>
                                                 <td class="no-print">

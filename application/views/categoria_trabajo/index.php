@@ -49,7 +49,7 @@
                     ?>
                     <tr>
                         <td><?php echo $cont; ?></td>
-                        <td><?php echo $c['cattrab_descripcion']; ?></td>
+                        <td><?php echo $c['cattrab_descripcion']; ?><sub> [<?php echo $c['cattrab_id']; ?>]</sub></td>
                         <td style="background-color: #<?php echo $c['estado_color'];?>"><?php echo $c['estado_descripcion']; ?></td>
                         <td class="no-print">
                         <!------------------------ INICIO modal para confirmar eliminación ------------------->

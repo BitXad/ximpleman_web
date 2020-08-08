@@ -116,7 +116,7 @@ function fechadeegreso(filtro)
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["egreso_nombre"]+"</b></td>";
+                        html += "<td><b>"+registros[i]["egreso_nombre"]+"</b><sub> ["+registros[i]["egreso_id"]+"]</sub></td>";
                         html += "<td align='center'>"+registros[i]["egreso_numero"]+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["egreso_fecha"]).format('DD/MM/YYYY HH:mm:ss')+"</td>"; 
                         html += "<td>"+registros[i]["egreso_categoria"]+"</br>"; 

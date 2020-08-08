@@ -45,7 +45,7 @@
                           foreach($categoria_ingreso as $c){ ?>
                     <tr>
                         <td><?php echo $i; ?></td>
-                        <td><?php echo $c['categoria_cating']; ?></td>
+                        <td><?php echo $c['categoria_cating']; ?><sub> [<?php echo $c['id_cating']; ?>]</sub></td>
                         <td><?php echo $c['descrip_cating']; ?></td>
                         <td class="no-print">
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->

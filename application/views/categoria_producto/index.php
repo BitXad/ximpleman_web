@@ -74,7 +74,7 @@
                             </div>
                             <!------------------------ FIN modal para ver imagen ------------------->
                         </td>
-                        <td><?php echo $c['categoria_nombre']; ?></td>
+                        <td><?php echo $c['categoria_nombre']; ?><sub> [<?php echo $c['categoria_id']?>]</sub></td>
                         <td class="no-print">
                              <!------------------------ INICIO modal para confirmar eliminación ------------------->
                                     <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
