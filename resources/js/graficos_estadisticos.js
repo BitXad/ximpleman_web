@@ -96,6 +96,7 @@ function grafico_barras(year, moth){
 
 
 function grafico_ventas(){
+    
     var base_url = document.getElementById("base_url").value;
     var controlador = base_url+"estadistica/ventas_mes";
     var mes = document.getElementById("select_mes").value;
@@ -172,7 +173,7 @@ function grafico_ventas(){
                     var i = 0;
                     html = "";   
                     html2 = "";   
-                        
+                      
                     for(i=1; i <= totaldias; i++){
                                 //alert(Math.round(ventas[i]*100)/100);
                                 
@@ -190,6 +191,7 @@ function grafico_ventas(){
                         total_utilidades += Number(utilidades[i]);
 
                     }
+                    //alert("aquiii33333333332");  
                     html += "<tr style='padding:0'>";
                     html += "   <th style='padding:0'> </th>";
                     html += "   <th style='padding:0;'>"+Number(total_ventas).toFixed(2)+"</th>";
@@ -220,14 +222,16 @@ function grafico_ventas(){
                     
                     //options.title.text="aqui e podria cambiar el titulo dinamicamente";
                     chart = new Highcharts.Chart(options);
+                    
+                    $("#div_grafica_barras").html( $("#cargador_empresa").html() );
+                    $("#tabla_ventas").html(html);
+                    $("#tabla_estadistica").html(html2);
                 }   
     });
 
 
 
 
-    $("#div_grafica_barras").html( $("#cargador_empresa").html() );
-    $("#tabla_ventas").html(html);
-    $("#tabla_estadistica").html(html2);
+
     
 }

@@ -43,12 +43,12 @@
 
 
 
-<div class="box-header no-print">
+<!--<div class="box-header no-print">
     <h3 class="box-title"><font face="Arial" size="3"><b>ESTADISTICA DE VENTAS</b></font></h3>
             	<div class="box-tools">                    
                     <?php if($rolusuario[23-1]['rolusuario_asignado'] == 1){ ?>
                     <select  class="btn btn-facebook btn-sm" id="select_ventas" onclick="buscar_ventas()">
-<!--                        <option value="1">-- SELECCIONE UNA OPCION --</option>-->
+                        <option value="1">-- SELECCIONE UNA OPCION --</option>
                         <option value="1">Ventas de Hoy</option>
                         <option value="2">Ventas de Ayer</option>
                         <option value="3">Ventas de la semana</option>
@@ -59,7 +59,7 @@
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
                 </div>
-</div>
+</div>-->
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
 <!--<form method="post">-->
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' style='display:block;'>
@@ -110,7 +110,7 @@
         
         
         <div class="col-md-2">
-            Año: 
+            Buscar: 
             <button class="btn btn-success  form-control" onclick="grafico_ventas()"><fa class="fa fa-binoculars"></fa> Buscar</button>
         </div>
         

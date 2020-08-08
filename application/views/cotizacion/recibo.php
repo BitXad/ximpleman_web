@@ -4,9 +4,9 @@
 
 <script type="text/javascript">
       $(document).on("ready",inicio);
-function inicio(){
-     window.print();
-        
+function inicio(){   
+    
+    window.print(); 
 }
 
   
@@ -210,6 +210,12 @@ pre {
                 <?php echo  $usuario['usuario_nombre']; ?>    
                
  </center>
+        
+    <center style="padding-top: 5%;" class="no-print">
+    
+        <a href="<?php echo base_url("cotizacion"); ?>" class="btn btn-danger btn-xs"><fa class="fa fa-list" > </fa> Cerrar</a>
+    </center>
+        
 </div>
 
 

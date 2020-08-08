@@ -140,6 +140,7 @@ class Cotizacion extends CI_Controller{
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $num = $this->Compra_model->numero();
         $este = $num[0]['parametro_tipoimpresora'];
+        
         if($this->acceso(36)){
             $data['page_title'] = "Cotización";
             $usuario_id = $this->session_data['usuario_id'];
@@ -368,7 +369,9 @@ class Cotizacion extends CI_Controller{
 
 
                     $this->Cotizacion_model->update_cotizacion($cotizacion_id,$params);            
-                     redirect('cotizacion/index');
+                    // redirect('cotizacion/index');
+                    $this->recibo($cotizacion_id);
+                    
                 }
                 else
                 {
