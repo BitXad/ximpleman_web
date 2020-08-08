@@ -94,26 +94,21 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     var totalingresos = 0;
                     var totalegresos = 0;
                     var totalutilidad = 0;
+                    var totalefectivo = 0;
+                    var subtotal = 0;
                     
-                    var totalingresotarj = 0;
-                    var totalingresoefec = 0;
-
                     var n = registros.length; //tamaño del arreglo de la consulta
 //                    $("#resingegr").val("- "+n+" -");
                    
                     html  = "";
-                    htmle = "";
-                    
-                    var conti = 1;
-                    var conte = 1;
-                    
-                    var bandcredito = true;
-                    
+                    htmle = "";                    
                     for (var i = 0; i < n ; i++){
                         
                         totalingresos += Number(registros[i]["ingresos"]);
                         totalegresos += Number(registros[i]["egresos"]);
                         totalutilidad += Number(registros[i]["utilidad"]);
+                        
+                        if(registros[i]["tipotrans_id"]<=2 && registros[i]["forma_id"]==1) totalefectivo += Number(registros[i]["ingresos"]);                       
                        
                         html += "<tr >"
                             html += "<td>"+(i+1)+"</td>";
@@ -127,6 +122,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             if (registros[i]["orden"]==4 && registros[i]["recibo"]>0) enlace = base_url+"servicio/boletainftecservicio/"+registros[i]["recibo"];
                             if (registros[i]["orden"]==5 && registros[i]["recibo"]>0) enlace = base_url+"cuotum/recibocuentas/"+registros[i]["recibo"];
                             if (registros[i]["orden"]==6 && registros[i]["recibo"]>0) enlace = base_url+"venta/prestamos/";
+                            
                             // DEL 7 AL 10 RESERVADO PARA FUTUROS INGRESOS
                             if (registros[i]["orden"]==11 && registros[i]["recibo"]>0) enlace = base_url+"egreso/imprimir/"+registros[i]["recibo"];
                             if (registros[i]["orden"]==12 && registros[i]["recibo"]>0) enlace = base_url+"compra/nota/"+registros[i]["recibo"];
@@ -157,15 +153,57 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                        
                     }
-                    html += "<tr style='background-color: #aaaaaa;' class='fondoprint'>";
-                    html += "<td colspan='4'>TOTALES </td>";
-//                    html += "<td> </td>";
-//                    html += "<td> </td>";
-//                    html += "<td> </td>";
-                    html += "<td> </td>";
-                    html += "<td style='text-align: right'>"+formato_numerico(totalingresos)+"</td>";
-                    html += "<td style='text-align: right'>"+formato_numerico(totalegresos)+"</td>";
-                    html += "<td style='text-align: right'>"+formato_numerico(totalutilidad)+"</td>";
+                    
+                    html += "<tr style='background-color: #aaaaaa !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>";
+                        html += "<td colspan='4'><b>TOTALES </b></td>";
+                        html += "<td> </td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalutilidad)+"</b></td>";                    
+                    html += "</tr>";
+
+                    html += "<tr>";
+                        html += "<td colspan='5'>TOTAL INGRESOS Bs</td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalingresos)+"</b></td>";
+                        html += "<td></td>";
+                    html += "</tr>";
+
+                    html += "<tr>";
+                        html += "<td></td>";
+                        html += "<td colspan='5'>TOTAL EGRESOS Bs</td>";
+                        html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
+                    html += "</tr>";
+
+                    estilo = "style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-size:12px;'";
+                    
+                    subtotal = totalingresos - totalegresos;
+                    
+                    html += "<tr style='font-size:12px;'>";
+    //                    html += "<td "+estilo+"></td>";
+                        html += "<td "+estilo+" colspan='5'><b>SUB TOTAL EN CAJA Bs</b></td>";
+                        html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(subtotal)+"</b></td>";
+                        html += "<td "+estilo+"></td>";
+                    html += "</tr>";
+                    
+                    var totalbanco = 0;
+                    totalbanco = totalingresos - totalefectivo;  //lo que queda son las transaciones por banco/debito/credito
+                    
+                    html += "<tr style='font-size:12px;'>";
+                        html += "<td></td>";
+                        html += "<td colspan='5'><b>TOTAL TRANSACCIONES BANCO/TARJ. CREDITO/DEBITO Bs</b></td>";
+                        html += "<td colspan='2'><b>"+formato_numerico(totalbanco)+"</b></td>";
+    //                    html += "<td "+estilo+"></td>";
+                    html += "</tr>";
+                    
+//                    totalfinal = 0;
+//                    totalfinal = subtotal - tot;
+                    
+                    
+                    html += "<tr style='font-size:12px;'>";
+    //                    html += "<td "+estilo+"></td>";
+                        html += "<td "+estilo+" colspan='5'><b>TOTAL EFECTIVO EN CAJA Bs</b></td>";
+                        html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(totalefectivo)+"</b></td>";
+                        html += "<td "+estilo+"></td>";
                     html += "</tr>";
                     
                     
