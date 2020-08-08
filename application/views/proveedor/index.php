@@ -208,7 +208,7 @@
                     <!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->
                                     </div>
                                     <div><?php
-                                        echo "<font size='3' face='Arial'><b>".$p['proveedor_nombre']."</b></font><br>";
+                                        echo "<font size='3' face='Arial'><b>".$p['proveedor_nombre']."</b></font><sub> [".$p['proveedor_id']."]</sub><br>";
                                         echo "<b>CODIGO: </b>".$p['proveedor_codigo']."<br>";
                                         echo "<b>DIRECC.: </b>".$p['proveedor_direccion']."<br>";
                                         echo "<b>EMAIL: </b>".$p['proveedor_email'];

@@ -208,7 +208,7 @@ function tablaresultadoscliente(limite)
                         if(registros[i]["cliente_nombre"].length>25){
                            tam = 1; 
                         }
-                        html += "<b><font face='Arial' size='"+tam+"' >"+registros[i]["cliente_nombre"]+"</font></b><br>";
+                        html += "<b><font face='Arial' size='"+tam+"' >"+registros[i]["cliente_nombre"]+"</font></b><sub> ["+registros[i]["cliente_id"]+"]</sub><br>";
                         
                         html += "<div><b>EMPRESA: </b>"+neg+"<br></div>";
                         html += "<b>ZONA: </b>"+escategoria_clientezona+" <b>DPTO: </b>"+registros[i]["cliente_departamento"];                        

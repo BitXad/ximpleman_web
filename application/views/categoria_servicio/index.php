@@ -50,7 +50,7 @@
                               ?>
                     <tr>
                         <td><?php echo $cont; ?></td>
-                        <td><?php echo $c['catserv_descripcion']; ?></td>
+                        <td><?php echo $c['catserv_descripcion']; ?><sub> [<?php echo $c['catserv_id']; ?>]</sub></td>
 
                         <td style="background-color: #<?php echo $c['estado_color']; ?>"> <?php echo $c['estado_descripcion']; ?></td>
                         <td class="no-print">
