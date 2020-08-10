@@ -198,10 +198,13 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         html += "<td></td>";
                     html += "</tr>";
                     
+                    var efectivo_caja = 0;
+                    efectivo_caja = subtotal - totalbanco;
+                    
                     html += "<tr style='font-size:12px;'>";
     //                    html += "<td "+estilo+"></td>";
                         html += "<td "+estilo+" colspan='5'><b>TOTAL EFECTIVO EN CAJA Bs</b></td>";
-                        html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(totalefectivo)+"</b></td>";
+                        html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(efectivo_caja)+"</b></td>";
                         html += "<td "+estilo+"></td>";
                     html += "</tr>";
 

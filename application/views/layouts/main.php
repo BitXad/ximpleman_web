@@ -495,6 +495,18 @@
                     <ul class="treeview-menu">
                       
                         <?php
+                        if($rolusuario[141-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <!--<a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>-->
+                            <a href="<?php echo site_url('reportes/movimientodiario');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>
+                        </li> 
+                        <?php
+                        }  ?>
+                        
+                        
+                        
+                        <?php
                         if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -561,15 +573,10 @@
                             <a href="<?php echo site_url('venta/comision');?>"><i class="fa fa-percent"></i>Comisiones</a>
                         </li>                        
                         <?php
-                        }
-                        if($rolusuario[141-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <!--<a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>-->
-                            <a href="<?php echo site_url('reportes/movimientodiario');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>
-                        </li> 
+                        } ?>
+                        
+
                         <?php
-                        }
                         if($rolusuario[144-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
