@@ -455,7 +455,10 @@ function tablacuentasagrupado(filtro)
                     html2 += "<tr>";  
                     html2 += "<th>#</th>";  
                     html2 += "<th>Cliente</th>";  
-                    html2 += "<th>Monto</th>";  
+                    html2 += "<th>Monto<br>Crédito</th>";  
+                    html2 += "<th>Total Por<br>Cancelar C+I+M</th>";  
+                    html2 += "<th>Total<br>Cancelado</th>";  
+                    html2 += "<th>Total<br>Saldo</th>";  
                     html2 += "</tr>";  
                     $("#titulos").html(html2); 
                     
@@ -479,6 +482,9 @@ function tablacuentasagrupado(filtro)
                         }
 
                         html += "<td style='text-align: right'>"+Number(registros[i]['suma']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['total']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['cancelado']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+Number(registros[i]['saldo']).toFixed(2)+"</td>";
                       
 }
                    html += "<tr><td align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 

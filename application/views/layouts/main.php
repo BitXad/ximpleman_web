@@ -565,7 +565,8 @@
                         if($rolusuario[141-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>
+                            <!--<a href="<?php echo site_url('reportes');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>-->
+                            <a href="<?php echo site_url('reportes/movimientodiario');?>"><i class="fa fa-exchange"></i>Movimiento Diario</a>
                         </li> 
                         <?php
                         }

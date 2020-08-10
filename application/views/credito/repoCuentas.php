@@ -126,18 +126,18 @@ function inicio(){
                             }}
                             $repeat=false;
 
-                           for($i=0;$i<count($result);$i++)
-    {
+                            for($i=0;$i<count($result);$i++)
+                            {
 
-        if($result[$i]['cliente_nombre']==$t['cliente_nombre'])
-        {
-            $result[$i]['credito_monto']+=$t['credito_monto']; 
-            $repeat=true;
-            
-            break;
-             
-        } 
-    }
+                                if($result[$i]['cliente_nombre']==$t['cliente_nombre'])
+                                {
+                                    $result[$i]['credito_monto']+=$t['credito_monto']; 
+                                    $repeat=true;
+
+                                    break;
+
+                                } 
+                            }
     if($repeat==false)
         $result[] = array('cliente_nombre' => $t['cliente_nombre'], 'credito_monto' => $t['credito_monto']
     , 'cliente_telefono' => $t['cliente_telefono'], 'cliente_celular' => $t['cliente_celular'], 'credito_cancelado' => $cancelado);
@@ -146,7 +146,7 @@ function inicio(){
                             $cont = $cont+1; ?>
                          <tr>
                         <td style="text-align: center;"><?php echo $cont; ?></td>                                                
-                        <td style="text-align: center;"><?php echo $c['cliente_nombre']; ?></td>                                                
+                        <td style="text-align: left;"><?php echo $c['cliente_nombre']; ?></td>                                                
                         <td style="text-align: right;"><?php echo number_format($c['credito_monto'], 2, ".", ","); ?></td>
                         <td style="text-align: right;"><?php echo  number_format($c['credito_cancelado'], 2, ".", ",");  $totalCancelados+=$c['credito_cancelado']; ?></td>
                         

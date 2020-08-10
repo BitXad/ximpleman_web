@@ -75,20 +75,25 @@ function inicio(){
 <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 
-                        <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60">
-                    </center>
+                            <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60">
+                        </center>
                     </div>
+    
                     <div class="columna_izquierda">
-                       <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
-                        <?php echo $empresa[0]['empresa_zona']; ?><br>
-                        <?php echo $empresa[0]['empresa_direccion']; ?><br>
-                        <?php echo $empresa[0]['empresa_telefono']; ?>
-                    </div> </center>
+                       <center>  
+                            <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
+                            <?php echo $empresa[0]['empresa_zona']; ?><br>
+                            <?php echo $empresa[0]['empresa_direccion']; ?><br>
+                            <?php echo $empresa[0]['empresa_telefono']; ?>
+                        </center>
+                    </div>
+    
                     <div class="columna_central">
-                        <center>      <h3 class="box-title"><u>DEUDAS POR PAGAR</u></h3>
+                        <center>      
+                            <h3 class="box-title" style="font-family: Arial;"><u>DEUDAS POR PAGAR</u></h3>
                             <b>COMPRAS AL CREDITO</b> <br>
-                <?php echo date('d/m/Y H:i:s'); ?>
-                </center>
+                            <?php echo date('d/m/Y H:i:s'); ?>
+                        </center>
                     </div>
 </div>
  <a onclick="imprimir()" class="btn btn-success btn-sm no-print"><i class="fa fa-print"> Imprimir</i></a>

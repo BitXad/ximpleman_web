@@ -163,7 +163,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 //                        html += "<td style='text-align: right'><b>"+formato_numerico(totalutilidad)+"</b></td>";                    
 //                    html += "</tr>";
 
-                    estilo = "style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-size:12px; padding:0; '";
+                    estilo = "style='border-top-style: solid;  border-color: black;  border-top-width: 1px; font-size:14; padding:0; '";
                     
                     html += "<tr>";
                         html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS Bs</b></td>";
