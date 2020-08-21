@@ -504,7 +504,8 @@ class Categoria_insumo extends CI_Controller{
 
                 $this->load->model('Detalle_venta_model');
                 $res = $this->Detalle_venta_model->existe_insumo_asignado($producto_id,$detalleserv_id);
-                if(sizeof($res) > 0){
+                //if(sizeof($res) > 0){
+                if(isset($res)){
                     $cantidad1 = $res['detalleven_cantidad'];
                     $rescantidad = $cantidad + $cantidad1;
                     $resubtotal = $subtotal + $res['detalleven_subtotal'];
