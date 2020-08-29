@@ -456,7 +456,7 @@ function tablacuentasagrupado(filtro)
                     html2 += "<th>#</th>";  
                     html2 += "<th>Cliente</th>";  
                     html2 += "<th>Monto<br>Crédito</th>";  
-                    html2 += "<th>Total Por<br>Cancelar C+I+M</th>";  
+                    //html2 += "<th>Total Por<br>Cancelar C+I+M</th>";  
                     html2 += "<th>Total<br>Cancelado</th>";  
                     html2 += "<th>Total<br>Saldo</th>";  
                     html2 += "</tr>";  
@@ -466,11 +466,17 @@ function tablacuentasagrupado(filtro)
                   
                         total = 0;
                         iniciales = 0;
-                    for (var i = 0; i < n ; i++){
+                        total_acuenta = 0;
+                        saldo = 0;
+                        total_saldo = 0;
                         
+                    for (var i = 0; i < n ; i++){
                         // var suma = Number(registros[i]["detallecomp_total"]);
                         //descuento += Number(registros[i]["detallecomp_descuento"]);
                         total += Number(registros[i]["suma"]);
+                        total_acuenta += Number(registros[i]["cancelado"]);
+                        saldo = Number(registros[i]['suma']) - Number(registros[i]['cancelado']);
+                        total_saldo += Number(saldo);
                         //iniciales += Number(registros[i]["credito_cuotainicial"]);
                         //total_detalle = Number(subtotal-descuento); 
                         html += "<tr>"; 
@@ -481,15 +487,20 @@ function tablacuentasagrupado(filtro)
                         html += "<td>"+registros[i]['perro']+"</td>";     
                         }
 
-                        html += "<td style='text-align: right'>"+Number(registros[i]['suma']).toFixed(2)+"</td>";
-                        html += "<td style='text-align: right'>"+Number(registros[i]['total']).toFixed(2)+"</td>";
-                        html += "<td style='text-align: right'>"+Number(registros[i]['cancelado']).toFixed(2)+"</td>";
-                        html += "<td style='text-align: right'>"+Number(registros[i]['saldo']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['suma']))+"</td>";
+                        //html += "<td style='text-align: right'>"+Number(registros[i]['total']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['cancelado']))+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(saldo))+"</td>";
                       
-}
-                   html += "<tr><td align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
-                   html += "<td align=right></td>"; 
-                   html += "<td align=right><font size='2' face='Arial'><b>"+Number(total).toFixed(2)+"</b></font></td></tr>"; 
+                    }
+                    
+                        html += "<tr><td colspan='2' align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
+                        //html += "<td align=right></td>"; 
+                        html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(total))+"</b></font></td>";
+                        html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(total_acuenta))+"</b></font></td>";
+                        html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(total_saldo))+"</b></font></td>";
+
+                        html += "</tr>";
                    
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
