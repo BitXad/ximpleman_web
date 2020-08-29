@@ -833,7 +833,8 @@ class Servicio extends CI_Controller{
         //if($this->acceso(69)){
         $this->load->model('Detalle_venta_model');
         $datos = $this->Detalle_venta_model->get_all_insumo_usado($detalleserv_id);
-        if(sizeof($datos)>0){
+        //if(sizeof($datos)>0){
+        if(isset($datos)){
             echo json_encode($datos);
         }else{
             echo json_encode(null);
@@ -1316,6 +1317,7 @@ class Servicio extends CI_Controller{
                             'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
                             'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
                             'detalleserv_detalleexterno' => $this->input->post('detalleserv_detalleexterno'),
+                            'responsable_id' => $this->input->post('este_responsable_reginf'),
                         );
                     }else{
                         $params = array(
@@ -1388,21 +1390,39 @@ class Servicio extends CI_Controller{
                     $estado_id = 7; // 7 ---> ENTREGADO
                     $fecha_entregado = date('Y-m-d');
                     $hora_entregado  = date('H:i:s');
-                    
-                    $params = array(
-                        'usuariopsaldo_id' => $usuario_id,
-                        'detalleserv_fechaentregado' => $fecha_entregado,
-                        'detalleserv_horaentregado' => $hora_entregado,
-                        'detalleserv_fpagosaldo' => $fecha_entregado." ".$hora_entregado,
-                        'estado_id' => $estado_id,
-                        'detalleserv_total'       => $this->input->post('detalleserv_total'),
-                        'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
-                        'detalleserv_entregadoa'  => $this->input->post('detalleserv_entregadoa'),
-                        'detalleserv_diagnostico'  => $this->input->post('detalleserv_diagnosticot'),
-                        'detalleserv_solucion'  => $this->input->post('detalleserv_soluciont'),
-                        'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
-                        'detalleserv_detalleexterno'  => $this->input->post('detalleserv_detalleexterno'),
-                    );
+                    $tipousuario_id = $this->session_data['tipousuario_id'];
+                    if($tipousuario_id == 1){
+                        $params = array(
+                            'responsable_id'       => $this->input->post('este_responsable_regent'),
+                            'usuariopsaldo_id' => $usuario_id,
+                            'detalleserv_fechaentregado' => $fecha_entregado,
+                            'detalleserv_horaentregado' => $hora_entregado,
+                            'detalleserv_fpagosaldo' => $fecha_entregado." ".$hora_entregado,
+                            'estado_id' => $estado_id,
+                            'detalleserv_total'       => $this->input->post('detalleserv_total'),
+                            'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
+                            'detalleserv_entregadoa'  => $this->input->post('detalleserv_entregadoa'),
+                            'detalleserv_diagnostico'  => $this->input->post('detalleserv_diagnosticot'),
+                            'detalleserv_solucion'  => $this->input->post('detalleserv_soluciont'),
+                            'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
+                            'detalleserv_detalleexterno'  => $this->input->post('detalleserv_detalleexterno'),
+                        );
+                    }else{
+                        $params = array(
+                            'usuariopsaldo_id' => $usuario_id,
+                            'detalleserv_fechaentregado' => $fecha_entregado,
+                            'detalleserv_horaentregado' => $hora_entregado,
+                            'detalleserv_fpagosaldo' => $fecha_entregado." ".$hora_entregado,
+                            'estado_id' => $estado_id,
+                            'detalleserv_total'       => $this->input->post('detalleserv_total'),
+                            'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
+                            'detalleserv_entregadoa'  => $this->input->post('detalleserv_entregadoa'),
+                            'detalleserv_diagnostico'  => $this->input->post('detalleserv_diagnosticot'),
+                            'detalleserv_solucion'  => $this->input->post('detalleserv_soluciont'),
+                            'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
+                            'detalleserv_detalleexterno'  => $this->input->post('detalleserv_detalleexterno'),
+                        );
+                    }
                     $this->load->model('Detalle_serv_model');
                     $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
                     /* **************Suma los montos de los detalles y actualiza servicio************* */
@@ -1758,6 +1778,7 @@ class Servicio extends CI_Controller{
                             'detalleserv_saldo'       => $this->input->post('detalleserv_saldo'),
                             'detalleserv_precioexterno'  => $this->input->post('detalleserv_precioexterno'),
                             'detalleserv_detalleexterno' => $this->input->post('detalleserv_detalleexterno'),
+                            'responsable_id' => $this->input->post('este_responsable_reginf'),
                         );
                     }else{
                         $params = array(

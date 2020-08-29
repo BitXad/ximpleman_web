@@ -1698,7 +1698,7 @@ function mostrardetalleserv(serv_id){
                         //res += "<span style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px; width: 80% !important' class='btn btn-xs' title='Servicio "+registros[i]['estado_descripcion']+"' >";
                         res += "<tr style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px;'>";
                         res += "<td style='width: 70%; text-align: left; border: 0px; padding: 0px'>";
-                        res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+res_unico+"' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+res_unico+"' target='_blank' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
                         var detalle_descripcion = " ";
                         if(registros[i]['detalleserv_descripcion'] != null){
                             detalle_descripcion = registros[i]['detalleserv_descripcion'].substring(0,35);
@@ -2059,6 +2059,25 @@ function mostrardetalleserv(serv_id){
                         res +="<input style='width: 100%' type='text' name='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' id='detalleserv_detalleexterno"+registros[i]['detalleserv_id']+"' value='"+detalleexterno+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
                         res +="</td>";
                         res +="</tr>";
+                        if(tipousuario_id ==1){
+                        res +="<tr>";
+                        res +="<th><div class='text-right'>Responsable: </div></th>";
+
+                        res +="<td colspan='2'>";
+                        res += "<select name='este_responsable_reginf"+registros[i]["detalleserv_id"]+"' id='este_responsable_reginf"+registros[i]["detalleserv_id"]+"'>";
+                        var selectedus = "";
+                        for (var a = 0; a < cantus; a++) {
+                            if(all_usuario[a]["usuario_id"] == registros[i]["responsable_id"]){
+                                selectedus= "selected";
+                            }else{
+                                selectedus = "";
+                            }
+                            res += "<option "+selectedus+" value='"+all_usuario[a]["usuario_id"]+"'>"+all_usuario[a]["usuario_nombre"]+"</option>";
+                        }
+                        res += "</select>";
+                        res +="</td>";
+                        res +="</tr>";
+                        }
                         res +="</table>";
                         res +="<table style='width: 100%'>";
                         res +="<tr style='width: 100%'>";
@@ -2174,7 +2193,25 @@ function mostrardetalleserv(serv_id){
                         res +="<input style='width: 100%' type='text' name='detalleserv_detalleexternot"+registros[i]['detalleserv_id']+"' id='detalleserv_detalleexternot"+registros[i]['detalleserv_id']+"' value='"+detalleexternot+"' onkeyup='var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);' />";
                         res +="</td>";
                         res +="</tr>";
-                        
+                        if(tipousuario_id ==1){
+                        res +="<tr>";
+                        res +="<th><div class='text-right'>Responsable: </div></th>";
+
+                        res +="<td colspan='2'>";
+                        res += "<select name='este_responsable_regent"+registros[i]["detalleserv_id"]+"' id='este_responsable_regent"+registros[i]["detalleserv_id"]+"'>";
+                        var selectedus = "";
+                        for (var a = 0; a < cantus; a++) {
+                            if(all_usuario[a]["usuario_id"] == registros[i]["responsable_id"]){
+                                selectedus= "selected";
+                            }else{
+                                selectedus = "";
+                            }
+                            res += "<option "+selectedus+" value='"+all_usuario[a]["usuario_id"]+"'>"+all_usuario[a]["usuario_nombre"]+"</option>";
+                        }
+                        res += "</select>";
+                        res +="</td>";
+                        res +="</tr>";
+                        }
                         res +="</table>";
                         res +="<table style='width: 100%'>";
                         res +="<tr style='width: 100%'>";
@@ -2417,11 +2454,12 @@ function registrarservicio_terminado(servicio_id, detalleserv_id){
     if(tipousuario_id ==1){
         var detalleserv_descripcion = document.getElementById('detalleserv_descripcion'+detalleserv_id).value;
         var detalleserv_falla = document.getElementById('detalleserv_falla'+detalleserv_id).value;
+        var este_responsable_reginf = document.getElementById('este_responsable_reginf'+detalleserv_id).value;
         esdata = {detalleserv_descripcion:detalleserv_descripcion, detalleserv_falla:detalleserv_falla,
                   detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
                   detalleserv_precioexterno:detalleserv_precioexterno, detalleserv_detalleexterno:detalleserv_detalleexterno,
                   detalleserv_total:detalleserv_total, detalleserv_saldo:detalleserv_saldo,
-                  detalleserv_id:detalleserv_id, servicio_id:servicio_id};
+                  detalleserv_id:detalleserv_id, servicio_id:servicio_id, este_responsable_reginf:este_responsable_reginf};
     }else{
         esdata = {detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
                   detalleserv_precioexterno:detalleserv_precioexterno, detalleserv_detalleexterno:detalleserv_detalleexterno,
@@ -2470,11 +2508,12 @@ function registrarinformacion_detservicio(servicio_id, detalleserv_id){
     if(tipousuario_id ==1){
         var detalleserv_descripcion = document.getElementById('detalleserv_descripcion'+detalleserv_id).value;
         var detalleserv_falla = document.getElementById('detalleserv_falla'+detalleserv_id).value;
+        var este_responsable_reginf = document.getElementById('este_responsable_reginf'+detalleserv_id).value;
         esdata = {detalleserv_descripcion:detalleserv_descripcion, detalleserv_falla:detalleserv_falla,
                   detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
                   detalleserv_precioexterno:detalleserv_precioexterno, detalleserv_detalleexterno:detalleserv_detalleexterno,
                   detalleserv_total:detalleserv_total, detalleserv_saldo:detalleserv_saldo,
-                  detalleserv_id:detalleserv_id, servicio_id:servicio_id};
+                  detalleserv_id:detalleserv_id, servicio_id:servicio_id, este_responsable_reginf:este_responsable_reginf};
     }else{
         esdata = {detalleserv_diagnostico:detalleserv_diagnostico, detalleserv_solucion:detalleserv_solucion,
                   detalleserv_precioexterno:detalleserv_precioexterno, detalleserv_detalleexterno:detalleserv_detalleexterno,
@@ -2533,6 +2572,7 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
     var detalleserv_diagnosticot = document.getElementById('detalleserv_diagnosticot'+detalleserv_id).value;
     var detalleserv_soluciont = document.getElementById('detalleserv_soluciont'+detalleserv_id).value;
     var detalleserv_entregadoa = document.getElementById('detalleserv_entregadoat'+detalleserv_id).value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
     /*var producto_id = document.getElementById('esteproducto_idt'+detalleserv_id).value;
     var producto_precio = document.getElementById('producto_preciot'+detalleserv_id).value;
     var nombre_insumo = document.getElementById('nombre_insumot'+detalleserv_id).value;*/
@@ -2541,15 +2581,29 @@ function registrarservicio_entregado(servicio_id, detalleserv_id){
     var detalleserv_total = document.getElementById('detalleserv_totalt'+detalleserv_id).value;
     var detalleserv_saldo = document.getElementById('detalleserv_saldot'+detalleserv_id).value;
     //var tipoimpresora = document.getElementById('tipoimpresora').value;
+    var esdata = "";
+    if(tipousuario_id ==1){
+        var este_responsable_regent = document.getElementById('este_responsable_regent'+detalleserv_id).value;
+        esdata = {detalleserv_entregadoa:detalleserv_entregadoa, detalleserv_id:detalleserv_id,
+                  detalleserv_saldo:detalleserv_saldo, servicio_id:servicio_id, detalleserv_diagnosticot:detalleserv_diagnosticot,
+                  detalleserv_soluciont:detalleserv_soluciont,
+                  /*producto_id:producto_id, producto_precio:producto_precio,nombre_insumo:nombre_insumo, */
+                  detalleserv_precioexterno:detalleserv_precioexterno, 
+                  detalleserv_detalleexterno:detalleserv_detalleexterno, detalleserv_total:detalleserv_total,
+                  este_responsable_regent:este_responsable_regent};
+    }else{
+        esdata = {detalleserv_entregadoa:detalleserv_entregadoa, detalleserv_id:detalleserv_id,
+                  detalleserv_saldo:detalleserv_saldo, servicio_id:servicio_id, detalleserv_diagnosticot:detalleserv_diagnosticot,
+                  detalleserv_soluciont:detalleserv_soluciont,
+                  /*producto_id:producto_id, producto_precio:producto_precio,nombre_insumo:nombre_insumo, */
+                  detalleserv_precioexterno:detalleserv_precioexterno, 
+                  detalleserv_detalleexterno:detalleserv_detalleexterno, detalleserv_total:detalleserv_total};
+    }
+    
     $('#modalregistrarentregaserv'+detalleserv_id).modal('hide');
         $.ajax({url: controlador,
             type:"POST",
-            data:{detalleserv_entregadoa:detalleserv_entregadoa, detalleserv_id:detalleserv_id,
-                  detalleserv_saldo:detalleserv_saldo, servicio_id:servicio_id, detalleserv_diagnosticot:detalleserv_diagnosticot,
-                 detalleserv_soluciont:detalleserv_soluciont,
-                 /*producto_id:producto_id, producto_precio:producto_precio,nombre_insumo:nombre_insumo, */
-                 detalleserv_precioexterno:detalleserv_precioexterno, 
-                 detalleserv_detalleexterno:detalleserv_detalleexterno, detalleserv_total:detalleserv_total},
+            data:esdata,
             success:function(respuesta){
                 
                 resultado = JSON.parse(respuesta);
