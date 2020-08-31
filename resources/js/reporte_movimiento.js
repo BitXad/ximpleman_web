@@ -66,12 +66,46 @@ function formato_numerico(numero){
 	return x1 + x2;
 }
 
+function mostrar_detalle(){
+    
+    var numfilas = document.getElementById('filas_detalle').value;
+    var boton = document.getElementById('boton_detalle').value;
+    
+    
+    if (boton == "[+]"){
+        
+        for(i=1; i<=Number(numfilas);i++)
+            document.getElementById('ocultar_fila'+i).style.display = '';
+   
+        $("#boton_detalle").val("[-]");
+    }
+    else{
+        for(i=1; i<=Number(numfilas);i++)
+            document.getElementById('ocultar_fila'+i).style.display = 'none';
+   
+        $("#boton_detalle").val("[+]");
+    }
+    
+}
+
 function mostrar_filas(){
     
-    for(i=1; i<=20;i++)
-        document.getElementById('detalle_oculto'+i).style.display = '';
+    var numfilas = document.getElementById('numerofilas').value;
+    var boton = document.getElementById('boton_mostrar').value;
+    
+    
+    if (boton == "[+]"){
+        for(i=1; i<=Number(numfilas);i++)
+            document.getElementById('detalle_oculto'+i).style.display = '';
    
-    $("#boton_mostrar").val("[-]");
+        $("#boton_mostrar").val("[-]");
+    }
+    else{
+        for(i=1; i<=Number(numfilas);i++)
+            document.getElementById('detalle_oculto'+i).style.display = 'none';
+   
+        $("#boton_mostrar").val("[+]");
+    }
     
 }
 
@@ -110,28 +144,44 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     var ingreso_ventas = 0;
                     var ingreso_servicios = 0;
                     var ingreso_creditos = 0;
+                    var ingreso_envases = 0;
 
                     var ingreso_caja_debito = 0;
                     var ingreso_ventas_debito = 0;
                     var ingreso_servicios_debito = 0;
                     var ingreso_creditos_debito = 0;
+                    var ingreso_envases_debito = 0;
 
                     var ingreso_caja_transacciones = 0;
                     var ingreso_ventas_transacciones = 0;
                     var ingreso_servicios_transacciones = 0;
                     var ingreso_creditos_transacciones = 0;
+                    var ingreso_envases_transacciones = 0;
                     
                     var ingreso_caja_tarjetascredito = 0;
                     var ingreso_ventas_tarjetascredito = 0;
                     var ingreso_servicios_tarjetascredito = 0;
                     var ingreso_servicios_tarjetascredito = 0;
                     var ingreso_creditos_tarjetascredito = 0;
+                    var ingreso_envases_tarjetascredito = 0;
                     
                     var ingreso_caja_cheque = 0;
                     var ingreso_ventas_cheque = 0;
                     var ingreso_servicios_cheque = 0;
                     var ingreso_servicios_cheque = 0;
                     var ingreso_creditos_cheque = 0;
+                    var ingreso_envases_cheque = 0;
+                    
+                   
+                   var egreso_caja = 0;
+                   var egreso_ordenes = 0;
+                   var egreso_compras = 0;
+                   var egreso_pagos = 0;
+                   
+                   var totalegreso_efectivo = 0;
+                    
+                    
+                    
                     
                     var n = registros.length; //tamaño del arreglo de la consulta
 //                    $("#resingegr").val("- "+n+" -");
@@ -146,6 +196,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     var total_credito = 0;
                     var total_cheque = 0;
                     
+                    var filas = 0;
+                    
                     for (var i = 0; i < n ; i++){
                         
                         totalingresos += Number(registros[i]["ingresos"]);
@@ -153,8 +205,9 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         totalutilidad += Number(registros[i]["utilidad"]);
                         
                         if(registros[i]["tipotrans_id"]<=2 && registros[i]["forma_id"]==1) totalefectivo += Number(registros[i]["ingresos"]);                       
-                       
-                        html += "<tr "+estilo+">"
+                        filas++;
+                        html += "<tr style='padding:0; ' id='ocultar_fila"+filas+"' >";
+                        
                             html += "<td "+estilo+">"+(i+1)+"</td>";
                             html += "<td "+estilo+">"+moment(registros[i]["fecha"]).format("DD/MM/YYYY");+"</td>";
                             html += "<td style='text-align: right; padding:0;'>"+registros[i]["recibo"];
@@ -185,6 +238,16 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                     if(registros[i]["orden"] == 3) ingreso_servicios += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
                                     if(registros[i]["orden"] == 4) ingreso_servicios += Number(registros[i]["ingresos"]); //pagos saldo por servicios
                                     if(registros[i]["orden"] == 5) ingreso_creditos += Number(registros[i]["ingresos"]);
+                                    if(registros[i]["orden"] == 6) ingreso_envases += Number(registros[i]["ingresos"]);
+                                    
+                           
+                                    if(registros[i]["orden"] == 11) egreso_caja += Number(registros[i]["egresos"]);
+                                    if(registros[i]["orden"] == 12) egreso_compras += Number(registros[i]["egresos"]);
+                                    if(registros[i]["orden"] == 13) egreso_ordenes += Number(registros[i]["egresos"]);
+                                    if(registros[i]["orden"] == 14) egreso_pagos += Number(registros[i]["egresos"]);
+                                    
+                                    
+                                    
                             }
                             
                             if (registros[i]["forma_id"] == 2){ // Tarjetas de Debito
@@ -196,6 +259,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                     if(registros[i]["orden"] == 3) ingreso_servicios_debito += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
                                     if(registros[i]["orden"] == 4) ingreso_servicios_debito += Number(registros[i]["ingresos"]); //pagos saldo por servicios
                                     if(registros[i]["orden"] == 5) ingreso_creditos_debito += Number(registros[i]["ingresos"]);
+                                    if(registros[i]["orden"] == 6) ingreso_envases_debito += Number(registros[i]["ingresos"]);
                             }
                             
                             if (registros[i]["forma_id"] == 3){ // Transacciones Bancarias
@@ -206,6 +270,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                     if(registros[i]["orden"] == 3) ingreso_servicios_transacciones += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
                                     if(registros[i]["orden"] == 4) ingreso_servicios_transacciones += Number(registros[i]["ingresos"]); //pagos saldo por servicios
                                     if(registros[i]["orden"] == 5) ingreso_creditos_transacciones += Number(registros[i]["ingresos"]);                           
+                                    if(registros[i]["orden"] == 6) ingreso_envases_transacciones += Number(registros[i]["ingresos"]);                           
                             }
                             
                             if (registros[i]["forma_id"] == 4){ //Tarjetas de credito
@@ -215,6 +280,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                     if(registros[i]["orden"] == 3) ingreso_servicios_tarjetascredito += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
                                     if(registros[i]["orden"] == 4) ingreso_servicios_tarjetascredito += Number(registros[i]["ingresos"]); //pagos saldo por servicios
                                     if(registros[i]["orden"] == 5) ingreso_creditos_tarjetascredito += Number(registros[i]["ingresos"]);                                 
+                                    if(registros[i]["orden"] == 6) ingreso_envases_tarjetascredito += Number(registros[i]["ingresos"]);                                 
                        
 
                             }
@@ -228,6 +294,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                     if(registros[i]["orden"] == 3) ingreso_servicios_cheque += Number(registros[i]["ingresos"]); //Pagos a cuenta por servicios
                                     if(registros[i]["orden"] == 4) ingreso_servicios_cheque += Number(registros[i]["ingresos"]); //pagos saldo por servicios
                                     if(registros[i]["orden"] == 5) ingreso_creditos_cheque += Number(registros[i]["ingresos"]);                                 
+                                    if(registros[i]["orden"] == 6) ingreso_envases_cheque += Number(registros[i]["ingresos"]);                                 
                              }
                             //EGRESOS
                             
@@ -259,6 +326,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                        
                     }
                     
+                    html += "<input type='hidden' value='"+filas+"' id='filas_detalle'/>";
 //                    html += "<tr style='background-color: #aaaaaa !important; -webkit-print-color-adjust: exact; color-adjust: exact;'>";
 //                        html += "<td colspan='4'><b>TOTALES </b></td>";
 //                        html += "<td> </td>";
@@ -272,11 +340,13 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     estilox = "style='padding:0;'";                    
 
                     html += "<tr>";
-                        html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS Bs <button onclick='mostrar_filas();' id='boton_mostrar' class='btn btn-xs'>[+]</button> </b></td>";
+                        html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS Bs <input type='button' value='[+]' onclick='mostrar_filas();' id='boton_mostrar' class='btn btn-xs'/> </b></td>";
                         html += "<td "+estilo+" ><b>"+formato_numerico(totalingresos)+"</b></td>";
                         html += "<td "+estilo+" ></td>";
                         html += "<td "+estilo+" ></td>";
                     html += "</tr>";
+                    
+                    numerofilas = 0;
                     
                     if(total_efectivo>0){
                     html += "<tr>";
@@ -288,7 +358,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     html += "</tr>";
                     
                             if (ingreso_caja>0){
-                                html += "<tr style='display:none;' id='detalle_oculto1'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja)+"</td>";
@@ -298,7 +369,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_ventas>0){
-                                html += "<tr style='display:none;' id='detalle_oculto2'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas)+"</td>";
@@ -308,7 +380,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_servicios>0){
-                                html += "<tr style='display:none;' id='detalle_oculto3'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios)+"</td>";
@@ -318,10 +391,22 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_creditos>0){
-                                html += "<tr style='display:none;' id='detalle_oculto4'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }
+
+                            if (ingreso_envases>0){
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMO DE ENVASES Bs</td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
                                 html += "</tr>";
@@ -341,7 +426,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     
                             if (ingreso_caja_debito > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto5'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_debito)+"</td>";
@@ -351,7 +437,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_ventas_debito > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto6'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_debito)+"</td>";
@@ -361,7 +448,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_servicios_debito > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto7'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_debito_debito)+"</td>";
@@ -371,10 +459,22 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_creditos_debito > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto8'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_debito)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }                    
+
+                            if (ingreso_envases_debito > 0){
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_debito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
                                 html += "</tr>";
@@ -393,7 +493,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     html += "</tr>";
                     
                             if (ingreso_caja_transacciones > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto9'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_transacciones)+"</td>";
@@ -403,7 +504,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_ventas_transacciones > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto10'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_transacciones)+"</td>";
@@ -413,7 +515,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_servicios_transacciones > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto11'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_transacciones)+"</td>";
@@ -423,10 +526,22 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_creditos_transacciones > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto12'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_transacciones)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }               
+
+                            if (ingreso_envases_transacciones > 0){
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_transacciones)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
                                 html += "</tr>";
@@ -444,7 +559,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     html += "</tr>";
 
                             if (ingreso_caja_tarjetascredito > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto13'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_tarjetascredito)+"</td>";
@@ -454,7 +570,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_ventas_tarjetascredito > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto14'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_tarjetascredito)+"</td>";
@@ -464,7 +581,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_servicios_tarjetascredito > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto15'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_tarjetascredito)+"</td>";
@@ -474,10 +592,22 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_creditos_tarjetascredito > 0){
-                                html += "<tr  style='display:none;' id='detalle_oculto16'>";
+                                numerofilas++;
+                                html += "<tr  style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_tarjetascredito)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }                                      
+
+                            if (ingreso_envases_tarjetascredito > 0){
+                                numerofilas++;
+                                html += "<tr  style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_tarjetascredito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
                                 html += "</tr>";
@@ -495,7 +625,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     html += "</tr>";
 
                             if (ingreso_caja_cheque > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto17'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_cheque)+"</td>";
@@ -505,6 +636,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_ventas_cheque > 0){
+                                numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto18'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
@@ -515,7 +647,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_servicios_cheque > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto19'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_cheque)+"</td>";
@@ -525,27 +658,94 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                             }
 
                             if (ingreso_creditos_cheque > 0){
-                                html += "<tr style='display:none;' id='detalle_oculto20'>";
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
                                     html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_cheque)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
                                 html += "</tr>";
+                            }                                            
+
+                            if (ingreso_envases_cheque > 0){
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_cheque)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
                             }                        
-                    
                     
                     }
 
-
+                  
 
                     html += "<tr>";
-                        html += "<td></td>";
+                        //html += "<td colspan='2'></td>";
                         html += "<td colspan='5'><b>TOTAL EGRESOS Bs</b></td>";
-                        html += "<td style='text-align: right'><b>"+formato_numerico(totalegresos)+"</b></td>";
+                        html += "<td><b>"+formato_numerico(totalegresos)+"</b></td>";
+                        html += "<td colspan='2'></td>";
                     html += "</tr>";
-
                     
+                    if(totalegresos>0){
+                        
+                            html += "<tr>";
+                                html += "<td></td>";
+                                html += "<td "+estilox+" colspan='5'><b>OPERACIONES EN EFECTIVO Bs</b></td>";
+                                html += "<td "+estilo2+" ><b>"+formato_numerico(totalegreso_efectivo)+"</b></td>";
+                                html += "<td "+estilo2+" ></td>";
+                                html += "<td "+estilo2+" ></td>";
+                            html += "</tr>";
+                    
+                            if (egreso_caja>0){
+                               
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA Bs</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_caja)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }
+
+                            if (egreso_compras>0){
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS Bs</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_compras)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }
+
+                            if (egreso_ordenes>0){
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO Bs</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_ordenes)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }
+
+                            if (egreso_pagos>0){
+                                numerofilas++;
+                                html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
+                                    html += "<td colspan='2'></td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO Bs</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                    html += "<td "+estilo2+" >"+formato_numerico(egreso_pagos)+"</td>";
+                                    html += "<td "+estilo2+" ></td>";
+                                html += "</tr>";
+                            }
+                    }                    
+
                     subtotal = totalingresos - totalegresos;
                     
                     html += "<tr style='font-size:12px;'>";
@@ -581,6 +781,8 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         html += "</tr>";
                     }
                     
+                      html += "<input  type='hidden' value='"+numerofilas+"' id='numerofilas' name='numerofilas' />"
+
                     $("#tablatotalresultados").html(html);
                    
                     $('#elusuario').html("<span class='text-bold'>Usuario: </span>"+esusuario);
