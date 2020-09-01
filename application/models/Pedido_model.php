@@ -301,13 +301,21 @@ class Pedido_model extends CI_Model
     
     function get_mis_pedidos($usuario_id)
     {
+//        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
+//                c.cliente_latitud, c.cliente_longitud, c.cliente_direccion, c.cliente_foto
+//               from pedido p, estado e, cliente c 
+//               where 
+//                p.estado_id = e.estado_id
+//                and p.cliente_id = c.cliente_id
+//                and p.estado_id = 11
+//                and p.usuario_id = ".$usuario_id;
+
         $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
                 c.cliente_latitud, c.cliente_longitud, c.cliente_direccion, c.cliente_foto
                from pedido p, estado e, cliente c 
                where 
                 p.estado_id = e.estado_id
                 and p.cliente_id = c.cliente_id
-                and p.estado_id = 11
                 and p.usuario_id = ".$usuario_id;
         
         $result = $this->db->query($sql)->result_array();
