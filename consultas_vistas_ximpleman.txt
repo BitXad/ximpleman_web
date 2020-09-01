@@ -1,0 +1,367 @@
+vista saldo credito : conssaldocredito
+=====================
+
+select credito_id, sum(cuota_total) as total,sum(cuota_cancelado) as cancelado, sum(cuota_total - cuota_cancelado) as saldo
+from cuota
+where estado_id = 9
+group by credito_id
+
+
+vista utilidad : consutilidad
+================
+
+select d.venta_id, 
+sum(((d.detalleven_precio - d.detalleven_descuento)) * d.detalleven_cantidad) as precio,
+sum((d.detalleven_costo) * d.detalleven_cantidad) as costo,
+
+sum(((d.detalleven_precio - d.detalleven_descuento) - d.detalleven_costo) * d.detalleven_cantidad) as utilidad
+from detalle_venta d
+group by d.venta_id
+
+
+
+
+
+
+
+
+
+REPORTE MOVIMIENTO DIARIO INGRESOS
+===================================
+
+(select 
+1 as orden,
+date(i.ingreso_fecha) as fecha,
+time(i.ingreso_fecha) as hora,
+i.ingreso_id as recibo,
+if(f.factura_numero>0,f.factura_numero,0) as factura,
+concat('INGRESO, CONTADO/EFECTIVO: ',i.ingreso_nombre,i.ingreso_concepto) as   detalle,
+i.ingreso_monto as ingresos,
+0 as egresos,
+0 as utilidad,
+i.ingreso_monto as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+i.usuario_id,
+if(f.factura_id>0,f.factura_id,0) as factura_id,
+0 as error
+from ingresos i
+left join factura f on f.ingreso_id  = i.ingreso_id
+order by i.ingreso_fecha
+)
+
+UNION
+
+(select 
+2 as orden,
+v.venta_fecha as fecha,
+v.venta_hora as hora,
+v.venta_id as recibo,  
+if(f.factura_numero>=0,f.factura_numero,0) as factura,
+CONCAT('VENTA, ',t.tipotrans_nombre,'/',p.forma_nombre,': ',c.cliente_nombre) as detalle,
+if(r.credito_cuotainicial>=0,r.credito_cuotainicial,v.venta_total) as ingresos,
+0 as egresos,
+u.utilidad,
+round(u.precio,2) as precio,
+v.tipotrans_id,
+t.tipotrans_nombre as transaccion,
+v.forma_id,
+p.forma_nombre as forma,
+v.usuario_id,
+if(f.factura_id>0,f.factura_id,0) as factura_id,
+if (round(v.venta_total,2)=round(u.precio,2),0,1) as error
+
+from venta v
+
+left join factura f on f.venta_id = v.venta_id
+left join consutilidadventas u on u.venta_id = v.venta_id
+left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
+left join cliente c on c.cliente_id = v.cliente_id
+left join forma_pago p on p.forma_id = v.forma_id
+left join credito r on r.venta_id = v.venta_id
+
+order by v.venta_fecha, v.venta_hora
+)
+
+UNION
+
+(select 
+3 as orden,
+d.detalleserv_fechaentrega as fecha,
+d.detalleserv_horaentrega as hora,
+d.servicio_id as recibo,
+if(f.factura_numero>=0,f.factura_numero,0) as factura,
+CONCAT('SERVICIO, PAGO A CTTA CONTADO/EFECTIVO: ',c.cliente_nombre) as detalle,
+d.detalleserv_acuenta as ingresos,
+0 as egresos,
+0 as utilidad,
+round(d.detalleserv_acuenta,2) as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+d.usuariopacuenta_id as usuario_id,
+if(f.factura_id>0,f.factura_id,0) as factura_id,
+0 as error
+
+from detalle_serv d
+
+left join factura f on f.servicio_id = d.servicio_id
+left join servicio s on  s.servicio_id = d.servicio_id
+left join cliente c on c.cliente_id = s.cliente_id
+
+where d.detalleserv_acuenta > 0
+order by d.detalleserv_fechaentrega, d.detalleserv_horaentrega
+)
+
+UNION
+
+(select 
+4 as orden,
+d.detalleserv_fechaentregado as fecha,
+d.detalleserv_horaentregado as hora,
+d.servicio_id as recibo,
+if(f.factura_numero>=0,f.factura_numero,0) as factura,
+CONCAT('SERVICIO, CONTADO/EFECTIVO: ',c.cliente_nombre) as detalle,
+d.detalleserv_saldo as ingresos,
+0 as egresos,
+(d.detalleserv_total - if(d.detalleserv_precioexterno>0,d.detalleserv_precioexterno,0)
+ - if(d.detalleserv_insumo>0,d.detalleserv_insumo,0)) as utilidad,
+round(d.detalleserv_saldo,2) as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+d.usuariopsaldo_id as usuario_id,
+if(f.factura_id>0,f.factura_id,0) as factura_id,
+0 as error
+
+from detalle_serv d
+
+left join factura f on f.servicio_id = d.servicio_id
+left join servicio s on  s.servicio_id = d.servicio_id
+left join cliente c on c.cliente_id = s.cliente_id
+
+where d.estado_id = 7
+order by d.detalleserv_fechaentregado, d.detalleserv_horaentregado
+)
+
+UNION
+
+(select 
+5 as orden,
+u.cuota_fecha as fecha,
+u.cuota_hora as hora,
+u.cuota_id recibo,
+if(f.factura_numero>0,f.factura_numero,0) as factura,
+concat('CUOTA DE CREDITO Nº ',u.cuota_numcuota,', EFECTIVO: ' ,c.cliente_nombre) AS   detalle,
+u.cuota_cancelado as ingresos,
+0 as egresos,
+u.cuota_interes,
+u.cuota_cancelado as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+u.usuario_id,
+if(f.factura_id>0,f.factura_id,0) as factura_id,
+0 as error
+
+from  credito r
+
+left join cuota u on u.credito_id = r.credito_id
+left join factura f on f.cuota_id  = u.cuota_id
+left join venta v on v.venta_id = r.venta_id
+left join cliente c on c.cliente_id = v.cliente_id
+
+
+
+where 
+u.estado_id = 9 and
+r.venta_id >=1 or
+r.servicio_id >=1
+order by u.cuota_fecha, u.cuota_hora
+)
+
+UNION
+
+(
+select 
+6 as orden,
+c.venta_fecha as fecha,
+c.venta_hora as hora,
+c.venta_id as recibo,
+0 as factura,
+concat('PRESTAMO DE ENVASE, ',t.tipotrans_nombre,'/',f.forma_nombre,': ',c.cliente_nombre) AS   detalle,
+c.detalleven_garantiaenvase ingresos,
+0 as egresos,
+0 as utilidad,
+c.detalleven_precioenvase as precio,
+c.tipotrans_id,
+t.tipotrans_nombre as transaccion,
+c.forma_id,
+f.forma_nombre as forma,
+c.usuario_id,
+0 as factura_id,
+0 as error
+
+from consprestamos c
+left join forma_pago f on f.forma_id = c.forma_id
+left join tipo_transaccion t on t.tipotrans_id = c.tipotrans_id
+)
+
+UNION
+(
+select 
+11 as orden,
+date(e.egreso_fecha) as fecha,
+time(e.egreso_fecha) as hora,
+e.egreso_id as recibo,
+0 as factura,
+concat('EGRESO, ',e.egreso_concepto,": " ,e.egreso_nombre) as   detalle,
+0 as ingresos,
+e.egreso_monto as egresos,
+0 as utilidad,
+0 as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+e.usuario_id,
+0 as factura_id,
+0 as error
+from egresos e
+order by e.egreso_fecha
+)
+UNION
+(
+
+select 
+12 as orden,
+c.compra_fecha as fecha,
+c.compra_hora as hora,
+c.compra_id as recibo,  
+0 as factura,
+CONCAT('COMPRA ',t.tipotrans_nombre,': ',e.proveedor_nombre) as detalle,
+0 as ingresos,
+if(r.credito_cuotainicial>=0,r.credito_cuotainicial,c.compra_total) as egresos,
+0 as utilidad,
+0 as precio,
+c.tipotrans_id,
+t.tipotrans_nombre as transaccion,
+c.forma_id,
+p.forma_nombre as forma,
+c.usuario_id,
+0 as factura_id,
+0 as error
+
+from compra c
+
+left join tipo_transaccion t on t.tipotrans_id = c.tipotrans_id
+left join proveedor e on e.proveedor_id = c.proveedor_id
+left join forma_pago p on p.forma_id = c.forma_id
+left join credito r on r.compra_id = c.compra_id
+
+where 
+c.compra_caja = 1 or
+c.tipotrans_id = 2 and
+r.credito_cuotainicial>0 
+
+order by c.compra_fecha, c.compra_hora
+
+)
+UNION
+(
+
+select 
+13 as orden,
+o.orden_fechapago as fecha,
+o.orden_horapago as hora,
+o.orden_id as recibo,  
+0 as factura,
+CONCAT('ORDEN DE PAGO ',o.orden_motivo,': ',o.orden_destinatario) as detalle,
+0 as ingresos,
+o.orden_monto as egresos,
+0 as utilidad,
+0 as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+o.usuario_id2 as usuario_id,
+0 as factura_id,
+0 as error
+
+from orden_pago o
+where o.estado_id = 9                                                                                                                                                                                                                                                                                                                                                                        
+
+order by o.orden_fechapago, o.orden_horapago
+
+)
+
+
+UNION
+
+(
+select 
+14 as orden,
+u.cuota_fecha as fecha,
+u.cuota_hora as hora,
+u.cuota_id recibo,
+0 as factura,
+concat('PAGO DE CREDITO Nº ',u.cuota_numcuota,": " ,p.proveedor_nombre ) AS   detalle,
+0 as ingresos,
+u.cuota_cancelado as egresos,
+
+u.cuota_interes,
+u.cuota_cancelado as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+u.usuario_id,
+0 as factura_id,
+0 as error
+
+from  credito r
+
+left join cuota u on u.credito_id = r.credito_id
+left join compra c on c.compra_id = r.compra_id
+left join proveedor p on p.proveedor_id = c.proveedor_id
+
+
+
+where 
+u.estado_id = 9 and
+r.compra_id >=1 and
+if(u.cuota_ordenpago>=1,u.cuota_ordenpago,0) = 0
+order by u.cuota_fecha, u.cuota_hora
+
+)
+
+UNION
+(
+select 
+6 as orden,
+c.detalleven_fechadevolucion as fecha,
+c.detalleven_horadevolucion as hora,
+c.venta_id as recibo,
+0 as factura,
+concat('DEVOLUCIÓN X ENVASE PRESTADO, CONTADO/EFECTIVO: ',c.cliente_nombre) AS   detalle,
+0 as ingresos,
+c.detalleven_montodevolucion egresos,
+0 as utilidad,
+c.detalleven_precioenvase as precio,
+1 as tipotrans_id,
+'CONTADO' as transaccion,
+1 as forma_id,
+'EFECTIVO' as forma,
+c.usuario_id, 
+0 as factura_id,
+0 as error
+
+from consprestamos c
+)
+

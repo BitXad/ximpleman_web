@@ -1088,6 +1088,26 @@ function registrarpedido()
         }
         
     }
+
+    function mapa_distribuidor()
+    {
+
+       if($this->acceso(30)) {
+        //**************** inicio contenido ***************  
+        
+            $data['page_title'] = "Mapa de Entregas";
+            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+            
+            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+            $data['_view'] = 'pedido/mapaentregas';
+            
+            $this->load->view('layouts/main',$data);
+            
+        //**************** fin contenido ***************
+        }
+        
+    }
     
 
     function mapa_clientes($usuario_id,$dia_visita)
@@ -1131,6 +1151,7 @@ function registrarpedido()
         }
         
     }
+    
     
 
     function eliminardetalle()

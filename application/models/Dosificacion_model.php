@@ -87,7 +87,8 @@ class Dosificacion_model extends CI_Model
 
             WHERE
                 d.estado_id = e.estado_id
-                and d.empresa_id = em.empresa_id
+                and d.empresa_id = em.empresa_id and
+                d.dosificacion_fechalimite >= date(now())
 
             ORDER BY `dosificacion_id` DESC
 

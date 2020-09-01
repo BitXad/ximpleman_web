@@ -72,7 +72,7 @@ function buscarventasdist(){
                     var ventatotal = Number(0);
                    
                     html = "";
-                   
+                    var imagen = "";
                    
                     for (var i = 0; i < n ; i++){
                         
@@ -87,6 +87,21 @@ function buscarventasdist(){
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>";
+                        
+                        html += "<td>";
+                        
+                            if ((registros[i]["cliente_latitud"]==0 && registros[i]["cliente_longitud"]==0) || (registros[i]["cliente_latitud"]==null && registros[i]["cliente_longitud"]==null) || (registros[i]["cliente_latitud"]== "" && registros[i]["cliente_longitud"]=="")){ 
+                                imagen = "noubicacion.png";
+                                html += " <a href='#' title='CLIENTE SIN UBICACIÓN REGISTRADA'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+                            }
+                            else{
+                                imagen = "blue.png";
+                                html += " <a href='https://www.google.com/maps/dir/"+registros[i]['cliente_latitud']+","+registros[i]['cliente_longitud']+"' target='_blank' title='lat:"+registros[i]['cliente_latitud']+",long:"+registros[i]['cliente_longitud']+"'><img src='"+base_url+"resources/images/"+imagen+"' width='25' height='25'></a>";
+
+                            }
+
+                        html += "</td>";
+                        
                         html += "<b>Telf.:</b>"+registros[i]["cliente_telefono"]+"<b>Dir.:"+registros[i]["cliente_direccion"]+"</b>";
                         html += "<td align='center'>"+registros[i]["venta_id"]+"</td>"; 
                         html += "<td align='right'>"+Number(registros[i]["venta_total"]).toFixed(2)+"</td>"; 
