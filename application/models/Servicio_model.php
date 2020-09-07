@@ -331,7 +331,7 @@ class Servicio_model extends CI_Model
                  ".
                 $filtro." 
 
-            ORDER BY ds.detalleserv_fechaentregado desc, ds.detalleserv_horaentregado desc 
+            ORDER BY ds.detalleserv_fechaentregado asc, ds.detalleserv_horaentregado asc 
         ")->result_array();
         
         return $servicio;
