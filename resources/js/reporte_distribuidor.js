@@ -69,7 +69,7 @@ function buscarventasdist(){
                     var total = Number(0);
                     
                     var n = registros.length; //tamaÃ±o del arreglo de la consulta
-                   
+                    var ventatotal = Number(0);
                    
                     html = "";
                     var imagen = "";
@@ -82,7 +82,7 @@ function buscarventasdist(){
                             var color="rgba(0, 255, 0, 0.7)";
                         }
 
-                        
+                        ventatotal = ventatotal + Number(registros[i]["venta_total"]);
                         html += "<tr style='background-color: "+color+"'>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -169,7 +169,14 @@ function buscarventasdist(){
                         }
                         html += "</tr>";
                     } 
-                        
+                        html += "<tr>";
+                        html += "<td class='text-bold text-right' colspan='3'>TOTAL:";
+                        html += "</td>";
+                        html += "<td class='text-bold text-right'>"+Number(ventatotal).toFixed(2);
+                        html += "</td>";
+                        html += "<td colspan='2'>";
+                        html += "</td>";
+                        html += "</tr>";
                    
                    $("#tablaresultados").html(html);
                    

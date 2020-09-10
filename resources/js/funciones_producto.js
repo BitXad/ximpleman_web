@@ -204,6 +204,7 @@ function tablaresultadosproducto(limite){
                             codbarras = registros[i]["producto_codigobarra"];
                         }
                         html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
+                        html += "<td>"+Number(registros[i]["existencia"])+"</td>";
                         html += "<td>";
                         if(tipousuario_id == 1){
                             html += "<b>COMPRA: </b>"+registros[i]["producto_costo"]+"<br>";
@@ -445,6 +446,7 @@ function cabecera_tabla() {
     chtml += "<th  role='columnheader' >Categoria|<br>Presentación</th>";
     chtml += "<th  role='columnheader' >Envase</th>";
     chtml += "<th  role='columnheader' >Código|<br>Cód. Barra</th>";
+    chtml += "<th  role='columnheader' >Exist.</th>";
     chtml += "<th  role='columnheader' >Precio</th>";
     chtml += "<th  role='columnheader' >Moneda</th>";
     chtml += "<th  role='columnheader' class='no-print'>Estado</th>";
@@ -562,6 +564,7 @@ function busqueda_inicial() {
             codbarras = registros[i]["producto_codigobarra"];
         }
         html += "<td>"+registros[i]["producto_codigo"]+"<br>"+ codbarras +"</td>";
+        html += "<td>"+Number(registros[i]["existencia"])+"</td>";
         html += "<td>";
         if(tipousuario_id == 1){
             html += "<b>COMPRA: </b>"+registros[i]["producto_costo"]+"<br>";
