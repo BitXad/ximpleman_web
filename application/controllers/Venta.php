@@ -65,8 +65,6 @@ class Venta extends CI_Controller{
         $data['_view'] = 'venta/index';
         $this->load->view('layouts/main',$data);
         
-		
-		
         //**************** fin contenido ***************
 		}
         

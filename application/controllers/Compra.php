@@ -16,6 +16,7 @@ class Compra extends CI_Controller{
         $this->load->model('Empresa_model');
         $this->load->model('Parametro_model');
         $this->load->model('Detalle_compra_model');
+        $this->load->model('Inventario_model');
         $this->load->helper('numeros');
         $this->load->model('Usuario_model');
         if ($this->session->userdata('logged_in')) {
@@ -632,372 +633,536 @@ class Compra extends CI_Controller{
        redirect('compra/index');
        /////////aca redirect////////////
     }
+    
+    function actualizar_costos($producto_id,$saldo){
+        
+        if($saldo>0){
+            
+        
+            $kardex = $this->Inventario_model->mostrar_compras($producto_id);
+            $costo_total = 0;
+            $saldo_total = $saldo;
+            $costo_promedio = 0.0;
+            
+            foreach($kardex as $k){
+
+                if ($saldo>=$k["detallecomp_cantidad"]){
+
+                        $costo_total += ($k["detallecomp_cantidad"] * $k["detallecomp_costo"]);
+                        $saldo -= $k["detallecomp_cantidad"]; 
+                        
+                        
+                }
+                else{
+                    if ($saldo>0){
+
+                        $costo_total += ($saldo * $k["detallecomp_costo"]);
+                        $saldo = 0;
+
+                    }
+                }
+            }
+
+            $costo_promedio = $costo_total / $saldo_total;
+            echo $costo_total."  -  ".$saldo_total;
+            $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$producto_id." and p.producto_id=".$producto_id." ";
+            $this->db->query($sql);
+            
+
+        }
+        
+    }
 
     function finalizarcompra($compra_id)
     {
 
-    if($this->acceso(1)){
-            $usuario_id = $this->session_data['usuario_id'];
- $this->load->model('Compra_model');
- $null = NULL;
- $num = $this->Compra_model->numero();
- $maximo = $num[0]['parametro_montomax'];
- $diasgra = $num[0]['parametro_diasgracia'];
- $diapago = $num[0]['parametro_diapago'];
- $periodo = $num[0]['parametro_periododias'];
- $numcuota =$this->input->post('credito_numpagos');
- $interes = $num[0]['parametro_interes'];
- $nroDia = date('N');
- $proxima_semana = time() + (7 * 24 * 60 * 60); 
- $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
- $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
- $patron = ($numcuota*0.5) + 0.5;
- $totalcompra=$this->input->post('compra_total');
- $descglobal=$this->input->post('compra_descglobal');
- $banderafin=$this->input->post('banderafin');
- $nueva_fecha = date("Y-m-d"); 
- $nueva_hora = date("H:i:s"); 
- if ($descglobal>0) {
-    $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
-
-        $this->db->query($descontar);
- }
- if(isset($_POST) && count($_POST) > 0)     
- {   
-     if ($banderafin==0) {
-    $params = array(
-        'compra_glosa' => $this->input->post('compra_glosa'),
-        'compra_numdoc' => $this->input->post('compra_numdoc'),
-        'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
-        'tipotrans_id' => $this->input->post('tipotrans_id'),                       
-        'forma_id' => $this->input->post('forma_id'),
-        'compra_subtotal' => $this->input->post('compra_subtotal'),
-        'compra_descuento' => $this->input->post('compra_descuento'),
-        'compra_descglobal' => $this->input->post('compra_descglobal'),
-        'compra_total' => $this->input->post('compra_total'),
-        'compra_totalfinal' => $this->input->post('compra_totalfinal'),
-        'usuario_id' => $usuario_id,
-        'compra_efectivo' => $this->input->post('compra_efectivo'),
-        'compra_cambio' => $this->input->post('compra_cambio'),
-        'compra_caja' => $this->input->post('compra_caja'),
-        'compra_placamovil' => $null,
-        'compra_codcontrol' => $this->input->post('compra_codcontrol'),
-        'compra_fecha' => $nueva_fecha,
-        'compra_hora' => $nueva_hora,
-    );  
-        } else{
-    $params = array(
-
-        'compra_glosa' => $this->input->post('compra_glosa'),
-        'compra_numdoc' => $this->input->post('compra_numdoc'),
-        'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
-        'tipotrans_id' => $this->input->post('tipotrans_id'),                       
-        'forma_id' => $this->input->post('forma_id'),
-        'compra_subtotal' => $this->input->post('compra_subtotal'),
-        'compra_descuento' => $this->input->post('compra_descuento'),
-        'compra_descglobal' => $this->input->post('compra_descglobal'),
-        'compra_total' => $this->input->post('compra_total'),
-        'compra_totalfinal' => $this->input->post('compra_totalfinal'),
-        'usuario_id' => $usuario_id,
-        'compra_efectivo' => $this->input->post('compra_efectivo'),
-        'compra_cambio' =>$this->input->post('compra_cambio'),
-        'compra_caja' => $this->input->post('compra_caja'),
-        'compra_placamovil' => $null,
-        'compra_codcontrol' => $this->input->post('compra_codcontrol'),
-
-    );  
-        }
-    
-    $this->Compra_model->update_compra($compra_id,$params);
-    $facturation=$this->input->post('documento_respaldo_id');
-    if ($facturation==1){
-         $yafactu = "SELECT COUNT(factura_id) as 'facturas_compra', factura_id as facturanga FROM factura_compra WHERE factura_compra.compra_id=".$compra_id;
-     $tiene_factura = $this->db->query($yafactu)->result_array();
-     $fac_id = $tiene_factura[0]['facturanga'];
-     if ($tiene_factura[0]['facturas_compra']<1) {
-    
-      $factur =  $params = array(
-        'estado_id' => 1,
-        'compra_id' => $compra_id,
-        'factura_tipo' => 0,
-        'factura_nit' => $this->input->post('factura_nit'),
-        'factura_razonsocial' => $this->input->post('factura_razonsocial'),
-        'factura_poliza' => 0,
-        'factura_fecha' => $this->input->post('factura_fecha'),
-        'factura_fechacompra' => $this->input->post('factura_fechacompra'),
-        'factura_hora' => $this->input->post('factura_hora'),
-        'factura_subtotal' => $this->input->post('compra_total'),
-        'factura_ice' => 0,
-        
-        'factura_exento' => 0,
-        'factura_descuento' => $this->input->post('compra_descglobal'),
-        'factura_total' => $this->input->post('compra_totalfinal'),
-        'factura_numero' => $this->input->post('compra_numdoc'),
-        'factura_autorizacion' => $this->input->post('autori'),
-        //'factura_llave' => $this->input->post('factura_llave'),
-        //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
-        'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
-        //'factura_leyenda' => $this->input->post('factura_leyenda'),
-            );
-      $factura_id = $this->Compra_model->add_facturacompra($params);
-         }else{
-          $factur =  $params = array(
-        'estado_id' => 1,
-        'compra_id' => $compra_id,
-        'factura_tipo' => 0,
-        'factura_nit' => $this->input->post('factura_nit'),
-        'factura_razonsocial' => $this->input->post('factura_razonsocial'),
-        'factura_poliza' => 0,
-        'factura_fecha' => $this->input->post('factura_fecha'),
-        'factura_fechacompra' => $this->input->post('factura_fechacompra'),
-        'factura_hora' => $this->input->post('factura_hora'),
-        'factura_subtotal' => $this->input->post('compra_total'),
-        'factura_ice' => 0,
-        
-        'factura_exento' => 0,
-        'factura_descuento' => $this->input->post('compra_descglobal'),
-        'factura_total' => $this->input->post('compra_totalfinal'),
-        'factura_numero' => $this->input->post('compra_numdoc'),
-        'factura_autorizacion' => $this->input->post('autori'),
-        //'factura_llave' => $this->input->post('factura_llave'),
-        //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
-        'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
-        //'factura_leyenda' => $this->input->post('factura_leyenda'),
-            );
-            $this->Compra_model->update_facturacompra($fac_id,$params);
-         }
-   }
-
-    $actualizarprecios = $this->input->post('actualizarprecios');
-    $fechalimite = $this->input->post('credito_fechalimite');
-    $fecha = $this->Compra_model->normalize_date($fechalimite);
-    $estado_id = 8;
-    $compra_id = $this->input->post('compra_id');
-    $credito_montoparcial =  $this->input->post('compra_totalfinal');
-    $credito_cuotainicial = $this->input->post('credito_cuotainicial');
-    $credito_interesproc = 0;
-    $credito_interesmonto = 0;
-    $credito_tipointeres = $this->input->post('credito_tipointeres');
-    $credito_fecmite = "'".$fecha."'";
-    $credito_fecha = "'".date('Y-m-d')."'";               
-    $credito_tipo = $this->input->post('credito_tipo');
-    $credito_hora = "'".date('H:i:s')."'";      
-    $credito_monto = $credito_montoparcial - $credito_cuotainicial;
-    $cuota_total = $credito_monto;
-
-    $credito_fechalimite = "'".date('Y-m-d', $proximo_martes)."'";
-    
-    $credito_numpagos = $numcuota;
-    $this->load->model('Inventario_model');
-// actualizar inventario //
-    
-    
-
-    $sacar = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra dc WHERE dc.compra_id=".$compra_id;
-    $sacar_id=$this->db->query($sacar)->result_array();
-
-    foreach ($sacar_id as $saca) {
-       
-
-       $this->Inventario_model->rebajar_cantidad_producto($saca['producto_id'],$saca['detallecomp_cantidad']);
-
-   }   
-   
-           ///////////4. ELIMINAR DETALLE COMPRA////////////
-   $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
-   $this->db->query($borrar_detalle); 
-            ///////////////5. COPIAR DE AUX A DETALLE/////////////////
-   $vaciar_detalle = "INSERT INTO detalle_compra 
-   (compra_id,
-   moneda_id,
-   producto_id,
-   detallecomp_codigo,
-   detallecomp_cantidad,
-   detallecomp_unidad,
-   detallecomp_costo,
-   detallecomp_precio,
-   detallecomp_subtotal,
-   detallecomp_descuento,
-   detallecomp_total,
-   detallecomp_descglobal,
-   detallecomp_fechavencimiento,
-   detallecomp_tipocambio,
-   cambio_id
-   )
-   (SELECT 
-   ".$compra_id.",
-   moneda_id,
-   producto_id,
-   detallecomp_codigo,
-   detallecomp_cantidad,
-   detallecomp_unidad,
-   detallecomp_costo,
-   detallecomp_precio,
-   detallecomp_subtotal,
-   detallecomp_descuento,
-   detallecomp_total,
-   detallecomp_descglobal,
-   detallecomp_fechavencimiento,
-   detallecomp_tipocambio,
-   cambio_id
-   FROM 
-   detalle_compra_aux
-   WHERE
-   compra_id=".$compra_id.")";
-   $this->db->query($vaciar_detalle);
-///////////// actualiza y promediaa precios////////////////////////
-  if($actualizarprecios==1){
-    $producto_mana = "SELECT i.existencia as 'saldom', dc.producto_id as 'productm', dc.detallecomp_total as 'nuevo_totalm', dc.detallecomp_cantidad as 'nueva_cantidadm' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia <= 0";
-    $pr_mana = $this->db->query($producto_mana)->result_array();
-    foreach ($pr_mana as $pr_identmana) {
-     $nuevomana = $pr_identmana['nuevo_totalm'];
-     $cantidadmana = $pr_identmana['nueva_cantidadm'];
-    $costo_promediom = $nuevomana/$cantidadmana;
-      $sqlm = "update inventario i, producto p set i.producto_costo=".$costo_promediom.", p.producto_costo=".$costo_promediom." where i.producto_id=".$pr_identmana['productm']." and p.producto_id=".$pr_identmana['productm']." ";
-
-        $this->db->query($sqlm);
-    }
-
-   $producto_ide = "SELECT i.existencia as 'saldo', dc.producto_id as 'product', dc.detallecomp_total as 'nuevo_total', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia > 0";
-    $pr_id = $this->db->query($producto_ide)->result_array(); 
-    $viejos = 0;
-$cantiviejas = 0;
-$cantidades = 0;
-$sumas = 0;
- foreach ($pr_id as $pr_ident) {
- 
-    $nuevo = $pr_ident['nuevo_total'];
-  $cantidad = $pr_ident['nueva_cantidad'];
-
-  //sumatoria de ventas//
-$existe = "SELECT   i.existencia as 'existencia' from consinventario i WHERE  i.producto_id= ".$pr_ident['product']." ";
-$existir=$this->db->query($existe)->result_array();  
-
-////
-
-  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE  i.producto_id= ".$pr_ident['product']." and i.compra_id <> ".$compra_id." order by i.detallecomp_id desc";
-  $det_costo=$this->db->query($detalle_costo)->result_array(); 
-
-$almacen = $existir[0]["existencia"];
-//$almacen4 = $existir[0]["existencia"];
-
-  foreach ($det_costo as $costo_cantidad) {
-  if ($almacen>0 ) {
-         if($almacen > $costo_cantidad['vieja_cantidad']){
-          $viejo = $costo_cantidad['viejo_total'];
-          $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
-          $cantidades = $cantiviejas+$cantidad;
-          $viejos = $viejos + $viejo;
-          $sumas =  $nuevo+$viejos;
-          $almacen =  $almacen-$cantidades;
-         }else{
-          $prom =  $costo_cantidad['viejo_total']/$costo_cantidad['vieja_cantidad'];
-          $viejo = $prom*$almacen;
-          $cantiviejas = $cantiviejas+$almacen;
-          $cantidades = $cantiviejas+$cantidad;
-          $viejos = $viejos + $viejo;
-          $sumas =  $nuevo+$viejos;
-          $almacen =  0;
-         }
-     
-     } 
-
-   }  
-   $costo_promedio = $sumas/$cantidades;
-      $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$pr_ident['product']." and p.producto_id=".$pr_ident['product']." ";
-
-        $this->db->query($sql);
-  }  }
-  
-
-   $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo, dc.detallecomp_precio from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
-   $productos_id=$this->db->query($product)->result_array();
-
-   foreach ($productos_id as $producto_id) {
-    //////pasa producto a inventario   y actualiza ultimo costo///////////
-
-       $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
-      $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
-
-   }          
-   
-                //////////////////6. ELIMINAR AUX///////////////////////////
-   $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
-   $this->db->query($eliminar_aux);
-   ///////////si elige generar orden de pago/////////////////////////
-   if ($_POST['compra_caja']==2 ) {
-     $this->load->model('Orden_pago_model');
-      $nodoc=$this->input->post('compra_numdoc');
-      $orden_fecha = "'".date("Y-m-d")."'"; 
-      $orden_hora = "'".date("H:i:s")."'"; 
-      $compra_prove=$this->Compra_model->get_compra_proveedor($compra_id);
-      $proveedor_nombre = $compra_prove[0]['proveedor_nombre'];
-      $orden_monto = $this->input->post('compra_totalfinal');
-      $orden_motivo = "'pago a proveedor compra No. ".$compra_id." documento de respaldo No. ".$nodoc." '";
-     
-      $cuota_id = 0;
-     $yaorden  = "SELECT COUNT(orden_id) as 'ordenes' FROM orden_pago WHERE orden_pago.compra_id=".$compra_id;
-     $tiene_orden = $this->db->query($yaorden)->result_array();
-     
-     if ($tiene_orden[0]['ordenes']<1) {
-    
-      $orden = "insert into orden_pago(usuario_id1,usuario_id2,orden_monto,orden_destinatario,orden_motivo,orden_fecha,orden_hora,estado_id,orden_cancelado,compra_id,cuota_id) "
-                    . "value(".$usuario_id.",0".",".$orden_monto.",'".$proveedor_nombre."',".$orden_motivo.",".$orden_fecha.",".$orden_hora.",8,0,".$compra_id.",".$cuota_id.")";
-            //echo $sql;
-           $this->Orden_pago_model->registrar_orden($orden);
-         }else{
-           $orden = "UPDATE orden_pago SET usuario_id1=".$usuario_id.",usuario_id2=0,orden_monto=".$orden_monto.",orden_destinatario='".$proveedor_nombre."',orden_motivo=".$orden_motivo." WHERE compra_id= ".$compra_id." ";
+        if($this->acceso(1)){
                     
+            $usuario_id = $this->session_data['usuario_id'];
+         $this->load->model('Compra_model');
+         $null = NULL;
+         $num = $this->Compra_model->numero();
+         $maximo = $num[0]['parametro_montomax'];
+         $diasgra = $num[0]['parametro_diasgracia'];
+         $diapago = $num[0]['parametro_diapago'];
+         $periodo = $num[0]['parametro_periododias'];
+         $numcuota =$this->input->post('credito_numpagos');
+         $interes = $num[0]['parametro_interes'];
+         $nroDia = date('N');
+         $proxima_semana = time() + (7 * 24 * 60 * 60); 
+         $proximo_martes = time() + ( ($diasgra-($nroDia-$diapago)) * 24 * 60 * 60 );
+         $proximo_martes2 = time() + ( ($diasgra+$periodo-($nroDia-$diapago)) * 24 * 60 * 60 );
+         $patron = ($numcuota*0.5) + 0.5;
+         $totalcompra=$this->input->post('compra_total');
+         $descglobal=$this->input->post('compra_descglobal');
+         $banderafin=$this->input->post('banderafin');
+         $nueva_fecha = date("Y-m-d"); 
+         $nueva_hora = date("H:i:s"); 
+         
+         if ($descglobal>0) {
+            $descontar = "update detalle_compra_aux set detallecomp_descglobal = detallecomp_subtotal/".$totalcompra."*".$descglobal.", detallecomp_total=detallecomp_subtotal-detallecomp_descglobal where compra_id=".$compra_id." ";
 
-           $this->Orden_pago_model->registrar_orden($orden);
-
+                $this->db->query($descontar);
          }
-   }
-   if ($_POST['tipotrans_id']==1 ) {
-    $borracuota  = "SELECT credito_id FROM credito WHERE credito.compra_id=".$compra_id;
-    $las_cuotas = $this->db->query($borracuota)->result_array();
-    if (sizeof($las_cuotas)>0) {
-    
-    $verificar = "SELECT cuota_id FROM cuota WHERE estado_id=9 AND credito_id=".$las_cuotas[0]["credito_id"];
-    $verif_cuota = $this->db->query($verificar)->result_array();
-    if (sizeof($verif_cuota)==0) {
-    $deleteccuotas = "DELETE FROM cuota WHERE credito_id=".$las_cuotas[0]["credito_id"];
-    $this->db->query($deleteccuotas);
-    $deletecredito  = "DELETE FROM credito WHERE credito.compra_id=".$compra_id;
-    $this->db->query($deletecredito);
-    } else {
-         $poner_glosa  = "UPDATE compra SET compra_glosa='El credito No. ".$las_cuotas[0]["credito_id"]." se mantiene porque se registraron pagos' WHERE compra_id=".$compra_id;
-         $this->db->query($poner_glosa);
-    }
-    }
-   }
+         
+         if(isset($_POST) && count($_POST) > 0)     
+         {   
+             if ($banderafin==0) {
+            $params = array(
+                'compra_glosa' => $this->input->post('compra_glosa'),
+                'compra_numdoc' => $this->input->post('compra_numdoc'),
+                'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+                'tipotrans_id' => $this->input->post('tipotrans_id'),                       
+                'forma_id' => $this->input->post('forma_id'),
+                'compra_subtotal' => $this->input->post('compra_subtotal'),
+                'compra_descuento' => $this->input->post('compra_descuento'),
+                'compra_descglobal' => $this->input->post('compra_descglobal'),
+                'compra_total' => $this->input->post('compra_total'),
+                'compra_totalfinal' => $this->input->post('compra_totalfinal'),
+                'usuario_id' => $usuario_id,
+                'compra_efectivo' => $this->input->post('compra_efectivo'),
+                'compra_cambio' => $this->input->post('compra_cambio'),
+                'compra_caja' => $this->input->post('compra_caja'),
+                'compra_placamovil' => $null,
+                'compra_codcontrol' => $this->input->post('compra_codcontrol'),
+                'compra_fecha' => $nueva_fecha,
+                'compra_hora' => $nueva_hora,
+            );  
+                } else{
+            $params = array(
 
-   
-    if ($_POST['tipotrans_id']==2 ) { // tipotrans_id = 2 : CREDITO
-        
-     $yacredito  = "SELECT COUNT(credito_id) as 'creditos' FROM credito WHERE credito.compra_id=".$compra_id;
-     $tiene_credito = $this->db->query($yacredito)->result_array();
+                'compra_glosa' => $this->input->post('compra_glosa'),
+                'compra_numdoc' => $this->input->post('compra_numdoc'),
+                'documento_respaldo_id' => $this->input->post('documento_respaldo_id'),
+                'tipotrans_id' => $this->input->post('tipotrans_id'),                       
+                'forma_id' => $this->input->post('forma_id'),
+                'compra_subtotal' => $this->input->post('compra_subtotal'),
+                'compra_descuento' => $this->input->post('compra_descuento'),
+                'compra_descglobal' => $this->input->post('compra_descglobal'),
+                'compra_total' => $this->input->post('compra_total'),
+                'compra_totalfinal' => $this->input->post('compra_totalfinal'),
+                'usuario_id' => $usuario_id,
+                'compra_efectivo' => $this->input->post('compra_efectivo'),
+                'compra_cambio' =>$this->input->post('compra_cambio'),
+                'compra_caja' => $this->input->post('compra_caja'),
+                'compra_placamovil' => $null,
+                'compra_codcontrol' => $this->input->post('compra_codcontrol'),
 
-     if (!isset($tiene_credito[0]['creditos'])) {
+            );  
+                }
 
-        $dias_mora = 0;
-        $multa = 0;
-        $descuento = 0;
-        $cancelado = 0;
+            $this->Compra_model->update_compra($compra_id,$params);
+            $facturation=$this->input->post('documento_respaldo_id');
+            if ($facturation==1){
+                 $yafactu = "SELECT COUNT(factura_id) as 'facturas_compra', factura_id as facturanga FROM factura_compra WHERE factura_compra.compra_id=".$compra_id;
+             $tiene_factura = $this->db->query($yafactu)->result_array();
+             $fac_id = $tiene_factura[0]['facturanga'];
+             if ($tiene_factura[0]['facturas_compra']<1) {
 
-        if ($maximo == 0){
-           $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-           $this->db->query($sql);
-           $credito_id = $this->db->insert_id();
-           if ($credito_tipointeres==1){
-               $cuota_capital = $credito_monto/$numcuota;
-               $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
-               $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+              $factur =  $params = array(
+                'estado_id' => 1,
+                'compra_id' => $compra_id,
+                'factura_tipo' => 0,
+                'factura_nit' => $this->input->post('factura_nit'),
+                'factura_razonsocial' => $this->input->post('factura_razonsocial'),
+                'factura_poliza' => 0,
+                'factura_fecha' => $this->input->post('factura_fecha'),
+                'factura_fechacompra' => $this->input->post('factura_fechacompra'),
+                'factura_hora' => $this->input->post('factura_hora'),
+                'factura_subtotal' => $this->input->post('compra_total'),
+                'factura_ice' => 0,
 
-               $saldo_deudor = $cuota_total;
-               $total =  $cuota_subtotal - $descuento;
-               $siguiente= 0;
-               for ($i=1; $i <= $numcuota; $i++) { 
+                'factura_exento' => 0,
+                'factura_descuento' => $this->input->post('compra_descglobal'),
+                'factura_total' => $this->input->post('compra_totalfinal'),
+                'factura_numero' => $this->input->post('compra_numdoc'),
+                'factura_autorizacion' => $this->input->post('autori'),
+                //'factura_llave' => $this->input->post('factura_llave'),
+                //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
+                'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
+                //'factura_leyenda' => $this->input->post('factura_leyenda'),
+                    );
+              $factura_id = $this->Compra_model->add_facturacompra($params);
+                 }else{
+                  $factur =  $params = array(
+                'estado_id' => 1,
+                'compra_id' => $compra_id,
+                'factura_tipo' => 0,
+                'factura_nit' => $this->input->post('factura_nit'),
+                'factura_razonsocial' => $this->input->post('factura_razonsocial'),
+                'factura_poliza' => 0,
+                'factura_fecha' => $this->input->post('factura_fecha'),
+                'factura_fechacompra' => $this->input->post('factura_fechacompra'),
+                'factura_hora' => $this->input->post('factura_hora'),
+                'factura_subtotal' => $this->input->post('compra_total'),
+                'factura_ice' => 0,
+
+                'factura_exento' => 0,
+                'factura_descuento' => $this->input->post('compra_descglobal'),
+                'factura_total' => $this->input->post('compra_totalfinal'),
+                'factura_numero' => $this->input->post('compra_numdoc'),
+                'factura_autorizacion' => $this->input->post('autori'),
+                //'factura_llave' => $this->input->post('factura_llave'),
+                //'factura_fechalimite' => $this->input->post('factura_fechalimite'),
+                'factura_codigocontrol' => $this->input->post('compra_codcontrol'),
+                //'factura_leyenda' => $this->input->post('factura_leyenda'),
+                    );
+                    $this->Compra_model->update_facturacompra($fac_id,$params);
+                 }
+           }
+
+            $actualizarprecios = $this->input->post('actualizarprecios');
+            $fechalimite = $this->input->post('credito_fechalimite');
+            $fecha = $this->Compra_model->normalize_date($fechalimite);
+            $estado_id = 8;
+            $compra_id = $this->input->post('compra_id');
+            $credito_montoparcial =  $this->input->post('compra_totalfinal');
+            $credito_cuotainicial = $this->input->post('credito_cuotainicial');
+            $credito_interesproc = 0;
+            $credito_interesmonto = 0;
+            $credito_tipointeres = $this->input->post('credito_tipointeres');
+            $credito_fecmite = "'".$fecha."'";
+            $credito_fecha = "'".date('Y-m-d')."'";               
+            $credito_tipo = $this->input->post('credito_tipo');
+            $credito_hora = "'".date('H:i:s')."'";      
+            $credito_monto = $credito_montoparcial - $credito_cuotainicial;
+            $cuota_total = $credito_monto;
+
+            $credito_fechalimite = "'".date('Y-m-d', $proximo_martes)."'";
+
+            $credito_numpagos = $numcuota;
+            $this->load->model('Inventario_model');
+        // actualizar inventario //
+
+
+
+            $sacar = "SELECT dc.producto_id, dc.detallecomp_cantidad from detalle_compra dc WHERE dc.compra_id=".$compra_id;
+            $sacar_id=$this->db->query($sacar)->result_array();
+
+            foreach ($sacar_id as $saca) {
+
+
+               $this->Inventario_model->rebajar_cantidad_producto($saca['producto_id'],$saca['detallecomp_cantidad']);
+
+           }   
+
+                   ///////////4. ELIMINAR DETALLE COMPRA////////////
+           $borrar_detalle = "DELETE from detalle_compra WHERE  detalle_compra.compra_id = ".$compra_id." "; 
+           $this->db->query($borrar_detalle); 
+                    ///////////////5. COPIAR DE AUX A DETALLE/////////////////
+           $vaciar_detalle = "INSERT INTO detalle_compra 
+           (compra_id,
+           moneda_id,
+           producto_id,
+           detallecomp_codigo,
+           detallecomp_cantidad,
+           detallecomp_unidad,
+           detallecomp_costo,
+           detallecomp_precio,
+           detallecomp_subtotal,
+           detallecomp_descuento,
+           detallecomp_total,
+           detallecomp_descglobal,
+           detallecomp_fechavencimiento,
+           detallecomp_tipocambio,
+           cambio_id
+           )
+           (SELECT 
+           ".$compra_id.",
+           moneda_id,
+           producto_id,
+           detallecomp_codigo,
+           detallecomp_cantidad,
+           detallecomp_unidad,
+           detallecomp_costo,
+           detallecomp_precio,
+           detallecomp_subtotal,
+           detallecomp_descuento,
+           detallecomp_total,
+           detallecomp_descglobal,
+           detallecomp_fechavencimiento,
+           detallecomp_tipocambio,
+           cambio_id
+           FROM 
+           detalle_compra_aux
+           WHERE
+           compra_id=".$compra_id.")";
+           $this->db->query($vaciar_detalle);
+           
+           
+        ///////////// actualiza y promediaa precios////////////////////////
+          if($actualizarprecios==1){
+              
+            //Nuevo metodo para actualizar precios  
+            //$productos_compra = "select producto_id from detalle_compra_aux where compra_id=".$compra_id;
+            $productos_compra = "select d.producto_id,i.existencia as saldo from detalle_compra_aux d, consinventario i
+                                where 
+                                d.producto_id = i.producto_id and
+                                d.compra_id = ".$compra_id;
+                        
+            $productos = $this->db->query($productos_compra)->result_array();
+            
+            foreach ($productos as $pr){
+                
+                $this->actualizar_costos($pr["producto_id"],$pr["saldo"]);
+                
+            }  
+              
+              
+              
+              
+              
+              
+            
+            //detalle producto compra actual
+            
+            
+            
+            
+             //detalle producto compra actual
+//            $producto_mana = "SELECT i.existencia as 'saldom', dc.producto_id as 'productm', dc.detallecomp_total as 'nuevo_totalm', dc.detallecomp_cantidad as 'nueva_cantidadm' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia <= 0";
+//            $pr_mana = $this->db->query($producto_mana)->result_array();
+//            
+//            foreach ($pr_mana as $pr_identmana) {
+//                
+//                $nuevomana = $pr_identmana['nuevo_totalm'];
+//                $cantidadmana = $pr_identmana['nueva_cantidadm'];
+//                
+//                $costo_promediom = $nuevomana/$cantidadmana; //promedio costo del producto nuevo
+//                
+//                $sqlm = "update inventario i, producto p set i.producto_costo=".$costo_promediom.", p.producto_costo=".$costo_promediom." where i.producto_id=".$pr_identmana['productm']." and p.producto_id=".$pr_identmana['productm']." ";
+//
+//                $this->db->query($sqlm);
+//            }
+//            
+//            
+//
+//            $producto_ide = "SELECT i.existencia as 'saldo', dc.producto_id as 'product', dc.detallecomp_total as 'nuevo_total', dc.detallecomp_cantidad as 'nueva_cantidad' from detalle_compra_aux dc, inventario i WHERE dc.compra_id=".$compra_id." and i.producto_id=dc.producto_id and i.existencia > 0";
+//            $pr_id = $this->db->query($producto_ide)->result_array(); 
+//            $viejos = 0;
+//            $cantiviejas = 0;
+//            $cantidades = 0;
+//            $sumas = 0;
+//            
+//            foreach ($pr_id as $pr_ident) {
+//
+//                $nuevo = $pr_ident['nuevo_total'];
+//                $cantidad = $pr_ident['nueva_cantidad'];
+//
+//                  //sumatoria de ventas//
+//                $existe = "SELECT   i.existencia as 'existencia' from consinventario i WHERE  i.producto_id= ".$pr_ident['product']." ";
+//                $existir=$this->db->query($existe)->result_array();  
+//
+//                ////
+//
+//                  $detalle_costo = "SELECT   i.detallecomp_total as 'viejo_total', i.detallecomp_cantidad as 'vieja_cantidad' from detalle_compra i WHERE i.producto_id= ".$pr_ident['product']." and i.compra_id <> ".$compra_id." order by i.detallecomp_id desc";
+//                  $det_costo=$this->db->query($detalle_costo)->result_array(); 
+//
+//                $almacen = $existir[0]["existencia"];
+//                //$almacen4 = $existir[0]["existencia"];
+//
+//                  foreach ($det_costo as $costo_cantidad) {
+//                  if ($almacen>0 ) {
+//                         
+//                        if($almacen > $costo_cantidad['vieja_cantidad']){
+//                            
+//                          $viejo = $costo_cantidad['viejo_total'];
+//                          $cantiviejas = $cantiviejas+$costo_cantidad['vieja_cantidad'];
+//                          $cantidades = $cantiviejas+$cantidad;
+//                          $viejos = $viejos + $viejo;
+//                          $sumas =  $nuevo+$viejos;
+//                          $almacen =  $almacen-$cantidades;
+//                          
+//                        }else{
+//                            
+//                          $prom =  $costo_cantidad['viejo_total']/$costo_cantidad['vieja_cantidad'];
+//                          $viejo = $prom*$almacen;
+//                          $cantiviejas = $cantiviejas+$almacen;
+//                          $cantidades = $cantiviejas+$cantidad;
+//                          $viejos = $viejos + $viejo;
+//                          $sumas =  $nuevo+$viejos;
+//                          $almacen =  0;
+//                        
+//                        }
+//
+//                     } 
+//
+//                   }
+//                   
+//                    $costo_promedio = $sumas/$cantidades;
+//                    $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$pr_ident['product']." and p.producto_id=".$pr_ident['product']." ";
+//
+//                    $this->db->query($sql);
+//            }  
+          
+        } // FIN ACTUALIZAR COSTOS
+
+
+           $product = "SELECT dc.producto_id, dc.detallecomp_cantidad, dc.detallecomp_costo, dc.detallecomp_precio from detalle_compra_aux dc WHERE dc.compra_id=".$compra_id;
+           $productos_id=$this->db->query($product)->result_array();
+
+           foreach ($productos_id as $producto_id) {
+            //////pasa producto a inventario   y actualiza ultimo costo///////////
+
+              $this->Inventario_model->aumentar_cantidad_producto($producto_id['producto_id'],$producto_id['detallecomp_cantidad'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
+              $this->Producto_model->cambiar_ultimocosto($producto_id['producto_id'],$producto_id['detallecomp_costo'],$producto_id['detallecomp_precio']);
+
+           }          
+
+            //////////////////6. ELIMINAR AUX///////////////////////////
+           $eliminar_aux = "DELETE FROM detalle_compra_aux WHERE compra_id=".$compra_id." ";
+           $this->db->query($eliminar_aux);
+           ///////////si elige generar orden de pago/////////////////////////
+           if ($_POST['compra_caja']==2 ) {
+             $this->load->model('Orden_pago_model');
+              $nodoc=$this->input->post('compra_numdoc');
+              $orden_fecha = "'".date("Y-m-d")."'"; 
+              $orden_hora = "'".date("H:i:s")."'"; 
+              $compra_prove=$this->Compra_model->get_compra_proveedor($compra_id);
+              $proveedor_nombre = $compra_prove[0]['proveedor_nombre'];
+              $orden_monto = $this->input->post('compra_totalfinal');
+              $orden_motivo = "'pago a proveedor compra No. ".$compra_id." documento de respaldo No. ".$nodoc." '";
+
+              $cuota_id = 0;
+             $yaorden  = "SELECT COUNT(orden_id) as 'ordenes' FROM orden_pago WHERE orden_pago.compra_id=".$compra_id;
+             $tiene_orden = $this->db->query($yaorden)->result_array();
+
+             if ($tiene_orden[0]['ordenes']<1) {
+
+              $orden = "insert into orden_pago(usuario_id1,usuario_id2,orden_monto,orden_destinatario,orden_motivo,orden_fecha,orden_hora,estado_id,orden_cancelado,compra_id,cuota_id) "
+                            . "value(".$usuario_id.",0".",".$orden_monto.",'".$proveedor_nombre."',".$orden_motivo.",".$orden_fecha.",".$orden_hora.",8,0,".$compra_id.",".$cuota_id.")";
+                    //echo $sql;
+                   $this->Orden_pago_model->registrar_orden($orden);
+                 }else{
+                   $orden = "UPDATE orden_pago SET usuario_id1=".$usuario_id.",usuario_id2=0,orden_monto=".$orden_monto.",orden_destinatario='".$proveedor_nombre."',orden_motivo=".$orden_motivo." WHERE compra_id= ".$compra_id." ";
+
+
+                   $this->Orden_pago_model->registrar_orden($orden);
+
+                 }
+           }
+           
+           if ($_POST['tipotrans_id']==1 ) {
+            $borracuota  = "SELECT credito_id FROM credito WHERE credito.compra_id=".$compra_id;
+            $las_cuotas = $this->db->query($borracuota)->result_array();
+            if (sizeof($las_cuotas)>0) {
+
+            $verificar = "SELECT cuota_id FROM cuota WHERE estado_id=9 AND credito_id=".$las_cuotas[0]["credito_id"];
+            $verif_cuota = $this->db->query($verificar)->result_array();
+            if (sizeof($verif_cuota)==0) {
+            $deleteccuotas = "DELETE FROM cuota WHERE credito_id=".$las_cuotas[0]["credito_id"];
+            $this->db->query($deleteccuotas);
+            $deletecredito  = "DELETE FROM credito WHERE credito.compra_id=".$compra_id;
+            $this->db->query($deletecredito);
+            } else {
+                 $poner_glosa  = "UPDATE compra SET compra_glosa='El credito No. ".$las_cuotas[0]["credito_id"]." se mantiene porque se registraron pagos' WHERE compra_id=".$compra_id;
+                 $this->db->query($poner_glosa);
+            }
+            }
+           }
+
+
+            if ($_POST['tipotrans_id']==2 ) { // tipotrans_id = 2 : CREDITO
+
+             $yacredito  = "SELECT COUNT(credito_id) as 'creditos' FROM credito WHERE credito.compra_id=".$compra_id;
+             $tiene_credito = $this->db->query($yacredito)->result_array();
+
+             if (!isset($tiene_credito[0]['creditos'])) {
+
+                $dias_mora = 0;
+                $multa = 0;
+                $descuento = 0;
+                $cancelado = 0;
+
+                if ($maximo == 0){
+                   $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
+                   $this->db->query($sql);
+                   $credito_id = $this->db->insert_id();
+                   if ($credito_tipointeres==1){
+                       $cuota_capital = $credito_monto/$numcuota;
+                       $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
+                       $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;
+
+                       $saldo_deudor = $cuota_total;
+                       $total =  $cuota_subtotal - $descuento;
+                       $siguiente= 0;
+                       for ($i=1; $i <= $numcuota; $i++) { 
+
+                        $cuota_numcuota = $i;
+                        $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
+                        $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
+                        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
+                        $this->db->query($cuota);
+                        $siguiente = $siguiente+$periodo;
+                        $saldo_deudor = $cuota_total - $cuota_capital;
+                        $cuota_total = $saldo_deudor;
+                    }
+                }
+                else{
+
+                   $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
+                   $this->db->query($sql);
+                   $credito_id = $this->db->insert_id();
+
+                   $cuota_capital = $credito_monto/$numcuota;
+                   $saldo_deudor = $cuota_total;
+
+
+                   $siguiente= 0;
+                   for ($i=1; $i <= $numcuota; $i++) { 
+                    $variable = $saldo_deudor * ($interes/100);
+                    $cuota_subtotal = $variable + $cuota_capital + $dias_mora + $multa;
+                    $cuota_numcuota = $i;
+                    $total = $cuota_subtotal - $descuento;
+                    $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
+                    $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
+                    $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
+                    $this->db->query($cuota);
+                    $siguiente = $siguiente+$periodo;
+                    $saldo_deudor = $cuota_total - $cuota_capital;
+
+                    $cuota_total = $saldo_deudor;
+                } 
+            }
+        } else {
+            if ($credito_monto > $maximo){
+                $numcuota = 2;
+                $credito_numpagos = $numcuota;
+                $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
+                $this->db->query($sql);
+                $credito_id = $this->db->insert_id();
+
+                $cuota_capital = $credito_monto/$numcuota;
+                $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
+                $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
+                $total = $cuota_subtotal - $descuento;
+                $saldo_deudor = $cuota_total;
+
+                $siguiente= 0;
+                for ($i=1; $i <= $numcuota; $i++) { 
+
+                    $cuota_numcuota = $i;
+                    $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
+                    $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
+                    $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
+                    $this->db->query($cuota);
+                    $siguiente = $siguiente+$periodo;
+                    $saldo_deudor = $cuota_total - $cuota_capital;
+                    $cuota_total = $saldo_deudor;
+                }
+            }
+            else{
+              $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
+              $this->db->query($sql);
+              $credito_id = $this->db->insert_id();
+              $cuota_capital = $credito_monto/$numcuota;
+              $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
+              $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
+              $total = $cuota_subtotal - $descuento;
+              $saldo_deudor = $cuota_total;
+
+              $siguiente= 0;
+              for ($i=1; $i <= $numcuota; $i++) { 
 
                 $cuota_numcuota = $i;
                 $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
@@ -1009,150 +1174,74 @@ $almacen = $existir[0]["existencia"];
                 $cuota_total = $saldo_deudor;
             }
         }
-        else{
-            
-           $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-           $this->db->query($sql);
-           $credito_id = $this->db->insert_id();
-           
-           $cuota_capital = $credito_monto/$numcuota;
-           $saldo_deudor = $cuota_total;
-           
-           
-           $siguiente= 0;
-           for ($i=1; $i <= $numcuota; $i++) { 
-            $variable = $saldo_deudor * ($interes/100);
-            $cuota_subtotal = $variable + $cuota_capital + $dias_mora + $multa;
-            $cuota_numcuota = $i;
-            $total = $cuota_subtotal - $descuento;
-            $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
-            $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$variable.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
-            $this->db->query($cuota);
-            $siguiente = $siguiente+$periodo;
-            $saldo_deudor = $cuota_total - $cuota_capital;
-            
-            $cuota_total = $saldo_deudor;
-        } 
-    }
-} else {
-    if ($credito_monto > $maximo){
-        $numcuota = 2;
-        $credito_numpagos = $numcuota;
-        $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-        $this->db->query($sql);
-        $credito_id = $this->db->insert_id();
-        
-        $cuota_capital = $credito_monto/$numcuota;
-        $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
-        $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
-        $total = $cuota_subtotal - $descuento;
-        $saldo_deudor = $cuota_total;
-        
-        $siguiente= 0;
-        for ($i=1; $i <= $numcuota; $i++) { 
 
-            $cuota_numcuota = $i;
-            $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
-            $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
-            $this->db->query($cuota);
-            $siguiente = $siguiente+$periodo;
-            $saldo_deudor = $cuota_total - $cuota_capital;
-            $cuota_total = $saldo_deudor;
-        }
-    }
-    else{
-      $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-      $this->db->query($sql);
-      $credito_id = $this->db->insert_id();
-      $cuota_capital = $credito_monto/$numcuota;
-      $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
-      $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
-      $total = $cuota_subtotal - $descuento;
-      $saldo_deudor = $cuota_total;
-      
-      $siguiente= 0;
-      for ($i=1; $i <= $numcuota; $i++) { 
+        }  } else {
 
-        $cuota_numcuota = $i;
-        $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
-        $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
-        $this->db->query($cuota);
-        $siguiente = $siguiente+$periodo;
-        $saldo_deudor = $cuota_total - $cuota_capital;
-        $cuota_total = $saldo_deudor;
-    }
-}
-
-}  } else {
-
-  $dias_mora = 0;
-        $multa = 0;
-        $descuento = 0;
-        $cancelado = 0;
-  $chaucre = "DELETE FROM credito WHERE compra_id=".$compra_id;
-$this->db->query($chaucre);
-       
-
-     if ($credito_monto > $maximo){
-        $numcuota = 2;
-        $credito_numpagos = $numcuota;
-        $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-        $this->db->query($sql);
-        $credito_id = $this->db->insert_id();
-        $chaycuo="DELETE FROM cuota where credito_id=".$credito_id."";
-        
-        $cuota_capital = $credito_monto/$numcuota;
-        $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
-        $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
-        $total = $cuota_subtotal - $descuento;
-        $saldo_deudor = $cuota_total;
-        
-        $siguiente= 0;
-        for ($i=1; $i <= $numcuota; $i++) { 
-
-            $cuota_numcuota = $i;
-            $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
-            $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-            $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
-            $this->db->query($cuota);
-            $siguiente = $siguiente+$periodo;
-            $saldo_deudor = $cuota_total - $cuota_capital;
-            $cuota_total = $saldo_deudor;
-        }
-    }else{
-      $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
-      $this->db->query($sql);
-      $credito_id = $this->db->insert_id();
-      $cuota_capital = $credito_monto/$numcuota;
-      $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
-      $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
-      $total = $cuota_subtotal - $descuento;
-      $saldo_deudor = $cuota_total;
-      
-      $siguiente= 0;
-      for ($i=1; $i <= $numcuota; $i++) { 
-
-        $cuota_numcuota = $i;
-        $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
-        $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
-        $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
-        $this->db->query($cuota);
-        $siguiente = $siguiente+$periodo;
-        $saldo_deudor = $cuota_total - $cuota_capital;
-        $cuota_total = $saldo_deudor;
-    }
-        }
-
-        } }
+          $dias_mora = 0;
+                $multa = 0;
+                $descuento = 0;
+                $cancelado = 0;
+          $chaucre = "DELETE FROM credito WHERE compra_id=".$compra_id;
+        $this->db->query($chaucre);
 
 
-        redirect('compra/index');
+             if ($credito_monto > $maximo){
+                $numcuota = 2;
+                $credito_numpagos = $numcuota;
+                $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
+                $this->db->query($sql);
+                $credito_id = $this->db->insert_id();
+                $chaycuo="DELETE FROM cuota where credito_id=".$credito_id."";
 
-         }
-    }
+                $cuota_capital = $credito_monto/$numcuota;
+                $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
+                $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
+                $total = $cuota_subtotal - $descuento;
+                $saldo_deudor = $cuota_total;
+
+                $siguiente= 0;
+                for ($i=1; $i <= $numcuota; $i++) { 
+
+                    $cuota_numcuota = $i;
+                    $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
+                    $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
+                    $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
+                    $this->db->query($cuota);
+                    $siguiente = $siguiente+$periodo;
+                    $saldo_deudor = $cuota_total - $cuota_capital;
+                    $cuota_total = $saldo_deudor;
+                }
+            }else{
+              $sql = "INSERT INTO credito (estado_id,compra_id,credito_monto,credito_cuotainicial,credito_interesproc,credito_interesmonto,credito_numpagos,credito_tipointeres,credito_fechalimite,credito_fecha,credito_tipo,credito_hora) VALUES (".$estado_id.",".$compra_id.",".$credito_monto.",".$credito_cuotainicial.",".$credito_interesproc.",".$credito_interesmonto.",".$credito_numpagos.",".$credito_tipointeres.",".$credito_fechalimite.",".$credito_fecha.",".$credito_tipo.",".$credito_hora.")"; 
+              $this->db->query($sql);
+              $credito_id = $this->db->insert_id();
+              $cuota_capital = $credito_monto/$numcuota;
+              $fijo = $patron * $credito_monto * ($interes/100/$numcuota);
+              $cuota_subtotal = $fijo + $cuota_capital + $dias_mora + $multa;;
+              $total = $cuota_subtotal - $descuento;
+              $saldo_deudor = $cuota_total;
+
+              $siguiente= 0;
+              for ($i=1; $i <= $numcuota; $i++) { 
+
+                $cuota_numcuota = $i;
+                $proximo_martes2 = time() + ( ($diasgra+$siguiente-($nroDia-$diapago)) * 24 * 60 * 60 );
+                $credito_fechalimite = "'".date('Y-m-d', $proximo_martes2)."'";
+                $cuota ="INSERT INTO cuota (credito_id,usuario_id,estado_id,cuota_numcuota,cuota_capital,cuota_interes,cuota_moradias,cuota_multa,cuota_descuento,cuota_cancelado,cuota_total,cuota_subtotal,cuota_fechalimite,cuota_saldo) VALUES (".$credito_id.",".$usuario_id.",".$estado_id.",".$cuota_numcuota.",".$cuota_capital.",".$fijo.",".$dias_mora.",".$multa.",".$descuento.",".$cancelado.",".$total.",".$cuota_subtotal.",".$credito_fechalimite.",".$saldo_deudor.")";
+                $this->db->query($cuota);
+                $siguiente = $siguiente+$periodo;
+                $saldo_deudor = $cuota_total - $cuota_capital;
+                $cuota_total = $saldo_deudor;
+            }
+                }
+
+                } }
+
+
+                redirect('compra/index');
+
+                 }
+            }
 
     }
 

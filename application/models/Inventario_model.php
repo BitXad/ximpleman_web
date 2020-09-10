@@ -440,6 +440,33 @@ class Inventario_model extends CI_Model
         return $kardex;
     }    
     
+    
+    function mostrar_compras($producto_id){
+
+        $sql = "SELECT 
+                c.compra_fecha AS fecha,
+                c.compra_id AS num_ingreso,
+                d.detallecomp_cantidad,
+                d.detallecomp_costo,
+                d.detallecomp_subtotal,
+                d.detallecomp_total,
+                c.compra_hora AS hora,
+                concat(c.compra_fecha,' ',c.compra_hora) as fechacompra
+
+              FROM
+                compra c,
+                detalle_compra d
+              WHERE
+                d.producto_id = ".$producto_id." AND 
+                c.compra_id = d.compra_id
+
+              ORDER BY
+                fechacompra DESC";
+ 
+        $kardex = $this->db->query($sql)->result_array();
+        return $kardex;
+    }    
+    
     function mostrar_duplicados_inventario(){
         
         $sql = "select x.* 

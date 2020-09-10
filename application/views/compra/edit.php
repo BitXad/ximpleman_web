@@ -1239,6 +1239,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
             <?php }else{ ?>
             <span class="btn btn-warning">Ajustar precios de costo <i class="fa fa-check-square"></i><input  type="checkbox"  id="actualizarprecios" name="actualizarprecios" value="1" checked="true" checked hidden></span>  
             <?php }  ?>
+            
             <button class="btn btn-lg btn-facebook btn-sm btn-block"  type="submit" onclick="final()">
                 <h4>
                 <span class="fa fa-money"></span>   Finalizar Compra  
