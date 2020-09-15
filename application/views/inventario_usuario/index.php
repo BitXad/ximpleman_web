@@ -24,7 +24,7 @@
     
 <div class="row">
 
-    <div class="col-md-6">
+    <div class="col-md-4">
     <label for="inventario_fecha" class="control-label">Fecha</label>
       <div class="form-group">
         <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
@@ -32,7 +32,8 @@
                         </div>
          
     </div>
-    <div class="col-md-6">
+    
+    <div class="col-md-4">
                         <label for="usuario_id" class="control-label">Usuario</label>
 
                         <div class="form-group">
@@ -49,7 +50,25 @@
                                 ?>
                             </select>
                         </div>
-                    </div>
+    </div>   
+    
+    <div class="col-md-4">
+                        <label for="label_tipo" class="control-label">Tipo</label>
+
+                        <div class="form-group">
+                        
+                            <select name="tipo_inventario" id="tipo_inventario"  class="form-control" >
+                                <option value="" selected>-- NINGUNO --</option>
+                                <option value="1">VENTAS</option>
+                                <option value="2">PRE VENTAS</option>
+                                <option value="3">ENTREGAS</option>
+                                
+                            </select>
+                        </div>
+    </div>
+    
+    
+    
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
@@ -67,11 +86,13 @@
 						
                         <th>Costo</th>
                         <th>Cantidad</th>
-                        <th>Total</th>
+                        <th>Total<br>Bs</th>
 						<th>Ventas</th>
-						<th>Pedidos</th>
-						<th>Devoluciones</th>
+						<th>total<br>Bs</th>
+<!--						<th>Pedidos</th>
+						<th>Devoluciones</th>-->
 						<th>Saldo</th>
+						<th>Saldo<br>Bs</th>
 						<th>Usuario</th>
                         <th></th>
 						

@@ -26,6 +26,13 @@ function tablaresul()
                     var cantidades = Number(0);
                     var saldo = Number(0);
                     var n = registros.length; //tama単o del arreglo de la consulta
+                    var total_invbs = 0; //
+                    var total_saldobs = 0; //
+                    var cant_ventas = 0; //
+                    var total_ventasbs = 0; //
+                    var total_saldo = 0; //
+                    
+                    
                     html = "";
                    
                     for (var i = 0; i < n; i++){
@@ -35,6 +42,8 @@ function tablaresul()
                         costos = Number(suma+costos);
                         cantidades = Number(sumacan+cantidades);
                         saldo += Number(registros[i]["inventario_saldo"]);
+                        total_invbs += (Number(registros[i]["inventario_costo"]) * Number(registros[i]["inventario_cantidad"]));
+                        
                         html += "<tr>";
                       
                         html += "<td>"+(i+1)+"</td>";
@@ -42,12 +51,27 @@ function tablaresul()
                         html += "<td align='center'>"+registros[i]["inventario_fecha"]+" "+registros[i]["inventario_hora"]+"</td>"; 
                     
                         html += "<td>"+Number(registros[i]["inventario_costo"]).toFixed(2)+"</td>"; 
+                        
+                        //CANTIDAD ASIGNADA
                         html += "<td style='background-color: orange'> <font size='2'><center><b>"+Number(registros[i]["inventario_cantidad"]).toFixed(2)+"</b></center></font></td>"; 
-                        html += "<td><b>"+Number(registros[i]["inventario_costo"]).toFixed(2)+"</b></td>";
-                        html += "<td align='center' style='background-color: yellow'><font size='1' face='Arial'><b>"+Number(registros[i]["inventario_ventas"]).toFixed(2)+"</b></font></td>"; 
-                        html += "<td style='background-color: yellow'>"+registros[i]["inventario_pedidos"]+"</td>"; 
-                        html += "<td style='background-color: yellow'>"+registros[i]["inventario_devoluciones"]+"</td>"; 
-                        html += "<td style='background-color: orange'><center><font size='2'><b>"+Number(registros[i]["inventario_saldo"]).toFixed(2)+"</b></font></center></td>"; 
+                        html += "<td style='background-color: yellow'><b>"+Number(registros[i]["inventario_costo"] * registros[i]["inventario_cantidad"]).toFixed(2)+"</b></td>";
+                        
+                        
+                        //VENTAS
+                        cant_ventas += Number(registros[i]["inventario_ventas"]);
+                        total_ventasbs += Number(registros[i]["inventario_ventas"])*Number(registros[i]["inventario_costo"]);
+                        html += "<td align='center' style='background-color: orange'><font size='1' face='Arial'><b>"+Number(registros[i]["inventario_ventas"]).toFixed(2)+"</b></font></td>"; 
+                        html += "<td style='background-color: yellow'><center><font size='2'><b>"+Number(Number(registros[i]["inventario_ventas"])*Number(registros[i]["inventario_costo"])).toFixed(2)+"</b></font></center></td>"; 
+                        
+//                        html += "<td style='background-color: yellow'>"+registros[i]["inventario_pedidos"]+"</td>"; 
+//                        html += "<td style='background-color: yellow'>"+registros[i]["inventario_devoluciones"]+"</td>"; 
+                        
+                        //SALDOS
+                        total_saldobs += Number(registros[i]["inventario_saldo"])*Number(registros[i]["inventario_costo"]);
+                        total_saldo += (Number(registros[i]["inventario_saldo"])).toFixed(2); 
+                        html += "<td style='background-color: orange'><center><font size='2'><b>"+(Number(registros[i]["inventario_saldo"])).toFixed(2)+"</b></font></center></td>"; 
+                        html += "<td style='background-color: yellow'><center><font size='2'><b>"+(Number(registros[i]["inventario_saldo"])*Number(registros[i]["inventario_costo"])).toFixed(2)+"</b></font></center></td>"; 
+                        
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td><a href='"+base_url+"inventario_usuario/edit/"+registros[i]["inventario_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
                         html += " <a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
@@ -85,12 +109,14 @@ function tablaresul()
                         html += "<td align='right'><b>TOTAL</b></td>";
                         html += "<td align='right'><font size='4'><b>"+Number(cantidades).toFixed(2)+"</b></font></td>";
                      
-                        html += "<td align='right'><font size='4'><b>"+Number(costos).toFixed(2)+"</b></font></td>";
-                        html += "<td></td>";
+                        html += "<td align='right'><font size='4'><b>"+Number(total_invbs).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+Number(cant_ventas).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+Number(total_ventasbs).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+Number(saldo).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+Number(total_saldobs).toFixed(2)+"</b></font></td>";
                         html += "<td></td>";
                         html += "<td></td>";
                                                 
-                        html += "<td align='right'><font size='4'><b>"+Number(saldo).toFixed(2)+"</b></font></td>";
                         html += "<td></td>";
                         html += "</tr>";
                    
@@ -111,16 +137,18 @@ function tablaresul()
 }
 
 function actualizar_invusuario(){
+    
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"inventario_usuario/actualizar_inventario";
     var usuario_id    = document.getElementById('usuario_id').value;
     var fecha    = document.getElementById('inventario_fecha').value;
+    var tipo    = document.getElementById('tipo_inventario').value;
 
     if (usuario_id>=1){
 
         $.ajax({url: controlador,
            type:"POST",
-           data:{usuario_id:usuario_id, fecha:fecha},
+           data:{usuario_id:usuario_id, fecha:fecha, tipo:tipo},
           
            success:function(resul){
                tablaresul();

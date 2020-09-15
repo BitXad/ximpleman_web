@@ -181,7 +181,7 @@ function tabla_pedidos(filtro)
                 // ****************************** fin anular pedido ***************************************
                  // ****************************** consolidar pedido a ventas ***************************************
                         if(esrolconsolidar == 1){
-                        html += "   <button type='button' class='btn btn-facebook btn-sm' data-toggle='modal'  title='Consolida Pedido' data-target='#modalconsolidar"+p[i]["pedido_id"]+"'> ";
+                        html += "   <button type='button' class='btn btn-facebook btn-sm' data-toggle='modal'  title='Consolidar pedido a ventas' data-target='#modalconsolidar"+p[i]["pedido_id"]+"'> ";
                         html += "           <span class='fa fa-cart-plus'></span>  ";
                         html += "      </button>  ";
                         }
@@ -220,8 +220,10 @@ function tabla_pedidos(filtro)
                         html += "          </center> ";
                         html += "      </div> ";
                         html += "      <div class='modal-footer'> ";
+                        
                         html += "        <button type='button' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar</button> ";
-                        html += "        <button type='button' class='btn btn-primary' data-dismiss='modal'  onclick='consolidar_pedido("+p[i]["pedido_id"]+","+p[i]["pedido_total"]+")'><span class='fa fa-cart-plus'></span> Vender</button> ";
+                        html += "        <button type='button' class='btn btn-primary' onclick='consolidar_pedido("+p[i]["pedido_id"]+","+p[i]["pedido_total"]+")' data-dismiss='modal'><span class='fa fa-cart-plus'></span> Vender</button> ";
+                        
                         html += "      </div> ";
                         html += "    </div> ";
                         html += "  </div> ";

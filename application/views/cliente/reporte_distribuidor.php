@@ -91,6 +91,10 @@
 </table>  <br> 
    
 </div>
+
+<!--- ?php echo form_open('pedido/mapa_paraentregas'); ?--->
+
+
 <br>  <input type="hidden" id="usu" name="">
 Desde:<span id="fechade"><font size="1" face="Arial"></font></span>        
 Hasta:<span id="fechaha"><font size="1" face="Arial"></font></span>   <br>     
@@ -122,16 +126,23 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
             <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>" />
         </div>
         <?php } ?>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <br>
-            <button class="btn btn-sm btn-soundcloud btn-sm btn-block"  type="submit" onclick="buscarventasdist()" style="height: 34px;">
+            <button class="btn btn-sm btn-soundcloud btn-sm btn-block" onclick="buscarventasdist()" style="height: 34px;">
                 <span class="fa fa-search"></span> Buscar
           </button>
             <br>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <br>
-            <button class="btn btn-info btn-foursquarexs btn-block"  type="submit" onclick="imprimir_reporte()" style="height: 34px;" title="Imprimir lista" >
+            <a href="<?php echo base_url("pedido/mapa_paraentregas"); ?>" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >
+                <span class="fa fa-map"></span> Mapa diario
+            </a>
+            <br>
+        </div>
+        <div class="col-md-1">
+            <br>
+            <button class="btn btn-info btn-foursquarexs btn-block" onclick="imprimir_reporte()" style="height: 34px;" title="Imprimir lista" >
                 <span class="fa fa-print"></span> Imprimir
             </button>
             <br>
@@ -148,7 +159,7 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
     </div>
     
 </div>
-    
+<!---- ?php echo form_close(); ? ---->    
 <!-------------------------------------------------------------------------------->
 
 <div class="row">

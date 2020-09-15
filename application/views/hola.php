@@ -484,7 +484,7 @@
                   <th>Proveedor/Detalle</th>
                   <th>
                         Bs
-                        <a href="<?php echo base_url("pedido_diario/pedido_nuevo"); ?>" class="btn btn-default btn-xs"><fa class="fa fa-cube"></fa> </a>
+                        <a href="<?php echo base_url("pedido_diario/pedido_nuevo"); ?>" class="btn btn-default btn-xs" title="Registrar nuevo pedido"><fa class="fa fa-cube"></fa> </a>
                   </th>
                 </tr>
                 <tbody id="tabla_pedidos_diarios">

@@ -14,6 +14,7 @@ class Detalle_venta extends CI_Controller{
         $this->load->model('Venta_model');
         $this->load->model('Tipo_transaccion_model');
         $this->load->model('Destino_producto_model');
+        $this->load->model('Pedido_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -92,6 +93,7 @@ class Detalle_venta extends CI_Controller{
         echo json_encode($data);
               
     }
+    
     function buscarventasdist()
     {
         
@@ -102,6 +104,33 @@ class Detalle_venta extends CI_Controller{
         echo json_encode($data);
               
     }
+    
+    function mapa_distribucion()
+    {
+        
+        $filtro = $this->input->post('filtro');
+        $data = $this->Detalle_venta_model->mapa_distribucion($filtro);
+        
+       
+        if($this->acceso(30)) {
+        //**************** inicio contenido ***************  
+        
+            $data['page_title'] = "Mapa de Entregas";
+            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+            
+            $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
+            //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+            $data['_view'] = 'pedido/mapaentregas';
+            
+//            $this->load->view('layouts/main',$data);
+            $this->index();
+        //**************** fin contenido ***************
+        }
+
+        
+    }
+    
+    
     function reportes()
     {
         if($this->acceso(156)){

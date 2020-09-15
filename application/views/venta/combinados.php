@@ -112,19 +112,20 @@
                         </center>
                     </div> 
         </div>
+         
         <div class="col-md-3 no-print" style="padding-top:0;">
-        <div class="box-tools">
-        <center>            
-            
-            <a href="#" onclick="imprimir()" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
-            <a  class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#myModal"><font size="5"><span class="fa fa-truck"></span></font><br><small> Asignar </small></a>
-        </center>            
-        </div>
+            <div class="box-tools">
+                <center>            
+
+                    <a href="#" onclick="imprimir()" class="btn btn-success btn-foursquarexs"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
+                    <a  class="btn btn-warning btn-foursquarexs" data-toggle="modal" data-target="#myModal"><font size="5"><span class="fa fa-truck"></span></font><br><small> Asignar </small></a>
+                </center>            
+            </div>
         </div>
         
        
        
-            
+<!--        Asignar productos inventario individual    -->
 
             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                       <div class="modal-dialog" role="document">
@@ -133,7 +134,8 @@
                                           <div class="modal-header"><b style="font-size: 14px;">Asignar Productos</b>
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                                           </div>
-                                          <div class="modal-body">
+                                            
+                    <div class="modal-body">
                                            <!------------------------------------------------------------------->
                                           Si este usuario ya tiene productos asignados en esta fecha, los productos seran reasignados.<div class="col-md-8 no-print"> 
                             <label for="cliente_foto" class="control-label">Asignar a:</label>
@@ -156,16 +158,18 @@
                         <center>
                             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >        
                         </center>
-                    </div> 
+                        </div> 
                                            <!------------------------------------------------------------------->
-                                          </div>
+                    </div>
                                           <div class="modal-footer aligncenter" id="botoness">
                                                       <a onclick="asignar()" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
                                                       <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
+            </div>
+
+<!--    Fin asignar productos inventario individual    -->
             
        </div>
    </div>

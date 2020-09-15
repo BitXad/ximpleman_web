@@ -387,7 +387,7 @@ function tabla_clientes(response){
 //                    cliente_direccion = c[i].cliente_direccion;
 //                }
                     
-                html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b>"+nombre_negocio+"</td>";
+                html += "<td "+estilo+"><b>"+c[i].cliente_nombre+"</b><sub>["+c[i].cliente_id+"]</sub>"+nombre_negocio+"</td>";
                 html += "<td "+estilo+"><center><button class='btn btn-info btn-xs' onclick='cargar_modal("+JSON.stringify(c[i])+")'> <fa class='fa fa-user'></fa> "+  c[i].cliente_ordenvisita+"</button></center></td>";
                 html += "<td "+estilo+"><center>";
                 

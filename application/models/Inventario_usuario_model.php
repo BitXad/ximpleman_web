@@ -109,30 +109,91 @@ class Inventario_usuario_model extends CI_Model
         return $this->db->delete('inventario_usuario',array('inventario_id'=>$inventario_id));
     }
 
-    function actualizar_inventario($usuario_id, $fecha)
+    function actualizar_inventario($usuario_id, $fecha, $tipo)
     {
-        $sql = "update inventario_usuario set inventario_ventas = 0, inventario_saldo = inventario_cantidad 
+        $sql = "update inventario_usuario set inventario_ventas = 0, inventario_pedidos = 0, inventario_devoluciones = 0, inventario_saldo = inventario_cantidad 
                 where usuario_id = ".$usuario_id." and inventario_fecha = '".$fecha."'";
                     
         $this->db->query($sql);
         
-        $sql ="update inventario_usuario i
-                set i.inventario_ventas = 
-                (
-                select if(sum(d.detalleven_cantidad)>0,sum(d.detalleven_cantidad),0) as cantidad
-                from venta v, detalle_venta d
-                where 
-                d.producto_id = i.producto_id and
-                v.venta_fecha = '".$fecha."' and
-                v.venta_id = d.venta_id and
-                v.usuario_id = ".$usuario_id."
-                group by d.producto_id
-                )
-                ,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,i.inventario_saldo)
-                where 
-                i.usuario_id = ".$usuario_id." and
-                i.inventario_fecha = '".$fecha."'";
+        
+        if ($tipo==1){ //en funcion a las ventas
+        
+            $sql ="update inventario_usuario i
+                    set i.inventario_ventas = 
+                    (
+                        select if(sum(d.detalleven_cantidad)>0,sum(d.detalleven_cantidad),0) as cantidad
+                        from venta v, detalle_venta d
+                        where 
+                        d.producto_id = i.producto_id and
+                        v.venta_fecha = '".$fecha."' and
+                        v.venta_id = d.venta_id and
+                        v.usuario_id = ".$usuario_id."
+                        group by d.producto_id
+                    )
+                    ,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,i.inventario_saldo)
+                    where 
+                    i.usuario_id = ".$usuario_id." and
+                    i.inventario_fecha = '".$fecha."'";
+            
+        }
+        
+        
+        if ($tipo==2){//en funcion a las preventas
+        
+            $sql ="update inventario_usuario i
+                    set i.inventario_ventas = 
+                    (
+                        select if(sum(d.detalleped_cantidad)>0,sum(d.detalleped_cantidad),0) as cantidad
+                        from pedido v, detalle_pedido d
+                        where 
+                        d.producto_id = i.producto_id and
+                        v.pedido_fecha = '".$fecha."' and
+                        v.pedido_id = d.pedido_id and
+                        v.usuario_id = ".$usuario_id."
+                        group by d.producto_id
+                    )
+                    ,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,i.inventario_saldo)
+                    where 
+                    i.usuario_id = ".$usuario_id." and
+                    i.inventario_fecha = '".$fecha."'";
+            
+        }
+        
+        
+        if ($tipo==3){//en funcion a las entregas
+        
+            $sql ="update inventario_usuario i
+                    set i.inventario_ventas = 
+                    (
+                        select if(sum(d.detalleven_cantidad)>0,sum(d.detalleven_cantidad),0) as cantidad
+                        from venta v, detalle_venta d
+                        where 
+                        d.producto_id = i.producto_id and
+                        v.venta_fecha = '".$fecha."' and
+                        v.venta_id = d.venta_id and
+                        v.entrega_usuarioid = ".$usuario_id." and
+                        v.entrega_id = 2
+                        group by d.producto_id
+                    ),
+                    i.inventario_ventas = if (i.inventario_ventas>0,i.inventario_ventas,0)
+                    
+                    where 
+                    i.usuario_id = ".$usuario_id." and
+                    i.inventario_fecha = '".$fecha."'";
+            
+        }
+        //,i.inventario_saldo = if(i.inventario_cantidad - i.inventario_ventas>0,i.inventario_cantidad - i.inventario_ventas,i.inventario_saldo)
         $this->db->query($sql);
+            
+        $sql ="update inventario_usuario i set 
+                    i.inventario_saldo = i.inventario_cantidad - i.inventario_ventas
+                    where 
+                    i.usuario_id = ".$usuario_id." and
+                    i.inventario_fecha = '".$fecha."'";
+        $this->db->query($sql);
+        
+        
         
         return true;
     }

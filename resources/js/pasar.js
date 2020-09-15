@@ -196,8 +196,8 @@ function asignar()
     var fecha = document.getElementById('fecha').value;
     var hora = document.getElementById('hora').value;
     var tipousu = document.getElementById('tipousu').value;
- document.getElementById('asigloader').style.display = 'block';
- document.getElementById('botoness').style.display = 'none';
+    document.getElementById('asigloader').style.display = 'block';
+    document.getElementById('botoness').style.display = 'none';
    // alert(usuario_id[0]['value']);
    // alert(usuario_id[1]['value']);
    // alert(usuario_id[2]['value']);

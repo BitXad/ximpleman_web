@@ -37,6 +37,38 @@ function formatofecha_hora_ampm(string){
    }
     return info;
 }
+
+
+function mapa_distribucion(){
+    
+ var base_url    = document.getElementById('base_url').value;
+ var usuario    = document.getElementById('usuario_id').value;
+ var fecha_desde = document.getElementById('fecha_desde').value;
+ var fecha_hasta = document.getElementById('fecha_hasta').value;
+ var controlador = base_url+"detalle_venta/mapa_distribucion";
+ 
+    if (usuario==0) {
+        var filtro = " and date(v.venta_fecha) >= '"+fecha_desde+"'  and  date(v.venta_fecha) <='"+fecha_hasta+"' ";
+    }else{
+        var filtro = " and date(v.venta_fecha) >= '"+fecha_desde+"'  and  date(v.venta_fecha) <='"+fecha_hasta+"' and v.entrega_usuarioid="+usuario+" ";
+    }
+
+    $.ajax({url: controlador,
+              type:"POST",
+              data:{filtro:filtro},
+
+              success:function(resul){     
+
+
+               },
+           error:function(resul){
+
+               }
+
+       });  
+        
+}
+
 //Tabla resultados de la busqueda de pendientes e npedidos o registros??
 function buscarventasdist(){
  var base_url    = document.getElementById('base_url').value;
@@ -68,7 +100,7 @@ function buscarventasdist(){
                     var cont = 0;
                     var total = Number(0);
                     
-                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                    var n = registros.length; //tamaño del arreglo de la consulta
                     var ventatotal = Number(0);
                    
                     html = "";
