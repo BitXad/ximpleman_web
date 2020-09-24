@@ -1754,10 +1754,13 @@ function mostrardetalleserv(serv_id){
                             res += "<!------------------------ FIN modal para imprimir detalle de INFORME TECNICO ------------------->";
 
                         }
-                        if(registros[i]['detallestado_id'] != 7){
+                        //if(registros[i]['detallestado_id'] != 7){
                             if(parametro_segservicio == 1){
                                 res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+res_unico+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                             }
+                        //}
+                        if(registros[i]['detalleserv_acuenta'] == 0){
+                            res += "<a class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistraracuenta"+registros[i]['detalleserv_id']+"' title='Registrar pago a cuenta'><span class='fa fa-dollar'></span></a>";
                         }
                         if(registros[i]['detallestado_id'] == 5){
                             res += "<br><a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#modalregistrarprocesar"+registros[i]['detalleserv_id']+"' title='Procesar el servicio'><span class='fa fa-wrench'></span> PENDIENTE</a>";

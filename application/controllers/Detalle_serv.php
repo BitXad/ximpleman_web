@@ -188,35 +188,38 @@ class Detalle_serv extends CI_Controller{
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $masdescripcion = $this->input->post('textcatproducto')." ".$this->input->post('textmarcadescripcion')." ".$this->input->post('detalleserv_descripcion');
+                $facuenta = date('Y-m-d H:i:s');
                 $params = array(
-                                    'estado_id' => $estado_id,
-                                    'responsable_id' => $this->input->post('responsable_id'),
-                                    'usuario_id' => $usuario_id,
-                                    'servicio_id' => $servicio_id,
-                                    'catserv_id' => $catserv_id,
-                                    'subcatserv_id' => $subcatserv_id,
-                                    'cattrab_id' => $this->input->post('cattrab_id'),
-                                    'tiempouso_id' => $this->input->post('tiempouso_id'),
-                                    'procedencia_id' => $this->input->post('procedencia_id'),
-                                    'detalleserv_descripcion' => $masdescripcion,
-                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
-                                    'detalleserv_falla' => $this->input->post('detalleserv_falla'),
-                                    'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
-                                    'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
-                                    'detalleserv_pesoentrada' => $this->input->post('detalleserv_pesoentrada'),
-                                    'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
-                                    'detalleserv_total' => $inputotal,
-                                    'detalleserv_acuenta' => $inputacuenta,
-                                    'detalleserv_saldo' => $inputsaldo,
+                    'estado_id' => $estado_id,
+                    'responsable_id' => $this->input->post('responsable_id'),
+                    'usuario_id' => $usuario_id,
+                    'servicio_id' => $servicio_id,
+                    'catserv_id' => $catserv_id,
+                    'subcatserv_id' => $subcatserv_id,
+                    'cattrab_id' => $this->input->post('cattrab_id'),
+                    'tiempouso_id' => $this->input->post('tiempouso_id'),
+                    'procedencia_id' => $this->input->post('procedencia_id'),
+                    'detalleserv_descripcion' => $masdescripcion,
+                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                    'detalleserv_falla' => $this->input->post('detalleserv_falla'),
+                    'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                    'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
+                    'detalleserv_pesoentrada' => $this->input->post('detalleserv_pesoentrada'),
+                    'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
+                    'detalleserv_total' => $inputotal,
+                    'detalleserv_acuenta' => $inputacuenta,
+                    'detalleserv_saldo' => $inputsaldo,
 //                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
 //                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
-                                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
-                                    'detalleserv_horaentrega' => $hora_entrega,
-                                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
+                    'detalleserv_fpagoacuenta' => $facuenta,
+                    'usuariopacuenta_id' => $usuario_id,
+                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
+                    'detalleserv_horaentrega' => $hora_entrega,
+                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
                 );
                 $detalle_serv_id = $this->Detalle_serv_model->add_detalle_serv($params);
 
-                $facuenta = date('Y-m-d H:i:s');
+                /*$facuenta = date('Y-m-d H:i:s');
                 if($inputacuenta >0)
                 {
                     $detparam = array(
@@ -226,7 +229,7 @@ class Detalle_serv extends CI_Controller{
 
                     $this->Detalle_serv_model->update_detalle_serv($detalle_serv_id, $detparam);
                 
-                }   
+                }*/
                 //$subcatserv_id = $this->input->post('subcatserv_id');
                 $this->load->model('Categoria_servicio_model');
 		$data['categoria_servicio'] = $this->Categoria_servicio_model->get_categoria_servicio($catserv_id);
@@ -2319,32 +2322,39 @@ class Detalle_serv extends CI_Controller{
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
+                $sereclamo = $this->input->post('detalleserv_reclamo');
+                if(isset($esreclamo)){
+                    $esreclamo = "si";
+                }else{
+                    $esreclamo = "no";
+                }
                 $params = array(
-                                    'estado_id' => $estado_id,
-                                    'responsable_id' => $this->input->post('responsable_id'),
-                                    'usuario_id' => $usuario_id,
-                                    //'servicio_id' => $servicio_id,
-                                    'catserv_id' => $catserv_id,
-                                    'subcatserv_id' => $subcatserv_id,
-                                    'cattrab_id' => $this->input->post('cattrab_id'),
-                                    'tiempouso_id' => $this->input->post('tiempouso_id'),
-                                    'procedencia_id' => $this->input->post('procedencia_id'),
-                                    //'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
-                                    'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
-                                    'detalleserv_falla' => $this->input->post('detalleserv_falla'),
-                                    'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
-                                    'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
-                                    'detalleserv_pesoentrada' => $this->input->post('detalleserv_pesoentrada'),
-                                    'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
-                                    'detalleserv_total' => $this->input->post('detalleserv_total'),
-                                    'detalleserv_acuenta' => $inputacuenta,
-                                    'detalleserv_saldo' => $inputsaldo,
+                    'estado_id' => $estado_id,
+                    'responsable_id' => $this->input->post('responsable_id'),
+                    'usuario_id' => $usuario_id,
+                    //'servicio_id' => $servicio_id,
+                    'catserv_id' => $catserv_id,
+                    'subcatserv_id' => $subcatserv_id,
+                    'cattrab_id' => $this->input->post('cattrab_id'),
+                    'tiempouso_id' => $this->input->post('tiempouso_id'),
+                    'procedencia_id' => $this->input->post('procedencia_id'),
+                    //'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
+                    'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
+                    //'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                    'detalleserv_reclamo' => $esreclamo,
+                    'detalleserv_falla' => $this->input->post('detalleserv_falla'),
+                    'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
+                    'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
+                    'detalleserv_pesoentrada' => $this->input->post('detalleserv_pesoentrada'),
+                    'detalleserv_glosa' => $this->input->post('detalleserv_glosa'),
+                    'detalleserv_total' => $this->input->post('detalleserv_total'),
+                    'detalleserv_acuenta' => $inputacuenta,
+                    'detalleserv_saldo' => $inputsaldo,
 //                                    'detalleserv_fechaterminado' => $this->input->post('detalleserv_fechaterminado'),
 //                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
-                                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
-                                    'detalleserv_horaentrega' => $hora_entrega,
-                                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
+                    'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
+                    'detalleserv_horaentrega' => $hora_entrega,
+                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
                 );
 
                 $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);

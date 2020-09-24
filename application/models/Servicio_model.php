@@ -357,6 +357,7 @@ class Servicio_model extends CI_Model
     }
     /*
      * Get all reporte servicios con Filtro
+     * se lo usa en reporte de movimiento economico de servicios diarios
      */
     function get_all_servicios_dia()
     {

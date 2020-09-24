@@ -664,7 +664,7 @@ class Compra extends CI_Controller{
             }
 
             $costo_promedio = $costo_total / $saldo_total;
-            echo $costo_total."  -  ".$saldo_total;
+            //echo $costo_total."  -  ".$saldo_total;
             $sql = "update inventario i, producto p set i.producto_costo=".$costo_promedio.", p.producto_costo=".$costo_promedio." where i.producto_id=".$producto_id." and p.producto_id=".$producto_id." ";
             $this->db->query($sql);
             

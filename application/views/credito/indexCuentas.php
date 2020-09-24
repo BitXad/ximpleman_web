@@ -13,32 +13,44 @@
                 })
             }(jQuery));
         });
-</script>   
+        function imprimir()
+        {
+             window.print(); 
+        }
+</script>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
+<!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="box-header">
     <div class="col-md-6 no-print">
-               <font size='4' face='Arial'><b>Deudas por Cobrar</b></font>
-               <br><font size='2' face='Arial' id="pillados">Registros Econtrados: </font>
-        </div>
-        <div class="col-md-6 no-print">
-            <form action="<?php echo site_url('credito/repoCuentas'); ?>"  target="_blank" method="POST">
-                <input type="hidden" name="usu" id="usu">
-                <input type="hidden" name="feini" id="feini">
-                <input type="hidden" name="fefin" id="fefin">
-                <input type="hidden" name="esti" id="esti" value="">
-                 <input type="hidden" name="vendedor" id="vendedor" value="">
-              <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
-               <button class="btn btn-success btn-md" style="float: right;margin-left: 10px"><span class="fa fa-print"></span> Imprimir</button>
-          
-              <?php } ?>
-              <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" > Agrupar</label>
-            </form>
-        </div></div>
-                 <div class="col-md-12">
+       <font size='4' face='Arial'><b>Deudas por Cobrar</b></font>
+       <br><font size='2' face='Arial' id="pillados">Registros Econtrados: </font>
+    </div>
+    <div class="col-md-6 no-print">
+        <!--<form action="<?php /*echo site_url('credito/repoCuentas'); ?>"  target="_blank" method="POST">
+            <input type="hidden" name="usu" id="usu">
+            <input type="hidden" name="feini" id="feini">
+            <input type="hidden" name="fefin" id="fefin">
+            <input type="hidden" name="esti" id="esti" value="">
+             <input type="hidden" name="vendedor" id="vendedor" value="">
+          <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
+           <button class="btn btn-success btn-md" style="float: right;margin-left: 10px"><span class="fa fa-print"></span> Imprimir</button>
+
+          <?php }*/ ?>
+          <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" > Agrupar</label>
+        </form>-->
+        <?php if($rol[50-1]['rolusuario_asignado'] == 1){ ?>
+            <a class="btn btn-success btn-md" style="float: right;margin-left: 10px" onclick="imprimir()"><span class="fa fa-print"></span> Imprimir</a>
+        <?php } ?>
+        <label class="btn btn-info btn-md" style="float: right;"> <input  class="btn btn-xs" type="checkbox"  id="agrupar" name="agrupar" value="1" > Agrupar</label>
+        
+    </div>
+</div>
+         <div class="col-md-12 no-print">
                      <div class="col-md-3">
         <!--------------------- parametro de buscador --------------------->
                 <label for="fecha_desde" class="control-label">Cliente</label>
@@ -95,9 +107,28 @@
              
           </button>
   
+    </div>
 </div>
+<div class=" col-md-12 cuerpo">
+    <div class="columna_derecha">
+        <center> 
+            <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60">
+        </center>
+    </div>
+    <div class="columna_izquierda">
+        <center>  <font size="4"><b><u><?php echo $empresa[0]['empresa_nombre']; ?></u></b></font><br>
+        <?php echo $empresa[0]['empresa_zona']; ?><br>
+        <?php echo $empresa[0]['empresa_direccion']; ?><br>
+        <?php echo $empresa[0]['empresa_telefono']; ?>
+        </center>
+    </div>
+    <div class="columna_central">
+        <center><h3 class="box-title"><u>DEUDAS POR COBRAR</u></h3>
+            <b>VENTAS AL CREDITO</b> <br>
+            <?php echo date('d/m/Y H:i:s'); ?>
+        </center>
+    </div>
 </div>
-
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
@@ -138,6 +169,13 @@
                 </div>                
         </div>
     </div>
+    <div class="col-md-12">
+            <center>
+                <hr style="border-color: black; width: 20%; margin-bottom: 0;">
+                RESPONSABLE<BR>
+                FIRMA-SELLO
+            </center>
+        </div>
 </div>
 
 <!----------------- modal factura ---------------------------------------------->

@@ -35,7 +35,7 @@ function convertDateFormat(string){
    }
     return info;
 }
-
+/* se lo usa en reporte de servicio diario(movimiento economico de servicios diarios) */
 function reportedetservicio(){
     var base_url       = document.getElementById('base_url').value;
     var controlador    = base_url+"servicio/buscardetalleserv_dia";

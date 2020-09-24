@@ -132,6 +132,7 @@ class Credito extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
             $data['cuota'] = $this->Cuotum_model->get_all_cuota();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'credito/indexCuentas';
             $this->load->view('layouts/main',$data);
         }
@@ -142,6 +143,7 @@ class Credito extends CI_Controller{
             $data['rol'] = $this->session_data['rol'];
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
             $data['cuota'] = $this->Cuotum_model->get_cuota_venta();
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['_view'] = 'credito/indexCuentas';
             $this->load->view('layouts/main',$data); 
         }

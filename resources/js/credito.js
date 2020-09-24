@@ -256,16 +256,16 @@ function tablacuentas(filtro) //Cuentas por cobrar
                     html2 += "<th>Cliente</th>";  
                     html2 += "<th>Crédito</th>";  
                     html2 += "<th>Transacción</th>";  
-                    html2 += "<th>Estado</th>";  
+                    html2 += "<th class='no-print'>Estado</th>";  
                     html2 += "<th>Monto Bs</th>";  
                     html2 += "<th>Cuota<br>Inicial</th>";  
                     html2 += "<th>Monto<br>Crédito</th>";  
                     html2 += "<th>Interes<br>(%)</th>";  
                     html2 += "<th># Pagos</th>";  
                     html2 += "<th>Fecha</th>";  
-                    html2 += "<th>Hora</th>";  
-                    html2 += "<th>Usuario</th>";  
-                    html2 += "<th></th>";  
+                    html2 += "<th class='no-print'>Hora</th>";  
+                    html2 += "<th class='no-print'>Usuario</th>";  
+                    html2 += "<th class='no-print'></th>";  
                     html2 += "</tr>";  
                     $("#titulos").html(html2); 
                     
@@ -289,14 +289,14 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         html += "<tr>";
                         html += "<td>"+(i+1)+"</td>";
                         if (registros[i]['venta_id']>0) {
-                        html += "<td><font face='Arial' size='3'><b>"+registros[i]['kay']+"<b></font><sub>["+registros[i]['clienteid']+"]</sub> </td>";
+                        html += "<td><font face='Arial' size='3'><b>"+registros[i]['kay']+"<b></font><sub class='no-print'>["+registros[i]['clienteid']+"]</sub> </td>";
                         html += "<td style='text-align: center'>00"+registros[i]['credito_id']+"</td>";
                         html += "<td style='text-align: center'>Venta: 00"+registros[i]['ventita'];
                         
                            if (registros[i]['orden_id']>0) {
                                 html += " OT:"+registros[i]['orden_id'];  
-                                html += "</td>";  
                             }
+                                html += "</td>";  
                         
                         } else {    
                         html += "<td style='"+color+"'>"+registros[i]['perro']+"</td>";
@@ -304,21 +304,21 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         html += "<td style='text-align: center'>Servicio: "+registros[i]['servicio_id']+"</td>";
                         }
                         color = "background: red";
-                        html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
+                        html += "<td style='text-align: center' class='no-print'>"+registros[i]['estado_descripcion']+"</td>";
                         html += "<td style='text-align: right; '><b>"+formato_numerico(Number(registros[i]['venta_total']))+"</b></td>";
                         html += "<td style='text-align: right; "+color+"'>"+formato_numerico(Number(registros[i]['credito_cuotainicial']))+"</td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>"+formato_numerico(Number(registros[i]['credito_monto']))+"</font></b></td>";
                         html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['credito_interesmonto']))+"("+registros[i]['credito_interesproc']+")</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
-                        html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
+                        html += "<td style='text-align: center' class='no-print'>"+registros[i]['credito_hora']+"</td>";
                         if (registros[i]['servicio_id']>0) {
-                        html += "<td style='text-align: center'>"+registros[i]['usuario_servnombre']+"</td>";
+                        html += "<td style='text-align: center' class='no-print'>"+registros[i]['usuario_servnombre']+"</td>";
                         }
                         if (registros[i]['venta_id']>0) {
-                        html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
+                        html += "<td style='text-align: center' class='no-print'>"+registros[i]['usuario_nombre']+"</td>";
                         
-                        html += "<td><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs' title='VER CUOTAS'><span class='fa fa-eye'></span></a>";
+                        html += "<td class='no-print'><a href='"+base_url+"cuotum/cuentas/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs' title='VER CUOTAS'><span class='fa fa-eye'></span></a>";
                         html += " <a href='"+base_url+"cuotum/planCuenta/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs' title='PLAN DE PAGOS'><span class='fa fa-print'></span></a>";
                         html += " <a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' target='_blank' class='btn btn-primary btn-xs' title='VER DETALLE VENTA'><span class='fa fa-file'></span></a>";
                         
@@ -331,8 +331,9 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         if (registros[i]["estado_id"]==9){
                         //html += "<a href='"+base_url+"credito/factura/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-warning btn-xs'><span class='fa fa-list'></span></a></td>";
                         }
+                        html += "</td>";
                         } else { 
-                        html += "<td><a href='"+base_url+"cuotum/cuenta_serv/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
+                        html += "<td class='no-print'><a href='"+base_url+"cuotum/cuenta_serv/"+registros[i]['credito_id']+"'  target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planCuentaServ/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>"; 
                         }
                         
