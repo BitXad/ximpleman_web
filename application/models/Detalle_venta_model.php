@@ -62,13 +62,17 @@ function ventas_dia($estado)
   {
         $detalle_venta = $this->db->query("
             SELECT
-                v.*, e.entrega_nombre,  c.cliente_nombre,c.cliente_latitud, c.cliente_longitud, c.cliente_razon,c.cliente_telefono,c.cliente_direccion, es.estado_descripcion
+                v.*, e.entrega_nombre,  c.cliente_nombre,c.cliente_latitud,
+                c.cliente_longitud, c.cliente_razon, c.cliente_telefono,
+                c.cliente_direccion, es.estado_descripcion, u.usuario_nombre, pr.usuario_nombre as prevendedor
             FROM
                 venta v 
             /*LEFT JOIN detalle_venta dv on v.venta_id=dv.venta_id*/
             LEFT JOIN entrega e on v.entrega_id=e.entrega_id
             LEFT JOIN cliente c on v.cliente_id=c.cliente_id
             LEFT JOIN estado es on v.estado_id=es.estado_id
+            LEFT JOIN usuario u on v.usuario_id= u.usuario_id
+            LEFT JOIN usuario pr on v.usuarioprev_id= pr.usuario_id
 
             WHERE
             1=1

@@ -184,7 +184,8 @@ class Servicio extends CI_Controller{
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
             
-	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+	    //$data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_activo();
             
             $this->load->model('Categoria_servicio_model');
 	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
@@ -1827,6 +1828,53 @@ class Servicio extends CI_Controller{
                 }else{
                     echo json_encode("faltainf");
                 }
+            }
+            else
+            {
+                show_404();
+            }
+        //}
+    }
+    /* registrar pago a cuenta de un detalle de servicio */
+    function registrar_pago_acuenta()
+    {
+            if ($this->input->is_ajax_request()){
+                    $servicio_id = $this->input->post('servicio_id');
+                    $detalleserv_id = $this->input->post('detalleserv_id');
+                    //$estado_id = 28; // 28 ---> EN PROCESO
+                    //$fecha_enproceso = date('Y-m-d');
+                    //$hora_enproceso  = date('H:i:s');
+                    //if($this->session_data['tipousuario_id'] == 1){
+                        //$fecha_acuenta = $this->input->post('fecha_acuenta');
+                        //$monto_acuenta = $this->input->post('monto_acuenta');
+                    /*}else{
+                        $responsable_id = $this->session_data['usuario_id'];
+                    }*/
+                    $this->load->model('Detalle_serv_model');
+                    //$detalleservdatos = $this->Detalle_serv_model->get_detalle_serv($detalleserv_id);
+                    $saldo = $this->input->post('monto_total')-$this->input->post('monto_acuenta');
+                    $params = array(
+                        'detalleserv_total' => $this->input->post('monto_total'),
+                        'detalleserv_acuenta' => $this->input->post('monto_acuenta'),
+                        'detalleserv_fpagoacuenta' => $this->input->post('fecha_acuenta'),
+                        'detalleserv_saldo' => $saldo,
+                    );
+                    
+                    $datos = $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
+                    
+                    $data['resultado'] = $this->Detalle_serv_model->sumarmontos($servicio_id);
+                    
+                    $total = $data['resultado']['total'];
+                    $acuenta = $data['resultado']['acuenta'];
+                    $saldo = $data['resultado']['saldo'];
+                    $sumparams = array(
+                            'servicio_total' => $total,
+                            'servicio_acuenta' => $acuenta,
+                            'servicio_saldo' => $saldo,
+                    );
+                    $this->Servicio_model->update_servicio($servicio_id,$sumparams);
+                    
+                    echo json_encode("ok");
             }
             else
             {

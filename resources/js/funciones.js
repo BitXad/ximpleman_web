@@ -1844,8 +1844,8 @@ function registrarcliente()
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
     var zona_id = document.getElementById('zona_id').value;
-    
-    if (Number.isInteger(zona_id)){
+    //if (Number.isInteger(zona_id)){
+    if (zona_id >0){
         zona_id = document.getElementById('zona_id').value;
     }else{        
         zona_id = 0;
@@ -2843,7 +2843,7 @@ function seleccionar_cliente(){
                     $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
                     $("#cliente_celular").val(resultado[0]["cliente_celular"]);
-                    if(registros[0]["zona_id"] != null && registros[0]["zona_id"] >=0){
+                    if(resultado[0]["zona_id"] != null && Number(resultado[0]["zona_id"]) >=0){
                         $("#zona_id").val(resultado[0]["zona_id"]);
                     }else{
                         $("#zona_id").val(0);

@@ -135,9 +135,23 @@ function buscarventasdist(){
                         html += "</td>";
                         
                         html += "<b>Telf.:</b>"+registros[i]["cliente_telefono"]+"<b>Dir.:"+registros[i]["cliente_direccion"]+"</b>";
-                        html += "<td align='center'>"+registros[i]["venta_id"]+"</td>"; 
+                        html += "<td align='center'>"+registros[i]["venta_id"]+"</td>";
                         html += "<td align='right'>"+Number(registros[i]["venta_total"]).toFixed(2)+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"]+"</td>"; 
+                        html += "<td align='center'>";
+                        var elvendedor = registros[i]["usuario_nombre"];
+                        if(elvendedor.length>15){
+                            elvendedor = "<span title='"+elvendedor+"'>"+elvendedor.substring(0,15)+"...</span>";
+                        }
+                        html += "Vend.: "+elvendedor;
+                        var prevendedor = registros[i]["prevendedor"];
+                        if(registros[i]["prevendedor"] != null || registros[i]["prevendedor"] >0){
+                            if(prevendedor.length>15){
+                                prevendedor = "<span title='"+prevendedor+"'>"+prevendedor.substring(0,15)+"...</span>";
+                            }
+                            html += "<br>Prev.:"+prevendedor;
+                        }
+                        html += "</td>"; 
                         if (registros[i]["entrega_id"]==null) {
                         html += "<td align='center'></br>";
                         }else{

@@ -382,7 +382,7 @@ window.onkeydown = compruebaTecla;
                             <?php 
                             foreach($zonas as $categoria_clientezona)
                             {
-                                    $selected = ($zonas['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
+                                    $selected = ($categoria_clientezona['zona_id'] == $cliente[0]['zona_id']) ? ' selected="selected"' : "";
 
                                     echo '<option value="'.$categoria_clientezona['zona_id'].'" '.$selected.'>'.$categoria_clientezona['zona_nombre'].'</option>';
                             } 

@@ -34,8 +34,8 @@
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
+                    <tbody class="buscar">
                     <?php
-                    
                     foreach($all_rolpadre as $rolpadre){
                         $i = 0;
                     ?>
@@ -73,6 +73,7 @@
                         </td>
                     </tr>
                     <?php $i++; } } } ?>
+                    </tbody>
                 </table>
                                
             </div>
