@@ -102,7 +102,7 @@
         <!--este es FIN del BREADCRUMB buscador-->
          <div class="col-md-12">
             <!--este es INICIO de input buscador-->
-             <div class="col-md- 6">
+             <div class="col-md-6">
                 <div class="input-group">
                     <span class="input-group-addon">Buscar</span>           
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, codigo, ci, nit" onkeypress="buscarcliente(event)" autocomplete="off" >
@@ -202,7 +202,7 @@
                 if($rol[97-1]['rolusuario_asignado'] == 1){ ?>
                 <a onclick="imprimir_cliente()" class="btn btn-info btn-foursquarexs" title="Imprimir lista de Clientes"><font size="5"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
                 <a href="<?php echo base_url('cliente/clienteprint'); ?>" target="_blank" class="btn btn-soundcloud btn-foursquarexs" title="Imprimir lista de Clientes con detalle resumido"><font size="5"><span class="fa fa-print"></span></font><br><small>Resumen</small></a>
-                <a href="<?php echo base_url('cliente/mapa_cliente'); ?>" class="btn btn-facebook btn-foursquarexs" title="Mostrar mapa de clientes"><font size="5"><span class="fa fa-map"></span></font><br><small>&nbsp;&nbsp;Mapa&nbsp;&nbsp;&nbsp;</small></a>
+                <a class="btn btn-facebook btn-foursquarexs" data-toggle='modal' data-target='#modalmapa' title="Mostrar mapa de clientes"><font size="5"><span class="fa fa-map"></span></font><br><small>&nbsp;&nbsp;Mapa&nbsp;&nbsp;&nbsp;</small></a>
                 <?php } ?>
             <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
     </div>
@@ -264,4 +264,58 @@ echo '<script type="text/javascript">
 </script>';
 ?>
 
-
+<!------------------------ INICIO modal para confirmar eliminación ------------------->
+<div class='modal fade' id='modalmapa' tabindex='-1' role='dialog' aria-labelledby='modalmapaLabel'>
+    <div class='modal-dialog modal-sm' role='document'>
+        <br><br>
+        <div class='modal-content'>
+            <div class='modal-header text-center'>
+                <span style='font-size: 15pt' class='text-bold'>CLIENTES SIN VISITA</span>
+                <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>
+            </div>
+            <div class='modal-body'>
+                <!------------------------------------------------------------------->
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><b>Desde:&nbsp</b></span>           
+                        <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                    </div>
+                    <br>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><b>Hasta:&nbsp</b></span>           
+                        <input type="date" value="<?php echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+                    </div>
+                    <br>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><b>Zona:&nbsp&nbsp</b></span>           
+                        <select name="zona_busqueda" class="btn-primary btn-sm btn-block form-control" id="zona_busqueda">
+                        <option value="" disabled selected >-- ZONAS --</option>
+                        <option value="0"> Todas Las Zonas </option>
+                        <?php 
+                        foreach($all_categoria_clientezona as $zona)
+                        {
+                            echo '<option value="'.$zona['zona_id'].'">'.$zona['zona_nombre'].'</option>';
+                        } 
+                        ?>
+                    </select>
+                    </div>
+                    <br>
+                </div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class='modal-footer aligncenter'>
+                <div class="col-md-6">
+                    <a href='' target="_blank" class='btn btn-success btn-block' id='buscar_visita'><span class='fa fa-search'></span> Buscar </a>
+                </div>
+                <div class="col-md-6">
+                    <a href='#' class='btn btn-danger btn-block' data-dismiss='modal' id='cerrar_modalmapa'><span class='fa fa-times'></span> Cerrar </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para confirmar eliminación ------------------->

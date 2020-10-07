@@ -66,5 +66,23 @@ class Unidad_model extends CI_Model
     {
         return $this->db->delete('unidad',array('unidad_id'=>$unidad_id));
     }
+    /*
+     * Get all unidad
+     */
+    function get_unidad_usada($nombre_unidad)
+    {
+        $unidad = $this->db->query("
+            SELECT
+                u.*
+            FROM
+                unidad u
+            left join producto p on u.unidad_nombre = p.producto_unidad
+            where
+                p.producto_unidad = '".$nombre_unidad."'
+
+        ")->result_array();
+
+        return $unidad;
+    }
 
 }

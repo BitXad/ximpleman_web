@@ -87,7 +87,6 @@ function buscar_producto()
     var idioma_id = document.getElementById('idioma_id').value;
     controlador = base_url+'website/webbuscar_productos/';
     parametro = document.getElementById('parabuscar').value;
-    
     if(parametro != ""){
         
         document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader

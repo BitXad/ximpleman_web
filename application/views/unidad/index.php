@@ -1,3 +1,5 @@
+<script src="<?php echo base_url('resources/js/unidad.js'); ?>" type="text/javascript"></script>
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <!----------------------------- script buscador --------------------------------------->
 <script type="text/javascript">
         $(document).ready(function () {
@@ -48,8 +50,11 @@
                         <td><?php echo $i+1; ?></td>
                         <td><?php echo $u['unidad_nombre']; ?></td>
                         <td class="no-print">
-                            <a href="<?php echo site_url('unidad/edit/'.$u['unidad_id']); ?>" class="btn btn-info btn-xs" title="Editar Unidad"><span class="fa fa-pencil"></span></a> 
-                            <!--<a data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span></a>-->
+                            <a href="<?php echo site_url('unidad/edit/'.$u['unidad_id']); ?>" class="btn btn-info btn-xs" title="Editar Unidad"><span class="fa fa-pencil"></span></a>
+                            <?php
+                            if($tipousuario_id == 1){
+                            ?>
+                            <a data-toggle="modal" data-target="#myModal<?php echo $i; ?>"  title="Eliminar" class="btn btn-danger btn-xs" onclick="verificar_usounidad(<?php echo $u['unidad_id'];?>, <?php echo "'".$u['unidad_nombre']."'";?>)"><span class="fa fa-trash"></span></a>
                         <!------------------------ INICIO modal para confirmar eliminación ------------------->
                             <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
                               <div class="modal-dialog" role="document">
@@ -63,6 +68,7 @@
                                    <h3><b> <span class="fa fa-trash"></span></b>
                                        ¿Desea eliminar la unidad <b> <?php echo $u['unidad_nombre']; ?></b>?
                                    </h3>
+                                   <span class="text-danger"><b><span style="font-size: 12px" id="esusado<?php echo $u["unidad_id"]; ?>"></span></b></span>
                                    <!------------------------------------------------------------------->
                                   </div>
                                   <div class="modal-footer aligncenter">
@@ -73,6 +79,9 @@
                               </div>
                             </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
+                        <?php
+                            }
+                        ?>
                         </td>
                     </tr>
                     <?php $i++; } ?>

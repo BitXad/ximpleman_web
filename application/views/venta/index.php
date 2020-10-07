@@ -54,6 +54,8 @@
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
+<input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($usuario); ?>' />
+<input type="hidden" name="tipousuario_id" id="tipousuario_id" value='<?php echo $tipousuario_id; ?>' />
 <input type="text" value="" id="parametro" hidden>
 
 

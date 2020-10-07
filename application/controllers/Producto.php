@@ -92,9 +92,11 @@ class Producto extends CI_Controller{
                     $data['_view'] = 'producto/add';
                     $this->load->view('layouts/main',$data);
                 }else{
+                    $producto_catalogo = $this->input->post('producto_catalogo');
             /* *********************INICIO imagen***************************** */
             $foto="";
             if (!empty($_FILES['producto_foto']['name'])){
+                $producto_catalogo = 1;
 		
                         $this->load->library('image_lib');
                         $config['upload_path'] = './resources/images/productos/';
@@ -197,6 +199,7 @@ class Producto extends CI_Controller{
                 'producto_cantidadenvase' => $this->input->post('producto_cantidadenvase'),
                 'subcategoria_id' => $this->input->post('subcategoria_id'),
                 'producto_unidadentera' => $this->input->post('producto_unidadentera'),
+                'producto_catalogo' => $producto_catalogo,
             );
             
             $producto_id = $this->Producto_model->add_producto($params);
@@ -248,11 +251,13 @@ class Producto extends CI_Controller{
 
             if($this->form_validation->run())     
             {
+                $producto_catalogo = $this->input->post('producto_catalogo');
                 /* *********************INICIO imagen***************************** */
                 $foto="";
                     $foto1= $this->input->post('producto_foto1');
                 if (!empty($_FILES['producto_foto']['name']))
                 {
+                    $producto_catalogo = 1;
                     $this->load->library('image_lib');
                     $config['upload_path'] = './resources/images/productos/';
                     $config['allowed_types'] = 'gif|jpeg|jpg|png';
@@ -366,6 +371,7 @@ class Producto extends CI_Controller{
                     'producto_cantidadenvase' => $this->input->post('producto_cantidadenvase'),
                     'subcategoria_id' => $this->input->post('subcategoria_id'),
                     'producto_unidadentera' => $this->input->post('producto_unidadentera'),
+                    'producto_catalogo' => $this->input->post('producto_catalogo'),
                 );
 
                 $this->Producto_model->update_producto($producto_id,$params);

@@ -169,28 +169,31 @@ class Producto_model extends CI_Model
     
     function get_busqueda_producto_parametro($parametro, $categoriaestado)
     {
-        $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
-             dp.destino_nombre, scp.subcategoria_nombre, i.existencia
-              FROM
-              producto p
-              LEFT JOIN estado e on p.estado_id = e.estado_id
-              LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
-              LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
-              LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
-              LEFT JOIN moneda m on p.moneda_id = m.moneda_id
-              LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
-              LEFT JOIN inventario i on p.producto_id = i.producto_id
-              WHERE 
-                   p.estado_id = e.estado_id
-                   and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
-                   or p.producto_codigo like '%".$parametro."%' or p.producto_marca like '%".$parametro."%'
-                   or p.producto_industria like '%".$parametro."%' or p.producto_caracteristicas like '%".$parametro."%'
-                   or p.producto_principioact like '%".$parametro."%' or p.producto_accionterap like '%".$parametro."%')
-                   ".$categoriaestado."
-              GROUP By p.producto_id
-              ORDER By p.producto_nombre";
+        $sql = "select x.*, i.existencia
+                from
+                    (SELECT
+                     p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
+                     dp.destino_nombre, scp.subcategoria_nombre
+                      FROM
+                      producto p
+                      LEFT JOIN estado e on p.estado_id = e.estado_id
+                      LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+                      LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
+                      LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+                      LEFT JOIN moneda m on p.moneda_id = m.moneda_id
+                      LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
+                      WHERE 
+                           p.estado_id = e.estado_id
+                           and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
+                           or p.producto_codigo like '%".$parametro."%' or p.producto_marca like '%".$parametro."%'
+                           or p.producto_industria like '%".$parametro."%' or p.producto_caracteristicas like '%".$parametro."%'
+                           or p.producto_principioact like '%".$parametro."%' or p.producto_accionterap like '%".$parametro."%')
+                           ".$categoriaestado."
+                      GROUP By p.producto_id
+                      ORDER By p.producto_nombre
+                ) as x, consinventario i
+                where x.producto_id = i.producto_id";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -226,23 +229,27 @@ class Producto_model extends CI_Model
 
      function get_busqueda_producto_limite()
     {
-        $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
-             dp.destino_nombre, scp.subcategoria_nombre, i.existencia
-              FROM
-              producto p
-              LEFT JOIN estado e on p.estado_id = e.estado_id
-              LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
-              LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
-              LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
-              LEFT JOIN moneda m on p.moneda_id = m.moneda_id
-              LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
-              LEFT JOIN inventario i on p.producto_id = i.producto_id
-              WHERE 
-                   p.estado_id = e.estado_id
-                  
-              ORDER By p.producto_nombre LIMIT 50";
+        $sql = "select x.*, i.existencia
+                from
+                    (SELECT
+                     p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
+                     dp.destino_nombre, scp.subcategoria_nombre
+                      FROM
+                      producto p
+                      LEFT JOIN estado e on p.estado_id = e.estado_id
+                      LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+                      LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
+                      LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+                      LEFT JOIN moneda m on p.moneda_id = m.moneda_id
+                      LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
+
+                      WHERE 
+                           p.estado_id = e.estado_id
+
+                      ORDER By p.producto_nombre LIMIT 50
+                      ) as x, consinventario i
+                where x.producto_id = i.producto_id";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -251,23 +258,25 @@ class Producto_model extends CI_Model
     /* *****Buscar todos los productos****** */
     function get_busqueda_productos_all()
     {
-        $sql = "SELECT
-             p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
-             dp.destino_nombre, scp.subcategoria_nombre, i.existencia
-              FROM
-              producto p
-              LEFT JOIN estado e on p.estado_id = e.estado_id
-              LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
-              LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
-              LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
-              LEFT JOIN moneda m on p.moneda_id = m.moneda_id
-              LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
-              LEFT JOIN inventario i on p.producto_id = i.producto_id
-              WHERE 
-                   p.estado_id = e.estado_id
-                  
-              ORDER By p.producto_nombre";
+        $sql = "select x.*, i.existencia
+                from
+                    (SELECT
+                     p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
+                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
+                     dp.destino_nombre, scp.subcategoria_nombre
+                      FROM
+                      producto p
+                      LEFT JOIN estado e on p.estado_id = e.estado_id
+                      LEFT JOIN categoria_producto cp on p.categoria_id = cp.categoria_id
+                      LEFT JOIN subcategoria_producto scp on p.subcategoria_id = scp.subcategoria_id
+                      LEFT JOIN presentacion pr on p.presentacion_id = pr.presentacion_id
+                      LEFT JOIN moneda m on p.moneda_id = m.moneda_id
+                      LEFT JOIN destino_producto dp on p.destino_id = dp.destino_id
+                      WHERE 
+                           p.estado_id = e.estado_id
+                      ORDER By p.producto_nombre
+                      ) as x, consinventario i
+                where x.producto_id = i.producto_id";
 
         $producto = $this->db->query($sql)->result_array();
         return $producto;
@@ -357,6 +366,7 @@ class Producto_model extends CI_Model
               LEFT JOIN estado e on p.estado_id = e.estado_id
               WHERE 
                    p.estado_id = 1
+                   and p.producto_catalogo = 1 
                    and(p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%'
                    or p.producto_codigo like '%".$parametro."%' or p.producto_marca like '%".$parametro."%'
                    or p.producto_industria like '%".$parametro."%' or p.producto_caracteristicas like '%".$parametro."%')
@@ -370,6 +380,10 @@ class Producto_model extends CI_Model
 
     function get_busqueda_categoria($categoria_id)
     {
+        $lacategoria = "";
+        if($categoria_id > 0){
+            $lacategoria = " and p.categoria_id='".$categoria_id."' ";
+        }
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion, cp.categoria_nombre
               FROM
@@ -378,7 +392,8 @@ class Producto_model extends CI_Model
               LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
               WHERE 
                    p.estado_id = 1
-                   and p.categoria_id=".$categoria_id."
+                   and p.producto_catalogo = 1 
+                   $lacategoria
               GROUP By p.producto_id
               ORDER By p.producto_nombre";
 
@@ -407,6 +422,7 @@ class Producto_model extends CI_Model
               LEFT JOIN categoria_producto cp on cp.categoria_id = p.categoria_id
               WHERE 
                    p.estado_id = 1
+                   and p.producto_catalogo = 1 
                    and p.subcategoria_id=".$subcategoria_id."
               GROUP By p.producto_id
               ORDER By p.producto_nombre";

@@ -30,10 +30,11 @@ class Unidad extends CI_Controller{
     function index()
     {
         if($this->acceso(136)){
-        $data['unidad'] = $this->Unidad_model->get_all_unidad();
-        $data['page_title'] = "Unidad";
-        $data['_view'] = 'unidad/index';
-        $this->load->view('layouts/main',$data);
+            $data['unidad'] = $this->Unidad_model->get_all_unidad();
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['page_title'] = "Unidad";
+            $data['_view'] = 'unidad/index';
+            $this->load->view('layouts/main',$data);
         }
           
     }
@@ -106,18 +107,31 @@ class Unidad extends CI_Controller{
      */
     function remove($unidad_id)
     {
-       if($this->acceso(136)){
-
-        // check if the unidad exists before trying to delete it
-        if(isset($unidad['unidad_id']))
-        {
-            $this->Unidad_model->delete_unidad($unidad_id);
-            redirect('unidad/index');
+        if($this->acceso(136)){
+            $data['unidad'] = $this->Unidad_model->get_unidad($unidad_id);
+            if(isset($data['unidad']['unidad_id'])){
+                $this->Unidad_model->delete_unidad($unidad_id);
+                redirect('unidad/index');
+            }else{
+                show_error('La unidad que estas intentando eliminar no existe.');
+            }
+        }
+    }
+    /*
+    * buscar productos
+    */
+    function verificar_uso()
+    { 
+        if($this->input->is_ajax_request()){
+            $nombre_unidad = $this->input->post('nombre_unidad');
+            $datos = $this->Unidad_model->get_unidad_usada($nombre_unidad);
+            echo json_encode($datos);
         }
         else
-            show_error('La unidad que estas intentando eliminar no existe.');
+        {                 
+            show_404();
         }
-          
+           
     }
     
 }

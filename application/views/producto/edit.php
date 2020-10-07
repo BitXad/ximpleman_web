@@ -551,6 +551,25 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <?php
+                        $selected1 ="";
+                        $selected2 ="";
+                        if($producto['producto_catalogo'] == 1){
+                            $selected1 = "selected";
+                        }
+                        if($producto['producto_catalogo'] == 2){
+                            $selected2 = "selected";
+                        }
+                        ?>
+                        <label for="producto_catalogo" class="control-label">Catálogo</label>
+                        <div class="form-group">
+                            <select name="producto_catalogo" class="form-control" id="producto_catalogo">
+                                <option value="1" <?php echo $selected1; ?>>MOSTRAR</option>
+                                <option value="2" <?php echo $selected2; ?>>NO MOSTRAR</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer">

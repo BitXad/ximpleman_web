@@ -185,20 +185,19 @@
                         </div>
                     </div>
                     <div class="col-md-2">
-                            <label for="destino_id" class="control-label">Destino</label>
-                            <div class="form-group">
-                                <select name="destino_id" class="form-control" id="destino_id">
-                                            <option value="">- DESTINO DEL PRODUCTO -</option>
-                                            <?php 
-                                            foreach($all_destino_producto as $destino_producto)
-                                            {
-                                                    $selected = ($destino_producto['destino_id'] == $this->input->post('destino_id')) ? ' selected="selected"' : "";
-
-                                                    echo '<option value="'.$destino_producto['destino_id'].'" '.$selected.'>'.$destino_producto['destino_nombre'].'</option>';
-                                            } 
-                                            ?>
-                                    </select>
-                            </div>
+                        <label for="destino_id" class="control-label">Destino</label>
+                        <div class="form-group">
+                            <select name="destino_id" class="form-control" id="destino_id">
+                                <option value="">- DESTINO DEL PRODUCTO -</option>
+                                <?php 
+                                foreach($all_destino_producto as $destino_producto)
+                                {
+                                    $selected = ($destino_producto['destino_id'] == $this->input->post('destino_id')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$destino_producto['destino_id'].'" '.$selected.'>'.$destino_producto['destino_nombre'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
                     </div>
                     <div class="col-md-3">
                             <label for="moneda_id" class="control-label"><span class="text-danger">*</span>Moneda</label>
@@ -477,6 +476,15 @@
                     </div>
                     </div>
                 </div>
+                    <div class="col-md-2">
+                        <label for="producto_catalogo" class="control-label">Catálogo</label>
+                        <div class="form-group">
+                            <select name="producto_catalogo" class="form-control" id="producto_catalogo">
+                                <option value="1">MOSTRAR</option>
+                                <option value="2">NO MOSTRAR</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer">

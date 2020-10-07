@@ -2370,7 +2370,9 @@ function tabla_ventas(filtro)
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"venta/mostrar_ventas";
     var parametro_modulorestaurante = document.getElementById("parametro_modulorestaurante").value;
-    
+    var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
+    var cantus         = all_usuario.length;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     document.getElementById('oculto2').style.display = 'block'; //mostrar el bloque del loader
     
@@ -2469,7 +2471,48 @@ function tabla_ventas(filtro)
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/certificado_garantia/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir certificado de garantia' style='background-color: purple'> <span class='fa fa-lock'></span> </a> ";
-                    
+                    if(tipousuario_id == 1){
+                    html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalusuario"+v[i]['venta_id']+"' title='Modificar Usuario vendedor'><span class='fa fa-user'></span></a>";
+                    html += "<!------------------------ INICIO modal para cambiar usuario vendedor ------------------->";
+                    html += "<div class='modal fade' id='modalusuario"+v[i]['venta_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalusuarioLabel"+v[i]['venta_id']+"'>";
+                    html += "<div class='modal-dialog' role='document'>";
+                    html += "<br><br>";
+                    html += "<div class='modal-content'>";
+                    html += "<div class='modal-header text-center text-bold'>";
+                    html += "<span style='font-size: 15px'>Venta N° "+v[i]["venta_id"]+"</span>";
+                    html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                    html += "</div>";
+                    html += "<div class='modal-body'>";
+                    html += "<!------------------------------------------------------------------->";
+                    html += "<div class='col-md-6'>";
+                    html += "    <label for='esteusuario_id' class='control-label'><b>Usuario Vendedor</b></label>";
+                    html += "    <div class='form-group'>";
+                    html += "        <select name='esteusuario_id"+v[i]["venta_id"]+"' class='form-control' id='esteusuario_id"+v[i]["venta_id"]+"'>";
+                                        var selectedus = "";
+                                        for (var a = 0; a < cantus; a++) {
+                                            if(all_usuario[a]["usuario_id"] == v[i]["usuario_id"]){
+                                                selectedus= "selected";
+                                            }else{
+                                                selectedus = "";
+                                            }
+                                            html += "<option "+selectedus+" value='"+all_usuario[a]["usuario_id"]+"'>"+all_usuario[a]["usuario_nombre"]+"</option>";
+                                        }
+                    html += "        </select>";
+                    html += "    </div>";
+                    html += "</div>";
+                    html += "<!------------------------------------------------------------------->";
+                    html += "</div>";
+                    html += "<div class='modal-footer text-center'>";
+                    html += "<div class='col-md-12 text-center'>";
+                    html += "<a onclick='modificar_usuario("+v[i]["venta_id"]+")' class='btn btn-success'><span class='fa fa-check'></span> Modifcar</a>";
+                    html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar</a>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "</div>";
+                    html += "<!------------------------ FIN modal para cambiar usuario vendedor ------------------->";
+                    }
                     if (parametro_modulorestaurante==1){
                     html += "                           <a href='"+base_url+"factura/comanda_boucher/"+v[i]['venta_id']+"' class='btn btn-primary btn-xs' target='_blank' title='Imprimir comanda'><span class='fa fa-list'></span></a> ";
                 }
@@ -3645,4 +3688,57 @@ function ingresar_promocion(promocion_id){
                 
            
     tablaproductos();
+}
+/* funcion que modifca al usuario vendedor */
+/*
+ * function modificar_usuario(venta_id){
+    var base_url = document.getElementById('base_url').value;
+    var esteusuario_id = document.getElementById('esteusuario_id'+venta_id).value;
+    var controlador = base_url+'venta/modificar_usuariovendedor/';
+    $('#modalusuario'+venta_id).modal('hide');
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{esteusuario_id:esteusuario_id, venta_id:venta_id},
+            success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    if("ok"){
+                        $('#filtrar').html(venta_id);
+                        ventas_por_parametro();
+                    }
+            }
+        },
+        error:function(respuesta){
+            
+        },
+        complete: function (jqXHR, textStatus) {
+            
+        }
+        
+    });   
+
+}*/
+
+function modificar_usuario(venta_id){
+    var base_url = document.getElementById('base_url').value;
+    var esteusuario_id = document.getElementById('esteusuario_id'+venta_id).value;
+    var controlador = base_url+'venta/modificar_usuariovendedor';
+    $('#modalusuario'+venta_id).modal('hide');
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{esteusuario_id:esteusuario_id, venta_id:venta_id},
+            success:function(respuesta){
+                resultado = JSON.parse(respuesta);
+                /*if(resultado == "ok"){
+                    buscar_servicioporfechas();
+                    //fechadeservicio(null, 1);
+                }*/
+                if(resultado == "ok"){
+                        $('#filtrar').val(venta_id);
+                        ventas_por_parametro();
+                    }
+            },
+            error: function(respuesta){
+            }
+        });
 }

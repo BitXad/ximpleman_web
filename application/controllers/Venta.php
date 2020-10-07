@@ -56,6 +56,7 @@ class Venta extends CI_Controller{
         if($this->acceso(18)){
         //**************** inicio contenido ***************
         $data['rolusuario'] = $this->session_data['rol'];
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
         $data['page_title'] = "Ventas del dia";
         $data['parametro'] = $this->Parametro_model->get_parametros();
@@ -3192,5 +3193,23 @@ function anular_venta($venta_id){
       
         //**************** fin contenido ***************
         }
+    }
+    function modificar_usuariovendedor()
+    {
+        if ($this->input->is_ajax_request()) {
+            
+            $esteusuario_id = $this->input->post('esteusuario_id');   
+            $venta_id = $this->input->post('venta_id');   
+            if ($esteusuario_id!=""){
+                $params = array(
+                    'usuario_id' => $esteusuario_id,
+                );
+                $this->Venta_model->update_venta($venta_id, $params);
+                echo json_encode("ok");
+            }
+            else echo json_encode(null);
+        }else{                 
+            show_404();
+        }              
     }
 }
