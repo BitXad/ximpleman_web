@@ -117,7 +117,105 @@ class Parametro extends CI_Controller{
         if(isset($data['parametro']['parametro_id']))
         {
             if(isset($_POST) && count($_POST) > 0)     
-            {   
+            {
+                /* *********************INICIO imagen LOGO monitor***************************** */
+                $foto="";
+                $foto1= $this->input->post('parametro_logomonitor1');
+                if (!empty($_FILES['parametro_logomonitor']['name']))
+                {
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/monitor/';
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['max_size'] = 0;
+                    /*$config['max_width'] = 2900;
+                    $config['max_height'] = 2900;*/
+
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
+
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('parametro_logomonitor');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/monitor/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 260;
+                        $conf['height'] = 130;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    $base_url = explode('/', base_url());
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/monitor/';
+                    if(isset($foto1) && !empty($foto1)){
+                      if(file_exists($directorio.$foto1)){
+                          unlink($directorio.$foto1);
+                      }
+                  }
+                    $foto = $new_name.$extension;
+                }else{
+                    $foto = $foto1;
+                }
+                /* *********************FIN imagen LOGO monitor***************************** */
+                /* *********************INICIO imagen FONDO monitor***************************** */
+                $fotof="";
+                $fotof1= $this->input->post('parametro_fondomonitor1');
+                if (!empty($_FILES['parametro_fondomonitor']['name']))
+                {
+                    $this->load->library('image_lib');
+                    $config1['upload_path'] = './resources/images/monitor/fondo/';
+                    $config1['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config1['max_size'] = 0;
+                    /*$config['max_width'] = 2900;
+                    $config['max_height'] = 2900;*/
+
+                    $new_name1 = (time()+3); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config1['file_name'] = $new_name1; //.$extencion;
+                    $config1['file_ext_tolower'] = TRUE;
+
+                    $this->load->library('upload', $config1);
+                    $this->upload->do_upload('parametro_fondomonitor');
+
+                    $img_data1 = $this->upload->data();
+                    $extension1 = $img_data1['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if($img_data1['file_ext'] == ".jpg" || $img_data1['file_ext'] == ".png" || $img_data1['file_ext'] == ".jpeg" || $img_data1['file_ext'] == ".gif") {
+                        $conf1['image_library'] = 'gd2';
+                        $conf1['source_image'] = $img_data1['full_path'];
+                        $conf1['new_image'] = './resources/images/monitor/fondo/';
+                        $conf1['maintain_ratio'] = TRUE;
+                        $conf1['create_thumb'] = FALSE;
+                        $conf1['width'] = 1920;
+                        $conf1['height'] = 1078;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf1);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    $base_url = explode('/', base_url());
+                    $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/monitor/fondo/';
+                    if(isset($fotof1) && !empty($fotof1)){
+                      if(file_exists($directorio.$fotof1)){
+                          unlink($directorio.$fotof1);
+                      }
+                  }
+                    $fotof = $new_name1.$extension1;
+                }else{
+                    $fotof = $fotof1;
+                }
+                /* *********************FIN imagen FONDO monitor***************************** */
                 $params = array(
                     'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
                     'parametro_numrecing' => $this->input->post('parametro_numrecing'),
@@ -154,6 +252,8 @@ class Parametro extends CI_Controller{
                     'parametro_notaentrega' => $this->input->post('parametro_notaentrega'),
                     'parametro_apikey' => $this->input->post('parametro_apikey'),
                     'parametro_serviciofact' => $this->input->post('parametro_serviciofact'),
+                    'parametro_logomonitor' => $foto,
+                    'parametro_fondomonitor' => $fotof,
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            

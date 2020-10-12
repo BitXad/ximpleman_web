@@ -17,7 +17,7 @@
 <div class="box-header">
     <center>
         <!--<h3 class="box-title">PEDIDO</h3>-->        
-        <img src="<?php echo base_url("resources/images/logomrwings.png"); ?>" width="260" height="130">
+        <img src="<?php echo base_url("resources/images/empresas/1588106605.png"); ?>" width="260" height="130">
         <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
     </center>
 </div>

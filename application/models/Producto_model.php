@@ -344,7 +344,8 @@ class Producto_model extends CI_Model
         return $producto;
 
     }
-    /* obtener imagen, nombre y precio de productos activos */
+    /* obtener imagen, nombre y precio de productos activos
+     * y que producto_catalogo = 1(MOSTRAR) */
     function get_productos_imagen()
     {
         $sql = "
@@ -352,6 +353,8 @@ class Producto_model extends CI_Model
                   p.producto_nombre, p.producto_foto, p.producto_precio
             FROM
                 inventario p
+            WHERE
+                p.producto_catalogo = 1
                 order by p.producto_id asc";
         $producto = $this->db->query($sql)->result_array();
         return $producto;

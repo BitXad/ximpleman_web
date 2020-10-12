@@ -67,12 +67,13 @@ class Detalle_venta extends CI_Controller{
 
     function recepcion()
     {
-                
-        $data['page_title'] = "Recepcion de pedidos";        
-        $data['_view'] = 'venta/recepcion';
-        $data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
-        $data['all_destino'] = $this->Destino_producto_model->get_all_destino_producto();
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(178)) {
+            $data['page_title'] = "Recepcion de pedidos";        
+            $data['_view'] = 'venta/recepcion';
+            $data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+            $data['all_destino'] = $this->Destino_producto_model->get_all_destino_producto();
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     function reporte_generalventa()

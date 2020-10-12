@@ -4,7 +4,7 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Parametros</h3>
             </div>
-            <?php echo form_open('parametro/edit/'.$parametro['parametro_id']); ?>
+            <?php echo form_open_multipart('parametro/edit/'.$parametro['parametro_id']); ?>
             <div class="box-body" style="margin-top: 0px;margin-bottom: -20px; background: rgba(0, 0, 255, 0.3);"><u><b>CONFIGURACION</b></u><br>
                 <div class="col-md-2">
                     <label for="parametro_numrecegr" class="control-label"> NUMERO EGRESO</label>
@@ -282,6 +282,20 @@
                                 <option value="2" <?php if($parametro['parametro_notaentrega']=='2') echo 'selected'; ?> >NOTA 2 (Carta)</option>
                                 <option value="3" <?php if($parametro['parametro_notaentrega']=='3') echo 'selected'; ?> >NOTA 3 (Pre-Impresa)</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="parametro_logomonitor" class="control-label">Logo(p/ Monitor) (260x130)</label>
+                        <div class="form-group">
+                            <input type="file" name="parametro_logomonitor" value="<?php echo ($this->input->post('parametro_logomonitor') ? $this->input->post('parametro_logomonitor') : $parametro['parametro_logomonitor']); ?>" class="form-control" id="parametro_logomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
+                            <input type="hidden" name="parametro_logomonitor1" value="<?php echo ($this->input->post('parametro_logomonitor') ? $this->input->post('parametro_logomonitor') : $parametro['parametro_logomonitor']); ?>" class="form-control" id="parametro_logomonitor1" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="parametro_fondomonitor" class="control-label">Imagen Fondo(p/ Monitor) (1920x1078)</label>
+                        <div class="form-group">
+                            <input type="file" name="parametro_fondomonitor" value="<?php echo ($this->input->post('parametro_fondomonitor') ? $this->input->post('parametro_fondomonitor') : $parametro['parametro_fondomonitor']); ?>" class="form-control" id="parametro_fondomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
+                            <input type="hidden" name="parametro_fondomonitor1" value="<?php echo ($this->input->post('parametro_fondomonitor') ? $this->input->post('parametro_fondomonitor') : $parametro['parametro_fondomonitor']); ?>" class="form-control" id="parametro_fondomonitor1" />
                         </div>
                     </div>
                 </div>

@@ -202,7 +202,7 @@
                         <?php
                         }
                         
-                        if($rolusuario[139-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[166-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('proceso_orden');?>"><i class="fa fa-check-square-o"></i> Terminar Proceso</a>
@@ -210,13 +210,16 @@
                         <li>
                             <a href="<?php echo site_url('proceso_orden/terminados');?>"><i class="fa fa-indent"></i> Recepcionar Proceso</a>
                         </li>
-                        <!--<li>
+                        <?php
+                        }
+                        if($rolusuario[174-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
                             <a href="<?php echo site_url('detalle_venta/recepcion');?>"><i class="fa fa-cutlery"></i> Despacho</a>
-                        </li>-->
+                        </li>
                         <?php
                         }
                         ?>
-                        
                         
                         <?php
                         if($rolusuario[12-1]['rolusuario_asignado'] == 1){
@@ -333,6 +336,13 @@
                     <a href="#"><i class="fa fa-cogs"></i> <span>Parámetros</span></a>
                     <ul class="treeview-menu">
                         <?php
+                        if($rolusuario[175-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('destino_producto');?>"><i class="fa fa-tasks"></i>Destino Producto</a>
+                        </li> 
+                        <?php
+                        }
                         if($rolusuario[121-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -387,10 +397,8 @@
                         <li>
                             <a href="<?php echo site_url('tipo_servicio');?>"><i class="fa fa-code-fork"></i>Tipo Servicio</a>
                         </li>
-                        
                         <?php
                         }
-                        
                         if($rolusuario[126-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -410,6 +418,13 @@
                         <li>
                             <a href="<?php echo site_url('unidad');?>"><i class="glyphicon glyphicon-baby-formula"></i>Unidades</a>
                         </li>
+                        <?php
+                        }
+                        if($rolusuario[176-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('usuario_destino');?>"><i class="fa fa-tag"></i>Usuario Destino</a>
+                        </li> 
                         <?php
                         }
                         if($rolusuario[115-1]['rolusuario_asignado'] == 1){

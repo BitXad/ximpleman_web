@@ -9,37 +9,56 @@ class Destino_producto extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Destino_producto_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of destino_producto
      */
     function index()
     {
-        $data['destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
-        
-        $data['_view'] = 'destino_producto/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(175)){
+            $data['destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
+
+            $data['_view'] = 'destino_producto/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new destino_producto
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'destino_nombre' => $this->input->post('destino_nombre'),
-            );
-            
-            $destino_producto_id = $this->Destino_producto_model->add_destino_producto($params);
-            redirect('destino_producto/index');
-        }
-        else
-        {            
-            $data['_view'] = 'destino_producto/add';
-            $this->load->view('layouts/main',$data);
+    {
+        if($this->acceso(175)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'destino_nombre' => $this->input->post('destino_nombre'),
+                );
+
+                $destino_producto_id = $this->Destino_producto_model->add_destino_producto($params);
+                redirect('destino_producto/index');
+            }
+            else
+            {            
+                $data['_view'] = 'destino_producto/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
     }  
 
@@ -47,46 +66,50 @@ class Destino_producto extends CI_Controller{
      * Editing a destino_producto
      */
     function edit($destino_id)
-    {   
-        // check if the destino_producto exists before trying to edit it
-        $data['destino_producto'] = $this->Destino_producto_model->get_destino_producto($destino_id);
-        
-        if(isset($data['destino_producto']['destino_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'destino_nombre' => $this->input->post('destino_nombre'),
-                );
+    {
+        if($this->acceso(175)){
+            // check if the destino_producto exists before trying to edit it
+            $data['destino_producto'] = $this->Destino_producto_model->get_destino_producto($destino_id);
 
-                $this->Destino_producto_model->update_destino_producto($destino_id,$params);            
-                redirect('destino_producto/index');
+            if(isset($data['destino_producto']['destino_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'destino_nombre' => $this->input->post('destino_nombre'),
+                    );
+
+                    $this->Destino_producto_model->update_destino_producto($destino_id,$params);            
+                    redirect('destino_producto/index');
+                }
+                else
+                {
+                    $data['_view'] = 'destino_producto/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-                $data['_view'] = 'destino_producto/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The destino_producto you are trying to edit does not exist.');
         }
-        else
-            show_error('The destino_producto you are trying to edit does not exist.');
-    } 
+    }
 
     /*
      * Deleting destino_producto
      */
     function remove($destino_id)
     {
-        $destino_producto = $this->Destino_producto_model->get_destino_producto($destino_id);
+        if($this->acceso(175)){
+            $destino_producto = $this->Destino_producto_model->get_destino_producto($destino_id);
 
-        // check if the destino_producto exists before trying to delete it
-        if(isset($destino_producto['destino_id']))
-        {
-            $this->Destino_producto_model->delete_destino_producto($destino_id);
-            redirect('destino_producto/index');
+            // check if the destino_producto exists before trying to delete it
+            if(isset($destino_producto['destino_id']))
+            {
+                $this->Destino_producto_model->delete_destino_producto($destino_id);
+                redirect('destino_producto/index');
+            }
+            else
+                show_error('The destino_producto you are trying to delete does not exist.');
         }
-        else
-            show_error('The destino_producto you are trying to delete does not exist.');
     }
     
 }

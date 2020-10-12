@@ -32,7 +32,7 @@ class Proceso_orden extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             
             $data['estados'] = $this->Estado_model->get_estado_tipo(6);
             $data['_view'] = 'proceso_orden/index';
@@ -47,7 +47,7 @@ class Proceso_orden extends CI_Controller{
 
     function terminados()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             
             $data['estados'] = $this->Estado_model->get_estado_tipo(6);
             $data['_view'] = 'proceso_orden/terminados';
@@ -57,7 +57,7 @@ class Proceso_orden extends CI_Controller{
 
     function  buscar()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             $estado = $this->input->post('estado');
             
             $estado_id = 25;
@@ -69,7 +69,7 @@ class Proceso_orden extends CI_Controller{
     }
     function  buscarterminados()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             $estado = $this->input->post('estado');
             
                 $estado_id = 26;
@@ -84,7 +84,7 @@ class Proceso_orden extends CI_Controller{
 
     function  terminar()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             $usuario_id = $this->session_data['usuario_id'];
             $proceso = $this->input->post('proceso');
             $estado = $this->input->post('estado');
@@ -129,7 +129,7 @@ class Proceso_orden extends CI_Controller{
 
     function  recibir()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             $usuario_id = $this->session_data['usuario_id'];
             $estado = $this->input->post('estado');
             $orden = $this->input->post('orden');
@@ -173,7 +173,7 @@ class Proceso_orden extends CI_Controller{
      */
     function add()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             $data['page_title'] = "Boton Articulo";
             if(isset($_POST) && count($_POST) > 0)     
             {   
@@ -204,7 +204,7 @@ class Proceso_orden extends CI_Controller{
      */
     function edit($botonartic_id)
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             $data['page_title'] = "Boton Articulo";
             // check if the proceso_orden exists before trying to edit it
             $data['proceso_orden'] = $this->proceso_orden_model->get_proceso_orden($botonartic_id);
@@ -243,7 +243,7 @@ class Proceso_orden extends CI_Controller{
      */
     function remove($botonartic_id)
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             $proceso_orden = $this->proceso_orden_model->get_proceso_orden($botonartic_id);
 
             // check if the proceso_orden exists before trying to delete it
@@ -259,7 +259,7 @@ class Proceso_orden extends CI_Controller{
 
     function elestado()
     {
-        if($this->acceso(155)){
+        if($this->acceso(166)){
             
              $estado = $this->input->post('estado');
             

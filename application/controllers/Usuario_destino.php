@@ -9,81 +9,100 @@ class Usuario_destino extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Usuario_destino_model');
-    } 
-
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+    /* *****Funcion que verifica el acceso al sistema**** */
+    private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     /*
      * Listing of usuario_destino
      */
     function index()
     {
-        $data['usuario_destino'] = $this->Usuario_destino_model->get_destinos();
-        
-        $data['_view'] = 'usuario_destino/index';
-        $this->load->view('layouts/main',$data);
+        if($this->acceso(176)){
+            $data['usuario_destino'] = $this->Usuario_destino_model->get_destinos();
+            $data['_view'] = 'usuario_destino/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
      * Adding a new usuario_destino
      */
     function add()
-    {   
-        if(isset($_POST) && count($_POST) > 0)     
-        {   
-            $params = array(
-				'usuario_id' => $this->input->post('usuario_id'),
-				'destino_id' => $this->input->post('destino_id'),
-            );
-            
-            $usuario_destino_id = $this->Usuario_destino_model->add_usuario_destino($params);
-            redirect('usuario_destino/index');
-        }
-        else
-        {
-			$this->load->model('Usuario_model');
-			$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+    {
+        if($this->acceso(176)){
+            if(isset($_POST) && count($_POST) > 0)     
+            {   
+                $params = array(
+                    'usuario_id' => $this->input->post('usuario_id'),
+                    'destino_id' => $this->input->post('destino_id'),
+                );
 
-			$this->load->model('Destino_producto_model');
-			$data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
-            
-            $data['_view'] = 'usuario_destino/add';
-            $this->load->view('layouts/main',$data);
+                $usuario_destino_id = $this->Usuario_destino_model->add_usuario_destino($params);
+                redirect('usuario_destino/index');
+            }
+            else
+            {
+                $this->load->model('Usuario_model');
+                $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
+                $this->load->model('Destino_producto_model');
+                $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
+
+                $data['_view'] = 'usuario_destino/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
-    }  
+    }
 
     /*
      * Editing a usuario_destino
      */
     function edit($usuariodestino_id)
-    {   
-        // check if the usuario_destino exists before trying to edit it
-        $data['usuario_destino'] = $this->Usuario_destino_model->get_usuario_destino($usuariodestino_id);
-        
-        if(isset($data['usuario_destino']['usuariodestino_id']))
-        {
-            if(isset($_POST) && count($_POST) > 0)     
-            {   
-                $params = array(
-					'usuario_id' => $this->input->post('usuario_id'),
-					'destino_id' => $this->input->post('destino_id'),
-                );
+    {
+        if($this->acceso(176)){
+            // check if the usuario_destino exists before trying to edit it
+            $data['usuario_destino'] = $this->Usuario_destino_model->get_usuario_destino($usuariodestino_id);
 
-                $this->Usuario_destino_model->update_usuario_destino($usuariodestino_id,$params);            
-                redirect('usuario_destino/index');
+            if(isset($data['usuario_destino']['usuariodestino_id']))
+            {
+                if(isset($_POST) && count($_POST) > 0)     
+                {   
+                    $params = array(
+                                            'usuario_id' => $this->input->post('usuario_id'),
+                                            'destino_id' => $this->input->post('destino_id'),
+                    );
+
+                    $this->Usuario_destino_model->update_usuario_destino($usuariodestino_id,$params);            
+                    redirect('usuario_destino/index');
+                }
+                else
+                {
+                                    $this->load->model('Usuario_model');
+                                    $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+
+                                    $this->load->model('Destino_producto_model');
+                                    $data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
+
+                    $data['_view'] = 'usuario_destino/edit';
+                    $this->load->view('layouts/main',$data);
+                }
             }
             else
-            {
-				$this->load->model('Usuario_model');
-				$data['all_usuario'] = $this->Usuario_model->get_all_usuario();
-
-				$this->load->model('Destino_producto_model');
-				$data['all_destino_producto'] = $this->Destino_producto_model->get_all_destino_producto();
-
-                $data['_view'] = 'usuario_destino/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                show_error('The usuario_destino you are trying to edit does not exist.');
         }
-        else
-            show_error('The usuario_destino you are trying to edit does not exist.');
     } 
 
     /*
@@ -91,16 +110,17 @@ class Usuario_destino extends CI_Controller{
      */
     function remove($usuariodestino_id)
     {
-        $usuario_destino = $this->Usuario_destino_model->get_usuario_destino($usuariodestino_id);
-
-        // check if the usuario_destino exists before trying to delete it
-        if(isset($usuario_destino['usuariodestino_id']))
-        {
-            $this->Usuario_destino_model->delete_usuario_destino($usuariodestino_id);
-            redirect('usuario_destino/index');
+        if($this->acceso(177)){
+            $usuario_destino = $this->Usuario_destino_model->get_usuario_destino($usuariodestino_id);
+            // check if the usuario_destino exists before trying to delete it
+            if(isset($usuario_destino['usuariodestino_id']))
+            {
+                $this->Usuario_destino_model->delete_usuario_destino($usuariodestino_id);
+                redirect('usuario_destino/index');
+            }
+            else
+                show_error('The usuario_destino you are trying to delete does not exist.');
         }
-        else
-            show_error('The usuario_destino you are trying to delete does not exist.');
     }
     
 }
