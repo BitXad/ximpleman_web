@@ -47,7 +47,8 @@ class Factura extends CI_Controller{
     {
         if($this->acceso(152)){
         //**************** inicio contenido ***************            
-        
+        $rolusuario = $this->session_data['rol'];
+        $data['rolusuario_asignado'] = $rolusuario[154-1]['rolusuario_asignado'];
         $params['limit'] = RECORDS_PER_PAGE; 
         $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
         

@@ -13,12 +13,13 @@
                 })
             }(jQuery));
         });
-</script>   
+</script>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="text" id="base_url" value="<?php echo base_url();?>" hidden>
+<input type="hidden" id="rolusuario_asignado" name="rolusuario_asignado" value="<?php echo $rolusuario_asignado;?>">
 
 <!--<div class="box-header">
                 <h3 class="box-title">Factura</h3>
@@ -50,7 +51,7 @@
                         </div>
                         
                         <div class="col-md-3">
-                            <label for="hasta" class="control-label">Desde:</label>
+                            <label for="hasta" class="control-label">Hasta:</label>
                             <div class="form-group">
                                 <input type="date" class="btn btn-warning btn-xs form-control"  id="fecha_hasta" name="fecha_hasta" value="<?php echo date("Y-m-d");?>">
                         

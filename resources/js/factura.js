@@ -42,6 +42,7 @@ function formato_fecha(string){
 
 function mostrar_facturas() {
     var base_url = document.getElementById('base_url').value;
+    var rolusuario_asignado = document.getElementById('rolusuario_asignado').value;
     var opcion = document.getElementById('opcion').value;
     var controlador = base_url+'factura/mostrar_facturas';    
     var desde = document.getElementById('fecha_desde').value;
@@ -119,8 +120,10 @@ function mostrar_facturas() {
                         html += "   <td>"+factura[i]["venta_id"]+"</td>";
 //                        html += "   <td><a href='"+base_url+"factura/imprimir_factura/"+factura[i]["venta_id"]+"' class='btn btn-warning btn-xs' ' target='_BLANK'><i class='fa fa-list'></i> </a>";
                         html += "   <td><a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/1' class='btn btn-warning btn-xs' ' target='_BLANK' title='Imprimir factura original'><i class='fa fa-list'></i> </a>";
-                        html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";                        
-                        html += "  <button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button></td>";
+                        html += "   <a href='"+base_url+"factura/imprimir_factura_id/"+factura[i]["factura_id"]+"/2' class='btn btn-default btn-xs' ' target='_BLANK' title='Imprimir factura copia'><i class='fa fa-list'></i> </a>";
+                        if(rolusuario_asignado == 1){
+                            html += "  <button class='btn btn-danger btn-xs' onclick='anular_factura("+factura[i]["factura_id"]+","+factura[i]["venta_id"]+","+factura[i]["factura_numero"]+","+'"'+factura[i]["factura_razonsocial"]+'"'+","+factura[i]["factura_total"]+","+'"'+factura[i]["factura_fecha"]+'"'+")'><i class='fa fa-trash'></i> </button></td>";
+                        }
                         html += "</tr>";
                         
                         totalfinal += Number(factura[i]["factura_subtotal"]);
