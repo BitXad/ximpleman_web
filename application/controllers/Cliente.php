@@ -1199,4 +1199,37 @@ class Cliente extends CI_Controller{
             }
         }
     }
+
+    /*
+    * mapa de clientes visitados
+    */
+    function mapavisitas()
+    {
+        if($this->acceso(30)) {
+       
+                //**************** inicio contenido ***************  
+
+                $data['page_title'] = "Mapa de Visitas";
+                $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+
+                $fecha_desde = $this->input->post("fecha_desde");
+                $fecha_hasta = $this->input->post("fecha_hasta");
+                $zona_id = $this->input->post("zona_busqueda");
+
+            if(isset($fecha_desde)){
+
+                $data['all_cliente'] = $this->Cliente_model->get_clientes_visitados($fecha_desde,$fecha_hasta,$zona_id);
+                //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+                $data['_view'] = 'cliente/mapavisitas';
+
+                $this->load->view('layouts/main',$data);
+
+            }
+            else{
+                $this->index();
+            }
+                //**************** fin contenido ***************
+
+        }
+    }
 }
