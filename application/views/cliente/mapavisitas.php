@@ -13,7 +13,7 @@
   </head>
   <body>
       <div class="container">
-          <h4><b>Clientes/Zona: <?php echo sizeof($all_cliente); ?></b>
+          <h4><b>ZONA: <?php echo $zona["zona_nombre"]; ?>, CLIENTES: <?php echo sizeof($all_cliente); ?></b>
           <a href="javascript:location.reload()" class="btn btn-danger btn-sm"><span class="fa fa-map-marker"></span> Actualizar visitas</a>
           </h4>
           <div class="col col-md-12 table-responsive">
@@ -81,11 +81,12 @@
 
                     position: new google.maps.LatLng(place[1], place[2]), //posicion
                     map: map,
+                    title: place[0],
                     scrollwheel: false,
                     animation: google.maps.Animation.DROP, //animacion           
                     nombre: place[0], //personalizado - nombre del punto
                     info: place[3], //personalizado - informacion adicional
-                    link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
+                    link: '', //'<?php //echo base_url().'pedido/comprobante/'; ?>'personalizado - informacion adicional              
                     icon: '<?php echo base_url().'resources/images/red.png';?>'
 
                 });
@@ -97,6 +98,7 @@
 
                     position: new google.maps.LatLng(place[1], place[2]), //posicion
                     map: map,
+                    title: place[0],
                     scrollwheel: false,
                     animation: google.maps.Animation.DROP, //animacion           
                     nombre: place[0], //personalizado - nombre del punto
@@ -151,10 +153,42 @@
     </script>
     
                     </td>
+<!--                    <td style="padding: 0">
+                        <table >
+                            <?php foreach($all_cliente as $cliente){ ?>
+                                <tr style="padding: 0">
+                                
+                                    <td style="padding: 0"><font style="font-family: Arial narrow; font-size: 8px;">
+                                        <?php
+                                            $nombrecliente = substr($cliente["cliente_nombre"], 10); 
+                                            echo $nombrecliente;
+                                        ?>
+                                        </font></td>
+                                    
+                                    <td style="padding: 0">
+                                                    <?php if ($cliente["cliente_visitado"]==1){ ?> 
+                                        <img src="<?php echo base_url("resources/images/red.png"); ?>" width="15px" height="15x">                                                                 
+                                                    <?php }else{ ?> 
+                                                            <img src="<?php echo base_url("resources/images/blue.png"); ?>" width="15px" height="15x"> 
+                                                    <?php } ?>
+                                    </td>
+                                
+                                </tr>
+                            <?php } ?>
+                        </table>
+                    </td>-->
                   </tr>
               </table>
     
         </div>
+          
+          
+          
     </div>
+  <center>
+      <a href="<?php echo base_url("cliente"); ?>" class="btn btn-danger btn-xs"><fa class="fa fa-times"> </fa> Cerrar</a    >
+  </center>
   </body>
+  
+  
 </html>

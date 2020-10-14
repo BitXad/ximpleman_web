@@ -269,7 +269,7 @@ echo '<script type="text/javascript">
     <div class='modal-dialog modal-sm' role='document'>
         <br><br>
         <div class='modal-content'>
-                <?php echo form_open_multipart('cliente/mapavisitas/'); ?>
+                <?php echo form_open_multipart('cliente/mapavisitas/', 'taget="blank"'); ?>
             <div class='modal-header text-center'>
                 <span style='font-size: 15pt' class='text-bold'>CLIENTES SIN VISITA</span>
                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>
