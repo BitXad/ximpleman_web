@@ -34,7 +34,7 @@ class Parametro extends CI_Controller{
         if($this->acceso(125)) {
         $this->load->model('Categoria_producto_model');
         $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
-        $data['parametros'] = $this->Parametro_model->get_all_parametro();
+        $data['all_parametros'] = $this->Parametro_model->get_all_parametros();
         $data['page_title'] = "Parametro";
         $data['_view'] = 'parametro/index';
         $this->load->view('layouts/main',$data);
@@ -52,43 +52,147 @@ class Parametro extends CI_Controller{
         
         if(isset($_POST) && count($_POST) > 0)     
         {
+            /* *********************INICIO imagen LOGO monitor***************************** */
+                    $foto="";
+                    if (!empty($_FILES['parametro_logomonitor']['name']))
+                    {
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/images/logo/';
+                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['max_size'] = 0;
+                        /*$config['max_width'] = 2900;
+                        $config['max_height'] = 2900;*/
+
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('parametro_logomonitor');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/logo/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 260;
+                            $conf['height'] = 130;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/images/logo/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/logo/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 50;
+                        $confi['height'] = 50;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+
+                        $foto = $new_name.$extension;
+                    }
+                /* *********************FIN imagen LOGO monitor***************************** */
+                /* *********************INICIO imagen FONDO monitor***************************** */
+                    $fotoapo="";
+                    if (!empty($_FILES['parametro_fondomonitor']['name']))
+                    {
+                        $this->load->library('image_lib');
+                        $config1['upload_path'] = './resources/images/monitor/';
+                        $config1['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config1['max_size'] = 0;
+                        /*$config1['max_width'] = 2900;
+                        $config1['max_height'] = 2900;*/
+
+                        $new_name1 = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config1['file_name'] = $new_name1; //.$extencion;
+                        $config1['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config1);
+                         $this->upload->initialize($config1);
+                        $this->upload->do_upload('parametro_fondomonitor');
+
+                        $img_data1 = $this->upload->data();
+                        $extension1 = $img_data1['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if($img_data1['file_ext'] == ".jpg" || $img_data1['file_ext'] == ".png" || $img_data1['file_ext'] == ".jpeg" || $img_data1['file_ext'] == ".gif") {
+                            $conf1['image_library'] = 'gd2';
+                            $conf1['source_image'] = $img_data1['full_path'];
+                            $conf1['new_image'] = './resources/images/monitor/';
+                            $conf1['maintain_ratio'] = TRUE;
+                            $conf1['create_thumb'] = FALSE;
+                            $conf1['width'] = 1920;
+                            $conf1['height'] = 1078;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf1);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $confi1['image_library'] = 'gd2';
+                        $confi1['source_image'] = './resources/images/monitor/'.$new_name1.$extension1;
+                        $confi1['new_image'] = './resources/images/monitor/'."thumb_".$new_name1.$extension1;
+                        $confi1['create_thumb'] = FALSE;
+                        $confi1['maintain_ratio'] = TRUE;
+                        $confi1['width'] = 50;
+                        $confi1['height'] = 50;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi1);
+                        $this->image_lib->resize();
+
+                        $fotoapo = $new_name1.$extension1;
+                    }
+                /* *********************FIN imagen FONDO monitor***************************** */
             $params = array(
-                    'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
-                    'parametro_numrecing' => $this->input->post('parametro_numrecing'),
-                    'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
-                    'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
-                    'parametro_numcuotas' => $this->input->post('parametro_numcuotas'),
-                    'parametro_montomax' => $this->input->post('parametro_montomax'),
-                    'parametro_diasgracia' => $this->input->post('parametro_diasgracia'),
-                    'parametro_diapago' => $this->input->post('parametro_diapago'),
-                    'parametro_periododias' => $this->input->post('parametro_periododias'),
-                    'parametro_interes' => $this->input->post('parametro_interes'),
-                    'parametro_diagnostico' => $this->input->post('parametro_diagnostico'),
-                    'parametro_mostrarcategoria' => $this->input->post('parametro_mostrarcategoria'),
-                    'parametro_solucion' => $this->input->post('parametro_solucion'),
-                    'parametro_modoventas' => $this->input->post('parametro_modoventas'),
-                    'parametro_imprimircomanda' => $this->input->post('parametro_imprimircomanda'),
-                    'parametro_anchoboton' => $this->input->post('parametro_anchoboton'),
-                    'parametro_altoboton' => $this->input->post('parametro_altoboton'),
-                    //'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
-                    'parametro_colorboton' => $this->input->post('parametro_colorboton'),
-                    'parametro_anchoimagen' => $this->input->post('parametro_anchoimagen'),
-                    'parametro_altoimagen' => $this->input->post('parametro_altoimagen'),
-                    'parametro_formaimagen' => $this->input->post('parametro_formaimagen'),
-                    'parametro_modulorestaurante' => $this->input->post('parametro_modulorestaurante'),
-                    'parametro_permisocredito' => $this->input->post('parametro_permisocredito'),
-                    'parametro_agruparitems' => $this->input->post('parametro_agruparitems'),
-                    'parametro_diasvenc' => $this->input->post('parametro_diasvenc'),
-                    'parametro_anchofactura' => $this->input->post('parametro_anchofactura'),
-                    'parametro_altofactura' => $this->input->post('parametro_altofactura'),
-                    'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
-                    'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
-                    'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
-                    'parametro_segservicio' => $this->input->post('parametro_segservicio'),
-                    'parametro_notaentrega' => $this->input->post('parametro_notaentrega'),
-                    'parametro_apikey' => $this->input->post('parametro_apikey'),
-                    'parametro_serviciofact' => $this->input->post('parametro_serviciofact'),
-               
+                'parametro_numrecegr' => $this->input->post('parametro_numrecegr'),
+                'parametro_numrecing' => $this->input->post('parametro_numrecing'),
+                'parametro_copiasfact' => $this->input->post('parametro_copiasfact'),
+                'parametro_tipoimpresora' => $this->input->post('parametro_tipoimpresora'),
+                'parametro_numcuotas' => $this->input->post('parametro_numcuotas'),
+                'parametro_montomax' => $this->input->post('parametro_montomax'),
+                'parametro_diasgracia' => $this->input->post('parametro_diasgracia'),
+                'parametro_diapago' => $this->input->post('parametro_diapago'),
+                'parametro_periododias' => $this->input->post('parametro_periododias'),
+                'parametro_interes' => $this->input->post('parametro_interes'),
+                'parametro_diagnostico' => $this->input->post('parametro_diagnostico'),
+                'parametro_mostrarcategoria' => $this->input->post('parametro_mostrarcategoria'),
+                'parametro_solucion' => $this->input->post('parametro_solucion'),
+                'parametro_modoventas' => $this->input->post('parametro_modoventas'),
+                'parametro_imprimircomanda' => $this->input->post('parametro_imprimircomanda'),
+                'parametro_anchoboton' => $this->input->post('parametro_anchoboton'),
+                'parametro_altoboton' => $this->input->post('parametro_altoboton'),
+                'parametro_tituldoc' => $this->input->post('parametro_tituldoc'),
+                'parametro_colorboton' => $this->input->post('parametro_colorboton'),
+                'parametro_anchoimagen' => $this->input->post('parametro_anchoimagen'),
+                'parametro_altoimagen' => $this->input->post('parametro_altoimagen'),
+                'parametro_formaimagen' => $this->input->post('parametro_formaimagen'),
+                'parametro_modulorestaurante' => $this->input->post('parametro_modulorestaurante'),
+                'parametro_permisocredito' => $this->input->post('parametro_permisocredito'),
+                'parametro_agruparitems' => $this->input->post('parametro_agruparitems'),
+                'parametro_diasvenc' => $this->input->post('parametro_diasvenc'),
+                'parametro_anchofactura' => $this->input->post('parametro_anchofactura'),
+                'parametro_altofactura' => $this->input->post('parametro_altofactura'),
+                'parametro_margenfactura' => $this->input->post('parametro_margenfactura'),
+                'parametro_imagenreal' => $this->input->post('parametro_imagenreal'),
+                'parametro_diasentrega' => $this->input->post('parametro_diasentrega'),
+                'parametro_segservicio' => $this->input->post('parametro_segservicio'),
+                'parametro_notaentrega' => $this->input->post('parametro_notaentrega'),
+                'parametro_apikey' => $this->input->post('parametro_apikey'),
+                'parametro_serviciofact' => $this->input->post('parametro_serviciofact'),
+                'parametro_logomonitor' => $foto,
+                'parametro_fondomonitor' => $fotoapo,
             );
             
             $parametro_id = $this->Parametro_model->add_parametro($params);

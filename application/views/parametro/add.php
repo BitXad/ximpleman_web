@@ -4,27 +4,27 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Parametros</h3>
             </div>
-            <?php echo form_open('parametro/add'); ?>
+            <?php echo form_open_multipart('parametro/add'); ?>
             <div class="box-body" style="margin-top: 0px;margin-bottom: -20px; background: rgba(0, 0, 255, 0.3);"><u><b>CONFIGURACION</b></u><br>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_numrecegr" class="control-label"> NUMERO EGRESO</label>
                     <div class="form-group">
                         <input type="text" readonly name="parametro_numrecegr" value="<?php echo ($this->input->post('parametro_numrecegr') ? $this->input->post('parametro_numrecegr') : 0); ?>" class="form-control" id="parametro_numrecegr" />
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_numrecing" class="control-label"> NUMERO INGRESO</label>
                     <div class="form-group">
                         <input type="text" readonly name="parametro_numrecing" value="<?php echo ($this->input->post('parametro_numrecing') ? $this->input->post('parametro_numrecing') : 0); ?>" class="form-control" id="parametro_numrecing" />
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_copiasfact" class="control-label"> NO. DE COPIAS FACTURA</label>
                     <div class="form-group">
                         <input type="number" name="parametro_copiasfact" value="<?php echo ($this->input->post('parametro_copiasfact') ? $this->input->post('parametro_copiasfact') : 3); ?>" class="form-control" id="parametro_copiasfact" />
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label for="parametro_tipoimpresora" class="control-label"> TIPO DE IMPRESORA</label>
                     <div class="form-group">
                         <select  name="parametro_tipoimpresora"  class="form-control" id="parametro_tipoimpresora" >
@@ -33,25 +33,22 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="parametro_anchofactura" class="control-label">ANCHO FACTURA</label>
+                <div class="col-md-2">
+                    <label for="parametro_anchofactura" class="control-label">ANCHO FACTURA (CM)</label>
                     <div class="form-group">
                         <input type="number" name="parametro_anchofactura" value="0" class="form-control" id="parametro_anchofactura" />
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="parametro_altofactura" class="control-label">ALTO FACTURA</label>
+                <div class="col-md-2">
+                    <label for="parametro_altofactura" class="control-label">ALTO FACTURA (CM)</label>
                     <div class="form-group">
                         <input type="number" name="parametro_altofactura" value="0" class="form-control" id="parametro_altofactura" />
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <label for="parametro_margenfactura" class="control-label">MARGEN FACTURA</label>
+                <div class="col-md-2">
+                    <label for="parametro_margenfactura" class="control-label">MARGEN IZQ. FACTURA (CM)</label>
                     <div class="form-group">
-                        <select  name="parametro_margenfactura" class="form-control" id="parametro_margenfactura" >
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
+                        <input type="text" name="parametro_margenfactura" value="<?php echo ($this->input->post('parametro_margenfactura') ? $this->input->post('parametro_margenfactura') : ''); ?>" class="form-control" id="parametro_margenfactura" />
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -63,10 +60,16 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-7">
                     <label for="parametro_apikey" class="control-label">API KEY</label>
                     <div class="form-group">
                         <input type="text" name="parametro_apikey" value="<?php echo ($this->input->post('parametro_apikey') ? $this->input->post('parametro_apikey') : ""); ?>" class="form-control" id="parametro_apikey" />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <label for="parametro_tituldoc" class="control-label">TITULO DOC.</label>
+                    <div class="form-group">
+                        <input type="text" name="parametro_tituldoc" value="<?php echo ($this->input->post('parametro_tituldoc') ? $this->input->post('parametro_tituldoc') : ''); ?>" class="form-control" id="parametro_tituldoc" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                     </div>
                 </div>
             </div><hr>
@@ -137,11 +140,11 @@
                     </div>
                 </div>
                 <div class="col-md-3">
-                    <label for="parametro_imagenreal" class="control-label"> RESOLUCIÓN DE IMAGEN</label>
+                    <label for="parametro_imagenreal" class="control-label"> SUBIR IMAGENES</label>
                     <div class="form-group">
                         <select  name="parametro_imagenreal" class="form-control" id="parametro_imagenreal" >
-                             <option value="1">SUBIR IMAGENES EN TAMAÑO REAL</option>
-                            <option value="0">SUBIR IMAGENES COMPRIMIDOS</option>
+                             <option value="1">EN TAMAÑO REAL</option>
+                            <option value="0">COMPRIMIDAS</option>
                         </select>
                     </div>
                 </div>
@@ -279,6 +282,18 @@
                                 <option value="2">NOTA DE ENTREGA N° 2</option>
                                 <option value="3">NOTA DE ENTREGA N° 3</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="parametro_logomonitor" class="control-label">Logo(p/ Monitor) (260x130)</label>
+                        <div class="form-group">
+                            <input type="file" name="parametro_logomonitor" value="<?php echo ($this->input->post('parametro_logomonitor') ? $this->input->post('parametro_logomonitor') : ''); ?>" class="form-control" id="parametro_logomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="parametro_fondomonitor" class="control-label">Imagen Fondo(p/ Monitor) (1920x1078)</label>
+                        <div class="form-group">
+                            <input type="file" name="parametro_fondomonitor" value="<?php echo ($this->input->post('parametro_fondomonitor') ? $this->input->post('parametro_fondomonitor') : ''); ?>" class="form-control" id="parametro_fondomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
                         </div>
                     </div>
                 </div>

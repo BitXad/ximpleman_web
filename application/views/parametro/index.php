@@ -1,22 +1,26 @@
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<div class="box-header">
+    <font size='4' face='Arial'><b>Parametros</b></font>
+    <div class="box-tools no-print">
+        <a href="<?php echo site_url('parametro/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Parametro</a> 
+    </div>
+</div>
+<?php
+foreach($all_parametros as $p)
+{
+?>
 <div class="row">
     <div class="col-md-12">
         <div class="box">
             <div class="box-header">
-                <font size='4' face='Arial'><b>Parametros</b></font>
-                <a href="<?php echo site_url('parametro/edit/1'); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a>
+                <font size='4' face='Arial'><b>Perfil <?php echo $p['parametro_id']; ?></b></font> 
+                <a href="<?php echo site_url('parametro/edit/'.$p['parametro_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a>
+                <a href="<?php echo site_url('parametro/remove/'.$p['parametro_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Eliminar</a>
             </div>
             <div class="box-body table-responsive" >
-                
-              
                 <table class="table table-striped table-condensed" id="mitabla" style="text-align: center; font-size: 11px;color:black;">
-                    <?php foreach($parametros as $p){ ?>
-                    
-                          
-                            
-                    
                     <tr>
-                        <th style="font-size: 12px;color:black;background: rgba(0, 0, 255, 0.3);" rowspan="2" ><u>CONFIGURACION</u></th>
+                        <th style="font-size: 12px;color:black;background: rgba(0, 0, 255, 0.3);" rowspan="4" ><u>CONFIGURACION</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. EGRESO</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No. INGRESO</th>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">No.COPIAS FACTURAS</th>
@@ -31,16 +35,19 @@
                         <td><?php echo $p['parametro_numrecegr']; ?></td>
                         <td><?php echo $p['parametro_numrecing']; ?></td>
                         <td><?php echo $p['parametro_copiasfact']; ?></td>
-                        <td><?php echo $p['parametro_tipoimpresora']; ?></td>
+                        <td><?php if($p['parametro_tipoimpresora'] =="NORMAL"){ echo "CARTA/MEDIA CARTA"; }else{echo $p['parametro_tipoimpresora'];} ?></td>
                         <td><?php echo $p['parametro_anchofactura']; ?></td>
                         <td><?php echo $p['parametro_altofactura']; ?></td>
                         <td><?php echo $p['parametro_margenfactura']; ?></td>
-                        <!--<th style="font-size: 11px;color:black;">TITULO DOC.</th>
-                        <td><?php echo $p['parametro_tituldoc']; ?></td>-->
                         <td><?php  if ($p['parametro_permisocredito']==1){ echo 'TODOS'; }else{ echo'INDIVIDUAL'; } ?></td>
                         <td><?php echo $p['parametro_apikey']; ?></td>
                     </tr>
-                  
+                    <tr>
+                        <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO DOC.</th>
+                    </tr>
+                    <tr>
+                        <td><?php echo $p['parametro_tituldoc']; ?></td>
+                    </tr>
                     <tr>
                         <th style="font-size: 12px;color:black; background: rgba(0, 255, 0, 0.3);" rowspan="2" ><u>CREDITOS</u></th>
                         <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">No. CUOTAS</th>
@@ -49,7 +56,6 @@
                         <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">DIA DE PAGO</th>
                         <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">PERIODO DE PAGO</th>
                         <th style="font-size: 11px;color:black; background: rgba(0, 255, 0, 0.3);">INTERES</th>
-                        
                     </tr>
                     <tr>
                         <td><?php echo $p['parametro_numcuotas']; ?></td>
@@ -57,25 +63,25 @@
                         <td><?php echo $p['parametro_diasgracia']; ?></td>
                         <td>[<?php echo $p['parametro_diapago']; ?>]
                             <?php
-$var= $p['parametro_diapago'];
-switch($var) {
+                            $var= $p['parametro_diapago'];
+                            switch($var) {
 
-case 1: echo "LUNES";
-break;
-case 2: echo "MARTES";
-break;
-case 3: echo "MIERCOLES";
-break;
-case 4: echo "JUEVES";
-break;
-case 5: echo "VIERNES";
-break;
-case 6: echo "SABADO";
-break;
-case 7: echo "DOMINGO";
-break;
-}
-?>
+                            case 1: echo "LUNES";
+                            break;
+                            case 2: echo "MARTES";
+                            break;
+                            case 3: echo "MIERCOLES";
+                            break;
+                            case 4: echo "JUEVES";
+                            break;
+                            case 5: echo "VIERNES";
+                            break;
+                            case 6: echo "SABADO";
+                            break;
+                            case 7: echo "DOMINGO";
+                            break;
+                            }
+                            ?>
                         </td>
                         <td><?php echo $p['parametro_periododias']; ?></td>
                         <td><?php echo $p['parametro_interes']; ?></td>
@@ -103,7 +109,6 @@ break;
                                   elseif($p['parametro_serviciofact'] == 4){ echo "DESCRIPCION Y SOLUCION"; } ?>
                         </td>
                     </tr>
-                        
                     <tr>
                         <th style="font-size: 12px;color:black;background: rgba(255, 255, 0, 0.3);" rowspan="4" ><u>VENTAS</u></th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MOSTRAR CATEGORIA</th>
@@ -143,6 +148,8 @@ break;
                     </tr>
                     <tr>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">NOTA DE ENTREGA</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">LOGO MONITOR</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMAGEN FONDO</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -155,13 +162,31 @@ break;
                             }
                             ?>
                         </td>
+                        <td><?php
+                            if($p['parametro_logomonitor'] == "" || $p['parametro_logomonitor'] == null){
+                                $logomonitor = "default.png";
+                            }else{
+                                $logomonitor  = "thumb_".$p['parametro_logomonitor'];
+                            }
+                            ?>
+                            <img src="<?php echo base_url("resources/images/logo/".$logomonitor); ?>" width="25" height="25">
+                        </td>
+                        <td><?php
+                            if($p['parametro_fondomonitor'] == "" || $p['parametro_fondomonitor'] == null){
+                                $fondomonitor = "fondo_vistadetalleventa.jpeg";
+                            }else{
+                                $fondomonitor = "thumb_".$p['parametro_fondomonitor'];
+                            }
+                            ?>
+                            <img src="<?php echo base_url("resources/images/monitor/".$fondomonitor); ?>" width="25" height="25">
+                        </td>
                     </tr>
-                    
-                  
-                    <?php } ?>
                 </table>
                            
             </div>
         </div>
     </div>
 </div>
+<?php
+}
+?>
