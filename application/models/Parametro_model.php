@@ -111,6 +111,8 @@ class Parametro_model extends CI_Model
      */
     function get_parametro_servicio()
     {
+        
+        
 //        $parametro = $this->db->query("
 //           SELECT
 //                p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega
@@ -119,14 +121,12 @@ class Parametro_model extends CI_Model
 //            WHERE
 //                1 = 1
 //        ")->row_array();
-//        
-//        return $parametro;
+//  return $parametro;
         
         $usuario_id = $this->session_data['usuario_id'];     
         $sql = "select p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
         
         return $this->db->query($sql)->row_array();        
-        
-        
+              
     }
 }
