@@ -12,12 +12,20 @@
         <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
         <script src="<?php echo base_url('resources/js/verventa_proceso.js'); ?>"></script>
     </head>
-<body style="width: 98%">
+    <?php
+    if($fondomonitor == "" || $fondomonitor == null){
+        $fondomonitor = "fondo_vistadetalleventa.jpeg";
+    }
+    if($logomonitor == "" || $logomonitor == null){
+        $logomonitor = "default.png";
+    }
+    ?>
+<body style="width: 98%; background: url('<?php echo base_url("resources/images/monitor/".$fondomonitor); ?>');">
     
 <div class="box-header">
     <center>
         <!--<h3 class="box-title">PEDIDO</h3>-->        
-        <img src="<?php echo base_url("resources/images/empresas/1588106605.png"); ?>" width="260" height="130">
+        <img src="<?php echo base_url("resources/images/logo/".$logomonitor); ?>" width="260" height="130">
         <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
     </center>
 </div>

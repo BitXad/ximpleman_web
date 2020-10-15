@@ -394,7 +394,7 @@ class Factura extends CI_Controller{
 
     function comanda_boucher($venta_id)
     {
-        if($this->acceso(154)){
+        if($this->acceso(21)){
         //**************** inicio contenido ***************           
     
         $usuario_id = $this->session_data['usuario_id'];
