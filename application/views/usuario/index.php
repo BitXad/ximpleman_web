@@ -58,6 +58,7 @@
                         <!--<th>Tipo</th>-->
                         <th>Email</th>
                         <th>Login</th>
+                        <th>Perfil</th>
                         <!--<th>Imagen</th>-->
                         <th>Estado</th>
                         <th></th>
@@ -75,16 +76,15 @@
                   ?>
 
                     <tr>
-						<td><?php echo $cont ?></td>
-                                                <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."' width='40' height='40' class='img-circle'"; ?></center></td>
-                                                <td><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
-                                                    <br>
-                                                    <?php echo $u['tipousuario_descripcion']; ?></td>
+                        <td><?php echo $cont ?></td>
+                        <td><center> <?php echo "<img src='".site_url()."/resources/images/usuarios/"."thumb_".$u['usuario_imagen']."' width='40' height='40' class='img-circle'"; ?></center></td>
+                        <td><font face="Arial" size="3"><b><?php echo $u['usuario_nombre']; ?></b></font>
+                            <br>
+                            <?php echo $u['tipousuario_descripcion']; ?></td>
                       	<td><?php echo $u['usuario_email']; ?></td>
-						<td><?php echo $u['usuario_login']; ?></td>
-                        
+                        <td><?php echo $u['usuario_login']; ?></td>
+                        <td class="text-center"><?php echo $u['parametro_id']; ?></td>
                         <td style="background-color: #<?php echo $u['estado_color']; ?>"><?php echo $u['estado_descripcion']; ?></td>
-
                         <td>
                             <a href="<?php echo site_url('usuario/editar/'. $u['usuario_id']); ?>" class="btn btn-info btn-xs" title="Modificar datos de usuario"><span class="fa fa-pencil"></span></a>
                             <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><em class="fa fa-trash"></em></a>-->
@@ -95,8 +95,7 @@
                             <?php
                             }
                             ?>
-                            <a href="<?php echo site_url('usuario/password/'.$u['usuario_id']); ?>" class="btn btn-success btn-xs" title="Cambiar contraseña"><span class="fa fa-asterisk"></span></a> 
-                            
+                            <a href="<?php echo site_url('usuario/password/'.$u['usuario_id']); ?>" class="btn btn-success btn-xs" title="Cambiar contraseña"><span class="fa fa-asterisk"></span></a>
                             <!------------------------ INICIO modal para cambiar PASSWORD ------------------->
                             <div class="modal fade" id="modalcambiar<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="modalcambiarlabel<?php echo $i; ?>">
                                 <div class="modal-dialog" role="document">

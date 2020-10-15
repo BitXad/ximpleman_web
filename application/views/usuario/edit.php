@@ -56,7 +56,22 @@
                             <div id="user-result"></div>
 						</div>
 					</div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                        <label for="parametro_id" class="control-label">Perfil</label>
+                        <div class="form-group">
+                            <select name="parametro_id" id="parametro_id" class="form-control">
+                                <!--<option value="1">ACTIVO</option>-->
+                                <?php 
+                                foreach($all_parametros as $parametro)
+                                {
+                                    $selected = ($parametro['parametro_id'] == $usuario['parametro_id']) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$parametro['parametro_id'].'" '.$selected.'>'.$parametro['parametro_id'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <label for="estado_id" class="control-label">Estado</label>
                         <div class="form-group">
                             <select name="estado_id" class="form-control">
@@ -72,7 +87,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="col-md-6">
                         <label for="user_imagen" class="control-label">Imagen</label>
                         <div class="form-group">
