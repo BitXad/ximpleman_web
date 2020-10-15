@@ -167,5 +167,15 @@ class Parametro_model extends CI_Model
         return $this->db->query($sql)->row_array();        
               
     }
+<<<<<<< HEAD
     
+=======
+    /* muestra todos los parametros */
+    function get_all_parametros()
+    {
+        $sql = "select * from parametros";
+        
+        return $this->db->query($sql)->result_array();
+    }
+>>>>>>> master
 }

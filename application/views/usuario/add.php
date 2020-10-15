@@ -5,43 +5,39 @@
             <div class="box-header with-border">
               	<h3 class="box-title">Añadir Usuario</h3>
             </div>
-            
             <?php $attributes = array("name" => "usuarioForm", "id"=>"usuarioForm");
             echo form_open_multipart("usuario/add", $attributes);?>
-          	<div class="box-body">
-          		<div class="row clearfix">
-                                        <div class="col-md-6">
-                                        <label for="usuario_nombre" class="control-label">Nombre</label>
-                                        <div class="form-group">
-                                                <input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                                                <span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
-                                        </div>
-					</div>
-					<div class="col-md-6">
-						<label for="tipousuario_id" class="control-label">Tipo</label>
-						<div class="form-group">
-							<select name="tipousuario_id" class="form-control" required>
-								<option value="">Tipo de usuario</option>
-								<?php 
-								foreach($all_tipo_usuario as $tipo_usuario)
-								{
-									$selected = ($tipo_usuario['tipousuario_id'] == $this->input->post('tipousuario_id')) ? ' selected="selected"' : "";
-
-									echo '<option value="'.$tipo_usuario['tipousuario_id'].'" '.$selected.'>'.$tipo_usuario['tipousuario_descripcion'].'</option>';
-								} 
-								?>
-							</select>
-						</div>
-					</div>
-				
-					<div class="col-md-6">
-						<label for="usuario_email" class="control-label">Email</label>
-						<div class="form-group">
-							<input type="email" name="usuario_email" value="<?php echo $this->input->post('usuario_email'); ?>" class="form-control" id="usuario_email" />
-							<span class="text-danger"><?php echo form_error('usuario_email');?></span>
-						</div>
-					</div>
-
+            <div class="box-body">
+                <div class="row clearfix">
+                    <div class="col-md-6">
+                    <label for="usuario_nombre" class="control-label">Nombre</label>
+                    <div class="form-group">
+                            <input type="text" name="usuario_nombre" value="<?php echo $this->input->post('usuario_nombre'); ?>" class="form-control" id="usuario_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <span class="text-danger"><?php echo form_error('usuario_nombre');?></span>
+                    </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="tipousuario_id" class="control-label">Tipo</label>
+                        <div class="form-group">
+                            <select name="tipousuario_id" class="form-control" required>
+                                <option value="">Tipo de usuario</option>
+                                <?php 
+                                foreach($all_tipo_usuario as $tipo_usuario)
+                                {
+                                    $selected = ($tipo_usuario['tipousuario_id'] == $this->input->post('tipousuario_id')) ? ' selected="selected"' : "";
+                                    echo '<option value="'.$tipo_usuario['tipousuario_id'].'" '.$selected.'>'.$tipo_usuario['tipousuario_descripcion'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="usuario_email" class="control-label">Email</label>
+                        <div class="form-group">
+                            <input type="email" name="usuario_email" value="<?php echo $this->input->post('usuario_email'); ?>" class="form-control" id="usuario_email" />
+                            <span class="text-danger"><?php echo form_error('usuario_email');?></span>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <label for="user_login" class="control-label">Login</label>
                         <div class="form-group">
@@ -50,21 +46,31 @@
                             <div id="user-result"></div>
                         </div>
                     </div>
-
- 					<div class="col-md-6">
-						<label for="usuario_clave" class="control-label">Clave</label>
-						<div class="form-group">
-							<input type="password" name="usuario_clave"  class="form-control" id="usuario_clave" required/>
-						</div>
-					</div>
-
-                    <div class="col-md-6">
+                    <div class="col-md-4">
+                        <label for="usuario_clave" class="control-label">Clave</label>
+                        <div class="form-group">
+                            <input type="password" name="usuario_clave"  class="form-control" id="usuario_clave" required/>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
                         <label for="usuario_clave" class="control-label">Repetir Clave</label>
                         <div class="form-group">
                             <input type="password" name="rusuario_clave"  class="form-control" id="rusuario_clave" required/>
                         </div>
                     </div>
-
+                    <div class="col-md-4">
+                        <label for="parametro_id" class="control-label">Perfil</label>
+                        <div class="form-group">
+                            <select name="parametro_id" id="parametro_id" class="form-control">
+                                <?php 
+                                foreach($all_parametros as $parametro)
+                                {
+                                    echo '<option value="'.$parametro['parametro_id'].'">'.$parametro['parametro_id'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-6">
                         <label for="user_imagen" class="control-label">Imagen</label>
                         <div class="form-group">
@@ -77,17 +83,17 @@
                     <div class="col-md-6">
                         <img src="<?php echo site_url('uploads/profile/default.jpg')?>" id="previewing" class="img-responsive center-block">
                     </div>
-
-				</div>
-			</div>
-          	<div class="box-footer">
-            	<button type="submit" id="boton" class="btn btn-success">
-            		<i class="fa fa-check"></i> Guardar
-            	</button>
-            	<a href="index"><button type="button" class="btn btn-danger">
-            		<i class="fa fa-times"></i> Cancelar
-            	</button></a>
-          	</div>
+                </div>
+            </div>
+            <div class="box-footer">
+                <button type="submit" id="boton" class="btn btn-success">
+                    <i class="fa fa-check"></i> Guardar
+                </button>
+                <a href="index"><button type="button" class="btn btn-danger">
+                    <i class="fa fa-times"></i> Cancelar
+                    </button>
+                </a>
+            </div>
             <?php echo form_close(); ?>
       	</div>
     </div>

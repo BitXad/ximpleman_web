@@ -163,6 +163,7 @@ private function acceso($id_rol){
                         'usuario_login' => $this->input->post('usuario_login'),
                         'usuario_clave' => md5($this->input->post('usuario_clave')),
                         'usuario_imagen' => $foto,
+                        'parametro_id' => $this->input->post('parametro_id'),
                     );
 
 
@@ -172,6 +173,8 @@ private function acceso($id_rol){
                    
                     $this->load->model('Tipo_usuario_model');
                     $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
+                    $this->load->model('parametro_model');
+                    $data['all_parametros'] = $this->parametro_model->get_all_parametros();
                     $data['page_title'] = "Usuarios";
                     $data['_view'] = 'usuario/add';
                     $this->load->view('layouts/main', $data);
@@ -202,7 +205,8 @@ private function acceso($id_rol){
 
                 $this->load->model('Estado_model');
                 $data['all_estado'] = $this->Estado_model->get_all_estado_activo_inactivo();
-
+                $this->load->model('parametro_model');
+                $data['all_parametros'] = $this->parametro_model->get_all_parametros();
                 $this->load->model('Tipo_usuario_model');
                 $data['all_tipo_usuario'] = $this->Tipo_usuario_model->get_all_tipo_usuario();
                 $data['page_title'] = "Usuario";
@@ -544,7 +548,8 @@ private function acceso($id_rol){
                         'usuario_imagen' => $foto,
                         'usuario_login' => $this->input->post('usuario_login'),
                         'estado_id' => $this->input->post('estado_id'),
-                        'tipousuario_id' => $this->input->post('tipousuario_id')
+                        'tipousuario_id' => $this->input->post('tipousuario_id'),
+                        'parametro_id' => $this->input->post('parametro_id')
                     );
 
                     if (!$this->user_model->update_usuario($data, $usuario_id)) {
