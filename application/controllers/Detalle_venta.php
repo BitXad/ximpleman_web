@@ -406,6 +406,11 @@ class Detalle_venta extends CI_Controller{
         $this->load->model('Producto_model');
         $usuario_id = $this->session_data['usuario_id'];
         $data['productos'] = $this->Producto_model->get_productos_imagen();
+        $this->load->model('Parametro_model');
+        $parametro_id = 1;
+        $parametros = $this->Parametro_model->get_parametro($parametro_id);
+        $data['logomonitor'] = $parametros['parametro_logomonitor'];
+        $data['fondomonitor'] = $parametros['parametro_fondomonitor'];
         //$data['ventas'] = $this->Venta_model->get_detalle_auxfoto($usuario_id);
         $data['_view'] = 'detalle_venta/venta_proceso';
         $this->load->view('detalle_venta/venta_proceso',$data);
