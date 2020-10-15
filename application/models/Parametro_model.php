@@ -6,46 +6,65 @@
  
 class Parametro_model extends CI_Model
 {
+//    function __construct()
+//    {
+//        parent::__construct();
+//    }
+    
+    private $session_data = "";
     function __construct()
     {
         parent::__construct();
-    }
-    
+        $this->load->model('Cliente_model');
+        $this->load->model('Compra_model');
+        $this->load->model('Categoria_clientezona_model');
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }    
     /*
      * Get parametro by parametro_id
      */
     function get_parametro($parametro_id)
     {
-        return $this->db->get_where('parametros',array('parametro_id'=>$parametro_id))->row_array();
+        $usuario_id = $this->session_data['usuario_id'];     
+        $sql = "select * from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+        
+        //return $this->db->get_where('parametros',array('parametro_id'=>$parametro_id))->row_array();
+        return $this->db->query($sql)->row_array();
     }
         
     /*
      * Get all parametros
      */
     function get_all_parametro()
-   
-       {
+    {
          
-        $limit_condition = "";
-        if(isset($params) && !empty($params))
-            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+//        $limit_condition = "";
+//        if(isset($params) && !empty($params))
+//            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+//        
+//        $parametros = $this->db->query("
+//           SELECT
+//                *
+//
+//            FROM
+//                `parametros`
+//
+//            WHERE
+//                1 = 1
+//
+//            ORDER BY `parametro_id` DESC
+//
+//            " . $limit_condition . "
+//        ")->result_array();
+//        return $parametros;
+        $usuario_id = $this->session_data['usuario_id'];     
+        $sql = "select * from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
         
-        $parametros = $this->db->query("
-           SELECT
-                *
-
-            FROM
-                `parametros`
-
-            WHERE
-                1 = 1
-
-            ORDER BY `parametro_id` DESC
-
-            " . $limit_condition . "
-        ")->result_array();
-
-        return $parametros;
+        return $this->db->query($sql)->result_array();
     }
         
     /*
@@ -53,9 +72,12 @@ class Parametro_model extends CI_Model
      */
     function get_parametros()
     {         
-        $sql = "select * from parametros";
-        $parametros = $this->db->query($sql)->result_array();
-        return $parametros;
+//        $sql = "select * from parametros";
+//        $parametros = $this->db->query($sql)->result_array();
+//        return $parametros;
+        $usuario_id = $this->session_data['usuario_id'];     
+        $sql = "select * from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+        return $this->db->query($sql)->result_array();
     }
  
         
@@ -89,15 +111,22 @@ class Parametro_model extends CI_Model
      */
     function get_parametro_servicio()
     {
-        $parametro = $this->db->query("
-           SELECT
-                p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega
-            FROM
-                parametros p
-            WHERE
-                1 = 1
-        ")->row_array();
-
-        return $parametro;
+//        $parametro = $this->db->query("
+//           SELECT
+//                p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega
+//            FROM
+//                parametros p
+//            WHERE
+//                1 = 1
+//        ")->row_array();
+//        
+//        return $parametro;
+        
+        $usuario_id = $this->session_data['usuario_id'];     
+        $sql = "select p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+        
+        return $this->db->query($sql)->row_array();        
+        
+        
     }
 }
