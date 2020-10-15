@@ -18,10 +18,9 @@ class Parametro_model extends CI_Model
         $this->load->model('Cliente_model');
         $this->load->model('Compra_model');
         $this->load->model('Categoria_clientezona_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
-        }else {
-            redirect('', 'refresh');
         }
     }    
     /*
@@ -29,9 +28,16 @@ class Parametro_model extends CI_Model
      */
     function get_parametro($parametro_id)
     {
-        $usuario_id = $this->session_data['usuario_id'];     
-        $sql = "select * from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
         
+        if (isset($this->session_data['usuario_id'])){
+        
+            $usuario_id = $this->session_data['usuario_id'];  
+            $sql = "select p.* from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+        
+        }else{
+            
+            $sql = "select p.* from parametros p where parametro_id = (select min(parametro_id) from parametros)";            
+        }        
         //return $this->db->get_where('parametros',array('parametro_id'=>$parametro_id))->row_array();
         return $this->db->query($sql)->row_array();
     }
@@ -61,8 +67,17 @@ class Parametro_model extends CI_Model
 //            " . $limit_condition . "
 //        ")->result_array();
 //        return $parametros;
-        $usuario_id = $this->session_data['usuario_id'];     
-        $sql = "select * from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+
+        if (isset($this->session_data['usuario_id'])){
+        
+            $usuario_id = $this->session_data['usuario_id'];  
+            $sql = "select p.* from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+        
+        }else{
+            
+            $sql = "select p.* from parametros p where parametro_id = (select min(parametro_id) from parametros)";            
+
+        }
         
         return $this->db->query($sql)->result_array();
     }
@@ -75,9 +90,22 @@ class Parametro_model extends CI_Model
 //        $sql = "select * from parametros";
 //        $parametros = $this->db->query($sql)->result_array();
 //        return $parametros;
-        $usuario_id = $this->session_data['usuario_id'];     
-        $sql = "select * from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
-        return $this->db->query($sql)->result_array();
+
+
+        if (isset($this->session_data['usuario_id'])){
+        
+            $usuario_id = $this->session_data['usuario_id'];  
+            $sql = "select p.* from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+        
+        }else{
+            
+            $sql = "select p.* from parametros p where parametro_id = (select min(parametro_id) from parametros)";            
+
+        }
+        
+        $parametros = $this->db->query($sql)->result_array();
+        return $parametros;
+        
     }
  
         
@@ -122,13 +150,26 @@ class Parametro_model extends CI_Model
 //                1 = 1
 //        ")->row_array();
 //  return $parametro;
+
+        if (isset($this->session_data['usuario_id'])){
         
-        $usuario_id = $this->session_data['usuario_id'];     
-        $sql = "select p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+            $usuario_id = $this->session_data['usuario_id'];  
+            $sql = "select p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega from parametros p, usuario u where p.parametro_id = u.parametro_id and u.usuario_id = ".$usuario_id;
+        
+        }else{
+            
+            $sql = "select p.parametro_diagnostico, p.parametro_solucion, p.parametro_diasentrega from parametros p where parametro_id = (select min(parametro_id) from parametros)";
+
+        }
+
+
         
         return $this->db->query($sql)->row_array();        
               
     }
+<<<<<<< HEAD
+    
+=======
     /* muestra todos los parametros */
     function get_all_parametros()
     {
@@ -136,4 +177,5 @@ class Parametro_model extends CI_Model
         
         return $this->db->query($sql)->result_array();
     }
+>>>>>>> master
 }

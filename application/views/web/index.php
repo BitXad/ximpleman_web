@@ -72,6 +72,7 @@ function mostrar() {
 </head>
     
 <body onload="buscar_por_categoria(<?php echo $parametro[0]["parametro_mostrarcategoria"]; ?>)">
+
 <!-- header -->
 <!------------------ PRIMERA SECCION -------------------------------------->
     <div class="agileits_header">

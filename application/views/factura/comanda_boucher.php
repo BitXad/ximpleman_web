@@ -116,9 +116,25 @@ border-bottom : 1px solid #aaa;
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 
-<!-------------------------------------------------------->
+<?php //$tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
+      $ancho = $parametro[0]["parametro_anchofactura"]."cm";
+      $margen_izquierdo = $parametro[0]["parametro_margenfactura"]."cm";
+?>
 
-<table class="table" style="width: 7cm;" >
+<!-------------------------------------------------------->
+<table class="table" >
+<tr>
+<td style="padding: 0; width: <?php echo $margen_izquierdo; ?>" >
+    
+</td>
+
+<td style="padding: 0;">
+    
+
+
+
+
+<table class="table" style="width: <?php echo $ancho?>" >
     <tr>
         <td colspan="4">
                 
@@ -210,3 +226,6 @@ border-bottom : 1px solid #aaa;
     
 </table>
        
+</td>    
+</tr>    
+</table>
