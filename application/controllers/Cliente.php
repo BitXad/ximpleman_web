@@ -11,6 +11,7 @@ class Cliente extends CI_Controller{
         parent::__construct();
         $this->load->model('Cliente_model');
         $this->load->model('Compra_model');
+        $this->load->model('Categoria_clientezona_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -1197,6 +1198,40 @@ class Cliente extends CI_Controller{
             {
                 show_404();
             }
+        }
+    }
+
+    /*
+    * mapa de clientes visitados
+    */
+    function mapavisitas()
+    {
+        if($this->acceso(30)) {
+       
+                //**************** inicio contenido ***************  
+
+                $data['page_title'] = "Mapa de Visitas";
+                $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+
+                $fecha_desde = $this->input->post("fecha_desde");
+                $fecha_hasta = $this->input->post("fecha_hasta");
+                $zona_id = $this->input->post("zona_busqueda");
+
+            if(isset($zona_id)){
+
+                $data['all_cliente'] = $this->Cliente_model->get_clientes_visitados($fecha_desde,$fecha_hasta,$zona_id);
+                $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($zona_id);
+                //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+                $data['_view'] = 'cliente/mapavisitas';
+
+                $this->load->view('layouts/main',$data);
+
+            }
+            else{
+                $this->index();
+            }
+                //**************** fin contenido ***************
+
         }
     }
 }

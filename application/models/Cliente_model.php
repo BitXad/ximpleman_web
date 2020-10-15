@@ -514,4 +514,49 @@ class Cliente_model extends CI_Model
 
     }    
     
+    
+   /*
+     * Funcion para obtener todos lciente visitados
+     */
+    function get_clientes_visitados($fecha_desde,$fecha_hasta,$zona_id)
+    {
+
+        
+        $sql = "(select distinct(c.cliente_id),c.cliente_nombre,c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 1 as cliente_visitado
+                from venta v, cliente c
+                where 
+                v.cliente_id = c.cliente_id and
+                v.venta_fecha >= '".$fecha_desde."' and
+                v.venta_fecha <= '".$fecha_hasta."' and
+                c.zona_id = ".$zona_id."
+
+                group by v.venta_id)
+
+                UNION
+
+                (
+                select distinct(c.cliente_id),c.cliente_nombre,c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 0 as cliente_visitado
+                from cliente c
+                where 
+                c.zona_id = ".$zona_id." and
+                c.cliente_id not in 
+                (
+                select distinct(c.cliente_id)
+                from venta v, cliente c
+                where 
+                v.cliente_id = c.cliente_id and
+                v.venta_fecha >= '".$fecha_desde."' and
+                v.venta_fecha <= '".$fecha_hasta."' and
+                c.zona_id = ".$zona_id."
+
+                group by v.venta_id
+                )
+
+                )";
+                
+        
+        return $this->db->query($sql)->result_array();
+
+    }    
+    
 }

@@ -138,7 +138,7 @@
                     <b>CÓDIGO BARRA:</b> <?php echo $inventario[0]["producto_codigobarra"]; ?>
                 </font>
                 
-                <?php } ?>
+                <?php   } ?>
                 
                 
                 <table class="table table-striped table-condensed" id="mitabla">

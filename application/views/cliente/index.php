@@ -269,12 +269,14 @@ echo '<script type="text/javascript">
     <div class='modal-dialog modal-sm' role='document'>
         <br><br>
         <div class='modal-content'>
+                <?php echo form_open_multipart('cliente/mapavisitas/', 'taget="blank"'); ?>
             <div class='modal-header text-center'>
                 <span style='font-size: 15pt' class='text-bold'>CLIENTES SIN VISITA</span>
                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>
             </div>
             <div class='modal-body'>
                 <!------------------------------------------------------------------->
+                
                 <div class="col-md-12">
                     <div class="input-group">
                         <span class="input-group-addon"><b>Desde:&nbsp</b></span>           
@@ -305,16 +307,20 @@ echo '<script type="text/javascript">
                     </div>
                     <br>
                 </div>
+                
                 <!------------------------------------------------------------------->
             </div>
             <div class='modal-footer aligncenter'>
                 <div class="col-md-6">
-                    <a href='' target="_blank" class='btn btn-success btn-block' id='buscar_visita'><span class='fa fa-search'></span> Buscar </a>
+                    <button type="submit"  target="_blank" class='btn btn-success btn-block' id='buscar_visita' name='buscar_visita' ><span class='fa fa-search'></span> Buscar </button>
                 </div>
                 <div class="col-md-6">
-                    <a href='#' class='btn btn-danger btn-block' data-dismiss='modal' id='cerrar_modalmapa'><span class='fa fa-times'></span> Cerrar </a>
+                    <a href='#' class='btn btn-danger btn-block' data-dismiss='modal' id='cerrar_modalmapa' name='cerrar_modalmapa'><span class='fa fa-times'></span> Cerrar </a>
                 </div>
             </div>
+            
+            
+                <?php echo form_close(); ?>
         </div>
     </div>
 </div>
