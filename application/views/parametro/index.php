@@ -15,7 +15,43 @@ foreach($all_parametros as $p)
             <div class="box-header">
                 <font size='4' face='Arial'><b>Perfil <?php echo $p['parametro_id']; ?></b></font> 
                 <a href="<?php echo site_url('parametro/edit/'.$p['parametro_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> Editar</a>
-                <a href="<?php echo site_url('parametro/remove/'.$p['parametro_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Eliminar</a>
+                <a data-toggle="modal" data-target="#modaleliminar<?php echo $p['parametro_id']; ?>"  class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> Eliminar</a>
+                    <!------------------------ INICIO modal para cambiar PASSWORD ------------------->
+                    <div class="modal fade" id="modaleliminar<?php echo $p['parametro_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="modalcambiarlabel<?php echo $p['parametro_id']; ?>">
+                        <div class="modal-dialog" role="document">
+                            <br><br>
+                            <div class="modal-content">
+                                <div class="modal-header text-center text-bold" style="font-size: 12pt">
+                                    <label>ELIMINAR PERFIL <?php echo $p['parametro_id']; ?></label>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                </div>
+                                <?php
+                                    echo form_open('parametro/remove/'.$p['parametro_id']);
+                                ?>
+                                <div class="modal-body" style="font-size: 10pt">
+                                    <!------------------------------------------------------------------->
+                                    <div class="col-md-12">
+                                        <label for="nuevo_pass<?php echo $p['parametro_id'] ?>" class="control-label">Nota.-</label>
+                                        <div class="form-group">
+                                            Si elimina este perfil, tenga en cuenta que algunos usuarios quedarian sin perfil! y debera asignarle otro.
+                                        </div>
+                                    </div>
+                                    <!------------------------------------------------------------------->
+                                </div>
+                                <div class="modal-footer aligncenter">
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fa fa-check"></i> Aceptar
+                                    </button>
+                                    <!--<a href="<?php //echo site_url('usuario/nueva_clave/'.$u['usuario_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Cambiar </a>-->
+                                    <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar </a>
+                                </div>
+                                <?php
+                                echo form_close();
+                                ?>
+                            </div>
+                        </div>
+                    </div>
+                    <!------------------------ FIN modal para cambiar PASSWORD ------------------->
             </div>
             <div class="box-body table-responsive" >
                 <table class="table table-striped table-condensed" id="mitabla" style="text-align: center; font-size: 11px;color:black;">

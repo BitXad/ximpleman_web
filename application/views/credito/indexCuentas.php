@@ -15,7 +15,9 @@
         });
         function imprimir()
         {
-             window.print(); 
+            $('#ocultar').css('display','block');
+            window.print(); 
+            $('#ocultar').css('display','none');
         }
 </script>
 <!----------------------------- fin script buscador --------------------------------------->
@@ -109,7 +111,7 @@
   
     </div>
 </div>
-<div class=" col-md-12 cuerpo">
+<div class=" col-md-12 cuerpo" id="ocultar" style="display: none">
     <div class="columna_derecha">
         <center> 
             <img src="<?php echo base_url('resources/images/empresas/').$empresa[0]['empresa_imagen']; ?>" width="100" height="60">
@@ -159,7 +161,7 @@
                                                 
                     </tr>-->
                     </thead>
-                    <tbody class="buscar" id="tablacuentas">
+                    <tbody class="buscar" id="tablacuentas"></tbody>
                   
                 </table>
                 

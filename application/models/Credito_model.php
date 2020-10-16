@@ -93,7 +93,22 @@ class Credito_model extends CI_Model
     function get_deudasagrupado($filtro,$condicion)
     {
         $deuda = $this->db->query("
-            SELECT
+            select
+                c.credito_id, p.`proveedor_nombre`, p.`proveedor_id`,
+                sum(c.credito_monto) as suma, if(sum(t.`total`) is null, 0, sum(t.`total`)) as total,
+                if(sum(t.`cancelado`) is null, 0, sum(t.`cancelado`)) as cancelado,
+                if(sum(t.`saldo`) is null, 0, sum(t.`saldo`)) as saldo
+            from credito c
+            left join conssaldocredito t on c.credito_id = t.credito_id
+            left join compra co on co.compra_id = c.compra_id
+            left join proveedor p on co.`proveedor_id` = p.proveedor_id
+            where
+                c.`compra_id`>0
+                ".$filtro."
+                ".$condicion." 
+                group by p.`proveedor_id`
+            
+            /*SELECT
                 c.*, p.*, co.*, e.*, u.*, sum(c.credito_monto) as suma
 
             FROM
@@ -107,7 +122,7 @@ class Credito_model extends CI_Model
                 ".$filtro."
                 ".$condicion." 
 
-           group by proveedor_nombre 
+           group by p.proveedor_nombre */
             
         ")->result_array();
 

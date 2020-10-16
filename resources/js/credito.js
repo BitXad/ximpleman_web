@@ -121,7 +121,7 @@ function tabladeudas(filtro) //Deudas por pagar
                     html2 += "<th>Fecha</th>";  
                     html2 += "<th>Hora</th>";  
                     html2 += "<th>Usuario</th>";  
-                    html2 += "<th></th>";  
+                    html2 += "<th class='no-print'></th>";  
                     html2 += "</tr>";  
                     
                     
@@ -150,7 +150,11 @@ function tabladeudas(filtro) //Deudas por pagar
                         html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
                                                 
                         
-                        html += "<td style='text-align: right;'><b>"+formato_numerico(Number(registros[i]['compra_total']))+"</b></td>";
+                        html += "<td style='text-align: right;'><b>"+formato_numerico(Number(registros[i]['compra_total']))+"</b>";
+                        if(registros[i]['compra_descglobal'] > 0){
+                            html += "<br>DESC.: "+formato_numerico(Number(registros[i]['compra_descglobal']));
+                        }
+                        html += "</td>";
                         html += "<td style='text-align: right'>"+Number(registros[i]['credito_cuotainicial']).toFixed(2)+"</td>";
                         html += "<td style='text-align: right; background:silver'><font size='3' face='Arial'><b>"+formato_numerico(Number(registros[i]['credito_monto']))+"</b></font></td>";
                         html += "<td style='text-align: right'>"+Number(registros[i]['credito_interesmonto']).toFixed(2)+"("+registros[i]['credito_interesproc']+")</td>";
@@ -158,9 +162,10 @@ function tabladeudas(filtro) //Deudas por pagar
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_hora']+"</td>";
                         html += "<td style='text-align: center'>"+registros[i]['usuario_nombre']+"</td>";
-                        html += "<td><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
+                        html += "<td class='no-print'><a href='"+base_url+"cuotum/deudas/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-eye'></span></a>";
                         html += "<a href='"+base_url+"cuotum/planDeuda/"+registros[i]['credito_id']+"' target='_blank' class='btn btn-facebook btn-xs'><span class='fa fa-print'></span></a></td>";
-}
+                        html += "</tr>";
+                    }
                    html += "<tr><td colspan=4 align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
                    html += "<td  align=right colspan=4><font size='3' face='Arial'><b>"+formato_numerico(Number(total))+"</b></font></td>"; 
                    html += "<td colspan=7 align=right></td><tr>"; 
@@ -386,31 +391,33 @@ function tabladeudasagrupado(filtro)
                     html2 += "<tr>";  
                     html2 += "<th>#</th>";  
                     html2 += "<th>Proveedor</th>";  
-                    html2 += "<th>Monto</th>";  
+                    html2 += "<th>Monto Credito</th>";
+                    html2 += "<th>Total Cancelado</th>";
+                    html2 += "<th>Total Saldo</th>";
                     html2 += "</tr>";  
                     $("#titulos").html(html2); 
-                    
-                    
-                  
-                        total = 0;
-                        iniciales = 0;
+                    var total     = 0;
+                    var cancelado = 0;
+                    var saldo     = 0;
                     for (var i = 0; i < n ; i++){
-                        
-                        // var suma = Number(registros[i]["detallecomp_total"]);
-                        //descuento += Number(registros[i]["detallecomp_descuento"]);
-                        total += Number(registros[i]["suma"]);
-                        //iniciales += Number(registros[i]["credito_cuotainicial"]);
-                        //total_detalle = Number(subtotal-descuento); 
+                        total     += Number(registros[i]["suma"]);
+                        cancelado += Number(registros[i]["cancelado"]);
+                        saldo     += Number(registros[i]["saldo"]);
                         html += "<tr>"; 
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>"+registros[i]['proveedor_nombre']+"<small> ["+registros[i]['proveedor_id']+"]</small></td>";
                 
-                        html += "<td style='text-align: right'>"+Number(registros[i]['suma']).toFixed(2)+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['suma']).toFixed(2))+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['cancelado']).toFixed(2))+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['saldo']).toFixed(2))+"</td>";
                       
 }
                    html += "<tr><td align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
                    html += "<td align=right></td>"; 
-                   html += "<td align=right><font size='2' face='Arial'><b>"+Number(total).toFixed(2)+"</b></font></td></tr>"; 
+                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(total).toFixed(2))+"</b></font></td>"; 
+                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(cancelado).toFixed(2))+"</b></font></td>"; 
+                   html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(saldo).toFixed(2))+"</b></font></td>";
+                   html += "</tr>"; 
                    
                    $("#tabladeudas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);

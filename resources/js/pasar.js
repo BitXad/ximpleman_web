@@ -129,7 +129,7 @@ function ventacombi(filtro)
                         var totalTo = Number(total+totalTo);
                         var precios = Number(registros[i]["precios"]);
                         var prom = Number(registros[i]["prom"]);
-                        html += "<tr>";
+                        html += "<tr class='labj'>";
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td><b>"+registros[i]["producto_nombre"]+"</b> <br>";

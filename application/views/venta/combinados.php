@@ -10,7 +10,25 @@
         }
 </script>
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
+<style>
+    .labj {
+        border-bottom: 2px solid black; border-right: 0px; border-top: 0px; padding-right: 3px;
+    }
+    @media print {
+        
+        .pintado {
+            background-color: rgba(169,175,232) !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+        .boxtabla {
+            background-color: rgba(169,175,232) !important;
+            -webkit-print-color-adjust: exact;
+            color-adjust: exact;
+        }
+    }
 
+</style>
 
 <div class="container">
     
