@@ -163,7 +163,7 @@ border-bottom : 1px solid #aaa;
                 <?php $fecha = new DateTime($venta[0]['venta_fecha']); 
                         $fecha_d_m_a = $fecha->format('d/m/Y');
                   ?>    
-                    <b>LUGAR Y FECHA: </b><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?> <br>
+                <b>LUGAR Y FECHA: </b><span style="font-size: 8pt"><?php echo $empresa[0]['empresa_departamento'].", ".$fecha_d_m_a; ?></span> <br>
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?>
                
             </center>                      
@@ -192,7 +192,7 @@ border-bottom : 1px solid #aaa;
                         ?>
            <tr style="padding: 0">
                 <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0"><font style="size:5px; font-family: arial narrow;"> <?php echo $d['producto_nombre'];?>
+                <td style="padding: 0"><font style="size:7px; font-family: arial;"> <?php echo $d['producto_nombre'];?>
                         <?php
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];

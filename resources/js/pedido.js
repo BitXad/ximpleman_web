@@ -973,13 +973,17 @@ function buscar_por_fecha()
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var estado_id = document.getElementById('estado_id').value;
+    var usuario_id = document.getElementById('usuario_id').value;
     
     var opcion      = document.getElementById('select_pedidos').value;
-    
+    var esteusuario_id = " and p.usuario_id = "+usuario_id;
+    if(usuario_id == 0){
+        esteusuario_id = "";
+    }
     if (opcion >= 6)
     {    
         filtro = " and pedido_fechaentrega >= '"+fecha_desde+"'  and pedido_fechaentrega <='"+fecha_hasta+
-        "' and p.estado_id = "+estado_id;
+        "' and p.estado_id = "+estado_id+esteusuario_id;
         tabla_pedidos(filtro);
 
     
@@ -987,7 +991,7 @@ function buscar_por_fecha()
     else
     {
         filtro = " and date(pedido_fecha) >= '"+fecha_desde+"'  and  date(pedido_fecha) <='"+fecha_hasta+
-        "' and p.estado_id = "+estado_id;
+        "' and p.estado_id = "+estado_id+esteusuario_id
         tabla_pedidos(filtro);
     }
 

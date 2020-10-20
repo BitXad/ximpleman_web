@@ -52,7 +52,7 @@
 
             <select class="btn btn-warning btn-sm form-control" id="select_usuarios" onclick="cambiar_usuario()">
                     <option value="0"><?php echo "TODOS"; ?></option>
-                    <!--<option value="<?php echo $usuario_id; ?>"><?php echo $usuario_nombre; ?></option>-->
+                    <!--<option value="<?php //echo $usuario_id; ?>"><?php //echo $usuario_nombre; ?></option>-->
             <?php foreach($usuario as $u){ ?>
                     <option value="<?php echo $u['usuario_id']?>"><?php echo $u['usuario_nombre']?></option>
             <?php } ?>
@@ -107,7 +107,6 @@
         <div class="col-md-2">
             Hasta: <input type="date" class="btn btn-warning btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true" value="<?php echo $date; ?>">
         </div>
-        
         <div class="col-md-2">
             Tipo:             
             <select  class="btn btn-warning btn-sm form-control" id="estado_id" required="true">
@@ -120,7 +119,7 @@
         <div class="col-md-3">
 <!--<form method="post" onclick="buscar_por_fecha()">-->
             
-<!--            <a href="<?php echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
+<!--            <a href="<?php //echo site_url('pedido/crearpedido'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Nuevo pedido</a>-->
             <button class="btn btn-sm btn-facebook btn-sm btn-block"  onclick="buscar_por_fecha()" type="submit">
                 <h4>
                 <span class="fa fa-search"></span>   Buscar
