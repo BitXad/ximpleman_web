@@ -57,6 +57,22 @@ function mostrar_ocultar(){
         document.getElementById('creditooculto').style.display = 'none';}
 }
 
+function mostrar_formapago(){
+    var forma_id = document.getElementById('forma_pago').value;
+    var html = "";
+//    
+////                <div class="col-md-12" style="display:none" id="imagenqr">
+//    html += "<center>";
+//    html += "<img src='<?php echo base_url('resources/images/formapago/'.$forma[forma_id]["forma_imagen"]); ?>'>"
+//    html += "</center>";
+//               
+//    $("#imagenqr").html(html);
+    
+    html += "cosas de casa";
+    html += "cosas de casa";
+   $("#imagenqr").style.display = "block";  
+}
+
 
 function compruebaTecla (e) {
 var keyCode = document.all ? e.which : e.keyCode;
@@ -764,7 +780,7 @@ window.onkeydown = compruebaTecla;
                                         
                                         <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
                                         <h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>                                        
-                                        <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;">
+                                        <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;" onchange="mostrar_formapago()">
                                             <?php
                                                 foreach($forma_pago as $forma){ ?>
                                                     <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
@@ -926,6 +942,13 @@ window.onkeydown = compruebaTecla;
           
             <div class="col-md-12">
                 NOTA: <input type="text" style="padding: 0;" id="venta_glosa" name="venta_glosa" value="" class="form-control  input-sm">           
+                
+                <div class="col-md-12" style="display:none" id="imagenqr">
+                    <center>
+                        <img src="<?php echo base_url("resources/images/formapago/miqr.jpg") ?>">                        
+                    </center>                    
+                </div>
+            
             </div>
            
         </div>
