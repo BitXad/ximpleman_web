@@ -32,11 +32,12 @@
             $('#precio_subtotal').val(res);
         });
   });
-    
+  
 </script>
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->    
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<input type="hidden" id="resventa" name="resventa">
 <input type="text" id="parametro_modoventas" value="<?php echo $parametro[0]['parametro_modoventas']; ?>" name="parametro_modoventas"  hidden>
 <input type="text" id="parametro_anchoboton" value="<?php echo $parametro[0]['parametro_anchoboton']; ?>" name="parametro_anchoboton"  hidden>
 <input type="text" id="parametro_altoboton" value="<?php echo $parametro[0]['parametro_altoboton']; ?>" name="parametro_altobotono"  hidden>
@@ -76,6 +77,7 @@
                     <?php } ?>
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
+                    <a class="btn btn-success btn-sm" onclick="imprimirtodo()"><span class="fa fa-cart-arrow-down"></span> Imprimir</a>
                 </div>
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
