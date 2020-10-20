@@ -300,7 +300,7 @@ class Producto extends CI_Controller{
                           unlink($directorio.$foto1);
                           //$mimagenthumb = str_replace(".", "_thumb.", $foto1);
                           $mimagenthumb = "thumb_".$foto1;
-                          if(file_exists($mimagenthumb)){
+                          if(file_exists($directorio.$mimagenthumb)){
                               unlink($directorio.$mimagenthumb);
                           }
                       }

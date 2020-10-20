@@ -55,26 +55,75 @@ class Forma_pago extends CI_Controller{
     {
         if($this->acceso(123)){
             $data['page_title'] = "Forma Pago";
-        $this->load->library('form_validation');
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('forma_nombre','Forma Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                if (!empty($_FILES['forma_imagen']['name'])){
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/formapago/';
+                    $img_full_path = $config['upload_path'];
 
-		$this->form_validation->set_rules('forma_nombre','Forma Nombre','required');
-		
-		if($this->form_validation->run())     
-        {   
-            $params = array(
-				'forma_nombre' => $this->input->post('forma_nombre'),
-            );
-            
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['image_library'] = 'gd2';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 0;
+                    $config['max_height'] = 0;
+
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
+
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('forma_imagen');
+
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/formapago/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 800;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
+                    }
+                    /* ********************F I N  para resize***************************** */
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/formapago/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/formapago/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 100;
+                    $confi['height'] = 100;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
+                }
+                /* *********************FIN imagen***************************** */
+                $params = array(
+                    'forma_nombre' => $this->input->post('forma_nombre'),
+                    'forma_imagen' => $foto,
+                );
             $forma_pago_id = $this->Forma_pago_model->add_forma_pago($params);
             redirect('forma_pago/index');
+            }else{
+                $data['_view'] = 'forma_pago/add';
+                $this->load->view('layouts/main',$data);
+            }
         }
-        else
-        {            
-            $data['_view'] = 'forma_pago/add';
-            $this->load->view('layouts/main',$data);
-        }
-        }
-    }  
+    }
 
     /*
      * Editing a forma_pago
@@ -83,34 +132,93 @@ class Forma_pago extends CI_Controller{
     {
         if($this->acceso(123)){
             $data['page_title'] = "Forma Pago";
-        // check if the forma_pago exists before trying to edit it
-        $data['forma_pago'] = $this->Forma_pago_model->get_forma_pago($forma_id);
-        
-        if(isset($data['forma_pago']['forma_id']))
-        {
-            $this->load->library('form_validation');
-
-			$this->form_validation->set_rules('forma_nombre','Forma Nombre','required');
-		
-			if($this->form_validation->run())     
-            {   
-                $params = array(
-					'forma_nombre' => $this->input->post('forma_nombre'),
-                );
-
-                $this->Forma_pago_model->update_forma_pago($forma_id,$params);            
-                redirect('forma_pago/index');
-            }
-            else
+            // check if the forma_pago exists before trying to edit it
+            $data['forma_pago'] = $this->Forma_pago_model->get_forma_pago($forma_id);
+            if(isset($data['forma_pago']['forma_id']))
             {
-                $data['_view'] = 'forma_pago/edit';
-                $this->load->view('layouts/main',$data);
-            }
+                $this->load->library('form_validation');
+                $this->form_validation->set_rules('forma_nombre','Forma Nombre','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                if($this->form_validation->run())
+                {
+                    /* *********************INICIO imagen***************************** */
+                    $foto="";
+                    $foto1= $this->input->post('forma_imagen1');
+                    if (!empty($_FILES['forma_imagen']['name']))
+                    {
+                        $this->load->library('image_lib');
+                        $config['upload_path'] = './resources/images/formapago/';
+                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                        $config['max_size'] = 0;
+                        $config['max_width'] = 0;
+                        $config['max_height'] = 0;
+
+                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                        $config['file_name'] = $new_name; //.$extencion;
+                        $config['file_ext_tolower'] = TRUE;
+
+                        $this->load->library('upload', $config);
+                        $this->upload->do_upload('forma_imagen');
+
+                        $img_data = $this->upload->data();
+                        $extension = $img_data['file_ext'];
+                        /* ********************INICIO para resize***************************** */
+                        if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                            $conf['image_library'] = 'gd2';
+                            $conf['source_image'] = $img_data['full_path'];
+                            $conf['new_image'] = './resources/images/formapago/';
+                            $conf['maintain_ratio'] = TRUE;
+                            $conf['create_thumb'] = FALSE;
+                            $conf['width'] = 800;
+                            $conf['height'] = 800;
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($conf);
+                            if(!$this->image_lib->resize()){
+                                echo $this->image_lib->display_errors('','');
+                            }
+                        }
+                        /* ********************F I N  para resize***************************** */
+                        $base_url = explode('/', base_url());
+                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/formapago/';
+                        if(isset($foto1) && !empty($foto1)){
+                            if(file_exists($directorio.$foto1)){
+                                unlink($directorio.$foto1);
+                                $mimagenthumb = "thumb_".$foto1;
+                                if(file_exists($directorio.$mimagenthumb)){
+                                    unlink($directorio.$mimagenthumb);
+                                }
+                            }
+                        }
+                        $confi['image_library'] = 'gd2';
+                        $confi['source_image'] = './resources/images/formapago/'.$new_name.$extension;
+                        $confi['new_image'] = './resources/images/formapago/'."thumb_".$new_name.$extension;
+                        $confi['create_thumb'] = FALSE;
+                        $confi['maintain_ratio'] = TRUE;
+                        $confi['width'] = 100;
+                        $confi['height'] = 100;
+
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($confi);
+                        $this->image_lib->resize();
+
+                        $foto = $new_name.$extension;
+                    }else{
+                        $foto = $foto1;
+                    }
+                    /* *********************FIN imagen***************************** */
+                    $params = array(
+                        'forma_nombre' => $this->input->post('forma_nombre'),
+                        'forma_imagen' => $foto,
+                    );
+                    $this->Forma_pago_model->update_forma_pago($forma_id,$params);            
+                    redirect('forma_pago/index');
+                }else{
+                    $data['_view'] = 'forma_pago/edit';
+                    $this->load->view('layouts/main',$data);
+                }
+            }else
+                show_error('The forma_pago you are trying to edit does not exist.');
         }
-        else
-            show_error('The forma_pago you are trying to edit does not exist.');
-        }
-    } 
+    }
 
     /*
      * Deleting forma_pago
