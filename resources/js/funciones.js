@@ -3721,11 +3721,6 @@ function imprimirtodo(){
     var n = registros.length; //tamaño del arreglo de la consulta
     for (var i = 0; i < n ; i++){
         window.open(base_url+'factura/imprimir_recibo/'+registros[i]["venta_id"], '_blank');
-        /*href="+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"'
-        window.location.href = 'http://www.google.com';*/
-        /*var venta_id = registros[i]["venta_id"];
-        $('#imprimir'+registros[i]["venta_id"]).click();
-        alert($('#imprimir'+venta_id).attr('id'));*/
+        //alert($('#imprimir'+venta_id).attr('id'));
         }
-    //alert('Fin de Impresion');
 }

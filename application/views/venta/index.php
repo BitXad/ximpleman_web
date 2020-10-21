@@ -77,7 +77,7 @@
                     <?php } ?>
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
-                    <a class="btn btn-success btn-sm" onclick="imprimirtodo()"><span class="fa fa-cart-arrow-down"></span> Imprimir</a>
+                    <a class="btn btn-success btn-sm" onclick="imprimirtodo()" title="Imprime todas la ventas" style="background-color: #761c19"><span class="fa fa-print"></span> Imprimir</a>
                 </div>
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->
