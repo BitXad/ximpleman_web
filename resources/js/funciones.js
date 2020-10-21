@@ -2701,6 +2701,7 @@ function borrar_datos_cliente()
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById('creditooculto').style.display = 'none';
+    document.getElementById('imagenqr').style.display = 'none';
                     //document.getElementById('creditooculto').style.display = 'none';
     
     $("#filtrar").focus();

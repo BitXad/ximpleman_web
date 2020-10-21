@@ -58,19 +58,46 @@ function mostrar_ocultar(){
 }
 
 function mostrar_formapago(){
-    var forma_id = document.getElementById('forma_pago').value;
+    
+    var forma_id = document.getElementById('forma_pago').value;    
+    var result = <?php echo json_encode($forma_pago); ?>;
     var html = "";
-//    
+    
+    var dato = result;
+    var tam = dato.length;
+    var mostrarimagen = "";
+    var encontrado = 0;
+    
+    for(var i=0; i<tam ;i++)
+    {
+        if(forma_id == dato[i]["forma_id"]){
+            imagen = dato[i]["forma_imagen"];
+            
+            if (imagen != null){
+            
+                mostrarimagen = "<?php echo base_url('resources/images/formapago/'); ?>";
+                mostrarimagen += imagen;
+                //alert(mostrarimagen);
+                html += "<center>";
+                html += "<img src='"+mostrarimagen+"' >";
+                html += "</center>";
+                $("#imagenqr").html(html);
+                //$("#imagenqr").style = 'display:block';  
+                
+                document.getElementById('imagenqr').style.display = 'block';
+                entontrado == 1;
+            }
+        }
+    }    
+    
+    if (encontrado==0)
+        document.getElementById('imagenqr').style.display = 'none';
+    
+    //alert(mostrarimagen);
 ////                <div class="col-md-12" style="display:none" id="imagenqr">
-//    html += "<center>";
-//    html += "<img src='<?php echo base_url('resources/images/formapago/'.$forma[forma_id]["forma_imagen"]); ?>'>"
-//    html += "</center>";
 //               
 //    $("#imagenqr").html(html);
-    
-    html += "cosas de casa";
-    html += "cosas de casa";
-   $("#imagenqr").style.display = "block";  
+
 }
 
 
@@ -780,7 +807,7 @@ window.onkeydown = compruebaTecla;
                                         
                                         <input type="datetime-local" id="fechahora_entrega" name="fechahora_entrega" value="<?php echo $fecha."T".$hora;?>" required>-->
                                         <h5 class="modal-title" id="myModalLabel"><b>FORMA DE PAGO</b></h5>                                        
-                                        <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" style="width: 120px;" onchange="mostrar_formapago()">
+                                        <select id="forma_pago"  name="forma_pago" class="btn btn-default btn-xs" onchange="mostrar_formapago()"  style="width: 120px;" >
                                             <?php
                                                 foreach($forma_pago as $forma){ ?>
                                                     <option value="<?php echo $forma['forma_id']; ?>"><?php echo $forma['forma_nombre']; ?></option>                                                   
