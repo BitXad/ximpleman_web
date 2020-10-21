@@ -2388,7 +2388,8 @@ function tabla_ventas(filtro)
             var total_pedido = 0;
             var v = JSON.parse(response);
             var nombre_cliente =  "sin nombre";
-                
+            const myString = JSON.stringify(v);
+            $("#resventa").val(myString);
                 $("#parametro").val(filtro); // se enviar el parametro a un text para usarlo desde otro metodo despues
                 
             
@@ -2469,7 +2470,7 @@ function tabla_ventas(filtro)
 //                    html += "                           <a href='"+base_url+"venta/edit/"+v[i]['venta_id']+"' class='btn btn-info btn-xs no-print' target='_blank' title='Modifica los datos generales de la venta'><span class='fa fa-pencil'></span></a>";
                     html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
-                    html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta'><span class='fa fa-print'></span></a> ";
+                    html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir"+v[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/certificado_garantia/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir certificado de garantia' style='background-color: purple'> <span class='fa fa-lock'></span> </a> ";
                     if(tipousuario_id == 1){
                     html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalusuario"+v[i]['venta_id']+"' title='Modificar Usuario vendedor'><span class='fa fa-user'></span></a>";
@@ -3691,35 +3692,6 @@ function ingresar_promocion(promocion_id){
     tablaproductos();
 }
 /* funcion que modifca al usuario vendedor */
-/*
- * function modificar_usuario(venta_id){
-    var base_url = document.getElementById('base_url').value;
-    var esteusuario_id = document.getElementById('esteusuario_id'+venta_id).value;
-    var controlador = base_url+'venta/modificar_usuariovendedor/';
-    $('#modalusuario'+venta_id).modal('hide');
-    $.ajax({url: controlador,
-            type:"POST",
-            data:{esteusuario_id:esteusuario_id, venta_id:venta_id},
-            success:function(respuesta){
-                var registros =  JSON.parse(respuesta);
-                if (registros != null){
-                    if("ok"){
-                        $('#filtrar').html(venta_id);
-                        ventas_por_parametro();
-                    }
-            }
-        },
-        error:function(respuesta){
-            
-        },
-        complete: function (jqXHR, textStatus) {
-            
-        }
-        
-    });   
-
-}*/
-
 function modificar_usuario(venta_id){
     var base_url = document.getElementById('base_url').value;
     var esteusuario_id = document.getElementById('esteusuario_id'+venta_id).value;
@@ -3742,4 +3714,14 @@ function modificar_usuario(venta_id){
             error: function(respuesta){
             }
         });
+}
+function imprimirtodo(){
+    var base_url = document.getElementById('base_url').value;
+    var resventa = document.getElementById('resventa').value;
+    var registros =  JSON.parse(resventa);
+    var n = registros.length; //tamaño del arreglo de la consulta
+    for (var i = 0; i < n ; i++){
+        window.open(base_url+'factura/imprimir_recibo/'+registros[i]["venta_id"], '_blank');
+        //alert($('#imprimir'+venta_id).attr('id'));
+        }
 }
