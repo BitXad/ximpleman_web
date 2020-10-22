@@ -26,19 +26,18 @@
 <div class="row">
     <div class="col-md-12">
         <!--------------------- parametro de buscador --------------------->
-                  <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese zona">
-                  </div>
-            <!--------------------- fin parametro de buscador --------------------->
+        <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
+            <input id="filtrar" type="text" class="form-control" placeholder="Ingrese zona">
+        </div>
+        <!--------------------- fin parametro de buscador --------------------->
         <div class="box">
-            
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Zona</th>
-						<th>Estado</th>
-                                                <th class="no-print"></th>
+                        <th>#</th>
+                        <th>Zona</th>
+                        <th>Estado</th>
+                        <th class="no-print"></th>
                     </tr>
                     <tbody class="buscar">
                     <?php $i = 0;
@@ -47,38 +46,39 @@
                                   $cont = $cont+1;
                     ?>
                     <tr>
-						<td><?php echo $cont; ?></td>
-						<td><?php echo $c['zona_nombre']; ?></td>
-						<td style="background-color: #<?php echo $c['estado_color'];?>"><?php echo $c['estado_descripcion']; ?></td>
-                                                <td class="no-print">
+                        <td><?php echo $cont; ?></td>
+                        <td><?php echo $c['zona_nombre']; ?></td>
+                        <td style="background-color: #<?php echo $c['estado_color'];?>"><?php echo $c['estado_descripcion']; ?></td>
+                        <td class="no-print">
                         <!------------------------ INICIO modal para confirmar eliminación ------------------->
-                                    <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
-                                      <div class="modal-dialog" role="document">
-                                            <br><br>
-                                        <div class="modal-content">
-                                          <div class="modal-header">
+                            <div class="modal fade" id="myModal<?php echo $i; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $i; ?>">
+                                <div class="modal-dialog" role="document">
+                                    <br><br>
+                                    <div class="modal-content">
+                                        <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                                          </div>
-                                          <div class="modal-body">
-                                           <!------------------------------------------------------------------->
-                                           <h3><b> <span class="fa fa-trash"></span></b>
-                                               ¿Desea eliminar la categoria cliente zona <b> <?php echo $c['zona_nombre']; ?></b>?
-                                           </h3>
-                                           <!------------------------------------------------------------------->
-                                          </div>
-                                          <div class="modal-footer aligncenter">
-                                                      <a href="<?php echo site_url('categoria_clientezona/remove/'.$c['zona_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
-                                                      <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
-                                          </div>
                                         </div>
-                                      </div>
+                                        <div class="modal-body">
+                                            <!------------------------------------------------------------------->
+                                            <h3><b> <span class="fa fa-trash"></span></b>
+                                                ¿Desea eliminar la categoria cliente zona <b> <?php echo $c['zona_nombre']; ?></b>?
+                                            </h3>
+                                            <!------------------------------------------------------------------->
+                                        </div>
+                                        <div class="modal-footer aligncenter">
+                                            <a href="<?php echo site_url('categoria_clientezona/remove/'.$c['zona_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                            <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                        </div>
                                     </div>
+                              </div>
+                            </div>
                         <!------------------------ FIN modal para confirmar eliminación ------------------->
                         <a href="<?php echo site_url('categoria_clientezona/edit/'.$c['zona_id']); ?>" class="btn btn-info btn-xs" title="Editar"><span class="fa fa-pencil"></span></a> 
                             <!--<a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php //echo $i; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>-->
                         </td>
                     </tr>
                     <?php $i++;  } ?>
+                    </tbody>
                 </table>
                                 
             </div>
