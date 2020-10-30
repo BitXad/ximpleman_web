@@ -1102,7 +1102,7 @@ class Cliente extends CI_Controller{
     /* * reporte de distribuidor * */
     function reporte_distribuidor()
     {
-        //if($this->acceso(94)){
+        if($this->acceso(180)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $data['usuario_nombre'] = $this->session_data['usuario_nombre'];
             $data['usuario_id'] = $this->session_data['usuario_id'];
@@ -1114,7 +1114,7 @@ class Cliente extends CI_Controller{
 
             $data['_view'] = 'cliente/reporte_distribuidor';
             $this->load->view('layouts/main',$data);
-        //}
+        }
     }
     
     /* * buscar clientes para pedido //://-->para pedidos * */
