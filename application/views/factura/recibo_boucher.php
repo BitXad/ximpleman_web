@@ -237,9 +237,14 @@ border-bottom : 1px solid #aaa;
 
     <tr >
         <td colspan="4" style="padding:0;">
-               USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
-               COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
-               TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
+            <?php
+            if($venta[0]['venta_glosa'] != null || $venta[0]['venta_glosa'] != ""){
+            ?>
+            <b>NOTA: </b><?php echo $venta[0]['venta_glosa']; ?><br>
+            <?php } ?>
+            USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
+            COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
+            TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
             <center>
             <font size="2">
                    

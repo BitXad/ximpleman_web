@@ -114,14 +114,14 @@ border-bottom : 1px solid #aaa;
 <!-------------------------------------------------------->
 <?php $tipo_factura = $parametro[0]["parametro_altofactura"]; //15 tamaño carta 
       $ancho = $parametro[0]["parametro_anchofactura"]."cm";
-      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];;
+      $margen_izquierdo = "col-xs-".$parametro[0]["parametro_margenfactura"];
 ?>
 <div class="<?php echo $margen_izquierdo; ?>" style="padding: 0; max-width:5cm;">
     
 </div>
  
 <div class="col-xs-10" style="padding: 0;">
-<table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
+<table class="table" style="width: <?php echo $ancho;?>; padding: 0;" >
 <!--<table class="table" style="width: <?php //echo $ancho; ?>;" >-->
     <tr>
         <td style="padding:0;">        
@@ -165,7 +165,7 @@ border-bottom : 1px solid #aaa;
      
 </table>
 
-<table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
+<table class="table" style="width: <?php echo $ancho;?>; padding: 0;" >
        <!--<table class="table table-striped table-condensed"  style="width: <?php //echo $ancho; ?>;" >-->
            <tr  style="border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;" >
                <td align="center"><b>CN</b></td>
@@ -241,22 +241,22 @@ border-bottom : 1px solid #aaa;
         </td>          
     </tr>
     <tr >
-        <td colspan="4">
-            <b>NOTA: </b><?php echo $venta[0]['venta_glosa']; ?>
-         </td>
-    </tr> 
-    <tr >
         <td colspan="4" style="padding:0;">
-               USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
-               COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
-               TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
+            <?php
+            if($venta[0]['venta_glosa'] != null || $venta[0]['venta_glosa'] != ""){
+            ?>
+            <b>NOTA: </b><?php echo $venta[0]['venta_glosa']; ?><br>
+            <?php } ?>
+            USUARIO: <b><?php echo $venta[0]['usuario_nombre']; ?></b>
+            COD.: <b><?php echo $venta[0]['venta_id']; ?></b><br>
+            TRANS.: <b><?php echo $venta[0]['tipotrans_nombre']; ?></b>
             <center>
             <font size="2">
                    
             </font>
                     <?php echo "GRACIAS POR SU PREFERENCIA...!!!"; ?>  
             </center>
-         </td>
+        </td>
     </tr>    
     
 </table>

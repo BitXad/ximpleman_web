@@ -230,12 +230,15 @@ border-bottom : 1px solid #aaa;
             
         </td>          
     </tr>
-
-    <tr >
+    <?php
+    if($venta[0]['venta_glosa'] != null || $venta[0]['venta_glosa'] != ""){
+    ?>
+    <tr>
         <td colspan="3">
             <b>NOTA: </b><?php echo $venta[0]['venta_glosa']; ?>
          </td>
-    </tr>    
+    </tr>
+    <?php } ?>    
     
 </table>
 <table class="table" style="width: <?php echo $ancho;?>cm; padding: 0;" >
