@@ -557,6 +557,26 @@ class Cliente_model extends CI_Model
         
         return $this->db->query($sql)->result_array();
 
-    }    
+    }   
+    
+    function get_cliente_index(){
+        $sql = "
+        SELECT
+            c.*, e.estado_color, e.estado_descripcion, tc.tipocliente_descripcion,
+            cc.categoriaclie_descripcion, u.usuario_nombre, z.zona_nombre
+        FROM
+            cliente c
+        LEFT JOIN estado e on c.estado_id = e.estado_id
+        LEFT JOIN tipo_cliente tc on c.tipocliente_id = tc.tipocliente_id
+        LEFT JOIN categoria_cliente cc on c.categoriaclie_id = cc.categoriaclie_id
+        LEFT JOIN usuario u on c.usuario_id = u.usuario_id
+        LEFT JOIN zona z on c.zona_id = z.zona_id
+        WHERE
+        1=1
+        GROUP BY
+            c.cliente_id
+        ";
+        return $this->db->query($sql)->result_array();
+    }
     
 }

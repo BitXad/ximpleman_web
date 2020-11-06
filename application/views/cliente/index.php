@@ -1,7 +1,7 @@
 
 <!----------------------------- script buscador --------------------------------------->
 
-<script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
+<!-- <script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -14,7 +14,7 @@
                 })
             }(jQuery));
         });
-</script>   
+</script>    -->
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
     #contieneimg{
@@ -35,13 +35,24 @@
     #masg{
         font-size: 12px;
     }
-    td div div{
+    /* td div div{
         
+    } */
+
+    td.details-control {
+        background: url('./resources/images/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+    tr.shown td.details-control {
+        background: url('./resources/images/details_close.png') no-repeat center center;
     }
 </style>
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/servicio_reportedia.css'); ?>" rel="stylesheet">
-<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<!-- <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet"> -->
+<!-- <link rel="stylesheet" href="<?= base_url('resources/css/dataTables.bootstrap4.min.css'); ?>"> -->
+<link rel="stylesheet" href="<?= base_url('resources/css/dataTables.min.css'); ?>">
+
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <input type="hidden" name="formaimagen" id="formaimagen" value="<?php  echo $parametro['parametro_formaimagen']; ?>" />
@@ -226,31 +237,106 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed display" id="mitabla">
                     <thead>
-                        
-                    <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Negocio</th>
-                        <!--<th>Dirección</th>-->
-                        <th class="no-print">Map</th>
-<!--                        <th>Email</th>-->
-                        <!--<th>Aniversario</th>-->
-<!--                        <th>Tipo</th>-->
-                        <!--<th>Categoria</th>-->
-                        <th>Estado</th>
-                        <!--<th>Estado</th>-->
-                        <th class="no-print"></th>
-                    </tr>
+                        <tr>
+                            <th>#</th>
+                            <!-- <th>cliente_id</th> -->
+                            <!-- <th>estado_id</th> -->
+                            <!-- <th>tipocliente_id</th> -->
+                            <!-- <th>categoriaclie_id</th> -->
+                            <!-- <th>usuario_id</th> -->
+                            <th>Cod Cliente</th>
+                            <th>Foto</th>
+                            <th>Nombre</th>
+                            <!-- <th>Cliente</th> -->
+                            <th>CI</th>
+                            <th>Direccion</th>
+                            <th>Teléfono</th>
+                            <th>Celular</th>
+                            <th>Email</th>
+                            <th>Nom Negocio</th>
+                            <th>Aniversario</th>
+                            <!-- <th>cliente_latitud</th>
+                            <th>cliente_longitud</th> -->
+                            <th>NIT</th>
+                            <th>Razón</th>
+                            <th>Departamento</th>
+                            <!-- <th>zona_id</th> -->
+                            <!-- <th>lun</th>
+                            <th>mar</th>
+                            <th>mie</th>
+                            <th>jue</th>
+                            <th>vie</th>
+                            <th>sab</th>
+                            <th>dom</th> -->
+                            <th>Orden Visita</th>
+                            <!-- <th>cliente_clave</th> -->
+                            <!-- <th>cliente_codactivacion</th> -->
+                            <th>Fecha Activacion</th>
+                            <!-- <th>estado_color</th> -->
+                            <th>Estado</th>
+                            <th>Descripcion</th>
+                            <th>Categoria</th>
+                            <th>Nombre Usuario</th>
+                            <th>zona</th>
+                            <th>Mapa</th>
+                            <th></th>
+                        </tr>
                     </thead>
-                    <tbody class="buscar" id="tablaresultados">
+                    <!-- <tbody class="buscar" id="tablaresultados">
                     
-                    </tbody>    
+                    </tbody>     -->
+                    <tfoot>
+                        <tr>
+                            <th>#</th>
+                            <!-- <th>cliente_id</th> -->
+                            <!-- <th>estado_id</th> -->
+                            <!-- <th>tipocliente_id</th> -->
+                            <!-- <th>categoriaclie_id</th> -->
+                            <!-- <th>usuario_id</th> -->
+                            <th>Cod Cliente</th>
+                            <th>Foto</th>
+                            <th>Nombre</th>
+                            <!-- <th>Cliente</th> -->
+                            <th>CI</th>
+                            <th>Direccion</th>
+                            <th>Teléfono</th>
+                            <th>Celular</th>
+                            <th>Email</th>
+                            <th>Nom Negocio</th>
+                            <th>Aniversario</th>
+                            <!-- <th>cliente_latitud</th>
+                            <th>cliente_longitud</th> -->
+                            <th>NIT</th>
+                            <th>Razón</th>
+                            <th>Departamento</th>
+                            <!-- <th>zona_id</th> -->
+                            <!-- <th>lun</th>
+                            <th>mar</th>
+                            <th>mie</th>
+                            <th>jue</th>
+                            <th>vie</th>
+                            <th>sab</th>
+                            <th>dom</th> -->
+                            <th>Orden Visita</th>
+                            <!-- <th>cliente_clave</th> -->
+                            <!-- <th>cliente_codactivacion</th> -->
+                            <th>Fecha Activacion</th>
+                            <!-- <th>estado_color</th> -->
+                            <th>Estado</th>
+                            <th>Descripcion</th>
+                            <th>Categoria</th>
+                            <th>Nombre Usuario</th>
+                            <th>zona</th>
+                            <th>Mapa</th>
+                            <th></th>
+                        </tr>
+                    </tfoot>
                 </table>
                 <?php if($err==2){ ?>
-                <script>alert("La imagen es demasiado grande ")</script>
+                <script>alert("La imagen es demasiado grande ");</script>
                 <?php } ?>
                 <?php if($err==1){ ?>
-                <script>alert("No se puede subir una imagen con ese formato ")</script>
+                <script>alert("No se puede subir una imagen con ese formato ");</script>
                 <?php } ?>
             </div>
 
@@ -318,10 +404,308 @@ echo '<script type="text/javascript">
                     <a href='#' class='btn btn-danger btn-block' data-dismiss='modal' id='cerrar_modalmapa' name='cerrar_modalmapa'><span class='fa fa-times'></span> Cerrar </a>
                 </div>
             </div>
-            
-            
-                <?php echo form_close(); ?>
+            <?php echo form_close(); ?>
         </div>
     </div>
 </div>
 <!------------------------ FIN modal para confirmar eliminación ------------------->
+
+<!------------------------ Inicio DATATABLE ------------------->
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+
+<script src="<?= site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
+<script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+<script src="<?= site_url('resources/js/datatables.min.js') ?>"></script>
+<script src="<?= site_url('resources/js/DataTables-1.10.22/js/dataTables.bootstrap4.min.js') ?>"></script>
+<script src="<?= site_url('resources/js/dataTables.buttons.min.js') ?>"></script>
+<script src="<?= site_url('resources/js/jszip.min.js') ?>"></script>
+<script src="<?= site_url('resources/js/pdfmake.min.js') ?>"></script>
+<script src="<?= site_url('resources/js/vfs_fonts.js') ?>"></script>
+<script src="<?= site_url('resources/js/buttons.html5.min.js') ?>"></script>
+<script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script>
+<script>
+    function format(d){
+            html ='<table class="table" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                        '<tr>' +
+                            '<td><b>CODIGO:</b></td>' +
+                            '<td>'+d.cliente_codigo+'</td>' +
+                            '<td><b>NIT:</b></td>' +
+                            '<td>'+d.cliente_nit+'</td>' +
+                            '<td><b>C.I.:</b></td>' +
+                            '<td>'+d.cliente_ci+'</td>' +
+                            '<td><b>EMAIL:</b></td>' +
+                            '<td>'+d.cliente_email+'</td>' +
+                            '<td><b>TELEFONO:</b></td>' +
+                            '<td>'+d.cliente_telefono+"-"+d.cliente_celular+'</td>' +
+                            '<td><b>ANIVERS.:</b></td>' +
+                            '<td>'+d.cliente_aniversario+"-"+d.cliente_celular+'</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                            '<td><b>EMPRESA:</b></td>' +
+                            '<td>'+d.cliente_nombrenegocio+'</td>' +
+                            '<td><b>RAZÓN SOCIAL:</b></td>' +
+                            '<td>'+d.cliente_razon+'</td>' +
+                            '<td><b>CATEGORIA:</b></td>' +
+                            '<td>'+d.categoriaclie_descripcion+'</td>' +
+                            '<td><b>ZONA:</b></td>' +
+                            '<td>'+d.zona_nombre+'</td>' +
+                            '<td><b>ORDEN VISITA.:</b></td>' +
+                            '<td>'+d.cliente_ordenvisita+'</td>' +
+                            '<td><b>DPTO.:</b></td>' +
+                            '<td>'+d.cliente_departamento+'</td>' +
+                        '</tr>' +
+                        '<tr>' +
+                            '<td><b>VISITA:</b></td>';
+                            if(d.lun == 1){ html += '<td>Lunes</td>'; }
+                            if(d.mar == 1){ html += '<td>Martes</td>'; }
+                            if(d.mie == 1){ html += '<td>Miercoles</td>'; }
+                            if(d.jue == 1){ html += '<td>Jueves</td>'; }
+                            if(d.vie == 1){ html += '<td>Viernes</td>'; }
+                            if(d.sab == 1){ html += '<td>Sabado</td>'; }
+                            if(d.dom == 1){ html += '<td>Domingo</td>'; }
+                            
+                            html+='<td><b>DIRECCION:</b></td>' +
+                            '<td colspan="8">' + d.cliente_direccion+ '</td>' +
+                        '</tr>' +
+                    '</table>';
+            return html;
+        }
+        $(document).ready(function() {
+            var tipousuario_id = document.getElementById('tipousuario_id').value;
+            var table = $('#mitabla').DataTable({
+                responsive: "true",
+                dom: 'Bfrtilp',
+                "ajax": "./json/client.txt",
+                "columns": [
+                    {
+                        "className": 'details-control',
+                        "orderable": false,
+                        "data": null,
+                        "defaultContent": ''
+                    },
+                    // { "data": "cliente_id" },
+                    // { "data": "estado_id" },
+                    // { "data": "tipocliente_id" },
+                    // { "data": "categoriaclie_id" },
+                    // { "data": "usuario_id" },
+                    { "data": "cliente_codigo", "visible": false},
+                    { "data": "cliente_foto", "render": (data, type, row)=>{ 
+                        return '<img class="img-rounded" src="./resource/images/clientes/thumb_'+data+'" alt="" width="40px" height="40px" />';
+                    }},
+                    { "data": "cliente_nombre","render":(data)=>{ return "<h5>"+data+"</h5>" } },
+                    { "data": "cliente_ci", "visible": false },
+                    { "data": "cliente_direccion", "visible": false },
+                    { "data": "cliente_telefono", "visible": false },
+                    { "data": "cliente_celular", "visible": false },
+                    { "data": "cliente_email", "visible": false },
+                    { "data": "cliente_nombrenegocio", "visible": false },
+                    { "data": "cliente_aniversario", "visible": false },
+                    // { "data": "cliente_latitud" },
+                    // { "data": "cliente_longitud" },
+                    { "data": "cliente_nit" },
+                    { "data": "cliente_razon" , "visible": false},
+                    { "data": "cliente_departamento", "visible": false },
+                    // { "data": "zona_id" },
+                    // { "data": "lun" },
+                    // { "data": "mar" },
+                    // { "data": "mie" },
+                    // { "data": "jue" },
+                    // { "data": "vie" },
+                    // { "data": "sab" },
+                    // { "data": "dom" },
+                    { "data": "cliente_ordenvisita", "visible": false },
+                    // { "data": "cliente_clave" },
+                    // { "data": "cliente_codactivacion" },
+                    { "data": "cliente_fechaactivacion", "visible": false },
+                    // { "data": "estado_color" },
+                    // { "data": "estado_descripcion" },
+                    { "data": null, "render": (data, type, row) =>{ return "<div style= background-color:#"+data.estado_color+" ><p class='text-center'>"+data.estado_descripcion+"</p></div>";  }},
+                    { "data": "tipocliente_descripcion", "visible": false },
+                    { "data": "categoriaclie_descripcion", "visible": false },
+                    { "data": "usuario_nombre", "visible": false },
+                    { "data": "zona_nombre", "visible": false },
+                    { "data": null, "render": (data, type, row) =>{ return "<a href='https://www.google.com/maps/dir/"+data.cliente_latitud+","+data.cliente_longitud+"' target='_blank' title='Ver mapa'><img src='./resources/images/blue.png' width='30' height='30'></a>"; }},
+                    { "data": null, "render": (data, type, row) =>{ 
+                        html = "<div>"+
+                                    "<a href='./venta/ventas_cliente/"+data.cliente_id+"' class='btn btn-success btn-xs' title='Vender'><span class='fa fa-cart-plus'></span></a>"+
+                                    "<a href='./pedido/pedidoabierto/"+data.cliente_id+"' class='btn btn-facebook btn-xs' title='Generar pedido Pre-Venta'><span class='fa fa-clipboard'></span></a>"+
+                                    "<a href='./cliente/edit/"+data.cliente_id+"' target='_blank' class='btn btn-info btn-xs' title='Modificar datos de Cliente'><span class='fa fa-pencil'></span></a>";
+                            if (data.cliente_celular > 1000){
+                        html += "<a href='https://wa.me/591"+data.cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs' title='Enviar mensaje por whatsapp'><span class='fa fa-whatsapp'></span></a>";
+                            }
+                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalDelete"+data.cliente_id+"' title='Eliminar'><span class='fa fa-trash'></span></a>"+
+                                    "<!------------------------ INICIO modal para confirmar eliminación ------------------->"+
+                                    "<div class='modal fade' id='modalDelete"+data.cliente_id+"' tabindex='-1' role='dialog' >"+
+                                        "<div class='modal-dialog' role='document'>"+
+                                            "<br><br>"+
+                                            "<div class='modal-content'>"+
+                                                "<div class='modal-header'>"+
+                                                    "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>"+
+                                                "</div>"+
+                                                "<div class='modal-body'>"+
+                                                    "<!------------------------------------------------------------------->"+
+                                                    "<h3><b> <span class='fa fa-trash'></span></b>"+
+                                                        "¿Desea eliminar al Cliente <b>"+data.cliente_nombre+"</b> ?"+
+                                                    "</h3>"+
+                                                    "<!------------------------------------------------------------------->"+
+                                                "</div>"+
+                                                "<div class='modal-footer aligncenter'>"+
+                                                    "<a href='./cliente/remove/"+data.cliente_id+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>"+
+                                                    "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>"+
+                                                "</div>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</div>"+
+                                    "<!------------------------ FIN modal para confirmar eliminación ------------------->"+
+                                    "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->"+
+                                    "<div class='modal fade' id='mostrarimagen"+data.cliente_id+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+data.cliente_id+"'>"+
+                                        "<div class='modal-dialog' role='document'>"+
+                                            "<br><br>"+
+                                            "<div class='modal-content'>"+
+                                                "<div class='modal-header'>"+
+                                                    "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>"+
+                                                    "<font size='3'><b>"+data.cliente_nombre+"</b></font>"+
+                                                "</div>"+
+                                                "<div class='modal-body'>"+
+                                                    "<!------------------------------------------------------------------->"+
+                                                    "<img style='max-height: 100%; max-width: 100%' src='./resources/images/clientes/"+data.cliente_foto+"' />"+
+                                                    "<!------------------------------------------------------------------->"+
+                                                "</div>"+
+                                            "</div>"+
+                                        "</div>"+
+                                    "</div>"+
+                                    "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
+                                if(tipousuario_id == 1){
+                                // if(true){
+                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalcambiar"+data.cliente_id+"' title='Cambiar contraseña'><em class='fa fa-gear'></em></a>"+
+                                "<!------------------------ INICIO modal para cambiar PASSWORD ------------------->"+
+                                "<div class='modal fade' id='modalcambiar"+data.cliente_id+"' tabindex='-1' role='dialog' aria-labelledby='modalcambiarlabel"+data.cliente_id+"'>"+
+                                    "<div class='modal-dialog' role='document'>"+
+                                        "<br><br>"+
+                                        "<div class='modal-content'>"+
+                                            "<div class='modal-header text-center text-bold' style='font-size: 12pt'>"+
+                                                "<label>CAMBIAR CONTRASEÑA</label>"+
+                                                "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>"+
+                                            "</div>"+
+                                            "<div class='modal-body' style='font-size: 10pt'>"+
+                                            "<!------------------------------------------------------------------->"+
+                                            "<div class='col-md-6'>"+
+                                                "<label for='nuevo_pass"+data.cliente_id+"' class='control-label'>Nueva Contraseña</label>"+
+                                                "<div class='form-group'>"+
+                                                    "<input type='password' name='nuevo_pass"+data.cliente_id+"' class='form-control' id='nuevo_pass"+data.cliente_id+"' />"+
+                                                    "<span class='text-danger' id='error_nuevopass'></span>"+
+                                                "</div>"+
+                                            "</div>"+
+                                            "<div class='col-md-6'>"+
+                                                "<label for='repita_pass"+data.cliente_id+"' class='control-label'>Repita Contraseña</label>"+
+                                                "<div class='form-group'>"+
+                                                    "<input type='password' name='repita_pass"+data.cliente_id+"' class='form-control' id='repita_pass"+data.cliente_id+"' />"+
+                                                    "<span class='text-danger' id='error_nuevopass1'></span>"+
+                                                "</div>"+
+                                            "</div>"+
+                                            "<!------------------------------------------------------------------->"+
+                                        "</div>"+
+                                        "<div class='modal-footer aligncenter'>"+
+                                            "<a class='btn btn-success' onclick='cambiarcontrasenia("+data.cliente_id+", "+1+")'>"+
+                                                "<i class='fa fa-check'></i> Cambiar"+
+                                            "</a>"+
+                                            "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> Cancelar </a>"+
+                                        "</div>"+
+                                    "</div>"+
+                                "</div>"+
+                            "</div>"+
+                            "<!------------------------ FIN modal para cambiar PASSWORD ------------------->";
+                            }
+                                // "</td>"+
+                                
+                                // "</tr>"+ 
+                                html += "</div>";  
+                                return html;
+                            }}
+                ],
+                "order": [[1, 'asc']],
+                buttons:[
+                    {
+                        extend: 'excelHtml5',
+                        text: '<p style="font-size:18px; color: #fff"><i class="fa fa-file-excel-o" aria-hidden="true"></i></p>',
+                        title: 'Clientes',
+                        titleAttr: 'Exportar a Excel',
+                        className: 'btn btn-success btn-xs m-auto',
+                        exportOptions: {
+                            columns: [0,':visible']
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: '<p style="font-size:18px; color: #fff"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></p>',
+                        title: 'Clientes',
+                        titleAttr: 'Exportar a PDF',
+                        className: 'btn btn-danger btn-xs m-auto',
+                        exportOptions: {
+                            columns: [0,':visible']
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '<p style="font-size:18px; color: #fff"><i class="fa fa-print" aria-hidden="true"></i></p>',
+                        title: 'Clientres',
+                        titleAttr: 'Imprimir',
+                        className: 'btn btn-info btn-xs m-auto',
+                        exportOptions: {
+                            columns: [0,':visible']
+                        }
+                    },
+                    {
+                        extend: 'colvis',
+                        text: '<p style="font-size:18px;">Ver columnas</p>',
+                        className: 'btn btn-warning btn-xs m-auto',
+                        columnText: function(dt,idx,title){
+                            return '<a class="dropdown-item pl-0" href="#" style="color:black;">'+(idx+1)+': '+title+'</a>';
+                            // return 'Hola'
+                        }
+                    }
+                ],
+            });
+
+            $('#mitabla tbody').on('click','td.details-control', function(){
+                var tr = $(this).closest('tr');
+                var row = table.row(tr);
+
+                if(row.child.isShown()){
+                    row.child.hide();
+                    tr.removeClass('shown');
+                }else{
+                    row.child(format(row.data())).show();
+                    tr.addClass('shown');
+                }
+            });
+        } );
+        function cambiarcontrasenia(cliente_id, limit){
+            var base_url    = document.getElementById('base_url').value;
+            var nuevo_pass  = document.getElementById('nuevo_pass'+cliente_id).value;
+            var repita_pass = document.getElementById('repita_pass'+cliente_id).value;
+            var controlador = base_url+"cliente/nuevaclave/";
+            $('#modalcambiar'+cliente_id).modal('hide');
+            $.ajax({url: controlador,
+                type:"POST",
+                data:{cliente_id:cliente_id, nuevo_pass:nuevo_pass, repita_pass:repita_pass },
+                    success:function(resul){
+                        var registros =  JSON.parse(resul);
+                        if (registros != null){
+                            if(registros == "ok"){
+                                alert("Cambio de contraseña exitosa");
+                                tablaresultadoscliente(limit);
+                            }else{
+                                alert("Las contraseñas deben ser iguales");
+                                $('#modalcambiar'+cliente_id).modal('show');
+                            }
+                        }
+                },
+                error:function(resul){
+                // alert("Algo salio mal...!!!");
+                alert("Ocurrio un error inesperado");
+                } 
+            });
+        }
+</script>
+<!------------------------- Fin DATATABLE --------------------->

@@ -162,16 +162,16 @@ class Estado_model extends CI_Model
     function get_all_estado_activo_inactivo()
     {
         $estado = $this->db->query("
-            SELECT
-                *
+        SELECT
+            *
 
-            FROM
-                `estado`
+        FROM
+            `estado`
 
-            WHERE
-                estado_tipo = 1
+        WHERE
+            estado_tipo = 1
 
-            ORDER BY `estado_id` DESC
+        ORDER BY `estado_id` DESC
 
         ")->result_array();
 
