@@ -103,7 +103,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <input type="password" name="password" id="password" class="lock" placeholder="Contraseña"  >
             <input type="submit" name="Sign In" value="Ingresar">
             <?php echo form_close(); ?>
-            <?php } ?>
+        <?php } ?>
             <!--<div class="forgot-top-grids">
                 <div class="forgot-grid">
                     <ul>

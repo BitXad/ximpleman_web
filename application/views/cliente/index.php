@@ -1,7 +1,7 @@
 
 <!----------------------------- script buscador --------------------------------------->
 
-<!-- <script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/funciones_cliente.js'); ?>" type="text/javascript"></script>
 <script type="text/javascript">
         $(document).ready(function () {
             (function ($) {
@@ -14,7 +14,7 @@
                 })
             }(jQuery));
         });
-</script>    -->
+</script>   
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
     #contieneimg{
@@ -227,7 +227,7 @@
 <div class="row">
     <div class="col-md-12">
         
-         <div class="row" id='loader'  style='display:none; text-align: center'>
+        <div class="row" id='loader'  style='display:none; text-align: center'>
             <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
         </div>
         <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
@@ -236,101 +236,26 @@
             
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed display" id="mitabla">
-                    <thead>
+                <thead>
+                        
                         <tr>
                             <th>#</th>
-                            <!-- <th>cliente_id</th> -->
-                            <!-- <th>estado_id</th> -->
-                            <!-- <th>tipocliente_id</th> -->
-                            <!-- <th>categoriaclie_id</th> -->
-                            <!-- <th>usuario_id</th> -->
-                            <th>Cod Cliente</th>
-                            <th>Foto</th>
                             <th>Nombre</th>
-                            <!-- <th>Cliente</th> -->
-                            <th>CI</th>
-                            <th>Direccion</th>
-                            <th>Teléfono</th>
-                            <th>Celular</th>
-                            <th>Email</th>
-                            <th>Nom Negocio</th>
-                            <th>Aniversario</th>
-                            <!-- <th>cliente_latitud</th>
-                            <th>cliente_longitud</th> -->
-                            <th>NIT</th>
-                            <th>Razón</th>
-                            <th>Departamento</th>
-                            <!-- <th>zona_id</th> -->
-                            <!-- <th>lun</th>
-                            <th>mar</th>
-                            <th>mie</th>
-                            <th>jue</th>
-                            <th>vie</th>
-                            <th>sab</th>
-                            <th>dom</th> -->
-                            <th>Orden Visita</th>
-                            <!-- <th>cliente_clave</th> -->
-                            <!-- <th>cliente_codactivacion</th> -->
-                            <th>Fecha Activacion</th>
-                            <!-- <th>estado_color</th> -->
+                            <th>Negocio</th>
+                            <!--<th>Dirección</th>-->
+                            <th class="no-print">Map</th>
+    <!--                        <th>Email</th>-->
+                            <!--<th>Aniversario</th>-->
+    <!--                        <th>Tipo</th>-->
+                            <!--<th>Categoria</th>-->
                             <th>Estado</th>
-                            <th>Descripcion</th>
-                            <th>Categoria</th>
-                            <th>Nombre Usuario</th>
-                            <th>zona</th>
-                            <th>Mapa</th>
-                            <th></th>
+                            <!--<th>Estado</th>-->
+                            <th class="no-print"></th>
                         </tr>
-                    </thead>
-                    <!-- <tbody class="buscar" id="tablaresultados">
-                    
-                    </tbody>     -->
-                    <tfoot>
-                        <tr>
-                            <th>#</th>
-                            <!-- <th>cliente_id</th> -->
-                            <!-- <th>estado_id</th> -->
-                            <!-- <th>tipocliente_id</th> -->
-                            <!-- <th>categoriaclie_id</th> -->
-                            <!-- <th>usuario_id</th> -->
-                            <th>Cod Cliente</th>
-                            <th>Foto</th>
-                            <th>Nombre</th>
-                            <!-- <th>Cliente</th> -->
-                            <th>CI</th>
-                            <th>Direccion</th>
-                            <th>Teléfono</th>
-                            <th>Celular</th>
-                            <th>Email</th>
-                            <th>Nom Negocio</th>
-                            <th>Aniversario</th>
-                            <!-- <th>cliente_latitud</th>
-                            <th>cliente_longitud</th> -->
-                            <th>NIT</th>
-                            <th>Razón</th>
-                            <th>Departamento</th>
-                            <!-- <th>zona_id</th> -->
-                            <!-- <th>lun</th>
-                            <th>mar</th>
-                            <th>mie</th>
-                            <th>jue</th>
-                            <th>vie</th>
-                            <th>sab</th>
-                            <th>dom</th> -->
-                            <th>Orden Visita</th>
-                            <!-- <th>cliente_clave</th> -->
-                            <!-- <th>cliente_codactivacion</th> -->
-                            <th>Fecha Activacion</th>
-                            <!-- <th>estado_color</th> -->
-                            <th>Estado</th>
-                            <th>Descripcion</th>
-                            <th>Categoria</th>
-                            <th>Nombre Usuario</th>
-                            <th>zona</th>
-                            <th>Mapa</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
+                        </thead>
+                        <tbody class="buscar" id="tablaresultados">
+                        
+                        </tbody>  
                 </table>
                 <?php if($err==2){ ?>
                 <script>alert("La imagen es demasiado grande ");</script>
@@ -413,7 +338,7 @@ echo '<script type="text/javascript">
 <!------------------------ Inicio DATATABLE ------------------->
 <!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
 
-<script src="<?= site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
+<!-- <script src="<?= site_url('resources/js/jquery-2.2.3.min.js');?>"></script>
 <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
 <script src="<?= site_url('resources/js/datatables.min.js') ?>"></script>
 <script src="<?= site_url('resources/js/DataTables-1.10.22/js/dataTables.bootstrap4.min.js') ?>"></script>
@@ -422,8 +347,8 @@ echo '<script type="text/javascript">
 <script src="<?= site_url('resources/js/pdfmake.min.js') ?>"></script>
 <script src="<?= site_url('resources/js/vfs_fonts.js') ?>"></script>
 <script src="<?= site_url('resources/js/buttons.html5.min.js') ?>"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script>
-<script>
+<script src="https://cdn.datatables.net/buttons/1.6.4/js/buttons.colVis.min.js"></script> -->
+<!-- <script>
     function format(d){
             html ='<table class="table" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
                         '<tr>' +
@@ -533,32 +458,32 @@ echo '<script type="text/javascript">
                             if (data.cliente_celular > 1000){
                         html += "<a href='https://wa.me/591"+data.cliente_celular+"' target='_BLANK' class='btn btn-success btn-xs' title='Enviar mensaje por whatsapp'><span class='fa fa-whatsapp'></span></a>";
                             }
-                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalDelete"+data.cliente_id+"' title='Eliminar'><span class='fa fa-trash'></span></a>"+
-                                    "<!------------------------ INICIO modal para confirmar eliminación ------------------->"+
-                                    "<div class='modal fade' id='modalDelete"+data.cliente_id+"' tabindex='-1' role='dialog' >"+
+                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modalDelete"+data.cliente_id+"' title='Eliminar'><span class='fa fa-trash'></span></a>"+-->
+                                    <!-- "---------------------- INICIO modal para confirmar eliminación -----------------"+ -->
+                                    <!-- "<div class='modal fade' id='modalDelete"+data.cliente_id+"' tabindex='-1' role='dialog' >"+
                                         "<div class='modal-dialog' role='document'>"+
                                             "<br><br>"+
                                             "<div class='modal-content'>"+
                                                 "<div class='modal-header'>"+
                                                     "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>"+
                                                 "</div>"+
-                                                "<div class='modal-body'>"+
-                                                    "<!------------------------------------------------------------------->"+
-                                                    "<h3><b> <span class='fa fa-trash'></span></b>"+
+                                                "<div class='modal-body'>"+-->
+                                                    <!-- "---------------------------------------------------------------"+ -->
+                                                    <!-- "<h3><b> <span class='fa fa-trash'></span></b>"+
                                                         "¿Desea eliminar al Cliente <b>"+data.cliente_nombre+"</b> ?"+
-                                                    "</h3>"+
-                                                    "<!------------------------------------------------------------------->"+
-                                                "</div>"+
+                                                    "</h3>"+ -->
+                                                    <!-- "---------------------------------------------------------------"+ -->
+                                                <!-- "</div>"+
                                                 "<div class='modal-footer aligncenter'>"+
                                                     "<a href='./cliente/remove/"+data.cliente_id+"' class='btn btn-success'><span class='fa fa-check'></span> Si </a>"+
                                                     "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>"+
                                                 "</div>"+
                                             "</div>"+
                                         "</div>"+
-                                    "</div>"+
-                                    "<!------------------------ FIN modal para confirmar eliminación ------------------->"+
-                                    "<!------------------------ INICIO modal para MOSTRAR imagen REAL ------------------->"+
-                                    "<div class='modal fade' id='mostrarimagen"+data.cliente_id+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+data.cliente_id+"'>"+
+                                    "</div>"+ -->
+                                    <!-- "---------------------- FIN modal para confirmar eliminación -----------------"+ -->
+                                    <!-- "---------------------- INICIO modal para MOSTRAR imagen REAL -----------------"+ -->
+                                    <!-- "<div class='modal fade' id='mostrarimagen"+data.cliente_id+"' tabindex='-1' role='dialog' aria-labelledby='mostrarimagenlabel"+data.cliente_id+"'>"+
                                         "<div class='modal-dialog' role='document'>"+
                                             "<br><br>"+
                                             "<div class='modal-content'>"+
@@ -566,20 +491,20 @@ echo '<script type="text/javascript">
                                                     "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>"+
                                                     "<font size='3'><b>"+data.cliente_nombre+"</b></font>"+
                                                 "</div>"+
-                                                "<div class='modal-body'>"+
-                                                    "<!------------------------------------------------------------------->"+
-                                                    "<img style='max-height: 100%; max-width: 100%' src='./resources/images/clientes/"+data.cliente_foto+"' />"+
-                                                    "<!------------------------------------------------------------------->"+
-                                                "</div>"+
+                                                "<div class='modal-body'>"+ -->
+                                                    <!-- "---------------------------------------------------------------"+ -->
+                                                    <!-- "<img style='max-height: 100%; max-width: 100%' src='./resources/images/clientes/"+data.cliente_foto+"' />"+ -->
+                                                    <!-- "---------------------------------------------------------------"+ -->
+                                                <!-- "</div>"+
                                             "</div>"+
                                         "</div>"+
-                                    "</div>"+
-                                    "<!------------------------ FIN modal para MOSTRAR imagen REAL ------------------->";
-                                if(tipousuario_id == 1){
+                                    "</div>"+ -->
+                                    <!-- "---------------------- FIN modal para MOSTRAR imagen REAL -----------------"; -->
+                                <!-- if(tipousuario_id == 1){
                                 // if(true){
-                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalcambiar"+data.cliente_id+"' title='Cambiar contraseña'><em class='fa fa-gear'></em></a>"+
-                                "<!------------------------ INICIO modal para cambiar PASSWORD ------------------->"+
-                                "<div class='modal fade' id='modalcambiar"+data.cliente_id+"' tabindex='-1' role='dialog' aria-labelledby='modalcambiarlabel"+data.cliente_id+"'>"+
+                            html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalcambiar"+data.cliente_id+"' title='Cambiar contraseña'><em class='fa fa-gear'></em></a>"+ -->
+                                <!-- "---------------------- INICIO modal para cambiar PASSWORD -----------------"+ -->
+                                <!-- "<div class='modal fade' id='modalcambiar"+data.cliente_id+"' tabindex='-1' role='dialog' aria-labelledby='modalcambiarlabel"+data.cliente_id+"'>"+
                                     "<div class='modal-dialog' role='document'>"+
                                         "<br><br>"+
                                         "<div class='modal-content'>"+
@@ -587,9 +512,9 @@ echo '<script type="text/javascript">
                                                 "<label>CAMBIAR CONTRASEÑA</label>"+
                                                 "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>"+
                                             "</div>"+
-                                            "<div class='modal-body' style='font-size: 10pt'>"+
-                                            "<!------------------------------------------------------------------->"+
-                                            "<div class='col-md-6'>"+
+                                            "<div class='modal-body' style='font-size: 10pt'>"+ -->
+                                            <!-- "---------------------------------------------------------------"+ -->
+                                            <!-- "<div class='col-md-6'>"+
                                                 "<label for='nuevo_pass"+data.cliente_id+"' class='control-label'>Nueva Contraseña</label>"+
                                                 "<div class='form-group'>"+
                                                     "<input type='password' name='nuevo_pass"+data.cliente_id+"' class='form-control' id='nuevo_pass"+data.cliente_id+"' />"+
@@ -602,9 +527,9 @@ echo '<script type="text/javascript">
                                                     "<input type='password' name='repita_pass"+data.cliente_id+"' class='form-control' id='repita_pass"+data.cliente_id+"' />"+
                                                     "<span class='text-danger' id='error_nuevopass1'></span>"+
                                                 "</div>"+
-                                            "</div>"+
-                                            "<!------------------------------------------------------------------->"+
-                                        "</div>"+
+                                            "</div>"+ -->
+                                            <!-- "---------------------------------------------------------------"+ -->
+                                        <!-- "</div>"+
                                         "<div class='modal-footer aligncenter'>"+
                                             "<a class='btn btn-success' onclick='cambiarcontrasenia("+data.cliente_id+", "+1+")'>"+
                                                 "<i class='fa fa-check'></i> Cambiar"+
@@ -613,9 +538,9 @@ echo '<script type="text/javascript">
                                         "</div>"+
                                     "</div>"+
                                 "</div>"+
-                            "</div>"+
-                            "<!------------------------ FIN modal para cambiar PASSWORD ------------------->";
-                            }
+                            "</div>"+ -->
+                            <!-- "---------------------- FIN modal para cambiar PASSWORD -----------------"; -->
+                            <!-- }
                                 // "</td>"+
                                 
                                 // "</tr>"+ 
@@ -706,6 +631,6 @@ echo '<script type="text/javascript">
                 alert("Ocurrio un error inesperado");
                 } 
             });
-        }
-</script>
+        } -->
+<!-- </script>  -->
 <!------------------------- Fin DATATABLE --------------------->
