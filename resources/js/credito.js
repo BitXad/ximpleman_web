@@ -266,6 +266,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                     html2 += "<th>Cuota<br>Inicial</th>";  
                     html2 += "<th>Monto<br>Crédito</th>";  
                     html2 += "<th>Interes<br>(%)</th>";  
+                    html2 += "<th>Saldo por<br>Cobrar</th>";  
                     html2 += "<th># Pagos</th>";  
                     html2 += "<th>Fecha</th>";  
                     html2 += "<th class='no-print'>Hora</th>";  
@@ -275,6 +276,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                     $("#titulos").html(html2); 
                     
                     total=0;
+                    var totalsaldoapagar = 0;
                     inciales=0;
                     for (var i = 0; i < n ; i++){
                        // var suma = Number(registros[i]["detallecomp_total"]);
@@ -314,6 +316,15 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         html += "<td style='text-align: right; "+color+"'>"+formato_numerico(Number(registros[i]['credito_cuotainicial']))+"</td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>"+formato_numerico(Number(registros[i]['credito_monto']))+"</font></b></td>";
                         html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['credito_interesmonto']))+"("+registros[i]['credito_interesproc']+")</td>";
+                        html += "<td style='text-align: right; background:silver;'><font size='3'><b>";
+                        if(registros[i]['saldo'] >0){
+                            totalsaldoapagar += Number(registros[i]["saldo"]);
+                            html += formato_numerico(Number(registros[i]['saldo']));
+                        }else{
+                            totalsaldoapagar += Number(registros[i]["credito_monto"]);
+                            html += formato_numerico(Number(registros[i]['credito_monto']));
+                        }
+                        html += "</font></b></td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
                         html += "<td style='text-align: center' class='no-print'>"+registros[i]['credito_hora']+"</td>";
@@ -345,7 +356,8 @@ function tablacuentas(filtro) //Cuentas por cobrar
                 }
                    html += "<tr><td colspan=4 align=right><font size='3' face='Arial'><b>TOTAL</b></font></td>"; 
                    html += "<td colspan=4 align=right><font size='3' face='Arial'><b>"+formato_numerico(Number(total))+"</b></font></td>"; 
-                   html += "<td colspan=7 align=right></td><tr>"; 
+                   html += "<td colspan=2 align=right><font size='3' face='Arial'><b>"+formato_numerico(Number(totalsaldoapagar))+"</b></font></td>"; 
+                   html += "<td colspan=5 align=right></td><tr>"; 
                    $("#tablacuentas").html(html);
                    //tablatotales(total_detalle,descuento,subtotal);
                    

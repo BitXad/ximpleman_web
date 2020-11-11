@@ -159,7 +159,7 @@ class Credito_model extends CI_Model
                 c.*, ve.venta_id as ventita, ve.cliente_id, e.*, ve.orden_id, ve.venta_total,
                 p.cliente_id as clienteid, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , 
                 r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, 
-                f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id
+                f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id, cs.saldo
 
             FROM
                 credito c
@@ -172,6 +172,7 @@ class Credito_model extends CI_Model
             LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
             LEFT JOIN usuario us on s.usuario_id = us.usuario_id 
             LEFT JOIN factura f on c.credito_id = f.credito_id
+            LEFT JOIN conssaldocredito cs on c.credito_id = cs.credito_id
 
 
 
