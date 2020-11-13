@@ -189,6 +189,12 @@ class Detalle_serv extends CI_Controller{
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $masdescripcion = $this->input->post('textcatproducto')." ".$this->input->post('textmarcadescripcion')." ".$this->input->post('detalleserv_descripcion');
                 $facuenta = date('Y-m-d H:i:s');
+                $esreclamo = $this->input->post('detalleserv_reclamo');
+                if(isset($esreclamo)){
+                    $esreclamo = "si";
+                }else{
+                    $esreclamo = "no";
+                }
                 $params = array(
                     'estado_id' => $estado_id,
                     'responsable_id' => $this->input->post('responsable_id'),
@@ -200,7 +206,7 @@ class Detalle_serv extends CI_Controller{
                     'tiempouso_id' => $this->input->post('tiempouso_id'),
                     'procedencia_id' => $this->input->post('procedencia_id'),
                     'detalleserv_descripcion' => $masdescripcion,
-                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                    'detalleserv_reclamo' => $esreclamo,
                     'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                     'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                     'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
@@ -314,6 +320,12 @@ class Detalle_serv extends CI_Controller{
                 $inputotal = $this->input->post('detalleserv_total'); 
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
+                $esreclamo = $this->input->post('detalleserv_reclamo');
+                if(isset($esreclamo)){
+                    $esreclamo = "si";
+                }else{
+                    $esreclamo = "no";
+                }
                 $params = array(
                                     'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
@@ -326,7 +338,7 @@ class Detalle_serv extends CI_Controller{
                                     'procedencia_id' => $this->input->post('procedencia_id'),
                                     'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
                                     'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_reclamo' => $esreclamo,
                                     'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                                     'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                                     'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
@@ -556,6 +568,12 @@ class Detalle_serv extends CI_Controller{
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
+                $esreclamo = $this->input->post('detalleserv_reclamo');
+                if(isset($esreclamo)){
+                    $esreclamo = "si";
+                }else{
+                    $esreclamo = "no";
+                }
                 $params = array(
                                     'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
@@ -568,7 +586,7 @@ class Detalle_serv extends CI_Controller{
                                     'procedencia_id' => $this->input->post('procedencia_id'),
                                     //'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
                                     'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_reclamo' => $esreclamo,
                                     'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                                     'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                                     'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
@@ -914,6 +932,12 @@ class Detalle_serv extends CI_Controller{
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
+                $esreclamo = $this->input->post('detalleserv_reclamo');
+                if(isset($esreclamo)){
+                    $esreclamo = "si";
+                }else{
+                    $esreclamo = "no";
+                }
                 $params = array(
                                     'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
@@ -926,7 +950,7 @@ class Detalle_serv extends CI_Controller{
                                     'procedencia_id' => $this->input->post('procedencia_id'),
                                     //'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
                                     'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_reclamo' => $esreclamo,
                                     'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                                     'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                                     'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
@@ -939,7 +963,7 @@ class Detalle_serv extends CI_Controller{
 //                                    'detalleserv_horaterminado' => $this->input->post('detalleserv_horaterminado'),
                                     'detalleserv_fechaentrega' => $this->input->post('detalleserv_fechaentrega'),
                                     'detalleserv_horaentrega' => $hora_entrega,
-                                    'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
+                                    //'detalleserv_insumo' => $this->input->post('detalleserv_insumo'),
                 );
 
                 $this->Detalle_serv_model->update_detalle_serv($detalleserv_id,$params);
@@ -1181,8 +1205,12 @@ class Detalle_serv extends CI_Controller{
             }
              redirect('servicio/serview/'.$servicio_id);
             }elseif($estado_id == 28){
+                $fecha_proceso = date('Y-m-d');
+                $hora_proceso  = date('H:i:s');
                     $detparams = array(
-                                    'estado_id' => $estado_id,
+                        'estado_id' => $estado_id,
+                        'detalleserv_fechaproceso' => $fecha_proceso,
+                        'detalleserv_horaproceso'  => $hora_proceso,
                     );
                     $this->Detalle_serv_model->update_detalle_serv($detalleserv_id, $detparams);
 
@@ -2027,6 +2055,12 @@ class Detalle_serv extends CI_Controller{
                 $inputotal = $this->input->post('detalleserv_total'); 
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
+                $esreclamo = $this->input->post('detalleserv_reclamo');
+                if(isset($esreclamo)){
+                    $esreclamo = "si";
+                }else{
+                    $esreclamo = "no";
+                }
                 $params = array(
                                     'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
@@ -2039,7 +2073,7 @@ class Detalle_serv extends CI_Controller{
                                     'procedencia_id' => $this->input->post('procedencia_id'),
                                     'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
                                     'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_reclamo' => $esreclamo,
                                     'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                                     'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                                     'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
@@ -2133,6 +2167,12 @@ class Detalle_serv extends CI_Controller{
                 $inputotal = $this->input->post('detalleserv_total'); 
                 $inputacuenta = $this->input->post('detalleserv_acuenta');
                 $inputsaldo = $this->input->post('detalleserv_saldo');
+                $esreclamo = $this->input->post('detalleserv_reclamo');
+                if(isset($esreclamo)){
+                    $esreclamo = "si";
+                }else{
+                    $esreclamo = "no";
+                }
                 $params = array(
                                     'estado_id' => $estado_id,
                                     'responsable_id' => $this->input->post('responsable_id'),
@@ -2145,7 +2185,7 @@ class Detalle_serv extends CI_Controller{
                                     'procedencia_id' => $this->input->post('procedencia_id'),
                                     'detalleserv_codigo' => $this->input->post('detalleserv_codigo'),
                                     'detalleserv_descripcion' => $this->input->post('detalleserv_descripcion'),
-                                    'detalleserv_reclamo' => $this->input->post('detalleserv_reclamo'),
+                                    'detalleserv_reclamo' => $esreclamo,
                                     'detalleserv_falla' => $this->input->post('detalleserv_falla'),
                                     'detalleserv_diagnostico' => $this->input->post('detalleserv_diagnostico'),
                                     'detalleserv_solucion' => $this->input->post('detalleserv_solucion'),
@@ -2322,7 +2362,7 @@ class Detalle_serv extends CI_Controller{
                 $inputsaldo = $this->input->post('detalleserv_saldo');
                 $catserv_id = $this->input->post('catserv_id');
                 $subcatserv_id = $this->input->post('subcatserv_id');
-                $sereclamo = $this->input->post('detalleserv_reclamo');
+                $esreclamo = $this->input->post('detalleserv_reclamo');
                 if(isset($esreclamo)){
                     $esreclamo = "si";
                 }else{

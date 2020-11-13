@@ -274,7 +274,7 @@ function mostrarAlert(){
 						<label for="responsable_id" class="control-label"><span class="text-danger">*</span>Responsable</label>
 						<div class="form-group">
                                                     <select name="responsable_id" class="form-control" required>
-								<!--<option value="">- RESPONSABLE -</option>-->
+								<option value="">- RESPONSABLE -</option>
 								<?php 
 								foreach($all_responsable as $usuario)
 								{

@@ -184,8 +184,8 @@ class Servicio extends CI_Controller{
             $this->load->model('Usuario_model');
 	    $data['usuario'] = $this->Usuario_model->get_usuario($data['servicio']['usuario_id']);
             
-	    //$data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
-	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_activo();
+	    $data['all_responsable'] = $this->Usuario_model->get_all_usuario_tecnicoresponsable_ok();
+	    //$data['all_responsable'] = $this->Usuario_model->get_all_usuario_activo();
             
             $this->load->model('Categoria_servicio_model');
 	    $data['all_categoria_servicio'] = $this->Categoria_servicio_model->get_all_categoria_servicio_id1();
