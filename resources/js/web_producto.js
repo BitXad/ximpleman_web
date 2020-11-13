@@ -809,22 +809,78 @@ function sesion(){
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'website/sesioncliente/';
  
-      $.ajax({url: controlador,
-           type:"POST",
-           data:{login:login,clave:clave,ipe:ipe},
-           success:function(respuesta){ 
-               location.reload();
-               
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{login:login,clave:clave,ipe:ipe},
+        success:function(respuesta){ 
+            location.reload();
+            
     },
-        error:function(respuesta){
-          
-       alert("Datos incorrectos, vuelva a intentar");
+    error:function(respuesta){
+        
+    alert("Datos incorrectos, vuelva a intentar");
    }
 
-});
-
+    });
 
 }
+
+// -----------------------------FACEBOOK-------------------------------------------------
+function sesionFacebook(name,id){ 
+    var id = id;
+    var name = name.toUpperCase(name);
+    var ipe = document.getElementById('miip').value; 
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'website/sesionclienteFacebook/'; 
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{name:name,id:id,ipe:ipe},
+        success:function(respuesta){ 
+            location.reload();
+        },
+        error:function(respuesta){
+            registrarclienteFacebook(name,id);
+            checkLoginState();
+        }
+    });
+}
+
+function registrarclienteFacebook(name,id){
+
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'website/registrarclienteonline';
+    var cliente_id = 0;
+    var nit = 0; 
+    var razon = 'SIN NOMBRE';
+    var telefono = 0; 
+    var tipocliente_id = 1;
+    
+    var cliente_nombre = name.toUpperCase(name);
+    var cliente_ci = 0;
+    var cliente_nombrenegocio = '-';
+    var cliente_codigo = Math.floor(Math.random() * 999999999);
+    
+    var cliente_direccion = '-';
+    var cliente_departamento = '-';
+    var cliente_celular = "";
+    var zona_id = 1;
+    var cliente_email = "";
+    var cliente_clave = "";
+    var cliente_repeticion = "";
+    var id_facebook =  id;
+
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
+                cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
+                cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
+                cliente_email:cliente_email, cliente_clave:cliente_clave, id_facebook:id_facebook},
+        success:function(respuesta){  
+            alert("Por favor, termina tu registro en edicion del perfil :)");
+        },
+        error: function(respuesta){ alert("A ocurrido un error, consulte con el encargado del sistema"); }});
+}
+// ------------------------------------------------------------------------------
 
 
 
@@ -846,22 +902,21 @@ function venta_online(){
         var base_url = document.getElementById('base_url').value;
         var controlador = base_url+'website/venta_online/';
  
-      $.ajax({url: controlador,
-           type:"POST",
-           data:{cliente:cliente,nit:nit,razon:razon,telefono:telefono,direccion:direccion,forma:forma,tipo_servicio:tipo_servicio,
-               subtotal:subtotal,descuento:descuento,total:total},
-           success:function(respuesta){
-           alert("Compra realizada con exito");
-           location.reload();
-         
-    },
-        error:function(respuesta){
-          
-       alert("OCURRIO UN ERROR, vuelva a intentar");
-   }
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{cliente:cliente,nit:nit,razon:razon,telefono:telefono,direccion:direccion,forma:forma,tipo_servicio:tipo_servicio,
+                subtotal:subtotal,descuento:descuento,total:total},
+            success:function(respuesta){
+            alert("Compra realizada con exito");
+            // location.reload();
+            
+            },
+                error:function(respuesta){
+                
+            alert("OCURRIO UN ERROR, vuelva a intentar");
+        }
 
-});
-      
+        });
     
 }
 
@@ -873,7 +928,6 @@ function cerrarsesion(){
         setCookie('codigo_usuario', cliente_id, 30);
         top.location = base_url;
         
-     
 }
 
 function buscarseguimiento(){
@@ -1066,6 +1120,8 @@ function registrarcliente()
     
     var cliente_repeticion = "";
     cliente_repeticion = document.getElementById('cliente_repeticion').value;
+var id_facebook =  "0";
+    // var login_facebook = false;
     
 //    alert(nit+","+razon+","+telefono+","+ cliente_nombre+","+ tipocliente_id+","+cliente_nombre+","+ cliente_ci+","+
 //    cliente_nombrenegocio+","+ cliente_codigo+","+cliente_direccion+","+ cliente_departamento+","+ cliente_celular+","+ zona_id+","+cliente_email+","+cliente_clave);
@@ -1098,13 +1154,13 @@ function registrarcliente()
                                     html += "</center>";
 
                                     $("#registrarcli").html(html);
-                                    
+                                    console.log("despues del registro correo");
                                     $.ajax({url: controlador,
                                             type:"POST",
                                             data:{nit:nit,razon:razon,telefono:telefono,cliente_id:cliente_id, cliente_nombre:cliente_nombre, tipocliente_id:tipocliente_id,
                                                         cliente_nombre:cliente_nombre, cliente_ci:cliente_ci,cliente_nombrenegocio:cliente_nombrenegocio, cliente_codigo:cliente_codigo,
                                                         cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
-                                                        cliente_email:cliente_email, cliente_clave:cliente_clave},
+                                                        cliente_email:cliente_email, cliente_clave:cliente_clave, id_facebook:id_facebook},
                                             success:function(respuesta){  
                                                     
                                                     html = "";
@@ -1184,6 +1240,7 @@ function registrarcliente()
     }
     
 }
+
 
 function email_valido( email ) 
 {

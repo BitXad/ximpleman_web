@@ -14,7 +14,7 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 <meta name="keywords" content="Ximpleman, Sistema de facturación, Sistema de ventas, facturacíon, Password SRL, Password Ingenieria Hardware & Software" />
 <meta property="og:image" content="<?php echo site_url('resources/images/icono.png');?>" >
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
-        function hideURLbar(){ window.scrollTo(0,1); }} </script>
+        function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- //for-mobile-apps -->
 <?php $raiz = base_url('resources/web/'); ?>
 
@@ -72,7 +72,10 @@ function mostrar() {
 </head>
     
 <body onload="buscar_por_categoria(<?php echo $parametro[0]['parametro_mostrarcategoria']; ?>)">
+<div id="fb-root"></div>
+<script src="<?= $raiz;?>js/facebookLogin.js"></script>
 
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v8.0&appId=711005146491995&autoLogAppEvents=1" nonce="zwap7FDk"></script>
 <!-- header -->
 <!------------------ PRIMERA SECCION -------------------------------------->
     <div class="agileits_header">
@@ -101,81 +104,81 @@ function mostrar() {
                 </div>
                     <!-- --------------- INICIO Modal para ver el avance de servicios --------------- -->
                     <div class="modal fade" id="seguimientoservicio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                      <div class="modal-dialog" role="document">
-                            <br><br>
-                            <div class="modal-content text-left">
-                          <div class="modal-header">
-                              <label>Seguimiento:</label> Soporte Técnico
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                          </div>
-                            <?php
-                            echo form_open('seguimiento/index');
-                            ?>
-                          <div class="modal-body">
-                           <!-- --------------------------------------------------------------- -->
-                           <div class="row">
-                                <div class="col-md-6">
-                                    <label for="usuario" class="control-label"><span class="text-danger">*</span>Usuario</label>
-                                    <div class="form-group">
-                                        <input type="text" name="usuario" id="usuario" class="form-control" required  autocomplete="off" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <label for="contrasen" class="control-label"><span class="text-danger">*</span>Contrase&ntilde;a</label>
-                                    <div class="form-group">
-                                        <input type="password" name="contrasen" id="contrasen" class="form-control" required autocomplete="off" />
-                                    </div>
-                                </div>
+                        <div class="modal-dialog" role="document">
+                                <br><br>
+                                <div class="modal-content text-left">
+                            <div class="modal-header">
+                                <label>Seguimiento:</label> Soporte Técnico
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                             </div>
-                           <!------------------------------------------------------------------->
-                          </div>
-                                <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="fa fa-binoculars"></i> Seguimiento
-                                    </button>
+                                <?php
+                                echo form_open('seguimiento/index');
+                                ?>
+                            <div class="modal-body">
+                            <!-- --------------------------------------------------------------- -->
+                            <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="usuario" class="control-label"><span class="text-danger">*</span>Usuario</label>
+                                        <div class="form-group">
+                                            <input type="text" name="usuario" id="usuario" class="form-control" required  autocomplete="off" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="contrasen" class="control-label"><span class="text-danger">*</span>Contrase&ntilde;a</label>
+                                        <div class="form-group">
+                                            <input type="password" name="contrasen" id="contrasen" class="form-control" required autocomplete="off" />
+                                        </div>
+                                    </div>
                                 </div>
-                            <?php echo form_close(); ?>
+                            <!------------------------------------------------------------------->
+                            </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fa fa-binoculars"></i> Seguimiento
+                                        </button>
+                                    </div>
+                                <?php echo form_close(); ?>
+                            </div>
                         </div>
-                      </div>
                     </div>
                     <!-- --------------- F I N Modal para ver el avance de servicios --------------- -->
-                     <!-- --------------- INICIO Modal para ver el avance de OT --------------- -->
+                    <!-- --------------- INICIO Modal para ver el avance de OT --------------- -->
                     <div class="modal fade" id="seguimientoOT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                      <div class="modal-dialog" role="document">
-                            <br><br>
-                            <div class="modal-content text-left">
-                          <div class="modal-header">
-                              <label>Seguimiento:</label> Ordenes de trabajo
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
-                          </div>
-                           
-                          <div class="modal-body">
-                           <!-- --------------------------------------------------------------- -->
-                           <div class="row">
-                            <div class="col-md-6">
-                                <label for="orden" class="control-label">Orden</label>
-                                <div class="form-group">
-                                    <input type="text" name="orden" id="orden" class="form-control" required  autocomplete="off" />
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="transaccion" class="control-label">Código</label>
-                                <div class="form-group">
-                                    <input type="text" name="transaccion" id="transaccion" class="form-control" required autocomplete="off" />
-                                </div>
-                            </div>
+                        <div class="modal-dialog" role="document">
+                                <br><br>
+                                <div class="modal-content text-left">
+                            <div class="modal-header">
+                                <label>Seguimiento:</label> Ordenes de trabajo
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
                             </div>
                             
-                           <!------------------------------------------------------------------->
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" onclick="buscarseguimiento()" class="btn btn-success">
-                                    <i class="fa fa-check "></i> Consultar
-                            </button>
-                          </div>
-                            
+                            <div class="modal-body">
+                            <!-- --------------------------------------------------------------- -->
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="orden" class="control-label">Orden</label>
+                                    <div class="form-group">
+                                        <input type="text" name="orden" id="orden" class="form-control" required  autocomplete="off" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="transaccion" class="control-label">Código</label>
+                                    <div class="form-group">
+                                        <input type="text" name="transaccion" id="transaccion" class="form-control" required autocomplete="off" />
+                                    </div>
+                                </div>
+                                </div>
+                                
+                            <!------------------------------------------------------------------->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" onclick="buscarseguimiento()" class="btn btn-success">
+                                        <i class="fa fa-check "></i> Consultar
+                                </button>
+                            </div>
+                                
+                            </div>
                         </div>
-                      </div>
                     </div>
                     <!-- --------------- F I N Modal para ver el avance de OT --------------- -->
                     
@@ -186,7 +189,7 @@ function mostrar() {
                         <button class="w3view-cart" type="button" class="btn btn-primary" onclick="tablacarrito()"><i class="fa fa-cart-arrow-down" aria-hidden="true" title="Mi Carrito"></i></button>
                         
                         <?php if(isset($_COOKIE["cliente_id"])) { ?>
-                                <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesión"></i></button>
+                            <button class="w3view-cart" type="button" class="btn btn-primary" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion(),FB.logout()"><i class="fa fa-sign-out" aria-hidden="true" title="Cerrar Sesión"></i></button>
                         <?php }  ?>
 
                     </form>
@@ -508,7 +511,7 @@ function mostrar() {
                                                 
                                                     <?php 
                                                         foreach($categorias as $cat){?>    
-                                                             <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
+                                                            <option value="<?php echo $cat['categoria_id']; ?>"><?php echo $cat['categoria_nombre']; ?></option>
                                                     
                                                     <?php } ?>  
                                                 </select>
@@ -1244,16 +1247,16 @@ function mostrar() {
       <div class="modal-body">
         <div class="col-md-12"></div>
         <table class="table table-hover">
-            
-            
             <tr>
                 <td>    
                     <div class="col-md-12" style="padding:0; border-bottom: silver;" >
                         <div class="btn-group" role="group" aria-label="login">
-                                                            
-                        <button class="btn btn-primary"  style="width: 120px;" onclick="inisesion()" id="boton_sesion"><fa class="fa fa-key"></fa> Iniciar Sesion</button>
-                        <button class="btn btn-default" style="width: 120px;" onclick="registrarcli()" id="boton_registro"><fa class="fa fa-user-plus"></fa> Registrate</button>
-                    </div>
+                            <button class="btn btn-primary"  style="width: 120px;" onclick="inisesion()" id="boton_sesion"><fa class="fa fa-key"></fa> Iniciar Sesion</button>
+                            <button class="btn btn-default" style="width: 120px;" onclick="registrarcli()" id="boton_registro"><fa class="fa fa-user-plus"></fa> Registrate</button>
+                            <!-- Boton "continuar con facebook" -->
+                            <div onlogin="checkLoginState()" class="fb-login-button" data-size="medium" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="false" data-width=""></div>
+                            <!-- Boton "continuar con facebook" -->
+                        </div>
                     </div>
                 </td>    
             </tr>
@@ -1597,5 +1600,9 @@ function mostrar() {
         });
 </script> 
 <!-- //main slider-banner --> 
+
+<!-- facebook login -->
+<script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
+<!-- facebook login -->
     </body>
 </html>
