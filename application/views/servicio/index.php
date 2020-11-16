@@ -7,6 +7,7 @@
 <input type="hidden" name="parametro_segservicio" id="parametro_segservicio" value="<?php echo $all_parametro[0]['parametro_segservicio']; ?>" />
 <input type="hidden" name="parametro_serviciofact" id="parametro_serviciofact" value="<?php echo $all_parametro[0]['parametro_serviciofact']; ?>" />
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($all_usuario);  ?>' />
+<input type="hidden" name="permisomodificar" id="permisomodificar" value='<?php echo $rol[182-1]['rolusuario_asignado']; ?>' />
 <input type="hidden" name="a" id="a" value='<?php echo $a; ?>' />
 <input type="hidden" name="b" id="b" value='<?php echo $b; ?>' />
 

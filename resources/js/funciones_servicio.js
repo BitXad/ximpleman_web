@@ -841,6 +841,7 @@ function fechadeservicio(elfiltro, busquedade){
     var base_url       = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var unico = document.getElementById('b').value;
+    var permisomodificar = document.getElementById('permisomodificar').value;
     /*var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
     var cantus = all_usuario.length;*/
     var tipoimpresora  = document.getElementById('tipoimpresora').value;
@@ -924,11 +925,22 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "<td><span class='text-bold' style='font-size: 12pt;'>"+cliente_nombre;
                         html += "<br>"+nomtelef+cliente_telef+guion+cliente_celu+" "+reswhatsapp+"</td>";
                         html += "<td class='text-center'>";
-                        //if(registros[i]["estado_id"] == 5){
-                        html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3"+res_unico+"' class='btn btn-info btn-xs' title='Añadir, modificar servicio creado'>"+registros[i]["servicio_id"]+"</a>";
-                        if(unico != "s"){
-                            html += "<br><a href='"+base_url+"servicio/index/"+registros[i]["servicio_id"]+"/s' target='_blank' class='btn btn-primary btn-xs' title='Trabajar con este servicio'><span class='fa fa-connectdevelop'></span></a>";
+                        if(registros[i]["estado_id"] == 7){
+                            if(tipousuario_id == 1 || permisomodificar == 1){
+                                html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3"+res_unico+"' class='btn btn-info btn-xs' title='Añadir, modificar servicio creado'>"+registros[i]["servicio_id"]+"</a>";    
+                                if(unico != "s"){
+                                    html += "<br><a href='"+base_url+"servicio/index/"+registros[i]["servicio_id"]+"/s' target='_blank' class='btn btn-primary btn-xs' title='Trabajar con este servicio'><span class='fa fa-connectdevelop'></span></a>";
+                                }
+                            }else{
+                                html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
+                            }
+                        }else{
+                            html += "<a href='"+base_url+"servicio/serviciocreado/"+registros[i]["servicio_id"]+"/3"+res_unico+"' class='btn btn-info btn-xs' title='Añadir, modificar servicio creado'>"+registros[i]["servicio_id"]+"</a>";
+                            if(unico != "s"){
+                                html += "<br><a href='"+base_url+"servicio/index/"+registros[i]["servicio_id"]+"/s' target='_blank' class='btn btn-primary btn-xs' title='Trabajar con este servicio'><span class='fa fa-connectdevelop'></span></a>";
+                            }
                         }
+                        
                        /* }else{
                             html += "<div class='btn'>"+registros[i]["servicio_id"]+"</div>";
                         }*/
@@ -1103,8 +1115,13 @@ function fechadeservicio(elfiltro, busquedade){
                         html += "</div>";
                         html += "</div>";
                         html += "<!------------------------ FIN modal para confirmar Eliminación ------------------->";
-                        html += "<a data-toggle='modal' data-target='#modalbotones"+i+"' class='btn btn-facebook btn-xs' title='Opciones del servicio'><span class='fa fa-eye'></span></a>"; 
-                        
+                        if(registros[i]["estado_id"] == 7){
+                            if(tipousuario_id == 1 || permisomodificar == 1){
+                                html += "<a data-toggle='modal' data-target='#modalbotones"+i+"' class='btn btn-facebook btn-xs' title='Opciones del servicio'><span class='fa fa-eye'></span></a>";
+                            }
+                        }else{
+                            html += "<a data-toggle='modal' data-target='#modalbotones"+i+"' class='btn btn-facebook btn-xs' title='Opciones del servicio'><span class='fa fa-eye'></span></a>";
+                        }
                             html += "<!------------------------ INICIO modal para registrar ENTREGA DE TODO EL SERVICIO ------------------->";
                             html += "<div class='modal' id='modalregistraresteservicio"+registros[i]['servicio_id']+"' tabindex='-1' role='dialog' aria-labelledby='modalinformetecnicoLabel"+registros[i]['servicio_id']+"'>";
                             html += "<div class='modal-dialog' role='document'>";
@@ -1681,6 +1698,7 @@ function mostrardetalleserv(serv_id){
     var base_url = document.getElementById('base_url').value;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
     var unico = document.getElementById('b').value;
+    var permisomodificar = document.getElementById('permisomodificar').value;
     var parametro_segservicio = document.getElementById('parametro_segservicio').value;
     var controlador = base_url+'servicio/getname_detalleservicio/'+serv_id;
     $.ajax({url: controlador,
@@ -1698,7 +1716,13 @@ function mostrardetalleserv(serv_id){
                         //res += "<span style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px; width: 80% !important' class='btn btn-xs' title='Servicio "+registros[i]['estado_descripcion']+"' >";
                         res += "<tr style='background-color: #"+registros[i]['estado_color']+"; padding: 0px; border: 0px;'>";
                         res += "<td style='width: 70%; text-align: left; border: 0px; padding: 0px'>";
-                        res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+res_unico+"' target='_blank' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        if(registros[i]["detallestado_id"] == 7){
+                            if(tipousuario_id == 1 || permisomodificar == 1){
+                                res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+res_unico+"' target='_blank' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                            }
+                        }else{
+                            res += "<a href='"+base_url+"detalle_serv/modificareldetalle/"+serv_id+"/"+registros[i]['detalleserv_id']+res_unico+"' target='_blank' class='btn btn-info btn-xs' title='Ver, modificar detalle'><span class='fa fa-pencil'></span></a>";
+                        }
                         var detalle_descripcion = " ";
                         if(registros[i]['detalleserv_descripcion'] != null){
                             detalle_descripcion = registros[i]['detalleserv_descripcion'].substring(0,35);
@@ -1756,10 +1780,10 @@ function mostrardetalleserv(serv_id){
                         }
                         //if(registros[i]['detallestado_id'] != 7){
                             if(parametro_segservicio == 1){
-                                res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+res_unico+"' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
+                                res += "<a href='"+base_url+"imagen_producto/catalogodet/"+registros[i]["detalleserv_id"]+res_unico+"' target='_blank' class='btn btn-soundcloud btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                             }
                         //}
-                        if(registros[i]['detalleserv_acuenta'] == 0){
+                        if(registros[i]['detalleserv_acuenta'] == 0 && registros[i]["detallestado_id"] != 7){
                             res += "<a style='width: 25px' class='btn btn-success btn-xs' data-toggle='modal' data-target='#modalregistraracuenta"+registros[i]['detalleserv_id']+"' title='Registrar pago a cuenta'><span class='fa fa-dollar'></span></a>";
                             
                             res += "<!------------------------ INICIO modal para registrar PAGO A CUENTA ------------------->";

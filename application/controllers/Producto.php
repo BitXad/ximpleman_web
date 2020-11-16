@@ -53,6 +53,9 @@ class Producto extends CI_Controller{
         $this->load->model('Parametro_model');
         $data['parametro'] = $this->Parametro_model->get_parametro(1);
         
+        $this->load->model('Clasificador_model');
+        $data['all_clasificador'] = $this->Clasificador_model->get_all_clasificadores();
+        
         $data['page_title'] = "Producto";
         $data['_view'] = 'producto/index';
         $this->load->view('layouts/main',$data);
@@ -1002,5 +1005,63 @@ class Producto extends CI_Controller{
             }
         }
     }
-    
+    /*
+    * buscar clasificadores de un producto
+    */
+    function buscar_clasificador()
+    {
+        if($this->acceso(102)) {
+            if ($this->input->is_ajax_request()) {
+                $producto_id = $this->input->post('producto_id');
+                $datos = $this->Producto_model->get_busqueda_clasificadores($producto_id);
+                echo json_encode($datos);
+            }
+            else{
+                show_404();
+            }
+        }
+    }
+    /*
+    * buscar clasificadores de un producto
+    */
+    function quitar_clasificador()
+    {
+        if($this->acceso(102)) {
+            if ($this->input->is_ajax_request()) {
+                $clasificadorprod_id = $this->input->post('clasificadorprod_id');
+                $this->Producto_model->delete_clasificador_producto($clasificadorprod_id);
+                echo json_encode("ok");
+            }
+            else{
+                show_404();
+            }
+        }
+    }
+    /*
+    * buscar clasificadores de un producto
+    */
+    function agregar_clasificador()
+    {
+        if($this->acceso(102)) {
+            if ($this->input->is_ajax_request()) {
+                $clasificador_id = $this->input->post('clasificador_id');
+                $miproducto_id   = $this->input->post('miproducto_id');
+                $resultado = $this->Producto_model->get_clasificador_producto($clasificador_id, $miproducto_id);
+                if(isset($resultado)){
+                    echo json_encode("no");
+                }else{
+                    $params = array(
+                        'clasificador_id' => $clasificador_id,
+                        'producto_id' => $miproducto_id,
+                    );
+                    //$this->load->model('Clasificador_model');
+                    $this->Producto_model->add_clasificador_producto($params);
+                    echo json_encode("ok");
+                }
+            }
+            else{
+                show_404();
+            }
+        }
+    }
 }

@@ -69,16 +69,23 @@ class Credito_model extends CI_Model
     {
         $deuda = $this->db->query("
             SELECT
-                c.*, p.*, co.*, e.*, u.*
+                c.*, p.*, co.*, e.*, u.*, cs.saldo
 
             FROM
-                credito c, proveedor p, compra co, estado e, usuario u
-
+                credito c
+            left join compra co on c.compra_id = co.compra_id
+            left join  proveedor p on co.proveedor_id = p.proveedor_id
+            left join estado e on c.estado_id = e.estado_id
+            left join usuario u on co.usuario_id = u.usuario_id
+            left join conssaldocredito cs on c.credito_id = cs.credito_id
+            where c.`compra_id` >0
+            /*, proveedor p, compra co, estado e, usuario u,
+                conssaldocredito cs
             WHERE
                 c.compra_id = co.compra_id
                 and p.proveedor_id = co.proveedor_id
                 and c.estado_id = e.estado_id
-                and co.usuario_id = u.usuario_id
+                and co.usuario_id = u.usuario_id*/
                 ".$filtro."
                 ".$condicion." 
 
@@ -159,7 +166,7 @@ class Credito_model extends CI_Model
                 c.*, ve.venta_id as ventita, ve.cliente_id, e.*, ve.orden_id, ve.venta_total,
                 p.cliente_id as clienteid, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , 
                 r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, 
-                f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id
+                f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id, cs.saldo
 
             FROM
                 credito c
@@ -172,6 +179,7 @@ class Credito_model extends CI_Model
             LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
             LEFT JOIN usuario us on s.usuario_id = us.usuario_id 
             LEFT JOIN factura f on c.credito_id = f.credito_id
+            LEFT JOIN conssaldocredito cs on c.credito_id = cs.credito_id
 
 
 

@@ -135,7 +135,7 @@
                         <?php } ?>
                         
                         <?php
-                        if($rolusuario[12-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[179-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('venta_online');?>"><i class="fa fa-internet-explorer"></i> Ventas Online</a>
@@ -173,7 +173,7 @@
                         </li>
                         <?php
                         }
-                        if($rolusuario[12-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[180-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('cliente/reporte_distribuidor');?>"><i class="fa fa-truck"></i> <span> Entregas</span></a>
@@ -222,7 +222,7 @@
                         ?>
                         
                         <?php
-                        if($rolusuario[12-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[181-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('pedido_diario/index');?>"><i class="fa fa-calendar"></i> Pedidos Diarios</a>

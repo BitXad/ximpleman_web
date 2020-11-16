@@ -786,7 +786,7 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
             order by v.venta_fecha desc, v.venta_hora desc )
       UNION
       (select 
-            concat(c.cuota_fecha, ' ', c.cuota_hora) as fecha, concat('Cuota credito N°: ', c.credito_id) as detalle,
+            concat(c.cuota_fecha, ' ', c.cuota_hora) as fecha, concat('Cuota credito Nro.: ', c.credito_id) as detalle,
             c.cuota_cancelado as ingreso, 0 as egreso,
             c.cuota_interes as utilidad, 3 as tipo
       from

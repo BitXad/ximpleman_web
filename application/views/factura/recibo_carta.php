@@ -141,6 +141,15 @@ border-bottom : 1px solid #aaa;
                     <b>SEÑOR(ES): </b><?php echo $venta[0]['cliente_razon'].""; ?><br>
                     <b>DIRECCIÓN: </b><?php echo $venta[0]['cliente_direccion'].""; ?><br>
                     <b>ZONA: </b><?php echo $venta[0]['zona_nombre'].""; ?>
+                    <?php
+                    if(($venta[0]['cliente_telefono'] != null || $venta[0]['cliente_telefono'] != "") || ($venta[0]['cliente_celular'] != null || $venta[0]['cliente_celular'] !="")){
+                    $guion = "";
+                    if($venta[0]['cliente_telefono'] >0 && $venta[0]['cliente_celular'] >0){
+                        $guion = " - ";
+                    }
+                    ?>
+                    <br><b>TELEFONOS: </b><?php echo $venta[0]['cliente_telefono'].$guion.$venta[0]['cliente_celular'].""; ?>
+                    <?php } ?>
                 <br>
                 </small>
                 _______________________________________________
@@ -238,12 +247,15 @@ border-bottom : 1px solid #aaa;
             
         </td>          
     </tr>
-<!--
-    <tr >
+    <?php
+    if($venta[0]['venta_glosa'] != null || $venta[0]['venta_glosa'] != ""){
+    ?>
+    <tr>
         <td colspan="3">
-
+            <b>NOTA: </b><?php echo $venta[0]['venta_glosa']; ?>
          </td>
-    </tr>    -->
+    </tr>
+    <?php } ?>
     
 </table>
 

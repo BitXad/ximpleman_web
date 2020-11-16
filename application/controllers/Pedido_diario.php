@@ -34,7 +34,7 @@ class Pedido_diario extends CI_Controller{
     function index()
     {
         
-        if($this->acceso(12)){
+        if($this->acceso(180)){
         //**************** inicio contenido ***************   
             $data['pedido_diario'] = $this->Pedido_diario_model->get_all_pedido_diario();
 
@@ -51,7 +51,7 @@ class Pedido_diario extends CI_Controller{
     function add()
     {   
                 
-        if($this->acceso(12)){
+        if($this->acceso(180)){
         //**************** inicio contenido ***************   
         $usuario_id = $this->session_data['usuario_id'];
         
@@ -88,7 +88,7 @@ class Pedido_diario extends CI_Controller{
     function pedido_nuevo()
     {   
         
-        if($this->acceso(12)){
+        if($this->acceso(180)){
         //**************** inicio contenido ***************   
         $usuario_id = $this->session_data['usuario_id'];
             
@@ -126,7 +126,7 @@ class Pedido_diario extends CI_Controller{
     function edit($pedido_id)
     {   
         
-        if($this->acceso(12)){
+        if($this->acceso(180)){
         //**************** inicio contenido ***************   
         
         
@@ -174,7 +174,7 @@ class Pedido_diario extends CI_Controller{
     function modificar_pedido($pedido_id)
     {   
         
-        if($this->acceso(12)){
+        if($this->acceso(180)){
         //**************** inicio contenido ***************   
         
         
@@ -223,7 +223,7 @@ class Pedido_diario extends CI_Controller{
     function remove($pedido_id)
     {
         
-        if($this->acceso(12)){
+        if($this->acceso(180)){
         //**************** inicio contenido ***************   
         
         $pedido_diario = $this->Pedido_diario_model->get_pedido_diario($pedido_id);
@@ -247,7 +247,7 @@ class Pedido_diario extends CI_Controller{
      */
     function buscar_pedidos()
     {
-        if($this->acceso(12)){
+        if($this->acceso(180)){
         //**************** inicio contenido ***************   
            
         $select_pedido = 0;

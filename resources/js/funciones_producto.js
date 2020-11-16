@@ -222,6 +222,7 @@ function tablaresultadosproducto(limite){
                         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Información'><span class='fa fa-pencil'></span></a>";
                         html += "<a href='"+base_url+"imagen_producto/catalogoprod/"+registros[i]["miprod_id"]+"' class='btn btn-success btn-xs' title='Catálogo de Imagenes' ><span class='fa fa-image'></span></a>";
                         html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='Eliminar'><span class='fa fa-trash'></span></a>";
+                        html += "<a class='btn btn-facebook btn-xs' onclick='buscarclasificador("+registros[i]["miprod_id"]+")' title='Ver Clasificador'><span class='fa fa-list-ol'></span></a>";
                         html += "<a href='"+base_url+"producto/productoasignado/"+registros[i]["miprod_id"]+"' class='btn btn-soundcloud btn-xs' title='Ver si esta asignado a subcategorias' target='_blank' ><span class='fa fa-list'></span></a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
@@ -631,4 +632,110 @@ function busqueda_inicial() {
 
     }
     $("#tablaresultados").html(html);
+}
+
+//Tabla resultados de la busqueda en el index de producto
+function buscarclasificador(producto_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/buscar_clasificador/';
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
+                   /*
+                   const myString = JSON.stringify(registros);
+                   $("#resproducto").val(myString);
+                    $("#encontrados").html("Registros Encontrados: "+n+" ");
+                    */
+                    html = "";
+                    for (var i = 0; i < n ; i++){
+                       
+                       html += "<tr>";
+                        
+                        html += "<td>"+(i+1)+"</td>";
+                        html += "<td>"+registros[i]["clasificador_nombre"]+"</td>";
+                        html += "<td>";
+                        html += "<a class='btn btn-danger btn-xs' onclick='quitarclasificador("+producto_id+", "+registros[i]["clasificadorprod_id"]+")' title='Quitar Clasificador'><span class='fa fa-trash'></span></a>";
+                        html += "</td>";
+                        
+                        html += "</tr>";
+
+                   }
+                   $("#clasificadoresultados").html(html);
+                   $("#miproducto_id").val(producto_id);
+                   $("#modalclasificador").modal("show");
+                   //alert("ok");
+            }else{
+                alert("Este producto no tiene Clasificadores");
+            }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#clasificadoresultados").html(html);
+        }
+        
+    });   
+
+}
+//Quita un clasificador y vuelve a mostrarel resultado de clasificador en una tabla
+function quitarclasificador(producto_id, clasificadorprod_id){
+    //$("#modalclasificador").modal("hide");
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto/quitar_clasificador/';
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{clasificadorprod_id:clasificadorprod_id},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    buscarclasificador(producto_id);
+            }else{
+                alert("Este producto no tiene Clasificadores");
+            }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#clasificadoresultados").html(html);
+        }
+        
+    });   
+
+}
+//Agregar un clasificador y vuelve a mostrarel resultado de clasificador en una tabla
+function agregar_clasificador(){
+    var base_url = document.getElementById('base_url').value;
+    var miproducto_id = document.getElementById('miproducto_id').value;
+    var clasificador_id = $("#clasificador_id option:selected").val(); 
+    var controlador = base_url+'producto/agregar_clasificador/';
+    
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{miproducto_id:miproducto_id, clasificador_id:clasificador_id},
+           success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    if(registros == "ok"){
+                        buscarclasificador(miproducto_id);
+                    }else{
+                        alert("El clasificador seleccionado ya se encuentra agregado, por favor elija otro clasificador");
+                    }
+                }else{
+                    alert("Este producto no tiene Clasificadores");
+                }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#clasificadoresultados").html(html);
+        }
+        
+    });   
+
 }

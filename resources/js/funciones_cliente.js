@@ -1,6 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-       tablaresultadoscliente(1);
+    tablaresultadoscliente(1);
 }
 
 function imprimir_cliente(){
@@ -24,15 +24,15 @@ function formatofecha_hora_ampm(string){
     var am_pm = mifh.getHours() >= 12 ? "p.m." : "a.m.";
     var hours = mifh.getHours() > 12 ? mifh.getHours() - 12 : mifh.getHours();
     if(string != null){
-       info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
-   }
+        info = aumentar_cero(mifh.getDate())+"/"+aumentar_cero((mifh.getMonth()+1))+"/"+mifh.getFullYear()+" "+aumentar_cero(hours)+":"+aumentar_cero(mifh.getMinutes())+":"+aumentar_cero(mifh.getSeconds())+" "+am_pm;
+    }
     return info;
 }
 /*
  * Funcion que buscara productos en la tabla productos
  */
 function buscarcliente(e) {
-  tecla = (document.all) ? e.keyCode : e.which;
+    tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){
         tablaresultadoscliente(2);
     }
@@ -69,42 +69,42 @@ function tablaresultadoscliente(limite)
         var prevendedortext   = "";
         var estadotext   = "";
         if(categoria == 0){
-           categoriaestado = "";
+            categoriaestado = "";
         }else{
-           categoriaestado += " and c.categoriaclie_id = cc.categoriaclie_id and c.categoriaclie_id = "+categoria+" ";
-           categoriatext = $('select[name="categoriaclie_id"] option:selected').text();
-           categoriatext = "Categoria: "+categoriatext;
+            categoriaestado += " and c.categoriaclie_id = cc.categoriaclie_id and c.categoriaclie_id = "+categoria+" ";
+            categoriatext = $('select[name="categoriaclie_id"] option:selected').text();
+            categoriatext = "Categoria: "+categoriatext;
         }
         if(zona == 0){
-           categoriaestado += "";
+            categoriaestado += "";
         }else{
-           categoriaestado += " and c.zona_id = z.zona_id and c.zona_id = "+zona+" ";
-           zonatext = $('select[name="zona_id"] option:selected').text();
-           zonatext = "Zona: "+zonatext;
+            categoriaestado += " and c.zona_id = z.zona_id and c.zona_id = "+zona+" ";
+            zonatext = $('select[name="zona_id"] option:selected').text();
+            zonatext = "Zona: "+zonatext;
         }
         if(tipo == 0){
-           categoriaestado += "";
+            categoriaestado += "";
         }else{
-           categoriaestado += " and c.tipocliente_id = tc.tipocliente_id and c.tipocliente_id = "+tipo+" ";
-           tipotext = $('select[name="tipo_id"] option:selected').text();
-           tipotext = "Tipo: "+tipotext;
+            categoriaestado += " and c.tipocliente_id = tc.tipocliente_id and c.tipocliente_id = "+tipo+" ";
+            tipotext = $('select[name="tipo_id"] option:selected').text();
+            tipotext = "Tipo: "+tipotext;
         }
         if(prevendedor == 0){
-           categoriaestado += "";
+            categoriaestado += "";
         }else if(prevendedor == -1){
-           categoriaestado += " and c.usuario_id = 0 or c.usuario_id = null"; 
-           prevendedortext = "Clientes asignados a: Sin Usuarios";
+            categoriaestado += " and c.usuario_id = 0 or c.usuario_id = null"; 
+            prevendedortext = "Clientes asignados a: Sin Usuarios";
         }else{
-           categoriaestado += " and c.usuario_id = u.usuario_id and c.usuario_id = "+prevendedor+" ";
-           prevendedortext = $('select[name="prevendedor_id"] option:selected').text();
-           prevendedortext = "Clientes asignados a: "+prevendedortext;
+            categoriaestado += " and c.usuario_id = u.usuario_id and c.usuario_id = "+prevendedor+" ";
+            prevendedortext = $('select[name="prevendedor_id"] option:selected').text();
+            prevendedortext = "Clientes asignados a: "+prevendedortext;
         }
         if(estado == 0){
-           categoriaestado += "";
+            categoriaestado += "";
         }else{
-           categoriaestado += " and c.estado_id = "+estado+" ";
-           estadotext = $('select[name="estado_id"] option:selected').text();
-           estadotext = "Estado: "+estadotext;
+            categoriaestado += " and c.estado_id = "+estado+" ";
+            estadotext = $('select[name="estado_id"] option:selected').text();
+            estadotext = "Estado: "+estadotext;
         }
         
         $("#busquedacategoria").html(categoriatext+" "+zonatext+" "+tipotext+" "+prevendedortext+" "+estadotext);
@@ -116,21 +116,20 @@ function tablaresultadoscliente(limite)
     
 
     $.ajax({url: controlador,
-           type:"POST",
-           data:{parametro:parametro, categoriaestado:categoriaestado},
-           success:function(respuesta){
-               
-                                     
+            type:"POST",
+            data:{parametro:parametro, categoriaestado:categoriaestado},
+            success:function(respuesta){
+        
                 //$("#encontrados").val("- 0 -");
-               var registros =  JSON.parse(respuesta);
+                var registros =  JSON.parse(respuesta);
                 
-               if (registros != null){
-                   
-                   var formaimagen = document.getElementById('formaimagen').value;
-                   /*var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
-                   var categoriacliezona = JSON.parse(document.getElementById('lacategoria_clientezona').value);
-                   var usuariocli = JSON.parse(document.getElementById('elusuario').value);*/
-                   
+                if (registros != null){
+                
+                    var formaimagen = document.getElementById('formaimagen').value;
+                    /*var categoriacli = JSON.parse(document.getElementById('lacategoria_cliente').value);
+                    var categoriacliezona = JSON.parse(document.getElementById('lacategoria_clientezona').value);
+                    var usuariocli = JSON.parse(document.getElementById('elusuario').value);*/
+
                     var n = registros.length; //tamaño del arreglo de la consulta
                     $("#encontrados").html("Registros Encontrados: "+n+" ");
                     html = "";
