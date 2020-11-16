@@ -361,6 +361,26 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
 
     }
     
+    
+    function get_reportemovimientodia()
+    {
+//
+//        if($usuario_id == 0)
+//        {
+//            $cadusuario1 = "";
+//        }
+//        else
+//        {
+//            $cadusuario1 = " and usuario_id = ".$usuario_id." ";
+//        }
+
+        $sql = "select * from consreportediario";
+
+        $ingresos = $this->db->query($sql)->result_array();
+        return $ingresos;
+
+    }
+    
     function get_reptotaling_efectivo($fecha1, $fecha2, $usuario_id)
     {
         if($usuario_id == 0){

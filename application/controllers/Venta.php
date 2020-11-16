@@ -624,11 +624,14 @@ class Venta extends CI_Controller{
             $codigo = $this->input->post('codigo');
             $producto = $this->Inventario_model->get_inventario_codigo($codigo);
             
-            if (sizeof($producto)>0){
+            if (sizeof($producto)>0){ //si encontro el producto por el codigo de producto
+                
                 echo json_encode($producto);
+           
             }
             else
             {
+            
                 $producto = $this->Inventario_model->get_inventario_codigo_factor($codigo);                
                 echo json_encode($producto);
                 

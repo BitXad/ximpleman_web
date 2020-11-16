@@ -83,35 +83,84 @@ order by i.ingreso_fecha
 
 union
 
-(select 
+(
+select 
 2 as orden,
 v.venta_fecha as fecha,
 v.venta_hora as hora,
 v.venta_id as recibo,  
 if(f.factura_numero>=0,f.factura_numero,0) as factura,
-concat('venta, ',t.tipotrans_nombre,'/',p.forma_nombre,': ',c.cliente_nombre) as detalle,
-if(r.credito_cuotainicial>=0,r.credito_cuotainicial,v.venta_total) as ingresos,
+concat('venta, ',t.tipotrans_nombre,'/',p.forma_nombre,': ',v.cliente_nombre) as detalle,
+v.venta_total as ingresos,
 0 as egresos,
-u.utilidad,
-round(u.precio,2) as precio,
+v.utilidad,
+round(v.precio,2) as precio,
 v.tipotrans_id,
 t.tipotrans_nombre as transaccion,
 v.forma_id,
 p.forma_nombre as forma,
 v.usuario_id,
 if(f.factura_id>0,f.factura_id,0) as factura_id,
-if (round(v.venta_total,2)=round(u.precio,2),0,1) as error
+if (round(v.venta_total,2)=round(v.precio,2),0,1) as error
 
-from venta v
+from consutilidadventas v
 
 left join factura f on f.venta_id = v.venta_id
-left join consutilidadventas u on u.venta_id = v.venta_id
 left join tipo_transaccion t on t.tipotrans_id = v.tipotrans_id
-left join cliente c on c.cliente_id = v.cliente_id
 left join forma_pago p on p.forma_id = v.forma_id
-left join credito r on r.venta_id = v.venta_id
+
+where v.tipotrans_id<>2
 
 order by v.venta_fecha, v.venta_hora
+)
+
+union 
+
+(
+
+select 
+t.orden, t.fecha, t.hora, t.recibo, 
+if(f.factura_numero>=0,f.factura_numero,0) as factura,
+t.detalle, t.ingresos, t.egresos, t.utilidad, t.precio, t.tipotrans_id,t.transaccion,
+t.forma_id, t.forma, t.usuario_id,
+if(f.factura_id>0,f.factura_id,0) as factura_id,
+error
+from
+ 
+(select 
+v.venta_id,
+2 as orden,
+v.venta_fecha as fecha,
+v.venta_hora as hora,
+v.venta_id as recibo,  
+concat('venta, ',t.tipotrans_nombre,'/ ',p.forma_nombre,': ',v.cliente_nombre) as detalle,
+if(r.credito_cuotainicial>=0,r.credito_cuotainicial,v.venta_total) as ingresos,
+0 as egresos,
+v.utilidad,
+round(v.precio,2) as precio,
+v.tipotrans_id,
+t.tipotrans_nombre as transaccion,
+v.forma_id,
+p.forma_nombre as forma,
+v.usuario_id,
+
+if (round(v.venta_total,2)=round(v.precio,2),0,1) as error
+
+from consutilidadventas v, credito r, tipo_transaccion t, forma_pago p
+
+
+where 
+v.venta_id = r.venta_id and
+v.tipotrans_id = t.tipotrans_id and
+v.forma_id = p.forma_id and
+v.tipotrans_id = 2 
+
+
+order by v.venta_fecha, v.venta_hora) as t
+
+left join factura f on f.venta_id = t.venta_id
+
+
 )
 
 union

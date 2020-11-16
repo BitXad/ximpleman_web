@@ -182,7 +182,7 @@ window.onkeydown = compruebaTecla;
 <link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
-<div id="selector" hidden="">
+<div id="selector" >
     <!--  Aqui inserta in input temporal que sirve para almacenar el factor de conversion del producto -->
     
 </div>

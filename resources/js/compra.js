@@ -205,6 +205,9 @@ function tabladetallecompra(){
                         if(modificar_detalle == 1){
                             html += "<button type='button' onclick='editadetalle("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='btn btn-success btn-xs'><span class='fa fa-save'></span></button>";
                         }
+                        
+                        html += "<button type='button' onclick='mostrar_modalclasificador("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+")' class='btn btn-info btn-xs'><span class='fa fa-list'></span></button>";
+                        
                         html += "</td>";
                         ////////////////////////////////fin fotmu//////////////////////
                         //html += "<td><form action='"+base_url+"detalle_compra/quitar/"+registros[i]["detallecomp_id"]+"/"+compra_id+"'  method='POST' class='form'>";
@@ -240,6 +243,162 @@ function tabladetallecompra(){
         
     });
 }
+
+function mostrar_modalclasificador(detallecomp_id, producto_id){    
+
+    mostrar_clasificador(detallecomp_id, producto_id);
+    $("#boton_modal_promocion").click(); 
+    
+}
+
+function mostrar_clasificador(detallecomp_id, producto_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var compra_id = document.getElementById('compra_id').value;
+
+    var controlador = base_url+"compra/clasificador_producto";
+
+    $("#input_detallecompid").val(detallecomp_id);
+    $("#input_productoid").val(producto_id);
+    
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{detallecomp_id:detallecomp_id, producto_id:producto_id},
+           success:function(respuesta){     
+               r = JSON.parse(respuesta);
+               var html = "";
+               //alert(r.length);
+               
+                html +="<select id='select_clasificador'>";
+               
+               
+               for (var i=0; i<r.length; i++){
+                   html +="<option value="+r[i]["clasificador_id"]+">";
+                    html +=r[i]["clasificador_nombre"];
+                   html +="</option>";                   
+               }
+                html +="</select>";
+               
+               
+               $("#div_clasificador").html(html);
+
+           },
+           error: function(respuesta){
+               
+           }
+       });
+                   
+    
+    controlador = base_url+"compra/clasificador_detalle";
+    
+    //mostrar la tabla de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{detallecomp_id:detallecomp_id, producto_id:producto_id},
+           success:function(respuesta){     
+               r = JSON.parse(respuesta);
+               var html = "";
+               var cant_total = 0;
+               //alert(r.length);
+                                             
+               for (var i=0; i<r.length; i++){
+                   html +="<tr>";
+                   html +="<td>"+(i+1)+"</td>" ;
+                   html +="<td>"+r[i]["clasificador_nombre"]+"</td>" ;
+                   html +="<td>"+r[i]["detallecomp_costo"]+"</td>" ;
+                   
+                   cantidad = Number(r[i]["detalleclas_cantidad"]);
+                   cant_total += cantidad;
+                   
+                   html +="<td>"+cantidad.toFixed(2)+"</td>" ;
+                   total = r[i]["detalleclas_cantidad"] * r[i]["detallecomp_costo"];
+                   
+                   html +="<td>"+total.toFixed(2)+"</td>" ;
+                   
+                   html +="<td> <button class='btn btn-xs btn-danger' onclick='eliminar_clasificador("+r[i]["detalleclas_id"]+")'><fa class='fa fa-trash'></fa> </button></td>" ;
+                   
+                   html +="</td>";                   
+               }
+                   html +="<tr>";
+                   html +="<th></th>";
+                   html +="<th></th>";
+                   html +="<th></th>";
+                   html +="<th>"+cant_total+"</th>";
+                   html +="<th></th>";
+                   html +="<th></th>";
+                   
+                   html +="</tr>";                   
+               
+               
+               $("#tablaclasificador").html(html);
+               
+               
+           },
+           error: function(respuesta){
+               
+           }
+       });
+       
+                
+//       $("#boton_modal_promocion").click(); 
+               
+}
+
+function registrar_clasificador(){
+    
+    var base_url = document.getElementById('base_url').value;
+    
+    var cantidad = document.getElementById('input_cantidad').value;
+    var clasificador_id = document.getElementById('select_clasificador').value;
+    var detallecomp_id = document.getElementById('input_detallecompid').value;
+    var producto_id = document.getElementById('input_productoid').value;
+    var controlador = base_url+"compra/registrar_clasificador";
+
+
+    //alert(cantidad+" * "+clasificador_id+" * "+detallecomp_id+" * "+producto_id);
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{detallecomp_id:detallecomp_id, cantidad:cantidad, clasificador_id:clasificador_id, producto_id:producto_id},
+           success:function(respuesta){     
+               
+               mostrar_clasificador(detallecomp_id, producto_id)
+
+           },
+           error: function(respuesta){
+               
+           }
+       });
+    
+}
+
+function eliminar_clasificador(detalleclas_id){
+    
+    var base_url = document.getElementById('base_url').value;    
+    var controlador = base_url+"compra/eliminar_clasificador";
+    var detallecomp_id = document.getElementById('input_detallecompid').value;
+    var producto_id = document.getElementById('input_productoid').value;
+
+
+    //alert(cantidad+" * "+clasificador_id+" * "+detallecomp_id+" * "+producto_id);
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{detalleclas_id:detalleclas_id},
+           success:function(respuesta){
+
+                mostrar_clasificador(detallecomp_id, producto_id)               
+
+           },
+           error: function(respuesta){
+               
+           }
+       });
+    
+}
+
+
 function numberFormat(numero){
         // Variable que contendra el resultado final
         var resultado = "";

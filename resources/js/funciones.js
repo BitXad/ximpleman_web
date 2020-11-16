@@ -629,10 +629,19 @@ function buscarporcodigojs()
                             if (res[0].producto_codigofactor4 == codigo) factor = res[0].producto_factor4;
                             
                            
-                            html = "<input type='text' value='"+factor+"' id='select_factor"+res[0].producto_id+"' title='select_factor"+res[0].producto_id+"'>"
-                             $("#selector").html(html);
+                            //html = "<input type='text' value='"+factor+"' id='select_factor"+res[0].producto_id+"' title='select_factor"+res[0].producto_id+"'>"
                             
-                            ingresorapidojs(1,res[0]);
+                            html = "";
+                            html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+res[0]["producto_id"]+"' name='select_factor"+res[0]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(res[0])+")'>";
+                            html += "       <option value='precio_normal'>";
+                            precio_unidad = res[0]["producto_precio"];
+                            html += "           "+res[0]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
+                            html += "       </option>";
+
+                            $("#selector").html(html);
+                            
+                            ingresorapidojs(1,res[0]); 
+                            //ingresorapidojs(factor,res[0]);
                          }
                          else{    
                              alert('No existe la cantidad requerida en inventario...!');

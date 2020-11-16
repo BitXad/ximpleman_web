@@ -392,6 +392,13 @@ class Compra_model extends CI_Model
         
     }
 
+    function consultar($sql)
+    {
+        $compra = $this->db->query($sql)->result_array();
+        return $compra;
+        
+    }
+
      function getcredito($sql)
     {
         $credito = $this->db->query($sql,array('credito_id'))->row_array();
