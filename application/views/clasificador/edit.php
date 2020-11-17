@@ -8,10 +8,17 @@
             <div class="box-body">
                 <div class="row clearfix">
                     <div class="col-md-6">
-                        <label for="tiposerv_descripcion" class="control-label"><span class="text-danger">*</span>Descripci&oacute;n</label>
+                        <label for="clasificador_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="tiposerv_descripcion" value="<?php echo ($this->input->post('tiposerv_descripcion') ? $this->input->post('tiposerv_descripcion') : $clasificador['tiposerv_descripcion']); ?>" class="form-control" id="tiposerv_descripcion" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                            <span class="text-danger"><?php echo form_error('tiposerv_descripcion');?></span>
+                            <input type="text" name="clasificador_nombre" value="<?php echo ($this->input->post('clasificador_nombre') ? $this->input->post('clasificador_nombre') : $clasificador['clasificador_nombre']); ?>" class="form-control" id="clasificador_nombre" required autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <span class="text-danger"><?php echo form_error('clasificador_nombre');?></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="clasificador_codigo" class="control-label">C&oacute;digo</label>
+                        <div class="form-group">
+                            <input type="text" name="clasificador_codigo" value="<?php echo ($this->input->post('clasificador_codigo') ? $this->input->post('clasificador_codigo') : $clasificador['clasificador_codigo']); ?>" class="form-control" id="clasificador_codigo" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <span class="text-danger"><?php echo form_error('clasificador_codigo');?></span>
                         </div>
                     </div>
                 </div>
@@ -20,7 +27,7 @@
             	<button type="submit" class="btn btn-success">
                     <i class="fa fa-check"></i> Guardar
 		</button>
-                <a href="<?php echo site_url('clasificador/index'); ?>" class="btn btn-danger">
+                <a href="<?php echo site_url('clasificador'); ?>" class="btn btn-danger">
                     <i class="fa fa-times"></i> Cancelar</a>
             </div>				
             <?php echo form_close(); ?>
