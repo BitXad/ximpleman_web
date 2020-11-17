@@ -1824,14 +1824,48 @@ $inventario = "update inventario set inventario.existencia=inventario.existencia
         $clasificador_id = $this->input->post('clasificador_id');
     
         
-        $sql = "insert into detalle_clasificador_aux(`detallecomp_id`,`producto_id`,`clasificador_id`,`detalleclas_cantidad`)
-                value(".$detallecomp_id.",".
-                $producto_id.",".
-                $clasificador_id.",".
-                $cantidad.")";
+        $sql = "select * from detalle_clasificador_aux
+                where producto_id = ".$producto_id." and
+                detallecomp_id = ".$detallecomp_id." and
+                clasificador_id = ".$clasificador_id;
+        $res = $this->Compra_model->consultar($sql);
         
-        $this->Compra_model->ejecutar($sql);
-        echo json_encode(true);  
+        if (sizeof($res)>0){
+            //$result = 0;
+            //            echo '[{"detallecomp_id":"'.$result.'"}]';
+            echo json_encode(false);
+        }
+        else{
+            
+//            
+//            $sql = "select if(sum(d.detalleclas_cantidad)>0,sum(d.detalleclas_cantidad),0)+".$cantidad." as cantidad, t.detallecomp_cantidad
+//                    from detalle_clasificador_aux d, detalle_compra_aux t
+//                    where 
+//                    d.detallecomp_id = t.detallecomp_id and
+//                    d.producto_id = ".$producto_id." and
+//                    d.detallecomp_id = ".$detallecomp_id."
+//                    group by d.detallecomp_id";
+//            
+//            $res = $this->Compra_model->consultar($sql);
+//            // revisar cantidad de productos de ingreso por clasificadores
+//            if ($res[0]["cantidad"] < $res[0]["detallecomp_cantidad"]){
+           
+                $sql = "insert into detalle_clasificador_aux(`detallecomp_id`,`producto_id`,`clasificador_id`,`detalleclas_cantidad`)
+                        value(".$detallecomp_id.",".
+                        $producto_id.",".
+                        $clasificador_id.",".
+                        $cantidad.")";
+
+                $this->Compra_model->ejecutar($sql);
+                echo json_encode(true);
+//            }
+//            else{
+//                echo '[{"maximo":"0"}]';
+//            }
+            
+            
+        }
+        
         
     }
     

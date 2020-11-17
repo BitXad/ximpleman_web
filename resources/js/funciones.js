@@ -308,6 +308,9 @@ html += "  <button class='btn btn-primary btn-xs' title='Registrar/modificar pre
 
 html += "  <a href='#' data-toggle='modal' onclick='iniciar_preferencia("+registros[i]["detalleven_id"]+")' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
 
+// Clasificador
+html += "  <button class='btn btn-facebook btn-xs' title='Clasificador de productos' type='button' data-toggle='modal' data-target='#modalclasificador' aria-expanded='false' aria-controls='modalclasificador' onclick='mostrar_clasificador("+registros[i]["producto_id"]+","+registros[i]["detalleven_id"]+")'><i class='fa fa-list'></i></button>";
+
 
 html += "<div class='row'>";
 html += "  <div class='col'>";
@@ -3733,4 +3736,70 @@ function imprimirtodo(){
         window.open(base_url+'factura/imprimir_recibo/'+registros[i]["venta_id"], '_blank');
         //alert($('#imprimir'+venta_id).attr('id'));
         }
+}
+
+//
+//function mostrar_modalclasificador(detallecomp_id, producto_id){    
+//
+//    mostrar_clasificador(detallecomp_id, producto_id);
+//    $("#boton_modal_promocion").click(); 
+//    
+//}
+
+function mostrar_clasificador(producto_id,detalleven_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/clasificador_producto";
+
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id},
+           success:function(respuesta){     
+               r = JSON.parse(respuesta);
+               var html = "";
+               
+                html +="<input type='hidden' value='"+detalleven_id+"' id='input_detalleven'>";
+                html +="<select id='select_clasificador'>";
+                for (var i=0; i<r.length; i++){
+                    html +="<option value="+r[i]["clasificador_id"]+">";
+                    html +=r[i]["clasificador_nombre"];
+                    html +="</option>";                   
+                }
+                html +="</select>";               
+               
+               $("#div_clasificador").html(html);
+
+           },
+           error: function(respuesta){
+               
+           }
+       });               
+}
+
+function registrar_clasificador(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/registrar_clasificador";
+    var clasificador_id = document.getElementById('select_clasificador').value;
+    var detalleven_id = document.getElementById('input_detalleven').value;
+
+
+    
+//    $("#input_detallecompid").val(detallecomp_id);
+//    $("#input_productoid").val(producto_id);
+//    
+//    
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{clasificador_id:clasificador_id, detalleven_id: detalleven_id},
+           success:function(respuesta){     
+               
+
+           },
+           error: function(respuesta){
+               
+           }
+       });              
 }
