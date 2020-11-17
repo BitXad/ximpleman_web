@@ -440,9 +440,15 @@
                 <li>
                     <a href="#"><i class="fa fa-braille"></i> <span>Categorías</span></a>
                     <ul class="treeview-menu">
-                         
-                        <?php
+                         <?php
                         
+                        if($rolusuario[117-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('Clasificador');?>"><i class="glyphicon glyphicon-save"></i>Clasificador</a>
+                        </li>
+                        <?php
+                        }
                         if($rolusuario[117-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>

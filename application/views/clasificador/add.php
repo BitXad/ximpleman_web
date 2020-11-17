@@ -10,14 +10,14 @@
                     <div class="col-md-6">
                         <label for="clasificador_nombre" class="control-label"><span class="text-danger">*</span>Nombre</label>
                         <div class="form-group">
-                            <input type="text" name="clasificador_nombre" value="<?php echo $this->input->post('clasificador_nombre'); ?>" class="form-control" id="clasificador_nombre" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="clasificador_nombre" value="<?php echo $this->input->post('clasificador_nombre'); ?>" class="form-control" id="clasificador_nombre" required autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             <span class="text-danger"><?php echo form_error('clasificador_nombre');?></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="clasificador_codigo" class="control-label">Código</label>
                         <div class="form-group">
-                            <input type="text" name="clasificador_codigo" value="<?php echo $this->input->post('clasificador_codigo'); ?>" class="form-control" id="clasificador_codigo" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                            <input type="text" name="clasificador_codigo" value="<?php echo $this->input->post('clasificador_codigo'); ?>" class="form-control" id="clasificador_codigo" autocomplete="off" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             <span class="text-danger"><?php echo form_error('clasificador_codigo');?></span>
                         </div>
                     </div>
