@@ -1513,7 +1513,7 @@ $("#texto2").change(function(){
                                                         CANT.
                                                     </td>
                                                     <td>
-                                                        <input value="1" size="3" id="input_cantidad">
+                                                        <input value="1" size="3" id="input_cantidad" class="input-xs">
                                                         <input type="hidden" size="3" id="input_detallecompid">
                                                         <input type="hidden" size="3" id="input_productoid">
                                                     </td>
@@ -1540,25 +1540,15 @@ $("#texto2").change(function(){
                                                 <tbody id="tablaclasificador">
                                                     <!---------- aqui van los resultados--> 
                                                 </tbody>
-
+                                                <input type='hidden' value='0' id='input_cantidadmax'>
+                                                <input type='hidden' value='0' id='input_cantidadtotal'>
                                             </table>
-                                            
+                                                                                                
+                                                    <button class="btn btn-danger btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cerrar
+                                                    </button>
                                         </div> 
-                                            
-<!--                                        <table class="table-responsive" id="mitabla">
-                                            <tr>
-                                                <th style="padding: 0">#</th>
-                                                <th style="padding: 0">DESCRIPCIÓN</th>
-                                                <th style="padding: 0">CODIGO</th>
-                                                <th style="padding: 0">CANTIDAD</th>
-                                                <th style="padding: 0">PRECIO</th>
-                                                <th style="padding: 0"></th>                                                
-                                            </tr>
-                                            <tbody id="tablaresultados">
-                                                -------- aqui van los resultados 
-                                            </tbody>
-                                            
-                                        </table>-->
+
                                         </center>
                             </div>
 

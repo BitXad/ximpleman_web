@@ -255,11 +255,16 @@ function mostrar_clasificador(detallecomp_id, producto_id){
     
     var base_url = document.getElementById('base_url').value;
     var compra_id = document.getElementById('compra_id').value;
+    var cantidadmax = document.getElementById('detallecomp_cantidad'+detallecomp_id).value;
 
     var controlador = base_url+"compra/clasificador_producto";
 
     $("#input_detallecompid").val(detallecomp_id);
     $("#input_productoid").val(producto_id);
+    
+    
+    $("#input_cantidadmax").val(cantidadmax);
+    
     
     //para llenar el select de clasificador de productos
      $.ajax({url: controlador,
@@ -320,7 +325,9 @@ function mostrar_clasificador(detallecomp_id, producto_id){
                    
                    html +="</td>";                   
                }
+               
                    html +="<tr>";
+                   //html +="<th><input type='hidden' value='"+r[0]["detallecomp_cantidad"]+"' id='input_cantidadmax'><input type='hidden' value='"+cant_total+"' id='input_cantidadtotal'></th>";
                    html +="<th></th>";
                    html +="<th></th>";
                    html +="<th></th>";
@@ -330,7 +337,9 @@ function mostrar_clasificador(detallecomp_id, producto_id){
                    
                    html +="</tr>";                   
                
-               
+             
+                $("#input_cantidadtotal").val(cant_total);
+      
                $("#tablaclasificador").html(html);
                
                
@@ -350,26 +359,46 @@ function registrar_clasificador(){
     var base_url = document.getElementById('base_url').value;
     
     var cantidad = document.getElementById('input_cantidad').value;
+    var cantidad_max = document.getElementById('input_cantidadmax').value;
+    var cantidad_total = document.getElementById('input_cantidadtotal').value;
     var clasificador_id = document.getElementById('select_clasificador').value;
     var detallecomp_id = document.getElementById('input_detallecompid').value;
     var producto_id = document.getElementById('input_productoid').value;
     var controlador = base_url+"compra/registrar_clasificador";
 
+    var total = Number(cantidad) + Number(cantidad_total) ;
+    
+    alert(total+" - "+cantidad_max);
 
+    if (total <= cantidad_max){
     //alert(cantidad+" * "+clasificador_id+" * "+detallecomp_id+" * "+producto_id);
-    //para llenar el select de clasificador de productos
+    //para llenar el select de clasificador de productos    
      $.ajax({url: controlador,
            type:"POST",
            data:{detallecomp_id:detallecomp_id, cantidad:cantidad, clasificador_id:clasificador_id, producto_id:producto_id},
            success:function(respuesta){     
-               
-               mostrar_clasificador(detallecomp_id, producto_id)
+
+            res = JSON.parse(respuesta);
+            
+              if (res == false){
+                    alert("ADVERTENCIA: El elemento ya se encuentra registrado..!");                       
+              } 
+              else{ 
+       
+                        mostrar_clasificador(detallecomp_id, producto_id);
+
+               } 
 
            },
            error: function(respuesta){
                
            }
        });
+       
+    }
+    else{
+        alert("ADVERTENCIA: La cantidad que excede el limite especificado...!");
+    }
     
 }
 
@@ -443,7 +472,7 @@ function tablatotales(total_detalle,descuento,subtotal)
      var globaly = Number(document.getElementById('compra_descglobal').value);
      var totalfinal = Number(total_detalle-globaly);
     $('#compra_subtotal').val(subtotal.toFixed(2));
-   $('#compra_descuento').val(descuento.toFixed(2));
+$('#compra_descuento').val(descuento.toFixed(2));
    $('#compra_total').val(parcial.toFixed(2));
     $("#compra_totalfinal").val(totalfinal.toFixed(2));
     //$("#venta_glogal").val(globaly);
