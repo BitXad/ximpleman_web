@@ -554,6 +554,14 @@
                         } ?>
                         
                         <?php
+                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('clasificador/inventario');?>"><i class="fa fa-cubes"></i>Clasificador Inventario</a>
+                        </li>
+                        <?php
+                        } ?>
+                        <?php
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
