@@ -368,7 +368,7 @@ function registrar_clasificador(){
 
     var total = Number(cantidad) + Number(cantidad_total) ;
     
-    alert(total+" - "+cantidad_max);
+    //alert(total+" - "+cantidad_max);
 
     if (total <= cantidad_max){
     //alert(cantidad+" * "+clasificador_id+" * "+detallecomp_id+" * "+producto_id);
