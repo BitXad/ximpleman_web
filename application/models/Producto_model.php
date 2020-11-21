@@ -484,4 +484,69 @@ class Producto_model extends CI_Model
 
         return $producto;
     }
+    
+    /* devuelve todos los productos activos(de inventario)..(lo usamos en catalogo).. */
+    function buscar_allproductos(){
+        $producto = $this->db->query("
+            SELECT
+                p.producto_id, p.producto_foto, p.producto_nombre, p.producto_codigo
+            FROM
+                inventario p, estado e
+            WHERE
+                p.estado_id = e.estado_id
+                and p.estado_id = 1
+            ORDER BY p.producto_nombre
+        ")->result_array();
+
+        return $producto;
+    }
+    
+    /* busca clasificadores de un producto */
+    function get_busqueda_clasificadores($producto_id)
+    {
+        $sql = "select
+                    cp.*, c.clasificador_codigo, c.clasificador_nombre
+                from
+                    clasificador c, clasificador_producto cp
+                where
+                    c.clasificador_id = cp.clasificador_id
+                    and cp.producto_id = $producto_id
+                    order by c.clasificador_nombre";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+
+    }
+    /*
+     * function to añadir clasificador_producto
+     */
+    function add_clasificador_producto($params)
+    {
+        $this->db->insert('clasificador_producto',$params);
+        return $this->db->insert_id();
+    }
+    /*
+     * Get clasificador producto
+     */
+    function get_clasificador_producto($clasificador_id, $producto_id)
+    {
+        $clasificador = $this->db->query("
+            SELECT
+                *
+            FROM
+                `clasificador_producto`
+            WHERE
+                `clasificador_id` = $clasificador_id
+                 and producto_id = $producto_id
+        ")->row_array();
+
+        return $clasificador;
+    }
+    /*
+     * elimina clasificador_producto
+     */
+    function delete_clasificador_producto($clasificadorprod_id)
+    {
+        return $this->db->delete('clasificador_producto',array('clasificadorprod_id'=>$clasificadorprod_id));
+    }
 }

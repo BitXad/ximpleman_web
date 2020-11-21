@@ -361,6 +361,26 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
 
     }
     
+    
+    function get_reportemovimientodia()
+    {
+//
+//        if($usuario_id == 0)
+//        {
+//            $cadusuario1 = "";
+//        }
+//        else
+//        {
+//            $cadusuario1 = " and usuario_id = ".$usuario_id." ";
+//        }
+
+        $sql = "select * from consreportediario";
+
+        $ingresos = $this->db->query($sql)->result_array();
+        return $ingresos;
+
+    }
+    
     function get_reptotaling_efectivo($fecha1, $fecha2, $usuario_id)
     {
         if($usuario_id == 0){
@@ -766,7 +786,7 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
             order by v.venta_fecha desc, v.venta_hora desc )
       UNION
       (select 
-            concat(c.cuota_fecha, ' ', c.cuota_hora) as fecha, concat('Cuota credito N°: ', c.credito_id) as detalle,
+            concat(c.cuota_fecha, ' ', c.cuota_hora) as fecha, concat('Cuota credito Nro.: ', c.credito_id) as detalle,
             c.cuota_cancelado as ingreso, 0 as egreso,
             c.cuota_interes as utilidad, 3 as tipo
       from

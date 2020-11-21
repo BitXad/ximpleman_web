@@ -27,6 +27,7 @@
 <!--<link href="<?php //echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<input type="hidden" name="cd" id="cd" value="d">
 <div class="box-header">
    <div class="col-md-6 no-print">
        <font size='4' face='Arial'><b>Deudas por Pagar</b></font>

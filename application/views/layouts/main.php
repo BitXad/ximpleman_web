@@ -440,9 +440,15 @@
                 <li>
                     <a href="#"><i class="fa fa-braille"></i> <span>Categorías</span></a>
                     <ul class="treeview-menu">
-                         
-                        <?php
+                         <?php
                         
+                        if($rolusuario[117-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('clasificador');?>"><i class="glyphicon glyphicon-save"></i>Clasificador</a>
+                        </li>
+                        <?php
+                        }
                         if($rolusuario[117-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -553,6 +559,14 @@
                         <?php
                         } ?>
                         
+                        <?php
+                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('clasificador/inventario');?>"><i class="fa fa-cubes"></i>Inventario Clasificador</a>
+                        </li>
+                        <?php
+                        } ?>
                         <?php
                         if($rolusuario[137-1]['rolusuario_asignado'] == 1){
                         ?>

@@ -94,6 +94,7 @@ class Compra extends CI_Controller{
             $this->load->view('layouts/main',$data);
         }
     }
+    
     function repoProveedor()
     {
         if($this->acceso(137)){
@@ -888,9 +889,33 @@ class Compra extends CI_Controller{
            WHERE
            compra_id=".$compra_id.")";
            $this->db->query($vaciar_detalle);
+
            
            
-        ///////////// actualiza y promediaa precios////////////////////////
+           
+
+//////////////////////////// insertar clasificador //////////////
+
+           
+           $sql_clasificador = "insert into detalle_clasificador(detallecomp_id,producto_id,clasificador_id,detalleclas_cantidad)
+               
+                                (select detallecomp_id,producto_id,clasificador_id,detalleclas_cantidad from detalle_clasificador_aux
+                                where detallecomp_id in (select detallecomp_id from detalle_compra_aux where compra_id =".$compra_id."))";
+           $this->db->query($sql_clasificador);
+           
+           
+           $sql_clasificador = " delete from detalle_clasificador_aux where detallecomp_id in (select detallecomp_id from detalle_compra_aux where compra_id =".$compra_id.")";
+           $this->db->query($sql_clasificador);
+           
+                   
+
+/////////////////////////// fin clasificador                  //////////////////
+           
+           
+           
+           
+        ///////////// actualiza y promedia precios////////////////////////
+        
           if($actualizarprecios==1){
               
             //Nuevo metodo para actualizar precios  
@@ -1749,4 +1774,112 @@ $inventario = "update inventario set inventario.existencia=inventario.existencia
         
     }
 
+    function clasificador_producto(){
+        
+        $producto_id = $this->input->post('producto_id');
+        $detallecomp_id = $this->input->post('detallecomp_id');
+        
+        $sql = "select * from clasificador c, clasificador_producto t
+                where t.producto_id = ".$producto_id." and  c.clasificador_id = t.clasificador_id";
+        
+        $resultado = $this->Compra_model->consultar($sql);
+        echo json_encode($resultado);  
+        
+    }
+    
+    function clasificador_compra(){
+        
+        $producto_id = $this->input->post('producto_id');
+        $detallecomp_id = $this->input->post('detallecomp_id');
+        
+        $sql = "select * from clasificador c, clasificador_producto t
+                where t.producto_id = ".$producto_id." and  c.clasificador_id = t.clasificador_id";
+        
+        $resultado = $this->Compra_model->consultar($sql);
+        echo json_encode($resultado);  
+        
+    }
+    
+    function clasificador_detalle(){
+        
+        $producto_id = $this->input->post('producto_id');
+        $detallecomp_id = $this->input->post('detallecomp_id');
+        
+        $sql = "select * from detalle_clasificador_aux d, clasificador c, detalle_compra_aux t
+                where                
+                t.detallecomp_id = ".$detallecomp_id." and
+                t.detallecomp_id = d.detallecomp_id and                    
+                d.clasificador_id = c.clasificador_id";
+        
+        $resultado = $this->Compra_model->consultar($sql);
+        echo json_encode($resultado);  
+        
+    }
+    
+    function registrar_clasificador(){
+        
+        $producto_id = $this->input->post('producto_id');
+        $detallecomp_id = $this->input->post('detallecomp_id');
+        $cantidad = $this->input->post('cantidad');
+        $clasificador_id = $this->input->post('clasificador_id');
+    
+        
+        $sql = "select * from detalle_clasificador_aux
+                where producto_id = ".$producto_id." and
+                detallecomp_id = ".$detallecomp_id." and
+                clasificador_id = ".$clasificador_id;
+        $res = $this->Compra_model->consultar($sql);
+        
+        if (sizeof($res)>0){
+            //$result = 0;
+            //            echo '[{"detallecomp_id":"'.$result.'"}]';
+            echo json_encode(false);
+        }
+        else{
+            
+//            
+//            $sql = "select if(sum(d.detalleclas_cantidad)>0,sum(d.detalleclas_cantidad),0)+".$cantidad." as cantidad, t.detallecomp_cantidad
+//                    from detalle_clasificador_aux d, detalle_compra_aux t
+//                    where 
+//                    d.detallecomp_id = t.detallecomp_id and
+//                    d.producto_id = ".$producto_id." and
+//                    d.detallecomp_id = ".$detallecomp_id."
+//                    group by d.detallecomp_id";
+//            
+//            $res = $this->Compra_model->consultar($sql);
+//            // revisar cantidad de productos de ingreso por clasificadores
+//            if ($res[0]["cantidad"] < $res[0]["detallecomp_cantidad"]){
+           
+                $sql = "insert into detalle_clasificador_aux(`detallecomp_id`,`producto_id`,`clasificador_id`,`detalleclas_cantidad`)
+                        value(".$detallecomp_id.",".
+                        $producto_id.",".
+                        $clasificador_id.",".
+                        $cantidad.")";
+
+                $this->Compra_model->ejecutar($sql);
+                echo json_encode(true);
+//            }
+//            else{
+//                echo '[{"maximo":"0"}]';
+//            }
+            
+            
+        }
+        
+        
+    }
+    
+    function eliminar_clasificador(){
+        
+        $detalleclas_id = $this->input->post('detalleclas_id');
+        
+        
+        
+        $sql = "delete from detalle_clasificador_aux where detalleclas_id = ".$detalleclas_id;
+        
+        $this->Compra_model->ejecutar($sql);
+        
+        echo json_encode(true);  
+        
+    }
 }

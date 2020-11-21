@@ -25,7 +25,7 @@
                 })
             }(jQuery));
         });
-</script>   
+</script> 
 <!----------------------------- fin script buscador --------------------------------------->
 <style type="text/css">
     /*td img{
@@ -897,3 +897,51 @@ echo '<script type="text/javascript">
       <!-- /.tab-pane -->
     </div>
   </aside>
+  
+  <!------------------------ INICIO modal para CRUD Clasificador ------------------->
+<div class="modal fade" id="modalclasificador" tabindex="-1" role="dialog" aria-labelledby="modalclasificadorlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">CLASIFICADORES</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Seleccionar </span>
+                        <select name="clasificador_id" class=" form-control" id="clasificador_id">
+                            <option value="">-- CLASIFICADOR --</option>
+                            <?php 
+                            foreach($all_clasificador as $clasificador)
+                            {
+                                echo '<option value="'.$clasificador['clasificador_id'].'">'.$clasificador['clasificador_nombre'].'</option>';
+                            } 
+                            ?>
+                        </select>
+                        <input type="hidden" name="miproducto_id" value="0" id="miproducto_id" />
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="agregar_clasificador()"><span class="fa fa-check">Añadir</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <!------------------------------------------------------------------->
+                <div class="box-body table-responsive">
+                    <table class="table table-striped" id="mitabla">
+                        <tr>
+                            <th>#</th>
+                            <th>Descripción</th>
+                            <th></th>
+                        </tr>
+                        <tbody class="buscar" id="clasificadoresultados" >
+                        </tbody>
+                    </table>
+                </div>
+                <!------------------------------------------------------------------->
+            </div>
+            <!--<div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>-->
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para CRUD Clasificador ------------------->

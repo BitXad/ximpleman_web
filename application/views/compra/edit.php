@@ -1458,3 +1458,103 @@ $("#texto2").change(function(){
     </div>
 </div>
 <!------------------------ FIN modal para Registrar nueva Categoria ------------------->
+
+<div hidden>
+    
+<button type="button" id="boton_modal_promocion" class="btn btn-primary" data-toggle="modal" data-target="#modalclasificador" >
+  Launch demo modal
+</button>
+</div>
+
+<!----------------- modal clasificador ---------------------------------------------->
+
+<div class="modal fade" id="modalclasificador" tabindex="-1" role="dialog" aria-labelledby="modalclasificador" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+                    <div class="modal-header" >
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>CLASIFICACION DE PRODUCTOS</b></h4>
+
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='oculto'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                                        <center>
+                                           
+                                        <div class="col-md-12">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        CLASIFICADOR
+                                                    </td>
+                                                    <td>
+                                                        <div id="div_clasificador">
+                                                            
+                                                        </div>
+                                                        
+                                                    </td>
+
+                                                    <td>
+                                                        CANT.
+                                                    </td>
+                                                    <td>
+                                                        <input value="1" size="3" id="input_cantidad" class="input-xs">
+                                                        <input type="hidden" size="3" id="input_detallecompid">
+                                                        <input type="hidden" size="3" id="input_productoid">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" > <fa class="fa fa-floppy-o"></fa> </button>
+                                                    </td>
+
+                                                
+                                                </tr>
+                                            </table>
+                                        </div>
+                                            
+                                        <div class="col-md-12">
+                                            
+                                            <table class="table-responsive" id="mitabla">
+                                                <tr>
+                                                    <th style="padding: 0">#</th>
+                                                    <th style="padding: 0">DESCRIPCIÓN</th>
+                                                    <th style="padding: 0">COSTO</th>
+                                                    <th style="padding: 0">CANT.</th>
+                                                    <th style="padding: 0">TOTAL</th>
+                                                    <th style="padding: 0"></th>                                                
+                                                </tr>
+                                                <tbody id="tablaclasificador">
+                                                    <!---------- aqui van los resultados--> 
+                                                </tbody>
+                                                <input type='hidden' value='0' id='input_cantidadmax'>
+                                                <input type='hidden' value='0' id='input_cantidadtotal'>
+                                            </table>
+                                                                                                
+                                                    <button class="btn btn-danger btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cerrar
+                                                    </button>
+                                        </div> 
+
+                                        </center>
+                            </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+<!----------------- fin modal clasificador ---------------------------------------------->

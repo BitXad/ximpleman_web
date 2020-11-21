@@ -319,7 +319,8 @@ class Venta extends CI_Controller{
           detalleven_prestamoenvase,
           detalleven_fechavenc,
           usuario_id,
-          factura_id
+          factura_id,
+          clasificador_id
         )
 
         (SELECT 
@@ -351,7 +352,8 @@ class Venta extends CI_Controller{
             detalleven_prestamoenvase,
             detalleven_fechavenc,
             usuario_id,
-            0 as factura_id
+            0 as factura_id,
+            clasificador_id
           
         FROM
           detalle_venta_aux
@@ -624,11 +626,14 @@ class Venta extends CI_Controller{
             $codigo = $this->input->post('codigo');
             $producto = $this->Inventario_model->get_inventario_codigo($codigo);
             
-            if (sizeof($producto)>0){
+            if (sizeof($producto)>0){ //si encontro el producto por el codigo de producto
+                
                 echo json_encode($producto);
+           
             }
             else
             {
+            
                 $producto = $this->Inventario_model->get_inventario_codigo_factor($codigo);                
                 echo json_encode($producto);
                 
@@ -3212,4 +3217,33 @@ function anular_venta($venta_id){
             show_404();
         }              
     }
+    
+    function clasificador_producto(){
+        
+        $producto_id = $this->input->post('producto_id');
+//        $detallecomp_id = $this->input->post('detallecomp_id');
+//        
+        $sql = "select * from clasificador c, clasificador_producto t
+                where                 
+                t.producto_id = ".$producto_id." and c.clasificador_id = t.clasificador_id ";
+        
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);  
+        
+    }
+
+    function registrar_clasificador(){
+        
+        $clasificador_id = $this->input->post('clasificador_id');
+        $detalleven_id = $this->input->post('detalleven_id');
+        
+        $sql = "update detalle_venta_aux set clasificador_id = ".$clasificador_id.
+               " where detalleven_id = ".$detalleven_id;
+        
+        $this->Venta_model->ejecutar($sql);
+        echo json_encode(true);  
+        
+    }
+        
+    
 }

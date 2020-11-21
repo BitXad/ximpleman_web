@@ -182,7 +182,7 @@ window.onkeydown = compruebaTecla;
 <link href="<?php echo base_url('resources/css/mitablaventas.css'); ?>" rel="stylesheet">
  <!--<link rel="stylesheet" type="text/css" href="estilos.css" />-->
 <!-------------------------------------------------------->
-<div id="selector" hidden="">
+<div id="selector" >
     <!--  Aqui inserta in input temporal que sirve para almacenar el factor de conversion del producto -->
     
 </div>
@@ -1507,3 +1507,76 @@ window.onkeydown = compruebaTecla;
 	</div>
 </div>
 <!----------------- fin modal promociones ---------------------------------------------->
+
+
+
+
+<!----------------- modal clasificador ---------------------------------------------->
+
+<div class="modal fade" id="modalclasificador" tabindex="-1" role="dialog" aria-labelledby="modalclasificador" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+                    <div class="modal-header" >
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>CLASIFICACION DE PRODUCTOS</b></h4>
+
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='oculto'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                                        <center>
+                                           
+                                        <div class="col-md-12">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        CLASIFICADOR
+                                                    </td>
+                                                    <td>
+                                                        <div id="div_clasificador">
+                                                            
+                                                        </div>
+                                                        
+                                                    </td>
+
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" > <fa class="fa fa-floppy-o"></fa> </button>
+                                                    </td>
+
+                                                
+                                                </tr>
+                                            </table>
+                                        </div>
+                                            
+                                        <div class="col-md-12">
+                                            
+
+                                            <button class="btn btn-danger btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
+                                                <span class="fa fa-close"></span>   Cerrar
+                                            </button>
+                                        </div> 
+
+                                        </center>
+                            </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+<!----------------- fin modal clasificador ---------------------------------------------->
