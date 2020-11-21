@@ -836,7 +836,8 @@ function sesionFacebook(name,id){
         type:"POST",
         data:{name:name,id:id,ipe:ipe},
         success:function(respuesta){ 
-            location.reload();
+            // location.reload();
+            window.location="./website/miperfil/1";
         },
         error:function(respuesta){
             registrarclienteFacebook(name,id);
@@ -876,7 +877,8 @@ function registrarclienteFacebook(name,id){
                 cliente_direccion:cliente_direccion, cliente_departamento:cliente_departamento, cliente_celular:cliente_celular, zona_id:zona_id,
                 cliente_email:cliente_email, cliente_clave:cliente_clave, id_facebook:id_facebook},
         success:function(respuesta){  
-            alert("Por favor, termina tu registro en edicion del perfil :)");
+            // alert("Por favor, termina tu registro en edicion del perfil :)");
+            // window.location="./website/miperfil/1";
         },
         error: function(respuesta){ alert("A ocurrido un error, consulte con el encargado del sistema"); }});
 }

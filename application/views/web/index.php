@@ -304,7 +304,7 @@ function mostrar() {
                                                             <li><a href="<?php echo base_url("website/miperfil/").$idioma_id; ?>" >Mi perfil</a></li>
                                                             <li><a href="<?php echo base_url("website/micarrito/").$idioma_id; ?>" >Mi carrito</a></li>
                                                             <li><a href="<?php echo base_url("website/miscompras/").$idioma_id; ?>" >Mis Compras</a></li>
-                                                            <li><a href="<?php echo base_url("website/cerrarsesion/").$idioma_id; ?>" >Finalizar Sesion</a></li>
+                                                            <li><a href="<?php echo base_url("/") ?>" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion(),FB.logout()" >Finalizar Sesion</a></li>
                                                             
                                                         </ul>
                                                     </div>	
