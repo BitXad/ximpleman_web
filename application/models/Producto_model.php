@@ -484,6 +484,23 @@ class Producto_model extends CI_Model
 
         return $producto;
     }
+    
+    /* devuelve todos los productos activos(de inventario)..(lo usamos en catalogo).. */
+    function buscar_allproductos(){
+        $producto = $this->db->query("
+            SELECT
+                p.producto_id, p.producto_foto, p.producto_nombre, p.producto_codigo
+            FROM
+                inventario p, estado e
+            WHERE
+                p.estado_id = e.estado_id
+                and p.estado_id = 1
+            ORDER BY p.producto_nombre
+        ")->result_array();
+
+        return $producto;
+    }
+    
     /* busca clasificadores de un producto */
     function get_busqueda_clasificadores($producto_id)
     {

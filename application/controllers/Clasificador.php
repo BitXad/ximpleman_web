@@ -116,7 +116,7 @@ class Clasificador extends CI_Controller{
             
     }*/
     /*
-     * Listing of producto
+     * muestra el inventario de los clasificadores
      */
     function inventario()
     {
@@ -126,19 +126,67 @@ class Clasificador extends CI_Controller{
             $data['page_title'] = "Inventario";
             $this->load->model('Empresa_model');
             $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Clasificador_model');
+            $data['all_clasificadores'] = $this->Clasificador_model->get_all_clasificadores();
             $data['_view'] = 'clasificador/inventario';
             $this->load->view('layouts/main',$data);
+        }
+    }
+    /*
+     * Funcion que se encarga de llenar la tabla catalogo!!...
+     */
+    function cargar_catalogo()
+    {
+        if($this->acceso(134)){
+            if ($this->input->is_ajax_request()) {
+                $data['rolusuario'] = $this->session_data['rol'];
+                
+                $this->load->model('Catalogo_model');
+                $this->Catalogo_model->truncar_catalogo();
+                $this->load->model('Producto_model');
+                $all_producto = $this->Producto_model->buscar_allproductos();
+                $this->load->model('Clasificador_model');
+                $all_clasificadores = $this->Clasificador_model->get_all_clasificadores();
+                foreach ($all_producto as $producto) {
+                    $params = array(
+                        'catalogo_foto' => $producto["producto_foto"],
+                        'catalogo_nombre' => $producto["producto_nombre"],
+                        'catalogo_codigo' => $producto["producto_codigo"],
+                    );
+                    $catalogo_id = $this->Catalogo_model->add_catalogo($params);
+                    $all_movclasificador = $this->Clasificador_model->get_allmovclasificador($producto["producto_id"]);
+                    foreach ($all_movclasificador as $movclasif) {
+                        $total = $movclasif["compras"]-$movclasif["ventas"];
+                        $sql = "update catalogo set c".$movclasif["clasificador_id"]." = $total
+                                where catalogo_id = $catalogo_id";
+            
+                        $this->Clasificador_model->ejecutar($sql);
+                        /*$res = array("'c".$movclasif["clasificador_id"]."'" => $total,);
+                        array_push($params, $res);*/
+                    }
+                    
+                }
+                
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
         }
     }
     function mostrar_clasificadorinventario()
     {
         if($this->acceso(134)){
             $parametro = $this->input->post("parametro");
-            if ($parametro=="" || $parametro==null)
-                $resultado = $this->Clasificador_model->get_clasificadorinventario();                
-            else
+            if ($parametro=="" || $parametro==null){
+                $maximo = $this->Clasificador_model->get_maxclasificadorusado();
+                $resultado = $this->Clasificador_model->get_clasificadorinventario();
+            }else{
+                $maximo = $this->Clasificador_model->get_maxclasificadorusado_parametro($parametro);
                 $resultado = $this->Clasificador_model->get_clasificadorinventario_parametro($parametro);
-            echo json_encode($resultado);
+            }
+            $data=array("elmaximo"=>$maximo[0], "resultado" =>$resultado);
+            echo   json_encode($data);
         }
     }
     

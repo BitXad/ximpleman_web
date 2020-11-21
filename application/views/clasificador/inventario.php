@@ -29,6 +29,7 @@
 </script>   
 
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
+<input type="hidden" name="elclasificador" id="elclasificador" value='<?php echo json_encode($all_clasificadores); ?>' />
 
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
@@ -110,7 +111,7 @@
     <div class="col-md-12">
             <!--------------------- parametro de buscador --------------------->
                   <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, precio, código"   onkeypress="validar(event,1)" >
+                    <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código"   onkeypress="validar_busclasificador(event,1)" >
                   </div>
             <!--------------------- fin parametro de buscador ---------------------> 
             <div class="box">

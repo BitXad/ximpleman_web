@@ -445,7 +445,7 @@
                         if($rolusuario[117-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('Clasificador');?>"><i class="glyphicon glyphicon-save"></i>Clasificador</a>
+                            <a href="<?php echo site_url('clasificador');?>"><i class="glyphicon glyphicon-save"></i>Clasificador</a>
                         </li>
                         <?php
                         }

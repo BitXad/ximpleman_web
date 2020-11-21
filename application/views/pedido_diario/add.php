@@ -32,7 +32,7 @@
 					<div class="col-md-6">
 						<label for="pedido_montototal" class="control-label">Monto Total Bs</label>
 						<div class="form-group">
-                                                    <input type="number" name="pedido_montototal" value="<?php echo $this->input->post('pedido_montototal'); ?>" class="form-control" id="pedido_montototal"/>
+                                                    <input type="number" step="any" min="0" name="pedido_montototal" value="<?php echo $this->input->post('pedido_montototal'); ?>" class="form-control" id="pedido_montototal"/>
 						</div>
 					</div>
                             
