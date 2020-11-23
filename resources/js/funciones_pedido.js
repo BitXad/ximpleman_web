@@ -1275,7 +1275,7 @@ function tablaresultados(opcion)
                     for (var i = 0; i < x ; i++){
                         
                         var mimagen = "";
-                        if(registros[i]["producto_foto"].length>2){
+                        if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"].length>2){
                             mimagen += "<a class='btn  btn-xs' data-toggle='modal' data-target='#mostrarimagen"+i+"' style='padding: 0px;'>";
                             mimagen += "<img src='"+base_url+"resources/images/productos/thumb_"+registros[i]["producto_foto"]+"' class='img img-circle' width='30' height='30' />";
                             mimagen += "</a>";
