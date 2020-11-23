@@ -48,7 +48,41 @@ v.venta_id = d.venta_id
 group by d.venta_id
 
 
+CONSULTA CREDITOS: conscreditos
+======================
 
+
+create view as conscreditos
+SELECT 
+  v.venta_id,
+  2 AS orden,
+  v.venta_fecha AS fecha,
+  v.venta_hora AS hora,
+  v.venta_id AS recibo,
+  concat('venta, ', t.tipotrans_nombre, '/ ', p.forma_nombre, ': ', v.cliente_nombre) AS detalle,
+  if(r.credito_cuotainicial >= 0, r.credito_cuotainicial, v.venta_total) AS ingresos,
+  0 AS egresos,
+  v.utilidad,
+  round(v.precio, 2) AS precio,
+  v.tipotrans_id,
+  t.tipotrans_nombre AS transaccion,
+  v.forma_id,
+  p.forma_nombre AS forma,
+  v.usuario_id,
+  if(round(v.venta_total, 2) = round(v.precio, 2), 0, 1) AS error
+FROM
+  consutilidadventas v,
+  tipo_transaccion t,
+  forma_pago p,
+  credito r
+WHERE
+  v.venta_id = r.venta_id AND 
+  v.tipotrans_id = t.tipotrans_id AND 
+  v.forma_id = p.forma_id AND 
+  v.tipotrans_id = 2
+ORDER BY
+  v.venta_fecha,
+  v.venta_hora
 
 
 
@@ -117,7 +151,6 @@ order by v.venta_fecha, v.venta_hora
 union 
 
 (
-
 select 
 t.orden, t.fecha, t.hora, t.recibo, 
 if(f.factura_numero>=0,f.factura_numero,0) as factura,
@@ -125,38 +158,7 @@ t.detalle, t.ingresos, t.egresos, t.utilidad, t.precio, t.tipotrans_id,t.transac
 t.forma_id, t.forma, t.usuario_id,
 if(f.factura_id>0,f.factura_id,0) as factura_id,
 error
-from
- 
-(select 
-v.venta_id,
-2 as orden,
-v.venta_fecha as fecha,
-v.venta_hora as hora,
-v.venta_id as recibo,  
-concat('venta, ',t.tipotrans_nombre,'/ ',p.forma_nombre,': ',v.cliente_nombre) as detalle,
-if(r.credito_cuotainicial>=0,r.credito_cuotainicial,v.venta_total) as ingresos,
-0 as egresos,
-v.utilidad,
-round(v.precio,2) as precio,
-v.tipotrans_id,
-t.tipotrans_nombre as transaccion,
-v.forma_id,
-p.forma_nombre as forma,
-v.usuario_id,
-
-if (round(v.venta_total,2)=round(v.precio,2),0,1) as error
-
-from consutilidadventas v, credito r, tipo_transaccion t, forma_pago p
-
-
-where 
-v.venta_id = r.venta_id and
-v.tipotrans_id = t.tipotrans_id and
-v.forma_id = p.forma_id and
-v.tipotrans_id = 2 
-
-
-order by v.venta_fecha, v.venta_hora) as t
+from conscreditos t
 
 left join factura f on f.venta_id = t.venta_id
 

@@ -2685,6 +2685,7 @@ function eliminar_producto_vendido(detalleven_id)
 
 function borrar_datos_cliente()
 {
+    
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
     $("#nit").val(0);
     $("#razon_social").val("SIN NOMBRE");
@@ -2709,6 +2710,8 @@ function borrar_datos_cliente()
     $("#venta_efectivo").val("0");
     $("#venta_cambio").val("0");
     $("#zona_id").val("0");
+    $("#venta_descuentoparc").val("0");
+    $("#venta_descuento").val("0");
      
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
@@ -2741,6 +2744,7 @@ function borrar_datos_cliente()
     
     document.getElementById('divventas0').style.display = 'block'; //ocultar el vid de ventas 
     document.getElementById('divventas1').style.display = 'none'; // mostrar el div de loader
+    
 }
 
 function verificar_ventas()
