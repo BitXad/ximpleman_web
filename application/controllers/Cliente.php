@@ -61,11 +61,12 @@ class Cliente extends CI_Controller{
             $data['parametro'] = $this->Parametro_model->get_parametro(1);
 
             $client = $this->Cliente_model->get_cliente_index();
-            $file_client = fopen("./json/client.txt", "w") or die("Problemas al crear el archivo client");
-            fwrite($file_client, '{ "data":');
-            fwrite($file_client, json_encode($client));
-            fwrite($file_client, '}');
-            fclose($file_client);
+            // datatable por json
+            // $file_client = fopen("./json/client.txt", "w") or die("Problemas al crear el archivo client");
+            // fwrite($file_client, '{ "data":');
+            // fwrite($file_client, json_encode($client));
+            // fwrite($file_client, '}');
+            // fclose($file_client);
 
             $data['_view'] = 'cliente/index';
             $this->load->view('layouts/main',$data);
