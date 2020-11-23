@@ -27,10 +27,8 @@ class Categoria_clientezona_model extends CI_Model
         $clientezona = $this->db->query("
             SELECT
                 *
-
             FROM
                 zona cc, estado e
-
             WHERE
                 cc.estado_id = e.estado_id
                 

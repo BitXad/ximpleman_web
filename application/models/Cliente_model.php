@@ -381,6 +381,18 @@ class Cliente_model extends CI_Model
         return $cliente;
     }
     /*
+    *get all cliente asignados
+    */
+    function get_cliente_all_asignados($usuario_id){
+        $cliente = $this->db->query("
+            SELECT count(*) as total_clientes_user
+            FROM cliente c, `usuario` u
+            WHERE c.estado_id = 1
+            and c.usuario_id = ".$usuario_id.";        
+        ")->result_array();
+        return $cliente;
+    }
+    /*
      * Get all cliente (SOLO LOS colientes con sus estados)
      */
     function get_cliente_all()
@@ -516,7 +528,7 @@ class Cliente_model extends CI_Model
     
     
    /*
-     * Funcion para obtener todos lciente visitados
+     * Funcion para obtener todos cliente visitados
      */
     function get_clientes_visitados($fecha_desde,$fecha_hasta,$zona_id)
     {

@@ -42,6 +42,37 @@ class Venta_model extends CI_Model
     }
     
     /*
+    * Get ventas del dia de un usuario (vendedor)
+    */
+    function get_ventas_dia_usuario($usuario_id){
+        $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_ventas, if(sum(v.venta_total)>0, sum(v.venta_total), 0) as total_ventas
+                FROM venta as v
+                WHERE 
+                    venta_fecha = date(now()) AND v.`usuario_id` = ".$usuario_id.";";
+        $venta = $this->db->query($sql)->result_array();
+        return $venta;
+    }
+
+    /*
+    *Get ventas credito de un usuario (vendedor)
+    */
+    function get_venta_credito($usuario_id){
+        $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_ventas_credito,sum(cr.`credito_monto`) as total_ventas_credito
+                FROM ventas vs 
+                LEFT JOIN credito cr on vs.venta_id = cr.venta_id 
+                WHERE vs.tipotrans_id = 2
+                AND vs.usuario_id = ".$usuario_id.";";
+        // $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_ventas_credito, if(sum(v.venta_total)>0, sum(v.venta_total), 0) as total_ventas_credito
+        //         FROM venta v
+        //         WHERE 
+        //             v.venta_fecha = date(now()) AND v.`usuario_id` = ".$usuario_id." AND v.`tipotrans_id` = 2;";
+        $venta = $this->db->query($sql)->result_array();
+        $creditos = $this->db->query($sql)->result_array();
+        return $creditos;
+    }
+
+
+    /*
      * Get ventas del dia
      */
     function get_resumen_usuarios()

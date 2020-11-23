@@ -427,9 +427,8 @@
             </div>
               <div class="box-body">
                   
-                  <div class="box-body" id="div_grafica_barras">
-		
-                    </div>
+                  <div class="box-body" id="div_grafica_barras"></div>
+                  <?php $user_id = $usuario; ?>
               </div>
               </div>
  </section>
@@ -722,11 +721,18 @@
           </div>
 
         </section>   
-   
+
     <br>
         <section>
-            <br>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
                 Ximpleman ver 2.0
+              </div>
+            </div>
+          </div>
+            <!-- <br> -->
 
         </section>   
+        <script> var user_id = '<?php echo $user_id?>'; </script>
  </body>   

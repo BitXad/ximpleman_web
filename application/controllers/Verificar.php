@@ -59,49 +59,56 @@ class Verificar extends CI_Controller
 
                 if ($session_data['tipousuario_id'] == 1) {// admin page
                     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
-                       redirect('alerta/dosificacion');
-                    }
-                    redirect('admin/dashb');
-                }
-                if($session_data['tipousuario_id'] == 5) {
-                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
-                       redirect('alerta/dosificacion');
-                    }
-                   // $this->load->model('Cliente_model');
-                    //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']);
-                    redirect('servicio');
-                }
-
-                if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 3){
-                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
-                       redirect('alerta/dosificacion');
-                    }
-                    redirect('venta/ventas');
-                }
-
-                if($session_data['tipousuario_id'] == 4){
-                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
-                       redirect('alerta/dosificacion');
-                    }
-                    redirect('pedido');
-                }
-
-                 if($session_data['tipousuario_id'] == 6){
-                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) {
-                       redirect('alerta/dosificacion');
-                    }
-                    redirect('factura');
-                }
-
-                 if($session_data['tipousuario_id'] == 7){
-                    redirect('detalle_venta/recepcion');
-                }
-                if($session_data['tipousuario_id'] == 8){
-                    redirect('venta/ventas');
-                }
-
-
-            } else {
+                        redirect('alerta/dosificacion'); 
+                    } 
+                    redirect('admin/dashb'); 
+                }else{  // En caso de otro usuario no administrador 
+                    if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
+                        redirect('alerta/dosificacion'); 
+                    } 
+                   // $this->load->model('Cliente_model'); 
+                    //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']); 
+                    redirect('admin/dashb/index_user'); 
+                } 
+                // if($session_data['tipousuario_id'] == 5) { 
+                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
+                //        redirect('alerta/dosificacion'); 
+                //     } 
+                //    // $this->load->model('Cliente_model'); 
+                //     //$cliente_id = $this->Cliente_model->get_cliente_from_ci($session_data['usuario_login']); 
+                //     redirect('servicio'); 
+                // } 
+ 
+                // if($session_data['tipousuario_id'] >= 2 and $session_data['tipousuario_id'] <= 3){ 
+                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
+                //        redirect('alerta/dosificacion'); 
+                //     } 
+                //     redirect('venta/ventas'); 
+                // } 
+ 
+                // if($session_data['tipousuario_id'] == 4){ 
+                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
+                //        redirect('alerta/dosificacion'); 
+                //     } 
+                //     redirect('pedido'); 
+                // } 
+ 
+                //  if($session_data['tipousuario_id'] == 6){ 
+                //     if ($dosificacion['dias']<=10 && $dosificacion['dias']!=null) { 
+                //        redirect('alerta/dosificacion'); 
+                //     } 
+                //     redirect('factura'); 
+                // } 
+ 
+                //  if($session_data['tipousuario_id'] == 7){ 
+                //     redirect('detalle_venta/recepcion'); 
+                // } 
+                // if($session_data['tipousuario_id'] == 8){ 
+                //     redirect('venta/ventas'); 
+                // } 
+ 
+ 
+            } else { 
                 $this->session->set_flashdata('msg', '<div class="alert alert-danger text-center">USUARIO no es valido' . $result . '</div>');
                 redirect('login');
             }

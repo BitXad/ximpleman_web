@@ -141,27 +141,52 @@ class Clasificador_model extends CI_Model
 
         return $clasificador;
     }
+    /* funcion que retorna compras y ventas de un clasificador */
+    function get_allmovclasificador($producto_id)
+    {
+        $sql = "select cm.producto_id, cm.clasificador_id, cm.compras, if(ve.ventas>0,ve.ventas,0)as ventas
+                from
+                (select t.producto_id, t.detalleclas_id, t.clasificador_id, sum(t.detalleclas_cantidad) as compras
+                from detalle_clasificador t
+                left join detalle_compra dc on t.detallecomp_id = dc.detallecomp_id
+                where t.producto_id = $producto_id
+                group by dc.producto_id, t.clasificador_id) as cm
+                left join
+                (select dv.producto_id, dv.clasificador_id, sum(dv.detalleven_cantidad) as ventas
+                from detalle_venta dv
+                where dv.clasificador_id > 0
+                and dv.producto_id = $producto_id
+                group by dv.producto_id, dv.clasificador_id) as ve on cm.clasificador_id = ve.clasificador_id";
+        $producto = $this->db->query($sql)->result_array();
+        
+        //$producto = $this->db->query($sql,array('credito_id'))->row_array();
+        return $producto;
+    }
+    /* retorna el maximo de los clasificadores usados */
+    function get_maxclasificadorusado()
+    {
+        $sql = "select max(t.clasificador_id) as maximo
+                  from detalle_clasificador t
+                  left join detalle_compra dc on t.detallecomp_id = dc.detallecomp_id";
+        $clasificador = $this->db->query($sql)->result_array();
+        return $clasificador;
+    }
+    /* retorna el maximo de los clasificadores usados */
+    function get_maxclasificadorusado_parametro($parametro)
+    {
+        $sql = "select max(t.clasificador_id) as maximo
+                  from detalle_clasificador t
+                  left join inventario p on t.producto_id = p.producto_id
+                  where p.producto_id = t.producto_id
+                  and p.producto_nombre like '%".$parametro."%' 
+                  or p.producto_codigo like '%".$parametro."%' ";
+        $clasificador = $this->db->query($sql)->result_array();
+        return $clasificador;
+    }
     
     function get_clasificadorinventario()
     {
-        $sql = "select c.*,if(v.ventas>0,v.ventas,0)as ventas from
-                (
-                select  d.producto_id, t.clasificador_id, sum(t.detalleclas_cantidad) as compras
-                from compra c, detalle_compra d, detalle_clasificador t
-                where 
-                c.compra_id = d.compra_id and
-                d.detallecomp_id = t.detallecomp_id
-                group by t.producto_id,t.clasificador_id
-                ) as c 
-                left join 
-                (
-                select d.producto_id, d.clasificador_id, sum(d.detalleven_cantidad) as ventas
-                from venta v, detalle_venta d
-                where v.venta_id = d.venta_id and
-                d.clasificador_id>0
-                group by d.producto_id, d.clasificador_id
-
-                ) as v on c.producto_id = v.producto_id";
+        $sql = "select * from catalogo";
         $producto = $this->db->query($sql)->result_array();
         
         //$producto = $this->db->query($sql,array('credito_id'))->row_array();
@@ -170,35 +195,18 @@ class Clasificador_model extends CI_Model
     function get_clasificadorinventario_parametro($parametro)
     {
         
-        $sql = "select c.*,if(v.ventas>0,v.ventas,0)as ventas from
-                (
-                select  d.producto_id, t.clasificador_id, sum(t.detalleclas_cantidad) as compras
-                from compra c, detalle_compra d, detalle_clasificador t
-                where 
-                c.compra_id = d.compra_id and
-                d.detallecomp_id = t.detallecomp_id
-                group by t.producto_id,t.clasificador_id
-                ) as c 
-                left join 
-                (
-                select d.producto_id, d.clasificador_id, sum(d.detalleven_cantidad) as ventas
-                from venta v, detalle_venta d
-                where v.venta_id = d.venta_id and
-                d.clasificador_id>0
-                group by d.producto_id, d.clasificador_id
-
-                ) as v on c.producto_id = v.producto_id
-                
-            /*select  p.*,c.categoria_nombre FROM inventario p
-                left join categoria_producto c on c.categoria_id = p.categoria_id
-                WHERE p.estado_id=1 and p.producto_nombre like '%".$parametro."%' or p.producto_codigobarra like '%".$parametro."%' or p.producto_codigo like '%".$parametro."%'
-                GROUP BY p.categoria_id, p.producto_id
-                ORDER By c.categoria_nombre, p.producto_nombre asc*/
-                ";
+        $sql = "select * from catalogo c
+                WHERE c.catalogo_nombre like '%".$parametro."%' 
+                  or c.catalogo_codigo like '%".$parametro."%' ";
+                  /*or p.producto_codigobarra like '%".$parametro."%' */
         
         $producto = $this->db->query($sql)->result_array();
         return $producto;
 
     }
-    
+    /* ejecuta una consulta */
+    function ejecutar($sql){
+        $this->db->query($sql);
+        return $this->db->insert_id();
+    }
 }

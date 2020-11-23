@@ -64,6 +64,19 @@ class Pedido_model extends CI_Model
         return $result;        
     }
 
+    /*
+    * Get todos los pedidos de un usuario(vendedor) 
+    * SUPONIENOD QUE SE ASIGNAN PRODUCTOS A UN VENDEDOR
+    */
+    function get_pedidos_dia_usuario($usuario_id) {
+        $sql = "SELECT if(count(*)>0, count(*), 0) as cantidad_pedidos, if(sum(pedido_total)>0, sum(pedido_total), 0) as total_pedidos
+                FROM pedido 
+                WHERE date(pedido_fecha) = date(now()) 
+                AND usuario_id = ".$usuario_id.";";
+        $result = $this->db->query($sql)->result_array();
+        return $result;
+    }
+
         
     /*
      * Get all pedido count

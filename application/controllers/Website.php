@@ -339,6 +339,36 @@ class Website extends CI_Controller{
         }
     }
 
+    // ---------------------------------------FACEBOOK---------------------------------------------------
+    function sesionclienteFacebook(){
+        $name   = $this->input->post('name');
+        $id     = $this->input->post('id');
+        $ipe    = $this->input->post('ipe');
+        $resultado = "SELECT * from cliente WHERE cliente_nombre = '".$name."'".
+                    " and id_facebook = '".$id."' ";
+                    " and estado_id = 1";
+        if($resultado){
+            $result=$this->db->query($resultado)->row_array();
+            if ($result){
+                $clienteid = $result['cliente_id'];
+                $clientenombre = $result['cliente_nombre'];
+                $update="UPDATE carrito
+                        SET cliente_id = '".$clienteid."' 
+                        WHERE cliente_id = '".$ipe."' ";
+                $this->db->query($update);
+                setcookie("cliente_id", $clienteid, time() + (3600 * 24), "/");
+                setcookie("cliente_nombre", $clientenombre, time() + (3600 * 24), "/");
+                return true;
+            }else{
+                show_404();
+            }
+        }else{
+            return false;
+        }
+    }
+
+    // ------------------------------------------------------------------------------------------
+
     function getcliente(){
             $cliente = $this->input->post('cliente');
         $datos = $this->Pagina_web_model->get_cliente($cliente);
@@ -668,12 +698,12 @@ class Website extends CI_Controller{
                     $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/clientes/';
                     //$directorio = $_SERVER['DOCUMENT_ROOT'].'/ximpleman_web/resources/images/clientes/';
                     if(isset($foto1) && !empty($foto1)){
-                      if(file_exists($directorio.$foto1)){
-                          unlink($directorio.$foto1);
-                          $mimagenthumb = "thumb_".$foto1;
-                          unlink($directorio.$mimagenthumb);
-                      }
-                  }
+                        if(file_exists($directorio.$foto1)){
+                            unlink($directorio.$foto1);
+                            $mimagenthumb = "thumb_".$foto1;
+                            unlink($directorio.$mimagenthumb);
+                        }
+                    }
                     $confi['image_library'] = 'gd2';
                     $confi['source_image'] = './resources/images/clientes/'.$new_name.$extension;
                     $confi['new_image'] = './resources/images/clientes/'."thumb_".$new_name.$extension;
@@ -765,9 +795,13 @@ class Website extends CI_Controller{
                 $zona_id =  $this->input->post('zona_id');
                 $email = $this->input->post('cliente_email');
                 $cliente_email = "'".$email."'";
-                
                 $codigo = mt_rand(100000,1250000);
-                
+                $id_facebook = $this->input->post('id_facebook');
+                if($id_facebook != "0"){
+                    $estado_id = 1; //Se crea cliente con Facebook
+                }else{
+                    $estado_id = 2; //Se crea cliente con correo
+                }
                 
                 $codigo_activacion = "'".$codigo."'";
                 
@@ -778,11 +812,11 @@ class Website extends CI_Controller{
                 $sql = "insert into cliente(tipocliente_id,categoriaclie_id,cliente_nombre,cliente_ci,cliente_nit,
                         cliente_razon,cliente_telefono,estado_id,usuario_id,
                         cliente_nombrenegocio, cliente_codigo, cliente_direccion, cliente_departamento,
-                        cliente_celular, zona_id, cliente_email, cliente_clave,cliente_codactivacion
+                        cliente_celular, zona_id, cliente_email, cliente_clave,cliente_codactivacion,id_facebook
                         ) value(".$tipocliente_id.",1,".$cliente_nombre.",".$cliente_ci.",".$cliente_nit.",".
-                        $cliente_razon.",".$cliente_telefono.",2,0,".
-                       $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
-                       $cliente_celular.",".$zona_id.",".$cliente_email.",".$cliente_clave.",".$codigo_activacion.")";
+                        $cliente_razon.",".$cliente_telefono.",".$estado_id.",0,".
+                        $cliente_nombrenegocio.",".$cliente_codigo.",".$cliente_direccion.",".$cliente_departamento.",".
+                        $cliente_celular.",".$zona_id.",".$cliente_email.",".$cliente_clave.",".$codigo_activacion.",".$id_facebook.");";
 
                 
 

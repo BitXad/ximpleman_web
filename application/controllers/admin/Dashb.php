@@ -18,6 +18,10 @@ class Dashb extends CI_Controller
         $this->load->model('Producto_model');
         $this->load->model('Servicio_model');
         $this->load->model('Pedido_diario_model');
+        $this->load->model('Cliente_model');
+        $this->load->model('Categoria_clientezona_model');
+        // $this->load->model('Dashb_model');
+
         $this->session_data = $this->session->userdata('logged_in');
     }
 
@@ -40,11 +44,48 @@ class Dashb extends CI_Controller
                 $data['resumen_usuario'] = $this->Venta_model->get_resumen_usuarios();
                 $data['ventas_semanales'] = $this->Venta_model->get_ventas_semanales();
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
-                
+                $data['usuario'] = $session_data['usuario_id'];
                 
                 $data['_view'] = 'hola';
                 $this->load->view('layouts/main',$data);
 
+            }else{
+                // redirect('alerta');
+                $url = "/dashb/index_user";
+                header("Location: .$url");
+                die();
+            }
+        } else {
+            redirect('', 'refresh');
+        }
+    }
+    
+    // ----------------------------------------------------------
+    public function index_user(){
+        if ($this->session->userdata('logged_in')) {
+            $session_data = $this->session->userdata('logged_in');
+            if($session_data['tipousuario_id'] > 1){
+
+                $data['page_title'] = 'Principal';
+                $data['ventas'] = $this->Venta_model->get_ventas_dia_usuario($session_data['usuario_id']);
+                $data['pedidos'] = $this->Pedido_model->get_pedidos_dia_usuario($session_data['usuario_id']);
+                $data['creditos'] = $this->Venta_model->get_venta_credito($session_data['usuario_id']);
+                $data['clientes'] = $this->Cliente_model->get_cliente_all_asignados($session_data['usuario_id']);//cantidad de clientes asignados a un usuario
+                $data['pedidos_diarios'] = $this->Pedido_diario_model->pedidos_diarios();
+                
+                $data['resumen_usuario'] = $this->Venta_model->get_resumen_usuarios();
+                $data['usuario_imagen'] = $session_data['usuario_imagen'];
+                
+                $fecha_desde = date('d-m-Y');
+                $fecha_hasta = date('d-m-Y');
+                $zona_id = 0;
+
+                $data['all_cliente'] = $this->Cliente_model->get_clientes_visitados($fecha_desde,$fecha_hasta,$zona_id);
+                $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($zona_id);
+                $data['all_pedido'] = $this->Pedido_model->get_para_entregas($session_data['usuario_id']);
+                $data['usuario'] = $session_data['usuario_id'];
+                $data['_view'] = 'dashboard_noad';
+                $this->load->view('layouts/dashb_noad',$data);
             }else{
                 redirect('alerta');
             }
@@ -52,6 +93,7 @@ class Dashb extends CI_Controller
             redirect('', 'refresh');
         }
     }
+    // ----------------------------------------------------------
 
     public function logout()
     {
