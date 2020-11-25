@@ -36,6 +36,12 @@
             <div class="box">
                 <div class="box-body table-responsive">
                     <table class='table table-condensed '>
+                        <tr style='color: white;'>
+                            <th class="text-center">#</th>
+                            <th class="text-center">Producto</th>
+                            <th class="text-right">P/U</th>
+                            <th class="text-right">Total</th>
+                        </tr>
                         <tbody class="buscar" id="verventa_detalle">
                         <?php
                        /* $cant_total = 0;
@@ -94,7 +100,7 @@
                         <tr>    
                             <td style="padding: 0; border-top: 0px; border-bottom: 0px">        
                                 <center>
-                                <h4 style="color: white;"><font size="4"><b> <?php echo "Prueba nuestras ofertas"; ?></b></font></h4>
+                                <h4 style="color: white;"><font size="4"><b> <?php echo "Ofertas"; ?></b></font></h4>
                                 <div id="myCarousel" class="carousel slide" data-ride="carousel">
                                   <!-- Indicators -->
                                   <!--<ol class="carousel-indicators">

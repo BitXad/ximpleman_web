@@ -65,7 +65,7 @@ class Promocion_model extends CI_Model
                 LEFT JOIN producto pr on pr.producto_id = p.producto_id
                 LEFT JOIN estado e on e.estado_id = p.estado_id
 
-                WHERE p.estado_id = 1  
+                /*WHERE p.estado_id = 1       */
                 ORDER BY
                   p.promocion_id DESC
         ")->result_array();
