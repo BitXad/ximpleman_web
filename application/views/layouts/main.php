@@ -530,8 +530,16 @@
                         <?php
                         if($rolusuario[156-1]['rolusuario_asignado'] == 1){
                         ?>
+                        <li><a href="#"><i class="fa fa-clipboard"></i> <span>Ventas</span></a>
+                        <ul class="treeview-menu">
                         <li>
-                            <a href="<?php echo site_url('venta');?>"><i class="fa fa-paste"></i>Ventas del dia</a>
+                            <a href="<?php echo site_url('venta');?>"><i class="fa fa-clock-o"></i>Ventas del dia</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/ventacliente');?>"><i class="fa fa-user-circle"></i>Ventas por Cliente</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/ventaproducto');?>"><i class="fa fa-product-hunt"></i>Ventas por Producto</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
@@ -539,6 +547,8 @@
 
                         <li>
                             <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
+                        </li>
+                        </ul>
                         </li>
                         <?php
                         } ?>
@@ -563,7 +573,7 @@
                         if($rolusuario[24-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('clasificador/inventario');?>"><i class="fa fa-cubes"></i>Inventario Clasificador</a>
+                            <a href="<?php echo site_url('clasificador/inventario');?>"><i class="fa fa-list-ol"></i>Inventario Clasificador</a>
                         </li>
                         <?php
                         } ?>

@@ -1028,5 +1028,29 @@ function torta3($anio,$mes)
         }
             
     }
+    function ventacliente()
+    {
+        if($this->acceso(156)){
+            $this->load->model('Tipo_transaccion_model');
+        $data['page_title'] = "Reporte Ventas";        
+        $data['_view'] = 'reportes/ventacliente';
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+        $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+        //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+        $this->load->view('layouts/main',$data);
+        }
+    }
+    function ventaproducto()
+    {
+        if($this->acceso(156)){
+            $this->load->model('Tipo_transaccion_model');
+        $data['page_title'] = "Reporte Ventas";        
+        $data['_view'] = 'reportes/ventaproducto';
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+        $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+        //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+        $this->load->view('layouts/main',$data);
+        }
+    }
     
 }
