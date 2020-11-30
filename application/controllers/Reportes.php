@@ -1052,5 +1052,17 @@ function torta3($anio,$mes)
         $this->load->view('layouts/main',$data);
         }
     }
+    function ventapagrupado()
+    {
+        if($this->acceso(156)){
+            $this->load->model('Tipo_transaccion_model');
+        $data['page_title'] = "Reporte Ventas";        
+        $data['_view'] = 'reportes/ventapagrupado';
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+        $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+        //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+        $this->load->view('layouts/main',$data);
+        }
+    }
     
 }

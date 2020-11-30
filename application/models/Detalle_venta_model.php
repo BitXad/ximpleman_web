@@ -468,5 +468,24 @@ function ventas_dia($estado)
 
         return $detalle_ventaservicio;
     }
-    
+    function reporteventas_prodagrupados($filtro)
+    {
+        $reporte = $this->db->query(
+            "SELECT
+		vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre,
+                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad,
+                (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
+                sum(`vs`.`detalleven_descuento`) as total_descuento,
+                sum(`vs`.`detalleven_total`) as total_venta,
+                (sum(`vs`.`detalleven_costo`) / count(vs.producto_id)) as total_costounit,
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`)) as total_utilidad
+            FROM
+                ventas vs
+            LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id
+            WHERE 
+                $filtro
+            group by `vs`.producto_id
+        ")->result_array();
+        return $reporte;
+    }
 }

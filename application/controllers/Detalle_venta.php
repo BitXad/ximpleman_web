@@ -594,6 +594,15 @@ class Detalle_venta extends CI_Controller{
         }        
     }
     
-    
+    function buscarprodagrupados()
+    {
+        if ($this->input->is_ajax_request()) {
+            $filtro = $this->input->post('filtro');
+            $datos = $this->Detalle_venta_model->reporteventas_prodagrupados($filtro);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
     
 }
