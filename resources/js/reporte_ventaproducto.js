@@ -73,7 +73,7 @@ function repoproducto(producto){
             $("#labusqueda").html(html);
             /*$("#cliente").val('');
             $("#proveedor").val('');*/
-            //document.getElementById('tablas').style.display = 'none';
+            document.getElementById('tablas').style.display = 'none';
             reportesproducto();
 	}
     });
@@ -184,14 +184,14 @@ function reportesproducto(){
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<th style='text-align:right'>"+Number(cuotas).toFixed(2)+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(cuotas).toFixed(2))+"</th>";
                         html += "<td></td>";
-                        html += "<th>"+Number(cantidades).toFixed(2)+"</td>";
+                        html += "<th>"+numberFormat(Number(cantidades).toFixed(2))+"</td>";
                         html += "<td></td>";
-                        html += "<th style='text-align:right'>"+Number(descuentos).toFixed(2)+"</th>";
-                        html += "<th style='text-align:right'>"+Number(total).toFixed(2)+"</th>";
-                        html += "<th style='text-align:right'>"+Number(costos).toFixed(2)+"</th>";
-                        html += "<th style='text-align:right'>"+Number(utilidades).toFixed(2)+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "</tr>";
@@ -202,14 +202,47 @@ function reportesproducto(){
                    $("#hasta").html(hasta1);
                    document.getElementById('loader').style.display = 'none';
             }
-                
         },
         error:function(result){
           // alert("Algo salio mal...!!!");
            html = "";
            $("#reportefechadeventa").html(html);
         }
-        
-    });   
+    });
+}
+function numberFormat(numero){
+    // Variable que contendra el resultado final
+    var resultado = "";
 
+    // Si el numero empieza por el valor "-" (numero negativo)
+    if(numero[0]=="-")
+    {
+        // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+        // el signo negativo
+        nuevoNumero=numero.replace(/\,/g,'').substring(1);
+    }else{
+        // Cogemos el numero eliminando los posibles puntos que tenga
+        nuevoNumero=numero.replace(/\,/g,'');
+    }
+
+    // Si tiene decimales, se los quitamos al numero
+    if(numero.indexOf(".")>=0)
+        nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+
+    // Ponemos un punto cada 3 caracteres
+    for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+        resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+
+    // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+    // los separadores de miles
+    if(numero.indexOf(".")>=0)
+        resultado+=numero.substring(numero.indexOf("."));
+
+    if(numero[0]=="-")
+    {
+        // Devolvemos el valor añadiendo al inicio el signo negativo
+        return "-"+resultado;
+    }else{
+        return resultado;
+    }
 }

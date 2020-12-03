@@ -1064,5 +1064,14 @@ function torta3($anio,$mes)
         $this->load->view('layouts/main',$data);
         }
     }
-    
+    function venta()
+    {
+        if($this->acceso(141)){
+        
+        $data['page_title'] = "Reporte de ventas";
+        $data['_view'] = 'reportes/indexventa';
+
+        $this->load->view('layouts/main',$data);
+        }
+    }
 }
