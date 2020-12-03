@@ -276,7 +276,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                     html2 += "<th>Cliente</th>";  
                     html2 += "<th>Crédito</th>";  
                     html2 += "<th>Transacción</th>";  
-                    html2 += "<th class='no-print'>Estado</th>";  
+                    html2 += "<th>Estado</th>";  
                     html2 += "<th>Monto Bs</th>";  
                     html2 += "<th>Cuota<br>Inicial</th>";  
                     html2 += "<th>Monto<br>Crédito</th>";  
@@ -326,7 +326,7 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         html += "<td style='text-align: center'>Servicio: "+registros[i]['servicio_id']+"</td>";
                         }
                         color = "background: red";
-                        html += "<td style='text-align: center' class='no-print'>"+registros[i]['estado_descripcion']+"</td>";
+                        html += "<td style='text-align: center'>"+registros[i]['estado_descripcion']+"</td>";
                         html += "<td style='text-align: right; '><b>"+formato_numerico(Number(registros[i]['venta_total']))+"</b></td>";
                         html += "<td style='text-align: right; "+color+"'>"+formato_numerico(Number(registros[i]['credito_cuotainicial']))+"</td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>"+formato_numerico(Number(registros[i]['credito_monto']))+"</font></b></td>";
