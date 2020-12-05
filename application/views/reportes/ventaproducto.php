@@ -62,7 +62,7 @@
         <div class="col-md-3">
             Hasta: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             Tipo Trans.:
             <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-primary btn-sm form-control"  >
                 <option value="0">-TODOS-</option>
@@ -72,31 +72,46 @@
                 <?php } ?>
             </select>
         </div>
+        <div class="col-md-2">
+            Usuario:
+            <select id="usuario_id" name="usuario_id" class="btn btn-primary btn-sm form-control"  >
+                <option value="0">-TODOS-</option>
+                <?php
+                    foreach($all_usuario as $usuario){ ?>
+                        <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>                                                   
+                <?php } ?>
+             </select>
+        </div>
+        <div class="col-md-2">
+            Venta/Preventa:
+            <select id="esventa_preventa" name="esventa_preventa" class="btn btn-primary btn-sm form-control"  >
+                <!--<option value="0">-TODOS-</option>-->
+                <option value="1"> VENTA </option>
+                <option value="2"> PREVENTA </option>
+             </select>
+        </div>
         <div class="col-md-3 no-print">
             <br>
-            <!--<button class="btn btn-facebook btn-sm" onclick="reportesproducto()"><i class="fa fa-search"> Buscar</i></button>-->
+            <a data-toggle="modal" data-target="#modalbuscarproducto" class="btn btn-facebook btn-sm" title="Buscar Producto"><i class="fa fa-search"> Buscar</i></a>
             <a onclick="imprimir()" class="btn btn-success btn-sm"><i class="fa fa-print"> Imprimir</i></a>
         </div>
-        <div class="col-md-6 no-print" >                     
-            &nbsp;
-            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo"  onkeypress="ventaproducto(event)">
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
-            </div>
-        </div>
+        
         <div id="tablas" style="visibility: block">  
-            <div class="col-md-6 no-print" id="tablareproducto">&nbsp;</div>
+            <!--<div class="col-md-6 no-print" id="tablareproducto"></div>
             <div class="col-md-6 no-print" id="tablarecliente"></div>
-            <div class="col-md-6 no-print" id="tablareproveedor"></div>
+            <div class="col-md-6 no-print" id="tablareproveedor"></div>-->
             <input id="producto" type="hidden" class="form-control" >
-            <input id="cliente" type="hidden" class="form-control" > 
-            <input id="proveedor" type="hidden" class="form-control" > 
+            <!--<input id="cliente" type="hidden" class="form-control" > 
+            <input id="proveedor" type="hidden" class="form-control" >-->
         </div>
             
     </div>
-         <span id="desde"></span>
-         <span id="hasta"></span>
-       <div id="labusqueda"></div>
+    <span id="desde"></span>
+    <span id="hasta"></span>
+    <div id="labusqueda"></div>
+    <span id="tipotrans"></span>
+    <span id="esteusuario"></span>
+    <span id="ventaprev"></span>
 </div>
 <div class="row no-print" id='loader'  style='display:none;'>
     <center>
@@ -136,7 +151,32 @@
     
 
 <!-------------------- FIN CATEGORIAS--------------------------------->
-                                
-          
-  
+<!------------------------ INICIO modal para Seleccionar un producto ------------------->
+<div class="modal fade" id="modalbuscarproducto" tabindex="-1" role="dialog" aria-labelledby="modalbuscarproductolabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Buscar Producto</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Buscar </span>
+                        <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo"  onkeypress="ventaproducto(event)">
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <!------------------------------------------------------------------->
+                <div class="col-md-12 no-print" id="tablareproducto"></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar un producto ------------------->
 

@@ -4,7 +4,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
-            $('#comprar').keyup(function () {
+            $('#cliente_id').keyup(function () {
                 var rex = new RegExp($(this).val(), 'i');
                 $('.buscar tr').hide();
                 $('.buscar tr').filter(function () {
@@ -60,7 +60,7 @@
         <div class="col-md-3">
             Hasta: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             Tipo Trans.:
             <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-primary btn-sm form-control"  >
                 <option value="0">-TODOS-</option>
@@ -70,9 +70,27 @@
                 <?php } ?>
              </select>
         </div>
+        <div class="col-md-2">
+            Usuario:
+            <select id="usuario_id" name="usuario_id" class="btn btn-primary btn-sm form-control"  >
+                <option value="0">-TODOS-</option>
+                <?php
+                    foreach($all_usuario as $usuario){ ?>
+                        <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>                                                   
+                <?php } ?>
+             </select>
+        </div>
+        <div class="col-md-2">
+            Venta/Preventa:
+            <select id="esventa_preventa" name="esventa_preventa" class="btn btn-primary btn-sm form-control"  >
+                <!--<option value="0">-TODOS-</option>-->
+                <option value="1"> VENTA </option>
+                <option value="2"> PREVENTA </option>
+             </select>
+        </div>
         <div class="col-md-3 no-print">
             <br>
-            <!--<button class="btn btn-facebook btn-sm" onclick="reportes()"><i class="fa fa-search"> Buscar</i></button>-->
+            <a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-facebook btn-sm" title="Buscar cliente"><i class="fa fa-search"> Buscar</i></a>
             <a onclick="imprimir()" class="btn btn-success btn-sm"><i class="fa fa-print"> Imprimir</i></a>
         </div>
         
@@ -82,13 +100,6 @@
           </div>
 
         </div>-->
-        <div class="col-md-6 no-print" >
-            &nbsp;
-            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                <input id="cliente_id" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)">
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablarecliente()"><span class="fa fa-search"></span></div>
-          </div>
-        </div>
         <!--<div class="col-md-6 no-print" >                     
           <div class="input-group no-print"> <span class="input-group-addon">Buscar Proveedor</span>
             <input id="proveedor_id" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor"  onkeypress="ventaproveedor(event)">
@@ -103,16 +114,19 @@
         </div>-->
         <div id="tablas" style="visibility: block">  
             <div class="col-md-6 no-print" id="tablareproducto"></div>
-            <div class="col-md-6 no-print" id="tablarecliente"></div>
-            <div class="col-md-6 no-print" id="tablareproveedor"></div>
-            <input id="producto" type="hidden" class="form-control" >
+            
+            <!--<div class="col-md-6 no-print" id="tablareproveedor"></div>-->
+            <!--<input id="producto" type="hidden" class="form-control" >-->
             <input id="cliente" type="hidden" class="form-control" > 
-            <input id="proveedor" type="hidden" class="form-control" > 
+            <!--<input id="proveedor" type="hidden" class="form-control" >--> 
         </div>
     </div>
     <span id="desde"></span>
     <span id="hasta"></span>
     <div id="labusqueda"></div>
+    <span id="tipotrans"></span>
+    <span id="esteusuario"></span>
+    <span id="ventaprev"></span>
 </div>
 <div class="row no-print" id='loader'  style='display:none;'>
     <center>
@@ -149,7 +163,33 @@
         <ul style="margin-bottom: -5px;">RESPONSABLE</ul><ul>FIRMA - SELLO</ul>
     </center>
 <!-------------------- FIN CATEGORIAS--------------------------------->
-                                
-          
-  
+
+<!------------------------ INICIO modal para Seleccionar a un cliente ------------------->
+<div class="modal fade" id="modalbuscarcliente" tabindex="-1" role="dialog" aria-labelledby="modalbuscarclientelabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Buscar Cliente</span>
+                <div class="col-md-12" style="padding-left: 0px">
+                    <div class="input-group">
+                        <span class="input-group-addon"> Buscar </span>
+                        <input id="cliente_id" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)" autofocus>
+                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablarecliente()"><span class="fa fa-search"></span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <!------------------------------------------------------------------->
+                <div class="col-md-12 no-print" id="tablarecliente"></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer aligncenter">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar a un cliente ------------------->
 

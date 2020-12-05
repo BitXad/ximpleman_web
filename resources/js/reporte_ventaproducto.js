@@ -47,8 +47,8 @@ function tablareproducto()
                         html += "</tr>";
                    }
                         html += "</tbody>"
-                   $("#tablareproducto").html("&nbsp;"+html);
-                    document.getElementById('tablas').style.display = 'block';
+                   $("#tablareproducto").html(html);
+                    //document.getElementById('tablas').style.display = 'block';
             }
         },
         error:function(respuesta){
@@ -69,7 +69,7 @@ function repoproducto(producto){
            success:function(report){  
             var registros =  JSON.parse(report);
             html = "";
-            html += "<font size='2'><b>Producto: "+registros["producto_nombre"]+"</b></font>";  
+            html += "<font size='2'>Producto: <b>"+registros["producto_nombre"]+"</b></font>";  
             $("#labusqueda").html(html);
             /*$("#cliente").val('');
             $("#proveedor").val('');*/
@@ -84,12 +84,12 @@ function reportesproducto(){
     var controlador = base_url+"detalle_venta/buscarrepo";
     var desde    = document.getElementById('fecha_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
-    var cliente  = document.getElementById('cliente').value;
+    var producto  = document.getElementById('producto').value;
     var tipo     = document.getElementById('tipo_transaccion').value;
-    var producto = document.getElementById('producto').value;
-    var proveedor   = document.getElementById('proveedor').value;
+    var usuario_id = document.getElementById('usuario_id').value;
+    var esventa_preventa = document.getElementById('esventa_preventa').value;
     document.getElementById('loader').style.display = 'block';
-    if (proveedor=="") {
+    /*if (proveedor=="") {
       elprove = "";
     } else {
       elprove = "and producto_marca like '%"+proveedor+"%' "; 
@@ -98,7 +98,7 @@ function reportesproducto(){
             elcliente = "";
     } else {
             elcliente = "and vs.cliente_id="+cliente+" "; 
-    }
+    }*/
     if (producto=="") {
             elproducto = "";
     } else {
@@ -108,8 +108,26 @@ function reportesproducto(){
       eltipo = "";
     }else{
       eltipo = " and vs.tipotrans_id = "+tipo+" ";
+      $("#tipotrans").html("<font size='2'>Tipo Trans.: <b>"+$('#tipo_transaccion option:selected').text()+"</b></font><br>");
     }
-	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" "+elprove+" ";
+    if(esventa_preventa ==1){
+        if (usuario_id==0) {
+            elusuario = " and vs.usuario_id > 0 ";
+        }else{
+            elusuario = " and vs.usuario_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
+    }else{
+        if (usuario_id==0) {
+            elusuario = " and vs.usuarioprev_id > 0 ";
+        }else{
+            elusuario = " and vs.usuarioprev_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
+    }
+	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elproducto+" "+elusuario+" ";
 
   //simplemente(filtro);
      
@@ -195,12 +213,16 @@ function reportesproducto(){
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "</tr>";
-                   desde1 = "<b>Desde: "+moment(desde).format('DD/MM/YYYY')+"</b>";
-                   hasta1 = "<b>Hasta: "+moment(hasta).format('DD/MM/YYYY')+"</b>";
+                   desde1 = "Desde: <b>"+moment(desde).format('DD/MM/YYYY')+"</b>";
+                   hasta1 = "Hasta: <b>"+moment(hasta).format('DD/MM/YYYY')+"</b>";
                    $("#reportefechadeventa").html(html);
                    $("#desde").html(desde1);
                    $("#hasta").html(hasta1);
                    document.getElementById('loader').style.display = 'none';
+                   $('#modalbuscarproducto').modal('hide');
+                    $('#modalbuscarproducto').on('hidden.bs.modal', function () {
+                    $('#tablareproducto').html('');
+                    });
             }
         },
         error:function(result){

@@ -544,9 +544,9 @@
                         <li>
                             <a href="<?php echo site_url('reportes/ventapagrupado');?>"><i class="fa fa-certificate"></i>Producto Agrupado</a>
                         </li>
-                        <li>
-                            <a href="<?php echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
-                        </li>
+                        <!--<li>
+                            <a href="<?php //echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
+                        </li>-->
 
                         <li>
                             <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>

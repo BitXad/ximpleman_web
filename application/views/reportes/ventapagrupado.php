@@ -3,7 +3,7 @@
  
     
 <script type="text/javascript">
-        $(document).ready(function () {
+        /*$(document).ready(function () {
             (function ($) {
                 $('#vender').keyup(function () {
                     var rex = new RegExp($(this).val(), 'i');
@@ -14,7 +14,7 @@
                 })
             }(jQuery));
         });
-        
+        */
         function imprimir()
         {
              window.print(); 
@@ -44,7 +44,7 @@
             <?php echo $empresa[0]['empresa_zona']; ?><br>
             <?php echo $empresa[0]['empresa_direccion']; ?><br>
             <?php echo $empresa[0]['empresa_telefono']; ?>
-         </center>
+        </center>
     </div>
     <div class="columna_central">
         <center>
@@ -62,7 +62,7 @@
         <div class="col-md-3">
             Hasta: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
             Tipo Trans.:
             <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-primary btn-sm form-control"  >
                 <option value="0">-TODOS-</option>
@@ -71,6 +71,24 @@
                         <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
                 <?php } ?>
             </select>
+        </div>
+        <div class="col-md-2">
+            Usuario:
+            <select id="usuario_id" name="usuario_id" class="btn btn-primary btn-sm form-control"  >
+                <option value="0">-TODOS-</option>
+                <?php
+                    foreach($all_usuario as $usuario){ ?>
+                        <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>                                                   
+                <?php } ?>
+             </select>
+        </div>
+        <div class="col-md-2">
+            Venta/Preventa:
+            <select id="esventa_preventa" name="esventa_preventa" class="btn btn-primary btn-sm form-control"  >
+                <!--<option value="0">-TODOS-</option>-->
+                <option value="1"> VENTA </option>
+                <option value="2"> PREVENTA </option>
+             </select>
         </div>
         <div class="col-md-3 no-print">
             <br>
@@ -84,19 +102,22 @@
                 <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
             </div>
         </div>-->
-        <div id="tablas" style="visibility: block">  
+        <!--<div id="tablas" style="visibility: block">  
             <div class="col-md-6 no-print" id="tablareproducto">&nbsp;</div>
             <div class="col-md-6 no-print" id="tablarecliente"></div>
             <div class="col-md-6 no-print" id="tablareproveedor"></div>
             <input id="producto" type="hidden" class="form-control" >
             <input id="cliente" type="hidden" class="form-control" > 
             <input id="proveedor" type="hidden" class="form-control" > 
-        </div>
+        </div>-->
             
     </div>
-         <span id="desde"></span>
-         <span id="hasta"></span>
-       <div id="labusqueda"></div>
+    <span id="desde"></span>
+    <span id="hasta"></span>
+    <div id="labusqueda"></div>
+    <span id="tipotrans"></span>
+    <span id="esteusuario"></span>
+    <span id="ventaprev"></span>
 </div>
 <div class="row no-print" id='loader'  style='display:none;'>
     <center>

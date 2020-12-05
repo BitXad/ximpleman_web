@@ -42,8 +42,8 @@ function tablarecliente(){
                         html += "</tr>";
                    }
                        html += "</tbody>"
-                   $("#tablarecliente").html("&nbsp;"+html);
-                   document.getElementById('tablas').style.display = 'block';
+                   $("#tablarecliente").html(html);
+                   //document.getElementById('tablas').style.display = 'block';
                 }
             },
             error:function(respuesta){
@@ -64,7 +64,7 @@ function repocliente(cliente){
         success:function(report){
             var registros =  JSON.parse(report);
             html = "";
-            html += "<font size='2'><b>Cliente: "+registros["cliente_nombre"]+"</b></font>";  
+            html += "<font size='2'>Cliente: <b>"+registros["cliente_nombre"]+"</b></font>";
             $("#labusqueda").html(html);
             /*$("#producto").val('');
             $("#proveedor").val('');*/
@@ -79,32 +79,58 @@ function reportescliente(){
     var controlador = base_url+"detalle_venta/buscarrepo";
     var desde    = document.getElementById('fecha_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
-    var cliente    = document.getElementById('cliente').value;
-    var tipo    = document.getElementById('tipo_transaccion').value;
-    var producto    = document.getElementById('producto').value;
-    var proveedor   = document.getElementById('proveedor').value;
+    var cliente  = document.getElementById('cliente').value;
+    var tipo     = document.getElementById('tipo_transaccion').value;
+    var usuario_id = document.getElementById('usuario_id').value;
+    var esventa_preventa = document.getElementById('esventa_preventa').value;
     document.getElementById('loader').style.display = 'block';
-    if (proveedor=="") {
+    
+    /*if (proveedor=="") {
       elprove = "";
     } else {
       elprove = "and producto_marca like '%"+proveedor+"%' "; 
-    }
+    }*/
     if (cliente=="") {
             elcliente = "";
     } else {
             elcliente = "and vs.cliente_id="+cliente+" "; 
     }
-    if (producto=="") {
+    /*if (producto=="") {
             elproducto = "";
     } else {
             elproducto = "and producto_id="+producto+" "; 
-    }
+    }*/
     if (tipo==0) {
       eltipo = "";
     }else{
-      eltipo = " and tipotrans_id = "+tipo+" ";
-    } 
-    var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" "+elprove+" ";
+      eltipo = " and vs.tipotrans_id = "+tipo+" ";
+      $("#tipotrans").html("<font size='2'>Tipo Trans.: <b>"+$('#tipo_transaccion option:selected').text()+"</b></font><br>");
+    }
+    
+    if(esventa_preventa ==1){
+        if (usuario_id==0) {
+            elusuario = " and vs.usuario_id > 0 ";
+        }else{
+            elusuario = " and vs.usuario_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
+    }else{
+        if (usuario_id==0) {
+            elusuario = " and vs.usuarioprev_id > 0 ";
+        }else{
+            elusuario = " and vs.usuarioprev_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
+    }
+    //}
+    /*if (esventa_preventa==0) {
+      ventapreventa = "";
+    }else{*/
+        
+    //}
+    var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elusuario+" ";
 
   //simplemente(filtro);
      
@@ -170,12 +196,16 @@ function reportescliente(){
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "</tr>";
-                   desde1 = "<b>Desde: "+moment(desde).format('DD/MM/YYYY')+"</b>";
-                   hasta1 = "<b>Hasta: "+moment(hasta).format('DD/MM/YYYY')+"</b>";
+                   desde1 = "Desde: <b>"+moment(desde).format('DD/MM/YYYY')+"</b>";
+                   hasta1 = "Hasta: <b>"+moment(hasta).format('DD/MM/YYYY')+"</b>";
                    $("#reportefechadeventa").html(html);
                    $("#desde").html(desde1);
                    $("#hasta").html(hasta1);
                    document.getElementById('loader').style.display = 'none';
+                    $('#modalbuscarcliente').modal('hide');
+                    $('#modalbuscarcliente').on('hidden.bs.modal', function () {
+                    $('#tablarecliente').html('');
+                    });
             }
         },
         error:function(result){

@@ -8,10 +8,9 @@ function tabla_reportesproducto(){
     var controlador = base_url+"detalle_venta/buscarprodagrupados";
     var desde    = document.getElementById('fecha_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
-    //var cliente  = document.getElementById('cliente').value;
     var tipo     = document.getElementById('tipo_transaccion').value;
-    //var producto = document.getElementById('producto').value;
-    //var proveedor   = document.getElementById('proveedor').value;
+    var usuario_id = document.getElementById('usuario_id').value;
+    var esventa_preventa = document.getElementById('esventa_preventa').value;
     document.getElementById('loader').style.display = 'block';
     /*if (proveedor=="") {
       elprove = "";
@@ -32,9 +31,27 @@ function tabla_reportesproducto(){
       eltipo = "";
     }else{
       eltipo = " and vs.tipotrans_id = "+tipo+" ";
+      $("#tipotrans").html("<font size='2'>Tipo Trans.: <b>"+$('#tipo_transaccion option:selected').text()+"</b></font><br>");
+    }
+    if(esventa_preventa ==1){
+        if (usuario_id==0) {
+            elusuario = " and vs.usuario_id > 0 ";
+        }else{
+            elusuario = " and vs.usuario_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
+    }else{
+        if (usuario_id==0) {
+            elusuario = " and vs.usuarioprev_id > 0 ";
+        }else{
+            elusuario = " and vs.usuarioprev_id = "+usuario_id+" ";
+            $("#esteusuario").html("<font size='2'>Usuario: <b>"+$('#usuario_id option:selected').text()+"</b></font><br>");
+        }
+        $("#ventaprev").html("<font size='2'>Venta/Preventa: <b>"+$('#esventa_preventa option:selected').text()+"</b></font>");
     }
 	//var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elcliente+" "+elproducto+" "+elprove+" ";
-	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" ";
+	var filtro = " date(venta_fecha) >= '"+desde+"'  and  date(venta_fecha) <='"+hasta+"' "+eltipo+" "+elusuario+" ";
 
   //simplemente(filtro);
      
@@ -104,8 +121,8 @@ function tabla_reportesproducto(){
                         /*html += "<td></td>";
                         html += "<td></td>";*/
                         html += "</tr>";
-                   desde1 = "<b>Desde: "+moment(desde).format('DD/MM/YYYY')+"</b>";
-                   hasta1 = "<b>Hasta: "+moment(hasta).format('DD/MM/YYYY')+"</b>";
+                   desde1 = "Desde: <b>"+moment(desde).format('DD/MM/YYYY')+"</b>";
+                   hasta1 = "Hasta: <b>"+moment(hasta).format('DD/MM/YYYY')+"</b>";
                    $("#reportefechadeventa").html(html);
                    $("#desde").html(desde1);
                    $("#hasta").html(hasta1);
