@@ -29,6 +29,15 @@ class Caja_model extends CI_Model
     }
         
     /*
+     * Get all caja
+     */
+    function get_mis_cajas($usuario_id)
+    {
+        $sql = "select * from caja where usuario_id = ".$usuario_id." order by caja_id desc";        
+        return $this->db->query($sql)->result_array();
+    }
+        
+    /*
      * function to add new caja
      */
     function add_caja($params)
@@ -53,4 +62,25 @@ class Caja_model extends CI_Model
     {
         return $this->db->delete('caja',array('caja_id'=>$caja_id));
     }
+    
+    /*
+     * function consultar
+     */
+    function consultar($sql)
+    {
+        return $this->db->query($sql)->result_array();
+    }
+    
+    /*
+     * function ejecutar
+     */
+    function ejecutar($sql)
+    {
+        $this->db->query($sql);
+        return true;
+        
+    }
+    
+    
+    
 }

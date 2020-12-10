@@ -12,10 +12,28 @@ function inicio(){
 
 function calculardesc(){
 
+   
+   
+    var porcdesc = document.getElementById('tipocliente_porcdesc').value;
+    var montodesc = document.getElementById('tipocliente_montodesc').value;
+    
+    
+    if (Number(porcdesc)>0){
+        //alert("eee: "+porcdesc);
+        $("#tipo_descuento").val(2);        
+        $("#venta_descuento").val(porcdesc);
+    }
+    else{
+        $("#tipo_descuento").val(1);                
+        $("#venta_descuento").val(montodesc);
+    }   
+   
+   
    var venta_subtotal = document.getElementById('venta_subtotal').value;
    var venta_descuento = document.getElementById('venta_descuento').value;      
    var tipo_descuento = document.getElementById('tipo_descuento').value;      
    var subtotal = 0;
+   
    
    if (tipo_descuento==2)
    {   
@@ -52,7 +70,7 @@ function validar(e,opcion) {
   tecla = (document.all) ? e.keyCode : e.which;
   
   
-    if (tecla==13){ 
+    if (tecla==13){
     
     
         if (opcion==0){   //si la pulsacion proviene del telefono
@@ -103,14 +121,15 @@ function validar(e,opcion) {
         }        
         
         if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
-           document.getElementById('filtrar').focus();               
+           document.getElementById('filtrar').focus();
+
         }
         
         if (opcion==9){   //si la tecla proviene del buscador de pedido abierto
             
            var nit = document.getElementById('nit').value;
            if (nit=='0'){
-                buscar_clientes();      
+                buscar_clientes();
            }
            else{
             
@@ -135,7 +154,12 @@ function validar(e,opcion) {
             $("#boton_ingreso_rapido").click();
         }
                 
-    } 
+    }
+    
+    if (opcion==7){   //si la tecla proviene del buscador de pedido abierto
+       //document.getElementById('filtrar').focus();
+       seleccionar_tipocliente();
+    }    
  
 }
 
@@ -192,11 +216,48 @@ function buscarcliente(){
                     $("#cliente_direccion").val(registros[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(registros[0]["cliente_departamento"]);
                     $("#cliente_celular").val(registros[0]["cliente_celular"]);
+                    $("#tipocliente_id").val(1);
+                    $("#tipocliente_porcdesc").val(0);
+                    $("#tipocliente_montodesc").val(0);
+                   
+                    
+                    
+                    if (registros[0]["tipocliente_id"] != null && registros[0]["tipocliente_id"] >=0)
+                    {   //si tiene definido un tipo de cliente 
+                        
+                        $("#tipocliente_id").val(registros[0]["tipocliente_id"]); 
+                        
+                        if(registros[0]["tipocliente_montodesc"]>0){
+                            
+                            $("#tipo_descuento").val(1);
+                            $("#venta_descuento").val(registros[0]["tipocliente_montodesc"]);                            
+                            calculardesc();
+                        } 
+                        else{
+                            
+                            if(registros[0]["tipocliente_porcdesc"]>0){                                
+                                $("#tipo_descuento").val(2); 
+                                $("#venta_descuento").val(registros[0]["tipocliente_porcdesc"]);
+                                calculardesc();
+                            }
+                            else{
+                                $("#tipo_descuento").val(1); 
+                                $("#venta_descuento").val(0);                                
+                            }
+                            
+                        }
+                    
+                    
+                    }
+                    else //si no tiene asignado ningun tipo, le asignara el tipo 1 por defecto
+                    {    $("#tipocliente_id").val(1); }
+                        
                     if(registros[0]["zona_id"] != null && registros[0]["zona_id"] >=0){
                         $("#zona_id").val(registros[0]["zona_id"]);
                     }else{
                         $("#zona_id").val(0);
                     }
+                    
                     
                 }
                 else 
@@ -216,6 +277,8 @@ function buscarcliente(){
                     $("#cliente_departamento").val("-");
                     $("#cliente_celular").val("");
                     $("#zona_id").val(0);
+                    $("#tipocliente_id").val(1);
+                    $("#venta_descuento").val(0);
                     
                     
                     
@@ -1596,7 +1659,8 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
-                        html += "     <a href='#' data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+//                        html += "     <a href='#' data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+                        html += "     <button data-toggle='modal' id='boton_cantidad"+registros[i]["producto_id"]+"' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-foursquarexs' id='boton_cantidad_producto'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 
                         html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
@@ -1665,7 +1729,9 @@ function tablaresultados(opcion)
                         nombre_producto = registros[i]['producto_nombre'];
                         prod = nombre_producto.substr(0,20);
                         
-                        html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" '>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
+                        // Este es el boton del producto
+                        html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
+                        // fin Este es el boton del producto
 
                         html += "<!---------------------- modal cantidad producto ------------------->";
                         
@@ -1726,10 +1792,12 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
+                        html += "     <button data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' id='boton_agregar"+registros[i]["producto_id"]+"'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar jejeje</small></button>";
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 
-                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
+//                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
+                        html += "     <button data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs' id='boton_salir_modal"+registros[i]["producto_id"]+"'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></button>";
                         html += "  </div>";                        
                         html += "</div>";
                         
@@ -2122,10 +2190,11 @@ function finalizarventa()
     var monto = document.getElementById('venta_totalfinal').value;
     //var base_url = document.getElementById('base_url').value;
     //var controlador = base_url+'/verificardetalle/'+monto;
-
-    
+    calculardesc();
+        
         if (monto>0)
         {
+           
            document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
            document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader
 
@@ -2904,11 +2973,47 @@ function seleccionar_cliente(){
                     $("#cliente_direccion").val(resultado[0]["cliente_direccion"]);
                     $("#cliente_departamento").val(resultado[0]["cliente_departamento"]);
                     $("#cliente_celular").val(resultado[0]["cliente_celular"]);
+                    
+                    $("#tipocliente_porcdesc").val(resultado[0]["tipocliente_porcdesc"]);
+                    $("#tipocliente_montodesc").val(resultado[0]["tipocliente_montodesc"]);                    
+
+                    if (resultado[0]["tipocliente_id"] != null && resultado[0]["tipocliente_id"] >=0)
+                    {   //si tiene definido un tipo de cliente 
+                        
+                        $("#tipocliente_id").val(resultado[0]["tipocliente_id"]); 
+                        
+                        if(resultado[0]["tipocliente_montodesc"]>0){
+                            
+                            $("#tipo_descuento").val(1);
+                            $("#venta_descuento").val(resultado[0]["tipocliente_montodesc"]);                            
+                            calculardesc();
+                        } 
+                        else{
+                            
+                            if(resultado[0]["tipocliente_porcdesc"]>0){                                
+                                $("#tipo_descuento").val(2); 
+                                $("#venta_descuento").val(resultado[0]["tipocliente_porcdesc"]);
+                                calculardesc();
+                            }
+                            else{
+                                $("#tipo_descuento").val(1); 
+                                $("#venta_descuento").val(0);                                
+                            }
+                            
+                        }
+                    
+                    
+                    }
+                    else //si no tiene asignado ningun tipo, le asignara el tipo 1 por defecto
+                    {    $("#tipocliente_id").val(1); }
+                    
+                    
                     if(resultado[0]["zona_id"] != null && Number(resultado[0]["zona_id"]) >=0){
                         $("#zona_id").val(resultado[0]["zona_id"]);
                     }else{
                         $("#zona_id").val(0);
                     }
+                    
                     //$("#zona_id").val(resultado[0]["zona_id"]);
                     $("#codigo").select();
                 }
@@ -3349,6 +3454,25 @@ function guardar_preferencia()
 
 function focus_efectivo(){
     
+    
+    var porcdesc = document.getElementById('tipocliente_porcdesc').value;
+    var montodesc = document.getElementById('tipocliente_montodesc').value;
+    
+    
+    if (Number(porcdesc)>0){
+        //alert("eee: "+porcdesc);
+        $("#tipo_descuento").val(2);        
+        $("#venta_descuento").val(porcdesc);
+        calculardesc();
+    }
+    else{
+        $("#tipo_descuento").val(1);                
+        $("#venta_descuento").val(montodesc);
+        calculardesc();
+    }
+    
+        
+    
         $('#modalfinalizar').on('shown.bs.modal', function() {
         $('#venta_efectivo').focus();
         $('#venta_efectivo').select();
@@ -3371,6 +3495,9 @@ function focus_cantidad(producto_id){
         $('#myModal'+producto_id).on('shown.bs.modal', function() {
         $('#'+campo).focus();
         $('#'+campo).select();
+       $("#boton_agregar"+producto_id).click();
+       $("#boton_salir_modal"+producto_id).click();
+    
     });
 }
 
@@ -3800,6 +3927,33 @@ function registrar_clasificador(){
            data:{clasificador_id:clasificador_id, detalleven_id: detalleven_id},
            success:function(respuesta){     
                
+
+           },
+           error: function(respuesta){
+               
+           }
+       });              
+}
+
+function seleccionar_tipocliente(){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/seleccionar_tipocliente";
+    var tipocliente_id = document.getElementById('tipocliente_id').value;
+    
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{tipocliente_id:tipocliente_id},
+           success:function(respuesta){     
+               
+               var r = JSON.parse(respuesta);
+               
+               if (r.length>0){
+                   $("#tipocliente_porcdesc").val(r[0]["tipocliente_porcdesc"]);
+                   $("#tipocliente_montodesc").val(r[0]["tipocliente_montodesc"]);
+                   
+               }
 
            },
            error: function(respuesta){
