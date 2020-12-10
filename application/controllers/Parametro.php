@@ -194,6 +194,7 @@ class Parametro extends CI_Controller{
                 'parametro_logomonitor' => $foto,
                 'parametro_fondomonitor' => $fotoapo,
                 'parametro_cantidadproductos' => $this->input->post('parametro_cantidadproductos'),
+                'parametro_datosboton' => $this->input->post('parametro_datosboton'),
             );
             
             $parametro_id = $this->Parametro_model->add_parametro($params);
@@ -395,6 +396,7 @@ class Parametro extends CI_Controller{
                     'parametro_logomonitor' => $foto,
                     'parametro_fondomonitor' => $fotoapo,
                     'parametro_cantidadproductos' => $this->input->post('parametro_cantidadproductos'),
+                    'parametro_datosboton' => $this->input->post('parametro_datosboton'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            

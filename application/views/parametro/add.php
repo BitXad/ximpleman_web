@@ -305,6 +305,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_datosboton" class="control-label">DATOS BOTON</label>
+                        <div class="form-group">
+                            <select  name="parametro_datosboton" class="form-control" id="parametro_datosboton">
+                                <option value="1">NOMBRE PRODUCTO Y PRECIO</option>
+                                <option value="2">SOLO NOMBRE</option>
+                                <option value="3">SOLO PRECIO</option>
+                                <option value="4">NINGUNO</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer text-center">

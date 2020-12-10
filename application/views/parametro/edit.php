@@ -313,6 +313,17 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="parametro_datosboton" class="control-label">DATOS BOTON</label>
+                        <div class="form-group">
+                            <select  name="parametro_datosboton" class="form-control" id="parametro_datosboton">
+                                <option value="1" <?php if($parametro['parametro_datosboton']=='1') echo 'selected'; ?> >NOMBRE PRODUCTO Y PRECIO</option>
+                                <option value="2" <?php if($parametro['parametro_datosboton']=='2') echo 'selected'; ?> >SOLO NOMBRE</option>
+                                <option value="3" <?php if($parametro['parametro_datosboton']=='3') echo 'selected'; ?> >SOLO PRECIO</option>
+                                <option value="4" <?php if($parametro['parametro_datosboton']=='4') echo 'selected'; ?> >NINGUNO</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer text-center">
