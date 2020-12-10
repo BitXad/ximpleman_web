@@ -852,16 +852,12 @@ window.onkeydown = compruebaTecla;
                                         <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
                                                 
                                                     <option value="0">MESA</option>
-                                                    <option value="1">A</option>
-                                                    <option value="1">B</option>
-                                                    <option value="1">C</option>
-                                                    <option value="1">D</option>
-                                                    <option value="1">E</option>
-                                                    <option value="1">G</option>
-                                            <?php //$mesas = 30;
-//                                                for($x = 1; $x<=$mesas; $x++ ){ ?>
-                                                    <!--<option value="//<?php echo $x; ?>"><?php echo $x; ?></option>-->
-                                            <?php //} ?>
+                                            <?php $mesas = 30;
+                                            
+                                                foreach($mesas as $mesa ){ ?>
+                                                    <option value="<?php echo $mesa["mesa_id"]; ?>"><?php echo $mesa["mesa_nombre"]; ?></option>
+                                            
+                                            <?php } ?>
  
                                          </select>
                                         
