@@ -111,4 +111,39 @@ class Categoria_producto_model extends CI_Model
 
         return $categoria_producto;
     }
+    /*
+     * Get all categoria_producto
+     */
+    function getall_ventapor_categoria($fecha_desde, $fecha_hasta)
+    {
+        $venta_categoriap = $this->db->query("
+            SELECT
+                vs.categoria_id, cp.`categoria_nombre`, SUM(vs.detalleven_total) as 'totalventas'
+            FROM
+                `ventas` vs
+            left join `categoria_producto` cp on vs.categoria_id = cp.categoria_id
+            where
+            	date(vs.venta_fecha) >= '$fecha_desde'
+                and date(vs.venta_fecha) <= '$fecha_hasta'
+            group by cp.`categoria_id`
+        ")->result_array();
+
+        return $venta_categoriap;
+    }
+    /* usado en reporte de vetnas por categoria */
+    function get_all_categoria_ventaproducto_count($fecha_desde, $fecha_hasta)
+    {
+        $categoria_producto = $this->db->query("
+            SELECT
+                `vs`.categoria_id
+            FROM
+                `ventas` vs
+            where
+            	date(vs.venta_fecha) >= '$fecha_desde'
+                and date(vs.venta_fecha) <= '$fecha_hasta'
+            group by vs.`categoria_id`
+        ")->result_array();
+
+        return $categoria_producto;
+    }
 }

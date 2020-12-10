@@ -291,17 +291,26 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="parametro_logomonitor" class="control-label">Logo(p/ Monitor) (260x130)</label>
+                        <label for="parametro_logomonitor" class="control-label">LOGO(p/ Monitor) (260x130)</label>
                         <div class="form-group">
                             <input type="file" name="parametro_logomonitor" value="<?php echo ($this->input->post('parametro_logomonitor') ? $this->input->post('parametro_logomonitor') : $parametro['parametro_logomonitor']); ?>" class="form-control" id="parametro_logomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
                             <input type="hidden" name="parametro_logomonitor1" value="<?php echo ($this->input->post('parametro_logomonitor') ? $this->input->post('parametro_logomonitor') : $parametro['parametro_logomonitor']); ?>" class="form-control" id="parametro_logomonitor1" />
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <label for="parametro_fondomonitor" class="control-label">Imagen Fondo(p/ Monitor) (1920x1078)</label>
+                        <label for="parametro_fondomonitor" class="control-label">IMAGEN FONDO(p/ Monitor) (1920x1078)</label>
                         <div class="form-group">
                             <input type="file" name="parametro_fondomonitor" value="<?php echo ($this->input->post('parametro_fondomonitor') ? $this->input->post('parametro_fondomonitor') : $parametro['parametro_fondomonitor']); ?>" class="form-control" id="parametro_fondomonitor" accept="image/png, image/jpeg, jpg, image/gif" />
                             <input type="hidden" name="parametro_fondomonitor1" value="<?php echo ($this->input->post('parametro_fondomonitor') ? $this->input->post('parametro_fondomonitor') : $parametro['parametro_fondomonitor']); ?>" class="form-control" id="parametro_fondomonitor1" />
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="parametro_cantidadproductos" class="control-label">PASE A DETALLE</label>
+                        <div class="form-group">
+                            <select  name="parametro_cantidadproductos" class="form-control" id="parametro_cantidadproductos">
+                                <option value="1" <?php if($parametro['parametro_cantidadproductos']=='1') echo 'selected'; ?> >SELECCIONAR CANTIDAD DE PRODUCTOS</option>
+                                <option value="2" <?php if($parametro['parametro_cantidadproductos']=='2') echo 'selected'; ?> >CARGAR UNO POR DEFECTO</option>
+                            </select>
                         </div>
                     </div>
                 </div>

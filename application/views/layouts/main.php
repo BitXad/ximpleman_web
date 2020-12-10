@@ -445,7 +445,7 @@
                         if($rolusuario[117-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('clasificador');?>"><i class="glyphicon glyphicon-save"></i>Clasificador</a>
+                            <a href="<?php echo site_url('clasificador');?>"><i class="glyphicon glyphicon-list-alt"></i>Clasificador</a>
                         </li>
                         <?php
                         }
@@ -536,6 +536,9 @@
                             <a href="<?php echo site_url('venta');?>"><i class="fa fa-clock-o"></i>Ventas del dia</a>
                         </li>
                         <li>
+                            <a href="<?php echo site_url('reportes/ventacategoria');?>"><i class="fa fa-th-list"></i>Ventas por Categoria</a>
+                        </li>
+                        <li>
                             <a href="<?php echo site_url('reportes/ventacliente');?>"><i class="fa fa-user-circle"></i>Ventas por Cliente</a>
                         </li>
                         <li>
@@ -543,6 +546,9 @@
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/ventapagrupado');?>"><i class="fa fa-certificate"></i>Producto Agrupado</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
                         </li>
                         <!--<li>
                             <a href="<?php //echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>

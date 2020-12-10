@@ -197,7 +197,7 @@
                 
             <hr style="border-color: black; margin: 1px">
             <div style="width: 100%; background-color: #e5e3e3; font-size: 7.5px;">
-                <?php echo $dosificacion5['dosificacion_leyenda5']; ?>
+                <?php if(isset($dosificacion5['dosificacion_leyenda5'])){ echo $dosificacion5['dosificacion_leyenda5'];} ?>
             </div><br>
             <div style="width: 100%; font-size: 10px">
                 <div class="columna_izquierda" style="text-align: center">
@@ -216,7 +216,7 @@
                 <div style="width: 30%">
                 </div>
                 <div style="width: 30%">
-                    <?php echo $dosificacion3['dosificacion_leyenda3']; ?>
+                    <?php if(isset($dosificacion3['dosificacion_leyenda3'])){ echo $dosificacion3['dosificacion_leyenda3'];} ?>
                 </div>
                 <div style="width: 60%">
                     CCA: SIS.INF.<?php echo $empresa[0]['empresa_nombre']; ?> | <?php echo date("d/m/Y - h:i:s a"); ?>
