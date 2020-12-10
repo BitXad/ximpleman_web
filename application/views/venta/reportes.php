@@ -67,13 +67,7 @@
     
       
 <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
-     <div class="col-md-4 no-print" >                     
-      Cliente:
-        <input id="cliente_id" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)">
-      
-   
-    </div>  
-   
+    
              
         <div class="col-md-3">
             Desde: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
@@ -81,30 +75,55 @@
         <div class="col-md-3">
             Hasta: <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_hasta" name="fecha_hasta" >
         </div>
-        <div class="col-md-1" hidden>
+        <div class="col-md-3">
             TIPO: <select id="tipo_transaccion" name="tipo_transaccion" class="btn btn-primary btn-sm form-control"  >
                 <option value="0">-TODOS-</option>
-                                       
+                                            <?php
+                                                foreach($all_tipo_transaccion as $tipo){ ?>
+                                                    <option value="<?php echo $tipo['tipotrans_id']; ?>"><?php echo $tipo['tipotrans_nombre']; ?></option>                                                   
+                                            <?php } ?>
  
                                          </select>
         </div>
-        <div class="col-md-2 no-print">
+        <div class="col-md-3 no-print">
             <br>
             <button class="btn btn-facebook btn-sm" onclick="reportes()"><i class="fa fa-search"> Buscar</i></button>
             <a onclick="imprimir()" class="btn btn-success btn-sm"><i class="fa fa-print"> Imprimir</i></a>
         </div>
         
-  
+   <div class="col-md-6 no-print" >                     
+      <div class="input-group no-print"> <span class="input-group-addon">Buscar Producto</span>
+        <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo"  onkeypress="ventaproducto(event)">
+      </div>
    
+    </div>
+    <div class="col-md-6 no-print" >                     
+      <div class="input-group no-print"> <span class="input-group-addon">Buscar Cliente</span>
+        <input id="cliente_id" type="text" class="form-control" placeholder="Ingresa el nombre del cliente, nit o razon social"  onkeypress="ventacliente(event)">
+      </div>
+   
+    </div>  
+    <div class="col-md-6 no-print" >                     
+      <div class="input-group no-print"> <span class="input-group-addon">Buscar Proveedor</span>
+        <input id="proveedor_id" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor"  onkeypress="ventaproveedor(event)">
+      </div>
+   
+    </div>
+    <!--<div class="col-md-6 no-print" >                     
+      <div class="input-group no-print"> <span class="input-group-addon">Buscar Categoria</span>
+        <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor"  onkeypress="ventaproducto(event)">
+      </div>
+   
+    </div>-->
 
                               
            <div id="tablas" style="visibility: block">  
-          <div class="col-md-6 no-print" id="tablareproducto" hidden></div>
+          <div class="col-md-6 no-print" id="tablareproducto"></div>
           <div class="col-md-6 no-print" id="tablarecliente"></div>
           <div class="col-md-6 no-print" id="tablareproveedor"></div>
            <input id="producto" type="hidden" class="form-control" >
            <input id="cliente" type="hidden" class="form-control" > 
-           <input id="proveedor" type="hidden" class="form-control" > 
+           <input id="proveedor" type="text" class="form-control" > 
        </div>
             
 </div>
@@ -127,17 +146,34 @@
             <div class="box-body table-responsive" >
                 <table class="table table-striped table-condensed" id="mitabla" >
                     <tr>
-                        <tr>
-                        <th>#</th>
-                        <th>Cliente</th>
-                        <th>Venta</th>
-                        <th>Monto</th>
-                        <th>Tipo</th>
-                        <th>Fecha</th>
+                        <th>Nro.</th>
+                        <th>PRODUCTO</th>
+                        <th>FECHA<br>VENTA</th>
+                        <th>NUM.<BR>VENTA</th>
+                        <th>NUM.<BR>DOC.</th>
+                        <th>TIPO<br>VENTA</th>
+                        <th>CUOTA<br>INIC.</th>
+                        <th>UNIDAD</th>
+                        <th>CANT.</th>
+                        <th>PRECIO<BR>UNIT.</th>
+                        <th>DESC</th>
+                        <th>PRECIO<BR>TOTAL</th>
+                        <th>COSTO</th>
+                        <th>UTILID.</th>
+                        <th>CLIENTE</th>
+                        <th>CAJERO</th>
+                        <th class="no-print"></th>
                     </tr>
-                       
-                    <tbody class="buscar" id="simple">
-                    </tbody>
+                    <tbody class="buscar" id="reportefechadeventa">
+                    
+                    
+
+                    <tr>
+                  
+                      
+                   
+                    </tr>
+                    <?php ?></tbody>
                 </table>
                 
             </div>

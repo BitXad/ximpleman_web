@@ -255,6 +255,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
 
+<input type="text" id="tipocliente_porcdesc" value="0" hidden>
+<input type="text" id="tipocliente_montodesc" value="0" hidden>
+
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
 <?php $atributos = " btn btn-warning btn-sm";  //atributos para los inputs del clientes?>
@@ -315,7 +318,7 @@ window.onkeydown = compruebaTecla;
             <label for="tipo" class="control-label" style="margin-bottom: 0;">TIPO CLIENTE</label>           
             <div class="form-group" <?php echo $estilo_div; ?>>
                 
-                <select  class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="tipocliente_id" name="tipocliente_id" onkeypress="validar(event,7)">
+                <select  class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="tipocliente_id" name="tipocliente_id" onchange="validar(event,7)">
                     <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
                     <?php $contador = 0;
                             foreach($tipo_cliente as $tc){                          

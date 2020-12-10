@@ -2530,11 +2530,13 @@ function anular_venta($venta_id){
         $usuario_id = $this->session_data['usuario_id'];
         $parametro = $this->input->post('parametro');
         
-        $sql =  "select * from cliente where ".
-                " cliente_razon like '%".$parametro."%'".
-                " or cliente_nombre like '%".$parametro."%'".
-                " or cliente_codigo like '%".$parametro."%'".
-                " or cliente_nit like '%".$parametro."%'";
+        $sql =  "select c.*, t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc  from cliente  c".
+                " left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id ".
+                " where ".
+                " c.cliente_razon like '%".$parametro."%'".
+                " or c.cliente_nombre like '%".$parametro."%'".
+                " or c.cliente_codigo like '%".$parametro."%'".
+                " or c.cliente_nit like '%".$parametro."%'";
         //echo $sql;
         $resultado = $this->Venta_model->consultar($sql);
         echo json_encode($resultado);
@@ -2552,8 +2554,15 @@ function anular_venta($venta_id){
                $usuario_id = $this->session_data['usuario_id'];
                
                
-               $sql =  "select * from cliente where ".
-                       " cliente_id = ".$cliente_id;
+//               $sql =  "select * from cliente where ".
+//                       " cliente_id = ".$cliente_id;
+               
+                $sql = "select c.*,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc from cliente c
+                        left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
+                        where 
+                        c.cliente_id = ".$cliente_id;
+               
+               
                
                $resultado = $this->Venta_model->consultar($sql);
                echo json_encode($resultado);
@@ -3242,6 +3251,17 @@ function anular_venta($venta_id){
         
         $this->Venta_model->ejecutar($sql);
         echo json_encode(true);  
+        
+    }
+
+    function seleccionar_tipocliente(){
+        
+        $tipocliente_id = $this->input->post('tipocliente_id');
+        
+        $sql = "select * from tipo_cliente where tipocliente_id = ".$tipocliente_id;
+        
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);  
         
     }
         
