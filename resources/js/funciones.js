@@ -1358,6 +1358,7 @@ function tablaresultados(opcion)
     var ancho_imagen = document.getElementById('parametro_anchoimagen').value;//document.getElementById('parametro_anchoimagen').value;
     var alto_imagen = document.getElementById('parametro_altoimagen').value; //document.getElementById('parametro_altoimagen').value;
     var forma_imagen = document.getElementById('parametro_formaimagen').value; //document.getElementById('parametro_altoimagen').value;
+    var datosboton = document.getElementById('parametro_datosboton').value; //document.getElementById('parametro_altoimagen').value;
     
     var rol_precioventa = document.getElementById('rol_precioventa').value; //document.getElementById('parametro_altoimagen').value;
     var rol_factor = document.getElementById('rol_factor').value; //document.getElementById('parametro_altoimagen').value;
@@ -1730,7 +1731,25 @@ function tablaresultados(opcion)
                         prod = nombre_producto.substr(0,20);
                         
                         // Este es el boton del producto
-                        html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
+                        
+                        if (datosboton==1){ //nombre de producto y precio
+                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";                            
+                        }                        
+                        
+                        if (datosboton==2){ // Solo Nombre de producto
+
+                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub></button>";
+                        }
+                        
+                        if (datosboton==3){ //Solo precio
+                            
+                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+precio_cantidad+"</button>";
+                        }
+                        
+                        if (datosboton==4){
+                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"</button>";
+                        }
+                        
                         // fin Este es el boton del producto
 
                         html += "<!---------------------- modal cantidad producto ------------------->";
@@ -1793,7 +1812,7 @@ function tablaresultados(opcion)
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
-                        html += "     <button data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' id='boton_agregar"+registros[i]["producto_id"]+"'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar jejeje</small></button>";
+                        html += "     <button data-toggle='modal' data-dismiss='modal' onclick='ingresardetallejs("+registros[i]["producto_id"]+","+JSON.stringify(registros[i])+")' class='btn btn-success btn-foursquarexs' id='boton_agregar"+registros[i]["producto_id"]+"'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></button>";
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' onclick='ingresardetalle("+registros[i]["producto_id"]+")' class='btn btn-success btn-foursquarexs'><font size='5'><span class='fa fa-cart-arrow-down'></span></font><br><small>Agregar</small></a>";
 
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
