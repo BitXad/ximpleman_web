@@ -94,6 +94,7 @@ class Venta extends CI_Controller{
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
+        //$data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         
