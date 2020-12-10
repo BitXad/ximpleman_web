@@ -45,7 +45,7 @@ class Mesa_model extends CI_Model
             WHERE
                 1 = 1
 
-            ORDER BY `mesa_id` DESC
+            ORDER BY `mesa_id` ASC
         ")->result_array();
 
         return $mesa;

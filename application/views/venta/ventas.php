@@ -247,6 +247,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
 <input type="text" id="parametro_diasvenc" value="<?php echo $parametro[0]['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
+<input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro[0]['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -851,8 +852,8 @@ window.onkeydown = compruebaTecla;
                                          </select>
                                         <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
                                                 
-                                                    <option value="0">MESA</option>
-                                            <?php $mesas = 30;
+                                                    <option value="0">- MESAS -</option>
+                                            <?php 
                                             
                                                 foreach($mesas as $mesa ){ ?>
                                                     <option value="<?php echo $mesa["mesa_id"]; ?>"><?php echo $mesa["mesa_nombre"]; ?></option>

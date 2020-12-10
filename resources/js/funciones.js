@@ -3495,9 +3495,15 @@ function focus_cantidad(producto_id){
         $('#myModal'+producto_id).on('shown.bs.modal', function() {
         $('#'+campo).focus();
         $('#'+campo).select();
-       $("#boton_agregar"+producto_id).click();
-       $("#boton_salir_modal"+producto_id).click();
-    
+        
+        var parametro_cantidadproductos = document.getElementById("parametro_cantidadproductos").value;
+        
+        if (parametro_cantidadproductos==2){ //si pasara directo a detalle
+           
+            $("#boton_agregar"+producto_id).click();
+            $("#boton_salir_modal"+producto_id).click();
+            
+        }
     });
 }
 
