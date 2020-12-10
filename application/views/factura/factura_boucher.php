@@ -125,7 +125,7 @@ border-bottom : 1px solid #aaa;*/
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <?php if (isset($empresa[0]['empresa_propietario'])){ ?>
+                    <?php if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
                     <font size="1" face="Arial"></b>
 
                         <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
