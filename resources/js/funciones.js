@@ -371,7 +371,7 @@ function tablaproductos()
                         
                         
                         html += "</font></b>";
-                        html += " <small>"+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        html += " <small>"+categoria+registros[i]["clasificador_nombre"]+" * "+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
 
@@ -3968,13 +3968,13 @@ function registrar_clasificador(){
            type:"POST",
            data:{clasificador_id:clasificador_id, detalleven_id: detalleven_id},
            success:function(respuesta){     
-               
-
+                tablaproductos();
            },
            error: function(respuesta){
                
            }
        });              
+    $("#cancelar_preferencia").click();
 }
 
 function seleccionar_tipocliente(){

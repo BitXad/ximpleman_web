@@ -1563,7 +1563,7 @@ window.onkeydown = compruebaTecla;
                                                     </td>
 
                                                     <td>
-                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" > <fa class="fa fa-floppy-o"></fa> </button>
+                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" data-dismiss="modal"> <fa class="fa fa-floppy-o"></fa> </button>
                                                     </td>
 
                                                 
