@@ -364,9 +364,9 @@ function tablaproductos()
                         html += "                    <tr>";
                         html += "			<td "+color+">"+cont+"</td>";
                         html += "<td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"];
-                        html += " <button id='boton_composicion' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
+                        html += " <button id='boton_composicion"+registros[i]["detalleven_id"]+"' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
                         
-                       html += " <div id='tabla_composicion' style='padding:0;'> </div>";
+                       html += " <div id='tabla_composicion"+registros[i]["detalleven_id"]+"' style='padding:0;'> </div>";
 //                       html += " <table style='padding:0;'> </table>";
                         
                         
@@ -4007,39 +4007,85 @@ function seleccionar_tipocliente(){
 
 function mostrar_composicion(detalleven_id){
     var html = "";
+    var boton = document.getElementById('boton_composicion'+detalleven_id);
     
-    
-    html +="<table>";
-    html +="<tr>";
-    html +="<td>A</td>";
-    html +="<td>B</td>";
-    html +="<td>c</td>";
-    html +="</tr>";
-    html +="</table>";
-    
-    var base_url = document.getElementById('base_url').value;
-    var controlador = base_url+"venta/detalle_composicion";
-    var tipocliente_id = document.getElementById('tipocliente_id').value;
-    
-    //para llenar el select de clasificador de productos
-     $.ajax({url: controlador,
-           type:"POST",
-           data:{tipocliente_id:tipocliente_id},
-           success:function(respuesta){     
-               
-               var r = JSON.parse(respuesta);
-               
-               if (r.length>0){
-                   $("#tipocliente_porcdesc").val(r[0]["tipocliente_porcdesc"]);
-                   $("#tipocliente_montodesc").val(r[0]["tipocliente_montodesc"]);
-                   
-               }
+    //alert(boton.innerText);
+    if (boton.innerText  == '[+]'){        
+            boton.innerText = '[-]';
 
-           },
-           error: function(respuesta){
-               
-           }
-       });              
-       
-    $("#tabla_composicion").html(html);
+
+            var base_url = document.getElementById('base_url').value;
+            var controlador = base_url+"venta/detalle_composicion";
+            var tipocliente_id = document.getElementById('tipocliente_id').value;
+
+            //para llenar el select de clasificador de productos
+             $.ajax({url: controlador,
+                   type:"POST",
+                   data:{detalleven_id:detalleven_id},
+                   success:function(respuesta){     
+
+                       var r = JSON.parse(respuesta);
+                       var estilo = "style='padding:0; font-family: Arial; font-weight: lighter; font-size: 10px; background: white;'";
+                       
+                       
+                        html +="<table >";
+                        html +="<tr>";
+                        
+//                        html +="<th "+estilo+">- # -</th>";
+//                        html +="<th "+estilo+">PRODUCTO</th>";
+//                        html +="<th "+estilo+">CANT</th>";
+//                        html +="<th "+estilo+">P.UNIT</th>";
+//                        html +="<th "+estilo+">TOTAL</th>";
+//                        
+                        
+                        html +="<td "+estilo+"></td>";
+                        html +="<td "+estilo+">- # -</td>";
+                        html +="<td "+estilo+"> PRODUCTO </td>";
+                        html +="<td "+estilo+"> CANT </td>";
+                        html +="<td "+estilo+"> P.UNIT </td>";
+                        html +="<td "+estilo+"> TOTAL </td>";
+                        html +="<td "+estilo+"></td>";
+                        
+                        html +="</tr>";
+                        
+                       for (var i=0; i < r.length ; i++){
+                            html +="<tr "+estilo+">";
+                            html +="<td></td>";
+                            html +="<td "+estilo+">";
+                            html +="<button class='btn btn-danger btn-xs' style='padding:0; background: transparent; border:none;'><fa class='fa fa-trash' style='color:red;'> </fa></button>";                                    
+                            html +="</td>;";
+//                            html +="<td "+estilo+">"+(i+1)+" </td>";
+                            html +="<td "+estilo+">";
+                            html +=r[i]["producto_nombre"];
+                            html += "</td>";
+
+                           html +="<td "+estilo+">"+r[i]["detallecomp_cantidad"]+"</td>";
+                            html +="<td "+estilo+">"+r[i]["detallecomp_precio"]+"</td>";
+                            html +="<td "+estilo+">"+r[i]["detallecomp_precio"]*r[i]["detallecomp_cantidad"]+"</td>";
+                            //botones
+                            html +="<td "+estilo+">";
+                            html +="<button class='btn btn-warning btn-xs' style='padding:0; background: transparent; border:none;'><fa class='fa fa-caret-square-o-down' style='color:blue;'> </fa></button>";                                    
+                            html +="</td>";                                    
+                            html +="</tr>";
+                           
+                       }
+                       
+                        html +="</table>";
+
+                        $("#tabla_composicion"+detalleven_id).html(html);
+                   },
+                   error: function(respuesta){
+
+                   }
+               });              
+
+
+    }    
+    else {
+        boton.innerText  = '[+]';
+        html =""
+        $("#tabla_composicion"+detalleven_id).html(html);
+        
+    }
+    
 }
