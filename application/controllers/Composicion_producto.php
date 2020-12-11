@@ -42,8 +42,8 @@ class Composicion_producto extends CI_Controller{
         else
         {
 			$this->load->model('Producto_model');
-			$data['all_producto'] = $this->Producto_model->get_all_producto();
-			$data['all_producto'] = $this->Producto_model->get_all_producto();
+			$data['all_producto'] = $this->Producto_model->get_productos();
+			$data['all_producto'] = $this->Producto_model->get_productos();
             
             $data['_view'] = 'composicion_producto/add';
             $this->load->view('layouts/main',$data);
@@ -75,8 +75,8 @@ class Composicion_producto extends CI_Controller{
             else
             {
 				$this->load->model('Producto_model');
-				$data['all_producto'] = $this->Producto_model->get_all_producto();
-				$data['all_producto'] = $this->Producto_model->get_all_producto();
+				$data['all_producto'] = $this->Producto_model->get_productos();
+				$data['all_producto'] = $this->Producto_model->get_productos();
 
                 $data['_view'] = 'composicion_producto/edit';
                 $this->load->view('layouts/main',$data);
