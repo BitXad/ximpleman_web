@@ -213,7 +213,23 @@ border-bottom : 1px solid #aaa;*/
                         ?>
            <tr style="font-size: 8pt;">
                 <td align="center" style="padding: 0;"><?php echo $d['detallefact_cantidad']; ?></td>
-                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['detallefact_descripcion']; ?></td>
+                <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['detallefact_descripcion']; ?></td>-->
+                
+                <td colspan="2" style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
+                    <?php echo $d['detallefact_descripcion']; ?>
+                    <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
+                        echo  $d['detallefact_preferencia']; }
+                    ?>
+                    <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
+                        echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                        //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
+
+                    ?>                                
+                    </font>
+                </td>
+                
+                
+                
                 <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></td>
