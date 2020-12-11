@@ -4,6 +4,7 @@ function inicio(){
 }
 
 function mostrar_grafica(){
+    $("#graficapastel").css("display", "block");
     var options={
      // Build the chart
         chart: {

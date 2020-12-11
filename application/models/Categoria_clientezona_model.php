@@ -112,4 +112,37 @@ class Categoria_clientezona_model extends CI_Model
         return $zona;
         
     }
+    /* usado en reporte de ventas por zonas */
+    function get_all_zonas_ventaproducto_count($fecha_desde, $fecha_hasta)
+    {
+        $categoria_zona = $this->db->query("
+            SELECT
+                `vs`.zona_id
+            FROM
+                `ventas` vs
+            where
+            	date(vs.venta_fecha) >= '$fecha_desde'
+                and date(vs.venta_fecha) <= '$fecha_hasta'
+            group by vs.`zona_id`
+        ")->result_array();
+
+        return $categoria_zona;
+    }
+    /* Get all venta por zonas */
+    function getall_ventapor_zonas($fecha_desde, $fecha_hasta)
+    {
+        $venta_porzona = $this->db->query("
+            SELECT
+                vs.zona_id, z.`zona_nombre`, SUM(vs.detalleven_total) as 'totalventas'
+            FROM
+                `ventas` vs
+            left join `zona` z on vs.zona_id = z.zona_id
+            where
+            	date(vs.venta_fecha) >= '$fecha_desde'
+                and date(vs.venta_fecha) <= '$fecha_hasta'
+            group by z.`zona_id`
+        ")->result_array();
+
+        return $venta_porzona;
+    }
 }
