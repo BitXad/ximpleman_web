@@ -303,6 +303,7 @@ function tablaproductos()
     var controlador = base_url+'venta/detalleventa';
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var venta_descuento = Number(document.getElementById('venta_descuento').value);
+    var tipousuario_id = Number(document.getElementById('tipousuario_id').value);
     
     $.ajax({url: controlador,
            type:"POST",
@@ -362,8 +363,15 @@ function tablaproductos()
                             
                         html += "                    <tr>";
                         html += "			<td "+color+">"+cont+"</td>";
-                        html += "                       <td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"]+"</font></b>";
-                        html += "                           <small><br>"+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        html += "<td "+color+"><b><font size='"+fuente+"'>"+registros[i]["producto_nombre"];
+                        html += " <button id='boton_composicion' class='btn btn-xs' style='padding:0;' onclick='mostrar_composicion("+registros[i]["detalleven_id"]+")'>[+]</button>";
+                        
+                       html += " <div id='tabla_composicion' style='padding:0;'> </div>";
+//                       html += " <table style='padding:0;'> </table>";
+                        
+                        
+                        html += "</font></b>";
+                        html += " <small>"+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
 
@@ -381,14 +389,16 @@ html += "    <div class='collapse multi-collapse' id='caracteristicas"+registros
 html += "      <div class='card card-body'>";
 
 html += "        <div class='row clearfix'> ";
-
 html += "           <div class='col-md-3' style='padding:1;'>";
-html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
-html += "               <div class='form-group'>"
-html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_costo']+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
-html += "               </div>";
-html += "           </div>";
 
+if (tipousuario_id == 1){
+    html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
+    html += "               <div class='form-group'>"
+    html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_costo']+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
+    html += "               </div>";
+}
+
+html += "           </div>";
 html += "           <div class='col-md-9' style='padding:1px;'>";
 html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Preferencias/Características</label>";
 html += "               <div class='form-group'>"
@@ -398,12 +408,19 @@ html += "           </div>";
 html += "           <div class='col-md-12'>";
 //html += "               <label for='estado_descripcion' class='control-label'>Descripcion</label>";
 html += "               <div class='form-group'>";
+
 if (registros[i]['detalleven_caracteristicas']=='null'){ caracteristicas = "";
     html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+caracteristicas;}
 else
 {  html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];}
 
 html += "</textarea>";
+
+//************ Inicio detalle composicion de productos
+
+    
+
+//************ Fin Inicio detalle composicion de productos
 
 if (registros[i]["detalleven_envase"] == 1){
     
@@ -1687,7 +1704,7 @@ function tablaresultados(opcion)
                }// fin visualizacion modo texto
  
                 
-                if (modo_visualizacion == 2){
+                if (modo_visualizacion == 2){ // Modo botones
                 
                        
                    /************** INICIO MODO GRAFICO ***************/
@@ -3985,4 +4002,44 @@ function seleccionar_tipocliente(){
                
            }
        });              
+}
+
+
+function mostrar_composicion(detalleven_id){
+    var html = "";
+    
+    
+    html +="<table>";
+    html +="<tr>";
+    html +="<td>A</td>";
+    html +="<td>B</td>";
+    html +="<td>c</td>";
+    html +="</tr>";
+    html +="</table>";
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/detalle_composicion";
+    var tipocliente_id = document.getElementById('tipocliente_id').value;
+    
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{tipocliente_id:tipocliente_id},
+           success:function(respuesta){     
+               
+               var r = JSON.parse(respuesta);
+               
+               if (r.length>0){
+                   $("#tipocliente_porcdesc").val(r[0]["tipocliente_porcdesc"]);
+                   $("#tipocliente_montodesc").val(r[0]["tipocliente_montodesc"]);
+                   
+               }
+
+           },
+           error: function(respuesta){
+               
+           }
+       });              
+       
+    $("#tabla_composicion").html(html);
 }
