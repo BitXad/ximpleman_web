@@ -29,7 +29,7 @@
         </center>
     </div>
 </div>
-<div  class="row" >
+<div class="row no-print" >
     <div class="col-md-3">
         <label>Desde:</label>
         <input type="date" value="<?php echo date('Y-m-d') ?>" class="btn btn-primary btn-sm form-control"  id="fecha_desde" name="fecha_desde" >
@@ -43,7 +43,7 @@
         <a class="btn btn-facebook btn-sm form-control" title="Buscar venta por categorias" onclick="mostrar_grafica()"><i class="fa fa-search"> Buscar</i></a>
     </div>
 </div>
-<div class="row">
+<div class="row" id="graficapastel" style="display: none">
     <br/>
     <br/>
     <div class="box box-primary">

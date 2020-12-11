@@ -1087,6 +1087,8 @@ function torta3($anio,$mes)
     {
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        $this->load->model('Categoria_clientezona_model');
+        $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['page_title'] = "Reporte por Rutas o Zonas";
         $data['_view'] = 'reportes/ventaruta';
 
@@ -1121,6 +1123,31 @@ function torta3($anio,$mes)
         
         foreach($usuarios as $tve){
         $ususel=intval($tve['categoria_id']);
+        
+        $suma=round($tve['totalventas'],2);
+        
+        $registros[$ususel]=$suma;    
+        }
+        //var_dump($numusu);
+        $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);
+        echo   json_encode($data);   
+    }
+    /* reporte de ventas por zonas */
+    function repventa_zonas()
+    {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+        
+        $this->load->model('Categoria_clientezona_model');
+        $res_zona = $this->Categoria_clientezona_model->get_all_zonas_ventaproducto_count($fecha_desde, $fecha_hasta);
+        $numusu = count($res_zona);
+        
+        $usuarios = $this->Categoria_clientezona_model->getall_ventapor_zonas($fecha_desde, $fecha_hasta);
+        
+        $tove = $usuarios;
+        
+        foreach($usuarios as $tve){
+        $ususel=intval($tve['zona_id']);
         
         $suma=round($tve['totalventas'],2);
         
