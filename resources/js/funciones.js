@@ -1074,16 +1074,16 @@ function ingresorapidojs(cantidad,producto)
     var precio = 0;
     var numerofactor = "";
     var unidadfactor = "";
-    var caracteristicas = "";
+    var preferencias = "";
     
     var inputcaract = document.getElementById("inputcaract").value;
     
     if (inputcaract.length>0){
-        caracteristicas = inputcaract;
+        preferencias = inputcaract;
         $("#inputcaract").val("");
     }
     else{
-        caracteristicas = producto.producto_caracteristicas;
+        preferencias = producto.producto_caracteristicas;
     }
     
     if (Number(indice)>0){
@@ -1158,7 +1158,7 @@ function ingresorapidojs(cantidad,producto)
     if (cantidad_total <= producto.existencia){
 
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+precio+"*"+cantidad+",'"+caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
