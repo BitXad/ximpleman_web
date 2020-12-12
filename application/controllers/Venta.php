@@ -172,7 +172,7 @@ class Venta extends CI_Controller{
         $sql1 = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ".
                 "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,".
                 "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra,
-                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase, detalleven_fechavenc) ".
+                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor) ".
                 " value(".$datos1.")";
         
         //si el producto ya esta registrado, solo actualizara la cantidad y total
@@ -347,7 +347,8 @@ class Venta extends CI_Controller{
           detalleven_fechavenc,
           usuario_id,
           factura_id,
-          clasificador_id
+          clasificador_id,
+          detalleven_unidadfactor
         )
 
         (SELECT 
@@ -380,7 +381,8 @@ class Venta extends CI_Controller{
             detalleven_fechavenc,
             usuario_id,
             0 as factura_id,
-            clasificador_id
+            clasificador_id,
+            detalleven_unidadfactor
           
         FROM
           detalle_venta_aux
@@ -581,7 +583,8 @@ class Venta extends CI_Controller{
                 detallefact_descuento,
                 detallefact_total,                
                 detallefact_preferencia,
-                detallefact_caracteristicas)
+                detallefact_caracteristicas,
+                detallefact_unidadfactor)
 
                 (SELECT 
                   producto_id,
@@ -596,7 +599,8 @@ class Venta extends CI_Controller{
                  (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
                   detalleven_total * (1 - ".$porcentaje."),     
                   detalleven_preferencia,
-                  detalleven_caracteristicas
+                  detalleven_caracteristicas,
+                  detalleven_unidadfactor
 
                 FROM
                   detalle_venta_aux

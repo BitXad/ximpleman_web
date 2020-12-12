@@ -217,6 +217,8 @@ border-bottom : 1px solid #aaa;*/
                 
                 <td colspan="2" style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
                     <?php echo $d['detallefact_descripcion']; ?>
+                     <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
+                    
                     <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
                         echo  $d['detallefact_preferencia']; }
                     ?>

@@ -231,6 +231,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
+<input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
 <input type="text" id="pedido_id" value="0" name="pedido_id" hidden>
 <input type="text" id="orden_id" value="0" name="orden_id" hidden>
 <input type="text" id="usuarioprev_id" value="0" name="usuarioprev_id" hidden>
@@ -1337,7 +1338,7 @@ window.onkeydown = compruebaTecla;
                                                 <?php } 
                                                 ?>
                                             </div>
-                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
+                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning" onKeyUp="this.value = this.value.toUpperCase();">
 					</div>
                                         <div class="col-md-6" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
