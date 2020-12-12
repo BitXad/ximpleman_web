@@ -88,16 +88,26 @@ function recepcion(estado)
                     	}
                         html += "</td><td>";
                 for (var e = 0; e < d; e++) {
+                    
                 	if (ventas[i]["venta_id"]==detalle[e]["venta_id"]) {
-                        html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b>";	
-                        html += " <br> <b>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
+                        
+                                html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b><br>";
+                            
+                            if (detalle[e]["detalleven_unidadfactor"]!="" && detalle[e]["detalleven_unidadfactor"]!="-"){
+                                html += "<b style='color:gray; font-size:13px;'>("+detalle[e]["detalleven_unidadfactor"]+")</b>";	
+                            }
+                            
+                            if (detalle[e]["detalleven_preferencia"]!="" && detalle[e]["detalleven_preferencia"]!="-"){
+                                html += " * <b style='color:red;'>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
+                            }
+                                html +="<br>"
                         }
                          
                       }
                      
                         html += "</td>";
                         html += "<td align='center' style='font-size: 14px;'><b>"+ventas[i]["venta_numeroventa"]+"</b>"; 
-                        html += "<br>"+ventas[i]["tiposerv_descripcion"]+"</td>";
+                        html += "<br> "+ventas[i]["tiposerv_descripcion"]+"</td>";
                         if (ventas[i]["entrega_id"]==1) {
                             //ventas[i]["entrega_nombre"]
                         html += "<td align='center'> <a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </a>";
