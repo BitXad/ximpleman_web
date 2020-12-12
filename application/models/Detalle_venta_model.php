@@ -42,9 +42,8 @@ function ventas_dia($estado)
             SELECT
                 v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*
             FROM
-                venta v 
-            /*LEFT JOIN detalle_venta dv on v.venta_id=dv.venta_id*/
-            LEFT JOIN mesa m on m.mesa_id=v.venta_numeromesa
+                venta v            
+            LEFT JOIN mesa m on m.mesa_id = v.venta_numeromesa
             LEFT JOIN entrega e on v.entrega_id=e.entrega_id
             LEFT JOIN cliente c on v.cliente_id=c.cliente_id
             LEFT JOIN tipo_servicio ts on v.tiposerv_id=ts.tiposerv_id
