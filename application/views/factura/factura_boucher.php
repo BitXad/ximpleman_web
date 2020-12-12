@@ -213,9 +213,10 @@ border-bottom : 1px solid #aaa;*/
                         ?>
            <tr style="font-size: 8pt;">
                 <td align="center" style="padding: 0;"><?php echo $d['detallefact_cantidad']; ?></td>
-                <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['detallefact_descripcion']; ?></td>-->
+                <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php //echo $d['detallefact_descripcion']; ?></td>-->
                 
-                <td colspan="2" style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
+                <td style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
+                    
                     <?php echo $d['detallefact_descripcion']; ?>
                      <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
                     
