@@ -83,9 +83,10 @@ function recepcion(estado)
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td align='center'><b style='font-size: 14px;'>"+ventas[i]["cliente_razon"]+"</b></br>";
-                        //if (ventas[i]["tiposerv_id"]==1){
-                        html += "<b>Mesa:  "+ventas[i]["mesa_nombre"]+"</b>";
-                    	//}
+                        
+                        if (ventas[i]["mesa_nombre"]!=null){
+                            html += "<b>Mesa:  "+ventas[i]["mesa_nombre"]+"</b>";
+                    	}
                         html += "</td><td>";
                 for (var e = 0; e < d; e++) {
                     
