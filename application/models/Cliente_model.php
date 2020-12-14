@@ -386,7 +386,7 @@ class Cliente_model extends CI_Model
     function get_cliente_all_asignados($usuario_id){
         $cliente = $this->db->query("
             SELECT count(*) as total_clientes_user
-            FROM cliente c, `usuario` u
+            FROM cliente c
             WHERE c.estado_id = 1
             and c.usuario_id = ".$usuario_id.";        
         ")->result_array();

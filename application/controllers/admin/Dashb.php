@@ -20,6 +20,7 @@ class Dashb extends CI_Controller
         $this->load->model('Pedido_diario_model');
         $this->load->model('Cliente_model');
         $this->load->model('Categoria_clientezona_model');
+        $this->load->model('Objetivo_model');
         // $this->load->model('Dashb_model');
 
         $this->session_data = $this->session->userdata('logged_in');
@@ -46,6 +47,7 @@ class Dashb extends CI_Controller
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 $data['usuario'] = $session_data['usuario_id'];
                 
+                $data['tipousuario_id'] = $session_data['tipousuario_id'];
                 $data['_view'] = 'hola';
                 $this->load->view('layouts/main',$data);
 
@@ -72,7 +74,11 @@ class Dashb extends CI_Controller
                 $data['creditos'] = $this->Venta_model->get_venta_credito($session_data['usuario_id']);
                 $data['clientes'] = $this->Cliente_model->get_cliente_all_asignados($session_data['usuario_id']);//cantidad de clientes asignados a un usuario
                 $data['pedidos_diarios'] = $this->Pedido_diario_model->pedidos_diarios();
-                
+                $data['objetivo'] = $this->Objetivo_model->get_objetivo($session_data['usuario_id']);
+                $data['ventas_mes'] = $this->Venta_model->get_ventas_mes($session_data['usuario_id']);
+                $data['entregas_dia'] = $this->Venta_model->get_venta_entrega_dia($session_data['usuario_id']);
+                $data['entregas_mes'] = $this->Venta_model->get_venta_entrega_mes($session_data['usuario_id']);
+
                 $data['resumen_usuario'] = $this->Venta_model->get_resumen_usuarios();
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 
@@ -84,6 +90,7 @@ class Dashb extends CI_Controller
                 $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($zona_id);
                 $data['all_pedido'] = $this->Pedido_model->get_para_entregas($session_data['usuario_id']);
                 $data['usuario'] = $session_data['usuario_id'];
+                $data['tipousuario_id'] = $session_data['tipousuario_id'];
                 $data['_view'] = 'dashboard_noad';
                 $this->load->view('layouts/dashb_noad',$data);
             }else{

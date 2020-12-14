@@ -175,6 +175,23 @@ class Usuario_model extends CI_Model
         ")->result_array();
         return $usuario;
     }
+
+    /*
+    *
+    */
+    function get_all_usuario_prev_activo_sesion($usuario_id){
+        $usuario = $this->db->query("
+            SELECT *
+            FROM
+                usuario u, estado e
+            WHERE
+                u.estado_id = e.estado_id
+                and e.estado_id = 1
+                and u.usuario_id = ".$usuario_id."
+            ORDER BY `usuario_id` DESC 
+        ")->row_array();
+        return $usuario;
+    }
     
     /* Funcion que retorna el nombre del usuario*/
     function get_usuario_name($servicio_id)

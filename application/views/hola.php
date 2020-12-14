@@ -428,9 +428,12 @@
               <div class="box-body">
                   
                   <div class="box-body" id="div_grafica_barras"></div>
-                  <?php $user_id = $usuario; ?>
+                  <?php
+                    $user_id = $usuario;
+                    $tipouser_id = $tipousuario_id;
+                  ?>
               </div>
-              </div>
+            </div>
  </section>
 
         <section class="col-lg-5 connectedSortable">
@@ -734,5 +737,9 @@
             <!-- <br> -->
 
         </section>   
-        <script> var user_id = '<?php echo $user_id?>'; </script>
+        <script> 
+          var user_id = '<?= $user_id?>'; 
+          var tipouser_id = '<?= $tipousuario_id ?>';
+          console.log(tipouser_id);
+        </script>
  </body>   

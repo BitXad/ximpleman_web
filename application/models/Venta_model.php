@@ -629,5 +629,45 @@ function get_busqueda($condicion)
         return $inventario;
     }
     
-    
+    /*
+    * Ventas del mes actual de un usuario
+    */
+    function get_ventas_mes($usuario_id){
+        $total_ventas = $this->db->query(
+            "SELECT if(SUM(v.venta_total)>0, SUM(v.venta_total),0) as total_mes
+            FROM venta as v
+            WHERE v.usuario_id = ".$usuario_id." 
+            AND v.venta_fecha >= '2020-".date('m')."-01'
+            AND v.venta_fecha <= '2020-".date('m')."-31'
+            ")->row_array();
+        return $total_ventas;
+    }
+    /*
+    * Cantidad de entregas en un dia de un vendedor
+    */
+    function get_venta_entrega_dia($usuario_id){
+        $entregas = $this->db->query("SELECT if(count(p.`venta_total`)>0,COUNT(p.`venta_total`),0) as pedido_diario
+            FROM venta p, estado e, cliente c 
+            WHERE p.estado_id = e.estado_id 
+            AND p.entrega_id = 2
+            AND p.cliente_id = c.cliente_id
+            AND p.entrega_usuarioid = ".$usuario_id." AND venta_fecha = date(NOW());")->row_array();
+
+        return $entregas;
+    }
+    /*
+    * Cantidad de entregas al mes de un usuario
+    */
+    function get_venta_entrega_mes($usuario_id){
+        $entrega_mes = $this->db->query(
+            "SELECT if(count(p.`venta_total`)>0,COUNT(p.`venta_total`),0) as pedido_mes
+            FROM venta p, estado e, cliente c 
+            WHERE p.estado_id = e.estado_id 
+            AND p.entrega_id = 2
+            AND p.cliente_id = c.cliente_id
+            AND p.entrega_usuarioid = ".$usuario_id."
+            AND venta_fecha >= '2020-".date('m')."-01'
+            AND venta_fecha <= '2020-".date('m')."-31';")->row_array();
+        return $entrega_mes;
+    }
 }

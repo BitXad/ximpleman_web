@@ -322,7 +322,7 @@ function toggle(source) {
                                                             <li><a href="<?php echo base_url("website/miperfil/").$idioma_id; ?>" >Mi perfil</a></li>
                                                             <li><a href="<?php echo base_url("website/micarrito/").$idioma_id; ?>" >Mi carrito</a></li>
                                                             <li><a href="<?php echo base_url("website/miscompras/").$idioma_id; ?>" >Mis Compras</a></li>
-                                                            <li><a href="<?php echo base_url("website/cerrarsesion/").$idioma_id; ?>" >Finalizar Sesion</a></li>
+                                                            <li><a href="<?php echo base_url("/")?>" onclick="javascript:$.fn.CookieCompliance.disconsent(),cerrarsesion(),FB.logout()" >Finalizar Sesion</a></li>
                                                             
                                                         </ul>
                                                     </div>	
@@ -383,9 +383,9 @@ function toggle(source) {
       	<div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">
-                <img src="<?php echo base_url("resources/images/clientes/".$cliente['cliente_foto']); ?>" width="50" height="50" class="img img-circle">
-                    
-                    Mi Perfil</h3>
+                <img src="<?php echo base_url("resources/images/clientes/".$cliente['cliente_foto']); ?>" width="50" height="50" class="img img-circle">    
+                    Mi Perfil
+                </h3>
 
                 
             </div>
@@ -403,14 +403,14 @@ function toggle(source) {
                     <div class="col-md-6">
                             <label for="cliente_direccion" class="control-label"><fa class="fa fa-calendar-o"></fa> Dirección <span class="text-blue">(*)</span></label>
                             <div class="form-group">
-                                    <input type="text" name="cliente_direccion" value="<?php echo ($this->input->post('cliente_direccion') ? $this->input->post('cliente_direccion') : $cliente['cliente_direccion']); ?>" class="form-control" id="cliente_direccion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <input type="text" name="cliente_direccion" value="<?php echo ($this->input->post('cliente_direccion') ? $this->input->post('cliente_direccion') : $cliente['cliente_direccion']); ?>" class="form-control" id="cliente_direccion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required/>
                             </div>
                     </div>
 
                     <div class="col-md-4">
                         <label for="cliente_celular" class="control-label"><fa class="fa fa-mobile"></fa> Celular <span class="text-blue">(*)</span></label>
                             <div class="form-group">
-                                    <input type="text" name="cliente_celular" value="<?php echo ($this->input->post('cliente_celular') ? $this->input->post('cliente_celular') : $cliente['cliente_celular']); ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <input type="text" name="cliente_celular" value="<?php echo ($this->input->post('cliente_celular') ? $this->input->post('cliente_celular') : $cliente['cliente_celular']); ?>" class="form-control" id="cliente_celular" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" required />
                             </div>
                     </div>
 
@@ -423,8 +423,8 @@ function toggle(source) {
                     <div class="col-md-4">
                             <label for="cliente_foto" class="control-label"><fa class="fa fa-picture-o"></fa> Foto</label>
                             <div class="form-group">
-                                    <input type="file" name="cliente_foto" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="btn btn-success btn-sm form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
-                                    <input type="hidden" name="cliente_foto1" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="form-control" id="cliente_foto1" />
+                                <input type="file" name="cliente_foto" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="btn btn-success btn-sm form-control" id="cliente_foto" accept="image/png, image/jpeg, jpg, image/gif" />
+                                <input type="hidden" name="cliente_foto1" value="<?php echo ($this->input->post('cliente_foto') ? $this->input->post('cliente_foto') : $cliente['cliente_foto']); ?>" class="form-control" id="cliente_foto1" />
                             </div>
                     </div>
 
@@ -433,20 +433,20 @@ function toggle(source) {
                             <label for="cliente_nombrenegocio" class="control-label"><fa class="fa fa-building"></fa> Nombre Negocio</label>
                             <div class="form-group">
                                 <input type="text" name="cliente_nombrenegocio" value="<?php echo ($this->input->post('cliente_nombrenegocio') ? $this->input->post('cliente_nombrenegocio') : $cliente['cliente_nombrenegocio']); ?>" class="form-control" id="cliente_nombrenegocio" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
-                                    <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
+                                <span class="text-danger"><?php echo form_error('cliente_nombrenegocio');?></span>
                             </div>
                     </div>
 
                     <div class="col-md-4">
                             <label for="cliente_nit" class="control-label"><fa class="fa fa-folder"></fa> Nit</label>
                             <div class="form-group">
-                                    <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : $cliente['cliente_nit']); ?>" class="form-control" id="cliente_nit" />
+                                <input type="number" min="0" onchange="verificarnumero(this.value)" name="cliente_nit" value="<?php echo ($this->input->post('cliente_nit') ? $this->input->post('cliente_nit') : $cliente['cliente_nit']); ?>" class="form-control" id="cliente_nit" />
                             </div>
                     </div>
                     <div class="col-md-4">
                             <label for="cliente_razon" class="control-label"><fa class="fa fa-codepen"></fa> Razón Social</label>
                             <div class="form-group">
-                                    <input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : $cliente['cliente_razon']); ?>" class="form-control" id="cliente_razon" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
+                                <input type="text" name="cliente_razon" value="<?php echo ($this->input->post('cliente_razon') ? $this->input->post('cliente_razon') : $cliente['cliente_razon']); ?>" class="form-control" id="cliente_razon" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                             </div>
                     </div>
 

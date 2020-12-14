@@ -326,18 +326,21 @@ class Pedido_model extends CI_Model
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }    
-    
+    /**
+    * Obtiene todos los pedidos de un usuario, entrega_id 1
+    */
     function get_para_entregas($usuario_id)
     {
 
-        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
+        $sql = "SELECT p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
                 c.cliente_latitud, c.cliente_longitud, c.cliente_direccion, c.cliente_foto
-               from venta p, estado e, cliente c 
-               where 
-                p.estado_id = e.estado_id 
-                and p.entrega_id = 1
-                and p.cliente_id = c.cliente_id
-                and p.entrega_usuarioid = ".$usuario_id;
+                FROM venta p
+                LEFT JOIN estado e ON p.estado_id = e.estado_id 
+                LEFT JOIN cliente c ON p.cliente_id = c.cliente_id
+                WHERE p.entrega_id >= 1
+                AND p.entrega_id <= 2
+                AND p.venta_fecha = DATE(NOW())
+                AND p.entrega_usuarioid = ".$usuario_id;
         
         $result = $this->db->query($sql)->result_array();
         return $result;        

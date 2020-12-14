@@ -344,9 +344,7 @@ class Website extends CI_Controller{
         $name   = $this->input->post('name');
         $id     = $this->input->post('id');
         $ipe    = $this->input->post('ipe');
-        $resultado = "SELECT * from cliente WHERE cliente_nombre = '".$name."'".
-                    " and id_facebook = '".$id."' ";
-                    " and estado_id = 1";
+        $resultado = "SELECT * from cliente WHERE id_facebook = ".$id." and estado_id = 1";
         if($resultado){
             $result=$this->db->query($resultado)->row_array();
             if ($result){
@@ -365,6 +363,14 @@ class Website extends CI_Controller{
         }else{
             return false;
         }
+    }
+
+    function buscarCuenta(){
+        $id = $this->input->post('id');
+        $resultado = "SELECT count(*) as cantidad FROM cliente WHERE id_facebook = ".$id.";";
+        $result=$this->db->query($resultado)->row_array();
+        $respu = array("result"=>$result['cantidad']);
+        echo json_encode($respu);
     }
 
     // ------------------------------------------------------------------------------------------
@@ -934,7 +940,9 @@ class Website extends CI_Controller{
 
     }
 
- 
+    function selecionar_sucursal(){
+        $this->load->view("web/select_sucursal");
+    }
    
 
 }
