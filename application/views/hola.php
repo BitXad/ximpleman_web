@@ -740,6 +740,6 @@
         <script> 
           var user_id = '<?= $user_id?>'; 
           var tipouser_id = '<?= $tipousuario_id ?>';
-          console.log(tipouser_id);
+          // console.log(tipouser_id);
         </script>
  </body>   

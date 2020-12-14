@@ -26,7 +26,7 @@ function mostrar_grafica(){
     var mes_sel = hoy.getMonth()+1;
     $("#anio_sel").val(anio_sel);
     $("#mes_sel").val(mes_sel);
-    if(user_id !== 'undefined'){ 
+    if(tipouser_id != 1){ 
         cargar_grafica_barras_noad(anio_sel,mes_sel,user_id); 
     }else{ 
         cargar_grafica_barras(anio_sel,mes_sel); 
