@@ -40,10 +40,10 @@ function ventas_dia($estado)
   {
         $detalle_venta = $this->db->query("
             SELECT
-                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion
+                v.*, e.entrega_nombre, c.cliente_nombre, c.cliente_razon, ts.tiposerv_descripcion, m.*
             FROM
-                venta v 
-            /*LEFT JOIN detalle_venta dv on v.venta_id=dv.venta_id*/
+                venta v            
+            LEFT JOIN mesa m on m.mesa_id = v.venta_numeromesa
             LEFT JOIN entrega e on v.entrega_id=e.entrega_id
             LEFT JOIN cliente c on v.cliente_id=c.cliente_id
             LEFT JOIN tipo_servicio ts on v.tiposerv_id=ts.tiposerv_id
@@ -108,12 +108,16 @@ function ventas_dia($estado)
   function get_dventadia($estado,$destino,$usuario)
     {
         $result = $this->db->query(
-        "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id
+                
+        "SELECT d.detalleven_cantidad,d.detalleven_preferencia, d.venta_id, d.producto_id, p.producto_nombre, p.destino_id, v.venta_fecha, v.entrega_id,
+                d.detalleven_unidadfactor, l.clasificador_nombre
+
         FROM detalle_venta d
         LEFT JOIN producto p ON d.producto_id=p.producto_id
         LEFT JOIN venta v ON d.venta_id=v.venta_id
         LEFT JOIN usuario_destino ud ON p.destino_id=ud.destino_id
         LEFT JOIN usuario u ON ud.usuario_id=u.usuario_id
+        LEFT JOIN clasificador l ON l.clasificador_id = d.clasificador_id
         WHERE v.venta_fecha = date(now()) 
         and v.entrega_id=".$estado."
         and p.destino_id=".$destino."
@@ -136,7 +140,7 @@ function ventas_dia($estado)
     {
         
         $reporte = $this->db->query(
-        "SELECT vs.*, c.cliente_nombre, tt.tipotrans_nombre FROM venta vs LEFT JOIN cliente c on vs.cliente_id = c.cliente_id LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id WHERE  ".$filtro." ORDER BY venta_fecha DESC, venta_hora DESC;
+        "SELECT vs.*, c.cliente_nombre, tt.tipotrans_nombre FROM venta vs LEFT JOIN cliente c on vs.cliente_id = c.cliente_id LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id WHERE  ".$filtro." ORDER BY vs.venta_fecha DESC, vs.venta_hora DESC;
         ")->result_array();
         return $reporte;
     }
@@ -468,5 +472,24 @@ function ventas_dia($estado)
 
         return $detalle_ventaservicio;
     }
-    
+    function reporteventas_prodagrupados($filtro)
+    {
+        $reporte = $this->db->query(
+            "SELECT
+		vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre,
+                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad,
+                (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
+                sum(`vs`.`detalleven_descuento`) as total_descuento,
+                sum(`vs`.`detalleven_total`) as total_venta,
+                (sum(`vs`.`detalleven_costo`) / count(vs.producto_id)) as total_costounit,
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`)) as total_utilidad
+            FROM
+                ventas vs
+            LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id
+            WHERE 
+                $filtro
+            group by `vs`.producto_id
+        ")->result_array();
+        return $reporte;
+    }
 }

@@ -67,8 +67,8 @@ class Promocion extends CI_Controller{
             $this->form_validation->set_rules('promocion_preciototal','Promocion Preciototal','required');
             if($this->form_validation->run())     
             {
-                $fecha = date("Y-m-d");
-                $estado_id = 1;
+                //$fecha = date("Y-m-d");
+                //$estado_id = 1;
 //                $params = array(
 //                    'producto_id' => $this->input->post('producto_id'),
 //                    'estado_id' => $estado_id,
@@ -136,7 +136,7 @@ class Promocion extends CI_Controller{
                     
                     $params = array(
                         'estado_id' => $this->input->post('estado_id'),
-                        'producto_id' => $this->input->post('producto_id'),
+                        //'producto_id' => $this->input->post('producto_id'),
                         'promocion_titulo' => $this->input->post('promocion_titulo'),
                         'promocion_cantidad' => $this->input->post('promocion_cantidad'),
                         'promocion_preciototal' => $preciototal,
@@ -200,6 +200,45 @@ class Promocion extends CI_Controller{
             $this->Promocion_model->ejecutar($sql);
             
             echo json_encode(true);
+            
+        }
+    }
+    
+    /*
+     * registrar producto al detalle
+     */
+    function buscar_detallepromocion()
+    {
+        if($this->acceso(155)){
+            
+            $detallepromo_id = $this->input->post("detallepromo_id");
+            $this->load->model('Detalle_promocion_model');
+            $datos = $this->Detalle_promocion_model->get_detalle_promocion($detallepromo_id);
+            echo json_encode($datos);
+        }
+    }
+    /*
+     * registrar producto al detalle
+     */
+    function modificar_detallepromocion()
+    {
+        if($this->acceso(155)){
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('detallepromo_cantidad','Cantidad','trim|numeric|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('detallepromo_precio','Precio','trim|numeric|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
+                $detallepromo_id = $this->input->post("detallepromo_id");
+                $params = array(
+                    'detallepromo_cantidad' => $this->input->post('detallepromo_cantidad'),
+                    'detallepromo_precio' => $this->input->post('detallepromo_precio'),
+                );
+                $this->load->model('Detalle_promocion_model');
+                $this->Detalle_promocion_model->update_detalle_promocion($detallepromo_id, $params);
+                echo json_encode("ok");
+            }else{
+                echo json_encode("no");
+            }
             
         }
     }

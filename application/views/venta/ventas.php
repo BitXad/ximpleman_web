@@ -231,6 +231,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
+<input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
 <input type="text" id="pedido_id" value="0" name="pedido_id" hidden>
 <input type="text" id="orden_id" value="0" name="orden_id" hidden>
 <input type="text" id="usuarioprev_id" value="0" name="usuarioprev_id" hidden>
@@ -246,7 +247,11 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro[0]['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
 <input type="text" id="parametro_diasvenc" value="<?php echo $parametro[0]['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
+<input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro[0]['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
+<input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -254,6 +259,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
+
+<input type="text" id="tipocliente_porcdesc" value="0" hidden>
+<input type="text" id="tipocliente_montodesc" value="0" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 
@@ -315,7 +323,7 @@ window.onkeydown = compruebaTecla;
             <label for="tipo" class="control-label" style="margin-bottom: 0;">TIPO CLIENTE</label>           
             <div class="form-group" <?php echo $estilo_div; ?>>
                 
-                <select  class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="tipocliente_id" name="tipocliente_id" onkeypress="validar(event,7)">
+                <select  class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="tipocliente_id" name="tipocliente_id" onchange="validar(event,7)">
                     <option value="<?php echo $tipo_cliente[0]['tipocliente_id']; ?>"><?php echo $tipo_cliente[0]['tipocliente_descripcion']; ?></option>
                     <?php $contador = 0;
                             foreach($tipo_cliente as $tc){                          
@@ -333,7 +341,7 @@ window.onkeydown = compruebaTecla;
  
         <h4 class="panel-title">
           <?php if(sizeof($dosificacion)>0){ ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado">
+            <input type="checkbox" id="facturado" value="1" name="facturado" checked="true">
           <?php } else{ ?>
             <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
             <font color="red" size="2"> Dosificación no activada</font>
@@ -848,10 +856,12 @@ window.onkeydown = compruebaTecla;
                                          </select>
                                         <select id="venta_numeromesa" name="venta_numeromesa" class="btn btn-default btn-xs">
                                                 
-                                                    <option value="0">MESA</option>
-                                            <?php $mesas = 30;
-                                                for($x = 1; $x<=$mesas; $x++ ){ ?>
-                                                    <option value="<?php echo $x; ?>"><?php echo $x; ?></option>
+                                                    <option value="0">- MESAS -</option>
+                                            <?php 
+                                            
+                                                foreach($mesas as $mesa ){ ?>
+                                                    <option value="<?php echo $mesa["mesa_id"]; ?>"><?php echo $mesa["mesa_nombre"]; ?></option>
+                                            
                                             <?php } ?>
  
                                          </select>
@@ -1329,7 +1339,7 @@ window.onkeydown = compruebaTecla;
                                                 <?php } 
                                                 ?>
                                             </div>
-                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning">
+                                            <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning" onKeyUp="this.value = this.value.toUpperCase();">
 					</div>
                                         <div class="col-md-6" id='botones'  style='display:block;'>
 						<label for="opciones" class="control-label">Opciones</label>
@@ -1555,7 +1565,7 @@ window.onkeydown = compruebaTecla;
                                                     </td>
 
                                                     <td>
-                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" > <fa class="fa fa-floppy-o"></fa> </button>
+                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" data-dismiss="modal"> <fa class="fa fa-floppy-o"></fa> </button>
                                                     </td>
 
                                                 

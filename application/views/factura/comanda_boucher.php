@@ -150,7 +150,7 @@ border-bottom : 1px solid #aaa;
                     <font size="1" face="Arial"><?php echo $empresa[0]['empresa_ubicacion']; ?></font><br>-->
 
 
-                <font size="3" face="arial"><b>PEDIDO Nº 00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
+                <font size="3" face="arial"><b>ORDEN Nº 00<?php echo $venta[0]['venta_numeroventa']; ?></b></font>
                 
                 <?php if($venta[0]['tiposerv_id']>0){ ?>
                 <br>
@@ -192,7 +192,9 @@ border-bottom : 1px solid #aaa;
                         ?>
            <tr style="padding: 0">
                 <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
-                <td style="padding: 0"><font style="size:7px; font-family: arial;"> <?php echo $d['producto_nombre'];?>
+                <td style="padding: 0"><font style="size:7px; font-family: arial;"><?php echo $d['producto_nombre'];?> 
+                    <?php if ($d['detalleven_unidadfactor'] != "-") echo "[".$d['detalleven_unidadfactor']."]";?>
+                        <small> 
                         <?php
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];
@@ -204,6 +206,7 @@ border-bottom : 1px solid #aaa;
                             echo  "<br>".$caracteristicas;
                         
                         ?>
+                        </small>
                     <!--<textarea onload="autosize()"></textarea>-->
                 </td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>

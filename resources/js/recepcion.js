@@ -52,9 +52,10 @@ function buscar_por_entrega()
 function recepcion(estado)
 {   
       
-   var base_url    = document.getElementById('base_url').value;
-   var destino    = document.getElementById('destino_id').value;
+    var base_url    = document.getElementById('base_url').value;
+    var destino    = document.getElementById('destino_id').value;
     var controlador = base_url+"detalle_venta/recepcionhoy";
+    var clasificador = "";
     
     document.getElementById('oculto').style.display = 'block';
     $.ajax({url: controlador,
@@ -83,21 +84,38 @@ function recepcion(estado)
                       
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td align='center'><b style='font-size: 14px;'>"+ventas[i]["cliente_razon"]+"</b></br>";
-                        if (ventas[i]["tiposerv_id"]==1){
-                        html += "<b>Mesa:  "+ventas[i]["venta_numeromesa"]+"</b>";
+                        
+                        if (ventas[i]["mesa_nombre"]!=null){
+                            html += "<b>Mesa:  "+ventas[i]["mesa_nombre"]+"</b>";
                     	}
                         html += "</td><td>";
                 for (var e = 0; e < d; e++) {
+                    
+                        
                 	if (ventas[i]["venta_id"]==detalle[e]["venta_id"]) {
-                        html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b>";	
-                        html += " <br> <b>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
+                        
+                            if (detalle[e]["clasificador_nombre"]!=null){
+                                clasificador = detalle[e]["clasificador_nombre"];
+                            }
+                            
+                            html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b><br> <b style='color:red;'>"+clasificador+"</b>";
+                            
+                            
+                            if (detalle[e]["detalleven_unidadfactor"]!="" && detalle[e]["detalleven_unidadfactor"]!="-"){
+                                html += "<b style='color:gray; font-size:13px;'>("+detalle[e]["detalleven_unidadfactor"]+")</b>";	
+                            }
+                            
+                            if (detalle[e]["detalleven_preferencia"]!="" && detalle[e]["detalleven_preferencia"]!="-"){
+                                html += " * <b style='color:red;'>("+detalle[e]["detalleven_preferencia"]+")</b><br>";	
+                            }
+                                html +="<br>"
                         }
                          
                       }
                      
                         html += "</td>";
                         html += "<td align='center' style='font-size: 14px;'><b>"+ventas[i]["venta_numeroventa"]+"</b>"; 
-                        html += "<br>"+ventas[i]["tiposerv_descripcion"]+"</td>";
+                        html += "<br> "+ventas[i]["tiposerv_descripcion"]+"</td>";
                         if (ventas[i]["entrega_id"]==1) {
                             //ventas[i]["entrega_nombre"]
                         html += "<td align='center'> <a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </a>";

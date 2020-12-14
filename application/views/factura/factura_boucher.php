@@ -125,7 +125,7 @@ border-bottom : 1px solid #aaa;*/
                     <font size="2" face="Arial"><b><?php echo $empresa[0]['empresa_nombre']; ?></b></font><br>
                     <font size="1" face="Arial narrow"><b><?php echo $empresa[0]['empresa_eslogan']; ?></b></font><br>                    
                     <!--<font size="1" face="Arial"><b><?php echo "De: ".$empresa[0]['empresa_propietario']; ?></b></font><br>-->
-                    <?php if (isset($empresa[0]['empresa_propietario'])){ ?>
+                    <?php if (isset($empresa[0]['empresa_propietario']) && ($empresa[0]['empresa_propietario']!="")){ ?>
                     <font size="1" face="Arial"></b>
 
                         <?php  echo "<b> DE: ".$empresa[0]['empresa_propietario'] ; ?>
@@ -213,7 +213,26 @@ border-bottom : 1px solid #aaa;*/
                         ?>
            <tr style="font-size: 8pt;">
                 <td align="center" style="padding: 0;"><?php echo $d['detallefact_cantidad']; ?></td>
-                <td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php echo $d['detallefact_descripcion']; ?></td>
+                <!--<td style="padding: 0;"><font style="size:5px; font-family: arial narrow;" style="padding: 0;"> <?php //echo $d['detallefact_descripcion']; ?></td>-->
+                
+                <td style="padding: 0; line-height: 10px;"><font style="size:5px; font-family: arial;"> 
+                    
+                    <?php echo $d['detallefact_descripcion']; ?>
+                     <?php if ($d['detallefact_unidadfactor'] != "-" && $d['detallefact_unidadfactor'] != "") echo " [".$d['detallefact_unidadfactor']."]";?>
+                    
+                    <?php if(isset($d['detallefact_preferencia']) && $d['detallefact_preferencia']!='null' && $d['detallefact_preferencia']!='-' ) {
+                        echo  $d['detallefact_preferencia']; }
+                    ?>
+                    <?php if(isset($d['detallefact_caracteristicas']) && $d['detallefact_caracteristicas']!='null' && $d['detallefact_caracteristicas']!='-' ) {
+                        echo  "<br>".nl2br($d['detallefact_caracteristicas']); }
+                        //echo  "<br><textarea rows='5' cols='100%' readonly='true'>".$d['detallefact_caracteristicas']."</textarea>"; }
+
+                    ?>                                
+                    </font>
+                </td>
+                
+                
+                
                 <!--<td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio']+$d['detallefact_descuento'],2,'.',','); ?></td>-->
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_precio'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0;"><?php echo number_format($d['detallefact_subtotal'],2,'.',','); ?></td>

@@ -147,8 +147,15 @@ class Venta_model extends CI_Model
      */
     function get_detalle_aux($usuario_id)
     {
-        //$sql = "select * from detalle_venta_aux d, producto p where d.producto_id = p.producto_id and d.usuario_id = ".$usuario_id." order by detalleven_id desc";
-        $sql = "select * from detalle_venta_aux d where d.usuario_id = ".$usuario_id." order by d.detalleven_id desc";
+        //$sql = "select * from detalle_venta_aux d where d.usuario_id = ".$usuario_id." order by d.detalleven_id desc";
+        $sql = "select d.*, p.producto_foto, c.clasificador_nombre
+                from detalle_venta_aux d
+                left join producto p on p.producto_id = d.producto_id
+                left join clasificador c on c.clasificador_id = d.clasificador_id
+                where d.usuario_id = ".$usuario_id."
+                order by d.detalleven_id desc";
+
+        
         $detalle = $this->db->query($sql)->result_array();
         return $detalle;
     }
@@ -335,8 +342,13 @@ class Venta_model extends CI_Model
     function buscar_cliente($nit)
     {
 
-        $sql = "select * from cliente where cliente_nit = ".$nit;        
-        $resultado = $this->db->query($sql)->result_array();
+//        $sql = "select * from cliente where cliente_nit = ".$nit;        
+        $sql = "select c.*,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc from cliente c
+                left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
+                where 
+                c.cliente_nit = ".$nit;
+
+       $resultado = $this->db->query($sql)->result_array();
         
         return $resultado;
     }
@@ -458,7 +470,17 @@ function get_busqueda($condicion)
     /* obtiene detalle venta aux con imagen de producto*/
     function get_detalle_auxfoto($usuario_id)
     {
-        $sql = "select d.*, p.producto_foto from detalle_venta_aux d, producto p where d.producto_id = p.producto_id and d.usuario_id = ".$usuario_id." order by d.detalleven_id asc";
+//        $sql = "select d.*, p.producto_foto from "
+//                . "detalle_venta_aux d, producto p where d.producto_id = p.producto_id and "
+//                . "d.usuario_id = ".$usuario_id." order by d.detalleven_id asc";
+//        
+        $sql = "select d.*, p.producto_foto, c.clasificador_nombre
+                from detalle_venta_aux d
+                left join producto p on p.producto_id = d.producto_id
+                left join clasificador c on c.clasificador_id = d.clasificador_id
+                where d.usuario_id = ".$usuario_id."
+                order by d.detalleven_id asc";
+        
         $detalle = $this->db->query($sql)->result_array();
         return $detalle;
     }

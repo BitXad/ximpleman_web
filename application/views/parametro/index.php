@@ -186,6 +186,8 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">NOTA DE ENTREGA</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">LOGO MONITOR</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMAGEN FONDO</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PASE A DETALLE</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DATOS DE BOTON</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -215,6 +217,26 @@ foreach($all_parametros as $p)
                             }
                             ?>
                             <img src="<?php echo base_url("resources/images/monitor/".$fondomonitor); ?>" width="25" height="25">
+                        </td>
+                        <td><?php
+                            if($p['parametro_cantidadproductos'] == 1){
+                                echo 'SELECCIONAR CANTIDAD DE PRODUCTOS';
+                            }else if($p['parametro_cantidadproductos'] == 2){
+                                echo 'CARGAR UNO POR DEFECTO';
+                            }
+                            ?>
+                        </td>
+                        <td><?php
+                            if($p['parametro_datosboton'] == 1){
+                                echo 'NOMBRE PRODUCTO Y PRECIO';
+                            }else if($p['parametro_datosboton'] == 2){
+                                echo 'SOLO NOMBRE';
+                            }else if($p['parametro_datosboton'] == 3){
+                                echo 'SOLO PRECIO';
+                            }else if($p['parametro_datosboton'] == 4){
+                                echo 'NINGUNO';
+                            }
+                            ?>
                         </td>
                     </tr>
                 </table>

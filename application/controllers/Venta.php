@@ -29,6 +29,7 @@ class Venta extends CI_Controller{
         $this->load->model('Credito_model');
         $this->load->model('Categoria_clientezona_model');
         $this->load->model('Promocion_model');
+        $this->load->model('Mesa_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -94,6 +95,7 @@ class Venta extends CI_Controller{
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
+        $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         
@@ -166,13 +168,14 @@ class Venta extends CI_Controller{
         
         $descuento = $this->input->post('descuento');
         
-        $sql1 = "";
+        //consulta para registrar del detalle venta
         $sql1 = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ".
                 "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,".
                 "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra,
-                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase, detalleven_fechavenc) ".
+                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor) ".
                 " value(".$datos1.")";
         
+        //si el producto ya esta registrado, solo actualizara la cantidad y total
         $sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
                 ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
                 ", detalleven_descuento = ".$descuento.
@@ -182,30 +185,54 @@ class Venta extends CI_Controller{
         
         $descuento = 0;
         
+        //verificando si la cantidad que se estan ingresando al detalle no excede el limite del inventario
         $sql = "select if(sum(detalleven_cantidad)+".$cantidad.">".$existencia.",1,0) as resultado from detalle_venta_aux where producto_id = ".$producto_id;
-
         $resultado = $this->Venta_model->consultar($sql);
         
         
+        
+        $existe = 0;
         if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
             
             if($agrupado==1){
                 
                 if ($this->Venta_model->existe($producto_id,$usuario_id)){
-                    $sql = $sql2;             
+                    $sql = $sql2; 
+                    $existe = 1;
                 }
                 else{
                     $sql = $sql1;
+                    $existe = 0;
+                    
                 }                
             }
             else
-            {
+            {   //si no registraran datos agrupados
                 $sql = $sql1;
             }
           
-            $this->Venta_model->ejecutar($sql);
+            $detalleven_id = $this->Venta_model->ejecutar($sql);
             
-            $result = 1;
+            
+            //Cuando se utiliza productos compuestos debe registrarse en la composicion de productos
+            if ($existe==0){ // sino existe el producto en el detalle
+                
+                // Consulta para el subdetalle de producto en detalle venta
+                $sql_subdet = "insert into detalle_composicion_aux(
+                                composicionproducto_id,producto_id,detallecomp_cantidad,
+                                detallecomp_precio,venta_id,usuario_id, detalleven_id)
+
+                                (select composicionproducto_id,
+                                producto_id,composicion_cantidad * ".$cantidad.", composicion_precio * ".$cantidad.
+                                ", 0 as venta_id,".$usuario_id.",".$detalleven_id."
+                                from composicion_producto where composicionproducto_id = ".$producto_id.")";
+                
+                $this->Venta_model->ejecutar($sql_subdet);
+            }           
+            // fin de funciones para manejar composicion de productos
+            
+            
+            $result = 1;    
             echo '[{"cliente_id":"'.$result.'"}]';
             
         }
@@ -320,7 +347,8 @@ class Venta extends CI_Controller{
           detalleven_fechavenc,
           usuario_id,
           factura_id,
-          clasificador_id
+          clasificador_id,
+          detalleven_unidadfactor
         )
 
         (SELECT 
@@ -353,7 +381,8 @@ class Venta extends CI_Controller{
             detalleven_fechavenc,
             usuario_id,
             0 as factura_id,
-            clasificador_id
+            clasificador_id,
+            detalleven_unidadfactor
           
         FROM
           detalle_venta_aux
@@ -554,7 +583,8 @@ class Venta extends CI_Controller{
                 detallefact_descuento,
                 detallefact_total,                
                 detallefact_preferencia,
-                detallefact_caracteristicas)
+                detallefact_caracteristicas,
+                detallefact_unidadfactor)
 
                 (SELECT 
                   producto_id,
@@ -569,7 +599,8 @@ class Venta extends CI_Controller{
                  (detalleven_subtotal*".$porcentaje."/detalleven_cantidad),
                   detalleven_total * (1 - ".$porcentaje."),     
                   detalleven_preferencia,
-                  detalleven_caracteristicas
+                  detalleven_caracteristicas,
+                  detalleven_unidadfactor
 
                 FROM
                   detalle_venta_aux
@@ -2530,11 +2561,13 @@ function anular_venta($venta_id){
         $usuario_id = $this->session_data['usuario_id'];
         $parametro = $this->input->post('parametro');
         
-        $sql =  "select * from cliente where ".
-                " cliente_razon like '%".$parametro."%'".
-                " or cliente_nombre like '%".$parametro."%'".
-                " or cliente_codigo like '%".$parametro."%'".
-                " or cliente_nit like '%".$parametro."%'";
+        $sql =  "select c.*, t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc  from cliente  c".
+                " left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id ".
+                " where ".
+                " c.cliente_razon like '%".$parametro."%'".
+                " or c.cliente_nombre like '%".$parametro."%'".
+                " or c.cliente_codigo like '%".$parametro."%'".
+                " or c.cliente_nit like '%".$parametro."%'";
         //echo $sql;
         $resultado = $this->Venta_model->consultar($sql);
         echo json_encode($resultado);
@@ -2552,8 +2585,15 @@ function anular_venta($venta_id){
                $usuario_id = $this->session_data['usuario_id'];
                
                
-               $sql =  "select * from cliente where ".
-                       " cliente_id = ".$cliente_id;
+//               $sql =  "select * from cliente where ".
+//                       " cliente_id = ".$cliente_id;
+               
+                $sql = "select c.*,t.tipocliente_descripcion, t.tipocliente_montodesc,t.tipocliente_porcdesc from cliente c
+                        left join tipo_cliente t on t.tipocliente_id = c.tipocliente_id
+                        where 
+                        c.cliente_id = ".$cliente_id;
+               
+               
                
                $resultado = $this->Venta_model->consultar($sql);
                echo json_encode($resultado);
@@ -3242,6 +3282,29 @@ function anular_venta($venta_id){
         
         $this->Venta_model->ejecutar($sql);
         echo json_encode(true);  
+        
+    }
+
+    function seleccionar_tipocliente(){
+        
+        $tipocliente_id = $this->input->post('tipocliente_id');
+        
+        $sql = "select * from tipo_cliente where tipocliente_id = ".$tipocliente_id;
+        
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);  
+        
+    }
+
+    function detalle_composicion(){
+        
+        $detalleven_id = $this->input->post('detalleven_id');
+        
+        $sql = "select d.*, p.producto_nombre, p.producto_codigobarra from detalle_composicion_aux d, inventario p
+                where  d.producto_id = p.producto_id and detalleven_id = ".$detalleven_id;
+        
+        $resultado = $this->Venta_model->consultar($sql);
+        echo json_encode($resultado);  
         
     }
         

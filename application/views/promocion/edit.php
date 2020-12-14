@@ -15,15 +15,17 @@
                 <?php echo form_open('promocion/edit/'.$promocion['promocion_id']); ?>
                 <div class="box-body">
                     <div class="row clearfix">
-                        <div class="col-md-6">
+                        <!--<div class="col-md-6">
                             <label for="producto_id" class="control-label"><span class="text-danger">*</span>Producto</label>
                             <div class="form-group">
-                                <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto"  onkeypress="ventaproducto(event)" value="<?php echo $promocion['producto_nombre']; ?>" readonly/>
-                                <input type="hidden" name="producto_id" id="producto_id" value="<?php echo ($this->input->post('producto_id') ? $this->input->post('producto_id') : $promocion['producto_id']); ?>" class="form-control"  required />
+                                <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto"  onkeypress="ventaproducto(event)" value="<?php //echo $promocion['producto_nombre']; ?>" readonly/>
+                                <input type="hidden" name="producto_id" id="producto_id" value="<?php //echo ($this->input->post('producto_id') ? $this->input->post('producto_id') : $promocion['producto_id']); ?>" class="form-control"  required />
                             </div>
-                        </div><div class="col-md-6 no-print" id="tablareproducto"></div>
+                        </div>
                         
-                        <div class="col-md-6">
+                        <div class="col-md-6 no-print" id="tablareproducto"></div>
+                        -->
+                        <div class="col-md-8">
                                 <label for="promocion_titulo" class="control-label"><span class="text-danger">*</span>Título</label>
                                 <div class="form-group">
                                         <input type="text" name="promocion_titulo" value="<?php echo ($this->input->post('promocion_titulo') ? $this->input->post('promocion_titulo') : $promocion['promocion_titulo']); ?>" class="form-control" id="promocion_titulo" required onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
@@ -45,11 +47,17 @@
                                         <span class="text-danger"><?php echo form_error('promocion_preciototal');?></span>
                                 </div>
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-6">
                                 <label for="promocion_descripcion" class="control-label">Descripción</label>
                                 <div class="form-group">
                                         <input type="text" name="promocion_descripcion" value="<?php echo ($this->input->post('promocion_descripcion') ? $this->input->post('promocion_descripcion') : $promocion['promocion_descripcion']); ?>" class="form-control" id="promocion_descripcion" onkeyup="var start = this.selectionStart; var end = this.selectionEnd; this.value = this.value.toUpperCase(); this.setSelectionRange(start, end);" />
                                 </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="promocion_fecha" class="control-label">Fecha</label>
+                            <div class="form-group">
+                                <input type="date" name="promocion_fecha" value="<?php echo $promocion['promocion_fecha']; ?>" class="form-control" id="promocion_fecha" />
+                            </div>
                         </div>
                         <div class="col-md-3">
                             <label for="estado_id" class="control-label">Estado</label>
@@ -98,15 +106,15 @@
                             $total += $d['detalleven_precio']*$d['detalleven_cantidad'];
                         ?>
                     <tr>
-                            <!--<td><?php echo $d['detallepromo_id']; ?></td>-->
-                            <td><?php echo ++$num; ?></td>
-                            <td><?php echo $d['producto_nombre']; ?></td>
-                            <td><?php echo $d['producto_codigobarra']; ?></td>
-                            <td style="text-align: center"><?php echo number_format($d['detalleven_cantidad'],2,".",","); ?></td>
-                            <td style="text-align: right"><?php echo number_format($d['detalleven_precio'],2,".",",");; ?></td>
-                            <td style="text-align: right"><?php echo number_format($d['detalleven_precio']*$d['detalleven_cantidad'],2,".",",");; ?></td>
-                            <td>
-                            <a href="<?php echo site_url('detalle_promocion/edit/'.$d['detallepromo_id']); ?>" class="btn btn-info btn-xs"><span class="fa fa-pencil"></span> </a> 
+                        <!--<td><?php echo $d['detallepromo_id']; ?></td>-->
+                        <td><?php echo ++$num; ?></td>
+                        <td><?php echo $d['producto_nombre']; ?></td>
+                        <td><?php echo $d['producto_codigobarra']; ?></td>
+                        <td style="text-align: center"><?php echo number_format($d['detalleven_cantidad'],2,".",","); ?></td>
+                        <td style="text-align: right"><?php echo number_format($d['detalleven_precio'],2,".",",");; ?></td>
+                        <td style="text-align: right"><?php echo number_format($d['detalleven_precio']*$d['detalleven_cantidad'],2,".",",");; ?></td>
+                        <td>
+                            <a onclick="buscar_prodpromocion(<?php echo $d["detallepromo_id"]; ?>, '<?php echo $d['producto_nombre']; ?>')" class="btn btn-info btn-xs" title="Modificar..."><span class="fa fa-pencil"></span> </a>
                             <a href="<?php echo site_url('detalle_promocion/remove/'.$d['detallepromo_id']."/".$d['promocion_id']); ?>" class="btn btn-danger btn-xs"><span class="fa fa-trash"></span> </a>
                         </td>
                     </tr>
@@ -134,10 +142,7 @@
     </div>
 </div>
 
-<!----------------- fin modal preferencias ---------------------------------------------->
-
 <!----------------- modal preferencias ---------------------------------------------->
-
 <div class="modal fade" id="modalingreso" tabindex="-1" role="dialog" aria-labelledby="modalingreso" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -188,3 +193,47 @@
 		</div>
 	</div>
 </div>
+<!----------------- F I N modal preferencias ---------------------------------------------->
+<!----------------- INICIO modal MODIFICAR ---------------------------------------------->
+<div class="modal fade" id="modalmodificar" tabindex="-1" role="dialog" aria-labelledby="modalmodificarlabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header" >
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <center>
+                    <h4 class="modal-title" id="myModalLabel">Modificar Producto:</h4>
+                    <h4 class="modal-title" id="myModalLabel"><b><span id="nomproducto"></span></b></h4>
+                </center>
+                <!--<input type="hidden" name="detallepromo_id" value="0" id="detallepromo_id" />-->
+            </div>
+            <div class="modal-body">
+                <!--------------------- TABLA---------------------------------------------------->
+                <div class="box-body table-responsive">
+                    <!--------------------- inicio loader ------------------------->
+                    <div class="col-md-6" id='oculto'  style='display: none;'>
+                        <center>
+                            <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                        </center>
+                    </div> 
+                    <!--------------------- fin inicio loader ------------------------->
+                    <table class="table-responsive" id="mitabla">
+                        <tr>
+                            <th style="padding: 0">CANTIDAD</th>
+                            <th style="padding: 0">PRECIO</th>
+                            <th style="padding: 0">TOTAL</th>
+                            <th style="padding: 0"></th>
+                        </tr>
+                        <tbody id="tabla_modificarproducto">
+                            <!---------- aqui van los resultados -->
+                        </tbody>
+
+                    </table>
+                </div>
+                <!----------------------FIN TABLA--------------------------------------------------->
+            </div>
+        </div>
+    </div>
+</div>
+<!----------------- F I N  modal MODIFICAR ---------------------------------------------->

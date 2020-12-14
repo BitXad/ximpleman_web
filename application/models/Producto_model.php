@@ -549,4 +549,10 @@ class Producto_model extends CI_Model
     {
         return $this->db->delete('clasificador_producto',array('clasificadorprod_id'=>$clasificadorprod_id));
     }
+
+    function get_productos()
+    {
+        $sql="select * from producto";
+        return $this->db->query($sql)->result_array();
+    }
 }

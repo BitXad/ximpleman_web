@@ -98,7 +98,7 @@ function tabladetalle_productos(){
                     }
                     html = "";
                     html2 = "";
-                    html += "<br>";
+                    //html += "<br>";
                     for (var i = 0; i < n ; i++){
                         cant_total   = Number(cant_total)  + Number(registros[i]['detalleven_cantidad']);
                         total_detalle = Number(total_detalle)   + Number(registros[i]['detalleven_total']);
@@ -112,7 +112,17 @@ function tabladetalle_productos(){
                         html += "<td style='padding: 0;'>";
                         html += "<center>";
                         //html += "<div style='color: white; display: flex; padding-right: 3px;'><h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'></h4><div style='font-size: "+preferencia+";  padding-top: "+altoletra+" padding-left: 5px'>"+registros[i]['detalleven_preferencia']+"</div></div>";
-                        html += "<h4><img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'></h4>";
+                        html += "<div style='display: flex;'>"
+                        html += "<img src='"+base_url+"resources/images/productos/"+registros[i]["producto_foto"]+"' width='"+ancho+"' height='"+alto+"' class='img img-circle'>";
+                        html += "</div>"
+                        html += "<div style='color:white; text-align: left'>"
+                        if((registros[i]["producto_nombre"]).length >23){
+                            res = (registros[i]["producto_nombre"]).substr(0, 21)+"...";
+                        }else{
+                            res = registros[i]["producto_nombre"];
+                        }
+                        html += "<span style='font-weight: bold; font-size: 12px'>"+res+"</span>";
+                        html += "</div>"
                         html += "</center>";
                         html += "</td>";
                         html += "<td style='padding: 0' align='right'>";

@@ -78,7 +78,9 @@ class Detalle_venta extends CI_Controller{
 
     function reporte_generalventa()
     {
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);             
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $this->load->model('Tipo_transaccion_model'); 
+        $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
         $data['page_title'] = "Reporte Ventas";        
         $data['_view'] = 'venta/reporte_venta';
         $this->load->view('layouts/main',$data);
@@ -131,7 +133,7 @@ class Detalle_venta extends CI_Controller{
         
     }
     
-    
+    /*
     function reportes()
     {
         if($this->acceso(156)){
@@ -142,7 +144,7 @@ class Detalle_venta extends CI_Controller{
         //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
         $this->load->view('layouts/main',$data);
         }
-    }
+    }*/
 
     function buscarrepo()
     {
@@ -153,15 +155,12 @@ class Detalle_venta extends CI_Controller{
         echo json_encode($datos);
               
     }
-
+    
     function busca_simple()
     {
-        
         $filtro = $this->input->post('filtro');
-        $datos = $this->Detalle_venta_model->reporte_simple($filtro);
-       
+        $datos = $this->Detalle_venta_model->reporte_simple($filtro);  
         echo json_encode($datos);
-              
     }
     function nomcliente($cliente)
     {
@@ -594,6 +593,15 @@ class Detalle_venta extends CI_Controller{
         }        
     }
     
-    
+    function buscarprodagrupados()
+    {
+        if ($this->input->is_ajax_request()) {
+            $filtro = $this->input->post('filtro');
+            $datos = $this->Detalle_venta_model->reporteventas_prodagrupados($filtro);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
     
 }

@@ -210,24 +210,83 @@ function registrar_producto(producto_id){
     $.ajax({url: controlador,
            type:"POST",
            data:{cantidad:cantidad, producto_id:producto_id, precio:precio,promocion_id:promocion_id },
-           success:function(respuesta){     
-
+           success:function(respuesta){
                 location.reload(); 
-          
-                
             },
             error:function(respuesta){
-
             },
             complete: function (jqXHR, textStatus) {
 
                 document.getElementById('oculto').style.display = 'none'; //ocultar el bloque del loader
-
-    //            $("#filtrar").focus();
-    //            $("#filtrar").select();
             }
-        
-    });  
-    
-    
+    });
+}
+
+//resultado para modificar una detalle de una promocion
+function buscar_prodpromocion(detallepromo_id, producto_nombre){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'promocion/buscar_detallepromocion/';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{detallepromo_id:detallepromo_id},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                    html = "";
+                        html += "<tr>";
+                        html += "<td><input type='number' step='any' min='0' value='"+Number(registros.detallepromo_cantidad)+"' id='cantidadmodif' onkeyup='calculartotalmodif()' /></td>";
+                        html += "<td><input type='number' step='any' min='0' value='"+Number(registros.detallepromo_precio)+"' id='preciomodif' onkeyup='calculartotalmodif()' /></td>";
+                        html += "<td class='text-right'><span id='totalmodificar'>"+Number(registros.detallepromo_cantidad*registros.detallepromo_precio).toFixed(2)+"</span>";
+                        html += "</td>";
+                        html += "<td><a class='btn btn-success btn-xs' onclick='modificar_detallepromocion("+detallepromo_id+")' title='Modificar..'>";
+                        html += "<fa class='fa fa-check'></fa> </a>";
+                        html += "</td>";
+                        html += "</tr>";
+                   $("#nomproducto").html(producto_nombre);
+                   $("#tabla_modificarproducto").html(html);
+                   $("#detallepromo_id").val(detallepromo_id);
+                   $("#modalmodificar").modal("show");
+            }else{
+                alert("Esta promoción no tiene productos");
+            }
+        },
+        error:function(respuesta){
+           // alert("Algo salio mal...!!!");
+           html = "";
+           $("#nomproducto").html(html);
+        }
+    });
+}
+
+function calculartotalmodif(){
+    var cantidadmodif = document.getElementById('cantidadmodif').value;
+    var preciomodif   = document.getElementById('preciomodif').value;
+    $("#totalmodificar").html(Number(cantidadmodif*preciomodif).toFixed(2));
+}
+//modifica un detalle de una promoción..
+function modificar_detallepromocion(detallepromo_id){
+    var base_url = document.getElementById('base_url').value;
+    var detallepromo_cantidad = document.getElementById('cantidadmodif').value;
+    var detallepromo_precio   = document.getElementById('preciomodif').value;
+    var controlador = base_url+'promocion/modificar_detallepromocion/';
+    $.ajax({url: controlador,
+           type:"POST",
+           data:{detallepromo_id:detallepromo_id, detallepromo_cantidad:detallepromo_cantidad,
+                 detallepromo_precio:detallepromo_precio},
+           success:function(respuesta){
+               var registros =  JSON.parse(respuesta);
+               if (registros != null){
+                   if(registros =="ok"){
+                       location.reload();
+                   }else{
+                       alert("No es un numero valido, por favor verifique sus datos");
+                   }
+            }else{
+                alert("Ocurrio un problema, revise sus datos!..");
+            }
+        },
+        error:function(respuesta){
+            $("#totalmodificar").html("-");
+        }
+    });
 }
