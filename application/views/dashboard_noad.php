@@ -261,8 +261,6 @@
                                                                 +'<br>';
                                                                 if(this.estado == 1){
                                                                     contenido+='<button class="btn btn-sm btn-warning" style="width: 100%; margin:auto" onclick="consolidar('+this.ven_id+')">Entregar</button>';
-                                                                }else{
-                                                                    contenido+='<button class="btn btn-sm btn-success" style="width: 100%; margin:auto" onclick="consolidar('+this.ven_id+')">Reestablecer</button>';
                                                                 }
                                                 contenido += '</div>';
                                                 infowindow.setContent(contenido); //asignar el contenido al globo
