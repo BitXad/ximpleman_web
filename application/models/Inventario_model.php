@@ -88,7 +88,7 @@ class Inventario_model extends CI_Model
     function get_inventario_categoria($parametro)
     {
         $sql = " select i.* from inventario i where i.estado_id = 1 and i.categoria_id = ".$parametro.
-               " group by i.producto_id order by i.producto_nombre";
+               " group by i.producto_id order by i.producto_id";
   
         $producto = $this->db->query($sql)->result_array();
         return $producto;

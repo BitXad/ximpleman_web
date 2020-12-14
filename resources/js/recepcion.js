@@ -52,9 +52,10 @@ function buscar_por_entrega()
 function recepcion(estado)
 {   
       
-   var base_url    = document.getElementById('base_url').value;
-   var destino    = document.getElementById('destino_id').value;
+    var base_url    = document.getElementById('base_url').value;
+    var destino    = document.getElementById('destino_id').value;
     var controlador = base_url+"detalle_venta/recepcionhoy";
+    var clasificador = "";
     
     document.getElementById('oculto').style.display = 'block';
     $.ajax({url: controlador,
@@ -90,9 +91,15 @@ function recepcion(estado)
                         html += "</td><td>";
                 for (var e = 0; e < d; e++) {
                     
+                        
                 	if (ventas[i]["venta_id"]==detalle[e]["venta_id"]) {
                         
-                                html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b><br>";
+                            if (detalle[e]["clasificador_nombre"]!=null){
+                                clasificador = detalle[e]["clasificador_nombre"];
+                            }
+                            
+                            html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b><br> <b style='color:red;'>"+clasificador+"</b>";
+                            
                             
                             if (detalle[e]["detalleven_unidadfactor"]!="" && detalle[e]["detalleven_unidadfactor"]!="-"){
                                 html += "<b style='color:gray; font-size:13px;'>("+detalle[e]["detalleven_unidadfactor"]+")</b>";	

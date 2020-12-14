@@ -304,6 +304,7 @@ function tablaproductos()
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var venta_descuento = Number(document.getElementById('venta_descuento').value);
     var tipousuario_id = Number(document.getElementById('tipousuario_id').value);
+    var clasificador = "";
     
     $.ajax({url: controlador,
            type:"POST",
@@ -369,11 +370,11 @@ function tablaproductos()
                        html += " <div id='tabla_composicion"+registros[i]["detalleven_id"]+"' style='padding:0;'> </div>";
 //                       html += " <table style='padding:0;'> </table>";
                         
-                        if (registros[i]["clasificador_nombre"]!="null" && registros[i]["clasificador_nombre"]!="")
+                        if (registros[i]["clasificador_nombre"]!=null && registros[i]["clasificador_nombre"]!="")
                             clasificador = registros[i]["clasificador_nombre"]+" | ";
                         
                         html += "</font></b>";
-                        html += " <small>"+clasificador+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
 
@@ -1412,7 +1413,7 @@ function tablaresultados(opcion)
     var rol_factor4 = document.getElementById('rol_factor4').value; //document.getElementById('parametro_altoimagen').value;
     var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
     
-
+    
     if(esMobil()) { tamanio = 1; }
     else{ tamanio = 2; }
     
@@ -1911,7 +1912,8 @@ function tablaresultados(opcion)
                         html += "          </tr>";
                         html += "          <tr>";
                         html += "          <td colspan='2'>";
-                        html += "   <input type='text' id='inputcaract' value='' class='form-control btn btn-xs btn-warning' onKeyUp='this.value = this.value.toUpperCase();'>";
+                        
+//                        html += "   <input type='text' id='inputcaract' value='"+mispreferencias+"' class='form-control btn btn-xs btn-warning' onKeyUp='this.value = this.value.toUpperCase();'>";
                         html += "          </td>";
                         html += "          </tr>";
                         }
@@ -2891,6 +2893,7 @@ function borrar_datos_cliente()
 {
     
     var modulo_restaurante = document.getElementById("parametro_modulorestaurante").value;
+    var parametro_imprimircomanda = document.getElementById("parametro_imprimircomanda").value; //0 no, 1 si
     $("#nit").val(0);
     $("#razon_social").val("SIN NOMBRE");
     $("#cliente_id").val("0");
@@ -2937,8 +2940,10 @@ function borrar_datos_cliente()
     
     //Si esta actuvo el modulo para restaurante
     if (modulo_restaurante == 1){
-        boton = document.getElementById("imprimir_comanda");
-        boton.click();                    
+        if (parametro_imprimircomanda==1){
+            boton = document.getElementById("imprimir_comanda");
+            boton.click();
+        }
     } 
     
     document.getElementById('boton_finalizar').style.display = 'block'; //mostrar el bloque del loader
