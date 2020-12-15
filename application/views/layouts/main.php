@@ -564,6 +564,9 @@
                         <li>
                             <a href="<?php echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
                         </li>
+						<li>
+                            <a href="<?php echo site_url('reportes/ventausuario');?>"><i class="fa fa-user"></i>Venta por Usuario</a>
+                        </li>
                         <!--<li>
                             <a href="<?php //echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
                         </li>-->

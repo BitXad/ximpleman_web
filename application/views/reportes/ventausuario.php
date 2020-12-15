@@ -1,5 +1,5 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
-<script src="<?php echo base_url('resources/js/reporte_vcategoria.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/reporte_vusuario.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
@@ -25,7 +25,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS POR CATEGORIA</u></h3>
+            <h3 class="box-title"><u>VENTAS POR USUARIO</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
@@ -42,8 +42,20 @@
     </div>
     <div class="col-md-1">
         <label>&nbsp;</label>
-        <a class="btn btn-facebook btn-sm form-control" title="Buscar venta por categorias" onclick="mostrar_grafica()"><i class="fa fa-search"> Buscar</i></a>
+        <a class="btn btn-facebook btn-sm form-control" title="Buscar ventas por usuario" onclick="mostrar_grafica()"><i class="fa fa-search"> Buscar</i></a>
     </div>
+    <div class="col-md-1">
+            <label for="imprimir" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+               <button onclick="imprimir()" type="button" class="btn btn-success btn-xs form-control" ><span class="fa fa-print"> </span> Imprimir</button>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <button onclick="generarexcel_vusuario()" type="button" class="btn btn-danger btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
+            </div>
+        </div>
 </div>
 <div class="row" id="graficapastel" style="display: none">
     <br/>
@@ -55,31 +67,6 @@
     </div>
 </div>
 <div class="row" >
-    <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
-        <div class="col-md-2">
-            Categoria:
-            <select id="categoria_id" name="categoria_id" class="btn btn-primary btn-sm form-control" onchange="venta_porcategoria()" >
-                <option value="0">-TODOS-</option>
-                <?php
-                    foreach($all_categoria as $categoria){ ?>
-                        <option value="<?php echo $categoria['categoria_id']; ?>"><?php echo $categoria['categoria_nombre']; ?></option>                                                   
-                <?php } ?>
-             </select>
-        </div>
-        <div class="col-md-4"></div>
-        <div class="col-md-1">
-            <label for="imprimir" class="control-label"> &nbsp; </label>
-           <div class="form-group">
-               <button onclick="imprimir()" type="button" class="btn btn-success btn-xs form-control" ><span class="fa fa-print"> </span> Imprimir</button>
-            </div>
-        </div>
-        <div class="col-md-2">
-            <label for="expotar" class="control-label"> &nbsp; </label>
-           <div class="form-group">
-                <button onclick="generarexcel_vcategoria()" type="button" class="btn btn-danger btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
-            </div>
-        </div>
-    </div>
     <span id="desde"></span>
     <span id="hasta"></span>
     <span id="lacategoria"></span>
@@ -98,24 +85,13 @@
         <table class="table table-striped table-condensed" id="mitabla" >
             <tr>
                 <th>Nro.</th>
-                <th>PRODUCTO</th>
-                <th>FECHA<br>VENTA</th>
-                <th>NUM.<BR>VENTA</th>
-                <th>NUM.<BR>DOC.</th>
-                <th>TIPO<br>VENTA</th>
-                <th>CUOTA<br>INIC.</th>
-                <th>UNIDAD</th>
-                <th>CANT.</th>
-                <th>PRECIO<BR>UNIT.</th>
-                <th>DESC</th>
-                <th>PRECIO<BR>TOTAL</th>
+                <th>USUARIO</th>
+                <th>VENTAS</th>
+                <th>DESCUENTOS</th>
                 <?php if($tipousuario_id == 1){ ?>
                 <th>COSTO</th>
-                <th>UTILID.</th>
+                <th>UTILIDAD</th>
                 <?php } ?>
-                <th>CLIENTE</th>
-                <th>CAJERO</th>
-                <th class="no-print"></th>
             </tr>
             <tbody class="buscar" id="reportefechadeventa"></tbody>
         </table>
