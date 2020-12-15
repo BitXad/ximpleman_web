@@ -1147,6 +1147,8 @@ function ingresorapidojs(cantidad,producto)
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
+    var preferencia_id = document.getElementById('preferencia_id').value;
+    var clasificador_id = document.getElementById('clasificador_id').value;
         
     if (check_agrupar){
         agrupado = 1;
@@ -1163,7 +1165,7 @@ function ingresorapidojs(cantidad,producto)
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"'";
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id;
         //alert(datos1);
 
         $.ajax({url: controlador,
@@ -1779,7 +1781,7 @@ function tablaresultados(opcion)
                         // Este es el boton del producto
                         
                         if (datosboton==1){ //nombre de producto y precio
-                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";                            
+                            html += "<button type='button' class='btn btn-sq-lg btn-"+color_boton+"' style='width: "+ancho_boton+"px !important; height: "+alto_boton+"px !important; padding:0;' data-toggle='modal' data-target='#myModal"+registros[i]["producto_id"]+"'  title='"+nombre_producto+" ' onclick='focus_cantidad("+registros[i]["producto_id"]+")'>"+imagen_boton+"<br>"+"<sub>"+prod+"</sub>"+precio_cantidad+"</button>";
                         }                        
                         
                         if (datosboton==2){ // Solo Nombre de producto
@@ -1893,6 +1895,10 @@ function tablaresultados(opcion)
                         }
 
                         html += "</select>";
+                        html += "<br>";
+                        html += "<div id='div_clasificador"+registros[i]["producto_id"]+"'>";
+                        html += "</div>";
+                        
                         // ******************** fin  select   
                         
                         
@@ -1900,13 +1906,23 @@ function tablaresultados(opcion)
                         html += "               <td>";
                         
                         if (lista_preferencias.length>0){
+                            
+                        html += "<div class='btn-group-vertical'>";
+//                        html += "   <div class='btn-group' role='group' aria-label='Button group with nested dropdown'>";
+                            
+                            html += "<button type='button' class='btn btn-xs btn-info' id='pref0'";
+                            html += " name='pref0'  onclick='agregar_preferencia(0)'>";
+                            html += "<i class='fa fa-cube'></i> NINGUNO </button>";
+                            
                         for (var pref = 0; pref < lista_preferencias.length; pref++ ){
-                            html += "<button class='btn btn-xs btn-facebook' id='pref"+lista_preferencias[pref]["preferencia_id"]+"'";
-                            html += " name='"+lista_preferencias[pref]["preferencia_descripcion"]+"' style='background-color: #db0ead' onclick='agregar_preferencia("+lista_preferencias[pref]["preferencia_id"]+")'>";
+                            html += "<button type='button' class='btn btn-xs btn-facebook' id='pref"+lista_preferencias[pref]["preferencia_id"]+"'";
+                            html += " name='"+lista_preferencias[pref]["preferencia_descripcion"]+"'  onclick='agregar_preferencia("+lista_preferencias[pref]["preferencia_id"]+")'>";
                             html += "<i class='fa fa-cube'></i> "+lista_preferencias[pref]["preferencia_descripcion"]+"</button>";
-                            html += "<br>";
                         }   
                         
+                        
+//                        html += "   </div>";
+                        html += "</div>";
                         html += "               </td>";
                         
                         html += "          </tr>";
@@ -2919,6 +2935,7 @@ function borrar_datos_cliente()
     $("#zona_id").val("0");
     $("#venta_descuentoparc").val("0");
     $("#venta_descuento").val("0");
+    $("#preferencia_id").val("0");
      
     document.getElementById("forma_pago").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
@@ -3556,11 +3573,12 @@ function iniciar_preferencia(detalleven_id)
 function agregar_preferencia(preferencia_id)
 {
     
-    var preferencia = document.getElementById('pref'+preferencia_id).name;
     var input = document.getElementById('inputcaract').value;
-    var cadena = input+preferencia+"|";
+    //var cadena = input+preferencia+"|";
     
-    $("#inputcaract").val(cadena);
+
+    $("#preferencia_id").val(preferencia_id);
+    //$("#inputcaract").val(cadena);
     //alert(preferencia);
     
 }
@@ -3631,6 +3649,8 @@ function focus_cantidad(producto_id){
     
 //    alert(producto_id);
         var campo = "cantidad"+producto_id;
+    
+        mostrar_clasificador_boton(producto_id);
     
         $('#myModal'+producto_id).on('shown.bs.modal', function() {
         $('#'+campo).focus();
@@ -4046,6 +4066,38 @@ function mostrar_clasificador(producto_id,detalleven_id){
                 html +="</select>";               
                
                $("#div_clasificador").html(html);
+
+           },
+           error: function(respuesta){
+               
+           }
+       });               
+}
+
+function mostrar_clasificador_boton(producto_id){
+    
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"venta/clasificador_producto";
+
+    //para llenar el select de clasificador de productos
+     $.ajax({url: controlador,
+           type:"POST",
+           data:{producto_id:producto_id},
+           success:function(respuesta){     
+               r = JSON.parse(respuesta);
+               var html = "";
+               
+                html +="<input type='hidden' value='"+detalleven_id+"' id='input_detalleven'>";
+                html +="<select id='select_clasificador"+producto_id+"' class='btn btn-warning btn-xs' style='width:175px;'>";
+                html +="<option value=0>NINGUNO</option>";
+                for (var i=0; i<r.length; i++){
+                    html +="<option value="+r[i]["clasificador_id"]+">";
+                    html +=r[i]["clasificador_nombre"];
+                    html +="</option>";                   
+                }
+                html +="</select>";               
+               
+               $("#div_clasificador"+producto_id).html(html);
 
            },
            error: function(respuesta){
