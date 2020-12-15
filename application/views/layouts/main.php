@@ -357,6 +357,13 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[123-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('forma_pago');?>"><i class="fa fa-credit-card"></i>Forma de Pago</a>
+                        </li>
+                        <?php
+                        }
                         if($rolusuario[124-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -364,11 +371,18 @@
                         </li>
                         <?php
                         }
-                        if($rolusuario[123-1]['rolusuario_asignado'] == 1){
+                        //if($rolusuario[126-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
-                            <a href="<?php echo site_url('forma_pago');?>"><i class="fa fa-credit-card"></i>Forma de Pago</a>
-                        </li>
+                            <a href="<?php echo site_url('preferencia');?>"><i class="fa fa-list-ul"></i>Preferencia</a>
+                        </li> 
+                        <?php
+                        //}
+                        if($rolusuario[126-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('procedencia');?>"><i class="fa fa-car"></i>Procedencia Servicio</a>
+                        </li> 
                         <?php
                         }
                         if($rolusuario[133-1]['rolusuario_asignado'] == 1){
@@ -397,13 +411,6 @@
                         <li>
                             <a href="<?php echo site_url('tipo_servicio');?>"><i class="fa fa-code-fork"></i>Tipo Servicio</a>
                         </li>
-                        <?php
-                        }
-                        if($rolusuario[126-1]['rolusuario_asignado'] == 1){
-                        ?>
-                        <li>
-                            <a href="<?php echo site_url('procedencia');?>"><i class="fa fa-car"></i>Procedencia Servicio</a>
-                        </li> 
                         <?php
                         }
                         if($rolusuario[135-1]['rolusuario_asignado'] == 1){
