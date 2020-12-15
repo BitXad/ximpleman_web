@@ -385,6 +385,13 @@
                         </li> 
                         <?php
                         }
+                        //if($rolusuario[126-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('producto_preferencia');?>"><i class="fa fa-list-ol"></i>Producto Preferencia</a>
+                        </li> 
+                        <?php
+                        //}
                         if($rolusuario[133-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>

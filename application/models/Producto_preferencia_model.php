@@ -61,7 +61,7 @@ class Producto_preferencia_model extends CI_Model
      */
     function update_producto_preferencia($productopref_id,$params)
     {
-        $this->db->where('productopref_id',$preferencia_id);
+        $this->db->where('productopref_id',$productopref_id);
         return $this->db->update('producto_preferencia',$params);
     }
     
@@ -97,11 +97,12 @@ class Producto_preferencia_model extends CI_Model
         
         $producto_preferencia = $this->db->query("
             SELECT
-                p.*, e.estado_descripcion, e.estado_color
+                pp.*, pr.preferencia_descripcion, p.producto_nombre
             FROM
-                `producto_preferencia` p, estado e
+                `producto_preferencia` pp, preferencia pr, producto p
             WHERE
-                p.estado_id = e.estado_id
+                pp.preferencia_id = pr.preferencia_id and
+                pp.producto_id = p.producto_id
             ORDER BY `preferencia_descripcion`
             " . $limit_condition . "
         ")->result_array();
