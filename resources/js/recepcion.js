@@ -83,12 +83,16 @@ function recepcion(estado)
                         html += "<tr style='border-top-style: solid; border-top-width: 2px; border-bottom-style: solid; border-bottom-width: 2px;'>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td align='center'><b style='font-size: 14px;'><fa class='fa fa-user'></fa> "+ventas[i]["cliente_razon"]+"</b></br>";
+                        html += "<td align='center'  style='line-height:5px;'><br><b style='font-size: 40px;'><fa class='fa fa-user'></fa> </b></br>";
+                        html += "<br><b style='font-size: 14px;'>"+ventas[i]["cliente_razon"]+"</b>";
                         
                         if (ventas[i]["mesa_nombre"]!=null){
-                            html += "<b>Mesa:  "+ventas[i]["mesa_nombre"]+"</b>";
+                            html += "<br><br><b>Mesa:  "+ventas[i]["mesa_nombre"]+"</b>";
                     	}
-                        html += "</td><td>";
+                        
+                        html += "<br><br>";
+                        html += "</td>";
+                        html += "<td>";
                 for (var e = 0; e < d; e++) {
                     
                         
@@ -99,26 +103,32 @@ function recepcion(estado)
                             }
                             
                             html += "<b style='font-size: 16px;'>"+detalle[e]["detalleven_cantidad"]+" "+detalle[e]["producto_nombre"]+"</b>";
+                            html += "<br>";
                             
-                            html += "<br><span style='font-size:13px; padding:0px;' class='label label-warning'><b>"+clasificador+"</b></span>";
+                            if (detalle[e]["clasificador_nombre"]!=null){
+                                html += "<span style='font-size:13px; padding-top:0px; padding-bottom:0px;' class='label label-warning'><b><fa class='fa fa-check-circle-o'></fa> "+clasificador+"</b></span>";
+                            }
                             
-                            if (detalle[e]["preferencia_descripcion"]!="" && detalle[e]["preferencia_descripcion"]!="-"){
-                                html += "<span style='font-size:13px; padding:0px;' class='label label-facebook'> <b>"+detalle[e]["detalleven_unidadfactor"]+"</b></span>";
+                            if (detalle[e]["preferencia_descripcion"]!=null && detalle[e]["preferencia_descripcion"]!="-"){
+                                html += "<span style='font-size:13px;  padding-top:0px; padding-bottom:0px;' class='label label-info'><b><fa class='fa fa-check-circle-o'></fa> "+detalle[e]["preferencia_descripcion"]+"</b></span>";
                             }
                             
                             if (detalle[e]["detalleven_unidadfactor"]!="" && detalle[e]["detalleven_unidadfactor"]!="-"){
-                                html += "<span style='font-size:13px; padding:0px;' class='label label-primary'> <b>"+detalle[e]["detalleven_unidadfactor"]+"</b></span>";
+                                html += "<span style='font-size:13px;  padding-top:0px; padding-bottom:0px;' class='label label-danger'><b><fa class='fa fa-check-circle-o'></fa> "+detalle[e]["detalleven_unidadfactor"]+"</b></span>";
                             }
                             
-                            if (detalle[e]["detalleven_preferencia"]!="" && detalle[e]["detalleven_preferencia"]!="-"){
-                                html += "<br> <b style='font-size:13px; padding:0px; background:black;' class='label label-danger'> "+detalle[e]["detalleven_preferencia"]+"</b><br>";	
-                            }
-                                html +="<br>"
+//                            if (detalle[e]["detalleven_preferencia"]!='null' && detalle[e]["detalleven_preferencia"]!=""){
+//                                html += "<br><b style='font-size:13px;> "+detalle[e]["detalleven_preferencia"]+"</b>";
+//                            }
+                            html +="<br>";
+                            html +="<br>";
+                            
                         }
                          
                       }
                      
                         html += "</td>";
+                        
                         html += "<td align='center' style='font-size: 14px;'><b>"+ventas[i]["venta_numeroventa"]+"</b>"; 
                         html += "<br> "+ventas[i]["tiposerv_descripcion"]+"</td>";
                         if (ventas[i]["entrega_id"]==1) {
