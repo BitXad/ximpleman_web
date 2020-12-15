@@ -7,7 +7,6 @@ function buscarproducto(e) {
 
 function tablaproducto()
 {
-    $('#modalbuscarproducto').modal('show');
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'producto_preferencia/buscarproducto';
     var producto_id = document.getElementById('producto_id').value
@@ -49,6 +48,7 @@ function tablaproducto()
                    }
                         html += "</tbody>"
                    $("#tablareproducto").html(html);
+                   $('#modalbuscarproducto').modal('show');
                     //document.getElementById('tablas').style.display = 'block';
             }else{
                 
