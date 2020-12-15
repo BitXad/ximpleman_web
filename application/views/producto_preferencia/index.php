@@ -32,8 +32,8 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Preferencia</th>
                             <th>Producto</th>
+                            <th>Preferencia</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -43,11 +43,34 @@
                     foreach($producto_preferencia as $p){ ?>
                     <tr>
                         <td class="text-center"><?php echo $cont+1; ?></td>
-                        <td><?php echo $p['preferencia_descripcion']; ?></td>
                         <td><?php echo $p['producto_nombre']; ?></td>
-                        <td class="text-center">
+                        <td><?php echo $p['preferencia_descripcion']; ?></td>
+                        <td class="text-center no-print">
                             <a href="<?php echo site_url('producto_preferencia/edit/'.$p['productopref_id']); ?>" class="btn btn-info btn-xs" title="Modificar preferencia"><span class="fa fa-pencil"></span></a> 
-                            <!--<a href="<?php //echo site_url('preferencia/remove/'.$p['preferencia_id']); ?>" class="btn btn-danger btn-xs" title="Eliminar Preferencia"><span class="fa fa-trash"></span></a>-->
+                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $p['productopref_id']; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                            <div class="modal fade" id="myModal<?php echo $p['productopref_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $p['productopref_id']; ?>">
+                            <div class="modal-dialog" role="document">
+                                    <br><br>
+                                <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                                </div>
+                                <div class="modal-body">
+                                <!------------------------------------------------------------------->
+                                <h3><b> <span class="fa fa-trash"></span></b>
+                                    ¿Desea eliminar producto-preferencia: <br><b> <?php echo $p['producto_nombre']; echo " - ".$p['preferencia_descripcion']; ?></b>?
+                                </h3>
+                                <!------------------------------------------------------------------->
+                                </div>
+                                <div class="modal-footer aligncenter">
+                                            <a href="<?php echo site_url('producto_preferencia/remove/'.$p['productopref_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                            <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <!------------------------ FIN modal para confirmar eliminación ------------------->
                         </td>
                     </tr>
                     <?php $cont++; } ?>

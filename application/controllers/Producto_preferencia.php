@@ -99,12 +99,12 @@ class Producto_preferencia extends CI_Controller{
      */
     function remove($productopref_id)
     {
-        $producto_preferencia = $this->Producto_producto_preferencia_model->get_producto_preferencia($productopref_id);
+        $producto_preferencia = $this->Producto_preferencia_model->get_producto_preferencia($productopref_id);
 
         // check if the producto_preferencia exists before trying to delete it
         if(isset($producto_preferencia['productopref_id']))
         {
-            $this->Producto_producto_preferencia_model->delete_producto_preferencia($productopref_id);
+            $this->Producto_preferencia_model->delete_producto_preferencia($productopref_id);
             redirect('producto_preferencia/index');
         }
         else
