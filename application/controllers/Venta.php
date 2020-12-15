@@ -93,7 +93,7 @@ class Venta extends CI_Controller{
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
+        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
         $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
@@ -172,7 +172,9 @@ class Venta extends CI_Controller{
         $sql1 = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ".
                 "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,".
                 "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra,
-                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor, preferencia_id) ".
+                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,
+                detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,
+                detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor, preferencia_id, clasificador_id) ".
                 " value(".$datos1.")";
         
         //si el producto ya esta registrado, solo actualizara la cantidad y total
@@ -348,7 +350,8 @@ class Venta extends CI_Controller{
           usuario_id,
           factura_id,
           clasificador_id,
-          detalleven_unidadfactor
+          detalleven_unidadfactor,
+          preferencia_id
         )
 
         (SELECT 
@@ -382,7 +385,8 @@ class Venta extends CI_Controller{
             usuario_id,
             0 as factura_id,
             clasificador_id,
-            detalleven_unidadfactor
+            detalleven_unidadfactor,
+            preferencia_id
           
         FROM
           detalle_venta_aux

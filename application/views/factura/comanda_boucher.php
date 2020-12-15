@@ -193,14 +193,22 @@ border-bottom : 1px solid #aaa;
            <tr style="padding: 0">
                 <td align="center" style="padding: 0"><?php echo $d['detalleven_cantidad']; ?></td>
                 <td style="padding: 0"><font style="size:7px; font-family: arial;"><?php echo $d['producto_nombre'];?> 
-                    <?php if ($d['detalleven_unidadfactor'] != "-") echo "[".$d['detalleven_unidadfactor']."]";?>
+                    <?php 
+                        if ($d['detalleven_unidadfactor'] != "-") echo "[".$d['detalleven_unidadfactor']."]"; 
+                        
+                        if ($d['clasificador_nombre'] != "-" && $d['clasificador_nombre'] != 'null' ) 
+                            echo "[".$d['clasificador_nombre']."]";
+                        
+                        if ($d['preferencia_descripcion'] != "-" && $d['preferencia_descripcion'] != 'null') 
+                            echo "[".$d['preferencia_descripcion']."]";?>
                         <small> 
                         <?php
+                        
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];
                         
                         if ($preferencia !='null' && $preferencia!='-')
-                            echo  " /".$preferencia;
+                            echo  "<br>".$preferencia;
                         
                         if ($caracteristicas!='null' && $caracteristicas!='-')
                             echo  "<br>".$caracteristicas;

@@ -1141,14 +1141,16 @@ function ingresorapidojs(cantidad,producto)
     var controlador = base_url+"venta/ingresar_detalle";
     var usuario_id = document.getElementById('usuario_id').value;
     var existencia =  producto.existencia;    
-    var producto_id =  producto.producto_id;    
+    var producto_id =  producto.producto_id;
     var datos1 = "";
     var descuento = 0;
     var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
     var check_agrupar = document.getElementById('check_agrupar').checked;
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var preferencia_id = document.getElementById('preferencia_id').value;
-    var clasificador_id = document.getElementById('clasificador_id').value;
+    var clasificador_id = document.getElementById('select_clasificador'+producto_id).value;
+        
+    // alert(clasificador_id);   
         
     if (check_agrupar){
         agrupado = 1;
@@ -1165,7 +1167,7 @@ function ingresorapidojs(cantidad,producto)
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id;
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id;
         //alert(datos1);
 
         $.ajax({url: controlador,
@@ -1896,6 +1898,7 @@ function tablaresultados(opcion)
 
                         html += "</select>";
                         html += "<br>";
+                        
                         html += "<div id='div_clasificador"+registros[i]["producto_id"]+"'>";
                         html += "</div>";
                         
@@ -1903,36 +1906,35 @@ function tablaresultados(opcion)
                         
                         
                         html += "               </td>";
-                        html += "               <td>";
                         
-                        if (lista_preferencias.length>0){
-                            
-                        html += "<div class='btn-group-vertical'>";
-//                        html += "   <div class='btn-group' role='group' aria-label='Button group with nested dropdown'>";
-                            
-                            html += "<button type='button' class='btn btn-xs btn-info' id='pref0'";
-                            html += " name='pref0'  onclick='agregar_preferencia(0)'>";
-                            html += "<i class='fa fa-cube'></i> NINGUNO </button>";
-                            
-                        for (var pref = 0; pref < lista_preferencias.length; pref++ ){
-                            html += "<button type='button' class='btn btn-xs btn-facebook' id='pref"+lista_preferencias[pref]["preferencia_id"]+"'";
-                            html += " name='"+lista_preferencias[pref]["preferencia_descripcion"]+"'  onclick='agregar_preferencia("+lista_preferencias[pref]["preferencia_id"]+")'>";
-                            html += "<i class='fa fa-cube'></i> "+lista_preferencias[pref]["preferencia_descripcion"]+"</button>";
-                        }   
+                        html += "               <td>";                        
                         
+                            
+                            html += "<div class='btn-group-vertical' id='botones_preferencias"+registros[i]["producto_id"]+"'>";
+
+                            html += "</div>";
+
+//                        if (lista_preferencias.length>0){
+//                            
+//                            html += "<div class='btn-group-vertical' id='botones_preferencias'>";
+//
+//                                html += "<button type='button' style='text-align:left;' class='btn btn-xs btn-info' id='pref0'";
+//                                html += " name='pref0'  onclick='agregar_preferencia(0)'>";
+//                                html += "<i class='fa fa-cube'></i> NINGUNO </button>";
+//
+//                            for (var pref = 0; pref < lista_preferencias.length; pref++ ){
+//                                html += "<button type='button' class='btn btn-xs btn-facebook' style='text-align:left;' id='pref"+lista_preferencias[pref]["preferencia_id"]+"'";
+//                                html += " name='"+lista_preferencias[pref]["preferencia_descripcion"]+"'  onclick='agregar_preferencia("+lista_preferencias[pref]["preferencia_id"]+")'>";
+//                                html += "<img src='"+base_url+"resources/images/preferencia/thumb_"+lista_preferencias[pref]["preferencia_foto"]+"' width='20px' height='20px'> "+lista_preferencias[pref]["preferencia_descripcion"];
+//                                html += "</button>";
+//
+//                            }   
+//                            html += "</div>";
+//
+//
+//                        }
                         
-//                        html += "   </div>";
-                        html += "</div>";
                         html += "               </td>";
-                        
-                        html += "          </tr>";
-                        html += "          <tr>";
-                        html += "          <td colspan='2'>";
-                        
-//                        html += "   <input type='text' id='inputcaract' value='"+mispreferencias+"' class='form-control btn btn-xs btn-warning' onKeyUp='this.value = this.value.toUpperCase();'>";
-                        html += "          </td>";
-                        html += "          </tr>";
-                        }
                         
                         html += "       </table>";
                         html += "       </center>";
@@ -1942,6 +1944,8 @@ function tablaresultados(opcion)
                         html += "  </div>";
                         
                         html += "  <div class='modal-footer aligncenter'>";
+                        html += "  <center>";
+                        
                         html += "    <input type='text' id='producto_id' name='producto_id' value='"+registros[i]["producto_id"]+"' hidden>";
                         html += "    <input type='text' id='producto_precio' name='producto_precio' value='"+registros[i]["producto_precio"]+"' hidden>";
 
@@ -1951,6 +1955,8 @@ function tablaresultados(opcion)
 
 //                        html += "     <a href='#' data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></a>";
                         html += "     <button data-toggle='modal' data-dismiss='modal' class='btn btn-danger btn-foursquarexs' id='boton_salir_modal"+registros[i]["producto_id"]+"'><font size='5'><span class='fa fa-search'></span></font><br><small>Cancelar</small></button>";
+                        html += "  </center>";                        
+
                         html += "  </div>";                        
                         html += "</div>";
                         
@@ -4047,6 +4053,7 @@ function mostrar_clasificador(producto_id,detalleven_id){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/clasificador_producto";
+    var html = "";
 
     //para llenar el select de clasificador de productos
      $.ajax({url: controlador,
@@ -4071,13 +4078,19 @@ function mostrar_clasificador(producto_id,detalleven_id){
            error: function(respuesta){
                
            }
-       });               
+       });
+       
+
+    
+    
 }
 
 function mostrar_clasificador_boton(producto_id){
     
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+"venta/clasificador_producto";
+    var lista_preferencias = JSON.parse(document.getElementById('preferencias').value);
+    var html = "";
 
     //para llenar el select de clasificador de productos
      $.ajax({url: controlador,
@@ -4104,6 +4117,28 @@ function mostrar_clasificador_boton(producto_id){
                
            }
        });               
+        
+            html += "<button type='button' style='text-align:left;' class='btn btn-xs btn-info' id='pref0'";
+            html += " name='pref0'  onclick='agregar_preferencia(0)'>";
+            html += "<i class='fa fa-cube'></i> NINGUNO </button>";
+            var cont = 0;
+        for (var j = 0; j < lista_preferencias.length; j++ ){
+            
+            if (lista_preferencias[j]["producto_id"] == producto_id){
+                cont++;
+                //alert(producto_id+" "+lista_preferencias[j]["preferencia_id"]);
+                html += "<button type='button' class='btn btn-xs btn-facebook' style='text-align:left;' id='pref"+lista_preferencias[j]["preferencia_id"]+"'";
+                html += " name='"+lista_preferencias[j]["preferencia_descripcion"]+"'  onclick='agregar_preferencia("+lista_preferencias[j]["preferencia_id"]+")'>";
+                html += "<img src='"+base_url+"resources/images/preferencia/thumb_"+lista_preferencias[j]["preferencia_foto"]+"' width='20px' height='20px'> "+lista_preferencias[j]["preferencia_descripcion"];
+                html += "</button>";
+
+            }
+        }
+        
+        if (cont == 0) html = "";
+        
+        $("#botones_preferencias"+producto_id).html(html);
+    
 }
 
 function registrar_clasificador(){
