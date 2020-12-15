@@ -50,6 +50,18 @@ class Preferencia_model extends CI_Model
 
         return $preferencia;
     }
+                
+    /*
+     * Get all preferencia
+     */
+    function get_producto_preferencia()
+    {
+        $sql= "select r.producto_id,p.* from producto_preferencia r, preferencia p
+               where r.preferencia_id = p.preferencia_id
+               ";
+        return $this->db->query($sql)->result_array();
+        
+    }
         
     /*
      * function to add new preferencia
