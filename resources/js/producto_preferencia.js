@@ -41,7 +41,7 @@ function tablaproducto()
                         html += "</div>";
                         html += "</td>";
                         html += "<td>";
-                        html += "<button type='button' onclick='repoproducto("+registros[i]["producto_id"]+")' class='btn btn-primary btn-xs'><i class='fa fa-search'></i></button>";
+                        html += "<button type='button' onclick='seleccionarproducto("+registros[i]["producto_id"]+","+JSON.stringify(registros[i]["producto_nombre"])+")' class='btn btn-success btn-xs'><i class='fa fa-check'></i></button>";
                         //html += "</div>";
                         html += "</td>";
                         html += "</tr>";
@@ -60,4 +60,18 @@ function tablaproducto()
            $("#tablareproducto").html(html);
         }
     });
+}
+
+function seleccionarproducto(producto_id, producto_nombre){
+    $('#modalbuscarproducto').modal('hide');
+    $('#modalbuscarproducto').on('hidden.bs.modal', function () {
+    $('#tablareproducto').html('');
+    });
+    $('#este_id').val(producto_id);
+    $('#producto_id').val(producto_nombre);
+    $('#botonguardar').prop("disabled",false);
+}
+
+function habilitarboton(){
+    $('#botonguardar').prop("disabled",false);
 }

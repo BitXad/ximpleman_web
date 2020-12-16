@@ -39,15 +39,16 @@ class Producto_preferencia extends CI_Controller{
     {
         $data['page_title'] = "Añadir Producto - Preferencia";
         $this->load->library('form_validation');
-        $this->form_validation->set_rules('producto_id','Producto ','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('preferencia_id','Preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+        $this->form_validation->set_rules('producto_id','Producto','trim|required', array('required' => 'Este Campo no debe estar vacio, debe hacer una busqueda correcta del producto'));
         if($this->form_validation->run())     
         {
             $params = array(
-                'producto_preferencia_descripcion' => $this->input->post('producto_preferencia_descripcion'),
-                'producto_preferencia_foto' => $foto,
+                'producto_id' => $this->input->post('este_id'),
+                'preferencia_id' => $this->input->post('preferencia_id'),
             );
             
-            $producto_preferencia_id = $this->Producto_preferencia_model->add_producto_preferencia($params);
+            $productopref_id = $this->Producto_preferencia_model->add_producto_preferencia($params);
             redirect('producto_preferencia/index');
         }else{
             $estado_id = 1;
@@ -61,47 +62,49 @@ class Producto_preferencia extends CI_Controller{
     /*
      * Editing a producto_preferencia
      */
-    function edit($producto_preferencia_id)
+    function edit($productopref_id)
     {
         $data['page_title'] = "Forma Pago";
         // check if the producto_preferencia exists before trying to edit it
-        $data['producto_preferencia'] = $this->Producto_producto_preferencia_model->get_producto_preferencia($producto_preferencia_id);
+        $data['producto_preferencia'] = $this->Producto_preferencia_model->get_producto_preferencia($productopref_id);
         
-        if(isset($data['producto_preferencia']['producto_preferencia_id']))
+        if(isset($data['producto_preferencia']['productopref_id']))
         {
             $this->load->library('form_validation');
-                $this->form_validation->set_rules('producto_preferencia_descripcion','Producto_producto_preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-                if($this->form_validation->run())
-                {
-                    $params = array(
-                        'estado_id' => $this->input->post('estado_id'),
-                        'producto_preferencia_descripcion' => $this->input->post('producto_preferencia_descripcion'),
-                        'producto_preferencia_foto' => $foto,
-                    );
-                    $this->Producto_producto_preferencia_model->update_producto_preferencia($producto_preferencia_id,$params);            
-                    redirect('producto_preferencia/index');
-                }else{
-                    $this->load->model('Estado_model');
-                    $data['all_estado'] = $this->Estado_model->get_estado_tipo(1);
-                    $data['_view'] = 'producto_preferencia/edit';
-                    $this->load->view('layouts/main',$data);
-                }
-        }
-        else
+            $this->form_validation->set_rules('preferencia_id','Preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            $this->form_validation->set_rules('producto_id','Producto','trim|required', array('required' => 'Este Campo no debe estar vacio, debe hacer una busqueda correcta del producto'));
+            if($this->form_validation->run())
+            {
+                $params = array(
+                    'producto_id' => $this->input->post('este_id'),
+                    'preferencia_id' => $this->input->post('preferencia_id'),
+                );
+                $this->Producto_preferencia_model->update_producto_preferencia($productopref_id,$params);            
+                redirect('producto_preferencia/index');
+            }else{
+                $estado_id = 1;
+                $this->load->model('Preferencia_model');
+                $data['all_preferencia'] = $this->Preferencia_model->get_all_preferenciaestado($estado_id);
+                $this->load->model('Producto_model');
+                $data['producto'] = $this->Producto_model->get_producto($data['producto_preferencia']['producto_id']);
+                $data['_view'] = 'producto_preferencia/edit';
+                $this->load->view('layouts/main',$data);
+            }
+        }else
             show_error('The producto_preferencia you are trying to edit does not exist.');
-    } 
+    }
 
     /*
      * Deleting producto_preferencia
      */
-    function remove($producto_preferencia_id)
+    function remove($productopref_id)
     {
-        $producto_preferencia = $this->Producto_producto_preferencia_model->get_producto_preferencia($producto_preferencia_id);
+        $producto_preferencia = $this->Producto_preferencia_model->get_producto_preferencia($productopref_id);
 
         // check if the producto_preferencia exists before trying to delete it
-        if(isset($producto_preferencia['producto_preferencia_id']))
+        if(isset($producto_preferencia['productopref_id']))
         {
-            $this->Producto_producto_preferencia_model->delete_producto_preferencia($producto_preferencia_id);
+            $this->Producto_preferencia_model->delete_producto_preferencia($productopref_id);
             redirect('producto_preferencia/index');
         }
         else
@@ -114,7 +117,7 @@ class Producto_preferencia extends CI_Controller{
             if ($this->input->is_ajax_request()) {
                 $parametro   = $this->input->post('parametro');
                 $this->load->model('Producto_model');
-                $resultado = $this->Producto_model->get_busqueda_productos($parametro);
+                $resultado = $this->Producto_model->buscar_allproducto($parametro);
                 echo json_encode($resultado);
             }else{
                 show_404();

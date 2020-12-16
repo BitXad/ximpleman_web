@@ -385,6 +385,13 @@
                         </li> 
                         <?php
                         }
+                        //if($rolusuario[126-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('producto_preferencia');?>"><i class="fa fa-list-ol"></i>Producto Preferencia</a>
+                        </li> 
+                        <?php
+                        //}
                         if($rolusuario[133-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
@@ -556,6 +563,9 @@
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
+                        </li>
+						<li>
+                            <a href="<?php echo site_url('reportes/ventausuario');?>"><i class="fa fa-user"></i>Venta por Usuario</a>
                         </li>
                         <!--<li>
                             <a href="<?php //echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>

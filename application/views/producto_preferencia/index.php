@@ -13,10 +13,10 @@
 </script>
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <div class="box-header">
-    <font size='4' face='Arial'><b>Preferencia</b></font>
-    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($preferencia); ?></font>
+    <font size='4' face='Arial'><b>Producto Preferencia</b></font>
+    <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($producto_preferencia); ?></font>
     <div class="box-tools no-print">
-        <a href="<?php echo site_url('preferencia/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar Preferencia</a> 
+        <a href="<?php echo site_url('producto_preferencia/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar producto-Preferencia</a> 
     </div>
 </div>
 <div class="row">
@@ -32,30 +32,24 @@
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th></th>
-                            <th>Descripción</th>
-                            <th>Estado</th>
+                            <th>Producto</th>
+                            <th>Preferencia</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody class="buscar">
                     <?php
                     $cont = 0;
-                    foreach($preferencia as $p){ ?>
+                    foreach($producto_preferencia as $p){ ?>
                     <tr>
                         <td class="text-center"><?php echo $cont+1; ?></td>
-                        <td class="no-print text-center">
-                            <?php
-                            if($p['preferencia_foto'] != null || $p['preferencia_foto'] != ""){ ?>
-                                <a class="btn btn-xs" data-toggle="modal" data-target="#myModal<?php echo $p['preferencia_id']; ?>">
-                                    <img src="<?php echo site_url('resources/images/preferencia/')."thumb_".$p['preferencia_foto']; ?>" class="img-circle" width="40" height="40">
-                                </a>
-
-                            <?php } /*else{ ?>
-                                        <img src="<?php echo site_url('resources/images/categorias/default_thumb.jpg'); ?>" class="img-circle" width="40" height="40">
-                            <?php }*/ ?>
-                            <!------------------------ INICIO modal para ver imagen ------------------->
-                            <div class="modal fade" id="myModal<?php echo $p['preferencia_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $p['preferencia_id']; ?>">
+                        <td><?php echo $p['producto_nombre']; ?></td>
+                        <td><?php echo $p['preferencia_descripcion']; ?></td>
+                        <td class="text-center no-print">
+                            <a href="<?php echo site_url('producto_preferencia/edit/'.$p['productopref_id']); ?>" class="btn btn-info btn-xs" title="Modificar preferencia"><span class="fa fa-pencil"></span></a> 
+                            <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $p['productopref_id']; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
+                            <!------------------------ INICIO modal para confirmar eliminación ------------------->
+                            <div class="modal fade" id="myModal<?php echo $p['productopref_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $p['productopref_id']; ?>">
                             <div class="modal-dialog" role="document">
                                     <br><br>
                                 <div class="modal-content">
@@ -64,19 +58,19 @@
                                 </div>
                                 <div class="modal-body">
                                 <!------------------------------------------------------------------->
-                                <img style="max-height: 100%; max-width: 100%" src="<?php echo site_url('resources/images/preferencia/').$p['preferencia_foto']; ?>">
+                                <h3><b> <span class="fa fa-trash"></span></b>
+                                    ¿Desea eliminar producto-preferencia: <br><b> <?php echo $p['producto_nombre']; echo " - ".$p['preferencia_descripcion']; ?></b>?
+                                </h3>
                                 <!------------------------------------------------------------------->
                                 </div>
+                                <div class="modal-footer aligncenter">
+                                            <a href="<?php echo site_url('producto_preferencia/remove/'.$p['productopref_id']); ?>" class="btn btn-success"><span class="fa fa-check"></span> Si </a>
+                                            <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No </a>
+                                </div>
                                 </div>
                             </div>
                             </div>
-                            <!------------------------ FIN modal para ver imagen ------------------->
-                        </td>
-                        <td><?php echo $p['preferencia_descripcion']; ?></td>
-                        <td class="text-center" style="background-color: #<?php echo $p['estado_color']; ?>"><?php echo $p['estado_descripcion']; ?></td>
-                        <td class="text-center">
-                            <a href="<?php echo site_url('preferencia/edit/'.$p['preferencia_id']); ?>" class="btn btn-info btn-xs" title="Modificar preferencia"><span class="fa fa-pencil"></span></a> 
-                            <!--<a href="<?php //echo site_url('preferencia/remove/'.$p['preferencia_id']); ?>" class="btn btn-danger btn-xs" title="Eliminar Preferencia"><span class="fa fa-trash"></span></a>-->
+                            <!------------------------ FIN modal para confirmar eliminación ------------------->
                         </td>
                     </tr>
                     <?php $cont++; } ?>

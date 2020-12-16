@@ -3,7 +3,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         (function ($) {
-            $('#producto_id').keyup(function () {
+            $('#filtrar').keyup(function () {
                 var rex = new RegExp($(this).val(), 'i');
                 $('.buscar tr').hide();
                 $('.buscar tr').filter(function () {
@@ -13,6 +13,10 @@
         }(jQuery));
     });
 </script>
+<!------------------ ESTILO DE LAS TABLAS ----------------->
+<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
+<!-------------------------------------------------------->
+
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <div class="row">
     <div class="col-md-12">
@@ -26,7 +30,7 @@
                     <div class="col-md-3">
                         <label for="preferencia_id" class="control-label"><span class="text-danger">*</span>Preferencia</label>
                         <div class="form-group">
-                            <select name="preferencia_id" class="form-control">
+                            <select name="preferencia_id" class="form-control" required>
                                 <?php 
                                 foreach($all_preferencia as $preferencia)
                                 {
@@ -34,20 +38,22 @@
                                 } 
                                 ?>
                             </select>
+                            <span class="text-danger"><?php echo form_error('preferencia_id');?></span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <label for="producto_id" class="control-label"><span class="text-danger">*</span>Producto</label>
                         <div class="input-group">
-                            <input id="producto_id" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo" onkeypress="buscarproducto(event)">
+                            <input id="producto_id" name="producto_id" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo" onkeypress="buscarproducto(event)">
                             <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablaproducto()"><span class="fa fa-search"></span></div>
-                            <input id="este_id" type="hidden" class="form-control">
+                            <input id="este_id" name="este_id" type="hidden" class="form-control" required>
                         </div>
+                        <span class="text-danger"><?php echo form_error('producto_id');?></span>
                     </div>
                 </div>
             </div>
             <div class="box-footer">
-                <button type="submit" class="btn btn-success" disabled="true">
+                <button type="submit" class="btn btn-success" id="botonguardar" disabled="true">
                     <i class="fa fa-check"></i> Guardar
             	</button>
                 <a href="<?php echo site_url('producto_preferencia'); ?>" class="btn btn-danger">
@@ -68,8 +74,7 @@
                 <div class="col-md-12" style="padding-left: 0px">
                     <div class="input-group">
                         <span class="input-group-addon"> Buscar </span>
-                        <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo"  onkeypress="ventaproducto(event)">
-                        <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
+                        <input id="filtrar" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo">
                     </div>
                 </div>
             </div>
