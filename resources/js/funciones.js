@@ -372,9 +372,12 @@ function tablaproductos()
                         
                         if (registros[i]["clasificador_nombre"]!=null && registros[i]["clasificador_nombre"]!="")
                             clasificador = registros[i]["clasificador_nombre"]+" | ";
+
+                       if (registros[i]["preferencia_descripcion"]!=null && registros[i]["preferencia_descripcion"]!="")
+                            preferencia = registros[i]["preferencia_descripcion"]+" | ";
                         
                         html += "</font></b>";
-                        html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+preferencia+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
 
