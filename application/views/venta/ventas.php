@@ -315,7 +315,7 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-3" <?php echo $estilo_div; ?>>
         <label for="cliente_celular" class="control-label" style="margin-bottom: 0;">CELULAR</label>
         <div class="form-group" <?php echo $estilo_div; ?>>
-            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
         </div>
         </div>
 
