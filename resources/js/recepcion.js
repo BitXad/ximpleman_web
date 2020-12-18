@@ -117,9 +117,9 @@ function recepcion(estado)
                                 html += "<span style='font-size:13px;  padding-top:0px; padding-bottom:0px;' class='label label-danger'><b><fa class='fa fa-check-circle-o'></fa> "+detalle[e]["detalleven_unidadfactor"]+"</b></span>";
                             }
                             
-//                            if (detalle[e]["detalleven_preferencia"]!='null' && detalle[e]["detalleven_preferencia"]!=""){
-//                                html += "<br><b style='font-size:13px;> "+detalle[e]["detalleven_preferencia"]+"</b>";
-//                            }
+                            if (detalle[e]["detalleven_preferencia"]!='null' && detalle[e]["detalleven_preferencia"]!=""){
+                                html += "<br><fa class='fa fa-file-text'></fa> "+detalle[e]["detalleven_preferencia"];
+                            }
                             html +="<br>";
                             html +="<br>";
                             

@@ -372,9 +372,12 @@ function tablaproductos()
                         
                         if (registros[i]["clasificador_nombre"]!=null && registros[i]["clasificador_nombre"]!="")
                             clasificador = registros[i]["clasificador_nombre"]+" | ";
+
+                       if (registros[i]["preferencia_descripcion"]!=null && registros[i]["preferencia_descripcion"]!="")
+                            preferencia = registros[i]["preferencia_descripcion"]+" | ";
                         
                         html += "</font></b>";
-                        html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
+                        html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+preferencia+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
 //************************ INICIO CARACTERISTICAS ***************************
 
@@ -1075,7 +1078,6 @@ function ingresorapidojs(cantidad,producto)
     var precio = 0;
     var numerofactor = "";
     var unidadfactor = "";
-    var preferencias = "";
     
     var inputcaract = document.getElementById("inputcaract").value;
     
@@ -1149,6 +1151,7 @@ function ingresorapidojs(cantidad,producto)
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var preferencia_id = document.getElementById('preferencia_id').value;
     var clasificador_id = document.getElementById('select_clasificador'+producto_id).value;
+    var preferencias = document.getElementById('input_detalleven_preferencia'+producto_id).value;
         
     // alert(clasificador_id);   
         
@@ -1816,19 +1819,23 @@ function tablaresultados(opcion)
                         html += "  <!----------------------------------------------------------------->";                  
                         html += "       <center>";
                         html += "       <table style='space-white: nowrap;'>";
-                        html += "           <tr>";
-                       
-                      
-                        html += "               <td>";
-                      
-                     
+                        html += "         <tr>";
+                        html += "           <td colspan='2'>";                     
                         html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
-                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
-                        
-
+                        html += "           </td>";
+                        html += "         <tr>";
+                        html += "           <td>";                     
+                        html += "               <b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"'></b>";
+                                            
+//                        html += "           </td>";   
+//                        html += "       </tr>";   
                         // ******************** inicio select factor para modo visual / botones  
+
+//                        html += "<tr>";   
+//                        html += "<td>";   
                         html += "<br>";   
+                        
                         html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+registros[i]["producto_id"]+"' name='select_factor"+registros[i]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(registros[i])+")'>";
 
                         if (rol_precioventa==1){
@@ -1897,11 +1904,12 @@ function tablaresultados(opcion)
                         }
 
                         html += "</select>";
-                        html += "<br>";
-                        
+                        html += "<br>";                        
                         html += "<div id='div_clasificador"+registros[i]["producto_id"]+"'>";
                         html += "</div>";
-                        
+                                     
+                        html += "<input type='text' id='input_detalleven_preferencia"+registros[i]["producto_id"]+"'";
+                        html += " onKeyUp='this.value = this.value.toUpperCase()' placeholder='Glosa' class='input input-default' style='width:175px'/>";
                         // ******************** fin  select   
                         
                         
@@ -1913,29 +1921,16 @@ function tablaresultados(opcion)
                             html += "<div class='btn-group-vertical' id='botones_preferencias"+registros[i]["producto_id"]+"'>";
 
                             html += "</div>";
+                        
+                        html += "</td>";                        
+//                        html += "       </tr>";
+//                        
+//                        html += "<tr>";
+//                        html += "<td colspan='2' id='input_detalleven_preferencia"+registros[i]["producto_id"]+"'>";
 
-//                        if (lista_preferencias.length>0){
-//                            
-//                            html += "<div class='btn-group-vertical' id='botones_preferencias'>";
-//
-//                                html += "<button type='button' style='text-align:left;' class='btn btn-xs btn-info' id='pref0'";
-//                                html += " name='pref0'  onclick='agregar_preferencia(0)'>";
-//                                html += "<i class='fa fa-cube'></i> NINGUNO </button>";
-//
-//                            for (var pref = 0; pref < lista_preferencias.length; pref++ ){
-//                                html += "<button type='button' class='btn btn-xs btn-facebook' style='text-align:left;' id='pref"+lista_preferencias[pref]["preferencia_id"]+"'";
-//                                html += " name='"+lista_preferencias[pref]["preferencia_descripcion"]+"'  onclick='agregar_preferencia("+lista_preferencias[pref]["preferencia_id"]+")'>";
-//                                html += "<img src='"+base_url+"resources/images/preferencia/thumb_"+lista_preferencias[pref]["preferencia_foto"]+"' width='20px' height='20px'> "+lista_preferencias[pref]["preferencia_descripcion"];
-//                                html += "</button>";
-//
-//                            }   
-//                            html += "</div>";
-//
-//
-//                        }
-                        
-                        html += "               </td>";
-                        
+//                        html += "</td>";
+                        html += "</tr>";
+                           
                         html += "       </table>";
                         html += "       </center>";
                         
