@@ -475,7 +475,7 @@ function get_busqueda($condicion)
 //                . "detalle_venta_aux d, producto p where d.producto_id = p.producto_id and "
 //                . "d.usuario_id = ".$usuario_id." order by d.detalleven_id asc";
 //        
-        $sql = "select d.*, p.producto_foto, c.clasificador_nombre
+        $sql = "select d.*, p.*, c.clasificador_nombre
                 from detalle_venta_aux d
                 left join producto p on p.producto_id = d.producto_id
                 left join clasificador c on c.clasificador_id = d.clasificador_id

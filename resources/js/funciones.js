@@ -1098,7 +1098,7 @@ function ingresorapidojs(cantidad,producto)
 
     var factor = 0;    
     var precio = 0;
-    var numerofactor = "";
+    var numerofactor = 0;
     var unidadfactor = "";
     
     var inputcaract = document.getElementById("inputcaract").value;
