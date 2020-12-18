@@ -306,6 +306,7 @@ function tablaproductos()
     var tipousuario_id = Number(document.getElementById('tipousuario_id').value);
     var clasificador = "";
     var preferencia = "";
+    var caracteristicas = "";
     
     $.ajax({url: controlador,
            type:"POST",
@@ -370,7 +371,7 @@ function tablaproductos()
                         
                        html += " <div id='tabla_composicion"+registros[i]["detalleven_id"]+"' style='padding:0;'> </div>";
 //                       html += " <table style='padding:0;'> </table>";
-                        clasificafor = "";
+                        clasificador = "";
                         if (registros[i]["clasificador_nombre"]!=null && registros[i]["clasificador_nombre"]!="")
                             clasificador = registros[i]["clasificador_nombre"]+" | ";
 
