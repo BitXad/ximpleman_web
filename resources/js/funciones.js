@@ -583,11 +583,11 @@ function tabladetalle(subtotal,descuento,totalfinal)
 //    alert(totalfinal);
 //    
     efectivo = totalfinal - descuento;
-    
     $("#venta_total").val(subtotal.toFixed(2));
     $("#venta_descuento").val(descuento.toFixed(2));
     $("#venta_subtotal").val(subtotal.toFixed(2));
     $("#venta_efectivo").val(efectivo.toFixed(2));
+    $("#venta_cambio").val("0.00");
     
     //alert(descuento);
     
@@ -940,7 +940,8 @@ function incrementar(cantidad,detalleven_id)
                 success:function(respuesta){
                     
                     tablaproductos();
-                    tabladetalle();
+                    //tabladetalle();
+                    //tabladetalle(subtotal,descuento,totalfinal)
                     
                 }
 
@@ -962,7 +963,7 @@ function incrementar_detalle(cantidad,detalleven_id,venta_id)
             data:{cantidad:cantidad,detalleven_id:detalleven_id,venta_id:venta_id},
             success:function(respuesta){
                 tablaproductos();
-                tabladetalle();                
+                //tabladetalle();                
             }
         
     });
@@ -984,7 +985,7 @@ function reducir(cantidad,detalleven_id)
                 data:{cantidad:cantidad,detalleven_id:detalleven_id},
                 success:function(respuesta){
                     tablaproductos();
-                    tabladetalle();                
+                   // tabladetalle();                
                 }
 
             });     
@@ -1026,7 +1027,7 @@ function actualizarprecios(e,detalleven_id)
                 data:{precio:precio, cantidad:cantidad,detalleven_id:detalleven_id},
                 success:function(respuesta){
                     tablaproductos();
-                    tabladetalle();
+                   // tabladetalle();
 
                 }        
         });
