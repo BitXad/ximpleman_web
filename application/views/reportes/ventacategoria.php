@@ -45,15 +45,31 @@
         <a class="btn btn-facebook btn-sm form-control" title="Buscar venta por categorias" onclick="mostrar_grafica()"><i class="fa fa-search"> Buscar</i></a>
     </div>
 </div>
-<div class="row" id="graficapastel" style="display: none">
-    <br/>
-    <br/>
-    <div class="box box-primary">
-        <div class="box-header"></div>
-        <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
-        <div class="box-footer"></div>
+<?php if($tipousuario_id == 1){ $tamanio = "class='col-md-6'"; } else{ $tamanio = "class='col-md-12'"; } ?>
+<div <?php echo $tamanio; ?>>
+    <div class="row" id="graficapastel" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
+            <div class="box-footer"></div>
+        </div>
     </div>
 </div>
+<?php if($tipousuario_id == 1){ ?>
+<div class="col-md-6">
+    <div class="row" id="graficapastelu" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pieu" id="div_grafica_pieu"></div>
+            <div class="box-footer"></div>
+        </div>
+    </div>
+</div>
+<?php } ?>
 <div class="row" >
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
         <div class="col-md-2">

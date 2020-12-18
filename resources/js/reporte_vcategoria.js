@@ -5,6 +5,7 @@ function inicio(){
 
 function mostrar_grafica(){
     $("#graficapastel").css("display", "block");
+    $("#graficapastelu").css("display", "block");
     var options={
      // Build the chart
         chart: {
@@ -37,8 +38,9 @@ function mostrar_grafica(){
         }]
     }
 
-    $("#div_grafica_pie").html( $("#cargador_empresa").html() );
+    //$("#div_grafica_pie").html( $("#cargador_empresa").html() );
     var base_url    = document.getElementById('base_url').value;
+    var tipousuario_id    = document.getElementById('tipousuario_id').value;
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var controlador = base_url+"reportes/repventa_categoria";
@@ -58,7 +60,50 @@ function mostrar_grafica(){
                     }
                     //options.title.text="aqui e podria cambiar el titulo dinamicamente";
                     chart = new Highcharts.Chart(options);
-
+                    
+                    if(tipousuario_id == 1){
+                        /* estas opciones son para la grafica de pastel de Utilidades */
+                        var optionsu={
+                         // Build the chart
+                            chart: {
+                                renderTo: 'div_grafica_pieu',
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Utilidades por Categorias'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.y}</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: false
+                                    },
+                                    showInLegend: true
+                                }
+                            },
+                            series: [{
+                                name: 'Utilidades',
+                                colorByPoint: true,
+                                data: []
+                            }]
+                        }
+                        for(i=0;i<=totattipos-1;i++){
+                            var utilidadu = Number(Number(tippos[i].totalventas)-Number(tippos[i].totalcosto)).toFixed(2);
+                            //utilidadu = utilidadu.toString()
+                            var idTP=tippos[i].categoria_id;
+                            var objeto= {name: tippos[i].categoria_nombre, y:parseFloat(utilidadu) };     
+                            optionsu.series[0].data.push( objeto );
+                        }
+                        //optionsu.title.text="aqui e podria cambiar el titulo dinamicamente";
+                        chartu = new Highcharts.Chart(optionsu);
+                    }
                     /*$("#div_grafica_pie").on("click", function(evt) {
 
                         //mostrar_repventacategoria();
@@ -140,9 +185,9 @@ function venta_porcategoria(){
                          total += Number(registros[i]["detalleven_total"]);
                          cantidades += Number(registros[i]["detalleven_cantidad"]);
                          cuotas += Number(registros[i]["credito_cuotainicial"]);
-                         descuentos += Number(registros[i]["detalleven_descuento"]);
-                         costos += Number(registros[i]["detalleven_costo"]);
-                         var utilidad = Number((registros[i]["detalleven_precio"]-registros[i]["detalleven_costo"])*registros[i]["detalleven_cantidad"]);
+                         descuentos += Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"]));
+                         costos += Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"]));
+                         var utilidad = Number(Number(registros[i]["detalleven_total"])-(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])));
                          utilidades += Number(utilidad);
                         
                         html += "<tr>";
@@ -159,11 +204,11 @@ function venta_porcategoria(){
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
                         html += "<td align='center'> "+registros[i]["detalleven_cantidad"]+" </td>"; 
                         html += "<td align='right'> "+Number(registros[i]["detalleven_precio"]).toFixed(2)+" </td>"; 
-                        html += "<td align='right'> "+Number(registros[i]["detalleven_descuento"]).toFixed(2)+" </td>";
+                        html += "<td align='right'> "+Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+" </td>";
                         
                         html += "<td align='right'><b>"+Number(registros[i]["detalleven_total"]).toFixed(2)+"</b></td>";
                         if(tipousuario_id == 1){
-                            html += "<td align='right'> "+Number(registros[i]["detalleven_costo"]).toFixed(2)+" </td>";
+                            html += "<td align='right'> "+Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+" </td>";
                             html += "<td align='right'> "+Number(utilidad).toFixed(2)+" </td>"; 
                         }
                         
@@ -313,7 +358,7 @@ function generarexcel_vcategoria(){
                     for (var i = 0; i < tam; i++) {
                         var row = "";
                         //2nd loop will extract each column and convert it in string comma-seprated
-                        var utilidad = Number((registros[i]["detalleven_precio"]-registros[i]["detalleven_costo"])*registros[i]["detalleven_cantidad"]);
+                        var utilidad = Number(Number(registros[i]["detalleven_total"])-(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])));
                         //utilidades += Number(utilidad);
                             row += (i+1)+',';
                             row += '"' +registros[i]["producto_nombre"]+ '",';
@@ -328,7 +373,7 @@ function generarexcel_vcategoria(){
                             row += '"' +Number(registros[i]["detalleven_descuento"]).toFixed(2)+ '",';
                             row += '"' +Number(registros[i]["detalleven_total"]).toFixed(2)+ '",';
                             if(tipousuario_id == 1){
-                                row += '"' +Number(registros[i]["detalleven_costo"]).toFixed(2)+ '",';
+                                row += '"' +Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+ '",';
                                 row += '"' +Number(utilidad).toFixed(2)+ '",';
                             }
                             row += '"' +registros[i]["cliente_nombre"]+ '",';

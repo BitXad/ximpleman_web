@@ -1031,13 +1031,14 @@ function torta3($anio,$mes)
     function ventacliente()
     {
         if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
-            $data['page_title'] = "Reporte Ventas";        
-            $data['_view'] = 'reportes/ventacliente';
+            $data['page_title'] = "Reporte de Ventas por Cliente";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['_view'] = 'reportes/ventacliente';
             $this->load->view('layouts/main',$data);
         }
     }
@@ -1145,7 +1146,7 @@ function torta3($anio,$mes)
         }
         //var_dump($numusu);
         $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);
-        echo   json_encode($data);   
+        echo   json_encode($data);
     }
     /* reporte de ventas por zonas */
     function repventa_zonas()
@@ -1182,28 +1183,13 @@ function torta3($anio,$mes)
         $res_usuario = $this->Categoria_producto_model->get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta);
         $numusu = count($res_usuario);
         
-        /*$ventausuario = "SELECT COUNT(DISTINCT cliente_id) as 'distusu',SUM(venta_total) as 'totalventas' FROM venta where venta.venta_fecha >= '".$anio."-".$mes."-01' and  venta.venta_fecha <= '".$anio."-".$mes."-31' ORDER by totalventas limit 10";
-        $usve = $this->db->query($ventausuario)->row_array();
-        $numusu=10;*/
-
         $usuarios = $this->Categoria_producto_model->getall_ventapor_usuario($fecha_desde, $fecha_hasta);
-        
-        /*$id_usuarios = "SELECT DISTINCT v.cliente_id, u.cliente_nombre,SUM(venta_total) as 'totalventas' FROM venta v, cliente u where v.venta_fecha >= '".$anio."-".$mes."-01' and  v.venta_fecha <= '".$anio."-".$mes."-31' and v.cliente_id=u.cliente_id GROUP BY cliente_id ORDER by totalventas desc limit 10";
-        $usuarios= $this->db->query($id_usuarios)->result_array();
-        */
-        
         $tove = $usuarios;
-        /*$totalventas = "SELECT DISTINCT v.cliente_id, SUM(venta_total) as 'totalventas' FROM venta v, cliente u where v.venta_fecha >= '".$anio."-".$mes."-01' and  v.venta_fecha <= '".$anio."-".$mes."-31' and v.cliente_id=u.cliente_id GROUP BY cliente_id ORDER by totalventas desc limit 10";
-        $tove= $this->db->query($totalventas)->result_array();
-        */
-        
         
         foreach($usuarios as $tve){
-        $ususel=intval($tve['usuario_id']);
-        
-        $suma=round($tve['totalventas'],2);
-        
-        $registros[$ususel]=$suma;
+            $ususel=intval($tve['usuario_id']);
+            $suma=round($tve['totalventas'],2);
+            $registros[$ususel]=$suma;
         }
         //var_dump($numusu);
         $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);

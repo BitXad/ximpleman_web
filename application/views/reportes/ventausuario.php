@@ -53,19 +53,35 @@
         <div class="col-md-2">
             <label for="expotar" class="control-label"> &nbsp; </label>
            <div class="form-group">
-                <button onclick="generarexcel_vusuario()" type="button" class="btn btn-danger btn-xs form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
+               <button onclick="generarexcel_vusuario()" type="button" class="btn btn-danger btn-xs form-control" title="Buscar venta por usuarios" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
             </div>
         </div>
 </div>
-<div class="row" id="graficapastel" style="display: none">
-    <br/>
-    <br/>
-    <div class="box box-primary">
-        <div class="box-header"></div>
-        <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
-        <div class="box-footer"></div>
+<?php if($tipousuario_id == 1){ $tamanio = "class='col-md-6'"; } else{ $tamanio = "class='col-md-12'"; } ?>
+<div <?php echo $tamanio; ?>>
+    <div class="row" id="graficapastel" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
+            <div class="box-footer"></div>
+        </div>
     </div>
 </div>
+<?php if($tipousuario_id == 1){ ?>
+<div class="col-md-6">
+    <div class="row" id="graficapastelu" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pieu" id="div_grafica_pieu"></div>
+            <div class="box-footer"></div>
+        </div>
+    </div>
+</div>
+<?php } ?>
 <div class="row" >
     <span id="desde"></span>
     <span id="hasta"></span>
@@ -87,7 +103,6 @@
                 <th>Nro.</th>
                 <th>USUARIO</th>
                 <th>VENTAS</th>
-                <th>DESCUENTOS</th>
                 <?php if($tipousuario_id == 1){ ?>
                 <th>COSTO</th>
                 <th>UTILIDAD</th>

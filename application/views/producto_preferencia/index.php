@@ -16,7 +16,7 @@
     <font size='4' face='Arial'><b>Producto Preferencia</b></font>
     <br><font size='2' face='Arial'>Registros Encontrados: <?php echo sizeof($producto_preferencia); ?></font>
     <div class="box-tools no-print">
-        <a href="<?php echo site_url('producto_preferencia/add'); ?>" class="btn btn-success btn-sm"><fa class='fa fa-pencil-square-o'></fa> Registrar producto-Preferencia</a> 
+        <a href="<?php echo site_url('producto_preferencia/add'); ?>" class="btn btn-success btn-sm" target="_blank"><fa class='fa fa-pencil-square-o'></fa> Registrar producto-Preferencia</a> 
     </div>
 </div>
 <div class="row">
@@ -46,7 +46,7 @@
                         <td><?php echo $p['producto_nombre']; ?></td>
                         <td><?php echo $p['preferencia_descripcion']; ?></td>
                         <td class="text-center no-print">
-                            <a href="<?php echo site_url('producto_preferencia/edit/'.$p['productopref_id']); ?>" class="btn btn-info btn-xs" title="Modificar preferencia"><span class="fa fa-pencil"></span></a> 
+                            <!--<a href="<?php //echo site_url('producto_preferencia/edit/'.$p['productopref_id']); ?>" class="btn btn-info btn-xs" title="Modificar preferencia"><span class="fa fa-pencil"></span></a>--> 
                             <a class="btn btn-danger btn-xs" data-toggle="modal" data-target="#myModal<?php echo $p['productopref_id']; ?>"  title="Eliminar"><span class="fa fa-trash"></span></a>
                             <!------------------------ INICIO modal para confirmar eliminación ------------------->
                             <div class="modal fade" id="myModal<?php echo $p['productopref_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel<?php echo $p['productopref_id']; ?>">

@@ -1,3 +1,8 @@
+$(document).on("ready",inicio);
+function inicio(){
+    //buscar_prodpreferencia();
+}
+
 function buscarproducto(e) {
     tecla = (document.all) ? e.keyCode : e.which;
     if (tecla==13){ 
@@ -62,21 +67,30 @@ function tablaproducto()
     });
 }
 
+function seleccionarproducto(producto_id, producto_nombre){
+    $('#modalbuscarproducto').modal('hide');
+    $('#modalbuscarproducto').on('hidden.bs.modal', function () {
+    $('#tablareproducto').html('');
+    });
+    $('#este_id').val(producto_id);
+    $('#producto_nombre').val(producto_nombre);
+    $('#botonguardar').prop("disabled",false);
+    buscar_prodpreferencia();
+}
+
 function buscar_prodpreferencia(){
     var base_url = document.getElementById('base_url').value;
-    var preferencia_id = document.getElementById('preferencia_id').value;
+    var producto_id = document.getElementById('este_id').value;
     var controlador = base_url+'producto_preferencia/seleccionar_prodpreferencia';
     //var producto_id = document.getElementById('filtrar').value
     $.ajax({url: controlador,
             type:"POST",
-            data:{preferencia_id:preferencia_id},
+            data:{producto_id:producto_id},
             success:function(respuesta){
                 //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
                 if (registros != null){
-                    /*var cont = 0;
-                    var cant_total = 0;
-                    var total_detalle = 0;*/
+                    
                     var n = registros.length; //tama«Ðo del arreglo de la consulta
                     //$("#encontrados").val("- "+n+" -");
                     html = "";
@@ -85,20 +99,44 @@ function buscar_prodpreferencia(){
                     html += "<th>#</th>";
                     html += "<th>Producto</th>";
                     html += "<th>Preferencia</th>";
+                    html += "<th></th>";
                     html += "</tr>";
-                    html += "<tbody class='buscar' id='tablareproducto'>";
+                    html += "<tbody class='buscar' id='tablareproductores'>";
                     for (var i = 0; i < n ; i++){
                         html += "<tr>";
                         html += "<td class='text-center'>"+(i+1)+"</td>";
                         html += "<td>";
-//                        html += "<input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
-//                        html += "<div class='col-md-12'>";
                         html += "<b>"+registros[i]["producto_nombre"]+"</b>";
-//                        html += "</div>";
                         html += "</td>";
                         html += "<td>";
                         html += "<b>"+registros[i]["preferencia_descripcion"]+"</b>";
-                        //html += "</div>";
+                        html += "</td>";
+                        html += "<td>";
+                        html += "<a class='btn btn-danger btn-xs' data-toggle='modal' data-target='#modaleliminar_prodpreferencia"+registros[i]["productopref_id"]+"'  title='Eliminar'><span class='fa fa-trash'></span></a>";
+                        html += "<!------------------------ INICIO modal para confirmar eliminación ------------------->";
+                        html += "<div class='modal fade' id='modaleliminar_prodpreferencia"+registros[i]["productopref_id"]+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+registros[i]["productopref_id"]+"'>";
+                        html += "<div class='modal-dialog' role='document'>";
+                        html += "<br><br>";
+                        html += "<div class='modal-content'>";
+                        html += "<div class='modal-header text-center'>";
+                        html += "<button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>";
+                        html += "<span class='text-bold' style='font-size: 13px'>Eliminar Producto - Preferencia</span>";
+                        html += "</div>";
+                        html += "<div class='modal-body'>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "<h3><b> <span class='fa fa-trash'></span></b>";
+                        html += "¿Desea eliminar: <br><b>- "+registros[i]["producto_nombre"]+"</b> <br><b>- "+registros[i]["preferencia_descripcion"]+"</b> ?";
+                        html += "</h3>";
+                        html += "<!------------------------------------------------------------------->";
+                        html += "</div>";
+                        html += "<div class='modal-footer aligncenter'>";
+                        html += "<a  onclick='eliminar_prodpreferencia("+registros[i]["productopref_id"]+")' class='btn btn-success'><span class='fa fa-check'></span> Si </a>";
+                        html += "<a href='#' class='btn btn-danger' data-dismiss='modal'><span class='fa fa-times'></span> No </a>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "</div>";
+                        html += "<!------------------------ FIN modal para confirmar eliminación ------------------->";
                         html += "</td>";
                         html += "</tr>";
                    }
@@ -113,55 +151,24 @@ function buscar_prodpreferencia(){
         error:function(respuesta){
            // alert("Algo salio mal...!!!");
            html = "";
-           $("#tablareproducto").html(html);
+           $("#tablareproductores").html(html);
         }
     });
 }
 
-function seleccionarproducto(producto_id, producto_nombre){
+function registrar_prodpreferencia(){
     var base_url = document.getElementById('base_url').value;
+    var producto_id = document.getElementById('este_id').value;
     var preferencia_id = document.getElementById('preferencia_id').value;
-    var controlador = base_url+'producto_preferencia/seleccionarproducto';
-    //var producto_id = document.getElementById('filtrar').value
+    var controlador = base_url+'producto_preferencia/registrar_prodpreferencia';
     $.ajax({url: controlador,
             type:"POST",
             data:{producto_id:producto_id, preferencia_id:preferencia_id},
             success:function(respuesta){
-                $("#encontrados").val("- 0 -");
+                //$("#encontrados").val("- 0 -");
                 var registros =  JSON.parse(respuesta);
                 if (registros != null){
-                    /*var cont = 0;
-                    var cant_total = 0;
-                    var total_detalle = 0;*/
-                    var n = registros.length; //tama«Ðo del arreglo de la consulta
-                    $("#encontrados").val("- "+n+" -");
-                    html = "";
-                    html += "<table class='table table-striped no-print' id='mitabla'>";
-                    html += "<tr>"
-                    html += "<th>#</th>";
-                    html += "<th>Producto</th>";
-                    html += "<th>Preferencia</th>";
-                    html += "</tr>";
-                    html += "<tbody class='buscar' id='tablareproducto'>";
-                    for (var i = 0; i < n ; i++){
-                        html += "<tr>";
-                        html += "<td class='text-center'>"+(i+1)+"</td>";
-                        html += "<td>";
-//                        html += "<input id='producto_id'  name='producto_id' type='hidden' class='form-control' value='"+registros[i]["producto_id"]+"'>";
-//                        html += "<div class='col-md-12'>";
-                        html += "<b>"+registros[i]["producto_nombre"]+"</b>";
-//                        html += "</div>";
-                        html += "</td>";
-                        html += "<td>";
-                        html += "<b>"+registros[i]["preferencia_descripcion"]+"</b>";
-                        //html += "</div>";
-                        html += "</td>";
-                        html += "</tr>";
-                   }
-                        html += "</tbody>"
-                   $("#resproducto").html(html);
-                   //$('#modalbuscarproducto').modal('show');
-                    //document.getElementById('tablas').style.display = 'block';
+                    buscar_prodpreferencia();
             }else{
                 
             }
@@ -169,23 +176,34 @@ function seleccionarproducto(producto_id, producto_nombre){
         error:function(respuesta){
            // alert("Algo salio mal...!!!");
            html = "";
-           $("#tablareproducto").html(html);
+           $("#tablareproductores").html(html);
         }
     });
-    
-    
-    
-    
-    /*
-    
-    $('#modalbuscarproducto').modal('hide');
-    $('#modalbuscarproducto').on('hidden.bs.modal', function () {
-    $('#tablareproducto').html('');
-    });
-    $('#este_id').val(producto_id);
-    $('#producto_id').val(producto_nombre);
-    $('#botonguardar').prop("disabled",false);*/
 }
-function habilitarboton(){
-    $('#botonguardar').prop("disabled",false);
+
+function eliminar_prodpreferencia(productopref_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+'producto_preferencia/eliminar_prodpreferencia';
+    $('#modaleliminar_prodpreferencia'+productopref_id).modal('hide');
+    $.ajax({url: controlador,
+            type:"POST",
+            data:{productopref_id:productopref_id},
+            success:function(respuesta){
+                var registros =  JSON.parse(respuesta);
+                if (registros != null){
+                    if(registros == "ok"){
+                        buscar_prodpreferencia();
+                    }else{
+                        buscar_prodpreferencia();
+                        alert("no existe este Producto - Preferencia, revise sus datos!");
+                    }
+            }else{
+                
+            }
+        }
+    });
+}
+
+function mostrar_modal(){
+    $('#modalbuscarproducto').modal('show');
 }
