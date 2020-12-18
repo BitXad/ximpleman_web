@@ -370,11 +370,12 @@ function tablaproductos()
                         
                        html += " <div id='tabla_composicion"+registros[i]["detalleven_id"]+"' style='padding:0;'> </div>";
 //                       html += " <table style='padding:0;'> </table>";
-                        
+                        clasificafor = "";
                         if (registros[i]["clasificador_nombre"]!=null && registros[i]["clasificador_nombre"]!="")
                             clasificador = registros[i]["clasificador_nombre"]+" | ";
 
-                       if (registros[i]["preferencia_descripcion"]!=null && registros[i]["preferencia_descripcion"]!="")
+                        preferencia = "";
+                        if (registros[i]["preferencia_descripcion"]!=null && registros[i]["preferencia_descripcion"]!="")
                             preferencia = registros[i]["preferencia_descripcion"]+" | ";
                         
                         html += "</font></b>";
@@ -1074,7 +1075,7 @@ function ingresorapido(producto_id,cantidad)
 function ingresorapidojs(cantidad,producto)
 {       
     var factor_nombre = ""; //cantidad del factor seleccionado
-    var indice = ""; //cantidad del factor seleccionado
+    var indice = 0; //cantidad del factor seleccionado
     
     try {
         factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
