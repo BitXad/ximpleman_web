@@ -305,6 +305,7 @@ function tablaproductos()
     var venta_descuento = Number(document.getElementById('venta_descuento').value);
     var tipousuario_id = Number(document.getElementById('tipousuario_id').value);
     var clasificador = "";
+    var preferencia = "";
     
     $.ajax({url: controlador,
            type:"POST",
@@ -1072,8 +1073,26 @@ function ingresorapido(producto_id,cantidad)
 
 function ingresorapidojs(cantidad,producto)
 {       
-    var factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
-    var indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
+    var factor_nombre = ""; //cantidad del factor seleccionado
+    var indice = ""; //cantidad del factor seleccionado
+    
+    try {
+        factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+
+    } catch (error) {
+        //console.error(error);
+        factor_nombre = ""; //cantidad del factor seleccionado
+        
+    }
+    
+    try {
+        var indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
+
+    } catch (error) {
+        //console.error(error);
+        indice = 0; //cantidad del factor seleccionado        
+    }
+
     var factor = 0;    
     var precio = 0;
     var numerofactor = "";
@@ -1150,8 +1169,29 @@ function ingresorapidojs(cantidad,producto)
     var check_agrupar = document.getElementById('check_agrupar').checked;
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
     var preferencia_id = document.getElementById('preferencia_id').value;
-    var clasificador_id = document.getElementById('select_clasificador'+producto_id).value;
-    var preferencias = document.getElementById('input_detalleven_preferencia'+producto_id).value;
+    
+    var clasificador_id = "";
+    
+    try {
+        clasificador_id = document.getElementById('select_clasificador'+producto_id).value;
+
+    } catch (error) {
+        //console.error(error);
+        clasificador_id = 0; //cantidad del factor seleccionado
+        
+    }
+    
+    var preferencias = "";
+    try {
+        preferencias = document.getElementById('input_detalleven_preferencia'+producto_id).value;
+
+    } catch (error) {
+        //console.error(error);
+        preferencias = ""; //preferencias
+        
+    }
+    
+    
         
     // alert(clasificador_id);   
         
@@ -1783,6 +1823,8 @@ function tablaresultados(opcion)
                         nombre_producto = registros[i]['producto_nombre'];
                         prod = nombre_producto.substr(0,20);
                         
+                        existenciaprod = registros[i]['existencia'];
+                        nombre_producto += " ("+Number(existenciaprod).toFixed(2)+" "+registros[i]['producto_unidad']+")";
                         // Este es el boton del producto
                         
                         if (datosboton==1){ //nombre de producto y precio
