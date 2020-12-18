@@ -118,7 +118,8 @@ class Categoria_producto_model extends CI_Model
     {
         $venta_categoriap = $this->db->query("
             SELECT
-                vs.categoria_id, cp.`categoria_nombre`, SUM(vs.detalleven_total) as 'totalventas'
+                vs.categoria_id, cp.`categoria_nombre`, SUM(vs.detalleven_total) as 'totalventas',
+                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
             FROM
                 `ventas` vs
             left join `categoria_producto` cp on vs.categoria_id = cp.categoria_id
@@ -170,7 +171,6 @@ class Categoria_producto_model extends CI_Model
         $venta_porusuario = $this->db->query("
             SELECT
                 vs.usuario_id, vs.`usuario_nombre`, SUM(vs.detalleven_total) as 'totalventas',
-                SUM(vs.detalleven_cantidad*vs.detalleven_descuento) as totaldescuento,
                 SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
             FROM
                 `ventas` vs

@@ -109,4 +109,21 @@ class Producto_preferencia_model extends CI_Model
 
         return $producto_preferencia;
     }
+    /* Get all prductos de una preferencia */
+    function get_allproductos_preferencia($producto_id)
+    {
+        $producto_preferencia = $this->db->query("
+            SELECT
+                pp.*, pr.preferencia_descripcion, p.producto_nombre
+            FROM
+                `producto_preferencia` pp, preferencia pr, producto p
+            WHERE
+                pp.preferencia_id = pr.preferencia_id and
+                pp.producto_id = p.producto_id and
+                pp.producto_id = $producto_id
+            ORDER BY pr.`preferencia_descripcion`
+        ")->result_array();
+
+        return $producto_preferencia;
+    }
 }

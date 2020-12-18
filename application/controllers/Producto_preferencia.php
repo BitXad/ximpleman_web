@@ -38,7 +38,7 @@ class Producto_preferencia extends CI_Controller{
     function add()
     {
         $data['page_title'] = "Añadir Producto - Preferencia";
-        $this->load->library('form_validation');
+        /*$this->load->library('form_validation');
         $this->form_validation->set_rules('preferencia_id','Preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
         $this->form_validation->set_rules('producto_id','Producto','trim|required', array('required' => 'Este Campo no debe estar vacio, debe hacer una busqueda correcta del producto'));
         if($this->form_validation->run())     
@@ -50,13 +50,13 @@ class Producto_preferencia extends CI_Controller{
             
             $productopref_id = $this->Producto_preferencia_model->add_producto_preferencia($params);
             redirect('producto_preferencia/index');
-        }else{
+        }else{*/
             $estado_id = 1;
             $this->load->model('Preferencia_model');
             $data['all_preferencia'] = $this->Preferencia_model->get_all_preferenciaestado($estado_id);
             $data['_view'] = 'producto_preferencia/add';
             $this->load->view('layouts/main',$data);
-        }
+        //}
     }
 
     /*
@@ -119,6 +119,52 @@ class Producto_preferencia extends CI_Controller{
                 $this->load->model('Producto_model');
                 $resultado = $this->Producto_model->buscar_allproducto($parametro);
                 echo json_encode($resultado);
+            }else{
+                show_404();
+            }
+        //}
+    }
+    function seleccionar_prodpreferencia()
+    {
+        //if($this->acceso(102)) {
+            if ($this->input->is_ajax_request()) {
+                $resultado = $this->Producto_preferencia_model->get_allproductos_preferencia($this->input->post('producto_id'));
+                echo json_encode($resultado);
+            }else{
+                show_404();
+            }
+        //}
+    }
+    function registrar_prodpreferencia()
+    {
+        //if($this->acceso(102)) {
+            if ($this->input->is_ajax_request()) {
+                $params = array(
+                    'producto_id' => $this->input->post('producto_id'),
+                    'preferencia_id' => $this->input->post('preferencia_id'),
+                );
+                $productopref_id = $this->Producto_preferencia_model->add_producto_preferencia($params);
+                
+                echo json_encode("ok");
+            }else{
+                show_404();
+            }
+        //}
+    }
+    
+    function eliminar_prodpreferencia()
+    {
+        //if($this->acceso(102)) {
+            if ($this->input->is_ajax_request()) {
+                $productopref_id = $this->input->post('productopref_id');
+                $producto_preferencia = $this->Producto_preferencia_model->get_producto_preferencia($productopref_id);
+                if(isset($producto_preferencia['productopref_id']))
+                {
+                    $this->Producto_preferencia_model->delete_producto_preferencia($productopref_id);
+                    echo json_encode("ok");
+                }
+                else
+                    echo json_encode("no");
             }else{
                 show_404();
             }
