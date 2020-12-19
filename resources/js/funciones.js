@@ -2356,6 +2356,7 @@ function registrarventa(cliente_id)
         var dia_pago = document.getElementById('dia_pago').value;
         var fecha_inicio = document.getElementById('fecha_inicio').value;
         
+        
         $.ajax({url: controlador,
             type:"POST",
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
@@ -2380,7 +2381,7 @@ function registrarventa(cliente_id)
             type:"POST",
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
+                facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 venta_descuento:venta_descuento,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
             success:function(respuesta){ 
