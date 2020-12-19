@@ -45,7 +45,7 @@ function calculardesc(){
        subtotal = Number(venta_subtotal) - Number(venta_descuento); 
     
    $("#venta_totalfinal").val(subtotal);
-   $("#venta_efectivo").val(subtotal);
+   //$("#venta_efectivo").val(subtotal);
    
 }
 
@@ -2349,7 +2349,7 @@ function registrarventa(cliente_id)
                 +","+venta_comision+","+venta_tipocambio+","+detalleserv_id+","+venta_tipodoc+","+tiposerv_id
                 +","+entrega_id+",'"+venta_numeromesa+"',"+venta_numeroventa+","+usuarioprev_id+","+pedido_id+","+orden_id+","+entregaestado_id;
         
-     //alert(sql); 
+     
     if (tipo_transaccion==2){
         var cuotas = document.getElementById('cuotas').value;
         var modalidad = document.getElementById('modalidad').value;
