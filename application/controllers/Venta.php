@@ -325,7 +325,8 @@ class Venta extends CI_Controller{
         $pedido_id = $this->input->post('pedido_id'); // interes por ventas
         $nit = $this->input->post('nit'); // nit del cliente
         $razon = $this->input->post('razon'); // nit del cliente
-        $fecha_venta = $this->input->post('venta_fecha'); // nit del cliente
+        $fecha_venta = $this->input->post('venta_fecha'); // fecha de la venta
+        $hora_venta = $this->input->post('venta_hora'); // hora de la venta
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
         $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
@@ -554,7 +555,7 @@ class Venta extends CI_Controller{
                 
                 $factura_fechaventa    = $fecha_venta;
                 $factura_fecha         = "date(now())";
-                $factura_hora          = "time(now())";
+                $factura_hora          =  $hora_venta; //"time(now())";
                 $factura_subtotal = $venta_total+$venta_descuento;
                 $factura_nit           = $nit;
                 $factura_razonsocial   = $razon;

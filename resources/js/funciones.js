@@ -2360,7 +2360,7 @@ function registrarventa(cliente_id)
             type:"POST",
             data:{cad:cad, tipo_transaccion:tipo_transaccion, cuotas:cuotas, cuota_inicial:cuota_inicial, 
                 venta_total:venta_total, credito_interes:credito_interes, pedido_id:pedido_id,
-                facturado:facturado,venta_fecha:venta_fecha, razon:razon, nit:nit,
+                facturado:facturado,venta_fecha:venta_fecha, venta_hora:venta_hora, razon:razon, nit:nit,
                 cuotas:cuotas, modalidad:modalidad, dia_pago:dia_pago, fecha_inicio: fecha_inicio,
                 venta_descuento:venta_descuento,usuarioprev_id:usuarioprev_id,orden_id:orden_id,
                 venta_efectivo:venta_efectivo, venta_cambio:venta_cambio},
@@ -3707,11 +3707,19 @@ function focus_cantidad(producto_id){
 //    alert(producto_id);
         var campo = "cantidad"+producto_id;
     
+    
         mostrar_clasificador_boton(producto_id);
     
         $('#myModal'+producto_id).on('shown.bs.modal', function() {
         $('#'+campo).focus();
         $('#'+campo).select();
+        
+        try{
+            $('#input_detalleven_preferencia'+producto_id).val("");
+        }catch (error){
+            
+        }
+       
         
         var parametro_cantidadproductos = document.getElementById("parametro_cantidadproductos").value;
         

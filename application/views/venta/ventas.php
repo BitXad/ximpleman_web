@@ -1314,7 +1314,7 @@ window.onkeydown = compruebaTecla;
                                     <span aria-hidden="true">&times;</span>
                             </button>
                             <center>
-                                <h4 class="modal-title" id="myModalLabel"><b>PREFRENCIAS</b></h4>
+                                <h4 class="modal-title" id="myModalLabel"><b>PREFERENCIAS</b></h4>
                                 <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
                             </center>
 
@@ -1333,11 +1333,11 @@ window.onkeydown = compruebaTecla;
                                             <div class="form-group">
 							
                                                 <?php 
-                                                foreach($preferencia as $p)
-                                                {?>
-                                                    <button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>
-                                                    <br>
-                                                <?php } 
+                                                //foreach($preferencia as $p)
+                                                //{?>
+                                                    <!--<button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>-->
+                                                    <!--<br>-->
+                                                <?php //} 
                                                 ?>
                                             </div>
                                             <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning" onKeyUp="this.value = this.value.toUpperCase();">

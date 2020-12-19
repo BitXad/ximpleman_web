@@ -129,8 +129,9 @@ function recepcion(estado)
                      
                         html += "</td>";
                         
-                        html += "<td align='center' style='font-size: 14px;'><b>"+ventas[i]["venta_numeroventa"]+"</b>"; 
-                        html += "<br> "+ventas[i]["tiposerv_descripcion"]+"</td>";
+                        html += "<td align='center'><b style='font-size: 20px;'>"+ventas[i]["venta_numeroventa"]+"</b>"; 
+                        html += "<br> "+ventas[i]["tiposerv_descripcion"]+"<br>"+ventas[i]["venta_hora"]+"</td>";
+                        
                         if (ventas[i]["entrega_id"]==1) {
                             //ventas[i]["entrega_nombre"]
                         html += "<td align='center'> <a class='btn btn-warning btn-xs' data-toggle='modal' data-target='#myModal"+i+"' title='DESPACHAR'><font size='5'><span class='fa fa-cutlery'></span></font><br> DESPACHAR PEDIDO </a>";
