@@ -165,6 +165,7 @@ class Venta extends CI_Controller{
         $existencia = $this->input->post('existencia');
         $datos1 = $this->input->post('datos1');
         $agrupado = $this->input->post('agrupado');
+        $detalleven_id = $this->input->post('detalleven_id');
         
         $descuento = $this->input->post('descuento');
         
@@ -194,43 +195,64 @@ class Venta extends CI_Controller{
         
         
         $existe = 0;
+        
         if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
             
             if($agrupado==1){
                 
-                if ($this->Venta_model->existe($producto_id,$usuario_id)){
+                $existe = $this->Venta_model->existe($producto_id,$usuario_id);
+                
+                if ($existe){
                     $sql = $sql2; 
                     $existe = 1;
+                    $detalleven_id = $this->Venta_model->ejecutar($sql);
                 }
                 else{
                     $sql = $sql1;
                     $existe = 0;
+                    $this->Venta_model->ejecutar($sql);
                     
                 }                
             }
-            else
-            {   //si no registraran datos agrupados
-                $sql = $sql1;
+            else //si no registraran datos agrupados
+            {   
+                
+                if ($detalleven_id>0){ //si exl producto existe en el detalle
+                    //si el producto ya esta registrado, solo actualizara la cantidad y total
+                    $sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
+                            ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                            ", detalleven_descuento = ".$descuento.
+                            ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                            ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
+                            "  where detalleven_id = ".$detalleven_id;
+                    $sql = $sql2;
+                    
+                    $this->Venta_model->ejecutar($sql);
+                }
+                else{
+                    
+                    $sql = $sql1;
+                    $detalleven_id = $this->Venta_model->ejecutar($sql);
+                }
             }
           
-            $detalleven_id = $this->Venta_model->ejecutar($sql);
             
             
             //Cuando se utiliza productos compuestos debe registrarse en la composicion de productos
-            if ($existe==0){ // sino existe el producto en el detalle
-                
-                // Consulta para el subdetalle de producto en detalle venta
-                $sql_subdet = "insert into detalle_composicion_aux(
-                                composicionproducto_id,producto_id,detallecomp_cantidad,
-                                detallecomp_precio,venta_id,usuario_id, detalleven_id)
-
-                                (select composicionproducto_id,
-                                producto_id,composicion_cantidad * ".$cantidad.", composicion_precio * ".$cantidad.
-                                ", 0 as venta_id,".$usuario_id.",".$detalleven_id."
-                                from composicion_producto where composicionproducto_id = ".$producto_id.")";
-                
-                $this->Venta_model->ejecutar($sql_subdet);
-            }           
+//            if ($existe==0){ // sino existe el producto en el detalle
+//                
+//                // Consulta para el subdetalle de producto en detalle venta
+//                $sql_subdet = "insert into detalle_composicion_aux(
+//                                composicionproducto_id,producto_id,detallecomp_cantidad,
+//                                detallecomp_precio,venta_id,usuario_id, detalleven_id)
+//
+//                                (select composicionproducto_id,
+//                                producto_id,composicion_cantidad * ".$cantidad.", composicion_precio * ".$cantidad.
+//                                ", 0 as venta_id,".$usuario_id.",".$detalleven_id."
+//                                from composicion_producto where composicionproducto_id = ".$producto_id.")";
+//                
+//                $this->Venta_model->ejecutar($sql_subdet);
+//            }           
             // fin de funciones para manejar composicion de productos
             
             
