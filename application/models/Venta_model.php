@@ -659,8 +659,8 @@ function get_busqueda($condicion)
             "SELECT if(SUM(v.venta_total)>0, SUM(v.venta_total),0) as total_mes
             FROM venta as v
             WHERE v.usuario_id = ".$usuario_id." 
-            AND v.venta_fecha >= '2020-".date('m')."-01'
-            AND v.venta_fecha <= '2020-".date('m')."-31'
+            AND v.venta_fecha >= '".date('Y')."-".date('m')."-01'
+            AND v.venta_fecha <= '".date('Y')."-".date('m')."-31'
             ")->row_array();
         return $total_ventas;
     }
@@ -668,12 +668,11 @@ function get_busqueda($condicion)
     * Cantidad de entregas en un dia de un vendedor
     */
     function get_venta_entrega_dia($usuario_id){
-        $entregas = $this->db->query("SELECT if(count(p.`venta_total`)>0,COUNT(p.`venta_total`),0) as pedido_diario
-            FROM venta p, estado e, cliente c 
-            WHERE p.estado_id = e.estado_id 
-            AND p.entrega_id = 2
-            AND p.cliente_id = c.cliente_id
-            AND p.entrega_usuarioid = ".$usuario_id." AND venta_fecha = date(NOW());")->row_array();
+        $entregas = $this->db->query(
+            "SELECT IF(count(p.pedido_total)>0,count(p.pedido_total),0) AS pedido_diario
+            FROM pedido as p
+            WHERE DATE(p.pedido_fecha) = DATE(NOW()) 
+            AND p.regusuario_id = ".$usuario_id."")->row_array();
 
         return $entregas;
     }
@@ -682,14 +681,11 @@ function get_busqueda($condicion)
     */
     function get_venta_entrega_mes($usuario_id){
         $entrega_mes = $this->db->query(
-            "SELECT if(count(p.`venta_total`)>0,COUNT(p.`venta_total`),0) as pedido_mes
-            FROM venta p, estado e, cliente c 
-            WHERE p.estado_id = e.estado_id 
-            AND p.entrega_id = 2
-            AND p.cliente_id = c.cliente_id
-            AND p.entrega_usuarioid = ".$usuario_id."
-            AND venta_fecha >= '2020-".date('m')."-01'
-            AND venta_fecha <= '2020-".date('m')."-31';")->row_array();
+            "SELECT IF(count(p.pedido_total)>0,count(p.pedido_total),0) as pedido_mes
+            FROM pedido as p
+            WHERE p.pedido_fecha >= '".date('Y')."-".date('m')."-01' 
+            AND p.pedido_fecha <= '".date('Y')."-".date('m')."-31'
+            AND p.regusuario_id = ".$usuario_id."")->row_array();
         return $entrega_mes;
     }
 }
