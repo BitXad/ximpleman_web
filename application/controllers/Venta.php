@@ -586,7 +586,7 @@ class Venta extends CI_Controller{
                     factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
                     usuario_id, tipotrans_id, factura_efectivo, factura_cambio) value(".
                     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                    $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
+                    $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".
