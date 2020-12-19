@@ -171,7 +171,7 @@ border-bottom : 1px solid #aaa;
                <td align="center"><b>CN</b></td>
                 <td align="center"><b>DESCRIPCIÓN</b></td>
                 <td align="center"><b>P.UNIT</b></td>
-                <td align="center"><b>TOTAL</b></td>               
+                <td align="center"><b>TOTAL</b></td>
            </tr>
            <?php $cont = 0;
                  $cantidad = 0;

@@ -118,7 +118,8 @@ class Categoria_producto_model extends CI_Model
     {
         $venta_categoriap = $this->db->query("
             SELECT
-                vs.categoria_id, cp.`categoria_nombre`, SUM(vs.detalleven_total) as 'totalventas'
+                vs.categoria_id, cp.`categoria_nombre`, SUM(vs.detalleven_total) as 'totalventas',
+                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
             FROM
                 `ventas` vs
             left join `categoria_producto` cp on vs.categoria_id = cp.categoria_id
@@ -145,5 +146,41 @@ class Categoria_producto_model extends CI_Model
         ")->result_array();
 
         return $categoria_producto;
+    }
+    /* usado en reporte de ventas por usuario */
+    function get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta)
+    {
+        $categoria_producto = $this->db->query("
+            SELECT
+                `vs`.usuario_id
+            FROM
+                `ventas` vs
+            where
+            	date(vs.venta_fecha) >= '$fecha_desde'
+                and date(vs.venta_fecha) <= '$fecha_hasta'
+            group by vs.`usuario_id`
+        ")->result_array();
+
+        return $categoria_producto;
+    }
+    /*
+     * Get all categoria_producto
+     */
+    function getall_ventapor_usuario($fecha_desde, $fecha_hasta)
+    {
+        $venta_porusuario = $this->db->query("
+            SELECT
+                vs.usuario_id, vs.`usuario_nombre`, SUM(vs.detalleven_total) as 'totalventas',
+                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
+            FROM
+                `ventas` vs
+            where
+            	date(vs.venta_fecha) >= '$fecha_desde'
+                and date(vs.venta_fecha) <= '$fecha_hasta'
+            group by vs.`usuario_id`
+            order by totalventas desc
+        ")->result_array();
+
+        return $venta_porusuario;
     }
 }

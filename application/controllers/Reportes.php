@@ -1031,13 +1031,14 @@ function torta3($anio,$mes)
     function ventacliente()
     {
         if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
-            $data['page_title'] = "Reporte Ventas";        
-            $data['_view'] = 'reportes/ventacliente';
+            $data['page_title'] = "Reporte de Ventas por Cliente";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $data['_view'] = 'reportes/ventacliente';
             $this->load->view('layouts/main',$data);
         }
     }
@@ -1074,6 +1075,7 @@ function torta3($anio,$mes)
     {
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
         $data['page_title'] = "Reporte por Categorias";
@@ -1095,6 +1097,20 @@ function torta3($anio,$mes)
         $this->load->view('layouts/main',$data);
         }
     }
+    /* reporte de ventas por usuario */
+    function ventausuario()
+    {
+        if($this->acceso(157)){
+        $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        
+        $data['page_title'] = "Reporte de ventas por usuario";
+        $data['_view'] = 'reportes/ventausuario';
+
+        $this->load->view('layouts/main',$data);
+        }
+    }
+    
     
     function repventa_categoria()
     {
@@ -1130,7 +1146,7 @@ function torta3($anio,$mes)
         }
         //var_dump($numusu);
         $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);
-        echo   json_encode($data);   
+        echo   json_encode($data);
     }
     /* reporte de ventas por zonas */
     function repventa_zonas()
@@ -1157,6 +1173,28 @@ function torta3($anio,$mes)
         $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);
         echo   json_encode($data);   
     }
+    /* reporte de ventas por usuario */
+    function repventa_usuario()
+    {
+        $fecha_desde = $this->input->post('fecha_desde');
+        $fecha_hasta = $this->input->post('fecha_hasta');
+        
+        $this->load->model('Categoria_producto_model');
+        $res_usuario = $this->Categoria_producto_model->get_all_usuario_ventaproducto_count($fecha_desde, $fecha_hasta);
+        $numusu = count($res_usuario);
+        
+        $usuarios = $this->Categoria_producto_model->getall_ventapor_usuario($fecha_desde, $fecha_hasta);
+        $tove = $usuarios;
+        
+        foreach($usuarios as $tve){
+            $ususel=intval($tve['usuario_id']);
+            $suma=round($tve['totalventas'],2);
+            $registros[$ususel]=$suma;
+        }
+        //var_dump($numusu);
+        $data=array("totaltipos"=>$numusu, "tipos" =>$usuarios, "numerodepubli" =>$registros);
+        echo   json_encode($data);   
+    }
     
     function venta()
     {
@@ -1168,4 +1206,5 @@ function torta3($anio,$mes)
         $this->load->view('layouts/main',$data);
         }
     }
+    
 }

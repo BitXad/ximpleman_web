@@ -50,6 +50,18 @@ class Preferencia_model extends CI_Model
 
         return $preferencia;
     }
+                
+    /*
+     * Get all preferencia
+     */
+    function get_producto_preferencia()
+    {
+        $sql= "select r.producto_id,p.* from producto_preferencia r, preferencia p
+               where r.preferencia_id = p.preferencia_id
+               ";
+        return $this->db->query($sql)->result_array();
+        
+    }
         
     /*
      * function to add new preferencia
@@ -75,5 +87,57 @@ class Preferencia_model extends CI_Model
     function delete_preferencia($preferencia_id)
     {
         return $this->db->delete('preferencia',array('preferencia_id'=>$preferencia_id));
+    }
+    /*
+     * Get all preferencia count
+     */
+    function get_all_preferencia_count()
+    {
+        $preferencia = $this->db->query("
+            SELECT
+                count(*) as count
+            FROM
+                `preferencia`
+        ")->row_array();
+
+        return $preferencia['count'];
+    }
+    /*
+     * Get all preferencia
+     */
+    function get_preferencia_all($params = array())
+    {
+        $limit_condition = "";
+        if(isset($params) && !empty($params))
+            $limit_condition = " LIMIT " . $params['offset'] . "," . $params['limit'];
+        
+        $preferencia = $this->db->query("
+            SELECT
+                p.*, e.estado_descripcion, e.estado_color
+            FROM
+                `preferencia` p, estado e
+            WHERE
+                p.estado_id = e.estado_id
+            ORDER BY `preferencia_descripcion`
+            " . $limit_condition . "
+        ")->result_array();
+
+        return $preferencia;
+    }
+    /* obtiene todas las preferencias segun el estado_id */
+    function get_all_preferenciaestado($estado_id)
+    {
+        $preferencia = $this->db->query("
+            SELECT
+                p.*
+            FROM
+                `preferencia` p
+            WHERE
+                p.estado_id = $estado_id
+
+            ORDER BY `p`.`preferencia_descripcion`
+        ")->result_array();
+
+        return $preferencia;
     }
 }

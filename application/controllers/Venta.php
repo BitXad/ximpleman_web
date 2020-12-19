@@ -93,7 +93,7 @@ class Venta extends CI_Controller{
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
-        $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
+        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
         $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
@@ -165,6 +165,7 @@ class Venta extends CI_Controller{
         $existencia = $this->input->post('existencia');
         $datos1 = $this->input->post('datos1');
         $agrupado = $this->input->post('agrupado');
+        $detalleven_id = $this->input->post('detalleven_id');
         
         $descuento = $this->input->post('descuento');
         
@@ -172,7 +173,9 @@ class Venta extends CI_Controller{
         $sql1 = "insert into detalle_venta_aux(venta_id,moneda_id,producto_id,detalleven_codigo,detalleven_cantidad,detalleven_unidad,detalleven_costo,detalleven_precio,detalleven_subtotal, ".
                 "detalleven_descuento,detalleven_total,detalleven_caracteristicas,detalleven_preferencia,detalleven_comision,detalleven_tipocambio,usuario_id,existencia,".
                 "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra,
-                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor) ".
+                detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,
+                detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,
+                detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor, preferencia_id, clasificador_id) ".
                 " value(".$datos1.")";
         
         //si el producto ya esta registrado, solo actualizara la cantidad y total
@@ -192,43 +195,64 @@ class Venta extends CI_Controller{
         
         
         $existe = 0;
+        
         if ($resultado[0]['resultado']==0){ //si la cantidad aun es menor al inventario
             
             if($agrupado==1){
                 
-                if ($this->Venta_model->existe($producto_id,$usuario_id)){
+                $existe = $this->Venta_model->existe($producto_id,$usuario_id);
+                
+                if ($existe){
                     $sql = $sql2; 
                     $existe = 1;
+                    $detalleven_id = $this->Venta_model->ejecutar($sql);
                 }
                 else{
                     $sql = $sql1;
                     $existe = 0;
+                    $this->Venta_model->ejecutar($sql);
                     
                 }                
             }
-            else
-            {   //si no registraran datos agrupados
-                $sql = $sql1;
+            else //si no registraran datos agrupados
+            {   
+                
+                if ($detalleven_id>0){ //si exl producto existe en el detalle
+                    //si el producto ya esta registrado, solo actualizara la cantidad y total
+                    $sql2 = "update detalle_venta_aux set detalleven_cantidad = detalleven_cantidad + ".$cantidad.
+                            ", detalleven_subtotal = detalleven_precio * (detalleven_cantidad)".
+                            ", detalleven_descuento = ".$descuento.
+                            ", detalleven_total = (detalleven_precio - ".$descuento.")*(detalleven_cantidad)".
+                            ", detalleven_cantidadenvase = if(detalleven_envase=1,detalleven_cantidad,0) ".
+                            "  where detalleven_id = ".$detalleven_id;
+                    $sql = $sql2;
+                    
+                    $this->Venta_model->ejecutar($sql);
+                }
+                else{
+                    
+                    $sql = $sql1;
+                    $detalleven_id = $this->Venta_model->ejecutar($sql);
+                }
             }
           
-            $detalleven_id = $this->Venta_model->ejecutar($sql);
             
             
             //Cuando se utiliza productos compuestos debe registrarse en la composicion de productos
-            if ($existe==0){ // sino existe el producto en el detalle
-                
-                // Consulta para el subdetalle de producto en detalle venta
-                $sql_subdet = "insert into detalle_composicion_aux(
-                                composicionproducto_id,producto_id,detallecomp_cantidad,
-                                detallecomp_precio,venta_id,usuario_id, detalleven_id)
-
-                                (select composicionproducto_id,
-                                producto_id,composicion_cantidad * ".$cantidad.", composicion_precio * ".$cantidad.
-                                ", 0 as venta_id,".$usuario_id.",".$detalleven_id."
-                                from composicion_producto where composicionproducto_id = ".$producto_id.")";
-                
-                $this->Venta_model->ejecutar($sql_subdet);
-            }           
+//            if ($existe==0){ // sino existe el producto en el detalle
+//                
+//                // Consulta para el subdetalle de producto en detalle venta
+//                $sql_subdet = "insert into detalle_composicion_aux(
+//                                composicionproducto_id,producto_id,detallecomp_cantidad,
+//                                detallecomp_precio,venta_id,usuario_id, detalleven_id)
+//
+//                                (select composicionproducto_id,
+//                                producto_id,composicion_cantidad * ".$cantidad.", composicion_precio * ".$cantidad.
+//                                ", 0 as venta_id,".$usuario_id.",".$detalleven_id."
+//                                from composicion_producto where composicionproducto_id = ".$producto_id.")";
+//                
+//                $this->Venta_model->ejecutar($sql_subdet);
+//            }           
             // fin de funciones para manejar composicion de productos
             
             
@@ -301,7 +325,8 @@ class Venta extends CI_Controller{
         $pedido_id = $this->input->post('pedido_id'); // interes por ventas
         $nit = $this->input->post('nit'); // nit del cliente
         $razon = $this->input->post('razon'); // nit del cliente
-        $fecha_venta = $this->input->post('venta_fecha'); // nit del cliente
+        $fecha_venta = $this->input->post('venta_fecha'); // fecha de la venta
+        $hora_venta = $this->input->post('venta_hora'); // hora de la venta
         $venta_descuento = $this->input->post('venta_descuento'); // descuento de la venta
         $usuarioprev_id = $this->input->post('usuarioprev_id'); // descuento de la venta
         $orden_id = $this->input->post('orden_id'); // Orden de trabajo        
@@ -348,7 +373,8 @@ class Venta extends CI_Controller{
           usuario_id,
           factura_id,
           clasificador_id,
-          detalleven_unidadfactor
+          detalleven_unidadfactor,
+          preferencia_id
         )
 
         (SELECT 
@@ -382,7 +408,8 @@ class Venta extends CI_Controller{
             usuario_id,
             0 as factura_id,
             clasificador_id,
-            detalleven_unidadfactor
+            detalleven_unidadfactor,
+            preferencia_id
           
         FROM
           detalle_venta_aux
@@ -528,7 +555,7 @@ class Venta extends CI_Controller{
                 
                 $factura_fechaventa    = $fecha_venta;
                 $factura_fecha         = "date(now())";
-                $factura_hora          = "time(now())";
+                $factura_hora          =  $hora_venta; //"time(now())";
                 $factura_subtotal = $venta_total+$venta_descuento;
                 $factura_nit           = $nit;
                 $factura_razonsocial   = $razon;
@@ -559,7 +586,7 @@ class Venta extends CI_Controller{
                     factura_nit, factura_razonsocial, factura_nitemisor, factura_sucursal, factura_sfc, factura_actividad,
                     usuario_id, tipotrans_id, factura_efectivo, factura_cambio) value(".
                     $estado_id.",".$venta_id.",'".$factura_fechaventa."',".
-                    $factura_fecha.",".$factura_hora.",".$factura_subtotal.",".
+                    $factura_fecha.",'".$factura_hora."',".$factura_subtotal.",".
                     $factura_ice.",".$factura_exento.",".$factura_descuento.",".$factura_total.",".
                     $factura_numero.",".$factura_autorizacion.",'".$factura_llave."','".
                     $factura_fechalimite."','".$factura_codigocontrol."','".$factura_leyenda1."','".$factura_leyenda2."',".

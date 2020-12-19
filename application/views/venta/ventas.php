@@ -252,6 +252,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro[0]['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
 <input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
+<input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -314,7 +315,7 @@ window.onkeydown = compruebaTecla;
         <div class="col-md-3" <?php echo $estilo_div; ?>>
         <label for="cliente_celular" class="control-label" style="margin-bottom: 0;">CELULAR</label>
         <div class="form-group" <?php echo $estilo_div; ?>>
-            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>"  onKeyUp="this.value = this.value.toUpperCase();"/>
+            <input type="text" name="cliente_celular" class="form-control <?php echo $atributos; ?>" <?php echo $estilos_facturacion; ?> id="cliente_celular" onkeypress="validar(event,0)" onclick="seleccionar(3)" value="<?php echo $cliente[0]['cliente_celular']; ?>" onKeyUp="this.value = this.value.toUpperCase();"/>
         </div>
         </div>
 
@@ -1313,7 +1314,7 @@ window.onkeydown = compruebaTecla;
                                     <span aria-hidden="true">&times;</span>
                             </button>
                             <center>
-                                <h4 class="modal-title" id="myModalLabel"><b>PREFRENCIAS</b></h4>
+                                <h4 class="modal-title" id="myModalLabel"><b>PREFERENCIAS</b></h4>
                                 <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
                             </center>
 
@@ -1332,11 +1333,11 @@ window.onkeydown = compruebaTecla;
                                             <div class="form-group">
 							
                                                 <?php 
-                                                foreach($preferencia as $p)
-                                                {?>
-                                                    <button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>
-                                                    <br>
-                                                <?php } 
+                                                //foreach($preferencia as $p)
+                                                //{?>
+                                                    <!--<button class="btn btn-xs btn-facebook" id="pref<?php echo $p["preferencia_id"]; ?>" name="<?php echo $p["preferencia_descripcion"]; ?>" style="background-color: #db0ead" onclick="agregar_preferencia(<?php echo $p["preferencia_id"]; ?>)"><i class="fa fa-cube"></i><?php echo $p["preferencia_descripcion"]; ?></button>-->
+                                                    <!--<br>-->
+                                                <?php //} 
                                                 ?>
                                             </div>
                                             <input type="text" id="inputcaract" value="" class="form-control btn btn-xs btn-warning" onKeyUp="this.value = this.value.toUpperCase();">

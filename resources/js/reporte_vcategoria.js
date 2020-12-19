@@ -5,6 +5,7 @@ function inicio(){
 
 function mostrar_grafica(){
     $("#graficapastel").css("display", "block");
+    $("#graficapastelu").css("display", "block");
     var options={
      // Build the chart
         chart: {
@@ -37,8 +38,9 @@ function mostrar_grafica(){
         }]
     }
 
-    $("#div_grafica_pie").html( $("#cargador_empresa").html() );
+    //$("#div_grafica_pie").html( $("#cargador_empresa").html() );
     var base_url    = document.getElementById('base_url').value;
+    var tipousuario_id    = document.getElementById('tipousuario_id').value;
     var fecha_desde = document.getElementById('fecha_desde').value;
     var fecha_hasta = document.getElementById('fecha_hasta').value;
     var controlador = base_url+"reportes/repventa_categoria";
@@ -58,7 +60,50 @@ function mostrar_grafica(){
                     }
                     //options.title.text="aqui e podria cambiar el titulo dinamicamente";
                     chart = new Highcharts.Chart(options);
-
+                    
+                    if(tipousuario_id == 1){
+                        /* estas opciones son para la grafica de pastel de Utilidades */
+                        var optionsu={
+                         // Build the chart
+                            chart: {
+                                renderTo: 'div_grafica_pieu',
+                                plotBackgroundColor: null,
+                                plotBorderWidth: null,
+                                plotShadow: false,
+                                type: 'pie'
+                            },
+                            title: {
+                                text: 'Utilidades por Categorias'
+                            },
+                            tooltip: {
+                                pointFormat: '{series.name}: <b>{point.y}</b>'
+                            },
+                            plotOptions: {
+                                pie: {
+                                    allowPointSelect: true,
+                                    cursor: 'pointer',
+                                    dataLabels: {
+                                        enabled: false
+                                    },
+                                    showInLegend: true
+                                }
+                            },
+                            series: [{
+                                name: 'Utilidades',
+                                colorByPoint: true,
+                                data: []
+                            }]
+                        }
+                        for(i=0;i<=totattipos-1;i++){
+                            var utilidadu = Number(Number(tippos[i].totalventas)-Number(tippos[i].totalcosto)).toFixed(2);
+                            //utilidadu = utilidadu.toString()
+                            var idTP=tippos[i].categoria_id;
+                            var objeto= {name: tippos[i].categoria_nombre, y:parseFloat(utilidadu) };     
+                            optionsu.series[0].data.push( objeto );
+                        }
+                        //optionsu.title.text="aqui e podria cambiar el titulo dinamicamente";
+                        chartu = new Highcharts.Chart(optionsu);
+                    }
                     /*$("#div_grafica_pie").on("click", function(evt) {
 
                         //mostrar_repventacategoria();
@@ -70,6 +115,7 @@ function mostrar_grafica(){
 
 function venta_porcategoria(){
     var base_url    = document.getElementById('base_url').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
     var controlador = base_url+"detalle_venta/buscarrepo";
     var desde    = document.getElementById('fecha_desde').value;
     var hasta    = document.getElementById('fecha_hasta').value;
@@ -113,18 +159,16 @@ function venta_porcategoria(){
   //simplemente(filtro);
      
     $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro},
-          
-           success:function(report){     
-              
-                            
+            type:"POST",
+            data:{filtro:filtro},
+            success:function(report){
                 $("#enco").val("- 0 -");
-               var registros =  JSON.parse(report);
-           
-               if (registros != null){
-                   
-                    
+                var registros =  JSON.parse(report);
+                
+                const myString = JSON.stringify(registros);
+                $("#resproducto").val(myString);
+                
+                if (registros != null){    
                     var cantidades = Number(0);
                     var total = Number(0);
                     var cuotas = Number(0);
@@ -141,9 +185,9 @@ function venta_porcategoria(){
                          total += Number(registros[i]["detalleven_total"]);
                          cantidades += Number(registros[i]["detalleven_cantidad"]);
                          cuotas += Number(registros[i]["credito_cuotainicial"]);
-                         descuentos += Number(registros[i]["detalleven_descuento"]);
-                         costos += Number(registros[i]["detalleven_costo"]);
-                         var utilidad = Number((registros[i]["detalleven_precio"]-registros[i]["detalleven_costo"])*registros[i]["detalleven_cantidad"]);
+                         descuentos += Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"]));
+                         costos += Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"]));
+                         var utilidad = Number(Number(registros[i]["detalleven_total"])-(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])));
                          utilidades += Number(utilidad);
                         
                         html += "<tr>";
@@ -160,12 +204,13 @@ function venta_porcategoria(){
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
                         html += "<td align='center'> "+registros[i]["detalleven_cantidad"]+" </td>"; 
                         html += "<td align='right'> "+Number(registros[i]["detalleven_precio"]).toFixed(2)+" </td>"; 
-                        html += "<td align='right'> "+Number(registros[i]["detalleven_descuento"]).toFixed(2)+" </td>";
+                        html += "<td align='right'> "+Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+" </td>";
                         
                         html += "<td align='right'><b>"+Number(registros[i]["detalleven_total"]).toFixed(2)+"</b></td>";
-                        html += "<td align='right'> "+Number(registros[i]["detalleven_costo"]).toFixed(2)+" </td>";
-                        html += "<td align='right'> "+Number(utilidad).toFixed(2)+" </td>"; 
-                         
+                        if(tipousuario_id == 1){
+                            html += "<td align='right'> "+Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+" </td>";
+                            html += "<td align='right'> "+Number(utilidad).toFixed(2)+" </td>"; 
+                        }
                         
                         
                         html += "<td  align='center'>"+registros[i]["cliente_nombre"]+"</td>"; 
@@ -189,8 +234,10 @@ function venta_porcategoria(){
                         html += "<td></td>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
-                        html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
+                        if(tipousuario_id == 1){
+                            html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
+                        }
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "</tr>";
@@ -250,4 +297,132 @@ function numberFormat(numero){
     }else{
         return resultado;
     }
+}
+
+function imprimir(){
+    window.print();
+}
+
+function generarexcel_vcategoria(){
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var respuesta = document.getElementById('resproducto').value;
+    if(respuesta == "" || respuesta == null){
+        alert("Primero debe realizar una búsqueda");
+    }else{
+        var registros =  JSON.parse(respuesta);
+        var showLabel = true;
+        var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
+
+                var tam = registros.length;
+              
+                var mensaje = "";
+                
+                html = "";
+                //if (opcion==1){
+                  /* **************INICIO Generar Excel JavaScript************** */
+                    var CSV = 'sep=,' + '\r\n\n';
+                    //This condition will generate the Label/Header
+                    if (showLabel) {
+                        var row = "";
+
+                        //This loop will extract the label from 1st index of on array
+                        
+
+                            //Now convert each value to string and comma-seprated
+                            row += 'Nro.' + ',';
+                            row += 'PRODUCTO' + ',';
+                            row += 'FECHA VENTA' + ',';
+                            row += 'NUM. VENTA' + ',';
+                            row += 'NUM. DOC.' + ',';
+                            row += 'TIPO VENTA' + ',';
+                            row += 'CUOTA INIC.' + ',';
+                            row += 'UNIDAD' + ',';
+                            row += 'CANT.' + ',';
+                            row += 'PRECIO UNIT.' + ',';
+                            row += 'DESCUENTO' + ',';
+                            row += 'PRECIO TOTAL' + ',';
+                            if(tipousuario_id == 1){
+                                row += 'COSTO' + ',';
+                                row += 'UTILIDAD' + ',';
+                            }
+                            row += 'CLIENTE' + ',';
+                            row += 'CAJERO' + ',';
+                            
+                        row = row.slice(0, -1);
+
+                        //append Label row with line break
+                        CSV += row + '\r\n';
+                    }
+                    
+                    //1st loop is to extract each row
+                    for (var i = 0; i < tam; i++) {
+                        var row = "";
+                        //2nd loop will extract each column and convert it in string comma-seprated
+                        var utilidad = Number(Number(registros[i]["detalleven_total"])-(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])));
+                        //utilidades += Number(utilidad);
+                            row += (i+1)+',';
+                            row += '"' +registros[i]["producto_nombre"]+ '",';
+                            row += '"' +moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+"-"+registros[i]["venta_hora"]+ '",';
+                            row += '"' +registros[i]["venta_id"]+ '",';
+                            row += '"' +Number(registros[i]["factura_id"])+ '",';
+                            row += '"' +registros[i]["tipotrans_nombre"]+ '",';
+                            row += '"' +Number(registros[i]["credito_cuotainicial"]).toFixed(2)+ '",';
+                            row += '"' +registros[i]["producto_unidad"]+ '",';
+                            row += '"' +registros[i]["detalleven_cantidad"]+ '",';
+                            row += '"' +Number(registros[i]["detalleven_precio"]).toFixed(2)+ '",';
+                            row += '"' +Number(registros[i]["detalleven_descuento"]).toFixed(2)+ '",';
+                            row += '"' +Number(registros[i]["detalleven_total"]).toFixed(2)+ '",';
+                            if(tipousuario_id == 1){
+                                row += '"' +Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+ '",';
+                                row += '"' +Number(utilidad).toFixed(2)+ '",';
+                            }
+                            row += '"' +registros[i]["cliente_nombre"]+ '",';
+                            row += '"' +registros[i]["usuario_nombre"]+ '",';
+                            
+                        row.slice(0, row.length - 1);
+
+                        //add a line break after each row
+                        CSV += row + '\r\n';
+                    }
+                    
+                    if (CSV == '') {
+                        alert("Invalid data");
+                        return;
+                    }
+                    
+                    //Generate a file name
+                    var fileName = "Ventacategoria_";
+                    //this will remove the blank-spaces from the title and replace it with an underscore
+                    fileName += reportitle.replace(/ /g,"_");   
+
+                    //Initialize file format you want csv or xls
+                    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+
+                    // Now the little tricky part.
+                    // you can use either>> window.open(uri);
+                    // but this will not work in some browsers
+                    // or you will not get the correct file extension    
+
+                    //this trick will generate a temp <a /> tag
+                    var link = document.createElement("a");    
+                    link.href = uri;
+
+                    //set the visibility hidden so it will not effect on your web-layout
+                    link.style = "visibility:hidden";
+                    link.download = fileName + ".csv";
+
+                    //this part will append the anchor tag and remove it after automatic click
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    /* **************F I N  Generar Excel JavaScript************** */
+                   
+                   
+                   
+                   
+                   //document.getElementById('loader').style.display = 'none';
+            //}
+         //document.getElementById('loader').style.display = 'none'; //ocultar el bloque del loader
+        //}  
+        }
 }

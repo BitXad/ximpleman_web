@@ -148,10 +148,11 @@ class Venta_model extends CI_Model
     function get_detalle_aux($usuario_id)
     {
         //$sql = "select * from detalle_venta_aux d where d.usuario_id = ".$usuario_id." order by d.detalleven_id desc";
-        $sql = "select d.*, p.producto_foto, c.clasificador_nombre
+        $sql = "select d.*, p.*, c.clasificador_nombre, t.preferencia_descripcion, t.preferencia_foto
                 from detalle_venta_aux d
                 left join producto p on p.producto_id = d.producto_id
                 left join clasificador c on c.clasificador_id = d.clasificador_id
+                left join preferencia t on t.preferencia_id = d.preferencia_id
                 where d.usuario_id = ".$usuario_id."
                 order by d.detalleven_id desc";
 
