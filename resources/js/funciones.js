@@ -501,6 +501,7 @@ html += "  </div>";
                         html += "                       <input size='1' name='cantidad' class='btn btn-default btn-xs' id='cantidad"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidad"]+"'   onKeyUp ='cambiarcantidadjs(event,"+JSON.stringify(registros[i])+")' >";
                         //onkeypress ='seleccionar_cantidad(cantidad"+registros[i]["detalleven_id"]+")'
                         html += "                       <input size='1' name='productodet_id' id='productodet_"+registros[i]["detalleven_id"]+"' value='"+registros[i]["producto_id"]+"' hidden>";
+                       
                         html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
                         html += "                    </div>";
 
@@ -1076,8 +1077,10 @@ function ingresorapido(producto_id,cantidad)
 
 function ingresorapidojs(cantidad,producto)
 {       
+    //alert(producto.producto_nombre);
     var factor_nombre = ""; //cantidad del factor seleccionado
     var indice = 0; //cantidad del factor seleccionado
+    var detalleven_id = 0; //cantidad del factor seleccionado
     
     try {
         factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
@@ -1089,12 +1092,20 @@ function ingresorapidojs(cantidad,producto)
     }
     
     try {
-        var indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
+        indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
 
     } catch (error) {
         //console.error(error);
         indice = 0; //cantidad del factor seleccionado        
     }
+
+    try{
+        detalleven_id = producto.detalleven_id;
+    }catch (error) {
+        detalleven_id = 0;
+        
+    }
+
 
     var factor = 0;    
     var precio = 0;
@@ -1218,7 +1229,7 @@ function ingresorapidojs(cantidad,producto)
 
         $.ajax({url: controlador,
             type:"POST",
-            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado},
+            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado, detalleven_id:detalleven_id},
             success:function(respuesta){
                                 
                 tablaproductos();
