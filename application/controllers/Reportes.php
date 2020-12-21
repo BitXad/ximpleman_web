@@ -1045,8 +1045,9 @@ function torta3($anio,$mes)
     function ventaproducto()
     {
         if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
-            $data['page_title'] = "Reporte Ventas";
+            $data['page_title'] = "Reporte de ventas por producto";
             $data['_view'] = 'reportes/ventaproducto';
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
@@ -1059,14 +1060,15 @@ function torta3($anio,$mes)
     function ventapagrupado()
     {
         if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
-            $data['page_title'] = "Reporte Ventas";
-            $data['_view'] = 'reportes/ventapagrupado';
+            $data['page_title'] = "Reporte de ventas agrupado";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
             //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+            $data['_view'] = 'reportes/ventapagrupado';
             $this->load->view('layouts/main',$data);
         }
     }
@@ -1076,9 +1078,9 @@ function torta3($anio,$mes)
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $data['page_title'] = "Reporte de ventas por categorias";
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
-        $data['page_title'] = "Reporte por Categorias";
         $data['_view'] = 'reportes/ventacategoria';
 
         $this->load->view('layouts/main',$data);
@@ -1088,13 +1090,14 @@ function torta3($anio,$mes)
     function ventaruta()
     {
         if($this->acceso(157)){
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        $this->load->model('Categoria_clientezona_model');
-        $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
-        $data['page_title'] = "Reporte por Rutas o Zonas";
-        $data['_view'] = 'reportes/ventaruta';
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Categoria_clientezona_model');
+            $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+            $data['page_title'] = "Reporte por Rutas o Zonas";
+            $data['_view'] = 'reportes/ventaruta';
 
-        $this->load->view('layouts/main',$data);
+            $this->load->view('layouts/main',$data);
         }
     }
     /* reporte de ventas por usuario */
