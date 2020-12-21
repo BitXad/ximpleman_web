@@ -25,14 +25,23 @@ class Objetivo_model extends CI_Model{
     * Obtener todos los usuarios con objetivos
     */
     function get_usuarios_objetivos(){
+        // $usuarios_obejetivo = $this->db->query(
+        //     "SELECT u.usuario_nombre, u.`usuario_imagen`, aux.`tipousuario_descripcion`, e.`estado_color`, e.estado_descripcion, o.*
+        //     FROM `objetivo` AS o
+        //     LEFT JOIN usuario AS u ON o.usuario_id = u.`usuario_id`
+        //     LEFT JOIN estado AS e ON o.`estado_id` = e.estado_id
+        //     LEFT JOIN (
+        //         SELECT u.`usuario_id`, t.tipousuario_descripcion 
+        //         FROM usuario AS u, tipo_usuario AS t
+        //         WHERE u.`tipousuario_id` = t.`tipousuario_id`
+        //     ) AS aux ON o.`usuario_id` = aux.usuario_id
+        //     WHERE o.`usuario_id` = u.usuario_id
+        //     ORDER BY u.usuario_nombre ASC"
+        // )->result_array();
         $usuarios_obejetivo = $this->db->query(
-            "SELECT u.`usuario_nombre`,u.`usuario_imagen`, t.`tipousuario_descripcion`, e.*, o.*
-            FROM usuario AS u
-            LEFT JOIN objetivo AS o ON o.usuario_id = u.usuario_id
-            LEFT JOIN estado AS e ON u.`estado_id` = e.`estado_id`
-            LEFT JOIN tipo_usuario AS t ON t.`tipousuario_id` = u.`tipousuario_id`
-            WHERE o.`usuario_id` = u.`usuario_id`
-            ORDER BY u.usuario_nombre ASC"
+            "SELECT o.usuario_id, u.usuario_nombre
+            FROM objetivo AS o, usuario as u
+            WHERE o.`usuario_id` = u.usuario_id"
         )->result_array();
         return $usuarios_obejetivo;
     }
@@ -52,7 +61,9 @@ class Objetivo_model extends CI_Model{
             LEFT JOIN objetivo AS o ON o.usuario_id = u.usuario_id
             LEFT JOIN estado AS e ON u.`estado_id` = e.`estado_id`
             LEFT JOIN tipo_usuario AS t ON t.`tipousuario_id` = u.`tipousuario_id`
-            where o.`usuario_id` = u.`usuario_id`) ORDER BY u.usuario_nombre ASC"
+            where o.`usuario_id` = u.`usuario_id`) 
+            AND e.`estado_id` = 1
+            ORDER BY u.usuario_nombre ASC"
         )->result_array();
         return $usuarios_sin_obejtivos;
     }
@@ -64,7 +75,7 @@ class Objetivo_model extends CI_Model{
         return $this->db->insert_id();  
     }
     /*
-    * Obtener los pobjetivos de un usuario
+    * Obtener los objetivos de un usuario
     */
     function get_objetivo_usuario($objetivo_id){
         $objetivo_user = $this->db->query(
