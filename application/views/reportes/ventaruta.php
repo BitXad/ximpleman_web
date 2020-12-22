@@ -25,7 +25,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS</u></h3>
+            <h3 class="box-title"><u>VENTAS POR RUTA</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
@@ -75,6 +75,7 @@
         <div class="col-md-2">
             <label for="imprimir" class="control-label">Zona: </label>
             <select id="zona_id" name="zona_id" class="btn btn-primary btn-sm form-control" onchange="venta_porzona()" >
+                <option value="" disabled selected >-- ELEGIR ZONA --</option>
                 <option value="0">-TODOS-</option>
                 <?php
                     foreach($all_zona as $zona){ ?>

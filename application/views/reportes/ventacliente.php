@@ -88,7 +88,7 @@
         </div>
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
-           <div class="form-group">
+            <div class="form-group">
                 <a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-facebook btn-sm form-control" title="Buscar cliente"><i class="fa fa-search"> Buscar</i></a>
             </div>
         </div>

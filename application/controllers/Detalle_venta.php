@@ -79,6 +79,7 @@ class Detalle_venta extends CI_Controller{
     function reporte_generalventa()
     {
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $this->load->model('Tipo_transaccion_model'); 
         $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
         $data['page_title'] = "Reporte Ventas";        
