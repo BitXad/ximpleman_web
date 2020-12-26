@@ -70,6 +70,7 @@ function tablaproducto()
 function seleccionarproducto(producto_id, producto_nombre){
     $('#modalbuscarproducto').modal('hide');
     $('#modalbuscarproducto').on('hidden.bs.modal', function () {
+    $('#filtrar').val('');
     $('#tablareproducto').html('');
     });
     $('#este_id').val(producto_id);
@@ -296,4 +297,11 @@ function seleccionarproductopref(producto_id, producto_nombre){
         $('#botonguardar').prop("disabled",false);
     }*/
     //buscar_prodpreferencia();
+}
+function limpiarmodal(){
+    $('#modalbuscarproductopreferencia').modal('hide');
+    $('#modalbuscarproductopreferencia').on('hidden.bs.modal', function () {
+    $('#filtrarpref').val('');
+    $('#tablareproductopref').html('');
+    });
 }

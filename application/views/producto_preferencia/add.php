@@ -144,7 +144,7 @@
                 <!------------------------------------------------------------------->
             </div>
             <div class="modal-footer" style="text-align: center">
-                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal" onclick="limpiarmodal()"><span class="fa fa-times"></span> Cerrar</a>
             </div>
         </div>
     </div>
