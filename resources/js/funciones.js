@@ -4189,7 +4189,7 @@ function mostrar_clasificador_boton(producto_id){
                 //alert(producto_id+" "+lista_preferencias[j]["preferencia_id"]);
                 html += "<button type='button' class='btn btn-xs btn-facebook' style='text-align:left;' id='pref"+lista_preferencias[j]["preferencia_id"]+"'";
                 html += " name='"+lista_preferencias[j]["preferencia_descripcion"]+"'  onclick='agregar_preferencia("+lista_preferencias[j]["preferencia_id"]+")'>";
-                html += "<img src='"+base_url+"resources/images/preferencia/thumb_"+lista_preferencias[j]["preferencia_foto"]+"' width='20px' height='20px'> "+lista_preferencias[j]["preferencia_descripcion"];
+                html += "<img src='"+base_url+"resources/images/productos/thumb_"+lista_preferencias[j]["preferencia_foto"]+"' width='20px' height='20px'> "+lista_preferencias[j]["preferencia_descripcion"];
                 html += "</button>";
 
             }
