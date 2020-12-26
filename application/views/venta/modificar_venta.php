@@ -181,6 +181,7 @@ window.onkeydown = compruebaTecla;
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
 <input type="text" value="<?php echo $usuario_id; ?>" id="usuario_id" hidden>
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
+<input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
 <input type="text" id="pedido_id" value="0" name="pedido_id" hidden>
 <input type="text" id="orden_id" value="0" name="orden_id" hidden>
 <input type="text" id="usuarioprev_id" value="0" name="usuarioprev_id" hidden>
@@ -196,7 +197,12 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_imprimircomanda" value="<?php echo $parametro[0]['parametro_imprimircomanda']; ?>" name="parametro_imprimircomanda"  hidden>
 <input type="text" id="parametro_diasvenc" value="<?php echo $parametro[0]['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
+<input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro[0]['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
+<input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
+<input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -204,6 +210,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
+
+<input type="text" id="tipocliente_porcdesc" value="0" hidden>
+<input type="text" id="tipocliente_montodesc" value="0" hidden>
 
 <input type="text" id="venta_id" value="<?php echo $venta[0]['venta_id']; ?>" hidden>
 <input type="text" id="credito_id" value="<?php if(isset($credito['credito_id'])){if($credito['credito_id']>0){ echo $credito['credito_id'];}else{ echo 0;} }else{ echo 0;}?>" hidden>
