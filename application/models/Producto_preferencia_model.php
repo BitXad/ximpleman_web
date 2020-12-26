@@ -97,13 +97,11 @@ class Producto_preferencia_model extends CI_Model
         
         $producto_preferencia = $this->db->query("
             SELECT
-                pp.*, pr.preferencia_descripcion, p.producto_nombre
+                pp.*, p.producto_nombre
             FROM
-                `producto_preferencia` pp, preferencia pr, producto p
-            WHERE
-                pp.preferencia_id = pr.preferencia_id and
-                pp.producto_id = p.producto_id
-            ORDER BY `preferencia_descripcion`
+                `conspreferencia` pp
+            left join producto p on pp.producto_id = p.producto_id
+            ORDER BY p.`producto_nombre`
             " . $limit_condition . "
         ")->result_array();
 
@@ -114,14 +112,13 @@ class Producto_preferencia_model extends CI_Model
     {
         $producto_preferencia = $this->db->query("
             SELECT
-                pp.*, pr.preferencia_descripcion, p.producto_nombre
+                pp.*, p.producto_nombre
             FROM
-                `producto_preferencia` pp, preferencia pr, producto p
-            WHERE
-                pp.preferencia_id = pr.preferencia_id and
-                pp.producto_id = p.producto_id and
+                `conspreferencia` pp
+            left join producto p on pp.producto_id = p.producto_id
+            where
                 pp.producto_id = $producto_id
-            ORDER BY pr.`preferencia_descripcion`
+            ORDER BY pp.`preferencia_descripcion`
         ")->result_array();
 
         return $producto_preferencia;
