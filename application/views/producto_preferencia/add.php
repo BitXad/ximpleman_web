@@ -80,13 +80,13 @@
                 </div>
             </div>
             <div class="box-footer">
-                <div class="col-md-3">
+                <!--<div class="col-md-3">
                 <button class="btn btn-success" id="botonguardar" disabled="true" onclick="registrar_prodpreferencia()">
                     <i class="fa fa-check"></i> Guardar
                 </button>
-                </div>
-                <div class="col-md-3">
-                    <a onclick="javascript:window.close();" class="btn btn-danger"><i class="fa fa-times"></i> Cerrar</a>
+                </div>-->
+                <div class="col-md-12 text-center">
+                    <a onclick="javascript:window.close();" class="btn btn-danger"><i class="fa fa-times"></i> Salir</a>
                 </div>
             </div>
             <?php //echo form_close(); ?>
@@ -115,8 +115,8 @@
                 <div class="col-md-12 no-print" id="tablareproducto"></div>
                 <!------------------------------------------------------------------->
             </div>
-            <div class="modal-footer aligncenter">
-                <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Finalizar</a>
+            <div class="modal-footer" style="text-align: center">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
             </div>
         </div>
     </div>
@@ -143,8 +143,8 @@
                 <div class="col-md-12 no-print" id="tablareproductopref"></div>
                 <!------------------------------------------------------------------->
             </div>
-            <div class="modal-footer aligncenter">
-                <a href="#" class="btn btn-success" data-dismiss="modal"><span class="fa fa-check"></span> Finalizar</a>
+            <div class="modal-footer" style="text-align: center">
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cerrar</a>
             </div>
         </div>
     </div>

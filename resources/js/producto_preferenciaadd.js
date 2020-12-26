@@ -74,9 +74,9 @@ function seleccionarproducto(producto_id, producto_nombre){
     });
     $('#este_id').val(producto_id);
     $('#producto_nombre').val(producto_nombre);
-    if($('#preferencia_id').val() > 0 && $('#este_id').val() > 0){
+    /*if($('#preferencia_id').val() > 0 && $('#este_id').val() > 0){
         $('#botonguardar').prop("disabled",false);
-    }
+    }*/
     buscar_prodpreferencia();
 }
 
@@ -172,7 +172,7 @@ function registrar_prodpreferencia(){
                 if (registros != null){
                     buscar_prodpreferencia();
             }else{
-                
+
             }
         },
         error:function(respuesta){
@@ -210,7 +210,11 @@ function mostrar_modal(){
     $('#modalbuscarproducto').modal('show');
 }
 function mostrar_modalpreferencia(){
-    $('#modalbuscarproductopreferencia').modal('show');
+    if($('#este_id').val() > 0){
+        $('#modalbuscarproductopreferencia').modal('show');
+    }else{
+        alert("primero debe elegir un Producto");
+    }
 }
 function buscarproductopref(e) {
     tecla = (document.all) ? e.keyCode : e.which;
@@ -276,14 +280,20 @@ function tablaproductopref(){
 }
 
 function seleccionarproductopref(producto_id, producto_nombre){
+    $('#preferencia_id').val(producto_id);
+    $('#prodpreferncia_nombre').val(producto_nombre);
+    registrar_prodpreferencia();
+    
+    
+    /*
     $('#modalbuscarproductopreferencia').modal('hide');
     $('#modalbuscarproductopreferencia').on('hidden.bs.modal', function () {
     $('#tablareproductopref').html('');
     });
     $('#preferencia_id').val(producto_id);
     $('#prodpreferncia_nombre').val(producto_nombre);
-    if($('#preferencia_id').val() > 0 && $('#este_id').val() > 0){
+    /*if($('#preferencia_id').val() > 0 && $('#este_id').val() > 0){
         $('#botonguardar').prop("disabled",false);
-    }
+    }*/
     //buscar_prodpreferencia();
 }
