@@ -7,7 +7,7 @@ class Objetivo extends CI_Controller{
     function __construct(){
         parent::__construct();
         
-        $this->load->model(array('Usuario_model', 'Rol_usuario_model', 'Tipo_usuario_model', 'Objetivo_model', 'user_model'));
+        $this->load->model(array('Usuario_model', 'Rol_usuario_model', 'Tipo_usuario_model', 'Objetivo_model', 'user_model','Estado_model'));
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -31,7 +31,7 @@ class Objetivo extends CI_Controller{
         // if($this->acceso(30)) {
             $data['tipo_usuario_id'] = $this->session_data['tipousuario_id'];
             // $data['usuario'] = $this->Usuario_model->get_all_usuario();
-            $data['objetivo']= $this->Objetivo_model->get_usuarios_objetivos();
+            $data['objetivos']= $this->Objetivo_model->get_usuarios_objetivos();    
             $data['_view'] = 'objetivo/index';
             $this->load->view('layouts/main',$data);
         // }
@@ -52,17 +52,18 @@ class Objetivo extends CI_Controller{
             if($this->form_validation->run())     
             {
                 $params = array(
-                    'usuario_id' => $this->input->post('usuario_id'),
+                    'usuario_id' => $this->input->post('usuario'),
                     'objetivo_minimo' => $this->input->post('objetivo_minimo'),
                     'objetivo_aceptable' => $this->input->post('objetivo_aceptable'),
                     'objetivo_diario' => $this->input->post('objetivo_diario'),
                     'objetivo_mes' => $this->input->post('objetivo_mes'),
                     'objetivo_pedido' => $this->input->post('objetivo_pedido'),
                     'objetivo_pedido_mes' => $this->input->post('objetivo_pedido_mes'),
+                    'estado_id' => 1
                 );
                 
                 $objetivo_id = $this->Objetivo_model->add_objetivo($params);
-                redirect('objetivo/index');
+                redirect('objetivo/');
             }
             else
             {
@@ -88,6 +89,7 @@ class Objetivo extends CI_Controller{
             $this->form_validation->set_rules('objetivo_mes','Objetivo Mes','required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('objetivo_pedido','Objetivo Pedido','required', array('required' => 'Este Campo no debe ser vacio'));
             $this->form_validation->set_rules('objetivo_pedido_mes','Objetivo Pedido Mes','required', array('required' => 'Este Campo no debe ser vacio'));
+            // $this->form_validation->set_rules('estado_id', array('required' => 'Este Campo no debe ser vacio'));
             
             if($this->form_validation->run()){
                 $params = array(
@@ -97,13 +99,15 @@ class Objetivo extends CI_Controller{
                     'objetivo_diario' => $this->input->post('objetivo_diario'),
                     'objetivo_mes' => $this->input->post('objetivo_mes'),
                     'objetivo_pedido' => $this->input->post('objetivo_pedido'),
-                    'objetivo_pedido_mes' => $this->input->post('objetivo_pedido_mes')
+                    'objetivo_pedido_mes' => $this->input->post('objetivo_pedido_mes'),
+                    'estado_id' => $this->input->post('estado_id')
                 );
                 
                 $this->Objetivo_model->update_objetivo($objetivo_id,$params);
                 redirect('objetivo/');
             }else{
                 $data['usuarios_obejetivo'] = $this->Objetivo_model->get_usuarios_sin_objetivos();
+                $data['all_estado'] = $this->Estado_model->get_all_estado();
                 $data['page_title'] = "Objetivos";
                 $data['_view'] = 'objetivo/edit';
                 $this->load->view('layouts/main',$data);
@@ -116,7 +120,12 @@ class Objetivo extends CI_Controller{
     /*
     * Todos los Objetivos
     */
-    function get_all_objetivos(){}
+    function objgrafica($usuario_id){
+        // $data['objetivo'] = $this->grafico->get_objetivos();
+        $data["usuario_id"] = $usuario_id;
+        $data['_view'] = 'objetivo/';
+        $this->load->view('layouts/main',$data);
+    }
 
     /*
     * Obtener el ultimo dia del mes
@@ -128,43 +137,35 @@ class Objetivo extends CI_Controller{
     * Objetivos de un mes
     */
     function objetivos_mes(){
-        $anio = $this->input->post("anio");
+        
+        $dia = $this->input->post("dia");                    
         $mes = $this->input->post("mes"); 
-        $dia = "";                   
-    
+        $anio = $this->input->post("anio");
+        
+        $fecha = date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$dia));
+
         $primer_dia = 1;
         $ultimo_dia = $this->getUltimoDiaMes($anio,$mes);
         
         $fecha_inicial = date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );
         $fecha_final = date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$ultimo_dia) );
-        
+            
         $fecha_inicial = $anio."-".$mes."-01";
         $fecha_final = $anio."-".$mes."-31";
-        // --------------------------------------------------------------------------------------------
-        $sql_ventas_mes = "SELECT u.`usuario_nombre`,u.`usuario_imagen`, t.`tipousuario_descripcion`, e.*, o.`objetivo_minimo`,
-                                o.`objetivo_aceptable`,o.`objetivo_diario`,o.`objetivo_mes`, SUM(d.detalleven_total) AS total_mes
-                        FROM usuario AS u
-                        LEFT JOIN objetivo AS o ON o.usuario_id = u.usuario_id
-                        LEFT JOIN estado AS e ON u.`estado_id` = e.`estado_id`
-                        LEFT JOIN tipo_usuario AS t ON t.`tipousuario_id` = u.`tipousuario_id`
-                        LEFT JOIN detalle_venta AS d ON d.`usuario_id` = u.`usuario_id`
-                        LEFT JOIN venta AS v ON v.`usuario_id`=o.usuario_id
-                        WHERE o.usuario_id = u.usuario_id AND
-                        v.venta_id = d.venta_id AND 
-                        v.venta_fecha >= '".$fecha_inicial."' AND 
-                        v.venta_fecha <= '".$fecha_final."' AND
-                        v.usuario_id = u.usuario_id
-                        GROUP BY u.usuario_nombre 
-                        ORDER BY u.usuario_nombre
-                    ";
-        $ventas_mes = $this->db->query($sql_ventas)->result_array();
-        // --------------------------------------------------------------------------------------------
-        $sql_objetivos = "SELECT o.*, u.usuario_nombre
-                            FROM objetivo AS o, usuario AS u
-                            WHERE o.usuario_id = u.usuario_id";
+         // --------------------------------------------------------------------------------------------
+        $sql_objetivos = "SELECT u.usuario_nombre, u.`usuario_imagen`, aux.`tipousuario_descripcion`, e.`estado_color`, e.estado_descripcion, o.*
+                            FROM `objetivo` AS o
+                            LEFT JOIN usuario AS u ON o.usuario_id = u.`usuario_id`
+                            LEFT JOIN estado AS e ON o.`estado_id` = e.estado_id
+                            LEFT JOIN (
+                                SELECT u.`usuario_id`, t.tipousuario_descripcion 
+                                FROM usuario AS u, tipo_usuario AS t
+                                WHERE u.`tipousuario_id` = t.`tipousuario_id`
+                            ) AS aux ON o.`usuario_id` = aux.usuario_id
+                            WHERE o.`usuario_id` = u.usuario_id";
         $objetivos = $this->db->query($sql_objetivos)->result_array();
         // --------------------------------------------------------------------------------------------
-        $sql_ventas_dia = "SELECT sum(d.detalleven_total) AS total
+        $sql_ventas_mes = "SELECT if(sum(d.detalleven_total)>0, round(sum(d.detalleven_total),2), 0) AS total_mes, u.usuario_id
                             FROM usuario AS u
                             LEFT JOIN objetivo AS o ON o.usuario_id = u.usuario_id
                             LEFT JOIN estado AS e ON u.`estado_id` = e.`estado_id`
@@ -173,72 +174,118 @@ class Objetivo extends CI_Controller{
                             left join venta as v on v.`usuario_id`=o.usuario_id
                             WHERE o.usuario_id = u.usuario_id AND
                             v.venta_id = d.venta_id AND 
-                            v.venta_fecha = '2020-12-10' AND 
+                            v.venta_fecha >= '".$fecha_inicial."' AND 
+                            v.venta_fecha <= '".$fecha_final."' AND 
+                            v.usuario_id = u.usuario_id
+                            GROUP BY u.usuario_nombre 
+                            order by u.usuario_nombre
+                    ";
+        $ventas_mes = $this->db->query($sql_ventas_mes)->result_array();
+        // --------------------------------------------------------------------------------------------
+        $sql_ventas_dia = "SELECT if(sum(d.detalleven_total)>0, round(sum(d.detalleven_total),2), 0) AS total_dia, u.usuario_id
+                            FROM usuario AS u
+                            LEFT JOIN objetivo AS o ON o.usuario_id = u.usuario_id
+                            LEFT JOIN estado AS e ON u.`estado_id` = e.`estado_id`
+                            LEFT JOIN tipo_usuario AS t ON t.`tipousuario_id` = u.`tipousuario_id`
+                            left join detalle_venta as d on d.`usuario_id` = u.`usuario_id`
+                            left join venta as v on v.`usuario_id`=o.usuario_id
+                            WHERE o.usuario_id = u.usuario_id AND
+                            v.venta_id = d.venta_id AND 
+                            v.venta_fecha = '".$fecha."' AND 
                             v.usuario_id = u.usuario_id
                             GROUP BY u.usuario_nombre 
                             order by u.usuario_nombre
                         ";
         $ventas_dia = $this->db->query($sql_ventas_dia)->result_array();
-        // --------------------------------------------------------------------------------------------
-        $sql_pedidos_mes = "SELECT if(count(p.`venta_total`)>0,COUNT(p.`venta_total`),0) as pedido_mes
-                            FROM venta p
-                            LEFT JOIN cliente as c on p.cliente_id = c.cliente_id
-                            LEFT JOIN usuario as u on p.entrega_usuarioid = u.usuario_id
-                            WHERE  p.entrega_id = 2
-                            AND venta_fecha >= '".$fecha_inicial."'
-                            AND venta_fecha <= '".$fecha_final."'
-                            group by u.`usuario_nombre`
-                            order by u.usuario_nombre";
+        // // --------------------------------------------------------------------------------------------
+        $sql_pedidos_mes = "SELECT if(count(p.`pedido_total`)>0, COUNT(p.`pedido_total`),0) as pedido_mes, u.usuario_id
+                            FROM pedido as  p
+                            LEFT JOIN venta as v on p.pedido_id = v.`pedido_id`
+                            LEFT JOIN usuario as u on p.`usuario_id` = u.usuario_id
+                            left join objetivo as o on p.`usuario_id` = o.`usuario_id`
+                            where v.`entrega_id` = 2
+                            and p.`pedido_fecha` >= '".$fecha_inicial."'
+                            and p.pedido_fecha <= '".$fecha_final."'
+                            and p.`regusuario_id` = o.usuario_id
+                            group by u.usuario_nombre
+                            ORDER by u.usuario_nombre";
         
         $pedidos_mes = $this->db->query($sql_pedidos_mes)->result_array();
-        // --------------------------------------------------------------------------------------------
-        $sql_pedidos_dia = "SELECT if(count(p.`venta_total`)>0,COUNT(p.`venta_total`),0) as pedido_dia
-                            FROM venta p
-                            LEFT JOIN cliente as c on  p.cliente_id = c.cliente_id
-                            LEFT JOIN usuario as u on p.entrega_usuarioid = u.usuario_id
-                            WHERE p.entrega_id = 2
-                            AND venta_fecha = '2020-12-10'
-                            group by u.`usuario_nombre`
-                            order by u.usuario_nombre
+        // // --------------------------------------------------------------------------------------------
+        $sql_pedidos_dia = "SELECT IF(COUNT(p.`pedido_id`)>0, COUNT(p.`pedido_id`),0) as pedido_mes, u.usuario_id
+                            FROM pedido AS  p
+                            LEFT JOIN venta as v on p.pedido_id = v.`pedido_id`
+                            LEFT JOIN usuario AS u ON p.`usuario_id` = u.usuario_id
+                            LEFT JOIN objetivo AS o ON p.`usuario_id` = o.`usuario_id`
+                            WHERE  date(p.`pedido_fecha`) = '".$fecha."'
+                            AND p.`regusuario_id` = o.usuario_id
+                            GROUP BY u.usuario_nombre
+                            ORDER BY u.usuario_nombre
                             ";
-        $pedidos_mes = $this->db->query($sql_pedidos_dia)->result_array();
-        // --------------------------------------------------------------------------------------------
-        // $ct = count($ventas_mes);
-
-        //Cargando los arreglos a CERO con todos los dias del mes
-        // for($d = 1; $d <= $ultimo_dia; $d++){
-        //     $arrayventas[$d] = 0;
-        //     $arrayutilidades[$d] = 0;     
-        // }
-        // foreach($ventas_mes as $res){
-        //     // $diasel = intval(date("d",strtotime($res['venta_fecha']) ) );
-        //     $suma = $res['total'];
-        //     $arrayventas[$diasel] += $suma;
-        // }   
-
-        // foreach($utilidades as $resven){
-        //     $diasel = intval(date("d",strtotime($resven['venta_fecha']) ) );
-        //     $sumautilidad = $resven['utilidad'];
-        //     $arrayutilidades[$diasel] += $sumautilidad;
-        // }
-
-        $data=array("usuario_nombre" => $usuario_nombre, 
-                    "usuario_imagen" => $usuario_imagen, 
-                    "totalutilidades" => $arrayutilidades,
-                    "tipo_descripcion" => $tipo_descripcion,
-                    "estado_id" => $estado_id,
-                    "estado_tipo" => $estado_tipo,
-                    "estado_descripcion" => $estado_descripcion,
-                    "estado_color" => $estado_color,
-                    "objetivo_minimo" => $objetivo_minimo,
-                    "objetivo_aceptable" => $objetivo_aceptable,
-                    "objetivo_diario" => $objetivo_diario,
-                    "objetivo_mes" => $objetivo_mes,
-                    "total_ventas_mes" => $total_ventas_mes,
-                    "total_ventas_dia" => $total_ventas_dia,
-                    "total_pedidos_mes" => $total_pedidos_mes,
-                    "total_pedidos_dia" => $total_pedidos_dia
-                );
+        $pedidos_dia = $this->db->query($sql_pedidos_dia)->result_array();
+        
+        $data = array(
+            "objetivos"   => $objetivos,
+            "ventas_dia"  => $ventas_dia,
+            "ventas_mes"  => $ventas_mes,
+            "pedidos_dia" => $pedidos_dia,
+            "pedidos_mes" => $pedidos_mes
+        );
         echo json_encode($data);
     }
+    
+    function mes_usuario_objetivo($anio,$mes,$usuario_id){
+        $primer_dia=1;
+        $ultimo_dia=$this->getUltimoDiaMes($anio,$mes);
+        $fecha_inicial=date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );
+        $fecha_final=date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$ultimo_dia) );
+        // $fechas = "SELECT compra_fecha, round(compra_totalfinal,2) as compra_totalfinal FROM compra where compra.compra_fecha >= '".$anio."-".$mes."-01' and  compra.compra_fecha <= '".$anio."-".$mes."-31' ";
+        $fechas = "SELECT date(pedido_fecha), if(count(p.pedido_total)>0,count(p.pedido_total),0) as pedido_total
+                    FROM pedido as p
+                    where p.pedido_fecha >= '".$anio."-".$mes."-01'
+                    and p.pedido_fecha <= '".$anio."-".$mes."-31'
+                    and p.regusuario_id = ".$usuario_id."
+                    group by p.pedido_total";
+        // $fechas = "SELECT date(pedido_fecha), round(p.pedido_total,2) as pedido_total
+        //             FROM pedido as p
+        //             where p.pedido_fecha >= '".$anio."-".$mes."-01' 
+        //             and p.pedido_fecha <= '".$anio."-".$mes."-31'
+        //             and p.regusuario_id = ".$usuario_id.";";
+        $result= $this->db->query($fechas)->result_array();
+        $fechasven = "SELECT v.venta_fecha, round(v.venta_total,2) as venta_total 
+                        FROM venta as v 
+                        where v.venta_fecha >= '".$anio."-".$mes."-01' 
+                        and  v.venta_fecha <= '".$anio."-".$mes."-31'
+                        and v.usuario_id = ".$usuario_id.";";
+        $resultven= $this->db->query($fechasven)->result_array();
+        //$result=$data['result'];
+        $ct=count($result);
+
+        for($d=1;$d<=$ultimo_dia;$d++){
+            $registros[$d]=0;
+            $registrosven[$d]=0;     
+        }
+
+        foreach($result as $res){
+            $diasel=intval(date("d",strtotime($res['date(pedido_fecha)']) ) );
+            
+            $suma=$res['pedido_total'];
+            
+            $registros[$diasel]+=$suma;    
+        }
+
+        foreach($resultven as $resven){
+            $diaselven=intval(date("d",strtotime($resven['venta_fecha']) ) );
+            
+            $sumave=$resven['venta_total'];
+        
+            $registrosven[$diaselven]+=$sumave;    
+        }
+
+        $data=array("totaldias"=>$ultimo_dia, "registrosdia" =>$registros, "registrosven" =>$registrosven);
+        echo   json_encode($data);
+        /*$anio = $this->input->post('anio');   1555891200
+        $mes = $this->input->post('fecha2'); 
+    */
+    }   
 }

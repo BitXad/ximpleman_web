@@ -3018,6 +3018,7 @@ function borrar_datos_cliente()
         if (parametro_imprimircomanda==1){
             boton = document.getElementById("imprimir_comanda");
             boton.click();
+            boton.click();
         }
     } 
     

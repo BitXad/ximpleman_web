@@ -133,7 +133,8 @@ class Categoria_clientezona_model extends CI_Model
     {
         $venta_porzona = $this->db->query("
             SELECT
-                vs.zona_id, z.`zona_nombre`, SUM(vs.detalleven_total) as 'totalventas'
+                vs.zona_id, z.`zona_nombre`, SUM(vs.detalleven_total) as 'totalventas',
+                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
             FROM
                 `ventas` vs
             left join `zona` z on vs.zona_id = z.zona_id

@@ -44,7 +44,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS</u></h3>
+            <h3 class="box-title"><u>VENTAS POR CLIENTE</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
@@ -88,7 +88,7 @@
         </div>
         <div class="col-md-2 no-print">
             <label for="expotar" class="control-label"> &nbsp; </label>
-           <div class="form-group">
+            <div class="form-group">
                 <a data-toggle="modal" data-target="#modalbuscarcliente" class="btn btn-facebook btn-sm form-control" title="Buscar cliente"><i class="fa fa-search"> Buscar</i></a>
             </div>
         </div>
@@ -104,25 +104,6 @@
                 <a onclick="generarexcel_vcliente()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
             </div>
         </div>
-        
-       <!--<div class="col-md-6 no-print" >                     
-          <div class="input-group no-print"> <span class="input-group-addon">Buscar Producto</span>
-            <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo"  onkeypress="ventaproducto(event)">
-          </div>
-
-        </div>-->
-        <!--<div class="col-md-6 no-print" >                     
-          <div class="input-group no-print"> <span class="input-group-addon">Buscar Proveedor</span>
-            <input id="proveedor_id" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor"  onkeypress="ventaproveedor(event)">
-          </div>
-
-        </div>
-        <!--<div class="col-md-6 no-print" >                     
-          <div class="input-group no-print"> <span class="input-group-addon">Buscar Categoria</span>
-            <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor"  onkeypress="ventaproducto(event)">
-          </div>
-
-        </div>-->
         <div id="tablas" style="visibility: block">  
             <div class="col-md-6 no-print" id="tablareproducto"></div>
             

@@ -1,7 +1,6 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/reporte_ventapagrupado.js'); ?>" type="text/javascript"></script>
- 
-    
+
 <script type="text/javascript">
         /*$(document).ready(function () {
             (function ($) {
@@ -33,6 +32,8 @@
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
+<input type="hidden" name="resproducto" id="resproducto" />
 <div class="cuerpo">
     <div class="columna_derecha">
         <center> 
@@ -48,7 +49,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS</u></h3>
+            <h3 class="box-title"><u>VENTAS AGRUPADAS POR PRODUCTO</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
@@ -90,27 +91,24 @@
                 <option value="2"> PREVENTA </option>
              </select>
         </div>
-        <div class="col-md-3 no-print">
-            <br>
-            <button class="btn btn-facebook btn-sm" onclick="tabla_reportesproducto()"><i class="fa fa-search"> Buscar</i></button>
-            <a onclick="imprimir()" class="btn btn-success btn-sm"><i class="fa fa-print"> Imprimir</i></a>
-        </div>
-        <!--<div class="col-md-6 no-print" >                     
-            &nbsp;
-            <div class="input-group no-print"> <span class="input-group-addon">Buscar</span>
-                <input id="vender" type="text" class="form-control" placeholder="Ingresa el nombre de producto o codigo"  onkeypress="ventaproducto(event)">
-                <div style="border-color: #008d4c; background: #008D4C !important; color: white" class="btn btn-success input-group-addon" onclick="tablareproducto()"><span class="fa fa-search"></span></div>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a class="btn btn-facebook btn-sm form-control" onclick="tabla_reportesproducto()" title="Buscar productos agrupados"><i class="fa fa-search"> Buscar</i></a>
             </div>
-        </div>-->
-        <!--<div id="tablas" style="visibility: block">  
-            <div class="col-md-6 no-print" id="tablareproducto">&nbsp;</div>
-            <div class="col-md-6 no-print" id="tablarecliente"></div>
-            <div class="col-md-6 no-print" id="tablareproveedor"></div>
-            <input id="producto" type="hidden" class="form-control" >
-            <input id="cliente" type="hidden" class="form-control" > 
-            <input id="proveedor" type="hidden" class="form-control" > 
-        </div>-->
-            
+        </div>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a onclick="imprimir()" class="btn btn-success btn-sm form-control" ><i class="fa fa-print"> Imprimir</i></a>
+            </div>
+        </div>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a onclick="generarexcel_vagrupado()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
+            </div>
+        </div>
     </div>
     <span id="desde"></span>
     <span id="hasta"></span>
@@ -130,21 +128,16 @@
             <tr>
                 <th>Nro.</th>
                 <th>PRODUCTO</th>
-                <!--<th>FECHA<br>VENTA</th>
-                <th>NUM.<BR>VENTA</th>
-                <th>NUM.<BR>DOC.</th>-->
                 <th>TIPO<br>VENTA</th>
-                <!--<th>CUOTA<br>INIC.</th>-->
                 <th>UNIDAD</th>
                 <th>CANT.</th>
                 <th>PRECIO<br>UNIT.</th>
                 <th>DESC</th>
                 <th>PRECIO<br>TOTAL</th>
-                <th>COSTO<br>UNIT.</th>
-                <th>UTILID.</th>
-                <!--<th>CLIENTE</th>
-                <th>CAJERO</th>
-                <th class="no-print"></th>-->
+                <?php if($tipousuario_id == 1){ ?>
+                    <th>COSTO<br>TOTAL</th>
+                    <th>UTILID.</th>
+                <?php } ?>
             </tr>
             <tbody class="buscar" id="reportefechadeventa"></tbody>
         </table>

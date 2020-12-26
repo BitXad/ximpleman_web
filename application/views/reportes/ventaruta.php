@@ -3,7 +3,9 @@
 <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
 
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
-<input type="hidden" name="empresa_nombre" id="empresa_nombre" value="<?php echo $empresa[0]['empresa_nombre']; ?>" />
+<input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
+<input type="hidden" name="resproducto" id="resproducto" />
+
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/alejo.css'); ?>" rel="stylesheet">
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
@@ -23,7 +25,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS</u></h3>
+            <h3 class="box-title"><u>VENTAS POR RUTA</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
@@ -43,26 +45,55 @@
         <a class="btn btn-facebook btn-sm form-control" title="Buscar venta por rutas(zonas)" onclick="mostrar_grafica()"><i class="fa fa-search"> Buscar</i></a>
     </div>
 </div>
-<div class="row" id="graficapastel" style="display: none">
-    <br/>
-    <br/>
-    <div class="box box-primary">
-        <div class="box-header"></div>
-        <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
-        <div class="box-footer"></div>
+<?php if($tipousuario_id == 1){ $tamanio = "class='col-md-6'"; } else{ $tamanio = "class='col-md-12'"; } ?>
+<div <?php echo $tamanio; ?>>
+    <div class="row" id="graficapastel" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pie" id="div_grafica_pie"></div>
+            <div class="box-footer"></div>
+        </div>
     </div>
 </div>
+<?php if($tipousuario_id == 1){ ?>
+<div class="col-md-6">
+    <div class="row" id="graficapastelu" style="display: none">
+        <br/>
+        <br/>
+        <div class="box box-primary">
+            <div class="box-header"></div>
+            <div class="box-body div_grafica_pieu" id="div_grafica_pieu"></div>
+            <div class="box-footer"></div>
+        </div>
+    </div>
+</div>
+<?php } ?>
 <div class="row" >
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
         <div class="col-md-2">
-            Zona:
+            <label for="imprimir" class="control-label">Zona: </label>
             <select id="zona_id" name="zona_id" class="btn btn-primary btn-sm form-control" onchange="venta_porzona()" >
+                <option value="" disabled selected >-- ELEGIR ZONA --</option>
                 <option value="0">-TODOS-</option>
                 <?php
                     foreach($all_zona as $zona){ ?>
                         <option value="<?php echo $zona['zona_id']; ?>"><?php echo $zona['zona_nombre']; ?></option>                                                   
                 <?php } ?>
              </select>
+        </div>
+        <div class="col-md-1">
+            <label for="imprimir" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+               <button onclick="imprimir()" type="button" class="btn btn-success btn-xs form-control" ><span class="fa fa-print"> </span> Imprimir</button>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+               <button onclick="generarexcel_vruta()" type="button" class="btn btn-danger btn-xs form-control" title="Buscar venta por usuarios" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</button>
+            </div>
         </div>
     </div>
     <span id="desde"></span>
@@ -94,8 +125,10 @@
                 <th>PRECIO<BR>UNIT.</th>
                 <th>DESC</th>
                 <th>PRECIO<BR>TOTAL</th>
-                <th>COSTO</th>
-                <th>UTILID.</th>
+                <?php if($tipousuario_id == 1){ ?>
+                    <th>COSTO</th>
+                    <th>UTILID.</th>
+                <?php } ?>
                 <th>CLIENTE</th>
                 <th>CAJERO</th>
                 <th class="no-print"></th>

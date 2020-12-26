@@ -1,24 +1,23 @@
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/reporte_ventaproducto.js'); ?>" type="text/javascript"></script>
- 
-    
+
 <script type="text/javascript">
-        $(document).ready(function () {
-            (function ($) {
-                $('#vender').keyup(function () {
-                    var rex = new RegExp($(this).val(), 'i');
-                    $('.buscar tr').hide();
-                    $('.buscar tr').filter(function () {
-                        return rex.test($(this).text());
-                    }).show();
-                })
-            }(jQuery));
-        });
-        
-        function imprimir()
-        {
-             window.print(); 
-        }
+    $(document).ready(function () {
+        (function ($) {
+            $('#vender').keyup(function () {
+                var rex = new RegExp($(this).val(), 'i');
+                $('.buscar tr').hide();
+                $('.buscar tr').filter(function () {
+                    return rex.test($(this).text());
+                }).show();
+            })
+        }(jQuery));
+    });
+
+    function imprimir()
+    {
+         window.print(); 
+    }
 </script>   
 
 <style type="text/css">
@@ -33,6 +32,8 @@
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
+<input type="hidden" name="resproducto" id="resproducto" />
 <div class="cuerpo">
     <div class="columna_derecha">
         <center> 
@@ -48,7 +49,7 @@
     </div>
     <div class="columna_central">
         <center>
-            <h3 class="box-title"><u>VENTAS</u></h3>
+            <h3 class="box-title"><u>VENTAS POR PRODUCTO</u></h3>
             <?php echo date('d/m/Y H:i:s'); ?><br>
             <b>VENTAS REALIZADAS</b>
         </center>
@@ -90,12 +91,24 @@
                 <option value="2"> PREVENTA </option>
              </select>
         </div>
-        <div class="col-md-3 no-print">
-            <br>
-            <a data-toggle="modal" data-target="#modalbuscarproducto" class="btn btn-facebook btn-sm" title="Buscar Producto"><i class="fa fa-search"> Buscar</i></a>
-            <a onclick="imprimir()" class="btn btn-success btn-sm"><i class="fa fa-print"> Imprimir</i></a>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a data-toggle="modal" data-target="#modalbuscarproducto" class="btn btn-facebook btn-sm form-control" title="Buscar Producto"><i class="fa fa-search"> Buscar</i></a>
+            </div>
         </div>
-        
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a onclick="imprimir()" class="btn btn-success btn-sm form-control"><i class="fa fa-print"> Imprimir</i></a>
+            </div>
+        </div>
+        <div class="col-md-2 no-print">
+            <label for="expotar" class="control-label"> &nbsp; </label>
+           <div class="form-group">
+                <a onclick="generarexcel_vproducto()" class="btn btn-danger btn-sm form-control" ><span class="fa fa-file-excel-o"> </span> Exportar a Excel</a>
+            </div>
+        </div>
         <div id="tablas" style="visibility: block">  
             <!--<div class="col-md-6 no-print" id="tablareproducto"></div>
             <div class="col-md-6 no-print" id="tablarecliente"></div>
@@ -134,8 +147,10 @@
                 <th>PRECIO<BR>UNIT.</th>
                 <th>DESC</th>
                 <th>PRECIO<BR>TOTAL</th>
+                <?php if($tipousuario_id == 1){ ?>
                 <th>COSTO</th>
                 <th>UTILID.</th>
+                <?php } ?>
                 <th>CLIENTE</th>
                 <th>CAJERO</th>
                 <th class="no-print"></th>

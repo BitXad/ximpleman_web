@@ -487,10 +487,10 @@ function ventas_dia($estado)
 		vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`, tt.tipotrans_nombre,
                 vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad,
                 (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
-                sum(`vs`.`detalleven_descuento`) as total_descuento,
+                sum(`vs`.`detalleven_descuento`*`vs`.`detalleven_cantidad`) as total_descuento,
                 sum(`vs`.`detalleven_total`) as total_venta,
-                (sum(`vs`.`detalleven_costo`) / count(vs.producto_id)) as total_costounit,
-                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`)) as total_utilidad
+                (sum(`vs`.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_costo,
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad
             FROM
                 ventas vs
             LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id
