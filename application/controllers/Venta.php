@@ -1171,13 +1171,12 @@ function edit($venta_id)
 //        $data['tipousuario_id'] = $tipousuario_id;
 //        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
 //        
-        
-        
+                
         
         $data['page_title'] = "Modificar Venta";
         $data['dosificacion'] = $this->Dosificacion_model->get_all_dosificacion();
         $data['pedidos'] = $this->Pedido_model->get_pedidos_activos();
-        $data['cliente'] = $this->Venta_model->get_cliente_inicial();
+        $data['cliente'] = $this->Cliente_model->get_cliente_by_id($cliente_id);
         $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         $data['categoria_producto'] = $this->Venta_model->get_categoria_producto();
         $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo();
@@ -1191,6 +1190,7 @@ function edit($venta_id)
         $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;        
+        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
         
         
                 
