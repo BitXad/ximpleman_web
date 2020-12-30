@@ -1004,6 +1004,12 @@ function ingresorapidojs(cantidad,producto)
     cantidad = cantidad * factor;
     var precio = 0;  
     
+    //incremetado de manera temporal para lidiar con el error hasta buscar otra solucion
+    var preferencia_id = 0;
+    var clasificador_id = 0;
+    var preferencias = "";
+    var unidadfactor = "";
+    
     //if (Number(factor)>1){
     if (indice>0){
     
@@ -1048,12 +1054,19 @@ function ingresorapidojs(cantidad,producto)
     if (cantidad_total <= producto.existencia){
 
         datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
-        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
         datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
-        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day)";        
-        //alert(datos1);
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id;
+
+//        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
+//        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"',"+"'-'"+",0,1,"+usuario_id+","+producto.existencia+",";
+//        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+//        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
+//        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+//        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),"+preferencia_id+","+clasificador_id;
+        alert(datos1);
 
         $.ajax({url: controlador,
             type:"POST",
