@@ -261,6 +261,7 @@ class Ingreso extends CI_Controller{
     {   
         
         if($this->acceso(55)){
+            
                 $usuario_id = $this->session_data['usuario_id'];
         // check if the ingreso exists before trying to edit it
         $data['ingreso'] = $this->Ingreso_model->get_ingreso($ingreso_id);
@@ -286,9 +287,9 @@ class Ingreso extends CI_Controller{
             }
             else
             {
-				      $this->load->model('Categoria_ingreso_model');
-               $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
-               $data['page_title'] = "Ingreso";
+                $this->load->model('Categoria_ingreso_model');
+                $data['all_categoria_ingreso'] = $this->Categoria_ingreso_model->get_all_categoria_ingreso();
+                $data['page_title'] = "Ingreso";
                 $data['_view'] = 'ingreso/edit';
                 $this->load->view('layouts/main',$data);
             }

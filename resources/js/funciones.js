@@ -2098,13 +2098,14 @@ function eliminardetalleventa()
         error: function(respuesta){         
         }        
     });
+    
+    //alert("llega");
 }
 
 function cerrar_ventas(){
     
-    var answer = window.confirm("¿Desea salir sin guardar cambios?")
+    var answer = window.confirm("¿Desea salir sin guardar cambios?");
     if (answer) {
-        //some code
         eliminardetalleventa();
         window.close();
     }
@@ -2999,8 +3000,16 @@ function borrar_datos_cliente()
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById("tipo_transaccion").selectedIndex = 0
     document.getElementById('creditooculto').style.display = 'none';
-    document.getElementById('imagenqr').style.display = 'none';
-                    //document.getElementById('creditooculto').style.display = 'none';
+    
+    try{
+        
+        document.getElementById('imagenqr').style.display = 'none';
+    
+    }
+    catch (error){}
+    
+            
+    //document.getElementById('creditooculto').style.display = 'none';
     
     $("#filtrar").focus();
     
