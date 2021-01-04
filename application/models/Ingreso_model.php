@@ -26,7 +26,7 @@ class Ingreso_model extends CI_Model
                 i.*, u.*
 
             FROM
-                ingresos i, usuario u
+                ingreso i, usuario u
 
             WHERE
                 i.usuario_id = u.usuario_id
