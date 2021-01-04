@@ -241,4 +241,22 @@ border-spacing : 1;
 </table>
 </div>
 <!--</div>-->
-
+<div class="row">
+    <div class="col-md-12">
+        <a class="btn btn-soundcloud" onclick="ver_operacionproceso(<?php echo $producto_id;?>)" title="Ver las operaciones en proceso"><span class="fa fa-eye"></span> Operaciones en proceso </a>
+    </div>
+    <div id='loader'  style='display:none; text-align: center'>
+            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+        </div>
+    <span style="font-size: 15px; font-weight: bold; text-align: center; display: block" id="tituloresventaaux"></span>
+    <div class="col-md-12">
+    <div class="col-md-3"></div>
+        <div class="col-md-6" id="resventaaux"></div>
+        <div class="col-md-3"></div>
+    </div>
+    <span style="font-size: 15px; font-weight: bold; text-align: center; display: block" id="titulores_pedido_nofin"></span>
+    <div class="col-md-12">
+    <div class="col-md-3"></div>
+    <div class="col-md-6" id="res_pedido_nofin"></div>
+    <div class="col-md-3"></div>
+</div>

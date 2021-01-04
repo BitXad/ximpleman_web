@@ -69,7 +69,7 @@ class Credito_model extends CI_Model
     {
         $deuda = $this->db->query("
             SELECT
-                c.*, p.*, co.*, e.*, u.*, cs.saldo
+                c.*, p.*, co.*, e.*, u.*, cs.saldo, cs.cancelado
 
             FROM
                 credito c
@@ -166,7 +166,8 @@ class Credito_model extends CI_Model
                 c.*, ve.venta_id as ventita, ve.cliente_id, e.*, ve.orden_id, ve.venta_total,
                 p.cliente_id as clienteid, p.cliente_nombre as kay, s.servicio_id, s.cliente_id , 
                 r.cliente_nombre as perro, s.usuario_id, ve.usuario_id, u.usuario_nombre, 
-                f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id, cs.saldo
+                f.factura_id, us.usuario_nombre as 'usuario_servnombre', s.usuario_id,
+                cs.saldo, cs.cancelado
 
             FROM
                 credito c

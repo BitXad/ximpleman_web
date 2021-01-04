@@ -236,6 +236,15 @@ class Inventario extends CI_Controller{
             echo json_encode($llamadas); 
      
     }
-    
-    
+    /* muestra operaciones en proceso de venta!! */
+    function operacion_enproceso()
+    {
+        if($this->input->is_ajax_request()){
+            $producto_id = $this->input->post('producto_id');
+            $res_venta_aux = $this->Inventario_model->mostrar_productoventa_aux($producto_id);
+            $res_pedido_nocons = $this->Inventario_model->mostrar_pedido_noconsolidado($producto_id);
+            $data=array("enventa_aux"=>$res_venta_aux, "enpedido_noconsol" =>$res_pedido_nocons);
+            echo   json_encode($data);
+        }else{ show_404();}
+    }
 }
