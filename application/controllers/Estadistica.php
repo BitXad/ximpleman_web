@@ -114,7 +114,7 @@ class Estadistica extends CI_Controller{
 
             $sql_utilidades = "SELECT 
                             v.venta_fecha,
-                            sum((d.detalleven_total - d.detalleven_costo)) AS utilidad
+                            sum((d.detalleven_total - d.detalleven_costo*d.detalleven_cantidad)) AS utilidad
                           FROM
                             venta v,
                             detalle_venta d
