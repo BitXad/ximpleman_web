@@ -1902,4 +1902,100 @@ function generarexcel(){
     });   
 
 }
+function ver_operacionproceso(producto_id){
+    var base_url = document.getElementById('base_url').value;
+    var controlador = base_url+"inventario/operacion_enproceso";
+    
+    document.getElementById('loader').style.display = 'block'; //muestra el bloque del loader
+    
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{producto_id:producto_id},
+        success:function(respuesta){     
+            var resultado = JSON.parse(respuesta);
+            var enventa  = resultado.enventa_aux; 
+            var enpedido = resultado.enpedido_noconsol; 
+        
+            var tamventa  = enventa.length;
+            var tampedido = enpedido.length;
+            if (tamventa >0){
+                html = "";            
+                html += "<table class='table table-striped table-bordered' id='mitabla'>";
+                html += "<tr>";
+                html += "	<th style='padding: 0'>Usuario</th>";
+                html += "	<th style='padding: 0'>Cantidad</th>";
+                html += "	<th style='padding: 0'>Num. Venta</th>";
+                html += "	<th style='padding: 0'>Producto</th>";
+                html += "</tr>";
+                html += "<tbody class='buscar'>";
+                var totalventa_aux = 0;
+                for (var i = 0; i < tamventa ; i++){
+                    totalventa_aux += enventa[i]["detalleven_cantidad"];
+                    
+                    html += "<td style='padding: 0' class='text-center'>"+enventa[i]["usuario_nombre"]+"</td>";
+                    html += "<td style='padding: 0' class='text-right'>"+enventa[i]["detalleven_cantidad"]+"</td>";
+                    html += "<td style='padding: 0' class='text-center'>"+enventa[i]["venta_id"]+"</td>";
+                    html += "<td style='padding: 0'>"+enventa[i]["producto_nombre"]+"</td>";
+                    html += "</tr>";
+                }
+                html += "</tbody>";
+                html += "<tr>";
+                html += "	<th style='text-align: right !important; padding: 0'>TOTAL:</th>";
+                html += "	<th style='text-align: right !important;padding: 0'>"+formato_numerico(totalventa_aux)+"</th>";
+                html += "	<th style='padding: 0'> </th>";
+                html += "	<th style='padding: 0'> </th>";
+                html += "</tr>    ";
+                html += "</table>";            
+                $("#tituloresventaaux").html('VENTAS EN PROCESO');
+                $("#resventaaux").html(html);
+            }else{
+                $("#tituloresventaaux").html('NO EXISTEN VENTAS EN PROCESO');
+                $("#resventaaux").html('');
+            }
+            
+            if (tampedido >0){
+                html = "";            
+                html += "<table class='table table-striped table-bordered' id='mitabla'>";
+                html += "<tr>";
+                html += "	<th style='padding: 0'>Usuario</th>";
+                html += "	<th style='padding: 0'>Cantidad</th>";
+                html += "	<th style='padding: 0'>Num. Pedido</th>";
+                html += "	<th style='padding: 0'>Producto</th>";
+                html += "</tr>";
+                html += "<tbody class='buscar'>";
+                var totalpedido_nofin = 0;
+                for (var i = 0; i < tampedido ; i++){
+                    totalpedido_nofin += enpedido[i]["detalleped_cantidad"];
+                    
+                    html += "<td style='padding: 0' class='text-center'>"+enpedido[i]["usuario_nombre"]+"</td>";
+                    html += "<td style='padding: 0' class='text-right'>"+enpedido[i]["detalleped_cantidad"]+"</td>";
+                    html += "<td style='padding: 0' class='text-center'>"+enpedido[i]["pedido_id"]+"</td>";
+                    html += "<td style='padding: 0'>"+enpedido[i]["detalleped_nombre"]+"</td>";
+                    html += "</tr>";
+                }
+                html += "</tbody>";
+                html += "<tr>";
+                html += "	<th style='text-align: right !important; padding: 0'>TOTAL:</th>";
+                html += "	<th style='text-align: right !important; padding: 0'>"+formato_numerico(totalpedido_nofin)+"</th>";
+                html += "	<th style='padding: 0'> </th>";
+                html += "	<th style='padding: 0'> </th>";
+                html += "</tr>    ";
+                html += "</table>";            
+                $("#titulores_pedido_nofin").html('PEDIDOS EN PROCESO');
+                $("#res_pedido_nofin").html(html);
+            }else{
+                $("#titulores_pedido_nofin").html('NO EXISTEN PEDIDOS EN PROCESO');
+                $("#res_pedido_nofin").html('');
+            }
+            }, // end succes: function(resultados){
+            error:function(resultado){
+                alert('ocurrio un error..!!');
+            },
+            complete: function (jqXHR, textStatus) {
+                document.getElementById('loader').style.display = 'none'; //muestra el bloque del loader 
+            }
+    });   
+      
+    
+}
 

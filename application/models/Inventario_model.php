@@ -540,4 +540,34 @@ class Inventario_model extends CI_Model
         $resultado = $this->db->query($sql)->result_array();
         return $resultado;
     }
+    /* obtiene productos de detalle venta aux... es decir de ventas no finalizadas  */
+    function mostrar_productoventa_aux($producto_id)
+    {
+        $sql = "SELECT
+                    dv.venta_id, dv.`detalleven_cantidad`,
+                    dv.`producto_nombre`, u.usuario_nombre
+                FROM
+                    detalle_venta_aux dv
+                left join usuario u on dv.usuario_id = u.usuario_id
+                WHERE dv.producto_id = $producto_id";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
+    /* obtiene prouctos de detalle pedido... pero de pedidos no consolidados  */
+    function mostrar_pedido_noconsolidado($producto_id)
+    {
+        $sql = "SELECT
+                    p.pedido_id, dp.`detalleped_cantidad`,
+                    dp.`detalleped_nombre`, u.usuario_nombre
+                FROM
+                    detalle_pedido dp
+                left join `pedido` p on dp.pedido_id = p.pedido_id
+                left join usuario u on p.usuario_id = u.usuario_id
+                WHERE p.`estado_id` = 11 and
+                      dp.producto_id = $producto_id";
+
+        $producto = $this->db->query($sql)->result_array();
+        return $producto;
+    }
 }
