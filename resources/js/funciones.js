@@ -23,7 +23,7 @@ function calculardesc(){
         $("#tipo_descuento").val(2);        
         $("#venta_descuento").val(porcdesc);
     }
-    else{
+    else if(Number(montodesc)>0){
         $("#tipo_descuento").val(1);                
         $("#venta_descuento").val(montodesc);
     }   

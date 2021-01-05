@@ -79,11 +79,17 @@
                   alert("El Precio de Compra es mayor o igual a Precio de Venta");
               }
       };
-      function loader() {
+    function loader() {
      	$("form").submit(function() {
-   document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
-});
-        }
+            document.getElementById('loader').style.display = 'block'; //ocultar el bloque del loader 
+        });
+    }
+        
+    function calcularporc(){
+        var estecosto   = $("#producto_costo").val();
+        var esteporcent = $("#porcentaje").val();
+        $("#producto_precio").val(Number(estecosto*esteporcent)+Number(estecosto));
+    }
 </script>
 <div class="row">
     <div class="col-md-12">
@@ -210,7 +216,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="moneda_id" class="control-label"><span class="text-danger">*</span>Moneda</label>
                         <div class="form-group">
                             <select name="moneda_id" class="form-control" required>
@@ -233,13 +239,29 @@
                             <input type="number" step="any" min="0" name="producto_costo" value="<?php echo ($this->input->post('producto_costo') ? $this->input->post('producto_costo') : $producto['producto_costo']); ?>" class="form-control" id="producto_costo" />
                         </div>
                     </div>
+                    <div class="col-md-2" style="padding-right: 30px">
+                        <label for="porcentaje" class="control-label">Porcentaje</label>
+                        <div class="form-group" style="display: flex">
+                            <input type="number" step="any" min="0" name="porcentaje" value="<?php
+                                                                                                   if($this->input->post('producto_costo')){
+                                                                                                       echo $this->input->post('producto_costo');
+                                                                                                   }else{
+                                                                                                       if($producto['producto_costo']>0){
+                                                                                                           echo (($producto['producto_precio']/$producto['producto_costo'])-1);
+                                                                                                       }else{ $producto['producto_costo']; }
+                                                                                                   }
+                                                                                            ?>" class="form-control" id="porcentaje" />
+                            <a href="#" class="btn btn-warning" title="Calcular Porcentaje" onclick="calcularporc()">
+                                <span class="fa fa-snowflake-o"></span> </a>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <label for="producto_precio" class="control-label">Precio de Venta</label>
                         <div class="form-group">
                             <input type="number" step="any" min="0" name="producto_precio" value="<?php echo ($this->input->post('producto_precio') ? $this->input->post('producto_precio') : $producto['producto_precio']); ?>" class="form-control" id="producto_precio" onchange="verificar_precio();" />
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="producto_comision" class="control-label">Comisión (%)</label>
                         <div class="form-group">
                             <input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo ($this->input->post('producto_comision') ? $this->input->post('producto_comision') : $producto['producto_comision']); ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>

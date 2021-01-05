@@ -69,8 +69,15 @@
       $(document).ready(function () {
           $("#producto_costo").keyup(function () {
               var value = $(this).val();
-              $("#producto_precio").val(value/0.8);
+              $("#producto_precio").val(Number(value*0.25)+Number(value));
           });
+          
+          $("#porcentaje").keyup(function () {
+              var value = $(this).val();
+              var estecosto = $("#producto_costo").val();
+              $("#producto_precio").val(Number(estecosto*value)+Number(estecosto));
+          });
+          
           $("#producto_precio").change(function () {
               var value = $(this).val();
               var costo = $("#producto_costo").val();
@@ -199,7 +206,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                             <label for="moneda_id" class="control-label"><span class="text-danger">*</span>Moneda</label>
                             <div class="form-group">
                                     <select name="moneda_id" class="form-control" required>
@@ -222,6 +229,12 @@
                                 <input type="number" step="any" min="0" name="producto_costo" value="<?php echo '0.00'; ?>" class="form-control" id="producto_costo"  onclick="this.select();"/>
                             </div>
                     </div>
+                    <div class="col-md-2">
+                            <label for="porcentaje" class="control-label">Porcentaje</label>
+                            <div class="form-group">
+                                <input type="number" step="any" min="0" name="porcentaje" value="<?php echo '0.25'; ?>" class="form-control" id="porcentaje"  onclick="this.select();"/>
+                            </div>
+                    </div>
                     <div class="col-md-3">
                             <label for="producto_precio" class="control-label">Precio de Venta</label>
                             <div class="form-group">
@@ -229,7 +242,7 @@
                             </div>
                     </div>
 
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                             <label for="producto_comision" class="control-label">Comisión (%)</label>
                             <div class="form-group">
                                     <input type="number" step="any" min="0" max="100" name="producto_comision" value="<?php echo '0.00'; ?>" class="form-control" id="producto_comision"  onclick="this.select();"/>
