@@ -43,7 +43,13 @@ function calculardesc(){
        subtotal = Number(venta_subtotal) - Number(venta_descuento); 
     
    $("#venta_totalfinal").val(subtotal);
-   $("#venta_efectivo").val(subtotal);
+   
+   //Calcular cambio
+   var venta_efectivo = document.getElementById('venta_efectivo').value;      
+   var venta_cambio = venta_efectivo - subtotal;      
+   
+   $("#venta_cambio").val(formato_numerico(venta_cambio));
+   //$("#venta_efectivo").val(subtotal);
    
 }
 
@@ -1751,7 +1757,7 @@ function tablaresultados(opcion)
                      
                        html += "               <font size='3'><b>"+registros[i]["producto_nombre"]+"</b></font>";
                         html += "               <br>"+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"];
-                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+registros[i]["existencia"]+"' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")' ></b>";
+                        html += "               <br><b>  <input type='number' id='cantidad"+registros[i]["producto_id"]+"' name='cantidad"+registros[i]["producto_id"]+"'  value='1' style='font-size:20pt; width:100pt' autofocus='true' min='0' step='1' max='"+formato_numerico(registros[i]["existencia"])+"' onkeyup='registrar_cantidad(event,"+registros[i]["producto_id"]+")' ></b>";
                         
                         html += "               </td>";
                         html += "          </tr>";
@@ -2323,6 +2329,7 @@ function registrarventa(cliente_id)
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
    
+    //alert(venta_efectivo);
     
     var venta_numeroventa = 0;
     var venta_tipodoc = 0;
@@ -2917,33 +2924,47 @@ function montrar_ocultar_fila(parametro)
     
 }
 
-function formato_numerico(numer){
-    var partdecimal = "";
-    var numero = "";
-    var num = numer.toString();
-    var signonegativo = "";
-    var resultado = "";
-    
-    /*quitamos el signo al numero, si es que lo tubiera*/
-    if(num[0]=="-"){
-        signonegativo="-";
-        numero = num.substring(1, num.length);
-    }else{
-        numero = num;
-    }
-    /*guardamos la parte decimal*/
-    if(num.indexOf(".")>=0){
-        partdecimal = num.substring(num.indexOf("."), num.length);
-        numero = numero.substring(0,num.indexOf(".")-1);
-    }else{
-        numero = num;
-    }
-    for (var j, i = numero.length - 1, j = 0; i >= 0; i--, j++){
-        resultado = numero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
-    }
- 
-    resultado = signonegativo+resultado+partdecimal;
-    return resultado;
+//function formato_numerico(numer){
+//    var partdecimal = "";
+//    var numero = "";
+//    var num = numer.toString();
+//    var signonegativo = "";
+//    var resultado = "";
+//    
+//    /*quitamos el signo al numero, si es que lo tubiera*/
+//    if(num[0]=="-"){
+//        signonegativo="-";
+//        numero = num.substring(1, num.length);
+//    }else{
+//        numero = num;
+//    }
+//    /*guardamos la parte decimal*/
+//    if(num.indexOf(".")>=0){
+//        partdecimal = num.substring(num.indexOf("."), num.length);
+//        numero = numero.substring(0,num.indexOf(".")-1);
+//    }else{
+//        numero = num;
+//    }
+//    for (var j, i = numero.length - 1, j = 0; i >= 0; i--, j++){
+//        resultado = numero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+//    }
+// 
+//    resultado = signonegativo+resultado+partdecimal;
+//    return resultado;
+//}
+
+function formato_numerico(numero){
+            nStr = Number(numero).toFixed(2);
+        nStr += '';
+	x = nStr.split('.');
+	x1 = x[0];
+	x2 = x.length > 1 ? '.' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	
+	return x1 + x2;
 }
 
 function eliminar_producto_vendido(detalleven_id)
