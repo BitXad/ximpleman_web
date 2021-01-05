@@ -43,7 +43,13 @@ function calculardesc(){
        subtotal = Number(venta_subtotal) - Number(venta_descuento); 
     
    $("#venta_totalfinal").val(subtotal);
-   $("#venta_efectivo").val(subtotal);
+   
+   //Calcular cambio
+   var venta_efectivo = document.getElementById('venta_efectivo').value;      
+   var venta_cambio = venta_efectivo - subtotal;      
+   
+   $("#venta_cambio").val(formato_numerico(venta_cambio));
+   //$("#venta_efectivo").val(subtotal);
    
 }
 
@@ -2323,6 +2329,7 @@ function registrarventa(cliente_id)
     var venta_numeromesa = document.getElementById('venta_numeromesa').value;
     var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
    
+    //alert(venta_efectivo);
     
     var venta_numeroventa = 0;
     var venta_tipodoc = 0;
