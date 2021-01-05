@@ -11,9 +11,7 @@ function inicio(){
 }
 
 function calculardesc(){
-
-   
-   
+   /*
     var porcdesc = document.getElementById('tipocliente_porcdesc').value;
     var montodesc = document.getElementById('tipocliente_montodesc').value;
     
@@ -27,7 +25,7 @@ function calculardesc(){
         $("#tipo_descuento").val(1);                
         $("#venta_descuento").val(montodesc);
     }   
-   
+   */
    
    var venta_subtotal = document.getElementById('venta_subtotal').value;
    var venta_descuento = document.getElementById('venta_descuento').value;      
@@ -45,7 +43,7 @@ function calculardesc(){
        subtotal = Number(venta_subtotal) - Number(venta_descuento); 
     
    $("#venta_totalfinal").val(subtotal);
-   //$("#venta_efectivo").val(subtotal);
+   $("#venta_efectivo").val(subtotal);
    
 }
 
@@ -3691,7 +3689,7 @@ function focus_efectivo(){
         $("#venta_descuento").val(porcdesc);
         calculardesc();
     }
-    else{
+    else if(Number(montodesc)>0){
         $("#tipo_descuento").val(1);                
         $("#venta_descuento").val(montodesc);
         calculardesc();
