@@ -1544,11 +1544,15 @@ function tablaresultados(opcion)
                     sql = ""; 
                     comilla = "'";
                     
-                    
+                   var x = 0;
+                   
                    if (n <= limite) x = n; 
                    else x = limite;
                     
+                      
                     for (var i = 0; i < x ; i++){
+                        
+//                        alert(x +" >> "+ registros[i]["producto_nombre"]);
                         
                         var mimagen = "";
                         if(registros[i]["producto_foto"] != null && registros[i]["producto_foto"] !=""){
@@ -1787,6 +1791,8 @@ function tablaresultados(opcion)
                         html += "</td>";
                         
                         html += "</tr>";
+                        
+                      //  alert(x);
 
                    }
                  
