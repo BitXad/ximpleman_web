@@ -62,7 +62,7 @@ function ventas_dia($estado)
   {
         $detalle_venta = $this->db->query("
             SELECT
-                v.*, e.entrega_nombre,  c.cliente_nombre,c.cliente_latitud,
+                v.*, e.entrega_nombre,  c.cliente_nombre,c.cliente_latitud, c.cliente_nombrenegocio,
                 c.cliente_longitud, c.cliente_razon, c.cliente_telefono,
                 c.cliente_direccion, es.estado_descripcion, u.usuario_nombre, pr.usuario_nombre as prevendedor
             FROM

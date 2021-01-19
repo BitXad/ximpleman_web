@@ -102,13 +102,15 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
 <div class="row no-print">
     
     <div class="col-md-12">
-    
+        <?php echo form_open_multipart('pedido/mapa_paraentregas/', array('target'=>'_blank')); ?>
+        
         <div class="col-md-2">
             Desde: <input type="date" class="btn btn-primary btn-sm form-control" value="<?php echo date('Y-m-d')?>" id="fecha_desde" name="fecha_desde" required="true">
         </div>
         <div class="col-md-2">
             Hasta: <input type="date" class="btn btn-primary btn-sm form-control" value="<?php echo date('Y-m-d')?>" id="fecha_hasta" name="fecha_hasta" required="true">
         </div>
+        
         <?php if($tipousuario_id == 1){ ?>
         <div class="col-md-2">
             Usuarios:             
@@ -126,6 +128,18 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
             <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>" />
         </div>
         <?php } ?>
+        
+        <div class="col-md-1">
+            <br>
+            <!--<a href="<?php echo base_url("pedido/mapa_paraentregas"); ?>" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >-->
+            <button type="submit" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >
+                <span class="fa fa-map"></span> Mapa        
+            </button>
+            <br>
+        </div>
+        
+        <?php echo form_close(); ?>
+        
         <div class="col-md-1">
             <br>
             <button class="btn btn-sm btn-soundcloud btn-sm btn-block" onclick="buscarventasdist()" style="height: 34px;">
@@ -133,13 +147,7 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
           </button>
             <br>
         </div>
-        <div class="col-md-1">
-            <br>
-            <a href="<?php echo base_url("pedido/mapa_paraentregas"); ?>" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >
-                <span class="fa fa-map"></span> Mapa diario
-            </a>
-            <br>
-        </div>
+        
         <div class="col-md-1">
             <br>
             <button class="btn btn-info btn-foursquarexs btn-block" onclick="imprimir_reporte()" style="height: 34px;" title="Imprimir lista" >

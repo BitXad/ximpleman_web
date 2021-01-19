@@ -1077,6 +1077,7 @@ function registrarpedido()
         
             $data['page_title'] = "Mapa de Entregas";
             $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+
             
             $data['all_pedido'] = $this->Pedido_model->get_mis_pedidos($usuario_id);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
@@ -1096,9 +1097,18 @@ function registrarpedido()
         //**************** inicio contenido ***************  
         
             $data['page_title'] = "Mapa de Entregas";
-            $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
             
-            $data['all_pedido'] = $this->Pedido_model->get_para_entregas($usuario_id);
+            
+            $fecha_desde = $this->input->post('fecha_desde');
+            $fecha_hasta = $this->input->post('fecha_hasta');
+            
+            if ($this->session_data['tipousuario_id']==1)
+                $usuario_id = $this->input->post('usuario_id');
+            else
+                $usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+                
+            
+            $data['all_pedido'] = $this->Pedido_model->get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta);
             //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
             $data['_view'] = 'pedido/mapaentregas';
             

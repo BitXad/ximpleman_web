@@ -71,6 +71,7 @@ function mapa_distribucion(){
 
 //Tabla resultados de la busqueda de pendientes e npedidos o registros??
 function buscarventasdist(){
+    
  var base_url    = document.getElementById('base_url').value;
  var usuario    = document.getElementById('usuario_id').value;
  var fecha_desde = document.getElementById('fecha_desde').value;
@@ -109,16 +110,16 @@ function buscarventasdist(){
                     for (var i = 0; i < n ; i++){
                         
                         if (registros[i]["entrega_id"]==1) {
-                            var color="rgba(255, 143, 0, 0.7)";
+                            var color=" "; //rgba(255, 143, 0, 0.7)
                         }else{
-                            var color="rgba(0, 255, 0, 0.7)";
+                            var color="rgba(100, 90, 90, 0.7)";
                         }
 
                         ventatotal = ventatotal + Number(registros[i]["venta_total"]);
                         html += "<tr style='background-color: "+color+"'>";
                       
                         html += "<td>"+(i+1)+"</td>";
-                        html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>";
+                        html += "<td><b>"+registros[i]["cliente_nombre"]+"</b><br>"+registros[i]["cliente_nombrenegocio"]+"<br>";
                         
                         html += "<td>";
                         
@@ -135,7 +136,12 @@ function buscarventasdist(){
                         html += "</td>";
                         
                         html += "<b>Telf.:</b>"+registros[i]["cliente_telefono"]+"<b>Dir.:"+registros[i]["cliente_direccion"]+"</b>";
-                        html += "<td align='center'>"+registros[i]["venta_id"]+"</td>";
+                        //html += "<td align='center'>"+registros[i]["venta_id"]+"</td>";
+                        html += "<td align='center'>";
+                        html += "<a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir"+registros[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
+                        html += "<br>";
+                        html += registros[i]["venta_id"];
+                        html += "</td>";
                         html += "<td align='right'>"+Number(registros[i]["venta_total"]).toFixed(2)+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"]+"</td>"; 
                         html += "<td align='center'>";
@@ -160,7 +166,7 @@ function buscarventasdist(){
                         
                         if (registros[i]["entrega_id"]==1) {
                             //registros[i]["estado_nombre"]
-                        html += "<a class='btn btn-warning btn-xs no-print' data-toggle='modal' data-target='#myModal"+i+"' title=''><span class='fa fa-exclamation-circle'></span> ENTREGADO</a>";
+                        html += "<a class='btn btn-facebook btn-xs no-print' data-toggle='modal' data-target='#myModal"+i+"' title=''><span class='fa fa-truck'></span> ENTREGAR</a>";
                         html += "<!------------------------ INICIO modal para confirmar eliminan ------------------->";
                         html += "<div class='modal fade' id='myModal"+i+"' tabindex='-1' role='dialog' aria-labelledby='myModalLabel"+i+"'>";
                         html += "<div class='modal-dialog' role='document'>";
