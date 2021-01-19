@@ -15,6 +15,7 @@
       <div class="container">
           <h4><b>Entregas para hoy: <?php echo sizeof($all_pedido); ?></b>
           <a href="<?php echo site_url('pedido'); ?>" class="btn btn-danger btn-sm"><span class="fa fa-list"></span> Pedidos</a>
+          <a href="javascript:location.reload()" class="btn btn-warning btn-sm" ><span class="fa fa-recycle"></span> Actualizar</a>
           </h4>
           <div class="col col-md-12 table-responsive">
               <table class="table">
@@ -41,7 +42,7 @@
             
             foreach($all_pedido as $p){ ?>
                
-                punto = ['<?php echo $p['cliente_nombre']; ?>','<?php echo $p['cliente_latitud']; ?>','<?php echo $p['cliente_longitud']; ?>','<?php echo $p['cliente_direccion']; ?>','<?php echo $p['pedido_id']; ?>'];
+                punto = ['<?php echo $p['cliente_nombre']; ?>','<?php echo $p['cliente_latitud']; ?>','<?php echo $p['cliente_longitud']; ?>','<?php echo $p['cliente_direccion']; ?>','<?php echo $p['pedido_id']; ?>','<?php echo $p['entrega_id']; ?>'];
                 puntos['<?php echo $i; ?>'] = punto;
             <?php $i++; } ?>       
        
@@ -70,20 +71,44 @@
         //recorremos cada uno de los puntos
         for (var i = 0; i < puntos.length; i++) {
             
+            
           var place = puntos[i];
+          var marker;
           
-          //propiedades del marcador
-          var marker = new google.maps.Marker({
-              position: new google.maps.LatLng(place[1], place[2]), //posicion
-              map: map,
-              scrollwheel: false,
-              animation: google.maps.Animation.DROP, //animacion           
-              nombre: place[0], //personalizado - nombre del punto
-              info: place[3], //personalizado - informacion adicional
-              link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
-              icon:'<?php echo base_url().'resources/images/blue.png'; ?>'
-                     
-          });
+          if (place[5]==1){
+          
+            //propiedades del marcador
+                var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(place[1], place[2]), //posicion
+                map: map,
+                scrollwheel: false,
+                animation: google.maps.Animation.DROP, //animacion           
+                nombre: place[0], //personalizado - nombre del punto
+                info: place[3], //personalizado - informacion adicional
+                link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
+                icon:'<?php echo base_url().'resources/images/blue.png'; ?>'
+
+            });
+          
+          }
+          else{
+          
+
+            //propiedades del marcador
+                var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(place[1], place[2]), //posicion
+                map: map,
+                scrollwheel: false,
+                animation: google.maps.Animation.DROP, //animacion           
+                nombre: place[0], //personalizado - nombre del punto
+                info: place[3], //personalizado - informacion adicional
+                link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
+                icon:'<?php echo base_url().'resources/images/red.png'; ?>'
+
+            });
+
+          
+          }
           
           //se agrega el evento click a cada marcador, asi despliega la
           //informacion nada uno de los marcadores
@@ -93,6 +118,8 @@
             infowindow.setContent(contenido); //asignar el contenido al globo
             infowindow.open(map, this); //mostrarlo
           });
+          
+          
         }
       }
       

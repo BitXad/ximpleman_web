@@ -139,8 +139,8 @@ function buscarventasdist(){
                         //html += "<td align='center'>"+registros[i]["venta_id"]+"</td>";
                         html += "<td align='center'>";
                         html += "<a href='"+base_url+"factura/imprimir_recibo/"+registros[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir"+registros[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
-                        html += "<br>";
-                        html += registros[i]["venta_id"];
+                        //html += "<br>";
+                        //html += registros[i]["venta_id"];
                         html += "</td>";
                         html += "<td align='right'>"+Number(registros[i]["venta_total"]).toFixed(2)+"</td>"; 
                         html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"]+"</td>"; 

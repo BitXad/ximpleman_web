@@ -107,8 +107,7 @@
                                           icon: '<?php echo base_url().'resources/images/blue.png';?>' 
  
                                       }); 
-                                 
-                                 
+                                      
                                 } 
  
  
@@ -128,6 +127,7 @@
                                  
                               //html de como vamos a visualizar el contenido del globo 
                                   var contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+this.link+'"><h5>'+this.nombre +'</h5></a>' +  this.info + '</div>'; 
+                                  
                                   infowindow.setContent(contenido); //asignar el contenido al globo 
                                   infowindow.open(map, this); //mostrarlo 
                                 }); 
