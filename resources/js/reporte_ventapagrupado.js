@@ -95,6 +95,7 @@ function tabla_reportesproducto(){
                         if(tipousuario_id == 1){
                             html += "<td align='right'> "+Number(registros[i]["total_costo"]).toFixed(2)+" </td>";
                             html += "<td align='right'> "+Number(registros[i]["total_utilidad"]).toFixed(2)+" </td>";
+                            html += "<td align='right'> "+Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2)+" </td>";
                         }
                         
                         html += "</tr>";

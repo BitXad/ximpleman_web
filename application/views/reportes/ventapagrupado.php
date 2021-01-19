@@ -137,6 +137,7 @@
                 <?php if($tipousuario_id == 1){ ?>
                     <th>COSTO<br>TOTAL</th>
                     <th>UTILID.</th>
+                    <th>%</th>
                 <?php } ?>
             </tr>
             <tbody class="buscar" id="reportefechadeventa"></tbody>

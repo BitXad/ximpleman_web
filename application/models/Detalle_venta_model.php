@@ -300,7 +300,7 @@ function ventas_dia($estado)
           d.detalleven_comision,
           d.detalleven_tipocambio,
           ".$usuario_id.",
-          i.existencia,
+          i.existencia+d.detalleven_cantidad as existencia,
           i.producto_nombre, 
           i.producto_unidad, 
           i.producto_marca, 
