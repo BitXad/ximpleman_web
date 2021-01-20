@@ -88,7 +88,7 @@ class Dashb extends CI_Controller
 
                 $data['all_cliente'] = $this->Cliente_model->get_clientes_visitados($fecha_desde,$fecha_hasta,$zona_id);
                 $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($zona_id);
-                $data['all_pedido'] = $this->Pedido_model->get_para_entregas($session_data['usuario_id']);
+                $data['all_pedido'] = $this->Pedido_model->get_para_entregas($session_data['usuario_id'], $fecha_desde, $fecha_hasta);
                 $data['usuario'] = $session_data['usuario_id'];
                 $data['tipousuario_id'] = $session_data['tipousuario_id'];
                 $data['_view'] = 'dashboard_noad';

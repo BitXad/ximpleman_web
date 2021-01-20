@@ -2311,7 +2311,7 @@ function anular_venta($venta_id){
              $data['venta'] = $this->Venta_model->get_busqueda($filtro);            
         }
         
-        $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        $data['all_usuario'] = $this->Usuario_model->get_all_usuactivo();
         $data['empresa'] = $this->Empresa_model->get_empresa(1); 
       
         $data['_view'] = 'venta/combinados';

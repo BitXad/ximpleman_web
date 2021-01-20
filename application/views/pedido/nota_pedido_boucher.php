@@ -205,7 +205,7 @@ border-bottom : 1px solid #aaa;
                             <br><b>CLIENTE: </b><?php echo $pedido[0]['cliente_nombre']; ?>
                             <br><b>CÓDIGO: </b><?php echo $pedido[0]['cliente_codigo']; ?>
                             <br><b>DIRECCIÓN: </b><?php echo $pedido[0]['cliente_direccion']; ?>
-                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']; ?>
+                            <br><b>TELÉF.: </b><?php echo $pedido[0]['cliente_telefono']." - ".$pedido[0]['cliente_celular']; ?>
                             <br><b>ZONA: </b><?php echo $pedido[0]['zona_nombre']; ?>
                         </font>
               
