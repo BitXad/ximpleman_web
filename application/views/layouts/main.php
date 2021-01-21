@@ -546,6 +546,9 @@
                         ?>
                         <li><a href="#"><i class="fa fa-clipboard"></i> <span>Ventas</span></a>
                         <ul class="treeview-menu">
+                            <li>
+                                <a href="<?php echo site_url('reportes/reporte_generalventa');?>"><i class="fa fa-id-card-o"></i>Ventas Agrupadas</a>
+                            </li>
                         <li>
                             <a href="<?php echo site_url('venta');?>"><i class="fa fa-clock-o"></i>Ventas del dia</a>
                         </li>
@@ -564,13 +567,9 @@
                         <li>
                             <a href="<?php echo site_url('reportes/ventaruta');?>"><i class="fa fa-truck"></i>Venta por Ruta</a>
                         </li>
-						<li>
+                        <li>
                             <a href="<?php echo site_url('reportes/ventausuario');?>"><i class="fa fa-user"></i>Venta por Usuario</a>
                         </li>
-                        <!--<li>
-                            <a href="<?php //echo site_url('detalle_venta/reportes');?>"><i class="fa fa-cart-plus"></i>Ventas</a>
-                        </li>-->
-
                         <li>
                             <a href="<?php echo site_url('detalle_venta/reporte_generalventa');?>"><i class="fa fa-cart-plus"></i>Simple Ventas</a>
                         </li>

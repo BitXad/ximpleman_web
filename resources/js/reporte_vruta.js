@@ -108,6 +108,44 @@ function mostrar_grafica(){
 
                         //mostrar_repventacategoria();
                     });*/
+                    
+                    var totalventas     = Number(0);
+                    var totaldescuentos = Number(0);
+                    var totalcostos     = Number(0);
+                    var totalutilidades = Number(0);
+                    html = "";
+                    for (var j = 0; j <= totattipos-1 ; j++){
+                         totalventas     += Number(tippos[j].totalventas);
+                         totaldescuentos += Number(tippos[j].totaldescuento);
+                        html += "<tr>";
+                      
+                        html += "<td align='center' style='width:5px;'>"+(j+1)+"</td>";
+                        
+                        
+                        html += "<td> "+tippos[j].zona_nombre+" </td>";                                            
+                        html += "<td class='text-right'> "+numberFormat(Number(tippos[j].totalventas).toFixed(2))+" </td>";
+                        if(tipousuario_id == 1){
+                            var utilidad = Number(tippos[j].totalventas)-Number(tippos[j].totalcosto);
+                            totalcostos     += Number(tippos[j].totalcosto);
+                            totalutilidades += Number(utilidad);
+                            html += "<td class='text-right'> "+numberFormat(Number(tippos[j].totalcosto).toFixed(2))+" </td>";
+                            html += "<td class='text-right'> "+numberFormat(Number(utilidad).toFixed(2))+" </td>";
+                        }
+                        
+                       
+                        html += "</tr>";
+                       
+                    }
+                    html += "<tr>";
+                        html += "<td></td>";
+                        html += "<th class='text-right'>TOTAL:</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(totalventas).toFixed(2))+"</th>";
+                        if(tipousuario_id == 1){
+                            html += "<th style='text-align:right'>"+numberFormat(Number(totalcostos).toFixed(2))+"</th>";
+                            html += "<th style='text-align:right'>"+numberFormat(Number(totalutilidades).toFixed(2))+"</th>";
+                        }
+                    html += "</tr>";
+                   $("#reporteporruta").html(html);
                 }
         }
     });

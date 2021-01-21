@@ -208,6 +208,7 @@ function generarexcel_vagrupado(){
                             if(tipousuario_id == 1){
                                 row += 'COSTO TOTAL' + ',';
                                 row += 'UTILIDAD' + ',';
+                                row += '%' + ',';
                             }
                             
                         row = row.slice(0, -1);
@@ -233,6 +234,7 @@ function generarexcel_vagrupado(){
                             if(tipousuario_id == 1){
                                 row += '"' +Number(registros[i]["total_costo"]).toFixed(2)+ '",';
                                 row += '"' +Number(registros[i]["total_utilidad"]).toFixed(2)+ '",';
+                                row += '"' +Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2)+ '",';
                             }
                             
                         row.slice(0, row.length - 1);

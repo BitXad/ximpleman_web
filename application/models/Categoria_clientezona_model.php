@@ -142,6 +142,7 @@ class Categoria_clientezona_model extends CI_Model
             	date(vs.venta_fecha) >= '$fecha_desde'
                 and date(vs.venta_fecha) <= '$fecha_hasta'
             group by z.`zona_id`
+            order by totalventas DESC
         ")->result_array();
 
         return $venta_porzona;

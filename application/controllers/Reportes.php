@@ -1209,5 +1209,28 @@ function torta3($anio,$mes)
         $this->load->view('layouts/main',$data);
         }
     }
+    function reporte_generalventa()
+    {
+        $data['empresa'] = $this->Empresa_model->get_empresa(1);
+        $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $this->load->model('Tipo_transaccion_model'); 
+        $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+        $data['page_title'] = "Reporte general - Ventas a Clientes";        
+        $data['_view'] = 'reportes/reporte_generalventa';
+        $this->load->view('layouts/main',$data);
+    }
+    /* busca ventas por cliente en un rango de fachas */
+    function busqueda_venta()
+    {
+        if ($this->input->is_ajax_request()) {
+            $fecha_desde = $this->input->post('fecha_desde');
+            $fecha_hasta = $this->input->post('fecha_hasta');
+
+            $datos = $this->Reporte_ing_egr_model->getall_ventaagrupado_porcliente($fecha_desde, $fecha_hasta);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
     
 }

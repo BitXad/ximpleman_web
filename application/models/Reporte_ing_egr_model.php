@@ -805,6 +805,25 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
         return $ingresos;
 
     }
+    /* obtiene las ventas totales de los clientes.. */
+    function getall_ventaagrupado_porcliente($fecha_desde, $fecha_hasta)
+    {
+        $venta_porusuario = $this->db->query("
+            SELECT
+                vs.cliente_id, c.`cliente_nombre`, SUM(vs.detalleven_total) as 'totalventas',
+                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
+            FROM
+                `ventas` vs
+            left join `cliente` c on vs.cliente_id = c.cliente_id
+            where
+            	date(vs.venta_fecha) >= '$fecha_desde'
+                and date(vs.venta_fecha) <= '$fecha_hasta'
+            group by c.`cliente_id`
+            order by totalventas DESC
+        ")->result_array();
+
+        return $venta_porusuario;
+    }
     
 }
 

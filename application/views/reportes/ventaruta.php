@@ -70,6 +70,22 @@
     </div>
 </div>
 <?php } ?>
+<div class="col-md-12" style="padding: 0;">
+    <div class="box-body table-responsive" style="padding: 0; padding-bottom: 2px" >
+        <table class="table table-striped table-condensed" id="mitabla" >
+            <tr>
+                <th>Nro.</th>
+                <th>RUTA</th>
+                <th>VENTAS</th>
+                <?php if($tipousuario_id == 1){ ?>
+                    <th>COSTO</th>
+                    <th>UTILIDAD</th>
+                <?php } ?>
+            </tr>
+            <tbody class="buscar" id="reporteporruta"></tbody>
+        </table>
+    </div>
+</div>
 <div class="row" >
     <div class="panel panel-primary col-md-12 no-print" id='buscador_oculto' >
         <div class="col-md-2">
