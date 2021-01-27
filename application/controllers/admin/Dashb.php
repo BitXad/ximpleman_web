@@ -82,8 +82,8 @@ class Dashb extends CI_Controller
                 $data['resumen_usuario'] = $this->Venta_model->get_resumen_usuarios();
                 $data['usuario_imagen'] = $session_data['usuario_imagen'];
                 
-                $fecha_desde = date('d-m-Y');
-                $fecha_hasta = date('d-m-Y');
+                $fecha_desde = date('Y-m-d');
+                $fecha_hasta = date('Y-m-d');
                 $zona_id = 0;
 
                 $data['all_cliente'] = $this->Cliente_model->get_clientes_visitados($fecha_desde,$fecha_hasta,$zona_id);
