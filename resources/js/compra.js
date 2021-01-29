@@ -151,6 +151,7 @@ function tabladetallecompra(){
                         if(modificar_detalle == 1){
                             html += "<button type='button' onclick='editadetalle("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+","+compra_id+")' class='btn btn-success btn-xs'><span class='fa fa-save'></span></button>";
                         }
+                        html += "<button type='button' onclick='mostrar_modalclasificador("+registros[i]["detallecomp_id"]+","+registros[i]["producto_id"]+")' class='btn btn-info btn-xs'><span class='fa fa-list'></span></button>";
                         html += "</td>";
                         ////////////////////////////////fin fotmu//////////////////////
                         //html += "<td><form action='"+base_url+"detalle_compra/quitar/"+registros[i]["detallecomp_id"]+"/"+compra_id+"'  method='POST' class='form'>";
