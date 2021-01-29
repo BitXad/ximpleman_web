@@ -143,7 +143,11 @@ function buscarventasdist(){
                         //html += registros[i]["venta_id"];
                         html += "</td>";
                         html += "<td align='right'>"+Number(registros[i]["venta_total"]).toFixed(2)+"</td>"; 
-                        html += "<td align='center'>"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"]+"</td>"; 
+                        html += "<td align='center'> F.VEN:"+moment(registros[i]["venta_fecha"]).format('DD/MM/YYYY')+" "+registros[i]["venta_hora"];
+    
+                       if (registros[i]["venta_fechaentrega"]!=null)
+                           html += "<br><b> F.ENT.:"+moment(registros[i]["venta_fechaentrega"]).format('DD/MM/YYYY')+" "+registros[i]["venta_horaentrega"]+"</b></td>"; 
+                        
                         html += "<td align='center'>";
                         var elvendedor = registros[i]["usuario_nombre"];
                         if(elvendedor.length>15){
