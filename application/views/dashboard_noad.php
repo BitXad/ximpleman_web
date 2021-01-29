@@ -213,7 +213,7 @@
                                                 
                                                 foreach($all_pedido as $p){ ?>
                                                 
-                                                    punto = ['<?= $p['cliente_nombre']; ?>','<?= $p['cliente_latitud']; ?>','<?= $p['cliente_longitud']; ?>','<?= $p['cliente_direccion']; ?>','<?= $p['pedido_id']; ?>','<?= $p['entrega_id'] ?>','<?= $p['venta_id']; ?>','<?= $p['entrega_id'] ?>','<?= $p['venta_id'] ?>'];
+                                                    punto = ['<?= $p['cliente_nombre']; ?>','<?= $p['cliente_latitud']; ?>','<?= $p['cliente_longitud']; ?>','<?= $p['cliente_direccion']; ?>','<?= $p['pedido_id']; ?>','<?= $p['entrega_id'] ?>','<?= $p['venta_id']; ?>','<?= $p['entrega_id'] ?>','<?= $p['venta_id'] ?>','<?= $p['venta_fechaentrega'] ?>', '<?= $p['venta_horaentrega'] ?>'];
                                                     puntos['<?php echo $i; ?>'] = punto;
                                                 <?php $i++; } ?>       
                                         //funcion para posicionar los marcadores en el mapa
@@ -243,7 +243,9 @@
                                                 link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional
                                                 ven_id:place[6],              
                                                 icon: color_icon,
-                                                estado: place[5]
+                                                estado: place[5],
+                                                entrega_fecha: place[9],
+                                                entrega_hora: place[10]
                                             });
                                             
                                             //se agrega el evento click a cada marcador, asi despliega la
@@ -257,10 +259,12 @@
                                                 //             + '</div>';
                                                 var contenido='<div id="content" style="width: auto; height: auto;">' 
                                                                 +'<a class="mr-0" href="'+this.link+'"><h5>'+this.nombre +'</h5></a>' 
-                                                                +  this.info
-                                                                +'<br>';
                                                                 if(this.estado == 1){
-                                                                    contenido+='<button class="btn btn-sm btn-warning" style="width: 100%; margin:auto" onclick="consolidar('+this.ven_id+')">Entregar</button>';
+                                                                    contenido += this.info
+                                                                    +'<br>'
+                                                                    +'<button class="btn btn-sm btn-warning" style="width: 100%; margin:auto" onclick="consolidar('+this.ven_id+')">Entregar</button>';
+                                                                }else{
+                                                                    contenido += '<span style="font-size:8pt;"><b>Fecha de entrega:</b> '+this.entrega_fecha+'<br><b>Hora:</b> '+this.entrega_hora+'</span>';
                                                                 }
                                                 contenido += '</div>';
                                                 infowindow.setContent(contenido); //asignar el contenido al globo
