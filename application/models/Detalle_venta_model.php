@@ -497,6 +497,7 @@ function ventas_dia($estado)
             WHERE 
                 $filtro
             group by `vs`.producto_id
+            order by total_venta desc
         ")->result_array();
         return $reporte;
     }
