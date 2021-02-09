@@ -98,7 +98,7 @@ class Categoria_clientezona_model extends CI_Model
             WHERE
                 cc.estado_id = e.estado_id
                 
-                ORDER BY cc.zona_id ASC
+                ORDER BY cc.zona_nombre ASC
 
         ")->result_array();
 
