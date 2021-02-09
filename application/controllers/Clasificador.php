@@ -147,7 +147,7 @@ class Clasificador extends CI_Controller{
                 $this->load->model('Producto_model');
                 $all_producto = $this->Producto_model->buscar_allproductos();
                 $this->load->model('Clasificador_model');
-                $all_clasificadores = $this->Clasificador_model->get_all_clasificadores();
+                //$all_clasificadores = $this->Clasificador_model->get_all_clasificadores();
                 foreach ($all_producto as $producto) {
                     $params = array(
                         'catalogo_foto' => $producto["producto_foto"],
@@ -160,7 +160,8 @@ class Clasificador extends CI_Controller{
                         $total = $movclasif["compras"]-$movclasif["ventas"];
                         $sql = "update catalogo set c".$movclasif["clasificador_id"]." = $total
                                 where catalogo_id = $catalogo_id";
-            
+                        //echo $sql;
+                        //break;
                         $this->Clasificador_model->ejecutar($sql);
                         /*$res = array("'c".$movclasif["clasificador_id"]."'" => $total,);
                         array_push($params, $res);*/

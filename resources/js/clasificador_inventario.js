@@ -57,7 +57,9 @@ function tabla_clasificadorinventario(){
                 html += "<tr>";
                 html += "	<th>#</th>";
                 html += "	<th>Descripción</th>";
+                //var cabecera = [];
             for (var k = 0; k < maximo ; k++){
+                //cabecera.push(elclasificador[k]["clasificador_nombre"]);
                 html += "	<th>"+elclasificador[k]["clasificador_nombre"]+"</th>";
             }
                 html += "	<th>Total</th>";
@@ -99,7 +101,8 @@ function tabla_clasificadorinventario(){
                         html += "<br>"+inv[i]["catalogo_codigo"]+"</font></div>";
                         html += "</div>";
                         html += "</td>";
-                        var totalparcial = 0
+                        var totalparcial = 0;
+                        var tot = 0;
                         for (var k = 0; k < maximo ; k++){
                             if(inv[i]["c"+(k+1)] != null && inv[i]["c"+(k+1)] !=""){
                                 tot = inv[i]["c"+(k+1)];
@@ -121,11 +124,7 @@ function tabla_clasificadorinventario(){
             } //end if (inv != null){
                 
                 html += "</tbody>";
-                /*html += "<tr>";
-                html += "	<th colspan='3' style='text-align: right !important'> Total:</th>";
-                html += "	<th style='text-align: right !important'>"+formato_numerico(total_final)+"</th>";
-                html += "</tr>    ";
-                */
+                
                 html += "</table>";            
                 $("#tabla_inventario").html(html);   
                              

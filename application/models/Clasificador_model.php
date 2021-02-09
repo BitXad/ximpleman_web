@@ -136,7 +136,8 @@ class Clasificador_model extends CI_Model
                 `clasificador`
             WHERE
                 1 = 1
-            ORDER BY `clasificador_nombre`
+            ORDER BY `clasificador_id` ASC
+            /*ORDER BY `clasificador_nombre`*/
         ")->result_array();
 
         return $clasificador;
@@ -166,8 +167,11 @@ class Clasificador_model extends CI_Model
     function get_maxclasificadorusado()
     {
         $sql = "select max(t.clasificador_id) as maximo
+                  from clasificador t
+                
+                /*select max(t.clasificador_id) as maximo
                   from detalle_clasificador t
-                  left join detalle_compra dc on t.detallecomp_id = dc.detallecomp_id";
+                  left join detalle_compra dc on t.detallecomp_id = dc.detallecomp_id*/ ";
         $clasificador = $this->db->query($sql)->result_array();
         return $clasificador;
     }
@@ -175,11 +179,12 @@ class Clasificador_model extends CI_Model
     function get_maxclasificadorusado_parametro($parametro)
     {
         $sql = "select max(t.clasificador_id) as maximo
-                  from detalle_clasificador t
+                  from clasificador t
+                  /*from detalle_clasificador t
                   left join inventario p on t.producto_id = p.producto_id
                   where p.producto_id = t.producto_id
                   and p.producto_nombre like '%".$parametro."%' 
-                  or p.producto_codigo like '%".$parametro."%' ";
+                  or p.producto_codigo like '%".$parametro."%' */";
         $clasificador = $this->db->query($sql)->result_array();
         return $clasificador;
     }
@@ -195,7 +200,7 @@ class Clasificador_model extends CI_Model
     function get_clasificadorinventario_parametro($parametro)
     {
         
-        $sql = "select * from catalogo c
+        $sql = "select c.* from catalogo c
                 WHERE c.catalogo_nombre like '%".$parametro."%' 
                   or c.catalogo_codigo like '%".$parametro."%' ";
                   /*or p.producto_codigobarra like '%".$parametro."%' */
