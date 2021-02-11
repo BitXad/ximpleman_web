@@ -2758,8 +2758,16 @@ function tabla_ventas(filtro)
                     html += "                           <br><br><span class='btn btn-facebook btn-xs' ><b>"+v[i]['estado_descripcion']+"</b></span> ";
                     html += "                       </td>";
 
-                    html += "                       <td style='padding:0;'><center>"+formato_fecha(v[i]['venta_fecha']);
-                    html += "                           <br> "+v[i]['venta_hora'];
+                    html += "                       <td style='padding:0;'><center>";
+                    if(tipousuario_id == 1){
+                        html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-sm' title='Modificar fecha y hora'>";
+                        html += formato_fecha(v[i]['venta_fecha']);;
+                        html += "<br> "+v[i]['venta_hora'];
+                        html += "</a>";
+                    }else{
+                        html +=                             formato_fecha(v[i]['venta_fecha']);;
+                        html += "                           <br> "+v[i]['venta_hora'];
+                    }
                     html += "                           <br><input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' style='display:block'>";
                     
                     html += "                       </center>";
@@ -4374,4 +4382,29 @@ function mostrar_composicion(detalleven_id){
         
     }
     
+}
+
+function modificarhora(venta_id, lafecha, lahora){
+    $('#num_venta').html(venta_id);
+    $('#nunmventa_id').val(venta_id);
+    $('#modif_fecha').val(lafecha);
+    $('#modif_hora').val(lahora);
+    $('#modalmodificarhora').modal('show');
+    //$('#modalmodificarhora').modal('hide');
+}
+
+function guardar_fechahora(){
+    var base_url = document.getElementById('base_url').value;
+    var laventa_id = $('#nunmventa_id').val();
+    var la_fecha = $('#modif_fecha').val();
+    var la_hora  = $('#modif_hora').val();
+    var controlador = base_url+"venta/modificar_fechahora";
+    $.ajax({url: controlador,
+        type:"POST",
+        data:{venta_id:laventa_id, la_fecha:la_fecha, la_hora:la_hora},
+        success:function(report){
+            var registros =  JSON.parse(report);
+            location.reload();
+        }
+    });
 }

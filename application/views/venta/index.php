@@ -379,6 +379,40 @@
 		</div>
 	</div>
 </div>
-
-
 <!----------------- fin modal factura ---------------------------------------------->
+
+<!------------------------ INICIO modal para Modificar fecha de una venta ------------------->
+<div class="modal fade" id="modalmodificarhora" tabindex="-1" role="dialog" aria-labelledby="modalmodificarhoralabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span style="font-size: 15pt">Venta Num.: <span class="text-bold" id="num_venta"></span></span>
+                <input type="hidden" name="nunmventa_id" class="form-control" id="nunmventa_id" />
+            </div>
+            <div class="modal-body" style="padding-bottom: 0px !important">
+                <div class="col-md-6">
+                    <label for="modif_fecha" class="control-label">Modificar Fecha</label>
+                    <div class="form-group">
+                        <input type="date" name="modif_fecha" class="form-control" id="modif_fecha" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <label for="modif_hora" class="control-label">Modificar hora</label>
+                    <div class="form-group">
+                        <input type="time" name="modif_hora" class="form-control" id="modif_hora" />
+                    </div>
+                </div>
+                <!------------------------------------------------------------------->
+                <div class="col-md-12 no-print" id="tablarecliente"></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer" style="text-align: center !important">
+                <a class="btn btn-success" data-dismiss="modal" onclick="guardar_fechahora()"><span class="fa fa-check"></span> Guardar</a>
+                <a class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> Cancelar</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Modificar fecha de una venta ------------------->

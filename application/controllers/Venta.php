@@ -3356,6 +3356,22 @@ function anular_venta($venta_id){
         echo json_encode($resultado);  
         
     }
-        
+    /* modifica la fecha y hora de venta!.. */
+    function modificar_fechahora()
+    {
+        if ($this->input->is_ajax_request()) {
+            $venta_id = $this->input->post('venta_id');   
+            $la_fecha = $this->input->post('la_fecha');   
+            $la_hora  = $this->input->post('la_hora');
+            $params = array(
+                'venta_fecha' => $la_fecha,
+                'venta_hora' => $la_hora,
+            );
+            $this->Venta_model->update_venta($venta_id, $params);
+            echo json_encode("ok");
+        }else{                 
+            show_404();
+        }              
+    }   
     
 }
