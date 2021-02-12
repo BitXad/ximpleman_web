@@ -22,7 +22,7 @@ function tabla_objetivos(){
             // alert("todo ok");
             console.log(resultado);
             if(resultado != null){
-                console.log(resultado["objetivos"][3]["usuario_nombre"]);
+                console.log(resultado["objetivos"]["usuario_nombre"]);
                 html= "";
                 n = resultado["objetivos"].length;
                 for(i = 0; i < n; i++){
