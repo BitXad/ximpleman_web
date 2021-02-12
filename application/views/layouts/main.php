@@ -708,6 +708,13 @@
                         </li>
                         <?php
                         }
+                        if($rolusuario[157-1]['rolusuario_asignado'] == 1){
+                        ?>
+                        <li>
+                            <a href="<?php echo site_url('objetivo');?>"><i class="fa fa-bar-chart"></i>Objetivos</a>
+                        </li>
+                        <?php
+                        }
                         ?>
                         
                     </ul>
