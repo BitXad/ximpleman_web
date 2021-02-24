@@ -225,6 +225,7 @@ function tablaproductos()
     var categ = JSON.parse(document.getElementById('categoria_producto').value);
     var controlador = base_url+'venta/detalleventa';
     var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
+    var modificar_precioventa = document.getElementById('modificar_precioventa').value;
     
     $.ajax({url: controlador,
            type:"POST",
@@ -261,7 +262,10 @@ function tablaproductos()
                     var total_detalle = 0;
                     var categoria = '';
                     var x = registros.length; //tamaño del arreglo de la consulta
-                      
+                    var sololectura = "";
+                    if(modificar_precioventa == 0){
+                        sololectura = "readonly";
+                    }
                     for (var i = 0; i < x ; i++){
 
                         //alert(registros[i]["categoria_id"]-1);
@@ -374,7 +378,7 @@ html += "  </div>";
                         html += "                       <button onclick='ingresorapidojs(1,"+JSON.stringify(registros[i])+")' class='btn btn-facebook btn-xs'><span class='fa fa-plus'></span></a></button>";
                         html += "                    </div>";
 
-                        html += "<input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
+                        html += "<input "+sololectura+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'>";
                         html += "<br><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font>";
                         html += "</td>";
                         html += "			<td "+color+">";
@@ -398,7 +402,7 @@ html += "  </div>";
                     
 
                         html += "</td>";
-                        html += "<td align='right' "+color+"><input size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
+                        html += "<td align='right' "+color+"><input "+sololectura+" size='5' name='precio' id='precio"+registros[i]["detalleven_id"]+"' value='"+parseFloat(registros[i]["detalleven_precio"]).toFixed(2)+"' onKeyUp ='actualizarprecios(event,"+registros[i]["detalleven_id"]+")'></td>";
                         
                         html += "                       <td align='right' "+color+"><font size='3' ><b>"+parseFloat(registros[i]["detalleven_total"]).toFixed(2)+"</b></font></td>";
 

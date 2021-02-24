@@ -63,7 +63,7 @@ class Rol extends CI_Controller{
             }
             else
             {
-                $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
+                $data['all_rolpadre'] = $this->Rol_model->get_allrol_padreordenado();
                 $data['page_title'] = "Rol";
                 $data['_view'] = 'rol/add';
                 $this->load->view('layouts/main',$data);
@@ -98,7 +98,7 @@ class Rol extends CI_Controller{
                 }
                 else
                 {
-                    $data['all_rolpadre'] = $this->Rol_model->get_allrol_padre();
+                    $data['all_rolpadre'] = $this->Rol_model->get_allrol_padreordenado();
                     $estado_tipo = 1;
                     $this->load->model('Estado_model');
                     $data['all_estado'] = $this->Estado_model->get_estado_tipo($estado_tipo);

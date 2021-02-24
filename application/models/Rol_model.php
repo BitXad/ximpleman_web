@@ -144,4 +144,18 @@ class Rol_model extends CI_Model
         ")->result_array();
         return $rol;
    }
+    function get_allrol_padreordenado()
+    {
+        $rol = $this->db->query("
+            SELECT
+                r.*, estado_color, estado_descripcion
+            FROM
+                rol r, estado e
+            WHERE
+                e.estado_id = r.estado_id
+                and r.rol_idfk = 0
+            ORDER BY r.rol_nombre ASC
+        ")->result_array();
+        return $rol;
+   }
 }
