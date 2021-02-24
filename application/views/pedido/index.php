@@ -85,7 +85,8 @@
                 <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 80px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Clientes</a>
                 <a href="<?php echo site_url('pedido/pedidoabierto/0'); ?>" class="btn btn-success btn-sm " target="_blank" style="width: 80px;"><span class="fa fa-cart-arrow-down"></span> </span> <span class="fa fa-user-plus"></span> Pedido</a>
                 <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 80px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
-                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;"><span class="fa fa-map"></span> Mapa</a>                
+                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span> Mapa</a>
+                <a class="btn btn-facebook btn-sm" data-toggle='modal' data-target='#modalmapa' style="width: 80px;" title="Mostrar mapa de pedidos"><span class="fa fa-map-o"></span> Mapa</a>
             </center>
         </div>
     </div>
@@ -186,9 +187,69 @@
 <!--    <div class="col-md-6"  style="padding:3px">
         <div class="form-group" style="margin-bottom: 0;">
             <center>
-                <a href="<?php echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 100px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Mis Clientes</a>
+                <a href="<?php /*echo site_url('pedido/misclientes'); ?>" class="btn btn-facebook btn-sm " target="_blank" style="width: 100px; background-color: purple;"><span class="fa fa-user-circle-o"></span> Mis Clientes</a>
                 <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 100px;"><span class="fa fa-steam"></span> Recorrido</a>
-                <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;"><span class="fa fa-map"></span> Mapa</a>                
+                <a href="<?php echo site_url('pedido/mapa_entregas');*/ ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 100px;"><span class="fa fa-map"></span> Mapa</a>                
             </center>
         </div>
     </div>-->
+                
+<!------------------------ INICIO modal para elegir zona de pedidos ------------------->
+<div class='modal fade' id='modalmapa' tabindex='-1' role='dialog' aria-labelledby='modalmapaLabel'>
+    <div class='modal-dialog modal-sm' role='document'>
+        <br><br>
+        <div class='modal-content'>
+                <?php echo form_open_multipart('pedido/mapa_depedidos/', 'taget="blank"'); ?>
+            <div class='modal-header text-center'>
+                <span style='font-size: 15pt' class='text-bold'>PEDIDOS</span>
+                <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>
+            </div>
+            <div class='modal-body'>
+                <!------------------------------------------------------------------->
+                
+                <!--<div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><b>Desde:&nbsp</b></span>           
+                        <input type="date" value="<?php /*echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
+                    </div>
+                    <br>
+                </div>
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><b>Hasta:&nbsp</b></span>           
+                        <input type="date" value="<?php echo date('Y-m-d')*/?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
+                    </div>
+                    <br>
+                </div>-->
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <span class="input-group-addon"><b>Zona:&nbsp&nbsp</b></span>           
+                        <select name="zona_busqueda" class="btn-primary btn-sm btn-block form-control" id="zona_busqueda">
+                            <option value="" disabled selected >-- ZONAS --</option>
+                            <option value="0"> Todas Las Zonas </option>
+                            <?php 
+                            foreach($all_categoria_clientezona as $zona)
+                            {
+                                echo '<option value="'.$zona['zona_id'].'">'.$zona['zona_nombre'].'</option>';
+                            } 
+                            ?>
+                        </select>
+                    </div>
+                    <br>
+                </div>
+                
+                <!------------------------------------------------------------------->
+            </div>
+            <div class='modal-footer aligncenter'>
+                <div class="col-md-6">
+                    <button type="submit"  target="_blank" class='btn btn-success btn-block' id='buscar_visita' name='buscar_visita' ><span class='fa fa-search'></span> Buscar </button>
+                </div>
+                <div class="col-md-6">
+                    <a href='#' class='btn btn-danger btn-block' data-dismiss='modal' id='cerrar_modalmapa' name='cerrar_modalmapa'><span class='fa fa-times'></span> Cerrar </a>
+                </div>
+            </div>
+            <?php echo form_close(); ?>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para elegir zona de pedidos ------------------->

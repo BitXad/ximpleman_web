@@ -33,7 +33,8 @@
                        
                             //puntos a ser marcados en el mapa 
                             var puntos = []; 
-                             
+                            var link1 = '<?php echo base_url().'venta/ventas_cliente/'; ?>';
+                            var link2 = '<?php echo base_url().'pedido/pedidoabierto/'; ?>';
                               var punto; 
                              
                              
@@ -70,7 +71,6 @@
                        
                               //recorremos cada uno de los puntos 
                               for (var i = 0; i < puntos.length; i++) { 
-                                   
                                 var place = puntos[i]; 
  
  
@@ -92,7 +92,7 @@
                                       }); 
  
                                 } 
-                                else{ 
+                                else{
                                       //propiedades del marcador 
                                       var marker = new google.maps.Marker({ 
  
@@ -103,12 +103,13 @@
                                           animation: google.maps.Animation.DROP, //animacion            
                                           nombre: place[0], //personalizado - nombre del punto 
                                           info: place[3], //personalizado - informacion adicional 
-                                          link: '<?php echo base_url().'venta/ventas_cliente/'; ?>'+place[4], //personalizado - informacion adicional               
+                                          link: place[4],
+                                          //link: '<?php //echo base_url().'venta/ventas_cliente/'; ?>'+place[4], //personalizado - informacion adicional               
                                           icon: '<?php echo base_url().'resources/images/blue.png';?>' 
  
                                       }); 
                                       
-                                } 
+                                }
  
  
  
@@ -126,7 +127,7 @@
                                   google.maps.event.addListener(marker, 'click', function() { 
                                  
                               //html de como vamos a visualizar el contenido del globo 
-                                  var contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+this.link+'"><h5>'+this.nombre +'</h5></a>' +  this.info + '</div>'; 
+                                  var contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+link1+this.link+'"><h5>Ventas: '+this.nombre +'</h5></a>'+'<a href="'+link2+this.link+'"><h5>Pedidos: '+this.nombre +'</h5></a>' +  this.info + '</div>'; 
                                   
                                   infowindow.setContent(contenido); //asignar el contenido al globo 
                                   infowindow.open(map, this); //mostrarlo 

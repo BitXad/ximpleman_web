@@ -590,5 +590,49 @@ class Cliente_model extends CI_Model
         ";
         return $this->db->query($sql)->result_array();
     }
+    /*
+     * Funcion para obtener todos cliente visitados
+     */
+    function get_clientes_por_pedidos($zona_id)
+    {
+        $fecha = date("Y-m-d");
+        
+        $sql = "(select distinct(c.cliente_id),c.cliente_nombre,c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 1 as cliente_visitado
+                from pedido v, cliente c
+                where 
+                v.cliente_id = c.cliente_id and
+                date(v.pedido_fecha) >= '".$fecha."' and
+                date(v.pedido_fecha) <= '".$fecha."' and
+                    
+                c.zona_id = ".$zona_id."
+
+                group by v.pedido_id)
+
+                UNION
+
+                (
+                select distinct(c.cliente_id),c.cliente_nombre,c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 0 as cliente_visitado
+                from cliente c
+                where 
+                c.zona_id = ".$zona_id." and
+                c.cliente_id not in 
+                (
+                select distinct(c.cliente_id)
+                from pedido v, cliente c
+                where 
+                v.cliente_id = c.cliente_id and
+                date(v.pedido_fecha) >= '".$fecha."' and
+                date(v.pedido_fecha) <= '".$fecha."' and
+                c.zona_id = ".$zona_id."
+
+                group by v.pedido_id
+                )
+
+                )";
+                
+        
+        return $this->db->query($sql)->result_array();
+
+    }
     
 }

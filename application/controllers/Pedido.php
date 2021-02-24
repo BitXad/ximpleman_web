@@ -73,6 +73,9 @@ class Pedido extends CI_Controller{
             $data['pedido'] = $this->Pedido_model->get_pedidos($filtro);
         }
         
+        $this->load->model('Categoria_clientezona_model');
+        $data['all_categoria_clientezona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona_asc();
+
         $data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
         $data['estado'] = $this->Estado_model->get_tipo_estado(5);
         
@@ -1386,7 +1389,38 @@ function registrarpedido()
         }
         
     }
-    
+    /*
+    * mapa de clientes para pedidos
+    */
+    function mapa_depedidos()
+    {
+        if($this->acceso(30)) {
+            //**************** inicio contenido ***************
+            $data['page_title'] = "Mapa de pedidos";
+            //$usuario_id = $this->session_data['usuario_id']; //$this->session->userdata('id_usu');
+
+            //$fecha_desde = $this->input->post("fecha_desde");
+            //$fecha_hasta = $this->input->post("fecha_hasta");
+            $zona_id = $this->input->post("zona_busqueda");
+            if(isset($zona_id)){
+
+                $data['parametros'] = $this->Parametro_model->get_parametro(1);
+                
+                $data['all_cliente'] = $this->Cliente_model->get_clientes_por_pedidos($zona_id);
+                $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($zona_id);
+                //$data['puntos_referencia'] = $this->Puntos_referencia_model->get_all_puntos_referencia();
+                $data['_view'] = 'pedido/mapa_depedidos';
+
+                $this->load->view('layouts/main',$data);
+
+            }
+            else{
+                redirect('pedido');
+            }
+                //**************** fin contenido ***************
+
+        }
+    }
     
     
 }
