@@ -30,7 +30,7 @@
                 <div class="small-box bg-aqua">
                     <div class="inner" >
                         <h3><b><fa class="fa fa-cart-plus"></fa></b></h3>
-                        <?php if($objetivo['objetivo_diario']){ ?>
+                        <?php if(isset($objetivo['objetivo_diario'])){ ?>
                             <div>
                                 <h5 width="100%"><b><?php echo " Bs ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> / <?= number_format($objetivo['objetivo_diario'],2,'.',','); ?></b></h5>
                             </div>
@@ -42,7 +42,7 @@
                         <i class="fa fa-cart-plus"></i>              
                     </div>
                     <!-- Barra de progreso en objetivo -->
-                    <?php if($objetivo['objetivo_diario']){ ?>
+                    <?php if(isset($objetivo['objetivo_diario'])){ ?>
                     <div class="progress" style="height:10px; margin-bottom: 2px;">
                         <div class="progress-bar" role="progressbar" style="width: <?= ((number_format($ventas[0]['total_ventas'],2,'.',',')*100)/$objetivo['objetivo_diario']) ?>%; background-color: #00acd7" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
@@ -66,7 +66,7 @@
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>              
                     </div>
                     <!-- Barra de progreso en objetivo -->
-                    <?php if($objetivo['objetivo_diario']){ ?>
+                    <?php if(isset($objetivo['objetivo_diario'])){ ?>
                         <div class="progress" style="height:10px; margin-bottom: 2px;">
                             <div class="progress-bar" role="progressbar" style="width: <?= (($entregas_dia['pedido_diario']*100)/$objetivo['objetivo_pedido']) ?>%; background-color: #c64333" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                         </div>
@@ -138,7 +138,7 @@
                 <section>
                 <div class="container">
                     <div class="row">
-                        <?php if($objetivo['objetivo_mes']){ ?>
+                        <?php if(isset($objetivo['objetivo_mes'])){ ?>
                             <div>
                                 <h4 class="title" style="display: inline;" >Ventas</h4>
                                 <h4 class="text-right mr-0" style="display: inline;">&nbsp;&nbsp;&nbsp;Bs. <?= $ventas_mes['total_mes'] ?> / <?= $objetivo['objetivo_mes'] ?></h4>
@@ -151,7 +151,7 @@
                                 <br>
                                 <br>
                         <?php } ?>
-                        <?php if($objetivo['objetivo_pedido_mes']){ ?>
+                        <?php if(isset($objetivo['objetivo_pedido_mes'])){ ?>
                             <div>
                                 <h4 class="title" style="display: inline;" >Pedidos realizados</h4>
                                 <h4 class="text-right mr-0" style="display: inline;">&nbsp;&nbsp;&nbsp;<?= $entregas_mes['pedido_mes'] ?> / <?= $objetivo['objetivo_pedido_mes'] ?></h4>
