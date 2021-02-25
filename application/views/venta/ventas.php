@@ -548,10 +548,11 @@ window.onkeydown = compruebaTecla;
 <!-------------------------- FIN BOTON AGRUPAR --------------------------------------->    
        
        <button class="btn btn-success btn-xs" onclick="actualizar_inventario()"><span class="fa fa-cubes"></span> Inventario</button>
-       
+        <?php if($rolusuario[185-1]['rolusuario_asignado'] == 1){ ?>
         <button type="button" id="boton_modal_promocion" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#modalpromocion" >
-                    <fa class="fa fa-cube"></fa> Promociones
-        </button>    
+            <fa class="fa fa-cube"></fa> Promociones
+        </button>
+        <?php } ?>
 <!--<span class="badge btn-primary">-->
         
         
@@ -633,7 +634,7 @@ window.onkeydown = compruebaTecla;
             
             
             <?php            
-            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
+            if($rolusuario[21-1]['rolusuario_asignado'] == 1){ ?>
             <a href="<?php echo base_url('venta/ultimorecibo');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: #761c19" id="imprimir"><span class="fa fa-print" title="Imprimir nota de entrega"></span><b> Recibo</b></a> 
             
             <?php } 
@@ -697,19 +698,23 @@ window.onkeydown = compruebaTecla;
             <?php } ?>
             
             <?php
-            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
+            if($rolusuario[184-1]['rolusuario_asignado'] == 1){ ?>
             
             <a href="<?php echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>
             
             <?php } ?>      
             
-            <!--<a href="<?php echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>-->
+            <!--<a href="<?php //echo base_url('venta/ultimagarantia');?>" data-toggle="modal" target="_blank" class="btn btn-facebook btn-xs"  style="background-color: purple"  id="garantias"><span class="fa fa-lock" title="Imprimir garantias"></span><b> Garantias</b></a>-->
+            <?php
+            if($rolusuario[17-1]['rolusuario_asignado'] == 1){ ?>
             <select  id="select_imprimir_factura" style="font-weight: bold" onclick="imprimir_factura()" class='btn btn-warning btn-xs' title="Imprimir factura">
                 <option value="0">Imprimir</option>
                 <option value="1">Factura</option>
                 <option value="2">Copia</option>
             </select>
-            
+            <?php
+            }
+            ?>
             </div>
         </div>
         

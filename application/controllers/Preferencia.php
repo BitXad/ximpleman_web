@@ -9,7 +9,20 @@ class Preferencia extends CI_Controller{
     {
         parent::__construct();
         $this->load->model('Preferencia_model');
-        
+        if ($this->session->userdata('logged_in')) {
+            $this->session_data = $this->session->userdata('logged_in');
+        }else {
+            redirect('', 'refresh');
+        }
+    }
+     private function acceso($id_rol){
+        $rolusuario = $this->session_data['rol'];
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
+            return true;
+        }else{
+            $data['_view'] = 'login/mensajeacceso';
+            $this->load->view('layouts/main',$data);
+        }
     } 
 
     /*
@@ -17,19 +30,21 @@ class Preferencia extends CI_Controller{
      */
     function index()
     {
-        $data['page_title'] = "Preferencia";
-        $params['limit'] = RECORDS_PER_PAGE; 
-        $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
-        
-        $config = $this->config->item('pagination');
-        $config['base_url'] = site_url('preferencia/index?');
-        $config['total_rows'] = $this->Preferencia_model->get_all_preferencia_count();
-        $this->pagination->initialize($config);
+        if($this->acceso(189)){
+            $data['page_title'] = "Preferencia";
+            $params['limit'] = RECORDS_PER_PAGE; 
+            $params['offset'] = ($this->input->get('per_page')) ? $this->input->get('per_page') : 0;
 
-        $data['preferencia'] = $this->Preferencia_model->get_preferencia_all($params);
-        
-        $data['_view'] = 'preferencia/index';
-        $this->load->view('layouts/main',$data);
+            $config = $this->config->item('pagination');
+            $config['base_url'] = site_url('preferencia/index?');
+            $config['total_rows'] = $this->Preferencia_model->get_all_preferencia_count();
+            $this->pagination->initialize($config);
+
+            $data['preferencia'] = $this->Preferencia_model->get_preferencia_all($params);
+
+            $data['_view'] = 'preferencia/index';
+            $this->load->view('layouts/main',$data);
+        }
     }
 
     /*
@@ -37,76 +52,78 @@ class Preferencia extends CI_Controller{
      */
     function add()
     {
-        $data['page_title'] = "Preferencia";
-        $this->load->library('form_validation');
-        $this->form_validation->set_rules('preferencia_descripcion','Preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-        if($this->form_validation->run())     
-        {
-            /* *********************INICIO imagen***************************** */
-            $foto="";
-            if (!empty($_FILES['preferencia_foto']['name'])){
-                $this->load->library('image_lib');
-                $config['upload_path'] = './resources/images/preferencia/';
-                $img_full_path = $config['upload_path'];
+        if($this->acceso(189)){
+            $data['page_title'] = "Preferencia";
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules('preferencia_descripcion','Preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+            if($this->form_validation->run())     
+            {
+                /* *********************INICIO imagen***************************** */
+                $foto="";
+                if (!empty($_FILES['preferencia_foto']['name'])){
+                    $this->load->library('image_lib');
+                    $config['upload_path'] = './resources/images/preferencia/';
+                    $img_full_path = $config['upload_path'];
 
-                $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                $config['image_library'] = 'gd2';
-                $config['max_size'] = 0;
-                $config['max_width'] = 0;
-                $config['max_height'] = 0;
+                    $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                    $config['image_library'] = 'gd2';
+                    $config['max_size'] = 0;
+                    $config['max_width'] = 0;
+                    $config['max_height'] = 0;
 
-                $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
-                $config['file_name'] = $new_name; //.$extencion;
-                $config['file_ext_tolower'] = TRUE;
+                    $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                    $config['file_name'] = $new_name; //.$extencion;
+                    $config['file_ext_tolower'] = TRUE;
 
-                $this->load->library('upload', $config);
-                $this->upload->do_upload('preferencia_foto');
+                    $this->load->library('upload', $config);
+                    $this->upload->do_upload('preferencia_foto');
 
-                $img_data = $this->upload->data();
-                $extension = $img_data['file_ext'];
-                /* ********************INICIO para resize***************************** */
-                if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
-                    $conf['image_library'] = 'gd2';
-                    $conf['source_image'] = $img_data['full_path'];
-                    $conf['new_image'] = './resources/images/preferencia/';
-                    $conf['maintain_ratio'] = TRUE;
-                    $conf['create_thumb'] = FALSE;
-                    $conf['width'] = 800;
-                    $conf['height'] = 800;
-                    $this->image_lib->clear();
-                    $this->image_lib->initialize($conf);
-                    if(!$this->image_lib->resize()){
-                        echo $this->image_lib->display_errors('','');
+                    $img_data = $this->upload->data();
+                    $extension = $img_data['file_ext'];
+                    /* ********************INICIO para resize***************************** */
+                    if ($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                        $conf['image_library'] = 'gd2';
+                        $conf['source_image'] = $img_data['full_path'];
+                        $conf['new_image'] = './resources/images/preferencia/';
+                        $conf['maintain_ratio'] = TRUE;
+                        $conf['create_thumb'] = FALSE;
+                        $conf['width'] = 800;
+                        $conf['height'] = 800;
+                        $this->image_lib->clear();
+                        $this->image_lib->initialize($conf);
+                        if(!$this->image_lib->resize()){
+                            echo $this->image_lib->display_errors('','');
+                        }
                     }
+                    /* ********************F I N  para resize***************************** */
+                    $confi['image_library'] = 'gd2';
+                    $confi['source_image'] = './resources/images/preferencia/'.$new_name.$extension;
+                    $confi['new_image'] = './resources/images/preferencia/'."thumb_".$new_name.$extension;
+                    $confi['create_thumb'] = FALSE;
+                    $confi['maintain_ratio'] = TRUE;
+                    $confi['width'] = 100;
+                    $confi['height'] = 100;
+
+                    $this->image_lib->clear();
+                    $this->image_lib->initialize($confi);
+                    $this->image_lib->resize();
+
+                    $foto = $new_name.$extension;
                 }
-                /* ********************F I N  para resize***************************** */
-                $confi['image_library'] = 'gd2';
-                $confi['source_image'] = './resources/images/preferencia/'.$new_name.$extension;
-                $confi['new_image'] = './resources/images/preferencia/'."thumb_".$new_name.$extension;
-                $confi['create_thumb'] = FALSE;
-                $confi['maintain_ratio'] = TRUE;
-                $confi['width'] = 100;
-                $confi['height'] = 100;
+                /* *********************FIN imagen***************************** */
+                $estado_id = 1;
+                $params = array(
+                    'estado_id' => $estado_id,
+                    'preferencia_descripcion' => $this->input->post('preferencia_descripcion'),
+                    'preferencia_foto' => $foto,
+                );
 
-                $this->image_lib->clear();
-                $this->image_lib->initialize($confi);
-                $this->image_lib->resize();
-
-                $foto = $new_name.$extension;
+                $preferencia_id = $this->Preferencia_model->add_preferencia($params);
+                redirect('preferencia/index');
+            }else{
+                $data['_view'] = 'preferencia/add';
+                $this->load->view('layouts/main',$data);
             }
-            /* *********************FIN imagen***************************** */
-            $estado_id = 1;
-            $params = array(
-                'estado_id' => $estado_id,
-                'preferencia_descripcion' => $this->input->post('preferencia_descripcion'),
-                'preferencia_foto' => $foto,
-            );
-            
-            $preferencia_id = $this->Preferencia_model->add_preferencia($params);
-            redirect('preferencia/index');
-        }else{
-            $data['_view'] = 'preferencia/add';
-            $this->load->view('layouts/main',$data);
         }
     }
 
@@ -115,97 +132,99 @@ class Preferencia extends CI_Controller{
      */
     function edit($preferencia_id)
     {
-        $data['page_title'] = "Forma Pago";
-        // check if the preferencia exists before trying to edit it
-        $data['preferencia'] = $this->Preferencia_model->get_preferencia($preferencia_id);
-        
-        if(isset($data['preferencia']['preferencia_id']))
-        {
-            $this->load->library('form_validation');
-                $this->form_validation->set_rules('preferencia_descripcion','Preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
-                if($this->form_validation->run())
-                {
-                    /* *********************INICIO imagen***************************** */
-                    $foto="";
-                    $foto1= $this->input->post('preferencia_foto1');
-                    if (!empty($_FILES['preferencia_foto']['name']))
+        if($this->acceso(189)){
+            $data['page_title'] = "Forma Pago";
+            // check if the preferencia exists before trying to edit it
+            $data['preferencia'] = $this->Preferencia_model->get_preferencia($preferencia_id);
+
+            if(isset($data['preferencia']['preferencia_id']))
+            {
+                $this->load->library('form_validation');
+                    $this->form_validation->set_rules('preferencia_descripcion','Preferencia','trim|required', array('required' => 'Este Campo no debe ser vacio'));
+                    if($this->form_validation->run())
                     {
-                        $this->load->library('image_lib');
-                        $config['upload_path'] = './resources/images/preferencia/';
-                        $config['allowed_types'] = 'gif|jpeg|jpg|png';
-                        $config['max_size'] = 0;
-                        $config['max_width'] = 0;
-                        $config['max_height'] = 0;
+                        /* *********************INICIO imagen***************************** */
+                        $foto="";
+                        $foto1= $this->input->post('preferencia_foto1');
+                        if (!empty($_FILES['preferencia_foto']['name']))
+                        {
+                            $this->load->library('image_lib');
+                            $config['upload_path'] = './resources/images/preferencia/';
+                            $config['allowed_types'] = 'gif|jpeg|jpg|png';
+                            $config['max_size'] = 0;
+                            $config['max_width'] = 0;
+                            $config['max_height'] = 0;
 
-                        $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
-                        $config['file_name'] = $new_name; //.$extencion;
-                        $config['file_ext_tolower'] = TRUE;
+                            $new_name = time(); //str_replace(" ", "_", $this->input->post('proveedor_nombre'));
+                            $config['file_name'] = $new_name; //.$extencion;
+                            $config['file_ext_tolower'] = TRUE;
 
-                        $this->load->library('upload', $config);
-                        $this->upload->do_upload('preferencia_foto');
+                            $this->load->library('upload', $config);
+                            $this->upload->do_upload('preferencia_foto');
 
-                        $img_data = $this->upload->data();
-                        $extension = $img_data['file_ext'];
-                        /* ********************INICIO para resize***************************** */
-                        if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
-                            $conf['image_library'] = 'gd2';
-                            $conf['source_image'] = $img_data['full_path'];
-                            $conf['new_image'] = './resources/images/preferencia/';
-                            $conf['maintain_ratio'] = TRUE;
-                            $conf['create_thumb'] = FALSE;
-                            $conf['width'] = 800;
-                            $conf['height'] = 800;
-                            $this->image_lib->clear();
-                            $this->image_lib->initialize($conf);
-                            if(!$this->image_lib->resize()){
-                                echo $this->image_lib->display_errors('','');
-                            }
-                        }
-                        /* ********************F I N  para resize***************************** */
-                        $base_url = explode('/', base_url());
-                        $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/preferencia/';
-                        if(isset($foto1) && !empty($foto1)){
-                            if(file_exists($directorio.$foto1)){
-                                unlink($directorio.$foto1);
-                                $mimagenthumb = "thumb_".$foto1;
-                                if(file_exists($directorio.$mimagenthumb)){
-                                    unlink($directorio.$mimagenthumb);
+                            $img_data = $this->upload->data();
+                            $extension = $img_data['file_ext'];
+                            /* ********************INICIO para resize***************************** */
+                            if($img_data['file_ext'] == ".jpg" || $img_data['file_ext'] == ".png" || $img_data['file_ext'] == ".jpeg" || $img_data['file_ext'] == ".gif") {
+                                $conf['image_library'] = 'gd2';
+                                $conf['source_image'] = $img_data['full_path'];
+                                $conf['new_image'] = './resources/images/preferencia/';
+                                $conf['maintain_ratio'] = TRUE;
+                                $conf['create_thumb'] = FALSE;
+                                $conf['width'] = 800;
+                                $conf['height'] = 800;
+                                $this->image_lib->clear();
+                                $this->image_lib->initialize($conf);
+                                if(!$this->image_lib->resize()){
+                                    echo $this->image_lib->display_errors('','');
                                 }
                             }
+                            /* ********************F I N  para resize***************************** */
+                            $base_url = explode('/', base_url());
+                            $directorio = $_SERVER['DOCUMENT_ROOT'].'/'.$base_url[3].'/resources/images/preferencia/';
+                            if(isset($foto1) && !empty($foto1)){
+                                if(file_exists($directorio.$foto1)){
+                                    unlink($directorio.$foto1);
+                                    $mimagenthumb = "thumb_".$foto1;
+                                    if(file_exists($directorio.$mimagenthumb)){
+                                        unlink($directorio.$mimagenthumb);
+                                    }
+                                }
+                            }
+                            $confi['image_library'] = 'gd2';
+                            $confi['source_image'] = './resources/images/preferencia/'.$new_name.$extension;
+                            $confi['new_image'] = './resources/images/preferencia/'."thumb_".$new_name.$extension;
+                            $confi['create_thumb'] = FALSE;
+                            $confi['maintain_ratio'] = TRUE;
+                            $confi['width'] = 100;
+                            $confi['height'] = 100;
+
+                            $this->image_lib->clear();
+                            $this->image_lib->initialize($confi);
+                            $this->image_lib->resize();
+
+                            $foto = $new_name.$extension;
+                        }else{
+                            $foto = $foto1;
                         }
-                        $confi['image_library'] = 'gd2';
-                        $confi['source_image'] = './resources/images/preferencia/'.$new_name.$extension;
-                        $confi['new_image'] = './resources/images/preferencia/'."thumb_".$new_name.$extension;
-                        $confi['create_thumb'] = FALSE;
-                        $confi['maintain_ratio'] = TRUE;
-                        $confi['width'] = 100;
-                        $confi['height'] = 100;
-
-                        $this->image_lib->clear();
-                        $this->image_lib->initialize($confi);
-                        $this->image_lib->resize();
-
-                        $foto = $new_name.$extension;
+                        /* *********************FIN imagen***************************** */
+                        $params = array(
+                            'estado_id' => $this->input->post('estado_id'),
+                            'preferencia_descripcion' => $this->input->post('preferencia_descripcion'),
+                            'preferencia_foto' => $foto,
+                        );
+                        $this->Preferencia_model->update_preferencia($preferencia_id,$params);            
+                        redirect('preferencia/index');
                     }else{
-                        $foto = $foto1;
+                        $this->load->model('Estado_model');
+                        $data['all_estado'] = $this->Estado_model->get_estado_tipo(1);
+                        $data['_view'] = 'preferencia/edit';
+                        $this->load->view('layouts/main',$data);
                     }
-                    /* *********************FIN imagen***************************** */
-                    $params = array(
-                        'estado_id' => $this->input->post('estado_id'),
-                        'preferencia_descripcion' => $this->input->post('preferencia_descripcion'),
-                        'preferencia_foto' => $foto,
-                    );
-                    $this->Preferencia_model->update_preferencia($preferencia_id,$params);            
-                    redirect('preferencia/index');
-                }else{
-                    $this->load->model('Estado_model');
-                    $data['all_estado'] = $this->Estado_model->get_estado_tipo(1);
-                    $data['_view'] = 'preferencia/edit';
-                    $this->load->view('layouts/main',$data);
-                }
+            }
+            else
+                show_error('The preferencia you are trying to edit does not exist.');
         }
-        else
-            show_error('The preferencia you are trying to edit does not exist.');
     } 
 
     /*
@@ -213,16 +232,17 @@ class Preferencia extends CI_Controller{
      */
     function remove($preferencia_id)
     {
-        $preferencia = $this->Preferencia_model->get_preferencia($preferencia_id);
-
-        // check if the preferencia exists before trying to delete it
-        if(isset($preferencia['preferencia_id']))
-        {
-            $this->Preferencia_model->delete_preferencia($preferencia_id);
-            redirect('preferencia/index');
+        if($this->acceso(189)){
+            $preferencia = $this->Preferencia_model->get_preferencia($preferencia_id);
+            // check if the preferencia exists before trying to delete it
+            if(isset($preferencia['preferencia_id']))
+            {
+                $this->Preferencia_model->delete_preferencia($preferencia_id);
+                redirect('preferencia/index');
+            }
+            else
+                show_error('The preferencia you are trying to delete does not exist.');
         }
-        else
-            show_error('The preferencia you are trying to delete does not exist.');
     }
     
 }

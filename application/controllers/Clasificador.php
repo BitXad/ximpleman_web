@@ -17,8 +17,7 @@ class Clasificador extends CI_Controller{
     }
      private function acceso($id_rol){
         $rolusuario = $this->session_data['rol'];
-        //if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
-        if(1 == 1){
+        if($rolusuario[$id_rol-1]['rolusuario_asignado'] == 1){
             return true;
         }else{
             $data['_view'] = 'login/mensajeacceso';
@@ -30,7 +29,7 @@ class Clasificador extends CI_Controller{
      */
     function index()
     {
-        if($this->acceso(134)){
+        if($this->acceso(191)){
         $data['clasificador'] = $this->Clasificador_model->get_all_clasificador();
         $data['page_title'] = "Clasificador";
         $data['_view'] = 'clasificador/index';
@@ -44,7 +43,7 @@ class Clasificador extends CI_Controller{
      */
     function add()
     {
-        if($this->acceso(134)){
+        if($this->acceso(191)){
             $this->load->library('form_validation');
             $this->form_validation->set_rules('clasificador_nombre','Clasificador','trim|required', array('required' => 'Este Campo no debe ser vacio'));
 
@@ -69,7 +68,7 @@ class Clasificador extends CI_Controller{
      */
     function edit($clasificador_id)
     {
-        if($this->acceso(134)){
+        if($this->acceso(191)){
             // check if the clasificador exists before trying to edit it
             $data['clasificador'] = $this->Clasificador_model->get_clasificador($clasificador_id);
 
@@ -102,7 +101,7 @@ class Clasificador extends CI_Controller{
      */
     /*function remove($clasificador_id)
     {
-        if($this->acceso(134)){
+        if($this->acceso(191)){
 
         // check if the clasificador exists before trying to delete it
         if(isset($clasificador['clasificador_id']))
@@ -120,7 +119,7 @@ class Clasificador extends CI_Controller{
      */
     function inventario()
     {
-        if($this->acceso(134)){
+        if($this->acceso(192)){
             $data['rolusuario'] = $this->session_data['rol'];
             $empresa_id = 1;
             $data['page_title'] = "Inventario";
@@ -138,7 +137,7 @@ class Clasificador extends CI_Controller{
      */
     function cargar_catalogo()
     {
-        if($this->acceso(134)){
+        //if($this->acceso(191)){
             if ($this->input->is_ajax_request()) {
                 $data['rolusuario'] = $this->session_data['rol'];
                 
@@ -173,11 +172,11 @@ class Clasificador extends CI_Controller{
             }else{
                 show_404();
             }
-        }
+        //}
     }
     function mostrar_clasificadorinventario()
     {
-        if($this->acceso(134)){
+        if($this->acceso(192)){
             $parametro = $this->input->post("parametro");
             if ($parametro=="" || $parametro==null){
                 $maximo = $this->Clasificador_model->get_maxclasificadorusado();

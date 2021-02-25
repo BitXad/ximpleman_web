@@ -2677,6 +2677,10 @@ function tabla_ventas(filtro)
     var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
     var cantus         = all_usuario.length;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var certif_garantia = document.getElementById('certif_garantia').value;
+    var dosificado      = document.getElementById('dosificado').value;
+    var generar_factura = document.getElementById('generar_factura').value;
+    var modif_fhora     = document.getElementById('modif_fhora').value;
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     document.getElementById('oculto2').style.display = 'block'; //mostrar el bloque del loader
     
@@ -2759,7 +2763,7 @@ function tabla_ventas(filtro)
                     html += "                       </td>";
 
                     html += "                       <td style='padding:0;'><center>";
-                    if(tipousuario_id == 1){
+                    if(modif_fhora == 1){
                         html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-sm' title='Modificar fecha y hora'>";
                         html += formato_fecha(v[i]['venta_fecha']);;
                         html += "<br> "+v[i]['venta_hora'];
@@ -2783,7 +2787,9 @@ function tabla_ventas(filtro)
                     html += "                           <a href='"+base_url+"venta/modificar_venta/"+v[i]['venta_id']+"' class='btn btn-facebook btn-xs no-print' target='_blank' title='Modificar el detalle/cliente de la venta'><span class='fa fa-edit'></span></a>";
 //                    html += "                           <a href='"+base_url+"venta/nota_venta/"+v[i]['venta_id']+"' class='btn btn-success btn-xs'><span class='fa fa-print'></span></a> ";
                     html += "                           <a href='"+base_url+"factura/imprimir_recibo/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir nota de venta' id='imprimir"+v[i]['venta_id']+"'><span class='fa fa-print'></span></a> ";
-                    html += "                           <a href='"+base_url+"factura/certificado_garantia/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir certificado de garantia' style='background-color: purple'> <span class='fa fa-lock'></span> </a> ";
+                    if(certif_garantia == 1){
+                        html += "                           <a href='"+base_url+"factura/certificado_garantia/"+v[i]['venta_id']+"' class='btn btn-success btn-xs' target='_blank' title='Imprimir certificado de garantia' style='background-color: purple'> <span class='fa fa-lock'></span> </a> ";
+                    }
                     if(tipousuario_id == 1){
                     html += "<a class='btn btn-soundcloud btn-xs' data-toggle='modal' data-target='#modalusuario"+v[i]['venta_id']+"' title='Modificar Usuario vendedor'><span class='fa fa-user'></span></a>";
                     html += "<!------------------------ INICIO modal para cambiar usuario vendedor ------------------->";
@@ -2832,8 +2838,12 @@ function tabla_ventas(filtro)
                     if (v[i]['venta_tipodoc']==1){
                         html += " <a href='"+base_url+"factura/imprimir_factura/"+v[i]['venta_id']+"/0' target='_blank' class='btn btn-warning btn-xs' title='Ver/anular factura'><span class='fa fa-list-alt'></span></a> ";
                     }
-                    else{                        
-                        html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
+                    else{
+                        if(generar_factura == 1){
+                            if(dosificado == 1){
+                                html += " <button class='btn btn-facebook btn-xs' style='background-color:#000;' title='Generar factura' onclick='cargar_factura("+JSON.stringify(v[i])+");'><span class='fa fa-modx'></span></button> ";
+                            }
+                        }
                     }
                     
                     html += "<br><br>";

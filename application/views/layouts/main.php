@@ -371,7 +371,7 @@
                         </li>
                         <?php
                         }
-                        if($rolusuario[126-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[189-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('preferencia');?>"><i class="fa fa-list-ul"></i>Preferencia</a>
@@ -385,7 +385,7 @@
                         </li> 
                         <?php
                         }
-                        if($rolusuario[126-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[190-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('producto_preferencia');?>"><i class="fa fa-list-ol"></i>Producto Preferencia</a>
@@ -456,7 +456,7 @@
                     <ul class="treeview-menu">
                          <?php
                         
-                        if($rolusuario[117-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[191-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('clasificador');?>"><i class="glyphicon glyphicon-list-alt"></i>Clasificador</a>
@@ -595,7 +595,7 @@
                         } ?>
                         
                         <?php
-                        if($rolusuario[24-1]['rolusuario_asignado'] == 1){
+                        if($rolusuario[192-1]['rolusuario_asignado'] == 1){
                         ?>
                         <li>
                             <a href="<?php echo site_url('clasificador/inventario');?>"><i class="fa fa-list-ol"></i>Inventario Clasificador</a>

@@ -53,6 +53,10 @@
 <input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
+<input type="hidden" id="certif_garantia" value="<?php echo $rolusuario[184-1]['rolusuario_asignado']; ?>" name="certif_garantia">
+<input type="hidden" id="dosificado" value="<?php echo $dosificado; ?>" name="dosificado">
+<input type="hidden" id="generar_factura" value="<?php echo $rolusuario[187-1]['rolusuario_asignado']; ?>" name="generar_factura">
+<input type="hidden" id="modif_fhora" value="<?php echo $rolusuario[188-1]['rolusuario_asignado']; ?>" name="modif_fhora">
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($usuario); ?>' />
@@ -77,7 +81,9 @@
                     <?php } ?>
                     <button class="btn btn-warning btn-sm" onclick="verificar_ventas()"><span class="fa fa-binoculars"></span> Verificar </button>
                     <a href="<?php echo site_url('venta/ventas'); ?>" class="btn btn-success btn-sm"><span class="fa fa-cart-arrow-down"></span> Ventas</a>
+                    <?php if($rolusuario[186-1]['rolusuario_asignado'] == 1){ ?>
                     <a class="btn btn-success btn-sm" onclick="imprimirtodo()" title="Imprime todas la ventas" style="background-color: #761c19"><span class="fa fa-print"></span> Imprimir</a>
+                    <?php } ?>
                 </div>
 </div>
 <!---------------------------------- panel oculto para busqueda--------------------------------------------------------->

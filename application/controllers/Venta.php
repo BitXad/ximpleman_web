@@ -63,7 +63,12 @@ class Venta extends CI_Controller{
         $data['parametro'] = $this->Parametro_model->get_parametros();
         $data['estado'] = $this->Estado_model->get_tipo_estado(1);
         $data['usuario'] = $this->Venta_model->get_usuarios();
-        
+        $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
+        if(sizeof($dosificacion)>0){
+            $data['dosificado'] = 1;
+        }else{
+            $data['dosificado'] = 0;
+        }
         $data['_view'] = 'venta/index';
         $this->load->view('layouts/main',$data);
         
