@@ -70,57 +70,44 @@
  
         //recorremos cada uno de los puntos
         for (var i = 0; i < puntos.length; i++) {
-            
-            
           var place = puntos[i];
           var marker;
           
           if (place[5]==1){
-          
-            //propiedades del marcador
-                var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(place[1], place[2]), //posicion
-                map: map,
-                scrollwheel: false,
-                animation: google.maps.Animation.DROP, //animacion           
-                nombre: place[0], //personalizado - nombre del punto
-                info: place[3], //personalizado - informacion adicional
-                link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
-                icon:'<?php echo base_url().'resources/images/blue.png'; ?>'
-
-            });
-          
+              var color_icon = '<?php echo base_url().'resources/images/blue.png'; ?>';
+          }else{
+              var color_icon = '<?php echo base_url().'resources/images/red.png'; ?>';
           }
-          else{
-          
-
-            //propiedades del marcador
-                var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(place[1], place[2]), //posicion
-                map: map,
-                scrollwheel: false,
+          //propiedades del marcador
+          var marker = new google.maps.Marker({
+            position: new google.maps.LatLng(place[1], place[2]), //posicion
+            map: map,
+            scrollwheel: false,
+            animation: google.maps.Animation.DROP, //animacion           
                 animation: google.maps.Animation.DROP, //animacion           
-                nombre: place[0], //personalizado - nombre del punto
-                info: place[3], //personalizado - informacion adicional
+            animation: google.maps.Animation.DROP, //animacion           
+                animation: google.maps.Animation.DROP, //animacion           
+            animation: google.maps.Animation.DROP, //animacion           
+            nombre: place[0], //personalizado - nombre del punto
+            info: place[3], //personalizado - informacion adicional
+            link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
                 link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
-                icon:'<?php echo base_url().'resources/images/red.png'; ?>'
+            link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
+                link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
+            link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
+            icon: color_icon
 
-            });
-
-          
-          }
-          
-          //se agrega el evento click a cada marcador, asi despliega la
-          //informacion nada uno de los marcadores
-          google.maps.event.addListener(marker, 'click', function() {
-            //html de como vamos a visualizar el contenido del globo
-            var contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+this.link+'"><h5>'+this.nombre +'</h5></a>' +  this.info + '</div>';
-            infowindow.setContent(contenido); //asignar el contenido al globo
-            infowindow.open(map, this); //mostrarlo
           });
-          
-          
         }
+          
+        //se agrega el evento click a cada marcador, asi despliega la
+        //informacion nada uno de los marcadores
+        google.maps.event.addListener(marker, 'click', function() {
+          //html de como vamos a visualizar el contenido del globo
+          var contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+this.link+'"><h5>'+this.nombre +'</h5></a>' +  this.info + '</div>';
+          infowindow.setContent(contenido); //asignar el contenido al globo
+          infowindow.open(map, this); //mostrarlo
+        });
       }
       
       //funcion para inicializar el mapa

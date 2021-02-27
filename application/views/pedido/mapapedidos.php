@@ -21,7 +21,7 @@
                   <tr>
                       <td>
                       
-    <div id="map"></div> <!-- mapa -->
+    <div id="map" style="width:100%"></div> <!-- mapa -->
     
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC5L7UMFw0GxFZgVXCfMLhGVK5Gn7HvG_U"></script>
     <script>      
@@ -71,7 +71,11 @@
         for (var i = 0; i < puntos.length; i++) {
             
           var place = puntos[i];
-          
+          if(place[5] == 1){
+              var color_icon = '<?php echo base_url().'resources/images/blue.png'; ?>';
+          }else{
+              var color_icon = '<?php echo base_url().'resources/images/red.png'; ?>';
+          }
           //propiedades del marcador
           var marker = new google.maps.Marker({
               position: new google.maps.LatLng(place[1], place[2]), //posicion
@@ -81,7 +85,7 @@
               nombre: place[0], //personalizado - nombre del punto
               info: place[3], //personalizado - informacion adicional
               link: '<?php echo base_url().'pedido/comprobante/'; ?>'+place[4], //personalizado - informacion adicional              
-              icon:'<?php echo base_url().'resources/images/blue.png'; ?>'
+              icon: color_icon
                      
           });
           

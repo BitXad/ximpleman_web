@@ -87,6 +87,8 @@
                 <a href="<?php echo site_url('recorrido'); ?>" class="btn btn-info btn-sm" style="width: 80px;"><span class="fa fa-pie-chart"></span> Estadistica</a>
                 <a href="<?php echo site_url('pedido/mapa_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span> Mapa</a>
                 <a class="btn btn-facebook btn-sm" data-toggle='modal' data-target='#modalmapa' style="width: 80px;" title="Mostrar mapa de pedidos"><span class="fa fa-map-o"></span> Mapa</a>
+                <!-- <a href="<?php echo site_url('pedido/mapa_seg_entregas'); ?>" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de entregas"><span class="fa fa-map"></span>Mapa Seg</a> -->
+                <a href="" id="mapa_seg_entregas" name="mapa_seg_entregas" target="_blank" class="btn btn-facebook btn-sm" style="width: 80px;" title="Mostrar mapa de seguimiento" onclick="mapa_seg()"><span class="fa fa-map"></span>Mapa Seg</a>
             </center>
         </div>
     </div>

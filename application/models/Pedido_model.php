@@ -250,7 +250,7 @@ class Pedido_model extends CI_Model
     function get_pedidos($condicion)
     {
 
-        $sql = "select 
+        $sql = "SELECT 
                 p.pedido_id,p.pedido_fecha,p.pedido_fechaentrega,p.pedido_glosa,
                 p.pedido_horaentrega, p.pedido_latitud, p.pedido_longitud, p.estado_id,
                 p.pedido_total, p.pedido_subtotal, p.pedido_descuento,p.usuario_id as usuarioprev_id,
@@ -268,7 +268,7 @@ class Pedido_model extends CI_Model
                 left join usuario u on u.usuario_id = p.usuario_id
                 left join tipo_transaccion t on t.tipotrans_id = p.tipotrans_id
                 where 1=1 
-                 ".$condicion." 
+                $condicion 
                 order by pedido_id desc";
 
         $pedido = $this->db->query($sql)->result_array();
@@ -314,15 +314,16 @@ class Pedido_model extends CI_Model
     
     function get_mis_pedidos($usuario_id)
     {
-
-        $sql = "select p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
-                c.cliente_latitud, c.cliente_longitud, c.cliente_direccion, c.cliente_foto
-               from pedido p, estado e, cliente c 
-               where 
-                p.estado_id = e.estado_id
-                and p.cliente_id = c.cliente_id
-                and p.usuario_id = ".$usuario_id;
-        
+        $sql = 
+        "SELECT  p.*, c.cliente_nombre, c.cliente_codigo, c.cliente_nombrenegocio, e.estado_descripcion, e.estado_color,
+            c.cliente_latitud, c.cliente_longitud, c.cliente_direccion, c.cliente_foto, v.entrega_id
+        FROM
+            pedido p, cliente c, estado e, venta v
+        WHERE
+            p.estado_id = e.estado_id AND 
+            p.cliente_id = c.cliente_id AND 
+            p.usuario_id = $usuario_id AND 
+            p.pedido_id = v.pedido_id";
         $result = $this->db->query($sql)->result_array();
         return $result;        
     }    
@@ -334,7 +335,7 @@ class Pedido_model extends CI_Model
         if ($usuario_id ==0)
             $usuario = "";
         else
-            $usuario = " AND p.entrega_usuarioid = ".$usuario_id;
+            $usuario = " AND p.entrega_usuarioid = $usuario_id";
     
 
         $sql = "SELECT p.*,c.cliente_nombre,c.cliente_codigo,c.cliente_nombrenegocio,e.estado_descripcion,e.estado_color, 
@@ -344,8 +345,9 @@ class Pedido_model extends CI_Model
                 LEFT JOIN cliente c ON p.cliente_id = c.cliente_id
                 WHERE p.entrega_id >= 1
                 AND p.entrega_id <= 2
-                AND p.venta_fecha >= '".$fecha_desde."'
-                AND p.venta_fecha <= '".$fecha_hasta."'".$usuario;
+                AND p.venta_fecha >= '$fecha_desde'
+                AND p.venta_fecha <= '$fecha_hasta'
+                $usuario";
         //echo $sql;
         $result = $this->db->query($sql)->result_array();
         return $result;        

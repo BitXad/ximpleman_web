@@ -1422,5 +1422,35 @@ function registrarpedido()
         }
     }
     
-    
+    function mapa_seg_entregas($usuario_id, $fecha_desde, $fecha_hasta,$select_pedido){
+        // if($this->acceso(30)) {
+            //**************** inicio contenido ***************  
+                $data['page_title'] = "Mapa";
+                // echo "hola $fecha_hasta $fecha_desde";
+                if($select_pedido == 1 || $select_pedido == 6){
+                    $fecha_desde = date("Y-m-d",strtotime($fecha_desde."- $select_pedido day"));
+                }else{
+                    if($select_pedido == 2 || $select_pedido == 7){
+                        $fecha_desde = date("Y-m-d",strtotime($fecha_desde."- $select_pedido day"));
+                        $aux = $select_pedido-1;
+                        $fecha_hasta = date("Y-m-d",strtotime($fecha_hasta."- $aux day"));
+                    }else{
+                        if($select_pedido == 3 || $select_pedido == 8){
+                            $fecha_desde = date("Y-m-d",strtotime($fecha_desde."- 1 week"));
+                        }else{
+                            if($select_pedido == 4 || $select_pedido == 9){
+                                $fecha_desde = date("Y-m-d",strtotime($fecha_desde."- 5 year"));
+                            }
+                        }
+                    }
+                }
+
+                $data['all_pedido'] = $this->Pedido_model->get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta);
+
+                $data['_view'] = 'pedido/mapa_seguimiento';
+                $this->load->view('layouts/main',$data);
+                
+            //**************** fin contenido ***************
+        // }
+    }
 }

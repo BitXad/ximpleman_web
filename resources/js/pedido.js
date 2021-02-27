@@ -1,3 +1,4 @@
+datos = "";
 $(document).on("ready",inicio);
 function inicio(){
        //alert('holaaaa');
@@ -39,8 +40,8 @@ function tabla_pedidos(filtro)
             var espresentacion="";
             var padding = "3px";
             var fecha_pedido = "";
-            var hora_pedido = "";
-            
+            var hora_p;edido = "";
+            set_mapa(p);
                 html = "";
 
             total_pedido = 0;   
@@ -287,7 +288,7 @@ function tabla_pedido_abierto()
              // alert("aquiiii....");
 
             var d = JSON.parse(response);
-            
+            set_mapa(d);
                 html = "";
 
 
@@ -609,7 +610,8 @@ function buscar_pedidos()
     var controlador = base_url+"pedido";
     var opcion      = document.getElementById('select_pedidos').value;
     var usuario_id  = document.getElementById('usuario_id').value;
-        
+    var fecha = new Date();
+    var fech_actual = fecha.getFullYear()+"-"+(fecha.getMonth()+1)+"-"+fecha.getDate(); 
     document.getElementById('loader').style.display = "block";
     
     var por_usuario = "";
@@ -853,7 +855,7 @@ function validar(e,opcion) {
     
     
         if (opcion==0){   //si la pulsacion proviene del telefono
-              document.getElementById('tipocliente_id').focus();
+            document.getElementById('tipocliente_id').focus();
         }
         
         if (opcion==1){   //si la pulsacion proviene del nit          
@@ -1001,4 +1003,24 @@ function cambiar_usuario(){
     var usuario_id = document.getElementById('select_usuarios').value;
     $('#usuario_id').val(usuario_id);
     buscar_pedidos();
+}
+
+function set_mapa(datos){
+    this.datos = datos;
+}
+
+function get_mapa(){
+    return this.datos;
+}
+
+function mapa_seg(){
+    var usuario_id = document.getElementById('select_usuarios').value;  
+    var fecha_desde = document.getElementById('fecha_desde').value;
+    var fecha_hasta = document.getElementById('fecha_hasta').value;
+    var select_pedidos = document.getElementById('select_pedidos').value;
+
+    var base_url    = document.getElementById('base_url').value;
+    var url= base_url+"pedido/mapa_seg_entregas/"+usuario_id+"/"+fecha_desde+"/"+fecha_hasta+"/"+select_pedidos;
+
+    document.getElementById("mapa_seg_entregas").href = url;
 }
