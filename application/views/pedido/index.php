@@ -201,28 +201,13 @@
     <div class='modal-dialog modal-sm' role='document'>
         <br><br>
         <div class='modal-content'>
-                <?php echo form_open_multipart('pedido/mapa_depedidos/', 'taget="blank"'); ?>
+                <?php //echo form_open_multipart('pedido/mapa_depedidos/', 'target="_blank"'); ?>
             <div class='modal-header text-center'>
                 <span style='font-size: 15pt' class='text-bold'>PEDIDOS</span>
                 <button type='button' class='close' data-dismiss='modal' aria-label='Close'><span aria-hidden='true'>x</span></button>
             </div>
             <div class='modal-body'>
                 <!------------------------------------------------------------------->
-                
-                <!--<div class="col-md-12">
-                    <div class="input-group">
-                        <span class="input-group-addon"><b>Desde:&nbsp</b></span>           
-                        <input type="date" value="<?php /*echo date('Y-m-d')?>" class="btn btn-primary btn-sm form-control" id="fecha_desde" name="fecha_desde" required="true">
-                    </div>
-                    <br>
-                </div>
-                <div class="col-md-12">
-                    <div class="input-group">
-                        <span class="input-group-addon"><b>Hasta:&nbsp</b></span>           
-                        <input type="date" value="<?php echo date('Y-m-d')*/?>" class="btn btn-primary btn-sm form-control" id="fecha_hasta" name="fecha_hasta" required="true">
-                    </div>
-                    <br>
-                </div>-->
                 <div class="col-md-12">
                     <div class="input-group">
                         <span class="input-group-addon"><b>Zona:&nbsp&nbsp</b></span>           
@@ -244,13 +229,13 @@
             </div>
             <div class='modal-footer aligncenter'>
                 <div class="col-md-6">
-                    <button type="submit"  target="_blank" class='btn btn-success btn-block' id='buscar_visita' name='buscar_visita' ><span class='fa fa-search'></span> Buscar </button>
+                    <button onclick="buscar_clienteszona()" target="_blank" class='btn btn-success btn-block' id='buscar_visita' name='buscar_visita' ><span class='fa fa-search'></span> Buscar </button>
                 </div>
                 <div class="col-md-6">
                     <a href='#' class='btn btn-danger btn-block' data-dismiss='modal' id='cerrar_modalmapa' name='cerrar_modalmapa'><span class='fa fa-times'></span> Cerrar </a>
                 </div>
             </div>
-            <?php echo form_close(); ?>
+            <?php //echo form_close(); ?>
         </div>
     </div>
 </div>

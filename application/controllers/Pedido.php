@@ -1392,7 +1392,7 @@ function registrarpedido()
     /*
     * mapa de clientes para pedidos
     */
-    function mapa_depedidos()
+    function mapa_depedidos($zona_id)
     {
         if($this->acceso(30)) {
             //**************** inicio contenido ***************
@@ -1401,7 +1401,7 @@ function registrarpedido()
 
             //$fecha_desde = $this->input->post("fecha_desde");
             //$fecha_hasta = $this->input->post("fecha_hasta");
-            $zona_id = $this->input->post("zona_busqueda");
+            //$zona_id = $this->input->post("zona_busqueda");
             if(isset($zona_id)){
 
                 $data['parametros'] = $this->Parametro_model->get_parametro(1);
@@ -1444,7 +1444,7 @@ function registrarpedido()
                         }
                     }
                 }
-
+                $data['parametros'] = $this->Parametro_model->get_parametro(1);
                 $data['all_pedido'] = $this->Pedido_model->get_para_entregas($usuario_id, $fecha_desde, $fecha_hasta);
 
                 $data['_view'] = 'pedido/mapa_seguimiento';

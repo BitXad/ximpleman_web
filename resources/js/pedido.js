@@ -1024,3 +1024,13 @@ function mapa_seg(){
 
     document.getElementById("mapa_seg_entregas").href = url;
 }
+
+function buscar_clienteszona(){
+    var base_url      = document.getElementById('base_url').value;
+    var zona_id = document.getElementById('zona_busqueda').value;
+    if(zona_id == null || zona_id == ""){
+        alert("Debe elegir una zona");
+    }else{
+        window.open(base_url+"pedido/mapa_depedidos/"+zona_id, '_blank');
+    }
+}

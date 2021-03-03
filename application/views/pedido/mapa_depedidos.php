@@ -13,7 +13,7 @@
   </head>
   <body>
       <div class="container">
-          <h4><b>ZONA: <?php echo $zona["zona_nombre"]; ?>, CLIENTES: <?php echo sizeof($all_cliente); ?></b>
+          <h4><b>ZONA: <?php if(isset($zona["zona_nombre"])){ echo $zona["zona_nombre"]; }else{ echo "TODAS"; } ?>, CLIENTES: <?php echo sizeof($all_cliente); ?></b>
           <a href="javascript:location.reload()" class="btn btn-danger btn-sm"><span class="fa fa-map-marker"></span> Actualizar visitas</a>
           </h4>
           <div class="col col-md-12 table-responsive">
@@ -43,7 +43,7 @@
                                    
                                   foreach($all_cliente as $p){ ?> 
                                      
-                                      punto = ['<?php echo $p['cliente_nombre']; ?>','<?php echo $p['cliente_latitud']; ?>','<?php echo $p['cliente_longitud']; ?>','<?php echo $p['cliente_direccion']; ?>','<?php echo $p['cliente_id']; ?>','<?php echo $p['cliente_visitado']; ?>']; 
+                                      punto = ['<?php echo $p['cliente_nombre']."(".$p['cliente_codigo'].")"; ?>','<?php echo $p['cliente_latitud']; ?>','<?php echo $p['cliente_longitud']; ?>','<?php echo $p['cliente_direccion']; ?>','<?php echo $p['cliente_id']; ?>','<?php echo $p['cliente_visitado']; ?>']; 
                                       puntos['<?php echo $i; ?>'] = punto; 
                                       //alert(puntos[i]); 
                                   <?php $i++; } ?>        
@@ -132,7 +132,7 @@
                                   if(this.visitado == 1){
                                       contenido='<div id="content" style="width: auto; height: auto;"><h5>'+this.nombre+'</h5>'+  this.info + '</div>';
                                   }else{
-                                      contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+link2+this.link+'"><h5>Pedidos: '+this.nombre +'</h5></a>' +  this.info + '</div>'; 
+                                      contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+link2+this.link+'" target="_blank"><h5>Pedidos: '+this.nombre +'</h5></a>' +  this.info + '</div>'; 
                                   }
                                   
                                   

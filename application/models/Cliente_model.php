@@ -595,26 +595,29 @@ class Cliente_model extends CI_Model
      */
     function get_clientes_por_pedidos($zona_id)
     {
+        $zona = ""; $zona1 = "";
+        if($zona_id > 0){
+            $zona = " and c.zona_id = ".$zona_id;
+            $zona1 = " c.zona_id = ".$zona_id." and ";
+        }
         $fecha = date("Y-m-d");
         
-        $sql = "(select distinct(c.cliente_id),c.cliente_nombre,c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 1 as cliente_visitado
+        $sql = "(select distinct(c.cliente_id),c.cliente_nombre, c.cliente_codigo, c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 1 as cliente_visitado
                 from pedido v, cliente c
                 where 
                 v.cliente_id = c.cliente_id and
                 date(v.pedido_fecha) >= '".$fecha."' and
-                date(v.pedido_fecha) <= '".$fecha."' and
-                    
-                c.zona_id = ".$zona_id."
-
+                date(v.pedido_fecha) <= '".$fecha."' 
+                ".$zona."
                 group by v.pedido_id)
 
                 UNION
 
                 (
-                select distinct(c.cliente_id),c.cliente_nombre,c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 0 as cliente_visitado
+                select distinct(c.cliente_id),c.cliente_nombre, c.cliente_codigo, c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 0 as cliente_visitado
                 from cliente c
                 where 
-                c.zona_id = ".$zona_id." and
+                ".$zona1."
                 c.cliente_id not in 
                 (
                 select distinct(c.cliente_id)
@@ -622,9 +625,8 @@ class Cliente_model extends CI_Model
                 where 
                 v.cliente_id = c.cliente_id and
                 date(v.pedido_fecha) >= '".$fecha."' and
-                date(v.pedido_fecha) <= '".$fecha."' and
-                c.zona_id = ".$zona_id."
-
+                date(v.pedido_fecha) <= '".$fecha."' 
+                ".$zona."
                 group by v.pedido_id
                 )
 
