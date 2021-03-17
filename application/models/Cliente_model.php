@@ -610,11 +610,20 @@ class Cliente_model extends CI_Model
                 date(v.pedido_fecha) <= '".$fecha."' 
                 ".$zona."
                 group by v.pedido_id)
-
+                
                 UNION
-
-                (
-                select distinct(c.cliente_id),c.cliente_nombre, c.cliente_codigo, c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 0 as cliente_visitado
+                (select distinct(c.cliente_id),CONCAT(c.cliente_nombre, ' (', v.recorrido_detalleresp, ')') as cliente_nombre, c.cliente_codigo, c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 2 as cliente_visitado
+                from `recorrido_usuario` v, cliente c
+                where 
+                v.cliente_id = c.cliente_id and
+                date(v.recorrido_fecha) >= '".$fecha."' and
+                date(v.recorrido_fecha) <= '".$fecha."' 
+                ".$zona."
+                and v.pedido_id = 0
+                group by v.pedido_id)
+                
+                UNION
+                ( select distinct(c.cliente_id),c.cliente_nombre, c.cliente_codigo, c.cliente_direccion,c.cliente_foto,c.cliente_celular,c.cliente_nombrenegocio, c.cliente_latitud, c.cliente_longitud, 0 as cliente_visitado
                 from cliente c
                 where 
                 ".$zona1."
@@ -625,8 +634,20 @@ class Cliente_model extends CI_Model
                 where 
                 v.cliente_id = c.cliente_id and
                 date(v.pedido_fecha) >= '".$fecha."' and
-                date(v.pedido_fecha) <= '".$fecha."' 
+                date(v.pedido_fecha) <= '".$fecha."'
                 ".$zona."
+                group by v.pedido_id
+                ) and
+                c.cliente_id not in 
+                (
+                select distinct(c.cliente_id)
+                from recorrido_usuario v, cliente c
+                where 
+                v.cliente_id = c.cliente_id and
+                date(v.recorrido_fecha) >= '".$fecha."' and
+                date(v.recorrido_fecha) <= '".$fecha."' and
+                ".$zona1."
+                v.pedido_id = 0
                 group by v.pedido_id
                 )
 

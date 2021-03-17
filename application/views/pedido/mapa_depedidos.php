@@ -93,9 +93,25 @@
  
                                       }); 
  
-                                } 
-                                else{
+                                } else if (place[5]==2){
                                       //propiedades del marcador 
+                                      var marker = new google.maps.Marker({ 
+ 
+                                          position: new google.maps.LatLng(place[1], place[2]), //posicion 
+                                          map: map, 
+                                          title: place[0], 
+                                          scrollwheel: false, 
+                                          animation: google.maps.Animation.DROP, //animacion            
+                                          nombre: place[0], //personalizado - nombre del punto 
+                                          info: place[3], //personalizado - informacion adicional 
+                                          link: '', //'<?php //echo base_url().'pedido/comprobante/'; ?>'personalizado - informacion adicional               
+                                          visitado: place[5],
+                                          icon: '<?php echo base_url().'resources/images/gray.png';?>' 
+ 
+                                      }); 
+                                      
+                                }else{
+                                    //propiedades del marcador 
                                       var marker = new google.maps.Marker({ 
  
                                           position: new google.maps.LatLng(place[1], place[2]), //posicion 
@@ -110,8 +126,7 @@
                                           //link: '<?php //echo base_url().'venta/ventas_cliente/'; ?>'+place[4], //personalizado - informacion adicional               
                                           icon: '<?php echo base_url().'resources/images/blue.png';?>' 
  
-                                      }); 
-                                      
+                                      });
                                 }
  
  
@@ -130,6 +145,8 @@
                                   google.maps.event.addListener(marker, 'click', function() {
                               //html de como vamos a visualizar el contenido del globo 
                                   if(this.visitado == 1){
+                                      contenido='<div id="content" style="width: auto; height: auto;"><h5>'+this.nombre+'</h5>'+  this.info + '</div>';
+                                  }else if(this.visitado == 2){
                                       contenido='<div id="content" style="width: auto; height: auto;"><h5>'+this.nombre+'</h5>'+  this.info + '</div>';
                                   }else{
                                       contenido='<div id="content" style="width: auto; height: auto;">' +'<a href="'+link2+this.link+'" target="_blank"><h5>Pedidos: '+this.nombre +'</h5></a>' +  this.info + '</div>'; 
