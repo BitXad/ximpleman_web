@@ -8,7 +8,6 @@ function inicio(){
  */
 function buscarproducto(e) {
   tecla = (document.all) ? e.keyCode : e.which;
-  
     if (tecla==13){
         tablaresultadosproducto(2);
     }
@@ -45,6 +44,7 @@ function formatofecha_hora_ampm(string){
 function tablaresultadosproducto(limite){
     $("#listaprecios").prop("checked", false);
     $("#escatalogo").prop("checked", false);
+    $("#listcodigobarras").prop("checked", false);
     var controlador = "";
     var parametro = "";
     var categoriatext = "";
@@ -293,6 +293,7 @@ function tablaresultadosproducto(limite){
 
 function catalogoproducto() {
     $("#listaprecios").prop("checked", false);
+    $("#listcodigobarras").prop("checked", false);
     $('#titcatalogo').text("CATALOGO DE ");
     var base_url = document.getElementById('base_url').value;
     //var checkBox = document.getElementById("myCheck");
@@ -378,6 +379,7 @@ function catalogoproducto() {
 }
 function listaprecios() {
     $("#escatalogo").prop("checked", false);
+    $("#listcodigobarras").prop("checked", false);
     $('#titcatalogo').text("LISTA DE PRECIOS DE ");
     var base_url = document.getElementById('base_url').value;
     //var checkBox = document.getElementById("myCheck");
@@ -433,6 +435,92 @@ function listaprecios() {
         }
         $("#cabcatalogo").html(chtml);
         $("#tablaresultados").html(html);
+    }else{
+        busqueda_inicial();
+    }
+    //cabcatalogo
+}
+function listacodbarras() {
+    $("#escatalogo").prop("checked", false);
+    $("#listaprecios").prop("checked", false);
+    $('#titcatalogo').text("CODIGO DE BARRAS DE ");
+    var base_url = document.getElementById('base_url').value;
+    //var checkBox = document.getElementById("myCheck");
+    //var formaimagen = document.getElementById('formaimagen').value;
+    var codbarras = $('#listcodigobarras').is(':checked');
+    var respuesta = document.getElementById('resproducto').value;
+    var registros =  JSON.parse(respuesta);
+    var n = registros.length; //tamaño del arreglo de la consulta
+    if(codbarras){
+        var numcolumna = 4;
+        var inifila = "";
+        var finfila = "";
+        var contcol = 1;
+        chtml = "";
+        chtml += "<tr role='row'  style='width: 19cm !important'>";
+        chtml += "<th colspan='"+numcolumna+"'  role='columnheader' >CODOGO DE BARRAS</th>";
+        chtml += "</tr>";
+        html = "";
+        for (var i = 0; i < n ; i++){
+            if(contcol <= numcolumna){
+                if(contcol == 1){
+                    inifila ="<tr style='width: 19cm !important'>";
+                    finfila = "";
+                    contcol++;
+                    //bandfila = false;
+                }else if(i+1== n || contcol == 4){
+                    inifila = "";
+                    finfila ="</tr>";
+                    contcol = 1;
+                }else{
+                    inifila = "";
+                    finfila = "";
+                    contcol++;
+                }
+            }else{
+                contcol = 1;
+            }
+            
+            html += inifila;
+            html += "<td style='width: 310px; height: 142px'>";
+            //html += "<div style='width: 300px; height: 300px'>";
+            html += "<div>";
+            //html += "<div style='height: 300px !important'>";
+            var mimagen = "";
+            if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !=""){
+                html += "<img id='barcode"+registros[i]["producto_id"]+"' width='100%' height='100%' />";
+            }else{
+                //mimagen = "<img src='"+base_url+"resources/images/productos/producto.jpg' class='img img-"+formaimagen+"' width='100%' height='100%' />";
+            }
+            html += "<div style='padding-left: 4px'>";
+            var tamaniofont = 3;
+            if(registros[i]["producto_nombre"].length >50){
+                tamaniofont = 1;
+            }
+            html += "<b id='masgrande'><font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
+            html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
+            if(registros[i]["destino_id"] > 0){
+                    html +="<br><b>DESTINO:</b> "+registros[i]['destino_nombre'];
+            }
+            /*if(parametro_modulo == 2){
+                html +="<br>Principio Activo: "+registros[i]['producto_principioact'];
+                html +="<br>Acción Terapeutica: "+registros[i]['producto_accionterap'];
+            }
+
+            html += caracteristica;*/
+            html += "";
+            html += "</div>";
+            html += "</div>";
+            html += "</td>";
+            html += finfila;
+        }
+        $("#cabcatalogo").html(chtml);
+        $("#tablaresultados").html(html);
+        for (var i = 0; i < n ; i++){
+            if(registros[i]["producto_codigobarra"] != null && registros[i]["producto_codigobarra"] !=""){
+                JsBarcode("#barcode"+registros[i]["producto_id"], registros[i]["producto_codigobarra"]);
+            }
+        }
     }else{
         busqueda_inicial();
     }

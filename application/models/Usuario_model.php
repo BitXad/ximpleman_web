@@ -224,7 +224,8 @@ class Usuario_model extends CI_Model
             FROM 
                   usuario u
             WHERE 
-                  u.estado_id = 1 ")->result_array();
+                  u.estado_id = 1
+            order by u.usuario_nombre asc")->result_array();
         return $usuario;
     }
     /*

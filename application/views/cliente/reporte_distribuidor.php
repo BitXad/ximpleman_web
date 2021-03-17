@@ -95,10 +95,10 @@
 <!--- ?php echo form_open('pedido/mapa_paraentregas'); ?--->
 
 
-<br>  <input type="hidden" id="usu" name="">
+<br>
 Desde:<span id="fechade"><font size="1" face="Arial"></font></span>        
 Hasta:<span id="fechaha"><font size="1" face="Arial"></font></span>   <br>     
-Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>  
+Distribuidor:<span id="usuru"><font size="1" face="Arial"></font> <?php echo $usuario_nombre; ?></span>  
 <div class="row no-print">
     
     <div class="col-md-12">
@@ -113,22 +113,37 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
         
         <?php if($tipousuario_id == 1){ ?>
         <div class="col-md-2">
-            Usuarios:             
-            <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" onchange="pasarnombre(this)" required>
-                <option value="0">TODOS</option>
-                <?php foreach($all_usuario as $usuario){?>
-                <option value="<?php echo $usuario['usuario_id']; ?>" id="<?php echo $usuario['usuario_nombre']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+            Distribuidor:             
+            <select class="btn btn-primary btn-sm form-control" name="usuariodist_id" id="usuariodist_id" onchange="pasarnombre(this)" required>
+                <!--<option value="0">TODOS</option>-->
+                <?php foreach($all_usuario as $usuario){
+                    $selected = ($usuario['usuario_id'] == $usuario_id) ? ' selected="selected"' : "";
+                ?>
+                <option value="<?php echo $usuario['usuario_id']; ?>" <?php echo $selected; ?>><?php echo $usuario['usuario_nombre']; ?></option>
                 <?php } ?>
             </select>
         </div>
         <?php }else{ ?>
         <div class="col-md-2">
-            Usuario:<br>
+            Distribuidor:<br>
             <label class="btn btn-primary btn-block"><?php echo $usuario_nombre; ?></label>
-            <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id; ?>" />
+            <input type="hidden" id="usuariodist_id" name="usuariodist_id" value="<?php echo $usuario_id; ?>">
         </div>
+        <!--<div class="col-md-2">
+            Usuario:<br>
+            <label class="btn btn-primary btn-block"><?php /*echo $usuario_nombre; ?></label>
+            <input type="hidden" name="usuario_id" id="usuario_id" value="<?php echo $usuario_id;*/ ?>" />
+        </div>-->
         <?php } ?>
-        
+        <div class="col-md-2">
+            Usuarios:             
+            <select class="btn btn-primary btn-sm form-control" name="usuario_id" id="usuario_id" onchange="pasarnombre(this)" required>
+                <option value="0">TODOS</option>
+                <?php foreach($all_usuario as $usuario){?>
+                <option value="<?php echo $usuario['usuario_id']; ?>"><?php echo $usuario['usuario_nombre']; ?></option>
+                <?php } ?>
+            </select>
+        </div>
         <div class="col-md-1">
             <br>
             <!--<a href="<?php echo base_url("pedido/mapa_paraentregas"); ?>" class="btn btn-facebook btn-foursquarexs btn-block"  style="height: 34px;" title="Mapa" target="_BLOCK" >-->
@@ -158,18 +173,17 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
         
         <!--</div>-->
         <!-- *********** INICIO de BUSCADOR select y productos encontrados ****** -->
-         <div class="row" id='loader'  style='display:none; text-align: center'>
-            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-        </div>
-        <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
         
+        <!-- *********** FIN de BUSCADOR select y productos encontrados ****** -->
         
     </div>
     
 </div>
 <!---- ?php echo form_close(); ? ---->    
 <!-------------------------------------------------------------------------------->
-
+<div class="row" id='loader'  style='display:block; text-align: center'>
+    <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+</div>
 <div class="row">
     <div class="col-md-12">
         
@@ -185,6 +199,7 @@ Usuario:<span id="usuru"><font size="1" face="Arial"></font></span>
                     <tr>
                         <th>#</th>
                         <th>Cliente</th>
+                        <th>Dirección</th>
                         <th> </th>
                         <th>Venta</th>
                         <th>Total</th>

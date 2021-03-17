@@ -1,5 +1,6 @@
 <!----------------------------- script buscador --------------------------------------->
 <script src="<?php echo base_url('resources/js/funciones_producto.js'); ?>" type="text/javascript"></script>
+<script src="<?php echo base_url('resources/js/JsBarcode.all.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/plugins/datatables/dataTables.bootstrap.css'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/plugins/datatables/jquery.dataTables.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/plugins/datatables/dataTables.bootstrap.min.js'); ?>" type="text/javascript"></script>
@@ -186,13 +187,17 @@
             <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
             <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
-            <table style="display: inline">
+            <table style="display: ruby-text; top: 1px">
                 <tr><td>
                 <input class="btn" type="checkbox" name="escatalogo" id="escatalogo" title="Catalogo de Productos" onclick="catalogoproducto()" >
                 </td>
                 </tr>
                 <tr><td>
                 <input class="btn" type="checkbox" name="listaprecios" id="listaprecios" title="Lista de Precios" onclick="listaprecios()" >
+                </td>
+                </tr>
+                <tr><td>
+                <input class="btn" type="checkbox" name="listcodigobarras" id="listcodigobarras" title="Lista de Codigos de Barras" onclick="listacodbarras()" >
                 </td>
                 </tr>
             </table>
