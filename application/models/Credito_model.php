@@ -201,11 +201,10 @@ class Credito_model extends CI_Model
     function get_cuentasagrupado($filtro,$condicion)
     {
             $sql = "
-                    select x.*, t.total, t.cancelado,t.saldo
-                    from 
-                    (SELECT c.*, ve.venta_id as ventita, e.estado_descripcion, p.cliente_id, p.cliente_nombre as kay, 
+                    SELECT c.*, ve.venta_id as ventita, e.estado_descripcion, p.cliente_id, p.cliente_nombre as kay, 
                       r.cliente_nombre as perro,  ve.usuario_id, u.usuario_nombre, 
-                    f.factura_id, sum(c.credito_monto) as suma
+                    f.factura_id, sum(c.credito_monto) as suma,
+                    sum(cc.total) as total, sum(cc.cancelado) as cancelado, sum(cc.saldo) as saldo
                      FROM credito c 
 
                     LEFT JOIN venta ve on c.venta_id = ve.venta_id
@@ -215,15 +214,13 @@ class Credito_model extends CI_Model
                     LEFT JOIN cliente r on s.cliente_id = r.cliente_id 
                     LEFT JOIN usuario u on ve.usuario_id = u.usuario_id 
                     LEFT JOIN factura f on c.credito_id = f.credito_id
+                    left join `conssaldocredito` cc on c.credito_id = cc.credito_id
                 WHERE
                     c.compra_id = 0
                      ".$filtro." 
                      ".$condicion."
-
-                group by kay 
-                 ) as x 
-
-                    left join conssaldocredito t on t.credito_id = x.credito_id";
+                group by kay
+                ";
             
             
 //                    "
