@@ -710,34 +710,67 @@ function buscarporcodigojs()
            data:{codigo:codigo},
            success:function(respuesta){
                
+               var precio = 0;
+               var factor_nombre = "";
                res = JSON.parse(respuesta);
 
+                //alert("tipo: "+res[0].tipo);
+                
                     if (res.length>0){
                         
                          if (res[0].existencia > 0){
                              
-                            if (res[0].producto_codigobarra == codigo) factor = 1;
+                            if (res[0].producto_codigobarra == codigo){
+                                factor = 1;
+                                precio = res[0].producto_precio;
+                                factor_nombre = "";
+                            }
                             
-                            if (res[0].producto_codigofactor == codigo) factor = res[0].producto_factor;
+                            if (res[0].producto_codigofactor == codigo){
+                                factor = res[0].producto_factor;
+                                precio = res[0].producto_preciofactor;
+                                factor_nombre = "producto_factor";
+                            }
                             
-                            if (res[0].producto_codigofactor1 == codigo) factor = res[0].producto_factor1;
-                            if (res[0].producto_codigofactor2 == codigo) factor = res[0].producto_factor2;
-                            if (res[0].producto_codigofactor3 == codigo) factor = res[0].producto_factor3;
-                            if (res[0].producto_codigofactor4 == codigo) factor = res[0].producto_factor4;
+                            if (res[0].producto_codigofactor1 == codigo){
+                                factor = res[0].producto_factor1;
+                                precio = res[0].producto_preciofactor1;
+                                factor_nombre = "producto_factor1";
+                            }
+                            
+                            if (res[0].producto_codigofactor2 == codigo){
+                                factor = res[0].producto_factor2;
+                                precio = res[0].producto_preciofactor2;
+                                factor_nombre = "producto_factor2";
+                            }
+                            
+                            if (res[0].producto_codigofactor3 == codigo){
+                                factor = res[0].producto_factor3;
+                                precio = res[0].producto_preciofactor3;
+                                factor_nombre = "producto_factor3";
+                            }
+                            
+                            if (res[0].producto_codigofactor4 == codigo){
+                                factor = res[0].producto_factor4;
+                                precio = res[0].producto_preciofactor4;
+                                factor_nombre = "producto_factor4";
+                            }
                             
                            
                             //html = "<input type='text' value='"+factor+"' id='select_factor"+res[0].producto_id+"' title='select_factor"+res[0].producto_id+"'>"
                             
+                            precio_unidad = precio; //res[0]["producto_precio"];
+                            
                             html = "";
                             html += "   <select class='btn btn-facebook' style='font-size:12px; font-family: Arial; padding:0; background: black;' id='select_factor"+res[0]["producto_id"]+"' name='select_factor"+res[0]["producto_id"]+"' onchange='mostrar_saldo("+JSON.stringify(res[0])+")'>";
-                            html += "       <option value='precio_normal'>";
-                            precio_unidad = res[0]["producto_precio"];
+                            html += "       <option value='"+factor_nombre+"'>";                            
                             html += "           "+res[0]["producto_unidad"]+" Bs : "+precio_unidad.fixed(2)+"";
                             html += "       </option>";
+                            html += "       </select>";
 
                             $("#selector").html(html);
                             
-                            ingresorapidojs(1,res[0]); 
+                            ingresorapidojs(factor, res[0]); 
                             //ingresorapidojs(factor,res[0]);
                          }
                          else{    
@@ -1087,20 +1120,32 @@ function ingresorapidojs(cantidad,producto)
     var detalleven_id = 0; //cantidad del factor seleccionado
     
     try {
+        
         factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
 
     } catch (error) {
         //console.error(error);
+        
         factor_nombre = ""; //cantidad del factor seleccionado
         
     }
     
+    //alert(factor_nombre);
+    
     try {
         indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
+        if (indice == 0){
+            if (factor_nombre!="")
+                indice = 1;
+        }
 
     } catch (error) {
         //console.error(error);
-        indice = 0; //cantidad del factor seleccionado        
+        
+        if (factor_nombre=="")
+            indice = 0; //cantidad del factor seleccionado        
+        else
+            indice = 1;
     }
 
     try{
