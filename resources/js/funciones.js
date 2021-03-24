@@ -770,7 +770,7 @@ function buscarporcodigojs()
 
                             $("#selector").html(html);
                             
-                            ingresorapidojs(factor, res[0]); 
+                            ingresorapidojs2(factor, res[0]); 
                             //ingresorapidojs(factor,res[0]);
                          }
                          else{    
@@ -1112,7 +1112,7 @@ function ingresorapido(producto_id,cantidad)
     
 }
 
-function ingresorapidojs(cantidad,producto)
+function ingresorapidojs2(cantidad,producto)
 {       
     //alert(producto.producto_nombre);
     var factor_nombre = ""; //cantidad del factor seleccionado
@@ -1146,6 +1146,173 @@ function ingresorapidojs(cantidad,producto)
             indice = 0; //cantidad del factor seleccionado        
         else
             indice = 1;
+    }
+
+    try{
+        detalleven_id = producto.detalleven_id;
+    }catch (error) {
+        detalleven_id = 0;
+        
+    }
+
+
+    var factor = 0;    
+    var precio = 0;
+    var numerofactor = 0;
+    var unidadfactor = "";
+    
+    var inputcaract = document.getElementById("inputcaract").value;
+    
+    if (inputcaract.length>0){
+        preferencias = inputcaract;
+        $("#inputcaract").val("");
+    }
+    else{
+        preferencias = producto.producto_caracteristicas;
+    }
+    
+    if (Number(indice)>0){
+    
+        if (factor_nombre == "producto_factor"){
+            precio = producto.producto_preciofactor;
+            factor = producto.producto_factor;
+            numerofactor = "";
+        }    
+    
+    
+        if (factor_nombre == "producto_factor1"){
+            precio = producto.producto_preciofactor1;
+            factor = producto.producto_factor1;
+            numerofactor = "1";
+        }    
+    
+        if (factor_nombre == "producto_factor2"){
+            precio = producto.producto_preciofactor2;
+            factor = producto.producto_factor2;
+            numerofactor = "2";
+        }    
+    
+        if (factor_nombre == "producto_factor3"){
+            precio = producto.producto_preciofactor3;
+            factor = producto.producto_factor3;
+            numerofactor = "3";
+        }    
+    
+        if (factor_nombre == "producto_factor4"){
+            precio = producto.producto_preciofactor4;
+            factor = producto.producto_factor4;
+            numerofactor = "4";
+        }    
+    }
+    else 
+    {   factor = 1; 
+        precio = producto.producto_precio;
+        numerofactor = "0";
+    }
+
+    //var cantidad = cantidad * factor;
+    //var cantidad = cantidad * factor;
+    
+    
+    if (numerofactor=="0")
+    {    unidadfactor = "-"; }
+    else
+    {    unidadfactor = producto["producto_unidadfactor"+numerofactor];  }
+        
+    //alert(unidadfactor);
+    //alert(producto.producto_nombre+", cantidad: "+cantidad+", factor:"+factor+", indice:"+indice+", precio: "+precio);
+    
+    var base_url = document.getElementById('base_url').value;   
+    var controlador = base_url+"venta/ingresar_detalle";
+    var usuario_id = document.getElementById('usuario_id').value;
+    var existencia =  producto.existencia;    
+    var producto_id =  producto.producto_id;
+    var datos1 = "";
+    var descuento = 0;
+    var cantidad_total = parseFloat(cantidad_en_detalle(producto.producto_id)) + cantidad; 
+    var check_agrupar = document.getElementById('check_agrupar').checked;
+    var parametro_diasvenc = document.getElementById('parametro_diasvenc').value;
+    var preferencia_id = document.getElementById('preferencia_id').value;
+    
+    var clasificador_id = "";
+    
+    try {
+        clasificador_id = document.getElementById('select_clasificador'+producto_id).value;
+
+    } catch (error) {
+        //console.error(error);
+        clasificador_id = 0; //cantidad del factor seleccionado
+        
+    }
+    
+    var preferencias = "";
+    try {
+        preferencias = document.getElementById('input_detalleven_preferencia'+producto_id).value;
+
+    } catch (error) {
+        //console.error(error);
+        preferencias = ""; //preferencias
+        
+    }        
+        
+    // alert(clasificador_id);   
+        
+    if (check_agrupar){
+        agrupado = 1;
+    }
+    else{
+        agrupado = 0;
+    }
+        
+        //alert(cantidad);
+    if (cantidad_total <= producto.existencia){
+
+        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
+        datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
+        datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
+        datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
+        datos1 += producto.producto_envase+",'"+producto.producto_nombreenvase+"',"+producto.producto_costoenvase+","+producto.producto_precioenvase+",";
+        datos1 += cantidad+",0,"+cantidad+",0,0, DATE_ADD(CURDATE(), interval "+parametro_diasvenc+" day),'"+unidadfactor+"',"+preferencia_id+","+clasificador_id;
+        //alert(datos1);
+
+        $.ajax({url: controlador,
+            type:"POST",
+            data:{datos1:datos1, existencia:existencia,producto_id:producto_id,cantidad:cantidad, descuento:descuento, agrupado:agrupado, detalleven_id:detalleven_id},
+            success:function(respuesta){
+                                
+                tablaproductos();
+
+            }
+        });
+    
+    }
+    else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
+    
+}
+
+
+function ingresorapidojs(cantidad,producto)
+{       
+    //alert(producto.producto_nombre);
+    var factor_nombre = ""; //cantidad del factor seleccionado
+    var indice = 0; //cantidad del factor seleccionado
+    var detalleven_id = 0; //cantidad del factor seleccionado
+    
+    try {
+        factor_nombre = document.getElementById("select_factor"+producto.producto_id).value; //cantidad del factor seleccionado
+
+    } catch (error) {
+        //console.error(error);
+        factor_nombre = ""; //cantidad del factor seleccionado
+        
+    }
+    
+    try {
+        indice = document.getElementById("select_factor"+producto.producto_id).selectedIndex; //cantidad del factor seleccionado
+
+    } catch (error) {
+        //console.error(error);
+        indice = 0; //cantidad del factor seleccionado        
     }
 
     try{
@@ -1290,6 +1457,7 @@ function ingresorapidojs(cantidad,producto)
     else { alert('ADVERTENCIA: La cantidad excede la existencia en inventario...!!\n'+'Cantidad Disponible: '+producto.existencia);}
     
 }
+
 
 function cambiarcantidadjs(e,producto)
 {   
