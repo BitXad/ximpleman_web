@@ -92,35 +92,19 @@
 
 <br>
 <div class="row no-print">
-        <div class="col-md-8">
-
-
-        <!--este es INICIO del BREADCRUMB buscador-->
-<!--        <div class="row">
-            <ol class="breadcrumb">
-                <li><a href="<?php //echo site_url('admin/dashb')?>"><i class="fa fa-dashboard"></i> Inicio</a></li>
-                <li><a href="<?php //echo site_url('cliente')?>">Clientes</a></li>
-                <li class="active"><b>Productos: </b></li>
-                <input style="border-width: 0; background-color: #DEDEDE" id="encontrados" type="text"  size="5"  readonly="true">
-            </ol>
-        </div>-->
-        <div class="box-header">
-            <font size='4' face='Arial'><b>Productos</b></font>
-            <br><font size='2' face='Arial' id="encontrados"></font> 
-        </div>
-
-        <!--este es FIN del BREADCRUMB buscador-->
- 
-        <!--este es INICIO de input buscador-->
-        <div class="col-md-12">
-            <div class="col-md-7">
+    <div class="col-md-6">
+        <div class="col-md-12" style="padding: 0px">
+            <div class="col-md-9">
+                <div class="box-header" style="padding-left: 0px">
+                    <font size='4' face='Arial'><b>Productos</b></font>
+                    <br><font size='2' face='Arial' id="encontrados"></font> 
+                </div>
                 <div class="input-group">
                     <span class="input-group-addon"> Buscar </span>           
                     <input id="filtrar" type="text" class="form-control" placeholder="Ingrese el nombre, código, código de barras, marca, industria.." onkeypress="buscarproducto(event)" autocomplete="off">
                 </div>
             </div>
             <div class="col-md-3">
-                
                 <div class="box-tools">
                     <select name="categoria_id" class="btn-primary btn-sm" id="categoria_id" onchange="tablaresultadosproducto(2)">
                         <option value="" disabled selected >-- BUSCAR POR CATEGORIAS --</option>
@@ -133,9 +117,7 @@
                         ?>
                     </select>
                 </div>
-            </div>
-            <div class="col-md-2">
-                
+                <br>
                 <div class="box-tools">
                     <select name="estado_id" class="btn-primary btn-sm" id="estado_id" onchange="tablaresultadosproducto(2)">
                         <option value="" disabled selected >-- BUSCAR POR ESTADOS --</option>
@@ -149,63 +131,60 @@
                     </select>
                 </div>
             </div>
-           <!-- <div class="col-md-3">
-                
-                <div class="box-tools">
-                    <select name="estado_id" class="btn-primary btn-sm" id="estado_id">
-                        <option value="">-- ESTADO --</option>
-                        <?php 
-                     /*   foreach($all_estado as $estado)
-                        {
-                                $selected = ($estado['estado_id'] == $producto['estado_id']) ? ' selected="selected"' : "";
-
-                                echo '<option value="'.$estado['estado_id'].'" '.$selected.'>'.$estado['estado_descripcion'].'</option>';
-                        } */
-                        ?>
-                    </select>
-                </div>
-            </div>-->
         </div>
-           
-            
-        <!--este es FIN de input buscador-->
-
-        <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
-         <div class="row" id='loader'  style='display:none; text-align: center'>
-            <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
-        </div>
-        <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
-        
-        
     </div>
+    
     <!---------------- BOTONES --------->
-    <div class="col-md-4">
-        <div class="box-tools text-center">
+    <div class="col-md-4" style="padding-right: 0px">
+        <div class="box-tools text-right">
             <a href="<?php echo site_url('producto/add'); ?>" class="btn btn-success btn-foursquarexs" title="Registrar nuevo Producto"><font size="5"><span class="fa fa-user-plus"></span></font><br><small>Registrar</small></a>
             <button data-toggle="modal" data-target="#modalbuscar" class="btn btn-warning btn-foursquarexs" onclick="tablaresultadosproducto(3)" title="Mostrar todos los Productos" ><font size="5"><span class="fa fa-search"></span></font><br><small>Ver Todos</small></button>
             <a href="<?php echo site_url('producto/existenciaminima'); ?>" class="btn btn-info btn-foursquarexs" target="_blank" ><font size="5" title="Productos con Existencia minima"><span class="fa fa-eye"></span></font><br><small>Exist. Min.</small></a>
+            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->
             <?php
             if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
             <a onclick="imprimir_producto()" class="btn btn-primary btn-foursquarexs"><font size="5" title="Imprimir Producto"><span class="fa fa-print"></span></font><br><small>Imprimir</small></a>
-            <table style="display: ruby-text; top: 1px">
-                <tr><td>
-                <input class="btn" type="checkbox" name="escatalogo" id="escatalogo" title="Catalogo de Productos" onclick="catalogoproducto()" >
-                </td>
+            <?php
+            } ?>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <?php
+            if($rol[106-1]['rolusuario_asignado'] == 1){ ?>
+            <table >
+                <tr>
+                    <td>
+                        <label style="font: normal; font-size: 10px">
+                            <input class="btn" type="checkbox" name="escatalogo" id="escatalogo" title="Catalogo de Productos" onclick="catalogoproducto()" >
+                            Catalogo
+                        </label>
+                    </td>
                 </tr>
-                <tr><td>
-                <input class="btn" type="checkbox" name="listaprecios" id="listaprecios" title="Lista de Precios" onclick="listaprecios()" >
-                </td>
+                <tr>
+                    <td>
+                        <label style="font: normal; font-size: 10px">
+                            <input class="btn" type="checkbox" name="listaprecios" id="listaprecios" title="Lista de Precios" onclick="listaprecios()" >
+                            Precios
+                        </label>
+                    </td>
                 </tr>
-                <tr><td>
-                <input class="btn" type="checkbox" name="listcodigobarras" id="listcodigobarras" title="Lista de Codigos de Barras" onclick="listacodbarras()" >
-                </td>
+                <tr>
+                    <td>
+                        <label style="font: normal; font-size: 10px">
+                            <input class="btn" type="checkbox" name="listcodigobarras" id="listcodigobarras" title="Lista de Codigos de Barras" onclick="listacodbarras()" >
+                            Cod. Barras
+                        </label>
+                    </td>
                 </tr>
             </table>
             <?php } ?>
-            <!--<a href="" class="btn btn-info btn-foursquarexs"><font size="5"><span class="fa fa-cubes"></span></font><br><small>Productos</small></a>-->            
-        </div>
     </div>
     <!---------------- FIN BOTONES --------->
+    <!-- **** INICIO de BUSCADOR select y productos encontrados *** -->
+     <div class="row col-md-12" id='loader'  style='display:none; text-align: center'>
+        <img src="<?php echo base_url("resources/images/loader.gif"); ?>"  >
+    </div>
+    <!-- **** FIN de BUSCADOR select y productos encontrados *** -->
 </div>
     
 
