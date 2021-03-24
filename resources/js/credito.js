@@ -107,7 +107,7 @@ function tabladeudas(filtro) //Deudas por pagar
                     //var subtotal = Number(0);
                     //var descuento = Number(0);
                     color ="";
-                    html = "";
+                    var html = "";
                     html2 = "";
                     
                     html2 += "<tr>";  
@@ -131,8 +131,8 @@ function tabladeudas(filtro) //Deudas por pagar
                     
                     
                     $("#titulos").html(html2); 
-                        total = 0;
-                        iniciales = 0;
+                        var total = 0;
+                        var iniciales = 0;
                         var totalsaldoapagar = 0;
                         var totalsaldopagado = 0;
                     for (var i = 0; i < n ; i++){
@@ -170,13 +170,15 @@ function tabladeudas(filtro) //Deudas por pagar
                         totalsaldopagado += Number(registros[i]["cancelado"]);
                         html += "</font></b></td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>";
-                        if(registros[i]['saldo'] >0){
+                        html += formato_numerico(Number(registros[i]['credito_monto'])-Number(registros[i]['cancelado']));
+                        totalsaldoapagar += Number(registros[i]['credito_monto'])-Number(registros[i]['cancelado']);
+                        /*if(registros[i]['saldo'] >0){
                             totalsaldoapagar += Number(registros[i]["saldo"]);
                             html += formato_numerico(Number(registros[i]['saldo']));
                         }else{
                             totalsaldoapagar += Number(registros[i]["credito_monto"]);
                             html += formato_numerico(Number(registros[i]['credito_monto']));
-                        }
+                        }*/
                         html += "</font></b></td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
@@ -345,13 +347,15 @@ function tablacuentas(filtro) //Cuentas por cobrar
                         totalsaldocobrado += Number(registros[i]["cancelado"]);
                         html += "</font></b></td>";
                         html += "<td style='text-align: right; background:silver;'><font size='3'><b>";
-                        if(registros[i]['saldo'] >0){
+                        html += formato_numerico(Number(registros[i]['credito_monto'])-Number(registros[i]['cancelado']));
+                        totalsaldoapagar += Number(Number(registros[i]["credito_monto"])-Number(registros[i]['cancelado']));
+                        /*if(registros[i]['saldo'] >0){
                             totalsaldoapagar += Number(registros[i]["saldo"]);
                             html += formato_numerico(Number(registros[i]['saldo']));
                         }else{
                             totalsaldoapagar += Number(registros[i]["credito_monto"]);
                             html += formato_numerico(Number(registros[i]['credito_monto']));
-                        }
+                        }*/
                         html += "</font></b></td>";
                         html += "<td style='text-align: center'>"+registros[i]['credito_numpagos']+"</td>";
                         html += "<td style='text-align: center'>"+moment(registros[i]['credito_fecha']).format('DD/MM/YYYY')+"</td>";
@@ -443,16 +447,16 @@ function tabladeudasagrupado(filtro)
                     for (var i = 0; i < n ; i++){
                         total     += Number(registros[i]["suma"]);
                         cancelado += Number(registros[i]["cancelado"]);
-                        saldo     += Number(registros[i]["saldo"]);
+                        saldo     += Number(Number(registros[i]['suma'])-Number(registros[i]['cancelado']));
                         html += "<tr>"; 
                         html += "<td>"+(i+1)+"</td>";
                         html += "<td>"+registros[i]['proveedor_nombre']+"<small> ["+registros[i]['proveedor_id']+"]</small></td>";
                 
                         html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['suma']).toFixed(2))+"</td>";
                         html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['cancelado']).toFixed(2))+"</td>";
-                        html += "<td style='text-align: right'>"+formato_numerico(Number(registros[i]['saldo']).toFixed(2))+"</td>";
+                        html += "<td style='text-align: right'>"+formato_numerico(Number(Number(registros[i]['suma'])-Number(registros[i]['cancelado'])).toFixed(2))+"</td>";
                       
-}
+                    }
                    html += "<tr><td align=right><font size='2' face='Arial'><b>TOTAL</b></font></td>"; 
                    html += "<td align=right></td>"; 
                    html += "<td align=right><font size='2' face='Arial'><b>"+formato_numerico(Number(total).toFixed(2))+"</b></font></td>"; 
