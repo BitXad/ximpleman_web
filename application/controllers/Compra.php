@@ -17,8 +17,10 @@ class Compra extends CI_Controller{
         $this->load->model('Parametro_model');
         $this->load->model('Detalle_compra_model');
         $this->load->model('Inventario_model');
+        $this->load->model('Moneda_model');
         $this->load->helper('numeros');
         $this->load->model('Usuario_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -462,6 +464,9 @@ class Compra extends CI_Controller{
              $data['compra'] = $this->Compra_model->get_compra($compra_id);
              $compra = $this->Compra_model->get_proveedor_id($compra_id);
              $proveedor_id = $compra[0]['proveedor_id'];
+             $data['parametro'] = $this->Parametro_model->get_parametros();
+             $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+             
              if ($bandera==0) {
               $this->Compra_model->volvermal($compra_id);
              }
@@ -520,7 +525,8 @@ class Compra extends CI_Controller{
                 $data['bandera'] = $bandera;
                 /* $data['proveedor'] = $this->Compra_model->get_all_proveedor($usuario_id);*/
 
-                
+                $data['parametro'] = $this->Parametro_model->get_parametros();
+                $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
 
                 $this->load->model('Tipo_transaccion_model');
                 $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();

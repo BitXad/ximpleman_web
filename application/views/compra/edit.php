@@ -183,19 +183,19 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                <table>       
                 
                 <tr>
-                        <td>Sub Total Bs:</td>
+                        <td>Sub Total <?php echo $parametro[0]["moneda_descripcion"];; ?>:</td>
                         <td></td>
                         <td><?php echo number_format($subtotal,2,'.',','); ?></td>
 
                 </tr>             
                 <tr>
-                        <td>Descuento:</td>
+                        <td>Descuento <?php echo $parametro[0]["moneda_descripcion"];; ?>:</td>
                         <td></td>
                         <td><?php echo number_format($descuento,2,'.',',');?></td>
                     
                 </tr>
                 <tr>
-                        <td>Descuento Global:</td>
+                        <td>Descuento Global <?php echo $parametro[0]["moneda_descripcion"];; ?>:</td>
                         <td style="width: 30px;"></td>
                         <td><?php  $compra_descglobal= $compra[0]['compra_descglobal']; echo number_format($compra_descglobal,2,'.',',');?>
 
@@ -205,7 +205,7 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 </tr>
                 
                 <tr>
-                        <th><b>TOTAL FINAL:</b></th>
+                        <th><b>TOTAL FINAL <?php echo $parametro[0]["moneda_descripcion"];; ?>:</b></th>
                         <td></td>
                         <th><font size="3"><b> <?php echo number_format($total_ultimo,2,'.',',');?></b></font></th>
                        
@@ -1095,42 +1095,42 @@ input[type=number] { -moz-appearance:textfield; font-family: "Arial", Arial, Ari
                 
 
                 <tr>
-                        <td>Compra Bs</td>
+                        <td>Compra <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
                         <td><input class="btn btn-default" type="text" size="8" readonly id="compra_subtotal" name="compra_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>"></td>
                     
                 </tr>                
                 <tr>
-                        <td>Descuento Bs</td>
+                        <td>Descuento <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
                         <td><input class="btn btn-default" type="text" size="8" readonly id="compra_descuento" name="compra_descuento" value="<?php echo number_format($descuento,2,'.',','); ?>"></td>
                     
                 </tr>
                 <tr>                      
-                        <td><b>Subtotal Bs</b></td>
+                        <td><b>Subtotal <?php echo $parametro[0]["moneda_descripcion"];; ?></b></td>
                         <td>
                               <input class="btn btn-default" id="compra_total" size="8" name="compra_total" value="<?php echo $totalfinal; ?>" readonly="true">
                         </td>
                 </tr>
                 <tr>                      
-                        <td>Descuento Global Bs</td>
+                        <td>Descuento Global <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
                         <td>
                          <input class="btn btn-warning" id="compra_descglobal" name="compra_descglobal" size="8" value="<?php echo ($compra[0]['compra_descglobal'] ? $compra[0]['compra_descglobal'] : '0.00'); ?>" onclick="this.select();" onKeyUp="calcularDesc('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')"> 
                         </td>
                 </tr>
                 <tr>                      
-                        <td><b>Total Final Bs</b></td>
+                        <td><b>Total Final <?php echo $parametro[0]["moneda_descripcion"];; ?></b></td>
                         <td>
                               <input class="btn btn-default" id="compra_totalfinal" size="8" name="compra_totalfinal" value="<?php echo $total_ultimo; ?>" readonly="true">
                         </td>
                 </tr>
                 <tr>                      
-                        <td>Efectivo Bs</td>
+                        <td>Efectivo <?php echo $parametro[0]["moneda_descripcion"];; ?></td>
                         <td>
                             <input class="btn btn-warning" id="compra_efectivo" size="8" name="compra_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularCambio('compra_total', 'compra_descglobal', 'compra_totalfinal','compra_efectivo','compra_cambio')">
                 
                         </td>
                 </tr>               
                 <tr>                      
-                    <td><b>Cambio Bs</b></td>
+                    <td><b>Cambio <?php echo $parametro[0]["moneda_descripcion"];; ?></b></td>
                         <td>
                             <input class="btn btn-default" id="compra_cambio" size="8" name="compra_cambio" value="<?php echo $cambio; ?>" readonly="true">
                         </td>
