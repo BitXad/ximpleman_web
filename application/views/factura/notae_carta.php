@@ -69,6 +69,9 @@ border-right : 1px solid #aaa;
 border-bottom : 1px solid #aaa;
 }
 </style>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_datosboton"  hidden>
+
 <!----------------------------- fin script buscador --------------------------------------->
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <!--<link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">-->
@@ -142,8 +145,20 @@ border-bottom : 1px solid #aaa;
            <tr  style="border-top-style: solid; border-bottom-style: solid">
                 <td align="center" style="padding: 0"><b>CANT</b></td>
                 <td align="center" style="padding: 0"><b>DESCRIPCIÓN</b></td>
-                <td align="center" style="padding: 0"><b>P.UNIT</b></td>
-                <td align="center" style="padding: 0"><b>TOTAL</b></td>               
+                <td align="center" style="padding: 0"><b>P.UNIT <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>
+                <td align="center" style="padding: 0"><b>TOTAL <?php echo $parametro[0]['moneda_descripcion']; ?></b></td>               
+                
+                <?php if($parametro[0]['moneda_id']==1){  ?> 
+                        
+                        <td align="center" style="padding: 0"><b>TOTAL <?php echo $moneda['moneda_descripcion']; ?></b></td>
+                            
+                <?php }else{  ?> 
+                        
+                        <td align="center" style="padding: 0"><b>TOTAL Bs</b></td>
+                        
+                <?php }  ?> 
+                
+                
            </tr>
            <?php $cont = 0;
                  $cantidad = 0;
@@ -163,7 +178,7 @@ border-bottom : 1px solid #aaa;
                         $preferencia = $d['detalleven_preferencia'];
                         $caracteristicas = $d['detalleven_caracteristicas'];
                         
-                        if ($preferencia !="null" && $preferencia!='-')
+                        if ($preferencia !="null" && $preferencia!="-" && $preferencia!="")
                             echo  " /".nl2br($preferencia);
                         
                         if ($caracteristicas!="null" && $caracteristicas!='-')
@@ -174,6 +189,33 @@ border-bottom : 1px solid #aaa;
                 </td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_precio']+$d['detalleven_descuento'],2,'.',','); ?></td>
                 <td align="right" style="padding: 0"><?php echo number_format($d['detalleven_subtotal'],2,'.',','); ?></td>
+                <td align="right" style="padding: 0">
+                
+
+                    <?php 
+                    
+                        if($parametro[0]['moneda_id'] == $d['moneda_id']){ //si la moneda es la misma que la principal       
+                            
+                            if ($d['moneda_id']==1){    
+                                $total_equivalente = round($d['detalleven_subtotal'],2)/$d['detalleven_tc'];
+                            }else{
+                                $total_equivalente = round($d['detalleven_subtotal'],2)*$d['detalleven_tc'];
+                            }    
+                                
+                        }else{  
+                            
+                            if($d['moneda_id']==1){
+                                $total_equivalente = round($d['detalleven_subtotal'],2) * round($d['detalleven_tc'],2);
+                                
+                            }else{
+                                $total_equivalente = round($d['detalleven_subtotal'],2) / round($d['detalleven_tc'],2);
+                            }
+                            
+                        }  
+                        
+                        echo number_format($total_equivalente,2,'.',',');
+                        //echo $total_equivalente; ?>
+                </td>
            </tr>
            <?php } ?>
        </table>
@@ -207,25 +249,64 @@ border-bottom : 1px solid #aaa;
         </td>
         <td align="right"  style="padding: 0">
             
-            <font size="1">
-                <b><?php echo "SUB TOTAL Bs ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
-            </font>
+            <?php if ($venta[0]['venta_descuento']>0){ ?>
             
+                <font size="1">
+                    <b><?php echo "SUB TOTAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_subtotal'],2,'.',','); ?></b><br>
+                </font>
 
-            <font size="1">
-                <?php echo "TOTAL DESCUENTO Bs ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
-            </font>
+
+                <font size="1">
+                    <?php echo "TOTAL DESCUENTO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_descuento'],2,'.',','); ?><br>
+                </font>
+           
+            <?php } ?>
+            
             <font size="2">
             <b>
-                <?php echo "TOTAL FINAL Bs: ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
+                <?php echo "TOTAL FINAL ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_total'] ,2,'.',','); ?><br>
             </b>
             </font>
-            <font size="1" face="arial narrow">
-                <?php echo "SON: ".num_to_letras($total_final,' Bolivianos'); ?><br>            
+            <font size="2" face="arial">
+            
+                <?php 
+                    if ($parametro[0]['moneda_id']==1)
+                        $texto_moneda = ' Bolivianos';
+                    else
+                        $texto_moneda = $parametro[0]['moneda_descripcion'];
+                
+                    echo "SON: ".num_to_letras($total_final,$texto_moneda); ?><br>            
+            
+                    <b>
+                        
+                    <!------------------ TOTAL EN OTRA MONEDA------------------------>
+                    <?php 
+                        $total_final_equivalente = 0;
+                        $tfe = "";
+                        
+                            if($parametro[0]['moneda_id']==1){
+                                
+                                $total_final_equivalente =  $venta[0]['venta_total'] / $d['detalleven_tc'];
+                                $tfe = "TOTAL FINAL ".$moneda['moneda_descripcion'];
+                                
+                            }else{
+                                
+                                $total_final_equivalente = $venta[0]['venta_total'] * $d['detalleven_tc'];
+                                $tfe = "TOTAL FINAL Bs ";
+                            }
+                        
+                        echo $tfe." ".number_format($total_final_equivalente,2,'.',',');
+                    ?>              
+                   
+                    <!------------------------------------------>
+                    </b>
+                    
+                    
             </font>
             <font size="1">
-                <?php echo "EFECTIVO Bs ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
-                <?php echo "CAMBIO Bs ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
+            
+            <br><?php echo "EFECTIVO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_efectivo'],2,'.',','); ?><br>
+                <?php echo "CAMBIO ".$parametro[0]['moneda_descripcion']." ".number_format($venta[0]['venta_cambio'],2,'.',','); ?>
             </font>
             
         </td>          
@@ -247,8 +328,10 @@ border-bottom : 1px solid #aaa;
             <td  style="padding: 0">
                 <center>
                     __________________________<br>
-                            ENTREGE CONFORME
+                    ENTREGE CONFORME<br>
+                   
                 </center>  
+                <small><?php echo date("d/m/Y H:i:s"); ?></small>
             </td>
             <td style="padding: 0">
             </td>
@@ -260,4 +343,4 @@ border-bottom : 1px solid #aaa;
             </td>
         </tr>
     </table>
-</div>
+</div> 

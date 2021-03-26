@@ -313,6 +313,7 @@ function tablaproductos()
     var caracteristicas = "";
     var parametro_moneda_id = document.getElementById('parametro_moneda_id').value; //1 bolivianos - 2 moneda extrangera
     var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
+    var moneda_extrangera = document.getElementById('moneda_descripcion').value; //1 bolivianos - 2 moneda extrangera
     var total_final_equivalente = 0; //1 bolivianos - 2 moneda extrangera
     
     $.ajax({url: controlador,
@@ -582,12 +583,12 @@ html += "  </div>";
                         html += "                            <th style='padding:0'><font size='3'>"+cant_total.toFixed(2)+"</font></th>";
                         html += "                            <th style='padding:0'></th>"; 
                                                 
-                        html += "                            <th style='padding:0' align='right'><font size='3'>"+parametro_moneda_descripcion+" "+total_detalle.toFixed(2)+"</font><br>";
+                        html += "                            <th style='padding:0' align='right'><font size='3'>"+parametro_moneda_descripcion+" "+formato_numerico(total_detalle.toFixed(2))+"</font><br>";
                         
-                       if (parametro_moneda_id==1){
-                           html +=  parametro_moneda_descripcion+" "+total_final_equivalente.toFixed(2)+"</th>";
+                       if (parametro_moneda_id == 1){
+                           html +=  moneda_extrangera+" "+ formato_numerico(total_final_equivalente.toFixed(2))+"</th>";
                        }else{
-                           html +=  "Bs "+total_final_equivalente.toFixed(2)+"</th>";
+                           html +=  "Bs "+formato_numerico(total_final_equivalente.toFixed(2))+"</th>";
                        }
                         
                        html += "                            <th style='padding:0'></th> ";                                                          
@@ -1301,20 +1302,25 @@ function ingresorapidojs2(cantidad,producto)
 
         
 //        precio = precio * producto.moneda_tc;
+        var costo = producto.producto_costo;
+        
         if (parametro_moneda_id == producto.moneda_id){ // Si la moneda del sistema es igual al del producto
                 precio = precio * 1;
+                
         }else{
         
             if (parametro_moneda_id == 1){
                     precio = precio * tipo_cambio;                
+                    costo = costo * tipo_cambio;                
             }else{
                     precio = precio / tipo_cambio;                
+                    costo = costo / tipo_cambio;                
             }
         
         }
             
         
-        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
+        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
         datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        
@@ -1485,21 +1491,26 @@ function ingresorapidojs(cantidad,producto)
     if (cantidad_total <= producto.existencia){
         
 //        precio = precio * producto.moneda_tc;
+        var costo = producto.producto_costo;
+        
         if (parametro_moneda_id == producto.moneda_id){ // Si la moneda del sistema es igual al del producto
                 precio = precio * 1;
+                
         }else{
         
             if (parametro_moneda_id == 1){
                     precio = precio * tipo_cambio;                
+                    costo = costo * tipo_cambio;                
             }else{
                     precio = precio / tipo_cambio;                
+                    costo = costo / tipo_cambio;                
             }
         
         }
             
         
 
-        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+producto.producto_costo+","+precio+","+precio+"*"+cantidad+",";
+        datos1 +="0,1,"+producto.producto_id+",'"+producto.producto_codigo+"',"+cantidad+",'"+producto.producto_unidad+"',"+costo+","+precio+","+precio+"*"+cantidad+",";
         datos1 += descuento+","+precio+"*"+cantidad+",'"+producto.producto_caracteristicas+"','"+preferencias+"',0,1,"+usuario_id+","+producto.existencia+",";
         datos1 += "'"+producto.producto_nombre+"','"+producto.producto_unidad+"','"+producto.producto_marca+"',";
         datos1 += producto.categoria_id+",'"+producto.producto_codigobarra+"',";        

@@ -22,6 +22,7 @@ class Factura extends CI_Controller{
         $this->load->model('Tipo_cliente_model');
         $this->load->model('Usuario_model');
         $this->load->model('Preferencia_model');
+        $this->load->model('Moneda_model');
         $this->load->library('ControlCode');
        
         if ($this->session->userdata('logged_in')) {
@@ -1140,7 +1141,8 @@ class Factura extends CI_Controller{
         $data['page_title'] = "Recibo";
 
         $data['parametro'] = $this->Parametro_model->get_parametros();
-   
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                
         $this->load->helper('numeros_helper'); // Helper para convertir numeros a letras
   
         $data['_view'] = 'factura/notae_carta';
