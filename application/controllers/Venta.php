@@ -30,6 +30,7 @@ class Venta extends CI_Controller{
         $this->load->model('Categoria_clientezona_model');
         $this->load->model('Promocion_model');
         $this->load->model('Mesa_model');
+        $this->load->model('Moneda_model');
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -97,6 +98,7 @@ class Venta extends CI_Controller{
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
@@ -180,7 +182,7 @@ class Venta extends CI_Controller{
                 "producto_nombre, producto_unidad, producto_marca, categoria_id, producto_codigobarra,
                 detalleven_envase,detalleven_nombreenvase,detalleven_costoenvase,detalleven_precioenvase,
                 detalleven_cantidadenvase,detalleven_garantiaenvase,detalleven_devueltoenvase,detalleven_montodevolucion,
-                detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor, preferencia_id, clasificador_id) ".
+                detalleven_prestamoenvase, detalleven_fechavenc,detalleven_unidadfactor, preferencia_id, clasificador_id, detalleven_tc) ".
                 " value(".$datos1.")";
         
         //si el producto ya esta registrado, solo actualizara la cantidad y total
