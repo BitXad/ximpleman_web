@@ -266,8 +266,8 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="tipocliente_porcdesc" value="0" hidden>
 <input type="text" id="tipocliente_montodesc" value="0" hidden>
 
-<input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>">
-<input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>">
+<input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
+<input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 

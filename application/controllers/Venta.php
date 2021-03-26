@@ -381,7 +381,8 @@ class Venta extends CI_Controller{
           factura_id,
           clasificador_id,
           detalleven_unidadfactor,
-          preferencia_id
+          preferencia_id,
+          detalleven_tc
         )
 
         (SELECT 
@@ -416,7 +417,8 @@ class Venta extends CI_Controller{
             0 as factura_id,
             clasificador_id,
             detalleven_unidadfactor,
-            preferencia_id
+            preferencia_id,
+            detalleven_tc
           
         FROM
           detalle_venta_aux
