@@ -498,10 +498,10 @@ function listacodbarras() {
                 tamaniofont = 1;
             }
             html += "<b id='masgrande'><font size='"+tamaniofont+"' face='Arial'><b>"+registros[i]["producto_nombre"]+"</b></font></b><br>";
-            html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
+            /*html += ""+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_industria"]+"";
             if(registros[i]["destino_id"] > 0){
                     html +="<br><b>DESTINO:</b> "+registros[i]['destino_nombre'];
-            }
+            }*/
             /*if(parametro_modulo == 2){
                 html +="<br>Principio Activo: "+registros[i]['producto_principioact'];
                 html +="<br>Acción Terapeutica: "+registros[i]['producto_accionterap'];
