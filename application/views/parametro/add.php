@@ -316,6 +316,20 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <label for="moneda_id" class="control-label"><span class="text-danger">*</span>MONEDA</label>
+                        <div class="form-group">
+                            <select name="moneda_id" class="form-control" required id="moneda_id">
+                                <!--<option value="0">- CATEGORIA -</option>-->
+                                <?php 
+                                foreach($all_moneda as $moneda)
+                                {
+                                    echo '<option value="'.$moneda['moneda_id'].'">'.$moneda['moneda_descripcion'].'</option>';
+                                } 
+                                ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="box-footer text-center">

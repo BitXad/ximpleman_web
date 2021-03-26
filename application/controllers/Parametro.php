@@ -45,7 +45,7 @@ class Parametro extends CI_Controller{
      * Adding a new parametro
      */
     function add()
-    {   
+    {
         if($this->acceso(125)) {
             $this->load->model('Categoria_producto_model');
             $data['all_categoria_producto'] = $this->Categoria_producto_model->get_all_categoria_producto();
@@ -195,14 +195,17 @@ class Parametro extends CI_Controller{
                 'parametro_fondomonitor' => $fotoapo,
                 'parametro_cantidadproductos' => $this->input->post('parametro_cantidadproductos'),
                 'parametro_datosboton' => $this->input->post('parametro_datosboton'),
+                'moneda_id' => $this->input->post('moneda_id'),
             );
             
             $parametro_id = $this->Parametro_model->add_parametro($params);
             redirect('parametro/index');
         }
         else
-        {    
-            $data['page_title'] = "Parametro";        
+        {
+            $data['page_title'] = "Parametro";
+            $this->load->model('Moneda_model');
+            $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'parametro/add';
             $this->load->view('layouts/main',$data);
         }
@@ -397,6 +400,7 @@ class Parametro extends CI_Controller{
                     'parametro_fondomonitor' => $fotoapo,
                     'parametro_cantidadproductos' => $this->input->post('parametro_cantidadproductos'),
                     'parametro_datosboton' => $this->input->post('parametro_datosboton'),
+                    'moneda_id' => $this->input->post('moneda_id'),
                 );
 
                 $this->Parametro_model->update_parametro($parametro_id,$params);            
@@ -405,6 +409,8 @@ class Parametro extends CI_Controller{
             else
             {
                 $data['page_title'] = "Parametro";
+                $this->load->model('Moneda_model');
+                $data['all_moneda'] = $this->Moneda_model->getalls_monedasact_asc();
                 $data['_view'] = 'parametro/edit';
                 $this->load->view('layouts/main',$data);
             }

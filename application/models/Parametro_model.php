@@ -170,8 +170,10 @@ class Parametro_model extends CI_Model
     /* muestra todos los parametros */
     function get_all_parametros()
     {
-        $sql = "select * from parametros";
-        
+        $sql = "select p.*, m.moneda_descripcion
+                from parametros p
+                left join moneda m on p.moneda_id = m.moneda_id
+            ";
         return $this->db->query($sql)->result_array();
     }
 }

@@ -188,6 +188,7 @@ foreach($all_parametros as $p)
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">IMAGEN FONDO</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">PASE A DETALLE</th>
                         <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">DATOS DE BOTON</th>
+                        <th style="font-size: 11px;color:black;background: rgba(255, 255, 0, 0.3);">MONEDA</th>
                     </tr>
                     <tr>
                         <td><?php
@@ -236,6 +237,10 @@ foreach($all_parametros as $p)
                             }else if($p['parametro_datosboton'] == 4){
                                 echo 'NINGUNO';
                             }
+                            ?>
+                        </td>
+                        <td><?php
+                            echo $p['moneda_descripcion'];
                             ?>
                         </td>
                     </tr>
