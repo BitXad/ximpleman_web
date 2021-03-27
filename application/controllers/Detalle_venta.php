@@ -608,5 +608,15 @@ class Detalle_venta extends CI_Controller{
             show_404();
         }
     }
+    function getdetalle_ventaenproceso()
+    {
+        if ($this->input->is_ajax_request()){
+            $datos = $this->Detalle_venta_model->getdetalles_paravender();
+            echo json_encode($datos);
+        }
+        else{
+            echo json_encode("null");
+        }        
+    }
     
 }

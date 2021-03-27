@@ -27,11 +27,12 @@
   <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">-->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 
-<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />  
+<input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>" />
 <script src="<?php echo base_url('resources/js/jquery-2.2.3.min.js'); ?>" type="text/javascript"></script>
 <script src="<?php echo base_url('resources/js/graficas.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/pedido_diario.js'); ?>"></script>
 <script src="<?php echo base_url('resources/js/highcharts.js'); ?>"></script>
+<script src="<?php echo base_url('resources/js/verventas_enprocesodashb.js'); ?>"></script>
 <!--
 <button onclick="mostrar_grafica()">
  graficos    
@@ -723,7 +724,44 @@
 
           </div>
 
-        </section>   
+    </section>
+    <section class="col-lg-5 connectedSortable">
+        <div class="box box-info">
+            <div class="box-header">
+                <i class="fa fa-file-text-o"></i>
+                <h3 class="box-title">Lo que se esta vendiendo</h3>
+                <a class="btn btn-success btn-sm" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
+                    <i class="fa fa-refresh"></i>
+                </a>
+                <a class="btn btn-danger btn-sm" onclick="quitartodo()" data-toggle="tooltip" title="Anular todo lo que se esta vendiendo">
+                    <i class="fa fa-trash"></i>
+                </a>
+                <!-- tools box -->
+                <div class="pull-right box-tools">
+                    <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remover">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <!-- /. tools -->
+            </div>
+            <div class="box-body">
+                <div class="box-body no-padding">
+                    <table class="table table-condensed">
+                        <tr>
+                            <th style="width: 10px">#</th>
+                            <th>Producto</th>
+                            <th>Cant.</th>
+                            <th>Precio</th>
+                            <th>Total</th>
+                            <th>Vendedor</th>
+                            <th></th>
+                        </tr>
+                        <tbody id="tablaresultados"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <br>
         <section>
@@ -743,3 +781,27 @@
           // console.log(tipouser_id);
         </script>
  </body>   
+ 
+ <!------------------------ INICIO modal para Seleccioanr nuevo asociado ------------------->
+<div class="modal fade" id="modalconfirmar" tabindex="-1" role="dialog" aria-labelledby="modalconofirmarlabel">
+    <div class="modal-dialog" role="document">
+        <br><br>
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">x</span></button>
+                <span class="text-bold">Eliminar detalle</span>
+            </div>
+            <div class="modal-body">
+                <!------------------------------------------------------------------->
+                <input type="hidden" name="eldetalle_id" id="eldetalle_id" />
+                <div id="titulomodal" ></div>
+                <!------------------------------------------------------------------->
+            </div>
+            <div class="modal-footer" style="text-align: center">
+                <a href="#" class="btn btn-success" onclick="quitardetalle()"><span class="fa fa-check"></span> Si</a>
+                <a href="#" class="btn btn-danger" data-dismiss="modal"><span class="fa fa-times"></span> No</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!------------------------ FIN modal para Seleccionar nuevo asociado ------------------->

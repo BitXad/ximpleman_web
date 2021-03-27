@@ -501,4 +501,18 @@ function ventas_dia($estado)
         ")->result_array();
         return $reporte;
     }
+    function getdetalles_paravender()
+    {
+        $get_detalle = $this->db->query(
+            "SELECT
+		dv.detalleven_id, dv.producto_nombre, dv.detalleven_codigo, dv.detalleven_cantidad,
+                dv.detalleven_precio, (dv.detalleven_cantidad*dv.detalleven_precio) as total,
+                u.usuario_nombre
+            FROM
+                detalle_venta_aux dv
+            LEFT JOIN usuario u on dv.usuario_id = u.usuario_id
+            order by dv.detalleven_id desc
+        ")->result_array();
+        return $get_detalle;
+    }
 }
