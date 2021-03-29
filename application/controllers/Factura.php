@@ -938,6 +938,11 @@ class Factura extends CI_Controller{
 //        if($factura_id>0)
 //        {
 //            
+        $sql = "select venta_id from factura where factura_id = ".factura_id;                
+        $resultado = $this->Factura_model->consultar($sql);
+        $venta_id = $resultado[0]["venta_id"];
+         
+        
         $sql = "update factura set ".                
                 "factura_subtotal = 0".
                 ",factura_nit = 0".
@@ -947,11 +952,12 @@ class Factura extends CI_Controller{
                 ",factura_descuento     = 0".
                 ",factura_total         = 0".
                 ",factura_codigocontrol     = '0'".
+                ",venta_id     = '0'".
                 ",estado_id     = 3".
                 " where factura_id = ".$factura_id;
+        $this->Factura_model->ejecutar($sql);
         
-        //echo $sql;
-        // check if the factura exists before trying to delete it
+        $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
         $this->Factura_model->ejecutar($sql);
             
             redirect('factura/mensaje/'.$factura_id."/".$factura_numero);

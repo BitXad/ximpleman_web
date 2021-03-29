@@ -63,7 +63,8 @@
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value='<?php echo $tipousuario_id; ?>' />
 <input type="text" value="" id="parametro" hidden>
 
-
+<input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
+<input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 
 <div class="box-header no-print">
