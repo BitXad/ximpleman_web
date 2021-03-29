@@ -729,11 +729,11 @@
         <div class="box box-info">
             <div class="box-header">
                 <i class="fa fa-file-text-o"></i>
-                <h3 class="box-title">Lo que se esta vendiendo</h3>
-                <a class="btn btn-success btn-sm" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
+                <h3 class="box-title">Ventas en proceso</h3>
+                <a class="btn btn-success btn-xs" onclick="tabladetalle_venta()" data-toggle="tooltip" title="Actualizar lo que se esta vendiendo">
                     <i class="fa fa-refresh"></i>
                 </a>
-                <a class="btn btn-danger btn-sm" onclick="quitartodo()" data-toggle="tooltip" title="Anular todo lo que se esta vendiendo">
+                <a class="btn btn-danger btn-xs" onclick="quitartodo()" data-toggle="tooltip" title="Anular todo lo que se esta vendiendo">
                     <i class="fa fa-trash"></i>
                 </a>
                 <!-- tools box -->
