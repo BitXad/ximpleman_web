@@ -203,6 +203,9 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_datosboton"  hidden>
+
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -213,6 +216,9 @@ window.onkeydown = compruebaTecla;
 
 <input type="text" id="tipocliente_porcdesc" value="0" hidden>
 <input type="text" id="tipocliente_montodesc" value="0" hidden>
+
+<input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
+<input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 <input type="text" id="venta_id" value="<?php echo $venta[0]['venta_id']; ?>" hidden>
 <input type="text" id="credito_id" value="<?php if(isset($credito['credito_id'])){if($credito['credito_id']>0){ echo $credito['credito_id'];}else{ echo 0;} }else{ echo 0;}?>" hidden>
@@ -592,7 +598,7 @@ window.onkeydown = compruebaTecla;
             <div class="col-md-4" style="background-color: black; line-height: 15px;">
                 <center>
                     
-                <font size="3" style="color:white;" face="Arial"><b>Total Final Bs</b></font>
+                <font size="3" style="color:white;" face="Arial"><b>Total Final <?php echo $parametro[0]["moneda_descripcion"]; ?></b></font>
                 
                 <font size="6" style="color:white;" face="Arial"><b>
                     <input type="text" id="venta_subtotal" name="venta_subtotal" values="0.00" style="width: 180px; border-color: black; border-width: 0; background-color: black; text-align: center; padding:0;" readonly> </b>                
@@ -840,7 +846,7 @@ window.onkeydown = compruebaTecla;
             <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
                 <tr>
-                        <td  style="padding: 0" >Total Bs</td>
+                        <td  style="padding: 0" >Total <?php echo $parametro[0]["moneda_descripcion"]; ?></td>
                         <td align="right">
                             <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -848,7 +854,7 @@ window.onkeydown = compruebaTecla;
                     
                 </tr>                
                 <tr style="padding: 0">
-                        <td style="padding: 0">Descuento Bs</td>
+                        <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -857,7 +863,7 @@ window.onkeydown = compruebaTecla;
 
                         
                 <tr style="padding: 0">
-                        <td align="right" style="padding: 0"><b>Sub Total Bs</b></td>
+                        <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
                         <td align="right" style="padding: 0">                
                             
                             <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
@@ -866,11 +872,11 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Descuento Bs</td>
+                        <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $venta[0]["venta_descuento"]; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
                             <select id="tipo_descuento" onchange="calculardesc()">
-                                <option value="1">Bs</option>
+                                <option value="1"><?php echo $parametro[0]["moneda_descripcion"]; ?></option>
                                 <option value="2">%</option>
                                 
                             </select>
@@ -878,7 +884,7 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0"><b>Total Final Bs</b></td>
+                        <td style="padding: 0"><b>Total Final <?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
                         <td align="right" style="padding: 0">
 
                               <input class="btn btn-foursquarexs" style="font-size: 20px; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">
@@ -887,14 +893,14 @@ window.onkeydown = compruebaTecla;
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Efectivo Bs</td>
+                        <td style="padding: 0">Efectivo <?php echo $parametro[0]["moneda_descripcion"]; ?></td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
                         </td>
                 </tr>
                 
                 <tr style="padding: 0">                      
-                    <td style="padding: 0"><b>Cambio Bs</b></td>
+                    <td style="padding: 0"><b>Cambio <?php echo $parametro[0]["moneda_descripcion"]; ?></b></td>
                         <td align="right" style="padding: 0;">
                             <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>

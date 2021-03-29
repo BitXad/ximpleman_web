@@ -62,6 +62,7 @@ class Venta extends CI_Controller{
         //$data['venta'] = $this->Venta_model->get_all_venta($params);
         $data['page_title'] = "Ventas del dia";
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['estado'] = $this->Estado_model->get_tipo_estado(1);
         $data['usuario'] = $this->Venta_model->get_usuarios();
         $dosificacion = $this->Dosificacion_model->get_all_dosificacion();
@@ -1157,7 +1158,7 @@ function edit($venta_id)
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id']; 
         
-                // check if the venta exists before trying to edit it
+        // check if the venta exists before trying to edit it
         $venta = $this->Venta_model->get_venta($venta_id);
         
         $data['venta'] = $venta;//$this->Venta_model->get_venta($venta_id);
@@ -1193,13 +1194,13 @@ function edit($venta_id)
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
         $data['promociones'] = $this->Promocion_model->get_promociones();
         $data['mesas'] = $this->Mesa_model->get_all_mesa();
         $data['usuario_id'] = $usuario_id;
-        $data['tipousuario_id'] = $tipousuario_id;        
-        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+        $data['tipousuario_id'] = $tipousuario_id;
         
         
                 

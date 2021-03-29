@@ -36,19 +36,19 @@ function calculardesc(){
    if (tipo_descuento==2)
    {   
        venta_descuento = venta_descuento * venta_subtotal /100;        
-       $("#venta_descuento").val(venta_descuento);
+       $("#venta_descuento").val(venta_descuento.toFixed(2));
        $("#tipo_descuento").val(1);
     }
 
        subtotal = Number(venta_subtotal) - Number(venta_descuento); 
     
-   $("#venta_totalfinal").val(subtotal);
+   $("#venta_totalfinal").val(subtotal.toFixed(2));
    
    //Calcular cambio
    var venta_efectivo = document.getElementById('venta_efectivo').value;      
    var venta_cambio = venta_efectivo - subtotal;      
    
-   $("#venta_cambio").val(formato_numerico(venta_cambio));
+   $("#venta_cambio").val(formato_numerico(venta_cambio.toFixed(2)));
    //$("#venta_efectivo").val(subtotal);
    
 }
@@ -2969,6 +2969,7 @@ function tabla_ventas(filtro)
     var dosificado      = document.getElementById('dosificado').value;
     var generar_factura = document.getElementById('generar_factura').value;
     var modif_fhora     = document.getElementById('modif_fhora').value;
+    var signo_moneda    = document.getElementById('moneda_descripcion').value;
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     document.getElementById('oculto2').style.display = 'block'; //mostrar el bloque del loader
     
@@ -3026,13 +3027,13 @@ function tabla_ventas(filtro)
                     html += "                       </td>";
 
                     html += "                       <td style='withe-space:nowrap; padding:0;' align='right'>";
-                    html += "                           Sub Total "+v[i]['moneda_descripcion']+': '+Number(v[i]['venta_subtotal']).toFixed(2)+"<br>";
-                    html += "                           Desc. "+v[i]['moneda_descripcion']+': '+Number(v[i]['venta_descuento']).toFixed(2)+"<br>";
+                    html += "                           Sub Total "+signo_moneda+': '+Number(v[i]['venta_subtotal']).toFixed(2)+"<br>";
+                    html += "                           Desc. "+signo_moneda+': '+Number(v[i]['venta_descuento']).toFixed(2)+"<br>";
                     html += "                           <!--<span class='btn btn-facebook'>-->";
-                    html += "                           <font size='3' face='Arial narrow'> <b>Total "+v[i]['moneda_descripcion']+': '+Number(v[i]['venta_total']).toFixed(2)+"</b></font><br>";
+                    html += "                           <font size='3' face='Arial narrow'> <b>Total "+signo_moneda+': '+Number(v[i]['venta_total']).toFixed(2)+"</b></font><br>";
                     html += "                           <!--</span>-->";
-                    html += "                               Efectivo "+v[i]['moneda_descripcion']+": "+Number(v[i]['venta_efectivo']).toFixed(2)+"<br>";
-                    html += "                               Cambio "+v[i]['moneda_descripcion']+": "+Number(v[i]['venta_cambio']).toFixed(2);
+                    html += "                               Efectivo "+signo_moneda+": "+Number(v[i]['venta_efectivo']).toFixed(2)+"<br>";
+                    html += "                               Cambio "+signo_moneda+": "+Number(v[i]['venta_cambio']).toFixed(2);
                     html += "                       </td>";
 
                     html += "                       <td align='center' style='padding:0;'><font size='3'><b> 00"+v[i]['venta_id']+"</b></font>";
@@ -3051,16 +3052,33 @@ function tabla_ventas(filtro)
                     html += "                       </td>";
 
                     html += "                       <td style='padding:0;'><center>";
+                    
+                    html += "<table style='padding:0; border: hidden;' >";
+                    html += "<tr style='padding:0;'>";
+                    html += "<td style='padding:0;'>";
+                    
                     if(modif_fhora == 1){
-                        html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-sm' title='Modificar fecha y hora'>";
-                        html += formato_fecha(v[i]['venta_fecha']);;
-                        html += "<br> "+v[i]['venta_hora'];
+//                        html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-xs' title='Modificar fecha y hora'>";
+//                        html += formato_fecha(v[i]['venta_fecha']);;
+//                        html += "<br> "+v[i]['venta_hora'];
+//                        html += "</a>";
+                       // html += "<br>";
+                        html += "<a onclick='modificarhora("+v[i]['venta_id']+", "+JSON.stringify(v[i]['venta_fecha'])+", "+JSON.stringify(v[i]['venta_hora'])+")' class='btn btn-facebook btn-xs' title='Modificar fecha y hora'>";
+                        html += "<fa class='fa fa-calendar'></fa>";
                         html += "</a>";
-                    }else{
-                        html +=                             formato_fecha(v[i]['venta_fecha']);;
-                        html += "                           <br> "+v[i]['venta_hora'];
+                        
                     }
-                    html += "                           <br><input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' style='display:block'>";
+                    html += "</td>";
+                    
+                    html += "<td style='padding:0;'>";
+                    html +=                             formato_fecha(v[i]['venta_fecha']);
+                    html += "                            <br>"+v[i]['venta_hora'];
+                    html += "</td>";
+                    
+                    html += "</tr>";
+                    html += "</table>";
+                    
+                    html += "<input type='button' class='btn btn-warning btn-xs' id='boton"+v[i]['venta_id']+"' value='--' style='display:block'>";
                     
                     html += "                       </center>";
                     html += "                       </td>";
@@ -3211,7 +3229,7 @@ function tabla_ventas(filtro)
                     html += "                   <tr>";
                     html += "                        <th></th>";
                     html += "                        <th>Totales</th>";
-                    html += "                        <th><font size='3'> Bs: "+total_final.toFixed(2)+"</font></th>	";
+                    html += "                        <th><font size='3'> Bs: "+formato_numerico(total_final.toFixed(2))+"</font></th>	";
                     html += "                        <th></th>";
                     html += "                        <th></th>";
                     html += "                        <th></th>";

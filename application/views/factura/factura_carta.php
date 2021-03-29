@@ -143,12 +143,12 @@ border-bottom : 1px solid #aaa;
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Anular Factura</h4>
               </div>
-              <div class="modal-body">
-                  <h3>              
-                  <p>
-                    ADVERTENCIA: La factura Nº: <?php echo $factura[0]['factura_numero']; ?>, esta a punto de ser ANULADA. ¿Desea continuar?
-                  </p>
-                  </h3>
+              <div class="modal-body" style="font-family:Arial; font-size: 12px;">
+                             
+                
+                  <fa class="fa fa-"></fa>  <b>ADVERTENCIA:</b> La factura Nº: <?php echo $factura[0]['factura_numero']; ?>, esta a punto de ser ANULADA. ¿Desea continuar?
+              
+               
               </div>
               <div class="modal-footer">
                   <a href="<?php echo base_url('factura/anular_factura/'.$factura[0]['factura_id']."/".$factura[0]['factura_numero']); ?>" type="button" class="btn btn-warning" ><i class="fa fa-times-rectangle"></i> Anular</a>

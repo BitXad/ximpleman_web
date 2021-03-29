@@ -192,6 +192,12 @@ class Factura_model extends CI_Model
         return $true;
     }
 
+    function consultar($sql)
+    {       
+        $res = $this->db->query($sql)->result_array();     
+        return $res;
+    }
+
 
     function get_detalle_factura_aux($usuario_id)
     {
