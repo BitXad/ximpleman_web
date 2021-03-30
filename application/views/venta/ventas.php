@@ -251,8 +251,8 @@ window.onkeydown = compruebaTecla;
 <input type="text" id="parametro_diasvenc" value="<?php echo $parametro[0]['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
 <input type="text" id="parametro_cantidadproductos" value="<?php echo $parametro[0]['parametro_cantidadproductos']; ?>" name="parametro_cantidadproductos"  hidden>
 <input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
-<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_datosboton"  hidden>
-<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
 <input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
 <input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
 
@@ -265,9 +265,9 @@ window.onkeydown = compruebaTecla;
 
 <input type="text" id="tipocliente_porcdesc" value="0" hidden>
 <input type="text" id="tipocliente_montodesc" value="0" hidden>
-
 <input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
 <input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
+
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 

@@ -103,6 +103,7 @@ function cerrar_ventana(){
 <?php } ?>
 
 <input type="text" value='<?php echo json_encode($categoria_producto); ?>' id="categoria_producto" hidden>
+<input type="text" value='<?php echo json_encode($preferencia); ?>' id="preferencias" hidden>
 <input type="text" id="pedido_id" value="0" name="pedido_id"  hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
 <input type="text" id="venta_comision" value="0" name="venta_comision"  hidden>
@@ -117,12 +118,27 @@ function cerrar_ventana(){
 <input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
+<input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
 <input type="text" id="parametro_diasvenc" value="<?php echo $parametro[0]['parametro_diasvenc']; ?>" name="parametro_diasvenc"  hidden>
 <input type="hidden" id="modificar_precioventa" value="<?php echo $rolusuario[183-1]['rolusuario_asignado']; ?>" name="modificar_precioventa">
+<input type="text" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>" name="tipousuario_id"  hidden>
+<input type="text" id="preferencia_id" value="0" name="preferencia_id" hidden>
+
+<input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor1" value="<?php echo $rolusuario[162-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor2" value="<?php echo $rolusuario[163-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor3" value="<?php echo $rolusuario[164-1]['rolusuario_asignado']; ?>" hidden>
+<input type="text" id="rol_factor4" value="<?php echo $rolusuario[165-1]['rolusuario_asignado']; ?>" hidden>
 
 
 <input type="text" value="<?php echo 0; ?>" id="pedido_latitud" hidden>
 <input type="text" value="<?php echo 0; ?>" id="pedido_longitud" hidden>
+<input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
+<input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 <!--<img src="<?php echo base_url("resources/images/logo.png"); ?>" class="img img-thumbnail" >-->
 <!-------------------- inicio collapse ---------------------->
@@ -550,7 +566,7 @@ function cerrar_ventana(){
                     
                 
                 <b>Total Final</b>
-                <b>Bs <input type="text" id="venta_subtotal" name="venta_subtotal" value="0.00" style="width: 150px; border-color: black; border-width: 0; background-color: black; text-align: center" readonly> </b>
+                <b><?php echo $parametro[0]["moneda_descripcion"]; ?> <input type="text" id="venta_subtotal" name="venta_subtotal" value="0.00" style="width: 150px; border-color: black; border-width: 0; background-color: black; text-align: center" readonly> </b>
                 </font>
     
                 </center>
@@ -770,7 +786,7 @@ function cerrar_ventana(){
             <table class="table table-striped table-condensed" id="miotratabla" style="font-size:15px; font-family: Arial, Helvetica, sans-serif;" style="max-width: 7cm">
                 
                 <tr>
-                        <td  style="padding: 0" >Total Bs</td>
+                        <td  style="padding: 0" >Total <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
                         <td align="right">
                             <input class="btn btn-danger btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;" id="venta_total" size="<?php echo $ancho_boton; ?>"  name="venta_total" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -778,7 +794,7 @@ function cerrar_ventana(){
                     
                 </tr>                
                 <tr style="padding: 0">
-                        <td style="padding: 0">Descuento Bs</td>
+                        <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-foursquarexs" style="padding: 0" id="venta_descuentoparc" size="<?php echo $ancho_boton; ?>"  name="venta_descuentoparc" value="<?php echo number_format(0.00,2,'.',','); ?>" readonly="true">
                         </td>
@@ -787,7 +803,7 @@ function cerrar_ventana(){
 
                         
                 <tr style="padding: 0">
-                        <td align="right" style="padding: 0"><b>Sub Total Bs</b></td>
+                        <td align="right" style="padding: 0"><b>Sub Total <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
                         <td align="right" style="padding: 0">                
                             
                             <input class="btn btn-foursquarexs"  style="padding: 0" id="venta_subtotal" size="<?php echo $ancho_boton; ?>"  name="venta_subtotal" value="<?php echo number_format($subtotal,2,'.',','); ?>" readonly="true">
@@ -796,14 +812,14 @@ function cerrar_ventana(){
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Descuento Bs</td>
+                        <td style="padding: 0">Descuento <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
                         <td align="right" style="padding: 0">
                             <input class="btn btn-info"  style="padding: 0" id="venta_descuento" name="venta_descuento" size="<?php echo $ancho_boton; ?>" value="<?php echo $descuento; ?>" onKeyUp="calculardesc()" onclick="seleccionar(4)">
                         </td>
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0"><b>Total Final Bs</b></td>
+                        <td style="padding: 0"><b>Total Final <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
                         <td align="right" style="padding: 0">
 
                               <input class="btn btn-foursquarexs" style="font-size: 20; padding: 0;" id="venta_totalfinal" size="<?php echo $ancho_boton; ?>" name="venta_totalfinal" value="<?php echo $totalfinal; ?>" readonly="true">                                
@@ -812,14 +828,14 @@ function cerrar_ventana(){
                 </tr>
 
                 <tr style="padding: 0">                      
-                        <td style="padding: 0">Efectivo Bs</td>
+                        <td style="padding: 0">Efectivo <?php echo $parametro[0]["moneda_descripcion"]; ?> </td>
                         <td align="right" style="padding: 0">
                             <input class="btn" style="padding:0; background-color:yellow; font-size:20px;" id="venta_efectivo" size="<?php echo $ancho_boton; ?>" name="venta_efectivo" value="<?php echo $efectivo; ?>"  onKeyUp="calcularcambio(event)"  onclick="seleccionar(5)">
                         </td>
                 </tr>
                 
                 <tr style="padding: 0">                      
-                    <td style="padding: 0"><b>Cambio Bs</b></td>
+                    <td style="padding: 0"><b>Cambio <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></td>
                         <td align="right" style="padding: 0;">
                             <input class="btn btn-danger  btn-foursquarexs" style="padding: 0; background-color: black; font-size: 20px;"  id="venta_cambio" size="<?php echo $ancho_boton; ?>" name="venta_cambio" value="<?php echo number_format($cambio,2,'.',','); ?>" readonly="true" required min="0">
                         </td>
@@ -904,7 +920,7 @@ function cerrar_ventana(){
                 </div>
 
                 <div class="col-md-4">
-                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. Bs</b></h5>
+                    <h5 class="modal-title" id="myModalLabel"><b>CUOTA INIC. <?php echo $parametro[0]["moneda_descripcion"]; ?> </b></h5>
                     <input type="text" class="form-control  input-sm"  value="0.00"name="cuota_inicial" id="cuota_inicial" >
                 </div>
 
@@ -1311,4 +1327,221 @@ function cerrar_ventana(){
 </div>
 <!--------------------------------- FIN MODAL CLIENTES ------------------------------------>
 
+                                   <div hidden>
+    
+<button type="button" id="boton_modal_ingreso" class="btn btn-primary" data-toggle="modal" data-target="#modalingreso" >
+  Launch demo modal
+</button>
+</div>
+<!----------------- modal preferencias ---------------------------------------------->
+
+<div class="modal fade" id="modalingreso" tabindex="-1" role="dialog" aria-labelledby="modalingreso" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>INGRESO RAPIDO</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+                            <input type="text" id="ingresorapido_producto" value="-" class="form-control btn btn-xs btn-default" readonly>
+                                        <div class="col-md-6">
+                                            <label for="usuario_idx" class="control-label">Cantidad:</label>
+                                            
+                                            <input type="text" id="ingresorapido_producto_id" value="0.00" hidden />
+                                            <input type="text" id="ingresorapido_cantidad" value="0.00" class="form-control btn btn-xs btn-warning" onkeyup="validar(event,11)" />
+					</div>
+                                        <div class="col-md-6" id='botones'  style='display:block;'>
+						<label for="opciones" class="control-label">Opciones</label>
+						<div class="form-group">
+                                                        
+                                                    <button class="btn btn-facebook" id="boton_ingreso_rapido" onclick="guardar_ingreso_rapido()" data-dismiss="modal" >
+                                                            <span class="fa fa-floppy-o"></span> Registrar
+                                                    </button>
                                                     
+                                                    <button class="btn btn-danger" id="cancelar_preferencia" data-dismiss="modal" >
+                                                        <span class="fa fa-close"></span>   Cancelar                                                          
+                                                    </button>
+						</div>
+					</div>
+                            
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='loaderinventario'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                            
+             
+                        </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+
+
+<!----------------- fin modal preferencias ---------------------------------------------->
+
+
+<!----------------- modal promociones ---------------------------------------------->
+
+<div class="modal fade" id="modalpromocion" tabindex="-1" role="dialog" aria-labelledby="modalpromocion" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+                    <div class="modal-header" >
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>COMBOS Y PROMOCIONES</b></h4>
+                                <!--<b>ADVERTENCIA: Seleccione la </b>-->                                
+                                
+                                <!--<input type="text" id="parametro" class="form-control btn-default" onkeyup="buscar(event)">-->
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='oculto'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                                        <center>
+                                            
+                                        <?php 
+                                        
+                                            $alto_botonx = 150;
+                                            $ancho_botonx = 100;
+                                            foreach($promociones as $prom){ ?>
+    <!--                                        <button > <fa class="fa fa-cube"></fa> 
+                                                    <?php echo $prom["promocion_titulo"]; ?>
+                                            </button>-->
+
+
+    <button data-toggle="modal" class="btn btn-sq-lg btn-primary" style="width: <?php echo $ancho_botonx; ?>px !important; height: <?php echo $alto_botonx; ?>px !important;" title=" <?php echo $prom["promocion_titulo"]; ?>" onclick="ingresar_promocion(<?php echo $prom["promocion_id"]; ?>)">
+                                                    <i class="fa fa-cubes fa-2x"></i><br><br>
+                                                    <small>
+                                                        <?php echo $prom["promocion_titulo"]; ?><br>
+                                                        
+                                                    </small>
+                                                    <b>
+                                                        <?php echo $parametro[0]['moneda_descripcion']." ".number_format($prom["promocion_preciototal"],2,".",","); ?>
+                                                    </b>
+                                                </button>
+
+                                        <?php } ?>
+<!--                                        <table class="table-responsive" id="mitabla">
+                                            <tr>
+                                                <th style="padding: 0">#</th>
+                                                <th style="padding: 0">DESCRIPCIÓN</th>
+                                                <th style="padding: 0">CODIGO</th>
+                                                <th style="padding: 0">CANTIDAD</th>
+                                                <th style="padding: 0">PRECIO</th>
+                                                <th style="padding: 0"></th>                                                
+                                            </tr>
+                                            <tbody id="tablaresultados">
+                                                -------- aqui van los resultados 
+                                            </tbody>
+                                            
+                                        </table>-->
+                                        </center>
+                            </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+<!----------------- fin modal promociones ---------------------------------------------->
+
+
+
+
+<!----------------- modal clasificador ---------------------------------------------->
+
+<div class="modal fade" id="modalclasificador" tabindex="-1" role="dialog" aria-labelledby="modalclasificador" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+                    <div class="modal-header" >
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                            </button>
+                            <center>
+                                <h4 class="modal-title" id="myModalLabel"><b>CLASIFICACION DE PRODUCTOS</b></h4>
+
+                            </center>
+                            
+                    </div>
+                    <div class="modal-body">
+                        <!--------------------- TABLA---------------------------------------------------->
+                        
+                        <div class="box-body table-responsive">
+
+                                        <!--------------------- inicio loader ------------------------->
+                                        <div class="col-md-6" id='oculto'  style='display: none;'>
+                                            <center>
+                                                <img src="<?php echo base_url("resources/images/loader.gif"); ?>" >        
+                                            </center>
+                                        </div> 
+                                        <!--------------------- fin inicio loader ------------------------->
+                                        <center>
+                                           
+                                        <div class="col-md-12">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        CLASIFICADOR
+                                                    </td>
+                                                    <td>
+                                                        <div id="div_clasificador">
+                                                            
+                                                        </div>
+                                                        
+                                                    </td>
+
+                                                    <td>
+                                                        <button class="btn btn-info btn-sm" id="boton_registrar_clasificacion" onclick="registrar_clasificador()" data-dismiss="modal"> <fa class="fa fa-floppy-o"></fa> </button>
+                                                    </td>
+
+                                                
+                                                </tr>
+                                            </table>
+                                        </div>
+                                            
+                                        <div class="col-md-12">
+                                            
+
+                                            <button class="btn btn-danger btn-xs" id="cancelar_preferencia" data-dismiss="modal" >
+                                                <span class="fa fa-close"></span>   Cerrar
+                                            </button>
+                                        </div> 
+
+                                        </center>
+                            </div>
+
+                        <!----------------------FIN TABLA--------------------------------------------------->
+                    </div>
+		</div>
+	</div>
+</div>
+<!----------------- fin modal clasificador ---------------------------------------------->                 

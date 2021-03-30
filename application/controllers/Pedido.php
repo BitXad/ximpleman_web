@@ -17,9 +17,18 @@ class Pedido extends CI_Controller{
         $this->load->model('Tipo_transaccion_model');
         $this->load->model('Venta_model');
         $this->load->model('Usuario_model');
+        $this->load->model('Moneda_model');
         $this->load->model('Parametro_model');
         $this->load->model('Categoria_clientezona_model');
         $this->load->model('Inventario_model');
+        $this->load->model('Cliente_model');
+        $this->load->model('Tipo_cliente_model');
+        $this->load->model('Dosificacion_model');
+        $this->load->model('Parametro_model');
+        $this->load->model('Tipo_servicio_model');
+        $this->load->model('Preferencia_model');
+        $this->load->model('Promocion_model');
+        
         if ($this->session->userdata('logged_in')) {
             $this->session_data = $this->session->userdata('logged_in');
         }else {
@@ -273,12 +282,8 @@ class Pedido extends CI_Controller{
         
         if($this->acceso(31)){
         //**************** inicio contenido ***************        
-        $this->load->model('Cliente_model');
-        $this->load->model('Tipo_cliente_model');
-        $this->load->model('Dosificacion_model');
-        $this->load->model('Parametro_model');
-        $this->load->model('Tipo_servicio_model');
-        $this->load->model('Preferencia_model');
+
+        
         
         $usuario_id = $this->session_data['usuario_id'];
         $tipousuario_id = $this->session_data['tipousuario_id'];
@@ -302,12 +307,21 @@ class Pedido extends CI_Controller{
         $data['forma_pago'] = $this->Forma_pago_model->get_all_forma();
         $data['tipo_cliente'] = $this->Tipo_cliente_model->get_all_tipo_cliente();
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['usuario_id'] = $usuario_id;
         $data['tipousuario_id'] = $tipousuario_id;
         $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
         $data['preferencia'] = $this->Preferencia_model->get_all_preferencia();
         $data['usuarios'] = $this->Usuario_model->get_all_usuario_activo();
         $data['tipo_respuesta'] = $this->Usuario_model->get_tipo_respuesta();
+        
+        $data['zonas'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+        $data['tipo_servicio'] = $this->Tipo_servicio_model->get_all_tipo_servicio();
+        $data['preferencia'] = $this->Preferencia_model->get_producto_preferencia();
+        $data['promociones'] = $this->Promocion_model->get_promociones();
+        
+        
+        
         
         //$data['venta'] = $this->Venta_model->get_all_venta($usuario_id);
         

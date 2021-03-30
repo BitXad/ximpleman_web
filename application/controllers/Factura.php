@@ -938,7 +938,7 @@ class Factura extends CI_Controller{
 //        if($factura_id>0)
 //        {
 //            
-        $sql = "select venta_id from factura where factura_id = ".factura_id;                
+        $sql = "select venta_id from factura where factura_id = ".$factura_id;                
         $resultado = $this->Factura_model->consultar($sql);
         $venta_id = $resultado[0]["venta_id"];
          
@@ -955,7 +955,9 @@ class Factura extends CI_Controller{
                 ",venta_id     = '0'".
                 ",estado_id     = 3".
                 " where factura_id = ".$factura_id;
+                
         $this->Factura_model->ejecutar($sql);
+        
         
         $sql = "update venta set venta_tipodoc = 0 where venta_id = ".$venta_id;
         $this->Factura_model->ejecutar($sql);
