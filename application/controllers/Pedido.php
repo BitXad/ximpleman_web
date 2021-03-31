@@ -112,6 +112,7 @@ class Pedido extends CI_Controller{
         $data['pedido'] = $data['pedido'] = $this->Pedido_model->get_pedido_id($pedido_id);
         $data['empresa'] = $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
         $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         
         $data['_view'] = 'pedido/nota_pedido';
         $this->load->view('layouts/main',$data);
@@ -153,7 +154,7 @@ class Pedido extends CI_Controller{
      */
     function imprimir($pedido_id)
     {
-        
+
         if($this->acceso(32)) {
             //**************** inicio contenido ***************            
             
@@ -561,7 +562,8 @@ function registrarpedido()
             detalleped_subtotal,
             detalleped_total,
             detalleped_preferencia,
-            detalleped_comision          
+            detalleped_comision,          
+            detalleped_tc,          
         )
         (SELECT           
           ".$pedido_id." as pedido_id,
@@ -577,7 +579,8 @@ function registrarpedido()
           detalleven_subtotal,
           detalleven_total * (1 - ".$porcentaje."),
           detalleven_preferencia,
-          detalleven_comision
+          detalleven_comision,
+          detalleven_tc,
 
         FROM
           detalle_venta_aux

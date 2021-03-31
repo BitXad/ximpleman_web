@@ -32,10 +32,11 @@
             momentoActual = new Date();
             var today = moment(momentoActual).format('DD/MM/YYYY HH:mm:ss');
             $("#reloj").html(today);
-            
         } 
         setInterval("mueveReloj()",1000);
+        
         </script>
+        
     <link rel="shortcut icon" href="<?php echo site_url('resources/images/icono.png');?>" />
     
 </head>
@@ -96,7 +97,15 @@
             </div>
 <div style="float: none; width: 90%" face="Arial" class="text-center" >
     <span class="text-bold" style="display: block; padding-top: 0px;padding-bottom: -8px; color: #FFF; font-size: 22px;">Ximpleman web</span>
-    <span name="reloj" id="reloj" style="color: #FFF; font-size: 12px;"></span> 
+    <span name="reloj" id="reloj" style="color: #FFF; font-size: 12px;"></span>
+    
+    <?php if (isset($parametro)&&isset($moneda)){ ?>
+    <span name="moneda" id="moneda" style="color: #FFF; font-size: 12px; "> 
+        | <b>MND:</b> <?php echo $parametro[0]["moneda_descripcion"]; ?> 
+        <b>TC:</b> <?php echo $moneda["moneda_tc"]; ?>            
+        </b>
+    </span>  
+    <?php } ?>
     
 </div>
         </nav>
@@ -860,6 +869,12 @@
                 }
                 ?>
             </ul>
+<!--            <center>
+                <span name="moneda" id="moneda" style="color: #FFF; font-size: 11px; background-color: #000">
+                    MON: <?php echo $parametro[0]["moneda_descripcion"]; ?> 
+                    TC: <?php echo $moneda["moneda_tc"]; ?>
+                </span>                
+            </center>-->
         </section>
         <!-- /.sidebar -->
     </aside>
