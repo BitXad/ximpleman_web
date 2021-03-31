@@ -563,7 +563,7 @@ function registrarpedido()
             detalleped_total,
             detalleped_preferencia,
             detalleped_comision,          
-            detalleped_tc,          
+            detalleped_tc        
         )
         (SELECT           
           ".$pedido_id." as pedido_id,
@@ -580,7 +580,7 @@ function registrarpedido()
           detalleven_total * (1 - ".$porcentaje."),
           detalleven_preferencia,
           detalleven_comision,
-          detalleven_tc,
+          detalleven_tc
 
         FROM
           detalle_venta_aux

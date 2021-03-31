@@ -263,27 +263,28 @@ border-bottom : 1px solid #aaa;
                 <td align="right"  style="padding: 0">
                 
                     <?php 
-                        if ($parametro[0]["moneda_id"]==1 && $p['moneda_id']==1){ //cuando la moneda principal es Bs y la del producto es Bs 
+//                        if ($parametro[0]["moneda_id"]==1 && $p['moneda_id']==1){ //cuando la moneda principal es Bs y la del producto es Bs
+//                                   echo number_format($p['detalleped_total'] / $p['detalleped_tc'] ,2,".",","); 
+//                        }
+//                        
+//                        if ($parametro[0]["moneda_id"]==1 && $p['moneda_id']!=1){ //cuando la moneda principal es Bs y la del producto moneda extrangera
+//                                   echo number_format($p['detalleped_total'] ,2,".",","); 
+//                        }
+//                        
+//                        if ($parametro[0]["moneda_id"]!=1 && $parametro[0]["moneda_id"]==1){ // cuando la moneda principal es Extrangera y el producto es Bs
+//                                   echo number_format($p['detalleped_total'] / $p['moneda_tc'],2,".",","); 
+//                        }
+//                          
+//                        
+//                        if ($parametro[0]["moneda_id"]!=1 && $p['moneda_id']!=$parametro[0]["moneda_id"]){ //Cuando la moneda principal es Extragera y el producto tambien
+//                                   echo number_format($p['detalleped_total'] * $p['moneda_tc'],2,".",","); 
+//                        }
+                        if ($parametro[0]["moneda_id"]==1){ //cuando la moneda principal es Bs y la del producto es Bs
                                    echo number_format($p['detalleped_total'] / $p['detalleped_tc'] ,2,".",","); 
                         }
-                        
-                        if ($parametro[0]["moneda_id"]==1 && $p['moneda_id']!=1){ //cuando la moneda principal es Bs y la del producto moneda extrangera
-                                   echo number_format($p['detalleped_total'] ,2,".",","); 
+                        else{
+                                   echo number_format($p['detalleped_total'] * $p['detalleped_tc'],2,".",","); 
                         }
-                        
-                        if ($parametro[0]["moneda_id"]!=1 && $parametro[0]["moneda_id"]==1){ // cuando la moneda principal es Extrangera y el producto es Bs
-                                   echo number_format($p['detalleped_total'] / $p['moneda_tc'],2,".",","); 
-                        }
-                          
-                        
-                        if ($parametro[0]["moneda_id"]!=1 && $p['moneda_id']!=$parametro[0]["moneda_id"]){ //Cuando la moneda principal es Extragera y el producto tambien
-                                   echo number_format($p['detalleped_total'] * $p['moneda_tc'],2,".",","); 
-                        }
-                        
-                        if ($parametro[0]["moneda_id"]!=1 && $p['moneda_id']!=$parametro[0]["moneda_id"]){ //Cuando la moneda principal es Extragera y el producto tambien
-                                   echo number_format($p['detalleped_total'] * $p['moneda_tc'],2,".",","); 
-                        }
-                          
                         
                     ?>
                     
@@ -297,11 +298,28 @@ border-bottom : 1px solid #aaa;
         ?>
         <tr align="right" style="border-top: solid; border-bottom: solid;">
 <!--            <th></th>-->
-            <td colspan="4"  style="padding: 0"><font size="3"><b>Total <?php echo $parametro[0]["moneda_descripcion"]; ?></b></font></td>
+            <td colspan="3"  style="padding: 0"><font size="3"><b>Total <?php echo $parametro[0]["moneda_descripcion"]; ?></b></font></td>
 <!--            <th></th>
             <th></th>-->
-            <td align="right"  style="padding: 0"><font size="3"><b> <?php echo number_format($total_final,2,".",","); ?></b></font></td>
-        </tr>                        
+            <td align="right"  style="padding: 0" colspan="2"><font size="3">
+                <b> 
+                    <?php echo number_format($total_final,2,".",","); ?>
+                </b></font>
+                    <br>
+                    <?php
+                        if ($parametro[0]["moneda_id"]==1){ //cuando la moneda principal es Bs y la del producto es Bs
+                            echo $moneda["moneda_descripcion"]." ".number_format($total_final / $p['detalleped_tc'] ,2,".",","); 
+                        }
+                        else{
+                            echo "Bs ".number_format($total_final * $p['detalleped_tc'],2,".",","); 
+                        }
+                    ?>
+            </td>
+            <td>
+            <td>
+                
+            </td>
+        </tr>
 
     </table>    
 </font>

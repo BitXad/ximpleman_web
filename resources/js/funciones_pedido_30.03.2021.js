@@ -1944,6 +1944,7 @@ function registrarcliente()
     var cliente_departamento = document.getElementById('cliente_departamento').value;
     var cliente_celular = document.getElementById('cliente_celular').value;
     var zona = document.getElementById('zona_id').value;
+    
     if (zona=='null' || zona=='' || zona==0) {
         zona_id=0;
     }else{
