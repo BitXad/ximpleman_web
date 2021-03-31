@@ -191,7 +191,9 @@ border-bottom : 1px solid #aaa;
                     <br>
                     <font size="3" face="Arial"><b><?php echo "NOTA DE PEDIDO"; ?></b></font><br>
                     <font size="3" face="Arial"><b><?php echo "Nº 000".$pedido[0]['pedido_id']; ?></b></font><br>
-                    <font size="1" face="Arial"><b><?php echo $pedido[0]['pedido_fecha']; ?></b></font><br>
+                    <font size="1" face="Arial"><b><?php echo  date_format(date_create($pedido[0]['pedido_fecha']),'d/m/Y h:i:s'); ?></b></font><br>
+                    <font size="1" face="Arial"><b><?php echo  "Expresado en ".$parametro[0]["moneda_descripcion"]; ?></b></font><br>
+                    <font size="1" face="Arial"><b><?php echo  "T.C. Bs ".$moneda["moneda_tc"]; ?></b></font><br>
                     
                 </center>                
             </td>
@@ -315,10 +317,8 @@ border-bottom : 1px solid #aaa;
                         }
                     ?>
             </td>
-            <td>
-            <td>
-                
-            </td>
+            <td></td>
+
         </tr>
 
     </table>    
