@@ -618,5 +618,16 @@ class Detalle_venta extends CI_Controller{
             echo json_encode("null");
         }        
     }
+    /* reeporte de productos agrupados por categoria */
+    function buscarprodagrupados_porcategoria()
+    {
+        if ($this->input->is_ajax_request()) {
+            $filtro = $this->input->post('filtro');
+            $datos = $this->Detalle_venta_model->reporteventas_prodagrupados_porcategoria($filtro);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
     
 }
