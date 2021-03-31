@@ -1232,5 +1232,20 @@ function torta3($anio,$mes)
             show_404();
         }
     }
+    function ventacategoria_pagrupado()
+    {
+        if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            //$this->load->model('Tipo_transaccion_model');
+            $data['page_title'] = "Reporte de ventas de productos agrupados por categorias";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+            //$data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+            $this->load->model('Categoria_producto_model');
+            $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
+            //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+            $data['_view'] = 'reportes/ventacategoria_pagrupado';
+            $this->load->view('layouts/main',$data);
+        }
+    }
     
 }
