@@ -562,7 +562,7 @@
                             <a href="<?php echo site_url('reportes/ventaproducto');?>"><i class="fa fa-product-hunt"></i>Ventas por Producto</a>
                         </li>
                         <li>
-                            <a href="<?php echo site_url('reportes/ventacategoria_pagrupado');?>"><i class="fa fa-certificate"></i>Producto Agrupado/Categoria</a>
+                            <a href="<?php echo site_url('reportes/ventacategoria_pagrupado');?>"><i class="fa fa-certificate"></i>P. Agrupado/Categoria</a>
                         </li>
                         <li>
                             <a href="<?php echo site_url('reportes/ventapagrupado');?>"><i class="fa fa-certificate"></i>Producto Agrupado</a>
