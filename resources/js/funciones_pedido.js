@@ -311,109 +311,109 @@ function tablaproductos()
                         html += "</font></b>";
                         html += " <small>"+registros[i]["detalleven_unidadfactor"]+" * "+clasificador+categoria+preferencia+registros[i]["producto_unidad"]+" | "+registros[i]["producto_marca"]+" | "+registros[i]["producto_codigobarra"]+"</small>";
 
-//************************ INICIO CARACTERISTICAS ***************************
+                    //************************ INICIO CARACTERISTICAS ***************************
 
-html += "  <button class='btn btn-primary btn-xs' title='Registrar/modificar preferencias y características' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
+                    html += "  <button class='btn btn-primary btn-xs' title='Registrar/modificar preferencias y características' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-edit'></i></button>";
 
-html += "  <a href='#' data-toggle='modal' onclick='iniciar_preferencia("+registros[i]["detalleven_id"]+")' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
+                    html += "  <a href='#' data-toggle='modal' onclick='iniciar_preferencia("+registros[i]["detalleven_id"]+")' data-target='#modalpreferencia' class='btn btn-xs btn-success' style=''><i class='fa fa-tasks'></i></a>";
 
-// Clasificador
-html += "  <button class='btn btn-facebook btn-xs' title='Clasificador de productos' type='button' data-toggle='modal' data-target='#modalclasificador' aria-expanded='false' aria-controls='modalclasificador' onclick='mostrar_clasificador("+registros[i]["producto_id"]+","+registros[i]["detalleven_id"]+")'><i class='fa fa-list'></i></button>";
+                    // Clasificador
+                    html += "  <button class='btn btn-facebook btn-xs' title='Clasificador de productos' type='button' data-toggle='modal' data-target='#modalclasificador' aria-expanded='false' aria-controls='modalclasificador' onclick='mostrar_clasificador("+registros[i]["producto_id"]+","+registros[i]["detalleven_id"]+")'><i class='fa fa-list'></i></button>";
 
 
-html += "<div class='row'>";
-html += "  <div class='col'>";
-html += "    <div class='collapse multi-collapse' id='caracteristicas"+registros[i]["detalleven_id"]+"'>";
-html += "      <div class='card card-body'>";
+                    html += "<div class='row'>";
+                    html += "  <div class='col'>";
+                    html += "    <div class='collapse multi-collapse' id='caracteristicas"+registros[i]["detalleven_id"]+"'>";
+                    html += "      <div class='card card-body'>";
 
-html += "        <div class='row clearfix'> ";
-html += "           <div class='col-md-3' style='padding:1;'>";
+                    html += "        <div class='row clearfix'> ";
+                    html += "           <div class='col-md-3' style='padding:1;'>";
 
-if (tipousuario_id == 1){
-    html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
-    html += "               <div class='form-group'>"
-    html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_costo']+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
-    html += "               </div>";
-}
+                    if (tipousuario_id == 1){
+                        html += "               <label for='producto_costo' class='control-label  text-uppercase'>Precio Costo</label>";
+                        html += "               <div class='form-group'>"
+                        html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_costo']+"' class='btn btn-xs btn-default form-control' style='text-align:left;' id='detalleven_costo"+registros[i]["detalleven_id"]+"' />";
+                        html += "               </div>";
+                    }
 
-html += "           </div>";
-html += "           <div class='col-md-9' style='padding:1px;'>";
-html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Preferencias/Características</label>";
-html += "               <div class='form-group'>"
-html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='btn btn-xs btn-default form-control' style='text-align:left' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
-html += "               </div>";
-html += "           </div>";
-html += "           <div class='col-md-12'>";
-//html += "               <label for='estado_descripcion' class='control-label'>Descripcion</label>";
-html += "               <div class='form-group'>";
+                    html += "           </div>";
+                    html += "           <div class='col-md-9' style='padding:1px;'>";
+                    html += "               <label for='estado_descripcion' class='control-label  text-uppercase'>Preferencias/Características</label>";
+                    html += "               <div class='form-group'>"
+                    html += "               <input type='text' name='detalleven_preferencia' value='"+registros[i]['detalleven_preferencia']+"' class='btn btn-xs btn-default form-control' style='text-align:left' id='detalleven_preferencia"+registros[i]["detalleven_id"]+"' />";
+                    html += "               </div>";
+                    html += "           </div>";
+                    html += "           <div class='col-md-12'>";
+                    //html += "               <label for='estado_descripcion' class='control-label'>Descripcion</label>";
+                    html += "               <div class='form-group'>";
 
-if (registros[i]['detalleven_caracteristicas']=='null'){ caracteristicas = "";
-    html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+caracteristicas;}
-else
-{  html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];}
+                    if (registros[i]['detalleven_caracteristicas']=='null'){ caracteristicas = "";
+                        html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+caracteristicas;}
+                    else
+                    {  html += "<textarea name='detalleven_caracteristicas' class='form-control btn-default' id='detalleven_caracteristicas"+registros[i]["detalleven_id"]+"'>"+registros[i]['detalleven_caracteristicas'];}
 
-html += "</textarea>";
+                    html += "</textarea>";
 
-//************ Inicio detalle composicion de productos
+                    //************ Inicio detalle composicion de productos
 
-    
 
-//************ Fin Inicio detalle composicion de productos
 
-if (registros[i]["detalleven_envase"] == 1){
-    
-    html += "<br>";
-    html += "<table id='mitabla'>";
-    
-    html += "<tr>";
-    
-        html += "<th style='padding: 0;' colspan='2'> Prestar</th>";    
-//        html += "<th style='padding: 0;'></th>";
-        html += "<th style='padding: 0;'> Prestados </th>";
-//        html += "<th style='padding: 0;'> Prestados </th>";
-        html += "<th style='padding: 0;'> Garantia </th>";
-    html += "</tr>";
+                    //************ Fin Inicio detalle composicion de productos
 
-    html += "<tr style='padding: 0;'>";
-        if(registros[i]["detalleven_prestamoenvase"]==1){ valorcheck = "checked"} else{ valorcheck = "";}
+                    if (registros[i]["detalleven_envase"] == 1){
 
-        html += "<td style='padding: 0;' bgcolor='gray'><b>"+registros[i]["detalleven_nombreenvase"]+": "+registros[i]["detalleven_precioenvase"]+" "+registros[i]["moneda_descripcion"]+"</b></td>";
-        html += "<td style='padding: 0;'><center><input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='1' "+valorcheck+" ></center></td>";
-        html += "<td style='padding: 0;'><center><input type='text' style='width:30px' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidadenvase"]+"' ></center></td>";
-//        html += "<td style='padding: 0;'><center><input type='text' style='width:40px' value='"+registros[i]["detalleven_precioenvase"]+"' ></center></td>";
-        html += "<td style='padding: 0;'><center><input type='text' style='width:30px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_garantiaenvase"]+"' ></center></td>";
-    html += "</tr>";
-    
-    html += "</table>";
-}
+                        html += "<br>";
+                        html += "<table id='mitabla'>";
 
-else
+                        html += "<tr>";
 
-{
-    html += "<input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
-    html += "<input type='text' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
-    html += "<input type='text' id='garantia"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
-}
+                            html += "<th style='padding: 0;' colspan='2'> Prestar</th>";    
+                    //        html += "<th style='padding: 0;'></th>";
+                            html += "<th style='padding: 0;'> Prestados </th>";
+                    //        html += "<th style='padding: 0;'> Prestados </th>";
+                            html += "<th style='padding: 0;'> Garantia </th>";
+                        html += "</tr>";
 
-        if(parametro_diasvenc>0){
-            html += "<div>";
-            html += "<b>VENCIMIENTO:</b> <input type='date' value='"+registros[i]["detalleven_fechavenc"]+"' id='fecha_vencimiento"+registros[i]["detalleven_id"]+"'/>  ";
-            html += "</div>";
-        }else{
-            html += "<div hidden>";
-            html += "<b>VENCIMIENTO:</b> <input type='date' value='' id='fecha_vencimiento"+registros[i]["detalleven_id"]+"'/>  ";
-            html += "</div>";
-        }
-    
-html += "               <button class='btn btn-primary btn-xs' onclick='actualizar_caracteristicas("+registros[i]["detalleven_id"]+")' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-save'></i> Guardar</button>";
+                        html += "<tr style='padding: 0;'>";
+                            if(registros[i]["detalleven_prestamoenvase"]==1){ valorcheck = "checked"} else{ valorcheck = "";}
 
-html += "               </div>";
-html += "           </div>";
+                            html += "<td style='padding: 0;' bgcolor='gray'><b>"+registros[i]["detalleven_nombreenvase"]+": "+registros[i]["detalleven_precioenvase"]+" "+registros[i]["moneda_descripcion"]+"</b></td>";
+                            html += "<td style='padding: 0;'><center><input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='1' "+valorcheck+" ></center></td>";
+                            html += "<td style='padding: 0;'><center><input type='text' style='width:30px' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_cantidadenvase"]+"' ></center></td>";
+                    //        html += "<td style='padding: 0;'><center><input type='text' style='width:40px' value='"+registros[i]["detalleven_precioenvase"]+"' ></center></td>";
+                            html += "<td style='padding: 0;'><center><input type='text' style='width:30px'  id='garantia"+registros[i]["detalleven_id"]+"' value='"+registros[i]["detalleven_garantiaenvase"]+"' ></center></td>";
+                        html += "</tr>";
 
-html += "           </div>";
-html += "      </div>";
-html += "    </div>";
-html += "  </div>";
+                        html += "</table>";
+                    }
+
+                    else
+
+                    {
+                        html += "<input type='checkbox' id='check"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
+                        html += "<input type='text' id='cantidadenvase"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
+                        html += "<input type='text' id='garantia"+registros[i]["detalleven_id"]+"' value='0'  hidden>";
+                    }
+
+                            if(parametro_diasvenc>0){
+                                html += "<div>";
+                                html += "<b>VENCIMIENTO:</b> <input type='date' value='"+registros[i]["detalleven_fechavenc"]+"' id='fecha_vencimiento"+registros[i]["detalleven_id"]+"'/>  ";
+                                html += "</div>";
+                            }else{
+                                html += "<div hidden>";
+                                html += "<b>VENCIMIENTO:</b> <input type='date' value='' id='fecha_vencimiento"+registros[i]["detalleven_id"]+"'/>  ";
+                                html += "</div>";
+                            }
+
+                    html += "               <button class='btn btn-primary btn-xs' onclick='actualizar_caracteristicas("+registros[i]["detalleven_id"]+")' type='button' data-toggle='collapse' data-target='#caracteristicas"+registros[i]["detalleven_id"]+"' aria-expanded='false' aria-controls='caracteristicas"+registros[i]["detalleven_id"]+"'><i class='fa fa-save'></i> Guardar</button>";
+
+                    html += "               </div>";
+                    html += "           </div>";
+
+                    html += "           </div>";
+                    html += "      </div>";
+                    html += "    </div>";
+                    html += "  </div>";
 
 //************************ FIN INICIO CARACTERISTICAS ***************************
 
@@ -493,7 +493,15 @@ html += "  </div>";
                    if (esMobil()){                       
                         html += "                            <th style='padding:0'></th>";
                         //html += "                            <th style='padding:0'></th>";
-                        html += "                            <th colspan=2 style='padding:0' align='right'><font size='1'> Producto(s): "+cant_total.toFixed(2)+"</font><br><font size='3'>Total "+parametro_moneda_descripcion+": "+total_detalle.toFixed(2)+"</font></th>";
+                        html += "                            <th colspan=2 style='padding:0' align='right'><font size='1'> Producto(s): "+cant_total.toFixed(2)+"</font><br><font size='3'>Total "+parametro_moneda_descripcion+": "+total_detalle.toFixed(2)+"</font><br>";
+                        
+                       if (parametro_moneda_id == 1){
+                           html +=  moneda_extrangera+" "+ formato_numerico(total_final_equivalente.toFixed(2))+"</th>";
+                       }else{
+                           html +=  "Bs "+formato_numerico(total_final_equivalente.toFixed(2))+"</th>";
+                       }
+                       
+                        html += "</th> ";                                       
                         html += "                            <th style='padding:0'></th> ";                                       
                    }
                    else{                       

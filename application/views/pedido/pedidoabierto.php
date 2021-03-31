@@ -78,7 +78,7 @@ function mostrar_buscadores(){
 }
         
 function cerrar_ventana(){
-    window.opener.location.reload();
+   //window.opener.location.reload();
     window.close();
 }
 </script>   
