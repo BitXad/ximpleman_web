@@ -1213,9 +1213,14 @@ function torta3($anio,$mes)
     {
         $data['empresa'] = $this->Empresa_model->get_empresa(1);
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        $this->load->model('Tipo_transaccion_model'); 
+        $this->load->model('Tipo_transaccion_model');
         $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
-        $data['page_title'] = "Reporte general - Ventas a Clientes";        
+        $this->load->model('Parametro_model');
+        $elparametro = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+        $data['elparametro'] = $elparametro;
+        $data['page_title'] = "Reporte general - Ventas a Clientes";
         $data['_view'] = 'reportes/reporte_generalventa';
         $this->load->view('layouts/main',$data);
     }

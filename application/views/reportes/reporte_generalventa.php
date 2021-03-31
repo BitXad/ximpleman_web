@@ -43,6 +43,7 @@
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
+<input type="hidden" name="elparametro" id="elparametro" value='<?php echo json_encode($elparametro); ?>'>
 <input type="hidden" name="resproducto" id="resproducto" />
 <div class="cuerpo">
     <div class="columna_derecha">
@@ -129,10 +130,18 @@
                 <tr>
                 <th>#</th>
                 <th>CLIENTE</th>
-                <th>VENTA</th>
+                <th>VENTA <?php echo $elparametro[0]["moneda_descripcion"]; ?></th>
+                <th>VENTA
+                    <?php 
+                    if($elparametro[0]["moneda_id"] == 1){
+                        echo $lamoneda[1]['moneda_descripcion'];
+                    }else{
+                        echo $lamoneda[0]['moneda_descripcion'];
+                    } ?>
+                </th>
                 <?php if($tipousuario_id == 1){ ?>
-                <th>COSTO</th>
-                <th>UTILIDAD</th>
+                <th>COSTO <?php echo $elparametro[0]["moneda_descripcion"]; ?></th>
+                <th>UTILIDAD <?php echo $elparametro[0]["moneda_descripcion"]; ?></th>
                 <?php } ?>
             </tr>
             <tbody class="buscar" id="resultado_ventas"></tbody>

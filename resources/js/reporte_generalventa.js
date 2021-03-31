@@ -21,16 +21,19 @@ function reporte_general(){
                 //$("#enco").val("- 0 -");
                 var registros =  JSON.parse(report);
                 var estos_registros = registros;
+                var el_parametro = JSON.parse(document.getElementById('elparametro').value);
                 const myString = JSON.stringify(estos_registros);
                 $("#resproducto").val(myString);
                 
                 if(registros != null){
-                    var totalventas     = Number(0);
+                    var totalventas      = Number(0);
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
                     //var totaldescuentos = Number(0);
                     var totalcostos     = Number(0);
                     var totalutilidades = Number(0);
                     var n = registros.length; //tamaño del arreglo de la consulta   
-                    
+                    tc = el_parametro[0]["moneda_tc"];
                     html = "";
                     for (var i=0; i<n ; i++){
                          totalventas     += Number(registros[i]["totalventas"]);
@@ -39,6 +42,16 @@ function reporte_general(){
                         html += "<td align='center' style='width:5px;'>"+(i+1)+"</td>";
                         html += "<td> "+registros[i]["cliente_nombre"]+" </td>";                                            
                         html += "<td class='text-right'> "+numberFormat(Number(registros[i].totalventas).toFixed(2))+" </td>";
+                        html += "<td class='text-right'> ";
+                        if(el_parametro[0]["moneda_id"] == 1){
+                            total_otram = Number(registros[i]["totalventas"])/tc
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = Number(registros[i]["totalventas"])*tc
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += "</td>";
                         if(tipousuario_id == 1){
                             var utilidad = Number(registros[i].totalventas)-Number(registros[i].totalcosto);
                             totalcostos     += Number(registros[i].totalcosto);
@@ -50,8 +63,9 @@ function reporte_general(){
                     }
                     html += "<tr>";
                         html += "<td></td>";
-                        html += "<th class='text-right'>TOTAL:</th>";
+                        html += "<th class='text-right'>TOTAL "+el_parametro[0]["moneda_descripcion"]+":</th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(totalventas).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
                         if(tipousuario_id == 1){
                             html += "<th style='text-align:right'>"+numberFormat(Number(totalcostos).toFixed(2))+"</th>";
                             html += "<th style='text-align:right'>"+numberFormat(Number(totalutilidades).toFixed(2))+"</th>";
