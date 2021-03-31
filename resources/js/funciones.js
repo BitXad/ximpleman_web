@@ -4097,6 +4097,7 @@ function pedidos_pendientes()
     var base_url = document.getElementById('base_url').value;
     var controlador = base_url+'/pedido/mostrar_pedidos';
     var parametro = document.getElementById('filtrar3').value;
+    var moneda_principal = document.getElementById('parametro_moneda_descripcion').value;
     
     if (parametro != null)
         filtro = " and c.cliente_nombre like '%"+parametro+"%' and p.estado_id = 11 ";
@@ -4135,13 +4136,13 @@ function pedidos_pendientes()
                         html += "         <font size='3'><b> 00"+p[i]['pedido_id']+"</b></font> <br>";
                         html += "         <font size='1'>"+p[i]['estado_descripcion']+"</font>";
                         html += "         </a>";
-                        html += "         <b>"+p[i]['pedido_fechaentrega']+"</b> <br>"+p[i]['pedido_horaentrega'];
+                        html += "         <b><br>"+formato_fecha(p[i]['pedido_fechaentrega'])+"</b> <br>"+p[i]['pedido_horaentrega'];
                         html += "     </td>";
                         html += "      ";
                         html += "     ";
-                        html += "     <td align='right' style='white-space: nowrap' >Sub Total: "+p[i]['pedido_subtotal']+"<br>";
-                        html += "		Desc.: "+p[i]['pedido_descuento']+"<br>  ";
-                        html += "	    <font size='3'><b>"+p[i]['pedido_total']+"</b></font>";
+                        html += "     <td align='right' style='white-space: nowrap' >Sub Total "+moneda_principal+": "+formato_numerico(p[i]['pedido_subtotal'])+"<br>";
+                        html += "		Desc. "+moneda_principal+": "+formato_numerico(p[i]['pedido_descuento'])+"<br>  ";
+                        html += "	    <font face='Arial narrow'  size='3'><b>"+moneda_principal+" "+formato_numerico(p[i]['pedido_total'])+"</b></font>";
                         html += "     </td>";
 
                         html += "     <td>";

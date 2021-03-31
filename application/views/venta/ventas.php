@@ -347,7 +347,7 @@ window.onkeydown = compruebaTecla;
  
         <h4 class="panel-title">
           <?php if(sizeof($dosificacion)>0){ ?>
-            <input type="checkbox" id="facturado" value="1" name="facturado" checked="true">
+            <input type="checkbox" id="facturado" value="1" name="facturado" >
           <?php } else{ ?>
             <input type="checkbox" id="facturado" value="1" name="facturado" hidden>
             <font color="red" size="2"> Dosificación no activada</font>
@@ -756,9 +756,11 @@ window.onkeydown = compruebaTecla;
         </div>    
         <!----------------------------------- fin Botones ---------------------------------->
         <font face="Arial" size="1">
-        <b>
-            
-        TECLAS DE ACCESO DIRECTO <br>
+                   
+            <span class="btn btn-danger btn-xs"> <b> MONEDA <?php echo $parametro[0]["moneda_descripcion"]; ?> / T.C. Bs: <?php echo $parametro[0]["moneda_tc"]; ?></b></span>
+        
+        <b>            
+        <br>TECLAS DE ACCESO DIRECTO <br>
         </b>
         <p>
             
