@@ -76,7 +76,7 @@ foreach($all_parametros as $p)
                         <td><?php echo $p['parametro_altofactura']; ?></td>
                         <td><?php echo $p['parametro_margenfactura']; ?></td>
                         <td><?php  if ($p['parametro_permisocredito']==1){ echo 'TODOS'; }else{ echo'INDIVIDUAL'; } ?></td>
-                        <td><?php echo $p['parametro_apikey']; ?></td>
+                        <td><?php echo substr($p['parametro_apikey'],0,8).".."; ?></td>
                     </tr>
                     <tr>
                         <th style="font-size: 11px;color:black;background: rgba(0, 0, 255, 0.3);">TITULO DOC.</th>
