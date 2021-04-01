@@ -31,18 +31,20 @@ function tabla_reportescatproducto(){
             success:function(report){
                 //$("#enco").val("- 0 -");
                 var registros =  JSON.parse(report);
-                
                 const myString = JSON.stringify(registros);
                 $("#resproducto").val(myString);
                 
                 if (registros != null){
                     var cantidades = Number(0);
                     var total = Number(0);
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
                     //var cuotas = Number(0);
                     var costos = Number(0);
                     var utilidades = Number(0);
                     var descuentos = Number(0);
-                    var n = registros.length; //tama«Ðo del arreglo de la consulta
+                    var n = registros.length; //tamaño del arreglo de la consulta
                     $("#pillados").val("- "+n+" -");
                     html = "";
                     for (var i = 0; i < n ; i++){
@@ -61,6 +63,16 @@ function tabla_reportescatproducto(){
                         html += "<td align='right'> "+Number(registros[i]["total_punitario"]).toFixed(2)+" </td>"; 
                         html += "<td align='right'> "+Number(registros[i]["total_descuento"]).toFixed(2)+" </td>";
                         html += "<td align='right'><b>"+Number(registros[i]["total_venta"]).toFixed(2)+"</b></td>";
+                        html += "<td class='text-right'> ";
+                        if(lamoneda_id == 1){
+                            total_otram = Number(registros[i]["total_venta"])/Number(registros[i]["tipo_cambio"])
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = Number(registros[i]["total_venta"])*Number(registros[i]["tipo_cambio"])
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += "</td>";
                         if(tipousuario_id == 1){
                             html += "<td align='right'> "+Number(registros[i]["total_costo"]).toFixed(2)+" </td>";
                             html += "<td align='right'> "+Number(registros[i]["total_utilidad"]).toFixed(2)+" </td>";
@@ -85,6 +97,7 @@ function tabla_reportescatproducto(){
                         html += "<td></td>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(descuentos).toFixed(2))+"</th>";
                         html += "<th style='text-align:right'>"+numberFormat(Number(total).toFixed(2))+"</th>";
+                        html += "<th style='text-align:right'>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
                         if(tipousuario_id == 1){
                             html += "<th style='text-align:right'>"+numberFormat(Number(costos).toFixed(2))+"</th>";
                             html += "<th style='text-align:right'>"+numberFormat(Number(utilidades).toFixed(2))+"</th>";
@@ -152,15 +165,16 @@ function generarexcel_vagrupado_porcategoria(){
     if(respuesta == "" || respuesta == null){
         alert("Primero debe realizar una búsqueda");
     }else{
+        var nombre_moneda = document.getElementById('nombre_moneda').value;
+        var lamoneda_id = document.getElementById('lamoneda_id').value;
+        var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
         var registros =  JSON.parse(respuesta);
         var showLabel = true;
         var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
-
-                var tam = registros.length;
-              
-                var mensaje = "";
-                
-                html = "";
+        var tam = registros.length;
+        var otramoneda_nombre = "";
+        var total_otram = Number(0);
+        html = "";
                 //if (opcion==1){
                   /* **************INICIO Generar Excel JavaScript************** */
                     var CSV = 'sep=,' + '\r\n\n';
@@ -177,12 +191,19 @@ function generarexcel_vagrupado_porcategoria(){
                             //row += 'TIPO VENTA' + ',';
                             row += 'UNIDAD' + ',';
                             row += 'CANTIDAD' + ',';
-                            row += 'PRECIO UNITARIO' + ',';
-                            row += 'DESCUENTO' + ',';
-                            row += 'PRECIO TOTAL' + ',';
+                            row += 'PRECIO UNITARIO(' +nombre_moneda+ '),';
+                            row += 'DESCUENTO(' +nombre_moneda+ '),';
+                            row += 'PRECIO TOTAL(' +nombre_moneda+ '),';
+                            row += 'PRECIO TOTAL(';
+                            if(lamoneda_id == 1){
+                                otramoneda_nombre = lamoneda[1]['moneda_descripcion'];
+                            }else{
+                                otramoneda_nombre = lamoneda[0]['moneda_descripcion'];
+                            }
+                            row += otramoneda_nombre+ '),';
                             if(tipousuario_id == 1){
-                                row += 'COSTO TOTAL' + ',';
-                                row += 'UTILIDAD' + ',';
+                                row += 'COSTO TOTAL(' +nombre_moneda+ '),';
+                                row += 'UTILIDAD(' +nombre_moneda+ '),';
                                 row += '%' + ',';
                             }
                             
@@ -203,12 +224,20 @@ function generarexcel_vagrupado_porcategoria(){
                             //row += '"' +registros[i]["tipotrans_nombre"]+ '",';
                             row += '"' +registros[i]["producto_unidad"]+ '",';
                             row += '"' +Number(registros[i]["total_cantidad"]).toFixed(2)+ '",';
-                            row += '"' +Number(registros[i]["total_punitario"]).toFixed(2)+ '",';
-                            row += '"' +Number(registros[i]["total_descuento"]).toFixed(2)+ '",';
-                            row += '"' +Number(registros[i]["total_venta"]).toFixed(2)+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["total_punitario"]).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["total_descuento"]).toFixed(2))+ '",';
+                            row += '"' +numberFormat(Number(registros[i]["total_venta"]).toFixed(2))+ '",';
+                            if(lamoneda_id == 1){
+                                total_otram = Number(registros[i]["total_venta"])/Number(registros[i]["tipo_cambio"])
+                                //total_otramoneda += total_otram;
+                            }else{
+                                total_otram = Number(registros[i]["total_venta"])*Number(registros[i]["tipo_cambio"])
+                                //total_otramoneda += total_otram;
+                            }
+                            row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
                             if(tipousuario_id == 1){
-                                row += '"' +Number(registros[i]["total_costo"]).toFixed(2)+ '",';
-                                row += '"' +Number(registros[i]["total_utilidad"]).toFixed(2)+ '",';
+                                row += '"' +numberFormat(Number(registros[i]["total_costo"]).toFixed(2))+ '",';
+                                row += '"' +numberFormat(Number(registros[i]["total_utilidad"]).toFixed(2))+ '",';
                                 row += '"' +Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2)+ '",';
                             }
                             

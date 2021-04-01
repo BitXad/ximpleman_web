@@ -529,7 +529,8 @@ function ventas_dia($estado)
                 sum(`vs`.`detalleven_descuento`*`vs`.`detalleven_cantidad`) as total_descuento,
                 sum(`vs`.`detalleven_total`) as total_venta,
                 (sum(`vs`.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_costo,
-                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad,
+                avg(vs.detalleven_tc) as tipo_cambio
             FROM
                 ventas vs
             LEFT JOIN tipo_transaccion tt on vs.tipotrans_id = tt.tipotrans_id
@@ -564,7 +565,8 @@ function ventas_dia($estado)
                 sum(`vs`.`detalleven_descuento`*`vs`.`detalleven_cantidad`) as total_descuento,
                 sum(`vs`.`detalleven_total`) as total_venta,
                 (sum(`vs`.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_costo,
-                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad,
+                avg(vs.detalleven_tc) as tipo_cambio
             FROM
                 ventas vs
             WHERE

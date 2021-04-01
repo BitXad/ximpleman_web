@@ -324,14 +324,15 @@ function generarexcel_vcategoria(){
         alert("Primero debe realizar una búsqueda");
     }else{
         var registros =  JSON.parse(respuesta);
+        var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+        var nombre_moneda = document.getElementById('nombre_moneda').value;
+        var lamoneda_id = document.getElementById('lamoneda_id').value;
         var showLabel = true;
         var reportitle = moment(Date.now()).format("DD/MM/YYYY H_m_s");
-
-                var tam = registros.length;
-              
-                var mensaje = "";
-                
-                html = "";
+        var tam = registros.length;
+        var otramoneda_nombre = "";
+        var total_otram = Number(0);
+        html = "";
                 //if (opcion==1){
                   /* **************INICIO Generar Excel JavaScript************** */
                     var CSV = 'sep=,' + '\r\n\n';
@@ -349,15 +350,22 @@ function generarexcel_vcategoria(){
                             row += 'NUM. VENTA' + ',';
                             row += 'NUM. DOC.' + ',';
                             row += 'TIPO VENTA' + ',';
-                            row += 'CUOTA INIC.' + ',';
+                            row += 'CUOTA INIC.(' +nombre_moneda+ '),';
                             row += 'UNIDAD' + ',';
                             row += 'CANT.' + ',';
-                            row += 'PRECIO UNIT.' + ',';
-                            row += 'DESCUENTO' + ',';
-                            row += 'PRECIO TOTAL' + ',';
+                            row += 'PRECIO UNIT.(' +nombre_moneda+ '),';
+                            row += 'DESCUENTO(' +nombre_moneda+ '),';
+                            row += 'PRECIO TOTAL(' +nombre_moneda+ '),';
+                            row += 'PRECIO TOTAL(';
+                            if(lamoneda_id == 1){
+                                otramoneda_nombre = lamoneda[1]['moneda_descripcion'];
+                            }else{
+                                otramoneda_nombre = lamoneda[0]['moneda_descripcion'];
+                            }
+                            row += otramoneda_nombre+ '),';
                             if(tipousuario_id == 1){
-                                row += 'COSTO' + ',';
-                                row += 'UTILIDAD' + ',';
+                                row += 'COSTO(' +nombre_moneda+ '),';
+                                row += 'UTILIDAD(' +nombre_moneda+ '),';
                             }
                             row += 'CLIENTE' + ',';
                             row += 'CAJERO' + ',';
@@ -386,6 +394,14 @@ function generarexcel_vcategoria(){
                             row += '"' +Number(registros[i]["detalleven_precio"]).toFixed(2)+ '",';
                             row += '"' +Number(registros[i]["detalleven_descuento"]).toFixed(2)+ '",';
                             row += '"' +Number(registros[i]["detalleven_total"]).toFixed(2)+ '",';
+                            if(lamoneda_id == 1){
+                                total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
+                                //total_otramoneda += total_otram;
+                            }else{
+                                total_otram = Number(registros[i]["detalleven_total"])*Number(registros[i]["detalleven_tc"])
+                                //total_otramoneda += total_otram;
+                            }
+                            row += '"' +numberFormat(Number(total_otram).toFixed(2))+ '",';
                             if(tipousuario_id == 1){
                                 row += '"' +Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+ '",';
                                 row += '"' +Number(utilidad).toFixed(2)+ '",';

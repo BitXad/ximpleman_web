@@ -1038,6 +1038,11 @@ function torta3($anio,$mes)
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'reportes/ventacliente';
             $this->load->view('layouts/main',$data);
         }
@@ -1048,12 +1053,17 @@ function torta3($anio,$mes)
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
             $this->load->model('Tipo_transaccion_model');
             $data['page_title'] = "Reporte de ventas por producto";
-            $data['_view'] = 'reportes/ventaproducto';
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+            $data['_view'] = 'reportes/ventaproducto';
             $this->load->view('layouts/main',$data);
         }
     }
@@ -1067,7 +1077,11 @@ function torta3($anio,$mes)
             $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Usuario_model');
             $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
-            //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'reportes/ventapagrupado';
             $this->load->view('layouts/main',$data);
         }
@@ -1248,13 +1262,15 @@ function torta3($anio,$mes)
     {
         if($this->acceso(156)){
             $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-            //$this->load->model('Tipo_transaccion_model');
             $data['page_title'] = "Reporte de ventas de productos agrupados por categorias";
             $data['empresa'] = $this->Empresa_model->get_empresa(1);  
-            //$data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $this->load->model('Categoria_producto_model');
             $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
-            //$data['all_entrega'] = $this->Detalle_venta_model->get_all_entrega();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['_view'] = 'reportes/ventacategoria_pagrupado';
             $this->load->view('layouts/main',$data);
         }

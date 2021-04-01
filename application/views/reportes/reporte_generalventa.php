@@ -43,7 +43,9 @@
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
 <input type="hidden" name="tipousuario_id" id="tipousuario_id" value="<?php echo $tipousuario_id; ?>">
-<input type="hidden" name="elparametro" id="elparametro" value='<?php echo json_encode($elparametro); ?>'>
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $elparametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $elparametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <input type="hidden" name="resproducto" id="resproducto" />
 <div class="cuerpo">
     <div class="columna_derecha">
