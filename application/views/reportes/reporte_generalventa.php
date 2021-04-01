@@ -130,18 +130,18 @@
                 <tr>
                 <th>#</th>
                 <th>CLIENTE</th>
-                <th>VENTA <?php echo $elparametro[0]["moneda_descripcion"]; ?></th>
-                <th>VENTA
+                <th>VENTA (<?php echo $elparametro[0]["moneda_descripcion"]; ?>)</th>
+                <th>VENTA (
                     <?php 
                     if($elparametro[0]["moneda_id"] == 1){
                         echo $lamoneda[1]['moneda_descripcion'];
                     }else{
                         echo $lamoneda[0]['moneda_descripcion'];
-                    } ?>
+                    } ?>)
                 </th>
                 <?php if($tipousuario_id == 1){ ?>
-                <th>COSTO <?php echo $elparametro[0]["moneda_descripcion"]; ?></th>
-                <th>UTILIDAD <?php echo $elparametro[0]["moneda_descripcion"]; ?></th>
+                <th>COSTO (<?php echo $elparametro[0]["moneda_descripcion"]; ?>)</th>
+                <th>UTILIDAD (<?php echo $elparametro[0]["moneda_descripcion"]; ?>)</th>
                 <?php } ?>
             </tr>
             <tbody class="buscar" id="resultado_ventas"></tbody>

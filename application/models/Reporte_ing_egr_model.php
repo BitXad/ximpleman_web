@@ -811,7 +811,8 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
         $venta_porusuario = $this->db->query("
             SELECT
                 vs.cliente_id, c.`cliente_nombre`, SUM(vs.detalleven_total) as 'totalventas',
-                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
+                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto,
+                avg(vs.detalleven_tc) as tipo_cambio
             FROM
                 `ventas` vs
             left join `cliente` c on vs.cliente_id = c.cliente_id

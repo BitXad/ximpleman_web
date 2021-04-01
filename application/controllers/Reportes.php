@@ -1078,6 +1078,11 @@ function torta3($anio,$mes)
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['page_title'] = "Reporte de ventas por categorias";
         $this->load->model('Categoria_producto_model');
         $data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
@@ -1217,7 +1222,9 @@ function torta3($anio,$mes)
         $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
         $this->load->model('Parametro_model');
         $elparametro = $this->Parametro_model->get_parametros();
+        $data['parametro'] = $this->Parametro_model->get_parametros();
         $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['elparametro'] = $elparametro;
         $data['page_title'] = "Reporte general - Ventas a Clientes";

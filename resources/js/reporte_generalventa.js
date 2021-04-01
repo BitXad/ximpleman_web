@@ -33,7 +33,7 @@ function reporte_general(){
                     var totalcostos     = Number(0);
                     var totalutilidades = Number(0);
                     var n = registros.length; //tamaño del arreglo de la consulta   
-                    tc = el_parametro[0]["moneda_tc"];
+                    //tc = el_parametro[0]["moneda_tc"];
                     html = "";
                     for (var i=0; i<n ; i++){
                          totalventas     += Number(registros[i]["totalventas"]);
@@ -44,10 +44,10 @@ function reporte_general(){
                         html += "<td class='text-right'> "+numberFormat(Number(registros[i].totalventas).toFixed(2))+" </td>";
                         html += "<td class='text-right'> ";
                         if(el_parametro[0]["moneda_id"] == 1){
-                            total_otram = Number(registros[i]["totalventas"])/tc
+                            total_otram = Number(registros[i]["totalventas"])/Number(registros[i]["tipo_cambio"])
                             total_otramoneda += total_otram;
                         }else{
-                            total_otram = Number(registros[i]["totalventas"])*tc
+                            total_otram = Number(registros[i]["totalventas"])*Number(registros[i]["tipo_cambio"])
                             total_otramoneda += total_otram;
                         }
                         html += numberFormat(Number(total_otram).toFixed(2));
