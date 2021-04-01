@@ -2699,8 +2699,10 @@ function registrarventa(cliente_id)
 function finalizarventa()
 {    
     var monto = document.getElementById('venta_totalfinal').value;
+    var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value;
     //var base_url = document.getElementById('base_url').value;
     //var controlador = base_url+'/verificardetalle/'+monto;
+    
     calculardesc();
         
         if (monto>0)
@@ -2717,7 +2719,7 @@ function finalizarventa()
             //alert('ADVERTENCIA: No tiene registrado ningun producto en el detalle...!!');
 
             var txt;
-            var r = confirm("La venta no tiene ningun detalle o los precios estan en Bs 0.00. \n ¿Desea Continuar?");
+            var r = confirm("La venta no tiene ningun detalle o los precios estan en "+parametro_moneda_descripcion+" 0.00. \n ¿Desea Continuar?");
             if (r == true) {
                 document.getElementById('divventas0').style.display = 'none'; //ocultar el vid de ventas 
                 document.getElementById('divventas1').style.display = 'block'; // mostrar el div de loader   
@@ -2961,7 +2963,7 @@ function tabla_ventas(filtro)
 {   
     var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"venta/mostrar_ventas";
-    var parametro_modulorestaurante = document.getElementById("parametro_modulorestaurante").value;
+    var parametro_modulorestaurante = document.getElementById('parametro_modulorestaurante').value;
     var all_usuario = JSON.parse(document.getElementById('all_usuario').value);
     var cantus         = all_usuario.length;
     var tipousuario_id = document.getElementById('tipousuario_id').value;
@@ -2972,6 +2974,10 @@ function tabla_ventas(filtro)
     var signo_moneda    = document.getElementById('moneda_descripcion').value;
     document.getElementById('oculto').style.display = 'block'; //mostrar el bloque del loader
     document.getElementById('oculto2').style.display = 'block'; //mostrar el bloque del loader
+    var parametro_moneda_descripcion = document.getElementById('parametro_moneda_descripcion').value;
+    var parametro_moneda_id = document.getElementById('parametro_moneda_id').value;
+    var moneda_descripcion = document.getElementById('moneda_descripcion').value;
+    var moneda_tc = document.getElementById('moneda_tc').value;
     
     $.ajax({url:controlador,
         type:"POST",
@@ -3229,7 +3235,20 @@ function tabla_ventas(filtro)
                     html += "                   <tr>";
                     html += "                        <th></th>";
                     html += "                        <th>Totales</th>";
-                    html += "                        <th><font size='3'> Bs: "+formato_numerico(total_final.toFixed(2))+"</font></th>	";
+                    html += "                        <th><font size='3'> "+parametro_moneda_descripcion+": "+formato_numerico(total_final.toFixed(2))+"</font>";                    
+                        
+                    var total_final_extragera = 0;
+                    var tfme = ""
+                    
+                    if (parametro_moneda_id==1){
+                        total_final_extragera = total_final / moneda_tc; 
+                        tfme = moneda_descripcion+" "+total_final_extragera.toFixed(2);
+                    }else{
+                        total_final_extragera = total_final * moneda_tc;
+                        tfme = "Bs "+total_final_extragera.toFixed(2);
+                    }
+                    html += "<br>"+tfme;
+                    html += "                        </th>	";
                     html += "                        <th></th>";
                     html += "                        <th></th>";
                     html += "                        <th></th>";

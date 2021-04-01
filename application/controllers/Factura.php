@@ -430,7 +430,9 @@ class Factura extends CI_Controller{
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $data['venta'] = $this->Detalle_venta_model->get_venta($venta_id);
         $data['detalle_venta'] = $this->Detalle_venta_model->get_detalle_venta($venta_id);        
-        $data['empresa'] = $this->Empresa_model->get_empresa(1);        
+        $data['empresa'] = $this->Empresa_model->get_empresa(1); 
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
         $data['page_title'] = "Recibo";
 
         $data['parametro'] = $this->Parametro_model->get_parametros();

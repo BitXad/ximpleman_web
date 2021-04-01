@@ -46,6 +46,9 @@
 <input type="text" id="parametro_anchoimagen" value="<?php echo $parametro[0]['parametro_anchoimagen']; ?>" name="parametro_anchoimagen"  hidden>
 <input type="text" id="parametro_formaimagen" value="<?php echo $parametro[0]['parametro_formaimagen']; ?>" name="parametro_formaimagen"  hidden>
 <input type="text" id="parametro_modulorestaurante" value="<?php echo $parametro[0]['parametro_modulorestaurante']; ?>" name="parametro_modulorestaurante"  hidden>
+<input type="text" id="parametro_datosboton" value="<?php echo $parametro[0]['parametro_datosboton']; ?>" name="parametro_datosboton"  hidden>
+<input type="text" id="parametro_moneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" name="parametro_moneda_id"  hidden>
+<input type="text" id="parametro_moneda_descripcion" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" name="parametro_moneda_descripcion"  hidden>
 
 <input type="text" id="rol_precioventa" value="<?php echo $rolusuario[160-1]['rolusuario_asignado']; ?>" hidden>
 <input type="text" id="rol_factor" value="<?php echo $rolusuario[161-1]['rolusuario_asignado']; ?>" hidden>
@@ -57,6 +60,8 @@
 <input type="hidden" id="dosificado" value="<?php echo $dosificado; ?>" name="dosificado">
 <input type="hidden" id="generar_factura" value="<?php echo $rolusuario[187-1]['rolusuario_asignado']; ?>" name="generar_factura">
 <input type="hidden" id="modif_fhora" value="<?php echo $rolusuario[188-1]['rolusuario_asignado']; ?>" name="modif_fhora">
+<input type="text" id="moneda_tc" value="<?php echo $moneda['moneda_tc']; ?>" hidden>
+<input type="text" id="moneda_descripcion" value="<?php echo $moneda['moneda_descripcion']; ?>" hidden>
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="hidden" name="all_usuario" id="all_usuario" value='<?php echo json_encode($usuario); ?>' />
