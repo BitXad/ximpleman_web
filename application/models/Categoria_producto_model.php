@@ -171,7 +171,8 @@ class Categoria_producto_model extends CI_Model
         $venta_porusuario = $this->db->query("
             SELECT
                 vs.usuario_id, vs.`usuario_nombre`, SUM(vs.detalleven_total) as 'totalventas',
-                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto
+                SUM(vs.`detalleven_costo`* vs.`detalleven_cantidad`) as totalcosto,
+                avg(vs.detalleven_tc) as tipo_cambio
             FROM
                 `ventas` vs
             where

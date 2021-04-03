@@ -203,13 +203,13 @@ function venta_porcategoria(){
                         html += "<td align='center'> "+registros[i]["venta_id"]+" </td>";  
                         html += "<td align='center'> "+Number(registros[i]["factura_id"])+" </td>";  // NUMERO FACTURA
                         html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";  
-                        html += "<td align='right'>"+Number(registros[i]["credito_cuotainicial"]).toFixed(2)+"</td>" ;// CUOTA INICIAL
+                        html += "<td align='right'>"+numberFormat(Number(registros[i]["credito_cuotainicial"]).toFixed(2))+"</td>" ;// CUOTA INICIAL
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
                         html += "<td align='center'> "+registros[i]["detalleven_cantidad"]+" </td>"; 
-                        html += "<td align='right'> "+Number(registros[i]["detalleven_precio"]).toFixed(2)+" </td>"; 
-                        html += "<td align='right'> "+Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+" </td>";
+                        html += "<td align='right'> "+numberFormat(Number(registros[i]["detalleven_precio"]).toFixed(2))+" </td>"; 
+                        html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_descuento"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+" </td>";
                         
-                        html += "<td align='right'><b>"+Number(registros[i]["detalleven_total"]).toFixed(2)+"</b></td>";
+                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["detalleven_total"]).toFixed(2))+"</b></td>";
                         html += "<td class='text-right'> ";
                         if(lamoneda_id == 1){
                             total_otram = Number(registros[i]["detalleven_total"])/Number(registros[i]["detalleven_tc"])
@@ -221,8 +221,8 @@ function venta_porcategoria(){
                         html += numberFormat(Number(total_otram).toFixed(2));
                         html += "</td>";
                         if(tipousuario_id == 1){
-                            html += "<td align='right'> "+Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2)+" </td>";
-                            html += "<td align='right'> "+Number(utilidad).toFixed(2)+" </td>"; 
+                            html += "<td align='right'> "+numberFormat(Number(Number(registros[i]["detalleven_costo"])*Number(registros[i]["detalleven_cantidad"])).toFixed(2))+" </td>";
+                            html += "<td align='right'> "+numberFormat(Number(utilidad).toFixed(2))+" </td>"; 
                         }
                         
                         

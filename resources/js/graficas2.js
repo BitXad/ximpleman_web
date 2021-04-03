@@ -204,7 +204,7 @@ var i=0;
 
 
 function cargar_grafica_pie(anio,mes){
-
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
 var options={
      // Build the chart
      
@@ -216,7 +216,7 @@ var options={
                 type: 'pie'
             },
             title: {
-                text: 'Clientes mas frecuentes'
+                text: 'Clientes mas frecuentes ('+nombre_moneda+')'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.y}</b>'
@@ -267,7 +267,7 @@ var numeropublicaciones=datos.numerodepubli;
 }
 
 function cargar_grafica_pie2(anio,mes){
-
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
 var options={
      // Build the chart
      
@@ -279,7 +279,7 @@ var options={
                 type: 'pie'
             },
             title: {
-                text: 'Productos mas vendidos del mes'
+                text: 'Productos mas vendidos del mes ('+nombre_moneda+')'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.y}</b>'

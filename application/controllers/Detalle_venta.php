@@ -82,6 +82,11 @@ class Detalle_venta extends CI_Controller{
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
         $this->load->model('Tipo_transaccion_model'); 
         $data['all_tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['page_title'] = "Reporte Ventas";        
         $data['_view'] = 'venta/reporte_venta';
         $this->load->view('layouts/main',$data);

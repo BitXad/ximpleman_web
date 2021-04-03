@@ -97,6 +97,11 @@ class Reportes extends CI_Controller{
     {
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['page_title'] = "Reportes";
         $data['_view'] = 'reportes/graficas2';
 
@@ -1113,6 +1118,11 @@ function torta3($anio,$mes)
             $data['empresa'] = $this->Empresa_model->get_all_empresa();
             $this->load->model('Categoria_clientezona_model');
             $data['all_zona'] = $this->Categoria_clientezona_model->get_all_categoria_clientezona();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
             $data['page_title'] = "Reporte por Rutas o Zonas";
             $data['_view'] = 'reportes/ventaruta';
 
@@ -1125,7 +1135,11 @@ function torta3($anio,$mes)
         if($this->acceso(157)){
         $data['empresa'] = $this->Empresa_model->get_all_empresa();
         $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
-        
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['page_title'] = "Reporte de ventas por usuario";
         $data['_view'] = 'reportes/ventausuario';
 

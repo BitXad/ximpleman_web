@@ -60,9 +60,9 @@ function tabla_reportescatproducto(){
                         //html += "<td align='center'> "+registros[i]["tipotrans_nombre"]+" </td>";  
                         html += "<td align='center'> "+registros[i]["producto_unidad"]+" </td>";                                          
                         html += "<td align='center'> "+registros[i]["total_cantidad"]+" </td>"; 
-                        html += "<td align='right'> "+Number(registros[i]["total_punitario"]).toFixed(2)+" </td>"; 
-                        html += "<td align='right'> "+Number(registros[i]["total_descuento"]).toFixed(2)+" </td>";
-                        html += "<td align='right'><b>"+Number(registros[i]["total_venta"]).toFixed(2)+"</b></td>";
+                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_punitario"]).toFixed(2))+" </td>"; 
+                        html += "<td align='right'> "+numberFormat(Number(registros[i]["total_descuento"]).toFixed(2))+" </td>";
+                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["total_venta"]).toFixed(2))+"</b></td>";
                         html += "<td class='text-right'> ";
                         if(lamoneda_id == 1){
                             total_otram = Number(registros[i]["total_venta"])/Number(registros[i]["tipo_cambio"])
@@ -74,8 +74,8 @@ function tabla_reportescatproducto(){
                         html += numberFormat(Number(total_otram).toFixed(2));
                         html += "</td>";
                         if(tipousuario_id == 1){
-                            html += "<td align='right'> "+Number(registros[i]["total_costo"]).toFixed(2)+" </td>";
-                            html += "<td align='right'> "+Number(registros[i]["total_utilidad"]).toFixed(2)+" </td>";
+                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_costo"]).toFixed(2))+" </td>";
+                            html += "<td align='right'> "+numberFormat(Number(registros[i]["total_utilidad"]).toFixed(2))+" </td>";
                             html += "<td align='right'> ";
                             if(Number(registros[i]["total_venta"]) !=0){
                                 html += Number(Number(registros[i]["total_utilidad"])/Number(registros[i]["total_venta"])).toFixed(2);
