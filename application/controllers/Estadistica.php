@@ -59,22 +59,22 @@ class Estadistica extends CI_Controller{
      */
     function ventas()
     {
-
         if($this->acceso(18)){
-        //**************** inicio contenido ***************
-     
-        $data['rolusuario'] = $this->session_data['rol'];
-        $data['page_title'] = "Reportes Estadisticos";
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $data['estado'] = $this->Estado_model->get_tipo_estado(1);
-        $data['usuario'] = $this->Venta_model->get_usuarios();        
-
-        $data['_view'] = 'reportes/estadistica_ventas';
-        $this->load->view('layouts/main',$data);
-        		
-        //**************** fin contenido ***************
-		}
-        
+            //**************** inicio contenido ***************
+            $data['rolusuario'] = $this->session_data['rol'];
+            $data['page_title'] = "Reportes Estadisticos";
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $data['estado'] = $this->Estado_model->get_tipo_estado(1);
+            $data['usuario'] = $this->Venta_model->get_usuarios();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'reportes/estadistica_ventas';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
+        }
     }
 
     public function getUltimoDiaMes($elAnio,$elMes) {
@@ -99,7 +99,7 @@ class Estadistica extends CI_Controller{
                 
             $sql_ventas = "SELECT 
                             v.venta_fecha,
-                            sum(d.detalleven_total) AS total
+                            sum(d.detalleven_total) AS total, avg(d.detalleven_tc) as tipo_cambio
                           FROM
                             venta v,
                             detalle_venta d
@@ -132,6 +132,7 @@ class Estadistica extends CI_Controller{
             //Cargando los arreglos a CERO
             for($d = 1; $d <= $ultimo_dia; $d++){
                 $arrayventas[$d] = 0;
+                $arraytc[$d] = 0;
                 $arrayutilidades[$d] = 0;     
             }
 
@@ -140,6 +141,7 @@ class Estadistica extends CI_Controller{
                 $diasel = intval(date("d",strtotime($res['venta_fecha']) ) );
                 $suma = $res['total'];
                 $arrayventas[$diasel] += $suma;
+                $arraytc[$diasel] += $res['tipo_cambio'];;
             }
 
             foreach($utilidades as $resven){
@@ -148,7 +150,7 @@ class Estadistica extends CI_Controller{
                 $arrayutilidades[$diasel] += $sumautilidad;
             }
 
-            $data=array("totaldias" => $ultimo_dia, "totalventas" => $arrayventas, "totalutilidades" => $arrayutilidades);
+            $data=array("totaldias" => $ultimo_dia, "totalventas" => $arrayventas, "totalutilidades" => $arrayutilidades, "totaltc" => $arraytc);
             echo  json_encode($data);
             
             /*$anio = $this->input->post('anio');   1555891200

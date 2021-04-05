@@ -84,11 +84,15 @@ class Reportes extends CI_Controller{
     function graficas()
     {
         if($this->acceso(157)){
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        $data['page_title'] = "Reportes";
-        $data['_view'] = 'reportes/graficas';
-
-        $this->load->view('layouts/main',$data);
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['page_title'] = "Reportes";
+            $data['_view'] = 'reportes/graficas';
+            $this->load->view('layouts/main',$data);
            // redirect('', 'refresh');
         }
     }
@@ -96,16 +100,15 @@ class Reportes extends CI_Controller{
     function graficas2()
     {
         if($this->acceso(157)){
-        $data['empresa'] = $this->Empresa_model->get_all_empresa();
-        $this->load->model('Parametro_model');
-        $data['parametro'] = $this->Parametro_model->get_parametros();
-        $this->load->model('Moneda_model');
-        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
-        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
-        $data['page_title'] = "Reportes";
-        $data['_view'] = 'reportes/graficas2';
-
-        $this->load->view('layouts/main',$data);
+            $data['empresa'] = $this->Empresa_model->get_all_empresa();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['page_title'] = "Reportes";
+            $data['_view'] = 'reportes/graficas2';
+            $this->load->view('layouts/main',$data);
            // redirect('', 'refresh');
         }
     }

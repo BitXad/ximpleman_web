@@ -173,7 +173,7 @@ class Producto_model extends CI_Model
                 from
                     (SELECT
                      p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
+                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion, m.moneda_tc,
                      dp.destino_nombre, scp.subcategoria_nombre
                       FROM
                       producto p
@@ -233,7 +233,7 @@ class Producto_model extends CI_Model
                 from
                     (SELECT
                      p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
+                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion, m.moneda_tc,
                      dp.destino_nombre, scp.subcategoria_nombre
                       FROM
                       producto p
@@ -262,7 +262,7 @@ class Producto_model extends CI_Model
                 from
                     (SELECT
                      p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion,
+                     cp.categoria_nombre, pr.presentacion_nombre, m.moneda_descripcion, m.moneda_tc,
                      dp.destino_nombre, scp.subcategoria_nombre
                       FROM
                       producto p
@@ -322,7 +322,7 @@ class Producto_model extends CI_Model
     {
         $sql = "SELECT
              p.*, p.producto_id as miprod_id, e.estado_color, e.estado_descripcion,
-             cp.categoria_nombre, m.moneda_descripcion, dp.destino_nombre
+             cp.categoria_nombre, m.moneda_descripcion, m.moneda_tc, dp.destino_nombre
 
               FROM
               inventario p

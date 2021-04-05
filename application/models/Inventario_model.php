@@ -191,8 +191,10 @@ class Inventario_model extends CI_Model
         
         //cargar el inventario actualizado
         $sql = "insert into inventario
-                (select p.*,0 as compras, 0 as ventas, 0 as pedidos, 0 as existencia
-                from producto p  
+                (select p.*,0 as compras, 0 as ventas, 0 as pedidos, 0 as existencia,
+                m.moneda_descripcion as moneda_descripcion, m.moneda_tc as moneda_tc
+                from producto p 
+                left join moneda m on p.moneda_id = m.moneda_id
                 where p.producto_id = ".$producto_id.")";
 
         $this->db->query($sql);
@@ -208,8 +210,10 @@ class Inventario_model extends CI_Model
         
         //cargar el inventario actualizado
         $sql = "insert into inventario
-                (select p.*,".$existencia." as compras, 0 as ventas, 0 as pedidos, ".$existencia." as existencia
-                from producto p  
+                (select p.*,".$existencia." as compras, 0 as ventas, 0 as pedidos, ".$existencia." as existencia,
+                    m.moneda_descripcion as moneda_descripcion, m.moneda_tc as moneda_tc
+                from producto p 
+                left join moneda m on p.moneda_id = m.moneda_id
                 where p.producto_id = ".$producto_id.")";
 
         $this->db->query($sql);

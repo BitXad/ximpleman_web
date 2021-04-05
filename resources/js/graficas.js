@@ -1,10 +1,6 @@
 $(document).on("ready",inicio);
 function inicio(){
-        
-        
-        mostrar_grafica(); 
-        
-        
+        mostrar_grafica();
 }
 
 function cambiar_fecha_grafica(){
@@ -38,14 +34,14 @@ function mostrar_grafica(){
 function cargar_grafica_barras(anio,mes){
 
     var empresa = document.getElementById('empresa_nombre').value;
-    
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
     var options={ 
         chart: { 
                 renderTo: 'div_grafica_barras', 
                 type: 'column' 
             }, 
             title: { 
-                text: 'Compras/Ventas del Mes' 
+                text: 'Compras/Ventas del Mes ('+nombre_moneda+')'
             }, 
             subtitle: { 
                 text: empresa 
@@ -120,14 +116,14 @@ function cargar_grafica_barras(anio,mes){
 
 function cargar_grafica_lineas(anio,mes){
     var empresa = document.getElementById('empresa_nombre').value;
-    
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
     var options={ 
         chart: { 
                 renderTo: 'div_grafica_lineas' 
              
             }, 
             title: { 
-                text: 'Ventas del Mes', 
+                text: 'Ventas del Mes ('+nombre_moneda+')',
                 x: -20 //center 
             }, 
             subtitle: { 
@@ -196,7 +192,7 @@ function cargar_grafica_lineas(anio,mes){
 
 
 function cargar_grafica_pie(anio,mes){
-
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
 var options={
      // Build the chart
      
@@ -208,7 +204,7 @@ var options={
                 type: 'pie'
             },
             title: {
-                text: 'Ventas del mes'
+                text: 'Ventas del mes ('+nombre_moneda+')'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.y}</b>'
@@ -255,14 +251,15 @@ var options={
 }
 
 function cargar_grafica_barras_noad(anio,mes,user_id){ 
-    var empresa = document.getElementById('empresa_nombre').value; 
+    var empresa = document.getElementById('empresa_nombre').value;
+    var nombre_moneda = document.getElementById('nombre_moneda').value;
     var options={ 
         chart: { 
                 renderTo: 'div_grafica_barras', 
                 type: 'column' 
             }, 
             title: { 
-                text: 'Pre-ventas/Ventas del Mes' 
+                text: 'Pre-ventas/Ventas del Mes ('+nombre_moneda+')'
             }, 
             subtitle: { 
                 text: empresa 

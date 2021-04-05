@@ -39,6 +39,9 @@
 
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="text" value="" id="parametro" hidden>
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 
 
 
@@ -151,8 +154,16 @@
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
                         <th style="padding:0;">Fecha</th>
-                        <th style="padding:0;">Ventas</th>
-                        <th style="padding:0;">Utilidades</th>						
+                        <th style="padding:0;">Ventas (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th style="padding:0;">Ventas (<?php
+                            if($parametro[0]["moneda_id"] == 1){
+                                echo $lamoneda[1]['moneda_descripcion'];
+                            }else{
+                                echo $lamoneda[0]['moneda_descripcion'];
+                            }
+                        ?>)
+                        </th>
+                        <th style="padding:0;">Utilidades (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>						
                     </tr>
 
                     <tbody class="buscar" id="tabla_ventas">
@@ -183,7 +194,7 @@
                             </button>
                             <center>
                                 <h4 class="modal-title" id="myModalLabel"><b>Asignar Detalle</b></h4>
-                                <b>ADVERTENCIA: El Detalle actual, remplazara algun invenario asignado previamente.</b>                                
+                                <b>ADVERTENCIA: El Detalle actual, remplazara algun inventario asignado previamente.</b>                                
                             </center>
 
                                 

@@ -165,10 +165,13 @@ function tablaresultadosproducto(limite){
                             essubcategoria = registros[i]["subcategoria_nombre"];
                         }
                         var esmoneda="";
+                        var esmoneda_tc="";
                         if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"] == ""){ 
                             esmoneda = "No definido";
+                            esmoneda_tc= "-";
                         }else{
                             esmoneda = registros[i]["moneda_descripcion"];
+                            esmoneda_tc = registros[i]["moneda_tc"];
                         }
                         html += "<td><b>CATEGORIA: </b>"+escategoria+"<br><b>SUB CATEGORIA: </b>"+essubcategoria+"<br>";
                         html += "<b>UNIDAD: </b>"+registros[i]["producto_unidad"]+"<br>";
@@ -214,9 +217,9 @@ function tablaresultadosproducto(limite){
                             html += "</td>";
                         html += "<td><b>MONEDA: </b>"+esmoneda+"<br>";
                         html += "<b>T.C.: </b>";
-                        var tipocambio= 0;
-                        if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
-                        html += tipocambio+"</td>";
+                        //var tipocambio= 0;
+                        //if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
+                        html += esmoneda_tc+"</td>";
                         html += "<td class='no-print' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
 		        html += "<td class='no-print'>";
                         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Información'><span class='fa fa-pencil'></span></a>";
@@ -614,10 +617,13 @@ function busqueda_inicial() {
             essubcategoria = registros[i]["subcategoria_nombre"];
         }
         var esmoneda="";
+        var esmoneda_tc="";
         if(registros[i]["moneda_id"] == null || registros[i]["moneda_id"] == 0 || registros[i]["moneda_id"] == ""){ 
             esmoneda = "No definido";
+            esmoneda_tc = "-";
         }else{
             esmoneda = registros[i]["moneda_descripcion"];
+            esmoneda_tc = registros[i]["moneda_tc"];
         }
         html += "<td><b>CATEGORIA: </b>"+escategoria+"<br><b>SUB CATEGORIA: </b>"+essubcategoria+"<br>";
         html += "<b>UNIDAD: </b>"+registros[i]["producto_unidad"]+"<br>";
@@ -663,9 +669,9 @@ function busqueda_inicial() {
             html += "</td>";
         html += "<td><b>MONEDA: </b>"+esmoneda+"<br>";
         html += "<b>T.C.: </b>";
-        var tipocambio= 0;
-        if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
-        html += tipocambio+"</td>";
+        //var tipocambio= 0;
+        //if(registros[i]["producto_tipocambio"] != null){ tipocambio = registros[i]["producto_tipocambio"]; }
+        html += esmoneda_tc+"</td>";
         html += "<td class='no-print' style='background-color: #"+registros[i]["estado_color"]+"'>"+registros[i]["estado_descripcion"]+"</td>";
         html += "<td class='no-print'>";
         html += "<a href='"+base_url+"producto/edit/"+registros[i]["miprod_id"]+"' target='_blank' class='btn btn-info btn-xs' title='Modificar Información'><span class='fa fa-pencil'></span></a>";
