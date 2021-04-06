@@ -493,4 +493,11 @@ LEFT JOIN usuario u on ve.usuario_id = u.usuario_id
         $credito = $this->db->query($sql)->row_array();
         return $credito;
     }
+    /* obtiene el credito atravez de la compra_id */
+    function getcredito_compraid($compra_id)
+    {
+        $sql = "select * from credito where compra_id =".$compra_id;
+        $credito = $this->db->query($sql)->row_array();
+        return $credito;
+    }
 }

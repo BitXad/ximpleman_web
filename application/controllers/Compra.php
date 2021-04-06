@@ -562,9 +562,9 @@ class Compra extends CI_Controller{
 
     function anular($compra_id)
     {
-
-        if($this->acceso(1)){
-            $usuario_id = $this->session_data['usuario_id']; 
+        if($this->acceso(8)){
+            $usuario_id = $this->session_data['usuario_id'];
+            $compra = $this->Compra_model->get_estacompra($compra_id);
             //$compra_id = $this->input->post('compra_id');
             $vaciar =    "UPDATE inventario i, detalle_compra_aux d
             SET i.existencia =  i.existencia-d.detallecomp_cantidad 
@@ -606,7 +606,38 @@ class Compra extends CI_Controller{
             WHERE compra_id = ".$compra_id."
             ";
             $this->Compra_model->ejecutar($comp);
-
+            if($compra['tipotrans_id'] == 2){
+                $this->load->model('Credito_model');
+                $credito = $this->Credito_model->getcredito_compraid($compra_id);
+                $credito_id = $credito['credito_id'];
+                $estado_id = 27; // anulado
+                $params = array(
+                    'estado_id' => $estado_id,
+                    //'compra_id' => $this->input->post('compra_id'),
+                    'venta_id' => $this->input->post('venta_id'),
+                    'credito_monto' => 0,
+                    'credito_cuotainicial' => 0,
+                    'credito_interesproc' => 0,
+                    'credito_interesmonto' => 0,
+                    'credito_numpagos' => 0,
+                );
+                $this->Credito_model->update_credito($credito_id,$params);
+                $detparams = array(
+                    'estado_id' => $estado_id,
+                    'cuota_numcuota' => 0,
+                    'cuota_capital' => 0,
+                    'cuota_interes' => 0,
+                    'cuota_moradias' => 0,
+                    'cuota_multa' => 0,
+                    'cuota_subtotal' => 0,
+                    'cuota_descuento' => 0,
+                    'cuota_total' => 0,
+                    'cuota_cancelado' => 0,
+                    'cuota_saldo' => 0,
+                );
+                $this->load->model('Cuotum_model');
+                $this->Cuotum_model->updatecuotum_decredito($credito_id,$detparams);
+            }
             redirect('compra/index');
         }
     }

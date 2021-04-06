@@ -87,7 +87,7 @@
                       <span class="input-group-addon"> 
                         Buscar 
                       </span>           
-                <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor" onkeypress="validacompra(event,4)" >
+                <input id="comprar" type="text" class="form-control" placeholder="Ingresa el nombre de proveedor, num. compra" onkeypress="validacompra(event,4)" >
             </div></div>
             <div class="col-md-4 no-print">
                 <?php if($rolusuario[11-1]['rolusuario_asignado'] == 1){ ?>
@@ -254,9 +254,15 @@
               <td><?php echo $cont ?></td>
               <!--<td><?php //echo $p['compra_id']; ?></td>-->
               <td><font size="3"><b><?php echo $c['proveedor_nombre']; ?></b></font><font size="1">[<?php echo $c['proveedor_id']; ?>]</font> <br>
-                <?php if ($c['tipotrans_nombre']=='CREDITO')  { ?>
+                <?php
+                if($c['tipotrans_nombre']=='CREDITO'){
+                    $mensajecred = "Al Anular esta compra, se anulara el credito y sus cuotas!.";
+                ?>
                 <span class="btn-facebook btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
-              <?php } else { ?>
+                <?php
+                }else{
+                    $mensajecred = "";
+                ?>
                 <span class="btn-info btn-xs"><?php echo $c['tipotrans_nombre']; ?></span><br>
               <?php }  ?>
                 <?php if ($c['compra_caja']==1){  ?><span class="btn-warning btn-xs">  <?php echo "Pago con Caja"; } ?><?php if ($c['compra_caja']==2){  ?><span class="btn-warning btn-xs">  <?php echo "Orden de Pago"; } ?><?php if ($c['compra_caja']==0){  ?><span class="btn-warning btn-xs">  <?php echo "Ninguno"; } ?></span></td>
@@ -310,49 +316,37 @@
                 <i class="fa fa-minus-circle "></i>
             </a>
             <?php } ?>
-
-
- <!---------------------------------MODAL DE ANULAR COMPRA------------------------->
-
-  <div class="modal fade" id="anularmodal<?php echo $c['compra_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4><b> <em class="fa fa-minus-circle"></em> Desea anular la compra No.: <?php echo $c['compra_id']; ?>? 
-              </b></h4>
-              </div>
-              <div class="modal-body" align="center">
-                <
-
-         <h4>
-               Esta compra puede tener una orden de Pago, tomar en cuenta.
-           </h4>
-          </div>
-              <div class="modal-footer" align="right">
-
-            <a href="<?php echo site_url('compra/anular/'.$c['compra_id']); ?>" class="btn btn-xs btn-warning"  type="submit">
-                <h5>
-                <span class="fa fa-check"></span>   Anular  
-                </h5>
-            </a>
-            
-            <button class="btn btn-xs btn-danger" data-dismiss="modal">
-                <h5>
-                <span class="fa fa-close"></span>   Cancelar  
-                </h5>
-            </button>
-                         
-        </div>
-
-            </div>
-          </div>
-        </div>
-        <!---------------------------------FIN MODAL DE ANULAR COMPRA------------------------->
-            </td>
+                    <!---------------------------------MODAL DE ANULAR COMPRA------------------------->
+                    <div class="modal fade" id="anularmodal<?php echo $c['compra_id'] ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    <h4><b> <em class="fa fa-minus-circle"></em> Desea anular la compra No.: <?php echo $c['compra_id']; ?>? 
+                                        </b>
+                                    </h4>
+                                </div>
+                                <div class="modal-body" align="center">
+                                    <h4>Esta compra puede tener una orden de Pago, tomar en cuenta.</h4>
+                                    <h4 class="text-bold">
+                                        <?php echo $mensajecred; ?>
+                                    </h4>
+                                </div>
+                                <div class="modal-footer" align="right">
+                                    <a href="<?php echo site_url('compra/anular/'.$c['compra_id']); ?>" class="btn btn-xs btn-warning"  type="submit">
+                                        <h5><span class="fa fa-check"></span>   Anular  </h5>
+                                    </a>
+                                    <button class="btn btn-xs btn-danger" data-dismiss="modal">
+                                        <h5><span class="fa fa-close"></span>   Cancelar  </h5>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!---------------------------------FIN MODAL DE ANULAR COMPRA------------------------->
+                    </td>
         </tr>
 
     <?php  } ?>

@@ -101,7 +101,7 @@ class Compra_model extends CI_Model
                 and c.proveedor_id = p.proveedor_id
                 and c.tipotrans_id = t.tipotrans_id
                 and c.usuario_id=u.usuario_id
-                and p.proveedor_nombre like '%".$parametro."%'
+                and (p.proveedor_nombre like '%".$parametro."%' or c.compra_id = $parametro)
 
             ORDER BY `compra_id` DESC
 
@@ -469,6 +469,21 @@ class Compra_model extends CI_Model
                     c.compra_fecha DESC";
         return $this->db->query($sql)->result_array();
         
+    }
+    /*
+     * Get compra compra_id
+     */
+    function get_estacompra($compra_id)
+    {
+        $compra = $this->db->query("
+            SELECT
+                *
+            FROM
+                `compra`
+            WHERE
+                `compra_id` = ?
+        ",array($compra_id))->row_array();
+        return $compra;
     }
     
 }

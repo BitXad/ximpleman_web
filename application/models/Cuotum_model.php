@@ -361,4 +361,11 @@ class Cuotum_model extends CI_Model
     {
         return $this->db->delete('cuota',array('cuota_id'=>$cuota_id));
     }
+    
+    /* funcion para modificar todas las cuotas de un credito (de compras) */
+    function updatecuotum_decredito($credito_id,$params)
+    {
+        $this->db->where('credito_id',$credito_id);
+        return $this->db->update('cuota',$params);
+    }
 }
