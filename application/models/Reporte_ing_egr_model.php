@@ -825,6 +825,27 @@ function get_reportes($fecha1, $fecha2, $usuario_id)
 
         return $venta_porusuario;
     }
+    /* obtener reporte agrupado por categoria */
+    function reporteventas_prodagrupados($filtro)
+    {
+        $reporte = $this->db->query(
+            "SELECT
+		vs.producto_id, vs.`producto_codigo`, vs.`producto_nombre`,
+                vs.producto_unidad, sum(vs.detalleven_cantidad) as total_cantidad,
+                (sum(`vs`.`detalleven_total`) / sum(vs.detalleven_cantidad)) as total_punitario, 
+                sum(`vs`.`detalleven_descuento`*`vs`.`detalleven_cantidad`) as total_descuento,
+                sum(`vs`.`detalleven_total`) as total_venta,
+                (sum(`vs`.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_costo,
+                (sum(`vs`.`detalleven_total`)-SUM(vs.`detalleven_costo`*`vs`.`detalleven_cantidad`)) as total_utilidad
+            FROM
+                ventas vs
+            WHERE
+                $filtro
+            group by `vs`.producto_id
+            order by total_venta desc
+        ")->result_array();
+        return $reporte;
+    }
     
 }
 

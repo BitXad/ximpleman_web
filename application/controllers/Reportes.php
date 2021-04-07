@@ -1292,5 +1292,33 @@ function torta3($anio,$mes)
             $this->load->view('layouts/main',$data);
         }
     }
+    function ventacategoriap()
+    {
+        //if($this->acceso(156)){
+            $data['tipousuario_id'] = $this->session_data['tipousuario_id'];
+            $data['page_title'] = "Reporte de ventas de productos agrupados por categorias";
+            $data['empresa'] = $this->Empresa_model->get_empresa(1);  
+            //$this->load->model('Categoria_producto_model');
+            //$data['all_categoria'] = $this->Categoria_producto_model->get_all_categoria_producto();
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            //$this->load->model('Moneda_model');
+            //$data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            //$data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'reportes/ventacategoriap';
+            $this->load->view('layouts/main',$data);
+        //}
+    }
+    /* reeporte de productos agrupados por categoria */
+    function buscarprodagrupados_porcategoria()
+    {
+        if ($this->input->is_ajax_request()) {
+            $filtro = $this->input->post('filtro');
+            $datos = $this->Reporte_ing_egr_model->reporteventas_prodagrupados($filtro);
+            echo json_encode($datos);
+        }else{
+            show_404();
+        }
+    }
     
 }
