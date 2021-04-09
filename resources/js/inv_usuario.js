@@ -12,20 +12,19 @@ function tablaresul()
  
     
     $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro},
-          
-           success:function(resul){     
-              
-               var registros =  JSON.parse(resul);
-           
-               if (registros != null){
-                   
-                   
+            type:"POST",
+            data:{filtro:filtro},
+            success:function(resul){
+                var registros =  JSON.parse(resul);
+                if (registros != null){
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
+                    var total_ventas = Number(0);
                     var costos = Number(0);
                     var cantidades = Number(0);
                     var saldo = Number(0);
-                    var n = registros.length; //tama単o del arreglo de la consulta
+                    var n = registros.length; //tamaño del arreglo de la consulta
                     var total_invbs = 0; //
                     var total_saldobs = 0; //
                     var cant_ventas = 0; //
@@ -60,6 +59,7 @@ function tablaresul()
                         //VENTAS
                         cant_ventas += Number(registros[i]["inventario_ventas"]);
                         total_ventasbs += Number(registros[i]["inventario_ventas"])*Number(registros[i]["inventario_costo"]);
+                        total_ventas = Number(registros[i]["inventario_ventas"])*Number(registros[i]["inventario_costo"]);
                         html += "<td align='center' style='background-color: orange'><font size='1' face='Arial'><b>"+Number(registros[i]["inventario_ventas"]).toFixed(2)+"</b></font></td>"; 
                         html += "<td style='background-color: yellow'><center><font size='2'><b>"+Number(Number(registros[i]["inventario_ventas"])*Number(registros[i]["inventario_costo"])).toFixed(2)+"</b></font></center></td>"; 
                         
@@ -69,8 +69,18 @@ function tablaresul()
                         //SALDOS
                         total_saldobs += Number(registros[i]["inventario_saldo"])*Number(registros[i]["inventario_costo"]);
                         total_saldo += (Number(registros[i]["inventario_saldo"])).toFixed(2); 
-                        html += "<td style='background-color: orange'><center><font size='2'><b>"+(Number(registros[i]["inventario_saldo"])).toFixed(2)+"</b></font></center></td>"; 
-                        html += "<td style='background-color: yellow'><center><font size='2'><b>"+(Number(registros[i]["inventario_saldo"])*Number(registros[i]["inventario_costo"])).toFixed(2)+"</b></font></center></td>"; 
+                        html += "<td class='text-right' style='background-color: orange'> ";
+                        if(lamoneda_id == 1){
+                            total_otram = total_ventas/Number(registros[i]["moneda_tc"])
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = total_ventas*Number(registros[i]["moneda_tc"])
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += "</td>";
+                        html += "<td style='background-color: yellow'><center><font size='2'><b>"+(Number(registros[i]["inventario_saldo"])).toFixed(2)+"</b></font></center></td>";
+                        html += "<td style='background-color: orange'><center><font size='2'><b>"+(Number(registros[i]["inventario_saldo"])*Number(registros[i]["inventario_costo"])).toFixed(2)+"</b></font></center></td>"; 
                         
                         html += "<td>"+registros[i]["usuario_nombre"]+"</td>"; 
                         html += "<td><a href='"+base_url+"inventario_usuario/edit/"+registros[i]["inventario_id"]+"'  class='btn btn-info btn-xs'><span class='fa fa-pencil'></a>";
@@ -112,6 +122,7 @@ function tablaresul()
                         html += "<td align='right'><font size='4'><b>"+Number(total_invbs).toFixed(2)+"</b></font></td>";
                         html += "<td align='right'><font size='4'><b>"+Number(cant_ventas).toFixed(2)+"</b></font></td>";
                         html += "<td align='right'><font size='4'><b>"+Number(total_ventasbs).toFixed(2)+"</b></font></td>";
+                        html += "<td align='right'><font size='4'><b>"+Number(total_otramoneda).toFixed(2)+"</b></font></td>";
                         html += "<td align='right'><font size='4'><b>"+Number(saldo).toFixed(2)+"</b></font></td>";
                         html += "<td align='right'><font size='4'><b>"+Number(total_saldobs).toFixed(2)+"</b></font></td>";
                         html += "<td></td>";
@@ -184,5 +195,41 @@ function eliminar_invusuario(){
        alert('ADVERTENCIA: Debe seleccionar un usuario/fecha..!');
    }
              
+}
+function numberFormat(numero){
+    // Variable que contendra el resultado final
+    var resultado = "";
+
+    // Si el numero empieza por el valor "-" (numero negativo)
+    if(numero[0]=="-")
+    {
+        // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+        // el signo negativo
+        nuevoNumero=numero.replace(/\,/g,'').substring(1);
+    }else{
+        // Cogemos el numero eliminando los posibles puntos que tenga
+        nuevoNumero=numero.replace(/\,/g,'');
+    }
+
+    // Si tiene decimales, se los quitamos al numero
+    if(numero.indexOf(".")>=0)
+        nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+
+    // Ponemos un punto cada 3 caracteres
+    for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+        resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+
+    // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+    // los separadores de miles
+    if(numero.indexOf(".")>=0)
+        resultado+=numero.substring(numero.indexOf("."));
+
+    if(numero[0]=="-")
+    {
+        // Devolvemos el valor añadiendo al inicio el signo negativo
+        return "-"+resultado;
+    }else{
+        return resultado;
+    }
 }
     

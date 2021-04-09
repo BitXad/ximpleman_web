@@ -72,7 +72,9 @@ class Reportes extends CI_Controller{
         
         $this->load->model('Parametro_model');
         $data['parametro'] = $this->Parametro_model->get_parametros();
-
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario_activo();
         $data['page_title'] = "Reportes";
         $data['_view'] = 'reportes/reportediario';

@@ -121,7 +121,8 @@ function mostrar_filas(){
 function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
     var base_url    = document.getElementById('base_url').value;
-    var tipousuario_id    = document.getElementById('tipousuario_id').value;
+    var tipousuario_id = document.getElementById('tipousuario_id').value;
+    var nombre_moneda  = document.getElementById('nombre_moneda').value;
     var controlador = base_url+"reportes/buscarporfecha";
     
     
@@ -351,7 +352,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     estilox = "style='padding:0;'";                    
 
                     html += "<tr>";
-                        html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS Bs <input type='button' value='[+]' onclick='mostrar_filas();' id='boton_mostrar' class='btn btn-xs'/> </b></td>";
+                        html += "<td "+estilo+" colspan='5'><b>TOTAL INGRESOS "+nombre_moneda+" <input type='button' value='[+]' onclick='mostrar_filas();' id='boton_mostrar' class='btn btn-xs'/> </b></td>";
                         html += "<td "+estilo+" ><b>"+formato_numerico(totalingresos)+"</b></td>";
                         html += "<td "+estilo+" ></td>";
                         html += "<td "+estilo+" ></td>";
@@ -362,7 +363,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     if(total_efectivo>0){
                     html += "<tr>";
                         html += "<td></td>";
-                        html += "<td "+estilox+" colspan='4'><b>OPERACIONES EN EFECTIVO Bs</b></td>";
+                        html += "<td "+estilox+" colspan='4'><b>OPERACIONES EN EFECTIVO "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo2+" ><b>"+formato_numerico(total_efectivo)+"</b></td>";
                         html += "<td "+estilo2+" ></td>";
                         html += "<td "+estilo2+" ></td>";
@@ -372,7 +373,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -383,7 +384,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -394,7 +395,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -405,7 +406,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -416,7 +417,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMO DE ENVASES Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMO DE ENVASES "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -429,7 +430,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     if(total_debito > 0){
                     html += "<tr>";
                         html += "<td></td>";
-                        html += "<td "+estilox+" colspan='4'><b>TARJETAS DE DEBITO Bs</b></td>";
+                        html += "<td "+estilox+" colspan='4'><b>TARJETAS DE DEBITO "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo2+" ><b>"+formato_numerico(total_debito)+"</b></td>";
                         html += "<td "+estilo2+" ></td>";
                         html += "<td "+estilo2+" ></td>";
@@ -440,7 +441,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_debito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -451,7 +452,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_debito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -462,7 +463,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_debito_debito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -473,7 +474,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_debito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -484,7 +485,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_debito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -497,7 +498,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     if(total_transaccion >0){
                     html += "<tr>";
                         html += "<td></td>";
-                        html += "<td "+estilox+" colspan='4'><b>TRANSACCIONES BANCARIAS Bs</b></td>";
+                        html += "<td "+estilox+" colspan='4'><b>TRANSACCIONES BANCARIAS "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo2+" ><b>"+formato_numerico(total_transaccion)+"</b></td>";
                         html += "<td "+estilo2+" ></td>";
                         html += "<td "+estilo2+" ></td>";
@@ -507,7 +508,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_transacciones)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -518,7 +519,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_transacciones)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -529,7 +530,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_transacciones)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -540,7 +541,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_transacciones)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -551,7 +552,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_transacciones)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -563,7 +564,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     if(total_credito>0){
                     html += "<tr>";
                         html += "<td></td>";
-                        html += "<td "+estilox+" colspan='4'><b>TARJETAS DE CREDITO Bs</b></td>";
+                        html += "<td "+estilox+" colspan='4'><b>TARJETAS DE CREDITO "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo2+" ><b>"+formato_numerico(total_credito)+"</b></td>";
                         html += "<td "+estilo2+" ></td>";
                         html += "<td "+estilo2+" ></td>";
@@ -573,7 +574,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_tarjetascredito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -584,7 +585,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_tarjetascredito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -595,7 +596,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_tarjetascredito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -606,7 +607,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr  style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_tarjetascredito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -617,7 +618,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr  style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_tarjetascredito)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -629,7 +630,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     if(total_cheque>0){
                     html += "<tr>";
                         html += "<td></td>";
-                        html += "<td "+estilox+" colspan='4'><b>OPERACIONE EN CHEQUE Bs</b></td>";
+                        html += "<td "+estilox+" colspan='4'><b>OPERACIONE EN CHEQUE "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo2+" ><b>"+formato_numerico(total_cheque)+"</b></td>";
                         html += "<td "+estilo2+" ></td>";
                         html += "<td "+estilo2+" ></td>";
@@ -639,7 +640,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS A CAJA "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_caja_cheque)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -650,7 +651,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto18'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR VENTAS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_ventas_cheque)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -661,7 +662,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR SERVICIOS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_servicios_cheque)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -672,7 +673,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS POR DEUDAS X COBRAR "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_creditos_cheque)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -683,7 +684,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>INGRESOS PRESTAMOS DE ENVASES Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>INGRESOS PRESTAMOS DE ENVASES "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(ingreso_envases_cheque)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -696,7 +697,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
 
                     html += "<tr>";
                         //html += "<td colspan='2'></td>";
-                        html += "<td colspan='5'><b>TOTAL EGRESOS Bs</b></td>";
+                        html += "<td colspan='5'><b>TOTAL EGRESOS "+nombre_moneda+"</b></td>";
                         html += "<td><b>"+formato_numerico(totalegresos)+"</b></td>";
                         html += "<td colspan='2'></td>";
                     html += "</tr>";
@@ -705,7 +706,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                         
                             html += "<tr>";
                                 html += "<td></td>";
-                                html += "<td "+estilox+" colspan='5'><b>OPERACIONES EN EFECTIVO Bs</b></td>";
+                                html += "<td "+estilox+" colspan='5'><b>OPERACIONES EN EFECTIVO "+nombre_moneda+"</b></td>";
                                 html += "<td "+estilo2+" ><b>"+formato_numerico(totalegreso_efectivo)+"</b></td>";
                                 html += "<td "+estilo2+" ></td>";
                                 html += "<td "+estilo2+" ></td>";
@@ -716,7 +717,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS DE CAJA "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(egreso_caja)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -727,7 +728,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR COMPRAS "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(egreso_compras)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -738,7 +739,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR ORDENES DE PAGO "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(egreso_ordenes)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -749,7 +750,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                                 numerofilas++;
                                 html += "<tr style='display:none;' id='detalle_oculto"+numerofilas+"'>";
                                     html += "<td colspan='2'></td>";
-                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO Bs</td>";
+                                    html += "<td "+estilox+" colspan='3'>EGRESOS POR PAGOS DE CREDITO "+nombre_moneda+"</td>";
                                     html += "<td "+estilo2+" ></td>";
                                     html += "<td "+estilo2+" >"+formato_numerico(egreso_pagos)+"</td>";
                                     html += "<td "+estilo2+" ></td>";
@@ -761,7 +762,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     html += "<tr style='font-size:12px;'>";
     //                    html += "<td "+estilo+"></td>";
-                        html += "<td "+estilo+" colspan='5'><b>SUB TOTAL EN CAJA Bs</b></td>";
+                        html += "<td "+estilo+" colspan='5'><b>SUB TOTAL EN CAJA "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(subtotal)+"</b></td>";
                         html += "<td "+estilo+"></td>";
                     html += "</tr>";
@@ -771,7 +772,7 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     html += "<tr style='font-size:12px;'>";
                         html += "<td></td>";
-                        html += "<td colspan='5'><b>TOTAL TRANSACCIONES BANCO/TARJ. CREDITO/DEBITO Bs</b></td>";
+                        html += "<td colspan='5'><b>TOTAL TRANSACCIONES BANCO/TARJ. CREDITO/DEBITO "+nombre_moneda+"</b></td>";
                         html += "<td style='text-align: right'><b>"+formato_numerico(totalbanco)+"</b></td>";
                         html += "<td></td>";
                     html += "</tr>";
@@ -781,13 +782,13 @@ function buscarporfecha(fecha_desde, fecha_hasta, usuario){
                     
                     html += "<tr style='font-size:12px;'>";
     //                    html += "<td "+estilo+"></td>";
-                        html += "<td "+estilo+" colspan='5'><b>TOTAL EFECTIVO EN CAJA Bs</b></td>";
+                        html += "<td "+estilo+" colspan='5'><b>TOTAL EFECTIVO EN CAJA "+nombre_moneda+"</b></td>";
                         html += "<td "+estilo+" colspan='2'><b>"+formato_numerico(efectivo_caja)+"</b></td>";
                         html += "<td "+estilo+"></td>";
                     html += "</tr>";
                     if (tipousuario_id==1){
                         html += "<tr style='font-size:12px;'>";
-                            html += "<td colspan='7'><b>UTILIDAD Bs</b></td>";
+                            html += "<td colspan='7'><b>UTILIDAD "+nombre_moneda+"</b></td>";
                             html += "<td colspan='2' style='text-align: right;'><b>"+formato_numerico(totalutilidad)+"</b></td>";
                         html += "</tr>";
                     }

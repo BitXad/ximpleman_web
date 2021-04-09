@@ -26,10 +26,13 @@
 
     <div class="col-md-4">
     <label for="inventario_fecha" class="control-label">Fecha</label>
-      <div class="form-group">
+    <div class="form-group">
         <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
-                            <input type="date" name="inventario_fecha" value="<?php echo date('Y-m-d') ?>" class="form-control" id="inventario_fecha" onchange="tablaresul()"/>
-                        </div>
+        <input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+        <input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+        <input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
+        <input type="date" name="inventario_fecha" value="<?php echo date('Y-m-d') ?>" class="form-control" id="inventario_fecha" onchange="tablaresul()"/>
+    </div>
          
     </div>
     
@@ -80,29 +83,29 @@
             <div class="box-body table-responsive">
                 <table class="table table-striped table-condensed" id="mitabla">
                     <tr>
-						<th>#</th>
-						<th>Producto</th>
-						<th>Fecha  Hora</th>
-						
+                        <th>#</th>
+                        <th>Producto</th>
+                        <th>Fecha  Hora</th>
                         <th>Costo</th>
                         <th>Cantidad</th>
-                        <th>Total<br>Bs</th>
-						<th>Ventas</th>
-						<th>total<br>Bs</th>
-<!--						<th>Pedidos</th>
-						<th>Devoluciones</th>-->
-						<th>Saldo</th>
-						<th>Saldo<br>Bs</th>
-						<th>Usuario</th>
+                        <th>Total<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th>Ventas</th>
+                        <th>Total<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th>Total<br>(<?php
+                                                if($parametro[0]["moneda_id"] == 1){
+                                                    echo $lamoneda[1]['moneda_descripcion'];
+                                                }else{
+                                                    echo $lamoneda[0]['moneda_descripcion'];
+                                                }
+                                            ?>)
+                        </th>
+                        <th>Saldo</th>
+                        <th>Saldo<br>Bs</th>
+                        <th>Usuario</th>
                         <th></th>
-						
                     </tr>
-                    <tbody class="ha" id="inv_usu"> 
-                    
-                        
-                    </tbody>
+                    <tbody id="inv_usu"></tbody>
                 </table>
-                                
             </div>
         </div>
     </div>

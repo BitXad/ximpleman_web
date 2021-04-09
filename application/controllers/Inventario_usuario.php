@@ -20,19 +20,23 @@ class Inventario_usuario extends CI_Controller{
     {
         //$data['inventario_usuario'] = $this->Inventario_usuario_model->get_all_inventario_usuario();
         $data['all_usuario'] = $this->Usuario_model->get_all_usuario();
+        $this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        $this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['_view'] = 'inventario_usuario/index';
         $this->load->view('layouts/main',$data);
     }
 
     function buscar()
     {
-        if ($this->input->is_ajax_request()) {
-        $filtro = $this->input->post('filtro');
-        $datos = $this->Inventario_usuario_model->buscar_inventario_usuario($filtro);
-        echo json_encode($datos);
-        } else
-        {                 
-                    show_404();
+        if($this->input->is_ajax_request()){
+            $filtro = $this->input->post('filtro');
+            $datos = $this->Inventario_usuario_model->buscar_inventario_usuario($filtro);
+            echo json_encode($datos);
+        }else{                 
+            show_404();
         }          
     }
 

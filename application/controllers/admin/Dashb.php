@@ -94,6 +94,11 @@ class Dashb extends CI_Controller
                 $data['zona'] = $this->Categoria_clientezona_model->get_categoria_clientezona($zona_id);
                 $data['all_pedido'] = $this->Pedido_model->get_para_entregas($session_data['usuario_id'], $fecha_desde, $fecha_hasta);
                 $data['usuario'] = $session_data['usuario_id'];
+                //$this->load->model('Parametro_model');
+                $data['parametro'] = $this->Parametro_model->get_parametros();
+                //$this->load->model('Moneda_model');
+                //$data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+                //$data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
                 $data['tipousuario_id'] = $session_data['tipousuario_id'];
                 $data['_view'] = 'dashboard_noad';
                 $this->load->view('layouts/dashb_noad',$data);

@@ -147,11 +147,12 @@ class Objetivo extends CI_Controller{
         $primer_dia = 1;
         $ultimo_dia = $this->getUltimoDiaMes($anio,$mes);
         
-        $fecha_inicial = date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );
-        $fecha_final = date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$ultimo_dia) );
+        //$fecha_inicial = date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$primer_dia) );
+        //$fecha_final = date("Y-m-d H:i:s", strtotime($anio."-".$mes."-".$ultimo_dia) );
             
         $fecha_inicial = $anio."-".$mes."-01";
-        $fecha_final = $anio."-".$mes."-31";
+        //$fecha_final = $anio."-".$mes."-31";
+        $fecha_final = $anio."-".$mes."-".$ultimo_dia;
          // --------------------------------------------------------------------------------------------
         $sql_objetivos = "SELECT u.usuario_nombre, u.`usuario_imagen`, aux.`tipousuario_descripcion`, e.`estado_color`, e.estado_descripcion, o.*
                             FROM `objetivo` AS o
@@ -212,7 +213,7 @@ class Objetivo extends CI_Controller{
         
         $pedidos_mes = $this->db->query($sql_pedidos_mes)->result_array();
         // // --------------------------------------------------------------------------------------------
-        $sql_pedidos_dia = "SELECT IF(COUNT(p.`pedido_id`)>0, COUNT(p.`pedido_id`),0) as pedido_mes, u.usuario_id
+        $sql_pedidos_dia = "SELECT IF(COUNT(p.`pedido_id`)>0, COUNT(p.`pedido_id`),0) as pedido_dia, u.usuario_id
                             FROM pedido AS  p
                             LEFT JOIN venta as v on p.pedido_id = v.`pedido_id`
                             LEFT JOIN usuario AS u ON p.`usuario_id` = u.usuario_id

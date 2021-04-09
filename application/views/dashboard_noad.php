@@ -32,10 +32,10 @@
                         <h3><b><fa class="fa fa-cart-plus"></fa></b></h3>
                         <?php if(isset($objetivo['objetivo_diario'])){ ?>
                             <div>
-                                <h5 width="100%"><b><?php echo " Bs ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> / <?= number_format($objetivo['objetivo_diario'],2,'.',','); ?></b></h5>
+                                <h5 width="100%"><b><?php echo $parametro[0]['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> / <?= number_format($objetivo['objetivo_diario'],2,'.',','); ?></b></h5>
                             </div>
                         <?php }else{ ?>
-                                <h5 width="100%"><b><?php echo " Bs ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> </b></h5>
+                                <h5 width="100%"><b><?php echo $parametro[0]['moneda_descripcion']." ".number_format($ventas[0]['total_ventas'],2,'.',','); ?> </b></h5>
                         <?php } ?>
                     </div>
                     <div class="icon">
@@ -44,7 +44,7 @@
                     <!-- Barra de progreso en objetivo -->
                     <?php if(isset($objetivo['objetivo_diario'])){ ?>
                     <div class="progress" style="height:10px; margin-bottom: 2px;">
-                        <div class="progress-bar" role="progressbar" style="width: <?= ((number_format($ventas[0]['total_ventas'],2,'.',',')*100)/$objetivo['objetivo_diario']) ?>%; background-color: #00acd7" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress-bar" role="progressbar" style="width: <?= (($ventas[0]['total_ventas']*100)/$objetivo['objetivo_diario']) ?>%; background-color: #00acd7" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <?php }else{ ?>
                         <div style="margin-bottom: 12px"></div>
@@ -59,7 +59,7 @@
                 <div class="small-box bg-red">
                     <div class="inner" >
                         <h3><b><i class="fa fa-pencil-square-o" aria-hidden="true"></i></b></h3>
-                        <h5><b><?php echo "Bs ".number_format($pedidos[0]['total_pedidos'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>                        
+                        <h5><b><?php echo $parametro[0]['moneda_descripcion']." ".number_format($pedidos[0]['total_pedidos'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>                        
                     </div>
                     
                     <div class="icon">
@@ -84,7 +84,7 @@
                 <div class="small-box bg-green">
                     <div class="inner" >
                         <h3><b><i class="fa fa-credit-card-alt" aria-hidden="true"></i></b></h3>
-                        <h5><b><?= "Bs ".number_format($creditos[0]['total_ventas_credito'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>
+                        <h5><b><?= $parametro[0]['moneda_descripcion']." ".number_format($creditos[0]['total_ventas_credito'],2,'.',','); ?><sup style="font-size: 20px"></sup></b></h5>
                     </div>
                     
                     <div class="icon">
@@ -141,7 +141,7 @@
                         <?php if(isset($objetivo['objetivo_mes'])){ ?>
                             <div>
                                 <h4 class="title" style="display: inline;" >Ventas</h4>
-                                <h4 class="text-right mr-0" style="display: inline;">&nbsp;&nbsp;&nbsp;Bs. <?= $ventas_mes['total_mes'] ?> / <?= $objetivo['objetivo_mes'] ?></h4>
+                                <h4 class="text-right mr-0" style="display: inline;">&nbsp;&nbsp;&nbsp; <?php echo $parametro[0]['moneda_descripcion']." ".$ventas_mes['total_mes'] ?> / <?= $objetivo['objetivo_mes'] ?></h4>
                             </div>
                             <div class="progress">
                                 <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" style="width: <?= intval(($ventas_mes['total_mes'] *100)/$objetivo['objetivo_mes']) ?>%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
