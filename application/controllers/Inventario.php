@@ -36,16 +36,23 @@ class Inventario extends CI_Controller{
         
 
         if($this->acceso(24)){
-        //**************** inicio contenido ***************
+            //**************** inicio contenido ***************
             $data['rolusuario'] = $this->session_data['rol'];
-        $empresa_id = 1;
-        $data['page_title'] = "Inventario";
-        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-        $data['_view'] = 'inventario/index';
-        $this->load->view('layouts/main',$data);
-		
-        //**************** fin contenido ***************
-			}
+            $empresa_id = 1;
+            $data['page_title'] = "Inventario";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['_view'] = 'inventario/index';
+            $this->load->view('layouts/main',$data);
+
+            //**************** fin contenido ***************
+        }
 			
     }
 
@@ -54,20 +61,24 @@ class Inventario extends CI_Controller{
      */
     function realizable()
     {
-        
-
         if($this->acceso(24)){
-        //**************** inicio contenido ***************
-        $data['rolusuario'] = $this->session_data['rol'];
-        $empresa_id = 1;
-        $data['page_title'] = "Inventario";
-        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-        $data['_view'] = 'inventario/realizable';
-        $this->load->view('layouts/main',$data);
-		
-        //**************** fin contenido ***************
-			}
-			
+            //**************** inicio contenido ***************
+            $data['rolusuario'] = $this->session_data['rol'];
+            $empresa_id = 1;
+            $data['page_title'] = "Inventario";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
+            $data['_view'] = 'inventario/realizable';
+            $this->load->view('layouts/main',$data);
+            
+            //**************** fin contenido ***************
+        }
     }
 
     /*
@@ -75,54 +86,38 @@ class Inventario extends CI_Controller{
      */
     function kardex($producto_id)
     {
-
         if($this->acceso(29)){
-        //**************** inicio contenido ***************
-		  
-                
-        $empresa_id = 1;
-        //$producto_id = $this->input->post('producto_id');
-        
-        $data['page_title'] = "Kardex";
-        $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
-        $data['producto'] = $this->Producto_model->get_producto($producto_id);
-        $data['producto_id'] = $producto_id;
-        
-
-        $data['_view'] = 'inventario/kardex';
-        $this->load->view('layouts/main',$data);
-//        
-        
-	
-        //**************** fin contenido ***************
-			}
-			 
-        
+            //**************** inicio contenido ***************           
+            $empresa_id = 1;
+            $data['page_title'] = "Kardex";
+            $data['empresa'] = $this->Empresa_model->get_empresa($empresa_id);
+            $data['producto'] = $this->Producto_model->get_producto($producto_id);
+            $data['producto_id'] = $producto_id;
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            $data['_view'] = 'inventario/kardex';
+            $this->load->view('layouts/main',$data);
+            //**************** fin contenido ***************
+        }
     }
     /*
      * Kadex de producto
      */
     function buscar_kardex()
     {
-
         if($this->acceso(29)){
-        //**************** inicio contenido ***************
-		  
-                
-        $empresa_id = 1;
-        $producto_id = $this->input->post('producto_id');
-        $hasta = $this->input->post('hasta');
-        $desde = $this->input->post('desde');
-        
-        $kardex = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
-        echo json_encode($kardex);
-          
-        
-	
-        //**************** fin contenido ***************
-			}
-			      
-        
+            //**************** inicio contenido ***************           
+            $empresa_id = 1;
+            $producto_id = $this->input->post('producto_id');
+            $hasta = $this->input->post('hasta');
+            $desde = $this->input->post('desde');
+            $kardex = $this->Inventario_model->mostrar_kardex($desde, $hasta, $producto_id);
+            echo json_encode($kardex);
+            //**************** fin contenido ***************
+        }
     }
 
     /*
@@ -148,24 +143,17 @@ class Inventario extends CI_Controller{
      * muestra inventario por parametro
      */
     function mostrar_inventario()
-    {      
-       
-
+    {
         if($this->acceso(25)){
-        //**************** inicio contenido ***************
-		
+            //**************** inicio contenido ***************
             $parametro = $this->input->post("parametro");
-            
             if ($parametro=="" || $parametro==null)
                 $resultado = $this->Inventario_model->get_inventario();                
             else
                 $resultado = $this->Inventario_model->get_inventario_parametro($parametro);
-            
             echo json_encode($resultado);            
-		
-        //**************** fin contenido ***************
-			}
-			
+            //**************** fin contenido ***************
+        }
     }
 
     function mostrar_inventario_existencia()

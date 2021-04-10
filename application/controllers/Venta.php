@@ -2935,9 +2935,7 @@ function anular_venta($venta_id){
     //Muestra la lista de vencimientos
     function inventario_envases()
     {
-        
         if($this->acceso(30)) {
-                
         //**************** inicio contenido ***************            
         $usuario_id = $this->session_data['usuario_id'];
         $usuario_nombre = $this->session_data['usuario_nombre'];
@@ -2948,7 +2946,6 @@ function anular_venta($venta_id){
         $data['esrol'] = $rolusuario[33-1]['rolusuario_asignado'];
         $data['esrolconsolidar'] = $rolusuario[35-1]['rolusuario_asignado'];
         $data['empresa'] = $this->Empresa_model->get_empresa(1); 
-        
         
         $rolusuario = $this->session_data['rol'];
 
@@ -2963,12 +2960,11 @@ function anular_venta($venta_id){
         $data['usuario_id'] = $usuario_id; //el usuario logueado        
         $data['tipousuario_id'] = $tipousuario_id; 
         $data['usuario_nombre'] = $usuario_nombre;
-        
-
-        
-        //$data['pedidosn'] = $this->Pedido_model->get_pedido_sin_nombre($usuario_id);
-//        $data['estado'] = $this->Estado_model->get_tipo_estado(5);
-        
+        //$this->load->model('Parametro_model');
+        $data['parametro'] = $this->Parametro_model->get_parametros();
+        //$this->load->model('Moneda_model');
+        $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+        $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
         $data['_view'] = 'venta/inventario_envases';
         $this->load->view('layouts/main',$data);
         //**************** fin contenido ***************
@@ -2977,12 +2973,9 @@ function anular_venta($venta_id){
 
     //Muestra la lista de vencimientos
     function buscar_inventarioenvases(){
-        
         if($this->acceso(12)){
-        //**************** inicio contenido ***************       
-
+        //**************** inicio contenido ***************
             $resultado = $this->Venta_model->buscar_inventarioenvases();
-            
             echo json_encode($resultado);
         }
         else
@@ -2990,8 +2983,7 @@ function anular_venta($venta_id){
             $data['_view'] = 'login/mensajeacceso';
             $this->load->view('layouts/main',$data);
         }
-        
-   }   
+    }
 
     //Muestra la lista de vencimientos
     function buscar_inventario(){

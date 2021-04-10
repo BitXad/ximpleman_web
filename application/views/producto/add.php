@@ -79,8 +79,8 @@
           });
           
           $("#producto_precio").change(function () {
-              var value = $(this).val();
-              var costo = $("#producto_costo").val();
+              var value = Number($(this).val());
+              var costo = Number($("#producto_costo").val());
               if(costo >= value){
                   alert("El Precio de Compra es mayor o igual a Precio de Venta");
               }

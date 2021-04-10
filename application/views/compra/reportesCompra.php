@@ -19,6 +19,9 @@
 <link href="<?php echo base_url('resources/css/cabecera.css'); ?>" rel="stylesheet">
 <!-------------------------------------------------------->
 <input type="hidden" name="base_url" id="base_url" value="<?php echo base_url(); ?>">
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 <div class="cuerpo">
                     <div class="columna_derecha">
                         <center> 
@@ -126,8 +129,16 @@
                         <th>UNIDAD</th>
                         <th>FECHA</th>
                         <th>CANT.</th>
-                        <th>PRECIO<br>UNIT.</th>
-                        <th>TOTAL</th>
+                        <th>PRECIO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th>TOTAL<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th>TOTAL<br>(<?php
+                                            if($parametro[0]["moneda_id"] == 1){
+                                                echo $lamoneda[1]['moneda_descripcion'];
+                                            }else{
+                                                echo $lamoneda[0]['moneda_descripcion'];
+                                            }
+                                        ?>)
+                        </th>
                         <th>CAJERO</th>
                     </tr>
                     

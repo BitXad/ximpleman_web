@@ -88,10 +88,16 @@ class Compra extends CI_Controller{
             else{
                 $data['compra'] = $this->Compra_model->fechacompras($filtro);            
             }
-
             $data['empresa'] = $this->Empresa_model->get_empresa(1);
             $data['tipo_transaccion'] = $this->Tipo_transaccion_model->get_all_tipo_transaccion();
             $data['estado'] = $this->Estado_model->get_tipo_estado(1);
+            
+            $this->load->model('Parametro_model');
+            $data['parametro'] = $this->Parametro_model->get_parametros();
+            $this->load->model('Moneda_model');
+            $data['moneda'] = $this->Moneda_model->get_moneda(2); //Obtener moneda extragera
+            $data['lamoneda'] = $this->Moneda_model->getalls_monedasact_asc();
+            
             $data['_view'] = 'compra/reportesCompra';
             $this->load->view('layouts/main',$data);
         }

@@ -28,6 +28,9 @@
 <input id="base_url" name="base_url" value="<?php echo base_url(); ?>" hidden>
 <input type="hidden" id="esrol" name="esrol" value="<?php echo $esrol; ?>">
 <input type="hidden" id="esrolconsolidar" name="esrolconsolidar" value="<?php echo $esrolconsolidar; ?>">
+<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php echo $parametro[0]['moneda_descripcion']; ?>" />
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<input type="hidden" name="lamoneda" id="lamoneda" value='<?php echo json_encode($lamoneda); ?>' />
 
 <input id="usuario_id" name="usuario_id" value="<?php echo $usuario_id; ?>" hidden>
 <input id="pedido_id" name="pedido_id" value="0" hidden>
@@ -138,10 +141,18 @@
                         <th rowspan="2">Vendedor</th>-->
                         <th colspan="3">Inventario</th>
                         
-                        <th rowspan="2">Total<br>Bs</th>
+                        <th rowspan="2">Total<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
+                        <th rowspan="2">Total<br>(<?php
+                                        if($parametro[0]["moneda_id"] == 1){
+                                            echo $lamoneda[1]['moneda_descripcion'];
+                                        }else{
+                                            echo $lamoneda[0]['moneda_descripcion'];
+                                        }
+                                    ?>)
+                        </th>
                     </tr>
                     <tr>                       
-                        <th>Costo</th>
+                        <th>Costo (<?php echo $parametro[0]['moneda_descripcion']; ?>)</th>
                         <th>Prestados</th>
                         <th>Saldo</th>
                         

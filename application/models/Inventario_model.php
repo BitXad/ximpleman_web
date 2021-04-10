@@ -380,7 +380,8 @@ class Inventario_model extends CI_Model
                   0 as costov_unit,
                   0 as importe_salida,
                   c.compra_hora as hora,
-                  '' as detalleobs
+                  '' as detalleobs,
+                  d.detallecomp_tc as tipo_cambio
                 from
                   compra c,
                   detalle_compra d
@@ -404,7 +405,8 @@ class Inventario_model extends CI_Model
                   t.detalleven_costo as costov_unit,
                   t.detalleven_subtotal as importe_salida,
                   v.venta_hora as hora,
-                  '' as detalleobs
+                  '' as detalleobs,
+                  t.detalleven_tc as tipo_cambio
                 from
                   venta v,
                   detalle_venta t
@@ -427,7 +429,8 @@ class Inventario_model extends CI_Model
                   t.detalleven_costo as costov_unit,
                   t.detalleven_subtotal as importe_salida,
                   ds.detalleserv_horaterminado as hora,
-                  concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs
+                  concat('SERV. TECNICO N° ', ds.servicio_id) as detalleobs,
+                  t.detalleven_tc as tipo_cambio
                 from
                   detalle_serv ds,
                   detalle_venta t

@@ -89,13 +89,10 @@ function tabladetallecompra(){
            data:{compra_id:compra_id},
            success:function(respuesta){     
                
-                                     
-               
-               var registros =  JSON.parse(respuesta);
+                var registros =  JSON.parse(respuesta);
                 
-               if (registros != null){                   
-                   
-                    var n = registros.length; //tamaÃ±o del arreglo de la consulta
+                if (registros != null){
+                    var n = registros.length; //tamaño del arreglo de la consulta
                     var total_detalle = Number(0);
                     var cantidad = Number(0);
                     var subtotal = Number(0);
@@ -838,52 +835,37 @@ function buscar_compras()
     fechadecompra(filtro);
 }
 
-   function reporte_compras()
-{
-    var base_url    = document.getElementById('base_url').value;
-    var controlador = base_url+"compra";
-    var opcion      = document.getElementById('select_compra').value;
- 
-    
+    function reporte_compras(){
+        var base_url    = document.getElementById('base_url').value;
+        //var controlador = base_url+"compra";
+        var opcion      = document.getElementById('select_compra').value;
+        if (opcion == 1)
+        {
+            filtro = " and date(compra_fecha) = date(now())";
+            mostrar_ocultar_buscador("ocultar");   
+        }//compras de hoy
+        if (opcion == 2)
+        {
+            filtro = " and date(compra_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
+            mostrar_ocultar_buscador("ocultar");
+        }//compras de ayer
+        if (opcion == 3) 
+        {
+            filtro = " and date(compra_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
+            mostrar_ocultar_buscador("ocultar");
 
-    if (opcion == 1)
-    {
-        filtro = " and date(compra_fecha) = date(now())";
-        mostrar_ocultar_buscador("ocultar");
+        }
+        if (opcion == 4) 
+        {   filtro = " ";//todos los compras
+            mostrar_ocultar_buscador("ocultar");
 
-               
-    }//compras de hoy
-    
-    if (opcion == 2)
-    {
-       
-        filtro = " and date(compra_fecha) = date_add(date(now()), INTERVAL -1 DAY)";
-        mostrar_ocultar_buscador("ocultar");
-    }//compras de ayer
-    
-    if (opcion == 3) 
-    {
-    
-        filtro = " and date(compra_fecha) >= date_add(date(now()), INTERVAL -1 WEEK)";//compras de la semana
-        mostrar_ocultar_buscador("ocultar");
-
-            }
-
-    
-    if (opcion == 4) 
-    {   filtro = " ";//todos los compras
-        mostrar_ocultar_buscador("ocultar");
-
+        }
+        if (opcion == 5) {
+            mostrar_ocultar_buscador("mostrar");
+            filtro = null;
+        }
+        reportefechadecompra(filtro);
     }
-    
-    if (opcion == 5) {
-
-        mostrar_ocultar_buscador("mostrar");
-        filtro = null;
-    }
-
-    reportefechadecompra(filtro);
-}
 
 function mostrar_ocultar_buscador(parametro){
        
@@ -1616,36 +1598,29 @@ function tablareproducto(opcion)
 
 } 
 function reportefechadecompra(filtro)
-{   
-      
+{
    var base_url    = document.getElementById('base_url').value;
     var controlador = base_url+"compra/buscarrepofecha";
-   
-     
     $.ajax({url: controlador,
-           type:"POST",
-           data:{filtro:filtro},
-          
-           success:function(report){     
-              
-                            
+            type:"POST",
+            data:{filtro:filtro},
+            success:function(report){
                 $("#enco").val("- 0 -");
-               var registros =  JSON.parse(report);
-           
-               if (registros != null){
-                   
-                    
+                var registros =  JSON.parse(report);
+                if(registros != null){
                     var cant = Number(0);
                     var total = Number(0);
-                    var total_detalle = 0;
+                    //var total_detalle = 0;
+                    var nombre_moneda = document.getElementById('nombre_moneda').value;
+                    var lamoneda_id = document.getElementById('lamoneda_id').value;
+                    var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                    var total_otramoneda = Number(0);
+                    var total_otram = Number(0);
                     var n = registros.length; //tama«Ðo del arreglo de la consulta
                     $("#pillados").val("- "+n+" ");
                    
                     html = "";
-                   
-                   
                     for (var i = 0; i < n ; i++){
-                        
                         cant += Number(registros[i]["detallecomp_cantidad"]);
                         var suma = Number(registros[i]["detallecomp_total"]);
                         var total = Number(suma+total);
@@ -1663,8 +1638,17 @@ function reportefechadecompra(filtro)
                         html += "<td>"+convertDateFormat(registros[i]["compra_fecha"])+""+registros[i]['compra_hora']+"</td>" ;                                          
                         html += "<td align='right'> "+registros[i]["detallecomp_cantidad"]+" </td>"; 
                         html += "<td align='right'> "+Number(registros[i]["detallecomp_costo"]).toFixed(2)+" </td>"; 
-                        html += "<td align='right'><b>"+Number(registros[i]["detallecomp_total"]).toFixed(2)+"</b></td>";
-                        
+                        html += "<td align='right'><b>"+numberFormat(Number(registros[i]["detallecomp_total"]).toFixed(2))+"</b></td>";
+                        html += "<td class='text-right'> ";
+                        if(lamoneda_id == 1){
+                            total_otram = Number(registros[i]["detallecomp_total"])/Number(registros[i]["detallecomp_tc"]);
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = Number(registros[i]["detallecomp_total"])*Number(registros[i]["detallecomp_tc"]);
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += "</td>";
                         
                         html += "<td  align='center'>"+registros[i]["usuario_nombre"]+"</td>"; 
                        // html += "<td><a href='"+base_url+"compra/pdf/"+registros[i]["compra_id"]+"' target='_blank' class='btn btn-success btn-xs'><span class='fa fa-print'> </a>";
@@ -1684,10 +1668,11 @@ function reportefechadecompra(filtro)
                         html += "<td></td>";
                         html += "<td></td>";
                         html += "<td></td>";
-                        html += "<th align='right'><b>TOTAL:</b></td>";
-                        html += "<th align='right'><b>"+Number(cant).toFixed(2)+"</b></th>";
+                        html += "<th style='text-align: right'><b>TOTAL:</b></td>";
+                        html += "<th style='text-align: right'><b>"+numberFormat(Number(cant).toFixed(2))+"</b></th>";
                         html += "<td></td>";
-                        html += "<th align='right'><b>"+Number(total).toFixed(2)+"</b></th>";
+                        html += "<th style='text-align: right'><b>"+numberFormat(Number(total).toFixed(2))+"</b></th>";
+                        html += "<th style='text-align: right'><b>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</b></th>";
                         html += "<td></td>";
                        
                         html += "</tr>";

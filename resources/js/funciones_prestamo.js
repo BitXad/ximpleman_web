@@ -193,8 +193,12 @@ function inventario_envases(){
            data:{},
            async: false, 
            success:function(respuesta){
-               
-               var prestamo = JSON.parse(respuesta); 
+                var prestamo = JSON.parse(respuesta); 
+                var nombre_moneda = document.getElementById('nombre_moneda').value;
+                var lamoneda_id = document.getElementById('lamoneda_id').value;
+                var lamoneda = JSON.parse(document.getElementById('lamoneda').value);
+                var total_otramoneda = Number(0);
+                var total_otram = Number(0);
                var html = "";
                var cantidad_prestados = 0;
                var cantidad_envases = 0;
@@ -213,6 +217,16 @@ function inventario_envases(){
                    html += "<td style='padding:0'><center>"+formato_numerico(prestamo[i].prestados)+"</center></td>";
                    html += "<td style='padding:0'><center>"+formato_numerico(prestamo[i].existencia)+"</center></td>";
                    html += "<td style='padding:0'><center>"+formato_numerico(prestamo[i].total)+"</center></td>";
+                   html += "<td style='padding:0' class='text-center'> ";
+                        if(lamoneda_id == 1){
+                            total_otram = Number(prestamo[i].total)/Number(lamoneda[1]["moneda_tc"]);
+                            total_otramoneda += total_otram;
+                        }else{
+                            total_otram = Number(prestamo[i].total)*Number(lamoneda[1]["moneda_tc"]);
+                            total_otramoneda += total_otram;
+                        }
+                        html += numberFormat(Number(total_otram).toFixed(2));
+                        html += "</td>";
                    if (prestamo[i].prestados>0){
                        html += "<td style='padding:0' class='no-print'><center><a href='"+base_url+"venta/envases_prestados/"+prestamo[i].producto_id+"' target='_BLANK' class='btn btn-warning btn-xs no-print' ><fa class='fa fa-list'></fa> Prestamos</a></center></td>";                       
                    }
@@ -244,6 +258,7 @@ function inventario_envases(){
                html+= "<th>"+formato_numerico(cantidad_prestados)+"</th>";
                html+= "<th>"+formato_numerico(cantidad_saldos)+"</th>";
                html+= "<th>"+formato_numerico(monto_inventario)+"</th>";
+               html+= "<th>"+numberFormat(Number(total_otramoneda).toFixed(2))+"</th>";
                html+= "</tr>";
                
                $("#tabla_inventario").html(html);              
@@ -272,3 +287,39 @@ function formato_numerico(numero){
 	
 	return x1 + x2;
 }
+function numberFormat(numero){
+        // Variable que contendra el resultado final
+        var resultado = "";
+ 
+        // Si el numero empieza por el valor "-" (numero negativo)
+        if(numero[0]=="-")
+        {
+            // Cogemos el numero eliminando los posibles puntos que tenga, y sin
+            // el signo negativo
+            nuevoNumero=numero.replace(/\,/g,'').substring(1);
+        }else{
+            // Cogemos el numero eliminando los posibles puntos que tenga
+            nuevoNumero=numero.replace(/\,/g,'');
+        }
+ 
+        // Si tiene decimales, se los quitamos al numero
+        if(numero.indexOf(".")>=0)
+            nuevoNumero=nuevoNumero.substring(0,nuevoNumero.indexOf("."));
+ 
+        // Ponemos un punto cada 3 caracteres
+        for (var j, i = nuevoNumero.length - 1, j = 0; i >= 0; i--, j++)
+            resultado = nuevoNumero.charAt(i) + ((j > 0) && (j % 3 == 0)? ",": "") + resultado;
+ 
+        // Si tiene decimales, se lo añadimos al numero una vez forateado con 
+        // los separadores de miles
+        if(numero.indexOf(".")>=0)
+            resultado+=numero.substring(numero.indexOf("."));
+ 
+        if(numero[0]=="-")
+        {
+            // Devolvemos el valor añadiendo al inicio el signo negativo
+            return "-"+resultado;
+        }else{
+            return resultado;
+        }
+    }

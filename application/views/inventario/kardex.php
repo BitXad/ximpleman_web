@@ -58,6 +58,9 @@ border-spacing : 1;
 <!------------------ ESTILO DE LAS TABLAS ----------------->
 <link href="<?php echo base_url('resources/css/mitabla.css'); ?>" rel="stylesheet">
 <input type="text" value="<?php echo base_url(); ?>" id="base_url" hidden>
+<!--<input type="hidden" name="nombre_moneda" id="nombre_moneda" value="<?php //echo $parametro[0]['moneda_descripcion']; ?>" />-->
+<input type="hidden" name="lamoneda_id" id="lamoneda_id" value="<?php echo $parametro[0]['moneda_id']; ?>" />
+<!--<input type="hidden" name="lamoneda" id="lamoneda" value='<?php //echo json_encode($lamoneda); ?>' />-->
 <!-------------------------------------------------------->
 <table class="table" style="width: 20cm; padding: 0;" >
     <tr>
@@ -192,7 +195,7 @@ border-spacing : 1;
         <th colspan="4">
             SALIDAS 
         </th>
-        <th colspan="2">
+        <th colspan="3">
            SALDOS   
         </th>
         <th rowspan="2">
@@ -209,10 +212,10 @@ border-spacing : 1;
             UNIDAD<br>COMP.
         </th>
         <th>
-            COSTO<br>UNIT.                            
+            COSTO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
-            IMPORTE<br>Bs.
+            IMPORTE<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
             Nº DOC.<br>VENTA                            
@@ -221,16 +224,24 @@ border-spacing : 1;
             UNIDAD<br>VEND.                            
         </th>
         <th>
-            COSTO<br>UNIT.                            
+            COSTO<br>UNIT.(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
-            IMPORTE<br>Bs.                            
+            IMPORTE<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)
         </th>
         <th>
             UNIDs.                            
         </th>
         <th>
-            SALDO<br>Bs.
+            SALDO<br>(<?php echo $parametro[0]['moneda_descripcion']; ?>)
+        </th>
+        <th>SALDO<br>(<?php
+                        if($parametro[0]["moneda_id"] == 1){
+                            echo $lamoneda[1]['moneda_descripcion'];
+                        }else{
+                            echo $lamoneda[0]['moneda_descripcion'];
+                        }
+                    ?>)
         </th>
 
 

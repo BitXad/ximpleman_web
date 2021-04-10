@@ -73,8 +73,8 @@
 </script>
 <script>
       function verificar_precio(){
-              var venta = $("#producto_precio").val();
-              var costo = $("#producto_costo").val();
+              var venta = Number($("#producto_precio").val());
+              var costo = Number($("#producto_costo").val());
               if(costo >= venta){
                   alert("El Precio de Compra es mayor o igual a Precio de Venta");
               }

@@ -146,7 +146,7 @@ class Moneda_model extends CI_Model
     {
         $moneda = $this->db->query("
             SELECT
-                moneda_id, moneda_descripcion
+                m.moneda_id, m.moneda_descripcion, m.moneda_tc
             FROM
                 moneda m, estado e
             WHERE
